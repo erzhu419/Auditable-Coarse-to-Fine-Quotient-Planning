@@ -1,0 +1,17 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "development_work": {
+        "selector_calls": 9,
+        "synthetic_utility_rows_read": 216
+      },
+      "newly_sampled_environment_transitions": 0,
+      "new_synthetic_transitions": 0,
+      "tree_fits": 0,
+      "neural_model_fits": 0,
+      "optimizer_steps": 0,
+      "scope": "Synthetic retained utility rows; pure selection arithmetic, no games or model inference."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "command": [
+    ".venv-lmta-v42/bin/python",
+    "scripts/analyze_controlled_predictive_paired_ntuple_v130.py",
+    "--input",
+    "reports/controlled_predictive_paired_ntuple_v130"
+  ],
+  "started_utc": "2026-09-20T01:38:42.271319+00:00",
+  "status": "completed",
+  "exit_code": 0,
+  "seconds": 5.4229329689987935,
+  "stderr_bytes": 0
+}

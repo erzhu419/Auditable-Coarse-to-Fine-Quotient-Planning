@@ -1,0 +1,26 @@
+{
+  "command": "TMPDIR='/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/.tmp' .venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_consolidation_v117.py --basetemp='.tmp/v117_analysis_tests'",
+  "cwd": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration",
+  "attempts": 1,
+  "returncode": 0,
+  "passed": 5,
+  "pytest_seconds": 0.63,
+  "scope": "Synthetic cached logs only; no production analysis, environment samples, fitting, router updates or planning.",
+  "detected_failures": [
+    "reserved validation records entering fits",
+    "selection violating batch protection or new-coverage rules",
+    "wrong hierarchy of prediction averaging",
+    "missing coverage treated as zero error or engineering failure",
+    "double charging shared acquisition or archived models",
+    "assuming a fixed tree-fit count for module banks"
+  ],
+  "development_work": {
+    "new_environment_transitions": 0,
+    "new_synthetic_transitions": 0,
+    "tree_fits": 0,
+    "constant_leaf_models": 0,
+    "router_observe_calls": 0,
+    "planner_calls": 0,
+    "learned_model_prediction_calls": 0
+  }
+}

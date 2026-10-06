@@ -1,0 +1,15 @@
+{
+  "attempts": [
+    {
+      "tests": 13,
+      "failures": 0,
+      "seconds": 0.28161064099913347,
+      "environment_samples": 0,
+      "environment_random_draws": 0,
+      "native_model_calls": 0,
+      "model_updates": 0,
+      "source_refits": 0,
+      "scope": "Mocked retained paired targets, original-game split, ordered training, model freeze, new-game streams and separate phase costs."
+    }
+  ]
+}

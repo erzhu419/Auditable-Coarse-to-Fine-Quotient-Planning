@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "scripts/analyze_controlled_predictive_paired_correction_v92.py",
+    "reports/controlled_predictive_paired_correction_v92"
+  ],
+  "attempts": 1,
+  "exit_code": 0,
+  "wall_seconds": 0.27250764903146774,
+  "stdout": "reports/controlled_predictive_paired_correction_v92/analysis.stdout.log",
+  "stderr": "reports/controlled_predictive_paired_correction_v92/analysis.stderr.log",
+  "stderr_bytes": 0,
+  "new_tree_fits": 0,
+  "new_sampled_transitions": 0
+}

@@ -1,0 +1,77 @@
+{
+  "schema": "acfqp.component_heads_freeze.v322",
+  "source_summary": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/reward_targets_v321/summary.json",
+  "protocol": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/specs/COMPONENT_HEADS_V322.md",
+  "lifecycles": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "parents": 4,
+  "workers": 4,
+  "tasks": [
+    "A",
+    "B"
+  ],
+  "new_arms": [
+    "REWARD_ONLY",
+    "WIN_ONLY"
+  ],
+  "reused_arms": [
+    "FIRST_LOCAL",
+    "NSTEP_QUERY"
+  ],
+  "components": {
+    "FIRST_LOCAL": [
+      "FIRST_LOCAL",
+      "FIRST_LOCAL"
+    ],
+    "NSTEP_QUERY": [
+      "NSTEP_QUERY",
+      "NSTEP_QUERY"
+    ],
+    "REWARD_ONLY": [
+      "NSTEP_QUERY",
+      "FIRST_LOCAL"
+    ],
+    "WIN_ONLY": [
+      "FIRST_LOCAL",
+      "NSTEP_QUERY"
+    ]
+  },
+  "restore": "ACTUAL_FIRST_V0_THEN_NSTEP_QUERY_V1_THEN_V2_ABSOLUTE_SPARSE_WRITES",
+  "assembly": "FULL_SELECTED_COMPONENT_COPY_OTHER_COMPONENT_EXACT_FIRST_NO_FIT",
+  "updates_counter": "INHERITED_FIRST_ONLY_HYBRID_VERSION_IS_ASSEMBLY_NOT_TRAINING",
+  "planning_belief": "ACTUAL_IMMUTABLE_V321_FIRST_BANK_BELIEF",
+  "true_probabilities": {
+    "A": 0.1,
+    "B": 0.5
+  },
+  "evaluation_games_per_cell": 32,
+  "max_steps": 8192,
+  "seed_evaluation": 321900000000,
+  "paired_stream_reuse": true,
+  "expected_new_evaluation_games": 2048,
+  "expected_reused_evaluation_games": 2048,
+  "maximum_new_evaluation_raw_tiles": 16781312,
+  "new_training_raw_tiles": 0,
+  "new_fit_updates": 0,
+  "primary": "REWARD_ONLY_minus_NSTEP_QUERY_FINAL_AB",
+  "bootstrap_draws": 20000,
+  "bootstrap_seed": 32200001,
+  "stop_rule": "ANY_NEW_OR_REUSED_NATURAL_GAME_CUTOFF_GLOBAL_HOLD_NO_REPLACEMENTS",
+  "evidence_scope": "SAVED_COMPONENT_POLICY_MECHANISM_FIXED_V321_STREAMS_NOT_INDEPENDENT_CONFIRMATION"
+}

@@ -1,0 +1,29 @@
+{
+  "attempts": [
+    {
+      "seed": 809901,
+      "tests": 1,
+      "main_campaign_calls": 0,
+      "full_support_teacher_calls": 0,
+      "work": {
+        "state_from_board_v1": 28,
+        "swipe_board_v1": 133,
+        "sampled_transitions": 25,
+        "environment_random_draws": 50,
+        "restoration_random_draws": 10
+      },
+      "prefix_policy_work": {
+        "learned_terminal_checks": 15,
+        "learned_swipe_calls": 60,
+        "learned_line_rewrites": 240,
+        "legal_swipes": 60
+      },
+      "suffix_policy_work": {
+        "learned_terminal_checks": 7,
+        "learned_swipe_calls": 28,
+        "learned_line_rewrites": 112,
+        "legal_swipes": 28
+      }
+    }
+  ]
+}

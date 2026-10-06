@@ -1,0 +1,172 @@
+{
+  "status": "PASS",
+  "raw_games": 384,
+  "new_actual_transitions": 328544,
+  "cohort": "All16original lifecycles;4fixedparents;3phases;8paired games each",
+  "new_source_observations": 0,
+  "new_warmup_observations": 0,
+  "new_value_updates": 0,
+  "leaf_query_provenance": "Exact original four V281 source_provenance and target query; leaf new updates zero",
+  "outcomes": {
+    "wins": 154,
+    "losses": 230,
+    "cutoffs": 0
+  },
+  "whole_life_contrasts": {
+    "LIBRARY_H2": {
+      "mean": -12.593505859375,
+      "ci95": [
+        -27.77564697265625,
+        2.4751434326171835
+      ],
+      "improved": 3,
+      "equal": 0,
+      "worse": 13,
+      "parent_mean_deltas": {
+        "0": -8.12109375,
+        "1": -12.6943359375,
+        "2": -16.314453125,
+        "3": -13.244140625
+      }
+    },
+    "FROZEN_H2": {
+      "mean": -6.8621826171875,
+      "ci95": [
+        -21.659002685546874,
+        9.880288696289059
+      ],
+      "improved": 6,
+      "equal": 0,
+      "worse": 10,
+      "parent_mean_deltas": {
+        "0": 9.5849609375,
+        "1": 8.59619140625,
+        "2": -24.47216796875,
+        "3": -21.15771484375
+      }
+    }
+  },
+  "adverse_lifecycles": {
+    "LIBRARY_H2": [
+      {
+        "lifecycle": 0,
+        "parent": 0,
+        "delta": -13.255859375
+      },
+      {
+        "lifecycle": 1,
+        "parent": 1,
+        "delta": -30.662109375
+      },
+      {
+        "lifecycle": 2,
+        "parent": 2,
+        "delta": -75.33984375
+      },
+      {
+        "lifecycle": 4,
+        "parent": 0,
+        "delta": -43.4453125
+      },
+      {
+        "lifecycle": 5,
+        "parent": 1,
+        "delta": -1.966796875
+      },
+      {
+        "lifecycle": 6,
+        "parent": 2,
+        "delta": -20.54296875
+      },
+      {
+        "lifecycle": 7,
+        "parent": 3,
+        "delta": -62.44140625
+      },
+      {
+        "lifecycle": 8,
+        "parent": 0,
+        "delta": -4.396484375
+      },
+      {
+        "lifecycle": 9,
+        "parent": 1,
+        "delta": -5.12109375
+      },
+      {
+        "lifecycle": 11,
+        "parent": 3,
+        "delta": -21.408203125
+      },
+      {
+        "lifecycle": 13,
+        "parent": 1,
+        "delta": -13.02734375
+      },
+      {
+        "lifecycle": 14,
+        "parent": 2,
+        "delta": -7.939453125
+      },
+      {
+        "lifecycle": 15,
+        "parent": 3,
+        "delta": -12.51953125
+      }
+    ],
+    "FROZEN_H2": [
+      {
+        "lifecycle": 1,
+        "parent": 1,
+        "delta": -38.958984375
+      },
+      {
+        "lifecycle": 2,
+        "parent": 2,
+        "delta": -38.6484375
+      },
+      {
+        "lifecycle": 4,
+        "parent": 0,
+        "delta": -30.080078125
+      },
+      {
+        "lifecycle": 6,
+        "parent": 2,
+        "delta": -9.291015625
+      },
+      {
+        "lifecycle": 7,
+        "parent": 3,
+        "delta": -52.373046875
+      },
+      {
+        "lifecycle": 10,
+        "parent": 2,
+        "delta": -28.533203125
+      },
+      {
+        "lifecycle": 11,
+        "parent": 3,
+        "delta": -37.57421875
+      },
+      {
+        "lifecycle": 13,
+        "parent": 1,
+        "delta": -22.009765625
+      },
+      {
+        "lifecycle": 14,
+        "parent": 2,
+        "delta": -21.416015625
+      },
+      {
+        "lifecycle": 15,
+        "parent": 3,
+        "delta": -12.36328125
+      }
+    ]
+  },
+  "method": "Read all raw oracle games and recomputed retained score/status utilities, transition and cost ledgers, exact original seed/prefix order, baseline cost copies and fixed-parent paired whole-life/phase bootstrap intervals. No environment or planner replay.",
+  "scope": "Known-law reference, not an upper bound or independent learned-model confirmation. Whole-life ORACLE-minus-LIBRARY CI crosses zero; all negative lifecycles retained."
+}

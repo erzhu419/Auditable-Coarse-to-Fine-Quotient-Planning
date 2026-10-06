@@ -1,0 +1,77 @@
+{"event": "snapshot_saved", "life": 0, "age": 1, "summary": {"num_programs": 31, "num_buckets": 16, "total_guards": 40, "total_exit_expressions": 59, "total_exit_cell_slots": 124, "total_reward_expressions": 16, "total_anchor_rank_copies": 124, "local_program_instructions": 180, "shared_composition_instructions": 33, "total_instructions": 213}}
+{"event": "snapshot_saved", "life": 1, "age": 1, "summary": {"num_programs": 29, "num_buckets": 16, "total_guards": 37, "total_exit_expressions": 57, "total_exit_cell_slots": 116, "total_reward_expressions": 15, "total_anchor_rank_copies": 116, "local_program_instructions": 168, "shared_composition_instructions": 33, "total_instructions": 201}}
+{"event": "snapshot_saved", "life": 2, "age": 1, "summary": {"num_programs": 28, "num_buckets": 15, "total_guards": 36, "total_exit_expressions": 53, "total_exit_cell_slots": 112, "total_reward_expressions": 16, "total_anchor_rank_copies": 112, "local_program_instructions": 164, "shared_composition_instructions": 33, "total_instructions": 197}}
+{"event": "snapshot_saved", "life": 3, "age": 1, "summary": {"num_programs": 30, "num_buckets": 15, "total_guards": 40, "total_exit_expressions": 58, "total_exit_cell_slots": 120, "total_reward_expressions": 16, "total_anchor_rank_copies": 120, "local_program_instructions": 176, "shared_composition_instructions": 33, "total_instructions": 209}}
+{"event": "snapshot_saved", "life": 0, "age": 8, "summary": {"num_programs": 34, "num_buckets": 16, "total_guards": 44, "total_exit_expressions": 65, "total_exit_cell_slots": 136, "total_reward_expressions": 19, "total_anchor_rank_copies": 136, "local_program_instructions": 199, "shared_composition_instructions": 33, "total_instructions": 232}}
+{"event": "snapshot_saved", "life": 1, "age": 8, "summary": {"num_programs": 34, "num_buckets": 16, "total_guards": 44, "total_exit_expressions": 65, "total_exit_cell_slots": 136, "total_reward_expressions": 19, "total_anchor_rank_copies": 136, "local_program_instructions": 199, "shared_composition_instructions": 33, "total_instructions": 232}}
+{"event": "snapshot_saved", "life": 2, "age": 8, "summary": {"num_programs": 34, "num_buckets": 16, "total_guards": 44, "total_exit_expressions": 65, "total_exit_cell_slots": 136, "total_reward_expressions": 19, "total_anchor_rank_copies": 136, "local_program_instructions": 199, "shared_composition_instructions": 33, "total_instructions": 232}}
+{"event": "snapshot_saved", "life": 3, "age": 8, "summary": {"num_programs": 34, "num_buckets": 16, "total_guards": 44, "total_exit_expressions": 65, "total_exit_cell_slots": 136, "total_reward_expressions": 19, "total_anchor_rank_copies": 136, "local_program_instructions": 199, "shared_composition_instructions": 33, "total_instructions": 232}}
+{"event": "snapshot_saved", "life": 2, "age": 64, "summary": {"num_programs": 34, "num_buckets": 16, "total_guards": 44, "total_exit_expressions": 65, "total_exit_cell_slots": 136, "total_reward_expressions": 19, "total_anchor_rank_copies": 136, "local_program_instructions": 199, "shared_composition_instructions": 33, "total_instructions": 232}}
+{"event": "snapshot_saved", "life": 1, "age": 64, "summary": {"num_programs": 34, "num_buckets": 16, "total_guards": 44, "total_exit_expressions": 65, "total_exit_cell_slots": 136, "total_reward_expressions": 19, "total_anchor_rank_copies": 136, "local_program_instructions": 199, "shared_composition_instructions": 33, "total_instructions": 232}}
+{"event": "snapshot_saved", "life": 0, "age": 64, "summary": {"num_programs": 34, "num_buckets": 16, "total_guards": 44, "total_exit_expressions": 65, "total_exit_cell_slots": 136, "total_reward_expressions": 19, "total_anchor_rank_copies": 136, "local_program_instructions": 199, "shared_composition_instructions": 33, "total_instructions": 232}}
+{"event": "snapshot_saved", "life": 3, "age": 64, "summary": {"num_programs": 34, "num_buckets": 16, "total_guards": 44, "total_exit_expressions": 65, "total_exit_cell_slots": 136, "total_reward_expressions": 19, "total_anchor_rank_copies": 136, "local_program_instructions": 199, "shared_composition_instructions": 33, "total_instructions": 232}}
+{"event": "control_complete", "life": 0, "replica": 0, "steps": 925}
+{"event": "control_complete", "life": 3, "replica": 0, "steps": 693}
+{"event": "control_complete", "life": 2, "replica": 0, "steps": 844}
+{"event": "control_complete", "life": 1, "replica": 0, "steps": 1115}
+{"event": "control_complete", "life": 3, "replica": 1, "steps": 1034}
+{"event": "control_complete", "life": 0, "replica": 1, "steps": 1027}
+{"event": "control_complete", "life": 2, "replica": 1, "steps": 1096}
+{"event": "control_complete", "life": 1, "replica": 1, "steps": 1040}
+{"event": "control_complete", "life": 3, "replica": 2, "steps": 1015}
+{"event": "control_complete", "life": 2, "replica": 2, "steps": 883}
+{"event": "control_complete", "life": 1, "replica": 2, "steps": 1070}
+{"event": "control_complete", "life": 0, "replica": 2, "steps": 1130}
+{"event": "control_complete", "life": 3, "replica": 3, "steps": 944}
+{"event": "control_complete", "life": 2, "replica": 3, "steps": 1006}
+{"event": "control_complete", "life": 1, "replica": 3, "steps": 915}
+{"event": "control_complete", "life": 0, "replica": 3, "steps": 1006}
+{"event": "control_complete", "life": 3, "replica": 4, "steps": 1046}
+{"event": "control_complete", "life": 2, "replica": 4, "steps": 1080}
+{"event": "control_complete", "life": 1, "replica": 4, "steps": 982}
+{"event": "control_complete", "life": 0, "replica": 4, "steps": 1061}
+{"event": "control_complete", "life": 3, "replica": 5, "steps": 1031}
+{"event": "control_complete", "life": 1, "replica": 5, "steps": 965}
+{"event": "control_complete", "life": 2, "replica": 5, "steps": 1252}
+{"event": "control_complete", "life": 0, "replica": 5, "steps": 1049}
+{"event": "control_complete", "life": 3, "replica": 6, "steps": 1062}
+{"event": "control_complete", "life": 1, "replica": 6, "steps": 1031}
+{"event": "control_complete", "life": 2, "replica": 6, "steps": 1108}
+{"event": "control_complete", "life": 0, "replica": 6, "steps": 1019}
+{"event": "control_complete", "life": 3, "replica": 7, "steps": 1032}
+{"event": "control_complete", "life": 1, "replica": 7, "steps": 1116}
+{"event": "control_complete", "life": 2, "replica": 7, "steps": 1084}
+{"event": "control_complete", "life": 0, "replica": 7, "steps": 1102}
+{"event": "control_complete", "life": 3, "replica": 8, "steps": 1063}
+{"event": "control_complete", "life": 2, "replica": 8, "steps": 860}
+{"event": "control_complete", "life": 1, "replica": 8, "steps": 1073}
+{"event": "control_complete", "life": 0, "replica": 8, "steps": 966}
+{"event": "control_complete", "life": 2, "replica": 9, "steps": 753}
+{"event": "control_complete", "life": 3, "replica": 9, "steps": 1048}
+{"event": "control_complete", "life": 1, "replica": 9, "steps": 966}
+{"event": "control_complete", "life": 0, "replica": 9, "steps": 797}
+{"event": "control_complete", "life": 3, "replica": 10, "steps": 878}
+{"event": "control_complete", "life": 2, "replica": 10, "steps": 1196}
+{"event": "control_complete", "life": 0, "replica": 10, "steps": 1108}
+{"event": "control_complete", "life": 1, "replica": 10, "steps": 1134}
+{"event": "control_complete", "life": 2, "replica": 11, "steps": 856}
+{"event": "control_complete", "life": 3, "replica": 11, "steps": 999}
+{"event": "control_complete", "life": 3, "replica": 12, "steps": 351}
+{"event": "control_complete", "life": 0, "replica": 11, "steps": 1041}
+{"event": "control_complete", "life": 1, "replica": 11, "steps": 1052}
+{"event": "control_complete", "life": 2, "replica": 12, "steps": 997}
+{"event": "control_complete", "life": 3, "replica": 13, "steps": 1039}
+{"event": "control_complete", "life": 1, "replica": 12, "steps": 971}
+{"event": "control_complete", "life": 0, "replica": 12, "steps": 1060}
+{"event": "control_complete", "life": 2, "replica": 13, "steps": 1090}
+{"event": "control_complete", "life": 3, "replica": 14, "steps": 1040}
+{"event": "control_complete", "life": 1, "replica": 13, "steps": 888}
+{"event": "control_complete", "life": 0, "replica": 13, "steps": 1033}
+{"event": "control_complete", "life": 2, "replica": 14, "steps": 1066}
+{"event": "control_complete", "life": 3, "replica": 15, "steps": 969}
+{"event": "control_complete", "life": 1, "replica": 14, "steps": 1062}
+{"event": "control_complete", "life": 0, "replica": 14, "steps": 1057}
+{"event": "control_complete", "life": 2, "replica": 15, "steps": 1008}
+{"event": "control_complete", "life": 1, "replica": 15, "steps": 980}
+{"event": "control_complete", "life": 0, "replica": 15, "steps": 780}
+{"status": "complete", "seconds": 9.151723326009233}

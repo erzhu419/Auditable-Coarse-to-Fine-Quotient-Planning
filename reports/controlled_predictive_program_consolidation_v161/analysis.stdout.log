@@ -1,0 +1,17 @@
+{"event": "audited_source", "life": 2, "phase": "TRAIN_SOURCE", "games": 8}
+{"event": "audited_source", "life": 1, "phase": "TRAIN_SOURCE", "games": 8}
+{"event": "audited_source", "life": 0, "phase": "TRAIN_SOURCE", "games": 8}
+{"event": "audited_source", "life": 3, "phase": "TRAIN_SOURCE", "games": 8}
+{"event": "audited_branches", "life": 3, "phase": "SCREEN", "branches": 480}
+{"event": "audited_branches", "life": 1, "phase": "SCREEN", "branches": 480}
+{"event": "audited_branches", "life": 2, "phase": "SCREEN", "branches": 480}
+{"event": "audited_branches", "life": 0, "phase": "SCREEN", "branches": 480}
+{"event": "audited_source", "life": 3, "phase": "EVAL_SOURCE", "games": 8}
+{"event": "audited_source", "life": 1, "phase": "EVAL_SOURCE", "games": 8}
+{"event": "audited_source", "life": 2, "phase": "EVAL_SOURCE", "games": 8}
+{"event": "audited_source", "life": 0, "phase": "EVAL_SOURCE", "games": 8}
+{"event": "audited_branches", "life": 1, "phase": "EVAL", "branches": 768}
+{"event": "audited_branches", "life": 0, "phase": "EVAL", "branches": 768}
+{"event": "audited_branches", "life": 2, "phase": "EVAL", "branches": 768}
+{"event": "audited_branches", "life": 3, "phase": "EVAL", "branches": 768}
+{"complete": true, "primary_complete": true, "checks": 69, "failed": [], "seconds": 150.83159195201006}

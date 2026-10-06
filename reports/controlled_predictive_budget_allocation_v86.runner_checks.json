@@ -1,0 +1,27 @@
+{
+  "attempts": [
+    {
+      "session_failures": 0,
+      "ground_work": {
+        "environment_random_draws": 816,
+        "initial_spawns": 8,
+        "ground_state_status_calls": 404,
+        "ground_status_internal_swipe_calls": 1616,
+        "ground_swipe_calls": 2016,
+        "ground_explicit_swipe_calls": 400,
+        "sampled_transitions": 400
+      },
+      "main_campaign_calls": 0,
+      "new_tree_fits": 0
+    }
+  ],
+  "test_command": [
+    ".venv-lmta-v42/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/test_controlled_predictive_budget_allocation_runner_v86.py"
+  ],
+  "test_exit_code": 0,
+  "test_seconds": 1.0695172779960558
+}

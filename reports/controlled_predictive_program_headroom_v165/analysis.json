@@ -1,0 +1,1283 @@
+{
+  "schema": "acfqp.program_headroom.v165.audit",
+  "valid": true,
+  "checks": [
+    {
+      "name": "full_roster_complete",
+      "passed": true
+    },
+    {
+      "name": "source_outcome_integrity",
+      "passed": true
+    },
+    {
+      "name": "production_complete",
+      "passed": true
+    },
+    {
+      "name": "embedded_roster",
+      "passed": true
+    },
+    {
+      "name": "zero_new_environment_or_updates",
+      "passed": true
+    },
+    {
+      "name": "roster:0:risk1",
+      "passed": true
+    },
+    {
+      "name": "roster:0:risk8",
+      "passed": true
+    },
+    {
+      "name": "roster:1:risk1",
+      "passed": true
+    },
+    {
+      "name": "roster:1:risk8",
+      "passed": true
+    },
+    {
+      "name": "roster:2:risk1",
+      "passed": true
+    },
+    {
+      "name": "roster:2:risk8",
+      "passed": true
+    },
+    {
+      "name": "roster:3:risk1",
+      "passed": true
+    },
+    {
+      "name": "roster:3:risk8",
+      "passed": true
+    },
+    {
+      "name": "eight_retained_cells",
+      "passed": true
+    },
+    {
+      "name": "primary:fixed_suffix_split",
+      "passed": true
+    },
+    {
+      "name": "primary:full_root_roster",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:0:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:0:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:0:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:0:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:0:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:0:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:0:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:0:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:0:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:0:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:0:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:0:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:0:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:0:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:0:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:0:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:1:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:1:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:1:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:1:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:1:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:1:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:1:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:1:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:1:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:1:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:1:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:1:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:1:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:1:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:1:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:1:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:2:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:2:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:2:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:2:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:2:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:2:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:2:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:2:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:2:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:2:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:2:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:2:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:2:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:2:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:2:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:2:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:3:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:3:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:3:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:3:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:3:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:3:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:3:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:3:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:3:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:3:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:3:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:3:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:3:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:3:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "primary:root:TRAIN_SOURCE:3:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "primary:root_moments:TRAIN_SOURCE:3:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "primary:fit:0:risk1",
+      "passed": true
+    },
+    {
+      "name": "primary:leaf_support:0:risk1",
+      "passed": true
+    },
+    {
+      "name": "primary:fit_scores:0:risk1",
+      "passed": true
+    },
+    {
+      "name": "primary:leaf_estimates:0:risk1",
+      "passed": true
+    },
+    {
+      "name": "primary:fit:0:risk8",
+      "passed": true
+    },
+    {
+      "name": "primary:leaf_support:0:risk8",
+      "passed": true
+    },
+    {
+      "name": "primary:fit_scores:0:risk8",
+      "passed": true
+    },
+    {
+      "name": "primary:leaf_estimates:0:risk8",
+      "passed": true
+    },
+    {
+      "name": "primary:fit:1:risk1",
+      "passed": true
+    },
+    {
+      "name": "primary:leaf_support:1:risk1",
+      "passed": true
+    },
+    {
+      "name": "primary:fit_scores:1:risk1",
+      "passed": true
+    },
+    {
+      "name": "primary:leaf_estimates:1:risk1",
+      "passed": true
+    },
+    {
+      "name": "primary:fit:1:risk8",
+      "passed": true
+    },
+    {
+      "name": "primary:leaf_support:1:risk8",
+      "passed": true
+    },
+    {
+      "name": "primary:fit_scores:1:risk8",
+      "passed": true
+    },
+    {
+      "name": "primary:leaf_estimates:1:risk8",
+      "passed": true
+    },
+    {
+      "name": "primary:fit:2:risk1",
+      "passed": true
+    },
+    {
+      "name": "primary:leaf_support:2:risk1",
+      "passed": true
+    },
+    {
+      "name": "primary:fit_scores:2:risk1",
+      "passed": true
+    },
+    {
+      "name": "primary:leaf_estimates:2:risk1",
+      "passed": true
+    },
+    {
+      "name": "primary:fit:2:risk8",
+      "passed": true
+    },
+    {
+      "name": "primary:leaf_support:2:risk8",
+      "passed": true
+    },
+    {
+      "name": "primary:fit_scores:2:risk8",
+      "passed": true
+    },
+    {
+      "name": "primary:leaf_estimates:2:risk8",
+      "passed": true
+    },
+    {
+      "name": "primary:fit:3:risk1",
+      "passed": true
+    },
+    {
+      "name": "primary:leaf_support:3:risk1",
+      "passed": true
+    },
+    {
+      "name": "primary:fit_scores:3:risk1",
+      "passed": true
+    },
+    {
+      "name": "primary:leaf_estimates:3:risk1",
+      "passed": true
+    },
+    {
+      "name": "primary:fit:3:risk8",
+      "passed": true
+    },
+    {
+      "name": "primary:leaf_support:3:risk8",
+      "passed": true
+    },
+    {
+      "name": "primary:fit_scores:3:risk8",
+      "passed": true
+    },
+    {
+      "name": "primary:leaf_estimates:3:risk8",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:required_cohorts",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk1:ROOT-BIT_REFIT",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk1:ROOT-GLOBAL_REFIT",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk1:BIT_REFIT-GLOBAL_REFIT",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk1:BIT_REFIT-H2",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk1:GLOBAL_REFIT-H2",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk1:ROOT-LEARNED",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk1:ROOT-GLOBAL",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk1:ROOT-H2",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk1:LEARNED-GLOBAL",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk1:LEARNED-ROOT",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk1:LEARNED-H2",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk1:GLOBAL-H2",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk1:A-H2",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk1:B-H2",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk1:TEST_ROOT_MEAN_ORACLE-H2",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk1:TEST_ROOT_MEAN_ORACLE-LEARNED",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk1:TEST_ROOT_MEAN_ORACLE-ROOT",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk8:ROOT-BIT_REFIT",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk8:ROOT-GLOBAL_REFIT",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk8:BIT_REFIT-GLOBAL_REFIT",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk8:BIT_REFIT-H2",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk8:GLOBAL_REFIT-H2",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk8:ROOT-LEARNED",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk8:ROOT-GLOBAL",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk8:ROOT-H2",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk8:LEARNED-GLOBAL",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk8:LEARNED-ROOT",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk8:LEARNED-H2",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk8:GLOBAL-H2",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk8:A-H2",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk8:B-H2",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk8:TEST_ROOT_MEAN_ORACLE-H2",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk8:TEST_ROOT_MEAN_ORACLE-LEARNED",
+      "passed": true
+    },
+    {
+      "name": "primary:comparisons:risk8:TEST_ROOT_MEAN_ORACLE-ROOT",
+      "passed": true
+    },
+    {
+      "name": "primary:modes:required_cohorts",
+      "passed": true
+    },
+    {
+      "name": "primary:modes:risk1:H2",
+      "passed": true
+    },
+    {
+      "name": "primary:modes:risk1:A",
+      "passed": true
+    },
+    {
+      "name": "primary:modes:risk1:B",
+      "passed": true
+    },
+    {
+      "name": "primary:modes:risk1:LEARNED",
+      "passed": true
+    },
+    {
+      "name": "primary:modes:risk1:GLOBAL",
+      "passed": true
+    },
+    {
+      "name": "primary:modes:risk1:ROOT",
+      "passed": true
+    },
+    {
+      "name": "primary:modes:risk1:BIT_REFIT",
+      "passed": true
+    },
+    {
+      "name": "primary:modes:risk1:GLOBAL_REFIT",
+      "passed": true
+    },
+    {
+      "name": "primary:modes:risk1:TEST_ROOT_MEAN_ORACLE",
+      "passed": true
+    },
+    {
+      "name": "primary:modes:risk8:H2",
+      "passed": true
+    },
+    {
+      "name": "primary:modes:risk8:A",
+      "passed": true
+    },
+    {
+      "name": "primary:modes:risk8:B",
+      "passed": true
+    },
+    {
+      "name": "primary:modes:risk8:LEARNED",
+      "passed": true
+    },
+    {
+      "name": "primary:modes:risk8:GLOBAL",
+      "passed": true
+    },
+    {
+      "name": "primary:modes:risk8:ROOT",
+      "passed": true
+    },
+    {
+      "name": "primary:modes:risk8:BIT_REFIT",
+      "passed": true
+    },
+    {
+      "name": "primary:modes:risk8:GLOBAL_REFIT",
+      "passed": true
+    },
+    {
+      "name": "primary:modes:risk8:TEST_ROOT_MEAN_ORACLE",
+      "passed": true
+    },
+    {
+      "name": "reverse:fixed_suffix_split",
+      "passed": true
+    },
+    {
+      "name": "reverse:full_root_roster",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:0:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:0:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:0:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:0:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:0:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:0:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:0:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:0:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:0:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:0:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:0:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:0:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:0:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:0:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:0:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:0:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:1:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:1:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:1:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:1:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:1:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:1:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:1:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:1:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:1:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:1:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:1:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:1:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:1:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:1:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:1:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:1:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:2:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:2:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:2:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:2:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:2:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:2:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:2:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:2:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:2:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:2:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:2:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:2:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:2:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:2:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:2:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:2:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:3:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:3:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:3:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:3:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:3:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:3:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:3:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:3:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:3:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:3:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:3:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:3:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:3:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:3:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "reverse:root:TRAIN_SOURCE:3:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:root_moments:TRAIN_SOURCE:3:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "reverse:fit:0:risk1",
+      "passed": true
+    },
+    {
+      "name": "reverse:leaf_support:0:risk1",
+      "passed": true
+    },
+    {
+      "name": "reverse:fit_scores:0:risk1",
+      "passed": true
+    },
+    {
+      "name": "reverse:leaf_estimates:0:risk1",
+      "passed": true
+    },
+    {
+      "name": "reverse:fit:0:risk8",
+      "passed": true
+    },
+    {
+      "name": "reverse:leaf_support:0:risk8",
+      "passed": true
+    },
+    {
+      "name": "reverse:fit_scores:0:risk8",
+      "passed": true
+    },
+    {
+      "name": "reverse:leaf_estimates:0:risk8",
+      "passed": true
+    },
+    {
+      "name": "reverse:fit:1:risk1",
+      "passed": true
+    },
+    {
+      "name": "reverse:leaf_support:1:risk1",
+      "passed": true
+    },
+    {
+      "name": "reverse:fit_scores:1:risk1",
+      "passed": true
+    },
+    {
+      "name": "reverse:leaf_estimates:1:risk1",
+      "passed": true
+    },
+    {
+      "name": "reverse:fit:1:risk8",
+      "passed": true
+    },
+    {
+      "name": "reverse:leaf_support:1:risk8",
+      "passed": true
+    },
+    {
+      "name": "reverse:fit_scores:1:risk8",
+      "passed": true
+    },
+    {
+      "name": "reverse:leaf_estimates:1:risk8",
+      "passed": true
+    },
+    {
+      "name": "reverse:fit:2:risk1",
+      "passed": true
+    },
+    {
+      "name": "reverse:leaf_support:2:risk1",
+      "passed": true
+    },
+    {
+      "name": "reverse:fit_scores:2:risk1",
+      "passed": true
+    },
+    {
+      "name": "reverse:leaf_estimates:2:risk1",
+      "passed": true
+    },
+    {
+      "name": "reverse:fit:2:risk8",
+      "passed": true
+    },
+    {
+      "name": "reverse:leaf_support:2:risk8",
+      "passed": true
+    },
+    {
+      "name": "reverse:fit_scores:2:risk8",
+      "passed": true
+    },
+    {
+      "name": "reverse:leaf_estimates:2:risk8",
+      "passed": true
+    },
+    {
+      "name": "reverse:fit:3:risk1",
+      "passed": true
+    },
+    {
+      "name": "reverse:leaf_support:3:risk1",
+      "passed": true
+    },
+    {
+      "name": "reverse:fit_scores:3:risk1",
+      "passed": true
+    },
+    {
+      "name": "reverse:leaf_estimates:3:risk1",
+      "passed": true
+    },
+    {
+      "name": "reverse:fit:3:risk8",
+      "passed": true
+    },
+    {
+      "name": "reverse:leaf_support:3:risk8",
+      "passed": true
+    },
+    {
+      "name": "reverse:fit_scores:3:risk8",
+      "passed": true
+    },
+    {
+      "name": "reverse:leaf_estimates:3:risk8",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:required_cohorts",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk1:ROOT-BIT_REFIT",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk1:ROOT-GLOBAL_REFIT",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk1:BIT_REFIT-GLOBAL_REFIT",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk1:BIT_REFIT-H2",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk1:GLOBAL_REFIT-H2",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk1:ROOT-LEARNED",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk1:ROOT-GLOBAL",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk1:ROOT-H2",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk1:LEARNED-GLOBAL",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk1:LEARNED-ROOT",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk1:LEARNED-H2",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk1:GLOBAL-H2",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk1:A-H2",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk1:B-H2",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk1:TEST_ROOT_MEAN_ORACLE-H2",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk1:TEST_ROOT_MEAN_ORACLE-LEARNED",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk1:TEST_ROOT_MEAN_ORACLE-ROOT",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk8:ROOT-BIT_REFIT",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk8:ROOT-GLOBAL_REFIT",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk8:BIT_REFIT-GLOBAL_REFIT",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk8:BIT_REFIT-H2",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk8:GLOBAL_REFIT-H2",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk8:ROOT-LEARNED",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk8:ROOT-GLOBAL",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk8:ROOT-H2",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk8:LEARNED-GLOBAL",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk8:LEARNED-ROOT",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk8:LEARNED-H2",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk8:GLOBAL-H2",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk8:A-H2",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk8:B-H2",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk8:TEST_ROOT_MEAN_ORACLE-H2",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk8:TEST_ROOT_MEAN_ORACLE-LEARNED",
+      "passed": true
+    },
+    {
+      "name": "reverse:comparisons:risk8:TEST_ROOT_MEAN_ORACLE-ROOT",
+      "passed": true
+    },
+    {
+      "name": "reverse:modes:required_cohorts",
+      "passed": true
+    },
+    {
+      "name": "reverse:modes:risk1:H2",
+      "passed": true
+    },
+    {
+      "name": "reverse:modes:risk1:A",
+      "passed": true
+    },
+    {
+      "name": "reverse:modes:risk1:B",
+      "passed": true
+    },
+    {
+      "name": "reverse:modes:risk1:LEARNED",
+      "passed": true
+    },
+    {
+      "name": "reverse:modes:risk1:GLOBAL",
+      "passed": true
+    },
+    {
+      "name": "reverse:modes:risk1:ROOT",
+      "passed": true
+    },
+    {
+      "name": "reverse:modes:risk1:BIT_REFIT",
+      "passed": true
+    },
+    {
+      "name": "reverse:modes:risk1:GLOBAL_REFIT",
+      "passed": true
+    },
+    {
+      "name": "reverse:modes:risk1:TEST_ROOT_MEAN_ORACLE",
+      "passed": true
+    },
+    {
+      "name": "reverse:modes:risk8:H2",
+      "passed": true
+    },
+    {
+      "name": "reverse:modes:risk8:A",
+      "passed": true
+    },
+    {
+      "name": "reverse:modes:risk8:B",
+      "passed": true
+    },
+    {
+      "name": "reverse:modes:risk8:LEARNED",
+      "passed": true
+    },
+    {
+      "name": "reverse:modes:risk8:GLOBAL",
+      "passed": true
+    },
+    {
+      "name": "reverse:modes:risk8:ROOT",
+      "passed": true
+    },
+    {
+      "name": "reverse:modes:risk8:BIT_REFIT",
+      "passed": true
+    },
+    {
+      "name": "reverse:modes:risk8:GLOBAL_REFIT",
+      "passed": true
+    },
+    {
+      "name": "reverse:modes:risk8:TEST_ROOT_MEAN_ORACLE",
+      "passed": true
+    }
+  ],
+  "passed_checks": 318,
+  "total_checks": 318,
+  "issues": [],
+  "new_environment_samples": 0,
+  "real_training_updates": 0
+}

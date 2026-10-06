@@ -1,0 +1,49 @@
+EEE.                                                                     [100%]
+==================================== ERRORS ====================================
+_ ERROR at setup of test_initial_linear_records_only_actual_changes_from_source_and_neutral _
+
+self = PosixPath('/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/closed_loop_v313/test_tmp/root_versions')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           self._accessor.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/closed_loop_v313/test_tmp/root_versions'
+
+/usr/lib/python3.10/pathlib.py:1175: FileNotFoundError
+_ ERROR at setup of test_native_four_table_shape_uses_flat_addresses_in_incremental_receipts _
+
+self = PosixPath('/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/closed_loop_v313/test_tmp/root_versions')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           self._accessor.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/closed_loop_v313/test_tmp/root_versions'
+
+/usr/lib/python3.10/pathlib.py:1175: FileNotFoundError
+_ ERROR at setup of test_incremental_history_preserves_zero_reversions_and_previous_identity _
+
+self = PosixPath('/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/closed_loop_v313/test_tmp/root_versions')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           self._accessor.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/closed_loop_v313/test_tmp/root_versions'
+
+/usr/lib/python3.10/pathlib.py:1175: FileNotFoundError
+=========================== short test summary info ============================
+ERROR tests/test_closed_loop_versions_v313.py::test_initial_linear_records_only_actual_changes_from_source_and_neutral
+ERROR tests/test_closed_loop_versions_v313.py::test_native_four_table_shape_uses_flat_addresses_in_incremental_receipts
+ERROR tests/test_closed_loop_versions_v313.py::test_incremental_history_preserves_zero_reversions_and_previous_identity
+1 passed, 3 errors in 0.36s

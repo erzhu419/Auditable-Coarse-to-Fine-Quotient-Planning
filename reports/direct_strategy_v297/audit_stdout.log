@@ -1,0 +1,98 @@
+{
+  "status": "PASS",
+  "independent_valid": true,
+  "lifecycles": 16,
+  "fixed_source_parents": 4,
+  "canonical_rows": 958,
+  "search_rounds": 64,
+  "logical_training_games_per_search_arm": 2048,
+  "logical_science_games_per_arm": 512,
+  "physical_training_games": 3336,
+  "physical_science_games": 1408,
+  "training_raw_tiles": 3142559,
+  "science_raw_tiles": 1354306,
+  "training_cutoffs": 0,
+  "science_cutoffs": 0,
+  "new_source_value_updates": 0,
+  "source_model_probabilities": {
+    "0": 0.10536228672723244,
+    "1": 0.1049195616693868,
+    "2": 0.10579881656804734,
+    "3": 0.10645683869474659
+  },
+  "economic_training_raw_tiles_per_arm": {
+    "SOURCE": 11279592,
+    "CEM": 13220367,
+    "RANDOM_SEARCH": 13198229
+  },
+  "stable_task_policy_gain_supported": false,
+  "optimizer_contribution_supported": false,
+  "primary": {
+    "mean": -0.12639999389648438,
+    "ci95": [
+      -0.7999272346496582,
+      0.6306179046630858
+    ],
+    "lifecycle_deltas": {
+      "0": 3.590087890625,
+      "1": -2.65570068359375,
+      "2": -0.50994873046875,
+      "3": -0.79669189453125,
+      "4": -0.29461669921875,
+      "5": 0.0,
+      "6": 0.0,
+      "7": -0.59130859375,
+      "8": -0.6959228515625,
+      "9": 0.79547119140625,
+      "10": 2.383544921875,
+      "11": -0.561279296875,
+      "12": -0.7115478515625,
+      "13": -2.6051025390625,
+      "14": -1.22711181640625,
+      "15": 1.85772705078125
+    },
+    "improved_equal_worse": [
+      4,
+      2,
+      10
+    ],
+    "adverse_lifecycles": [
+      1,
+      2,
+      3,
+      4,
+      7,
+      8,
+      11,
+      12,
+      13,
+      14
+    ],
+    "parent_mean_deltas": {
+      "0": 0.4720001220703125,
+      "1": -1.1163330078125,
+      "2": 0.16162109375,
+      "3": -0.02288818359375
+    },
+    "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS"
+  },
+  "source_setup_counts": {
+    "cpp_compilations": 4,
+    "lookup_line_rewrites": 58564,
+    "allocated_weight_parameters": 56689952,
+    "allocated_weight_bytes": 453519616,
+    "cpp_library_cache_hits": 4,
+    "lookup_table_cache_hits": 4,
+    "source_parameters_copied": 28344976,
+    "source_weight_bytes_copied": 226759808
+  },
+  "native_setup_counts": {
+    "cpp_compilations": 4,
+    "cpp_translation_units_compiled": 16
+  },
+  "physical_training_evaluation_cpu_seconds": 79.50363324599985,
+  "physical_science_evaluation_cpu_seconds": 35.77299162599999,
+  "canonical_trace_bytes": 637303,
+  "errors": [],
+  "limitations": "Independent literal Gaussian/CEM/ranking reconstruction, canonical execution, terminal/utility, signed mean and physical/logical cost audit. No source-weight/world replay, additional games, value fitting, or 20000-draw CI regeneration. Setup and evaluator CPU subscopes are already included in worker CPU. Stable-A independent program utility is separate from optimizer contribution, continual learning or a persistent strategy library; four sources are fixed."
+}

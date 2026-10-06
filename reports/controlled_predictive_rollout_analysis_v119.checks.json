@@ -1,0 +1,27 @@
+{
+  "purpose": "Detect incorrect cohort or paired effects, bookkeeping corruption, hidden incurred cost, and new fitting; fix analyzer before freezing if any fail.",
+  "attempts": [
+    {
+      "command": [
+        "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_analyze_controlled_predictive_rollout_consequences_v119.py",
+        "--basetemp",
+        "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v119_test_artifacts/analysis_pytest"
+      ],
+      "returncode": 0,
+      "seconds": 0.7827528790003271,
+      "stdout": "reports/v119_test_artifacts/analysis_pytest.stdout.log",
+      "stderr": "reports/v119_test_artifacts/analysis_pytest.stderr.log"
+    }
+  ],
+  "development_cost": {
+    "environment_transitions": 0,
+    "model_spawn_samples": 0,
+    "tree_fits": 0,
+    "router_observations": 0,
+    "cpp_compilations": 0
+  }
+}

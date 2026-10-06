@@ -1,0 +1,12 @@
+{
+  "command": [
+    ".venv-lmta-v42/bin/python",
+    "scripts/analyze_controlled_predictive_natural_reference_v104.py",
+    "reports/controlled_predictive_natural_reference_v104"
+  ],
+  "status": "complete",
+  "started_unix": 1789342495.29551,
+  "returncode": 0,
+  "seconds": 2.3426407799706794,
+  "stderr_bytes": 0
+}

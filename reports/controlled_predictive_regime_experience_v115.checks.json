@@ -1,0 +1,18 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "development_work": {
+        "started_episode_calls": 5,
+        "environment_spawns": 50,
+        "environment_random_draws": 100,
+        "completed_episode_calls": 4,
+        "sampled_transitions": 40
+      },
+      "newly_sampled_environment_transitions": 40,
+      "new_synthetic_transitions": 0,
+      "neural_model_fits": 0,
+      "scope": "bounded real development episodes; no production sampling"
+    }
+  ]
+}

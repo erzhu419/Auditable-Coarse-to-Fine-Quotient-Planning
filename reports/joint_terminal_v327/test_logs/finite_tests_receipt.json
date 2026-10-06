@@ -1,0 +1,21 @@
+{
+  "command": [
+    "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/joint_terminal_v327/test_logs/finite_tests.xml",
+    "tests/test_joint_terminal_fit_v327.py",
+    "tests/test_joint_terminal_analysis_v327.py",
+    "tests/test_joint_terminal_audit_v327.py"
+  ],
+  "exit_code": 0,
+  "cases": 40,
+  "failures": 0,
+  "errors": 0,
+  "process_tree_cpu_seconds": 12.931175,
+  "monotonic_wall_seconds": 11.396282606001478,
+  "purpose": "Detect actual two-member target duplication/leakage, WIN-trajectory mismatch, covariance omission, changed update budgets and invalid net-gain/retention route before formal work; fix any detected mismatch before new games."
+}

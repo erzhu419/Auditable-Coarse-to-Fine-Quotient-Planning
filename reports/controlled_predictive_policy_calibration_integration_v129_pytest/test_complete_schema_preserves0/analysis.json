@@ -1,0 +1,1879 @@
+{
+  "schema": "acfqp.policy_calibration.v129.analysis",
+  "complete": false,
+  "primary_complete": false,
+  "checks": {
+    "frozen_settings": true,
+    "source_roster": true,
+    "lifecycle_rosters": true,
+    "inherited_costs": true,
+    "source_origins": true,
+    "frozen_calibration": true,
+    "fit_statistics": true,
+    "immutable_models": true,
+    "model_loads": true,
+    "source_fit_budget": false,
+    "forced_roster": true,
+    "forced_traces": true,
+    "control_roster": true,
+    "control_traces": true,
+    "unchanged_source_proposals": true,
+    "full_control_terminal": true,
+    "full_panel_terminal": true,
+    "fit_roster": true,
+    "fit_source_targets": true,
+    "fit_counters": true,
+    "fit_residuals": true,
+    "root_games": true,
+    "panel_cases": true,
+    "panel_boards": true,
+    "panel_roots": true,
+    "panel_predictions": true,
+    "fixed_panel_candidates": true,
+    "panel_budget": true,
+    "physical_budgets": true
+  },
+  "calibration": [
+    {
+      "life": 0,
+      "checks": {
+        "fit_roster": true,
+        "fit_source_targets": true,
+        "fit_counters": true,
+        "fit_residuals": true
+      },
+      "policies": {
+        "reward": {
+          "n": 2048,
+          "target_sum": 18.0,
+          "anchor_sum": -2030.0,
+          "residual_sum": 2048.0,
+          "offset": 1.0,
+          "counts": {
+            "calibration_games": 1024,
+            "calibration_observed_afterstates": 2048,
+            "calibration_samples": 2048,
+            "source_tail_predictions": 2048,
+            "source_table_lookups": 65536
+          }
+        },
+        "risk_goal": {
+          "n": 2048,
+          "target_sum": -8174.0,
+          "anchor_sum": -10222.0,
+          "residual_sum": 2048.0,
+          "offset": 1.0,
+          "counts": {
+            "calibration_games": 1024,
+            "calibration_observed_afterstates": 2048,
+            "calibration_samples": 2048,
+            "source_tail_predictions": 2048,
+            "source_table_lookups": 65536
+          }
+        }
+      },
+      "episodes": {
+        "reward": 1024,
+        "risk_goal": 1024
+      },
+      "replay_counts": {
+        "replay_games": 2048,
+        "replay_swipe_calls": 4096,
+        "replay_line_table_lookups": 16384,
+        "replay_recorded_spawns": 4096
+      },
+      "replay_seconds": 204.79999999999265,
+      "fit_seconds": 204.79999999999265,
+      "retained_transitions": 4096
+    },
+    {
+      "life": 1,
+      "checks": {
+        "fit_roster": true,
+        "fit_source_targets": true,
+        "fit_counters": true,
+        "fit_residuals": true
+      },
+      "policies": {
+        "reward": {
+          "n": 2048,
+          "target_sum": 18.0,
+          "anchor_sum": -2030.0,
+          "residual_sum": 2048.0,
+          "offset": 1.0,
+          "counts": {
+            "calibration_games": 1024,
+            "calibration_observed_afterstates": 2048,
+            "calibration_samples": 2048,
+            "source_tail_predictions": 2048,
+            "source_table_lookups": 65536
+          }
+        },
+        "risk_goal": {
+          "n": 2048,
+          "target_sum": -8174.0,
+          "anchor_sum": -10222.0,
+          "residual_sum": 2048.0,
+          "offset": 1.0,
+          "counts": {
+            "calibration_games": 1024,
+            "calibration_observed_afterstates": 2048,
+            "calibration_samples": 2048,
+            "source_tail_predictions": 2048,
+            "source_table_lookups": 65536
+          }
+        }
+      },
+      "episodes": {
+        "reward": 1024,
+        "risk_goal": 1024
+      },
+      "replay_counts": {
+        "replay_games": 2048,
+        "replay_swipe_calls": 4096,
+        "replay_line_table_lookups": 16384,
+        "replay_recorded_spawns": 4096
+      },
+      "replay_seconds": 204.79999999999265,
+      "fit_seconds": 204.79999999999265,
+      "retained_transitions": 4096
+    },
+    {
+      "life": 2,
+      "checks": {
+        "fit_roster": true,
+        "fit_source_targets": true,
+        "fit_counters": true,
+        "fit_residuals": true
+      },
+      "policies": {
+        "reward": {
+          "n": 2048,
+          "target_sum": 18.0,
+          "anchor_sum": -2030.0,
+          "residual_sum": 2048.0,
+          "offset": 1.0,
+          "counts": {
+            "calibration_games": 1024,
+            "calibration_observed_afterstates": 2048,
+            "calibration_samples": 2048,
+            "source_tail_predictions": 2048,
+            "source_table_lookups": 65536
+          }
+        },
+        "risk_goal": {
+          "n": 2048,
+          "target_sum": -8174.0,
+          "anchor_sum": -10222.0,
+          "residual_sum": 2048.0,
+          "offset": 1.0,
+          "counts": {
+            "calibration_games": 1024,
+            "calibration_observed_afterstates": 2048,
+            "calibration_samples": 2048,
+            "source_tail_predictions": 2048,
+            "source_table_lookups": 65536
+          }
+        }
+      },
+      "episodes": {
+        "reward": 1024,
+        "risk_goal": 1024
+      },
+      "replay_counts": {
+        "replay_games": 2048,
+        "replay_swipe_calls": 4096,
+        "replay_line_table_lookups": 16384,
+        "replay_recorded_spawns": 4096
+      },
+      "replay_seconds": 204.79999999999265,
+      "fit_seconds": 204.79999999999265,
+      "retained_transitions": 4096
+    },
+    {
+      "life": 3,
+      "checks": {
+        "fit_roster": true,
+        "fit_source_targets": true,
+        "fit_counters": true,
+        "fit_residuals": true
+      },
+      "policies": {
+        "reward": {
+          "n": 2048,
+          "target_sum": 18.0,
+          "anchor_sum": -2030.0,
+          "residual_sum": 2048.0,
+          "offset": 1.0,
+          "counts": {
+            "calibration_games": 1024,
+            "calibration_observed_afterstates": 2048,
+            "calibration_samples": 2048,
+            "source_tail_predictions": 2048,
+            "source_table_lookups": 65536
+          }
+        },
+        "risk_goal": {
+          "n": 2048,
+          "target_sum": -8174.0,
+          "anchor_sum": -10222.0,
+          "residual_sum": 2048.0,
+          "offset": 1.0,
+          "counts": {
+            "calibration_games": 1024,
+            "calibration_observed_afterstates": 2048,
+            "calibration_samples": 2048,
+            "source_tail_predictions": 2048,
+            "source_table_lookups": 65536
+          }
+        }
+      },
+      "episodes": {
+        "reward": 1024,
+        "risk_goal": 1024
+      },
+      "replay_counts": {
+        "replay_games": 2048,
+        "replay_swipe_calls": 4096,
+        "replay_line_table_lookups": 16384,
+        "replay_recorded_spawns": 4096
+      },
+      "replay_seconds": 204.79999999999265,
+      "fit_seconds": 204.79999999999265,
+      "retained_transitions": 4096
+    }
+  ],
+  "offsets": [
+    {
+      "life": 0,
+      "offsets": {
+        "reward": 1.0,
+        "risk_goal": 1.0
+      }
+    },
+    {
+      "life": 1,
+      "offsets": {
+        "reward": 1.0,
+        "risk_goal": 1.0
+      }
+    },
+    {
+      "life": 2,
+      "offsets": {
+        "reward": 1.0,
+        "risk_goal": 1.0
+      }
+    },
+    {
+      "life": 3,
+      "offsets": {
+        "reward": 1.0,
+        "risk_goal": 1.0
+      }
+    }
+  ],
+  "control": {
+    "methods": {
+      "UNCAL_LEARNED": {
+        "risk1": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            }
+          ],
+          "lifecycle_mean": {
+            "score": 20.0,
+            "utility": -0.990234375,
+            "steps": 2.0,
+            "seconds": 0.09999999999999999
+          },
+          "games": 32,
+          "wins": 0,
+          "complete": true
+        },
+        "risk8": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            }
+          ],
+          "lifecycle_mean": {
+            "score": 20.0,
+            "utility": -7.990234375,
+            "steps": 2.0,
+            "seconds": 0.09999999999999999
+          },
+          "games": 32,
+          "wins": 0,
+          "complete": true
+        }
+      },
+      "CAL_LEARNED": {
+        "risk1": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            }
+          ],
+          "lifecycle_mean": {
+            "score": 20.0,
+            "utility": -0.990234375,
+            "steps": 2.0,
+            "seconds": 0.09999999999999999
+          },
+          "games": 32,
+          "wins": 0,
+          "complete": true
+        },
+        "risk8": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            }
+          ],
+          "lifecycle_mean": {
+            "score": 20.0,
+            "utility": -7.990234375,
+            "steps": 2.0,
+            "seconds": 0.09999999999999999
+          },
+          "games": 32,
+          "wins": 0,
+          "complete": true
+        }
+      },
+      "UNCAL_CONSTANT": {
+        "risk1": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            }
+          ],
+          "lifecycle_mean": {
+            "score": 20.0,
+            "utility": -0.990234375,
+            "steps": 2.0,
+            "seconds": 0.09999999999999999
+          },
+          "games": 32,
+          "wins": 0,
+          "complete": true
+        },
+        "risk8": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            }
+          ],
+          "lifecycle_mean": {
+            "score": 20.0,
+            "utility": -7.990234375,
+            "steps": 2.0,
+            "seconds": 0.09999999999999999
+          },
+          "games": 32,
+          "wins": 0,
+          "complete": true
+        }
+      },
+      "CAL_CONSTANT": {
+        "risk1": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            }
+          ],
+          "lifecycle_mean": {
+            "score": 20.0,
+            "utility": -0.990234375,
+            "steps": 2.0,
+            "seconds": 0.09999999999999999
+          },
+          "games": 32,
+          "wins": 0,
+          "complete": true
+        },
+        "risk8": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            }
+          ],
+          "lifecycle_mean": {
+            "score": 20.0,
+            "utility": -7.990234375,
+            "steps": 2.0,
+            "seconds": 0.09999999999999999
+          },
+          "games": 32,
+          "wins": 0,
+          "complete": true
+        }
+      },
+      "FROZEN_reward": {
+        "risk1": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            }
+          ],
+          "lifecycle_mean": {
+            "score": 20.0,
+            "utility": -0.990234375,
+            "steps": 2.0,
+            "seconds": 0.09999999999999999
+          },
+          "games": 32,
+          "wins": 0,
+          "complete": true
+        },
+        "risk8": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            }
+          ],
+          "lifecycle_mean": {
+            "score": 20.0,
+            "utility": -7.990234375,
+            "steps": 2.0,
+            "seconds": 0.09999999999999999
+          },
+          "games": 32,
+          "wins": 0,
+          "complete": true
+        }
+      },
+      "FROZEN_risk_goal": {
+        "risk1": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -0.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            }
+          ],
+          "lifecycle_mean": {
+            "score": 20.0,
+            "utility": -0.990234375,
+            "steps": 2.0,
+            "seconds": 0.09999999999999999
+          },
+          "games": 32,
+          "wins": 0,
+          "complete": true
+        },
+        "risk8": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "games": 8,
+              "means": {
+                "score": 20.0,
+                "utility": -7.990234375,
+                "steps": 2.0,
+                "seconds": 0.09999999999999999
+              },
+              "wins": 0,
+              "statuses": {
+                "LOST": 8
+              }
+            }
+          ],
+          "lifecycle_mean": {
+            "score": 20.0,
+            "utility": -7.990234375,
+            "steps": 2.0,
+            "seconds": 0.09999999999999999
+          },
+          "games": 32,
+          "wins": 0,
+          "complete": true
+        }
+      }
+    },
+    "comparisons": {
+      "CAL_LEARNED_minus_UNCAL_LEARNED": {
+        "risk1": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 1,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 2,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 3,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            }
+          ],
+          "mean_deltas": {
+            "score": 0.0,
+            "utility": 0.0,
+            "steps": 0.0,
+            "seconds": 0.0
+          },
+          "positive": 0,
+          "negative": 0
+        },
+        "risk8": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 1,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 2,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 3,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            }
+          ],
+          "mean_deltas": {
+            "score": 0.0,
+            "utility": 0.0,
+            "steps": 0.0,
+            "seconds": 0.0
+          },
+          "positive": 0,
+          "negative": 0
+        }
+      },
+      "CAL_LEARNED_minus_FROZEN_reward": {
+        "risk1": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 1,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 2,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 3,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            }
+          ],
+          "mean_deltas": {
+            "score": 0.0,
+            "utility": 0.0,
+            "steps": 0.0,
+            "seconds": 0.0
+          },
+          "positive": 0,
+          "negative": 0
+        },
+        "risk8": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 1,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 2,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 3,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            }
+          ],
+          "mean_deltas": {
+            "score": 0.0,
+            "utility": 0.0,
+            "steps": 0.0,
+            "seconds": 0.0
+          },
+          "positive": 0,
+          "negative": 0
+        }
+      },
+      "CAL_LEARNED_minus_FROZEN_risk_goal": {
+        "risk1": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 1,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 2,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 3,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            }
+          ],
+          "mean_deltas": {
+            "score": 0.0,
+            "utility": 0.0,
+            "steps": 0.0,
+            "seconds": 0.0
+          },
+          "positive": 0,
+          "negative": 0
+        },
+        "risk8": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 1,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 2,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 3,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            }
+          ],
+          "mean_deltas": {
+            "score": 0.0,
+            "utility": 0.0,
+            "steps": 0.0,
+            "seconds": 0.0
+          },
+          "positive": 0,
+          "negative": 0
+        }
+      },
+      "CAL_CONSTANT_minus_UNCAL_CONSTANT": {
+        "risk1": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 1,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 2,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 3,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            }
+          ],
+          "mean_deltas": {
+            "score": 0.0,
+            "utility": 0.0,
+            "steps": 0.0,
+            "seconds": 0.0
+          },
+          "positive": 0,
+          "negative": 0
+        },
+        "risk8": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 1,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 2,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 3,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            }
+          ],
+          "mean_deltas": {
+            "score": 0.0,
+            "utility": 0.0,
+            "steps": 0.0,
+            "seconds": 0.0
+          },
+          "positive": 0,
+          "negative": 0
+        }
+      },
+      "CAL_CONSTANT_minus_FROZEN_reward": {
+        "risk1": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 1,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 2,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 3,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            }
+          ],
+          "mean_deltas": {
+            "score": 0.0,
+            "utility": 0.0,
+            "steps": 0.0,
+            "seconds": 0.0
+          },
+          "positive": 0,
+          "negative": 0
+        },
+        "risk8": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 1,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 2,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 3,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            }
+          ],
+          "mean_deltas": {
+            "score": 0.0,
+            "utility": 0.0,
+            "steps": 0.0,
+            "seconds": 0.0
+          },
+          "positive": 0,
+          "negative": 0
+        }
+      },
+      "CAL_CONSTANT_minus_FROZEN_risk_goal": {
+        "risk1": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 1,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 2,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 3,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            }
+          ],
+          "mean_deltas": {
+            "score": 0.0,
+            "utility": 0.0,
+            "steps": 0.0,
+            "seconds": 0.0
+          },
+          "positive": 0,
+          "negative": 0
+        },
+        "risk8": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 1,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 2,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            },
+            {
+              "life": 3,
+              "deltas": {
+                "score": 0.0,
+                "utility": 0.0,
+                "steps": 0.0,
+                "seconds": 0.0
+              }
+            }
+          ],
+          "mean_deltas": {
+            "score": 0.0,
+            "utility": 0.0,
+            "steps": 0.0,
+            "seconds": 0.0
+          },
+          "positive": 0,
+          "negative": 0
+        }
+      }
+    }
+  },
+  "panel_selections": [],
+  "panel_policy_errors": [],
+  "panel_selection_summary": {
+    "lifecycles": [],
+    "four_life_means": []
+  },
+  "panel_error_summary": {
+    "lifecycles": [],
+    "four_life_means": []
+  },
+  "panel_coverage": {
+    "case_slots": 32,
+    "available_cases": 0,
+    "unique_roots": 0
+  },
+  "costs": {
+    "fitting_counts": {
+      "calibration_games": 8192,
+      "calibration_observed_afterstates": 16384,
+      "calibration_samples": 16384,
+      "source_tail_predictions": 16384,
+      "source_table_lookups": 524288
+    },
+    "fitting_seconds": 819.1999999999706,
+    "replay_counts": {
+      "replay_games": 8192,
+      "replay_swipe_calls": 16384,
+      "replay_line_table_lookups": 65536,
+      "replay_recorded_spawns": 16384
+    },
+    "replay_seconds": 819.1999999999706,
+    "retained_training_transitions": 16384,
+    "source_load_counts": {
+      "checkpoint_loads": 24,
+      "checkpoint_loaded_parameters": 168
+    },
+    "source_load_seconds": 0.48000000000000015,
+    "count_load_counts": {
+      "checkpoint_loads": 24,
+      "checkpoint_loaded_addresses": 96,
+      "checkpoint_loaded_count_entries": 192
+    },
+    "count_load_seconds": 0.7200000000000004,
+    "source_setup_counts": {},
+    "source_setup_seconds": 0.24000000000000007,
+    "count_setup_counts": {},
+    "count_setup_seconds": 0.24000000000000007,
+    "calibrator_setup_counts": {},
+    "calibrator_setup_seconds": 0.08,
+    "forced": {
+      "games": 0,
+      "seconds": 0.0,
+      "statuses": {},
+      "environment_counts": {},
+      "policy_counts": {},
+      "learning_counts": {},
+      "setup_counts": {}
+    },
+    "control": {
+      "games": 320,
+      "seconds": 32.000000000000185,
+      "statuses": {
+        "LOST": 320
+      },
+      "environment_counts": {
+        "sampled_transitions": 640,
+        "initial_spawns": 640,
+        "environment_random_draws": 2560,
+        "ground_explicit_swipe_calls": 640
+      },
+      "policy_counts": {
+        "choose_calls": 128
+      },
+      "learning_counts": {
+        "choose_calls": 1024,
+        "source_choose_calls": 1024
+      },
+      "setup_counts": {}
+    },
+    "controller_counts": {
+      "candidate_evaluations": 1024,
+      "policy_comparisons": 512,
+      "offset_additions": 1024
+    },
+    "peak_resident_weight_bytes_per_life": 103,
+    "root_acquisition": {
+      "games": 16,
+      "seconds": 1.6000000000000003,
+      "statuses": {
+        "LOST": 16
+      },
+      "environment_counts": {
+        "sampled_transitions": 32,
+        "initial_spawns": 32,
+        "environment_random_draws": 128,
+        "ground_explicit_swipe_calls": 32
+      },
+      "policy_counts": {
+        "choose_calls": 32
+      },
+      "learning_counts": {},
+      "setup_counts": {}
+    },
+    "analysis_counts": {},
+    "analysis_prefix_seconds": 0.00031597999623045325,
+    "panel_prediction_counts": {},
+    "physical_forced_attempts": 0,
+    "logical_forced_attempts": 0,
+    "physical_control_games": 320,
+    "logical_control_rows": 384,
+    "actual_new_environment_transitions": 672,
+    "model_spawn_samples": 0,
+    "fresh_training_environment_transitions": 0
+  },
+  "inherited_work": {
+    "retained_source_training_transitions": 987654,
+    "charged_again": false
+  },
+  "seconds": 1.0,
+  "analysis_seconds": 0.12573209800757468,
+  "scope": "Offsets fit source training only; fresh forced branches test comparability, and separate full games test repeated control. Within-policy success-gap error is unchanged."
+}

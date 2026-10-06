@@ -1,0 +1,5390 @@
+{
+  "schema": "acfqp.lifelong_analysis.v77",
+  "complete": true,
+  "lifecycle_ids": [
+    0,
+    1,
+    2
+  ],
+  "evaluation_replicas": 2,
+  "query_names": [
+    "reward",
+    "risk_goal"
+  ],
+  "cohort": {
+    "source_streams_complete": true,
+    "evaluation_games_complete": true,
+    "paired_evaluation_seeds_complete": true,
+    "fixed_controls_unchanged": true,
+    "fixed_control_changes": [],
+    "all_games_terminal": true,
+    "games": 180,
+    "all_evaluation_games_terminal": true,
+    "all_source_games_terminal": true,
+    "source_games": 225,
+    "source_status_counts": {
+      "LOST": 225
+    },
+    "status_counts": {
+      "LOST": 180
+    }
+  },
+  "checkpoints": [
+    {
+      "episodes": 15,
+      "methods": {
+        "H2_ONLY": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 7860.666666666667,
+                  "utility": 3.8382161458333335,
+                  "steps": 521.3333333333334,
+                  "max_rank": 9.0,
+                  "seconds": 0.36270290764514357
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 6270.0,
+                    "utility": 3.0615234375,
+                    "steps": 431.5,
+                    "max_rank": 9.0,
+                    "seconds": 0.31860852948739193
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 5482.0,
+                    "utility": 2.6767578125,
+                    "steps": 400.5,
+                    "max_rank": 8.5,
+                    "seconds": 0.27064283145591617
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 11830.0,
+                    "utility": 5.7763671875,
+                    "steps": 732.0,
+                    "max_rank": 9.5,
+                    "seconds": 0.4988573619921226
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 7951.333333333333,
+                  "utility": -0.11751302083333333,
+                  "steps": 526.8333333333334,
+                  "max_rank": 9.0,
+                  "seconds": 0.35468490250059403
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 7068.0,
+                    "utility": -0.548828125,
+                    "steps": 481.0,
+                    "max_rank": 9.0,
+                    "seconds": 0.3214302069682162
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 5482.0,
+                    "utility": -1.3232421875,
+                    "steps": 400.5,
+                    "max_rank": 8.5,
+                    "seconds": 0.2675948180258274
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 11304.0,
+                    "utility": 1.51953125,
+                    "steps": 699.0,
+                    "max_rank": 9.5,
+                    "seconds": 0.47502968250773847
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            }
+          },
+          "cumulative_costs": {
+            "totals": {
+              "source_seconds": 0.0,
+              "initial_fit_seconds": 0.0,
+              "update_seconds": 0.0,
+              "serialization_seconds": 0.0,
+              "evaluation_seconds": 4.497359155968297,
+              "total_seconds": 4.497359155968297
+            },
+            "lifecycles": [
+              {
+                "id": 0,
+                "source_seconds": 0.0,
+                "initial_fit_seconds": 0.0,
+                "update_seconds": 0.0,
+                "serialization_seconds": 0.0,
+                "evaluation_seconds": 1.3356401339406148,
+                "total_seconds": 1.3356401339406148
+              },
+              {
+                "id": 1,
+                "source_seconds": 0.0,
+                "initial_fit_seconds": 0.0,
+                "update_seconds": 0.0,
+                "serialization_seconds": 0.0,
+                "evaluation_seconds": 1.1251121769892052,
+                "total_seconds": 1.1251121769892052
+              },
+              {
+                "id": 2,
+                "source_seconds": 0.0,
+                "initial_fit_seconds": 0.0,
+                "update_seconds": 0.0,
+                "serialization_seconds": 0.0,
+                "evaluation_seconds": 2.0366068450384773,
+                "total_seconds": 2.0366068450384773
+              }
+            ]
+          }
+        },
+        "FROZEN_PLAN": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 4248.0,
+                  "utility": 2.07421875,
+                  "steps": 317.0,
+                  "max_rank": 8.166666666666666,
+                  "seconds": 0.3079584674948516
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 3084.0,
+                    "utility": 1.505859375,
+                    "steps": 237.5,
+                    "max_rank": 8.0,
+                    "seconds": 0.2346603604964912
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 5394.0,
+                    "utility": 2.6337890625,
+                    "steps": 398.0,
+                    "max_rank": 8.5,
+                    "seconds": 0.3786248539981898
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 4266.0,
+                    "utility": 2.0830078125,
+                    "steps": 315.5,
+                    "max_rank": 8.0,
+                    "seconds": 0.3105901879898738
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 4986.0,
+                  "utility": -1.5654296875,
+                  "steps": 362.1666666666667,
+                  "max_rank": 8.5,
+                  "seconds": 0.3551192478237984
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 5208.0,
+                    "utility": -1.45703125,
+                    "steps": 381.5,
+                    "max_rank": 8.5,
+                    "seconds": 0.3787963119975757
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 5496.0,
+                    "utility": -1.31640625,
+                    "steps": 389.0,
+                    "max_rank": 8.5,
+                    "seconds": 0.3709083909925539
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 4254.0,
+                    "utility": -1.9228515625,
+                    "steps": 316.0,
+                    "max_rank": 8.5,
+                    "seconds": 0.31565304048126563
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            }
+          },
+          "cumulative_costs": {
+            "totals": {
+              "source_seconds": 1.497010798950214,
+              "initial_fit_seconds": 0.6487237050314434,
+              "update_seconds": 0.0,
+              "serialization_seconds": 0.002926129032857716,
+              "evaluation_seconds": 4.094874015892856,
+              "total_seconds": 6.243534648907371
+            },
+            "lifecycles": [
+              {
+                "id": 0,
+                "source_seconds": 0.48463122599059716,
+                "initial_fit_seconds": 0.6018218240351416,
+                "update_seconds": 0,
+                "serialization_seconds": 0.0005532309878617525,
+                "evaluation_seconds": 1.2606555999373086,
+                "total_seconds": 2.347661880950909
+              },
+              {
+                "id": 1,
+                "source_seconds": 0.4283284159610048,
+                "initial_fit_seconds": 0.018653728999197483,
+                "update_seconds": 0,
+                "serialization_seconds": 0.0012472760281525552,
+                "evaluation_seconds": 1.5433769410010427,
+                "total_seconds": 1.9916063619893976
+              },
+              {
+                "id": 2,
+                "source_seconds": 0.584051156998612,
+                "initial_fit_seconds": 0.028248151997104287,
+                "update_seconds": 0,
+                "serialization_seconds": 0.0011256220168434083,
+                "evaluation_seconds": 1.2908414749545045,
+                "total_seconds": 1.9042664059670642
+              }
+            ]
+          }
+        },
+        "FIXED_PLAN": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 4248.0,
+                  "utility": 2.07421875,
+                  "steps": 317.0,
+                  "max_rank": 8.166666666666666,
+                  "seconds": 0.30887773582556594
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 3084.0,
+                    "utility": 1.505859375,
+                    "steps": 237.5,
+                    "max_rank": 8.0,
+                    "seconds": 0.23384006199194118
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 5394.0,
+                    "utility": 2.6337890625,
+                    "steps": 398.0,
+                    "max_rank": 8.5,
+                    "seconds": 0.3823795674543362
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 4266.0,
+                    "utility": 2.0830078125,
+                    "steps": 315.5,
+                    "max_rank": 8.0,
+                    "seconds": 0.31041357803042047
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 4986.0,
+                  "utility": -1.5654296875,
+                  "steps": 362.1666666666667,
+                  "max_rank": 8.5,
+                  "seconds": 0.35548887532786466
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 5208.0,
+                    "utility": -1.45703125,
+                    "steps": 381.5,
+                    "max_rank": 8.5,
+                    "seconds": 0.3761270694958512
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 5496.0,
+                    "utility": -1.31640625,
+                    "steps": 389.0,
+                    "max_rank": 8.5,
+                    "seconds": 0.3730251929955557
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 4254.0,
+                    "utility": -1.9228515625,
+                    "steps": 316.0,
+                    "max_rank": 8.5,
+                    "seconds": 0.3173143634921871
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            }
+          },
+          "cumulative_costs": {
+            "totals": {
+              "source_seconds": 1.497010798950214,
+              "initial_fit_seconds": 0.6487237050314434,
+              "update_seconds": 0.0,
+              "serialization_seconds": 0.004366635053884238,
+              "evaluation_seconds": 4.102398016024381,
+              "total_seconds": 6.2524991550599225
+            },
+            "lifecycles": [
+              {
+                "id": 0,
+                "source_seconds": 0.48463122599059716,
+                "initial_fit_seconds": 0.6018218240351416,
+                "update_seconds": 0,
+                "serialization_seconds": 0.0006068330258131027,
+                "evaluation_seconds": 1.2538650840288028,
+                "total_seconds": 2.3409249670803547
+              },
+              {
+                "id": 1,
+                "source_seconds": 0.4283284159610048,
+                "initial_fit_seconds": 0.018653728999197483,
+                "update_seconds": 0,
+                "serialization_seconds": 0.002670537040103227,
+                "evaluation_seconds": 1.5561443709302694,
+                "total_seconds": 2.005797052930575
+              },
+              {
+                "id": 2,
+                "source_seconds": 0.584051156998612,
+                "initial_fit_seconds": 0.028248151997104287,
+                "update_seconds": 0,
+                "serialization_seconds": 0.0010892649879679084,
+                "evaluation_seconds": 1.2923885610653087,
+                "total_seconds": 1.905777135048993
+              }
+            ]
+          }
+        },
+        "REVISED_PLAN": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 4248.0,
+                  "utility": 2.07421875,
+                  "steps": 317.0,
+                  "max_rank": 8.166666666666666,
+                  "seconds": 0.3082215931790415
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 3084.0,
+                    "utility": 1.505859375,
+                    "steps": 237.5,
+                    "max_rank": 8.0,
+                    "seconds": 0.23328172200126573
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 5394.0,
+                    "utility": 2.6337890625,
+                    "steps": 398.0,
+                    "max_rank": 8.5,
+                    "seconds": 0.3822292840050068
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 4266.0,
+                    "utility": 2.0830078125,
+                    "steps": 315.5,
+                    "max_rank": 8.0,
+                    "seconds": 0.30915377353085205
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 4986.0,
+                  "utility": -1.5654296875,
+                  "steps": 362.1666666666667,
+                  "max_rank": 8.5,
+                  "seconds": 0.3560322024859488
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 5208.0,
+                    "utility": -1.45703125,
+                    "steps": 381.5,
+                    "max_rank": 8.5,
+                    "seconds": 0.3753668869903777
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 5496.0,
+                    "utility": -1.31640625,
+                    "steps": 389.0,
+                    "max_rank": 8.5,
+                    "seconds": 0.37482728698523715
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 4254.0,
+                    "utility": -1.9228515625,
+                    "steps": 316.0,
+                    "max_rank": 8.5,
+                    "seconds": 0.3179024334822316
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            }
+          },
+          "cumulative_costs": {
+            "totals": {
+              "source_seconds": 1.497010798950214,
+              "initial_fit_seconds": 0.6487237050314434,
+              "update_seconds": 0.0,
+              "serialization_seconds": 0.001982907997444272,
+              "evaluation_seconds": 4.109497464844026,
+              "total_seconds": 6.257214876823127
+            },
+            "lifecycles": [
+              {
+                "id": 0,
+                "source_seconds": 0.48463122599059716,
+                "initial_fit_seconds": 0.6018218240351416,
+                "update_seconds": 0,
+                "serialization_seconds": 0.0005910579930059612,
+                "evaluation_seconds": 1.2504150689346716,
+                "total_seconds": 2.3374591769534163
+              },
+              {
+                "id": 1,
+                "source_seconds": 0.4283284159610048,
+                "initial_fit_seconds": 0.018653728999197483,
+                "update_seconds": 0,
+                "serialization_seconds": 0.0005846769781783223,
+                "evaluation_seconds": 1.5613710069446824,
+                "total_seconds": 2.008937828883063
+              },
+              {
+                "id": 2,
+                "source_seconds": 0.584051156998612,
+                "initial_fit_seconds": 0.028248151997104287,
+                "update_seconds": 0,
+                "serialization_seconds": 0.0008071730262599885,
+                "evaluation_seconds": 1.2977113889646716,
+                "total_seconds": 1.910817870986648
+              }
+            ]
+          }
+        },
+        "REVISED_DIRECT": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 1381.3333333333333,
+                  "utility": 0.6744791666666666,
+                  "steps": 141.0,
+                  "max_rank": 6.666666666666667,
+                  "seconds": 0.046006941488788776
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 1716.0,
+                    "utility": 0.837890625,
+                    "steps": 160.5,
+                    "max_rank": 7.0,
+                    "seconds": 0.051244846486952156
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 1272.0,
+                    "utility": 0.62109375,
+                    "steps": 130.5,
+                    "max_rank": 7.0,
+                    "seconds": 0.04399563296465203
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 1156.0,
+                    "utility": 0.564453125,
+                    "steps": 132.0,
+                    "max_rank": 6.0,
+                    "seconds": 0.04278034501476213
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 1048.6666666666667,
+                  "utility": -3.4879557291666665,
+                  "steps": 115.66666666666667,
+                  "max_rank": 6.333333333333333,
+                  "seconds": 0.03917891051969491
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 1588.0,
+                    "utility": -3.224609375,
+                    "steps": 149.0,
+                    "max_rank": 7.0,
+                    "seconds": 0.0492504570283927
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 724.0,
+                    "utility": -3.646484375,
+                    "steps": 95.5,
+                    "max_rank": 6.0,
+                    "seconds": 0.03449824400013313
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 834.0,
+                    "utility": -3.5927734375,
+                    "steps": 102.5,
+                    "max_rank": 6.0,
+                    "seconds": 0.0337880305305589
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            }
+          },
+          "cumulative_costs": {
+            "totals": {
+              "source_seconds": 1.497010798950214,
+              "initial_fit_seconds": 0.6487237050314434,
+              "update_seconds": 0.0,
+              "serialization_seconds": 0.001982907997444272,
+              "evaluation_seconds": 0.5528989918529987,
+              "total_seconds": 2.7006164038321003
+            },
+            "lifecycles": [
+              {
+                "id": 0,
+                "source_seconds": 0.48463122599059716,
+                "initial_fit_seconds": 0.6018218240351416,
+                "update_seconds": 0,
+                "serialization_seconds": 0.0005910579930059612,
+                "evaluation_seconds": 0.216362205974292,
+                "total_seconds": 1.3034063139930367
+              },
+              {
+                "id": 1,
+                "source_seconds": 0.4283284159610048,
+                "initial_fit_seconds": 0.018653728999197483,
+                "update_seconds": 0,
+                "serialization_seconds": 0.0005846769781783223,
+                "evaluation_seconds": 0.16976628196425736,
+                "total_seconds": 0.617333103902638
+              },
+              {
+                "id": 2,
+                "source_seconds": 0.584051156998612,
+                "initial_fit_seconds": 0.028248151997104287,
+                "update_seconds": 0,
+                "serialization_seconds": 0.0008071730262599885,
+                "evaluation_seconds": 0.16677050391444936,
+                "total_seconds": 0.7798769859364256
+              }
+            ]
+          }
+        }
+      },
+      "models": [
+        {
+          "id": 0,
+          "FROZEN": {
+            "nodes": 115,
+            "leaves": 59,
+            "bytes": 7297,
+            "counts": {}
+          },
+          "FIXED": {
+            "nodes": 115,
+            "leaves": 59,
+            "bytes": 7296,
+            "counts": {}
+          },
+          "REVISED": {
+            "nodes": 115,
+            "leaves": 59,
+            "bytes": 7298,
+            "counts": {}
+          }
+        },
+        {
+          "id": 1,
+          "FROZEN": {
+            "nodes": 121,
+            "leaves": 62,
+            "bytes": 7636,
+            "counts": {}
+          },
+          "FIXED": {
+            "nodes": 121,
+            "leaves": 62,
+            "bytes": 7635,
+            "counts": {}
+          },
+          "REVISED": {
+            "nodes": 121,
+            "leaves": 62,
+            "bytes": 7637,
+            "counts": {}
+          }
+        },
+        {
+          "id": 2,
+          "FROZEN": {
+            "nodes": 131,
+            "leaves": 67,
+            "bytes": 8311,
+            "counts": {}
+          },
+          "FIXED": {
+            "nodes": 131,
+            "leaves": 67,
+            "bytes": 8310,
+            "counts": {}
+          },
+          "REVISED": {
+            "nodes": 131,
+            "leaves": 67,
+            "bytes": 8312,
+            "counts": {}
+          }
+        }
+      ]
+    },
+    {
+      "episodes": 39,
+      "methods": {
+        "H2_ONLY": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 7860.666666666667,
+                  "utility": 3.8382161458333335,
+                  "steps": 521.3333333333334,
+                  "max_rank": 9.0,
+                  "seconds": 0.3587399559910409
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 6270.0,
+                    "utility": 3.0615234375,
+                    "steps": 431.5,
+                    "max_rank": 9.0,
+                    "seconds": 0.2917422275058925
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 5482.0,
+                    "utility": 2.6767578125,
+                    "steps": 400.5,
+                    "max_rank": 8.5,
+                    "seconds": 0.27031298997462727
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 11830.0,
+                    "utility": 5.7763671875,
+                    "steps": 732.0,
+                    "max_rank": 9.5,
+                    "seconds": 0.514164650492603
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 7951.333333333333,
+                  "utility": -0.11751302083333333,
+                  "steps": 526.8333333333334,
+                  "max_rank": 9.0,
+                  "seconds": 0.37415532650387223
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 7068.0,
+                    "utility": -0.548828125,
+                    "steps": 481.0,
+                    "max_rank": 9.0,
+                    "seconds": 0.34886286602704786
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 5482.0,
+                    "utility": -1.3232421875,
+                    "steps": 400.5,
+                    "max_rank": 8.5,
+                    "seconds": 0.2732379444933031
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 11304.0,
+                    "utility": 1.51953125,
+                    "steps": 699.0,
+                    "max_rank": 9.5,
+                    "seconds": 0.5003651689912658
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            }
+          },
+          "cumulative_costs": {
+            "totals": {
+              "source_seconds": 0.0,
+              "initial_fit_seconds": 0.0,
+              "update_seconds": 0.0,
+              "serialization_seconds": 0.0,
+              "evaluation_seconds": 9.078156774048693,
+              "total_seconds": 9.078156774048693
+            },
+            "lifecycles": [
+              {
+                "id": 0,
+                "source_seconds": 0.0,
+                "initial_fit_seconds": 0.0,
+                "update_seconds": 0.0,
+                "serialization_seconds": 0.0,
+                "evaluation_seconds": 2.6703768389998004,
+                "total_seconds": 2.6703768389998004
+              },
+              {
+                "id": 1,
+                "source_seconds": 0.0,
+                "initial_fit_seconds": 0.0,
+                "update_seconds": 0.0,
+                "serialization_seconds": 0.0,
+                "evaluation_seconds": 2.25745116797043,
+                "total_seconds": 2.25745116797043
+              },
+              {
+                "id": 2,
+                "source_seconds": 0.0,
+                "initial_fit_seconds": 0.0,
+                "update_seconds": 0.0,
+                "serialization_seconds": 0.0,
+                "evaluation_seconds": 4.150328767078463,
+                "total_seconds": 4.150328767078463
+              }
+            ]
+          }
+        },
+        "FROZEN_PLAN": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 4248.0,
+                  "utility": 2.07421875,
+                  "steps": 317.0,
+                  "max_rank": 8.166666666666666,
+                  "seconds": 0.31129090865336667
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 3084.0,
+                    "utility": 1.505859375,
+                    "steps": 237.5,
+                    "max_rank": 8.0,
+                    "seconds": 0.2406325860065408
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 5394.0,
+                    "utility": 2.6337890625,
+                    "steps": 398.0,
+                    "max_rank": 8.5,
+                    "seconds": 0.38254362397128716
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 4266.0,
+                    "utility": 2.0830078125,
+                    "steps": 315.5,
+                    "max_rank": 8.0,
+                    "seconds": 0.3106965159822721
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 4986.0,
+                  "utility": -1.5654296875,
+                  "steps": 362.1666666666667,
+                  "max_rank": 8.5,
+                  "seconds": 0.3558774316625204
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 5208.0,
+                    "utility": -1.45703125,
+                    "steps": 381.5,
+                    "max_rank": 8.5,
+                    "seconds": 0.37725834400043823
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 5496.0,
+                    "utility": -1.31640625,
+                    "steps": 389.0,
+                    "max_rank": 8.5,
+                    "seconds": 0.3743942524888553
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 4254.0,
+                    "utility": -1.9228515625,
+                    "steps": 316.0,
+                    "max_rank": 8.5,
+                    "seconds": 0.3159796984982677
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            }
+          },
+          "cumulative_costs": {
+            "totals": {
+              "source_seconds": 1.497010798950214,
+              "initial_fit_seconds": 0.6487237050314434,
+              "update_seconds": 0.0019906320376321673,
+              "serialization_seconds": 0.005195836070924997,
+              "evaluation_seconds": 8.210021247738041,
+              "total_seconds": 10.362942219828255
+            },
+            "lifecycles": [
+              {
+                "id": 0,
+                "source_seconds": 0.48463122599059716,
+                "initial_fit_seconds": 0.6018218240351416,
+                "update_seconds": 0.00047046400140970945,
+                "serialization_seconds": 0.0011723909992724657,
+                "evaluation_seconds": 2.529250371910166,
+                "total_seconds": 3.617346276936587
+              },
+              {
+                "id": 1,
+                "source_seconds": 0.4283284159610048,
+                "initial_fit_seconds": 0.018653728999197483,
+                "update_seconds": 0.0007784300250932574,
+                "serialization_seconds": 0.001962015056051314,
+                "evaluation_seconds": 3.100250156945549,
+                "total_seconds": 3.549972746986896
+              },
+              {
+                "id": 2,
+                "source_seconds": 0.584051156998612,
+                "initial_fit_seconds": 0.028248151997104287,
+                "update_seconds": 0.0007417380111292005,
+                "serialization_seconds": 0.0020614300156012177,
+                "evaluation_seconds": 2.580520718882326,
+                "total_seconds": 3.1956231959047727
+              }
+            ]
+          }
+        },
+        "FIXED_PLAN": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 6829.333333333333,
+                  "utility": 3.3346354166666665,
+                  "steps": 458.3333333333333,
+                  "max_rank": 9.0,
+                  "seconds": 0.45900594650690135
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 7450.0,
+                    "utility": 3.6376953125,
+                    "steps": 477.0,
+                    "max_rank": 9.0,
+                    "seconds": 0.47645791349350475
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 5908.0,
+                    "utility": 2.884765625,
+                    "steps": 407.5,
+                    "max_rank": 9.0,
+                    "seconds": 0.404870814003516
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 7130.0,
+                    "utility": 3.4814453125,
+                    "steps": 490.5,
+                    "max_rank": 9.0,
+                    "seconds": 0.49568911202368326
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 3326.6666666666665,
+                  "utility": -2.3756510416666665,
+                  "steps": 267.3333333333333,
+                  "max_rank": 8.0,
+                  "seconds": 0.26602898085063015
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 3104.0,
+                    "utility": -2.484375,
+                    "steps": 253.0,
+                    "max_rank": 8.0,
+                    "seconds": 0.25284358850331046
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 2438.0,
+                    "utility": -2.8095703125,
+                    "steps": 218.0,
+                    "max_rank": 7.5,
+                    "seconds": 0.21891447552479804
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 4438.0,
+                    "utility": -1.8330078125,
+                    "steps": 331.0,
+                    "max_rank": 8.5,
+                    "seconds": 0.3263288785237819
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            }
+          },
+          "cumulative_costs": {
+            "totals": {
+              "source_seconds": 4.217164248984773,
+              "initial_fit_seconds": 0.6487237050314434,
+              "update_seconds": 0.13417559897061437,
+              "serialization_seconds": 0.006071841053199023,
+              "evaluation_seconds": 8.583168926998042,
+              "total_seconds": 13.589304321038071
+            },
+            "lifecycles": [
+              {
+                "id": 0,
+                "source_seconds": 1.303380149998702,
+                "initial_fit_seconds": 0.6018218240351416,
+                "update_seconds": 0.040741121978498995,
+                "serialization_seconds": 0.001100254012271762,
+                "evaluation_seconds": 2.7547574199852534,
+                "total_seconds": 4.701800770009868
+              },
+              {
+                "id": 1,
+                "source_seconds": 1.3640627739951015,
+                "initial_fit_seconds": 0.018653728999197483,
+                "update_seconds": 0.04516620497452095,
+                "serialization_seconds": 0.0032923390390351415,
+                "evaluation_seconds": 2.84195239294786,
+                "total_seconds": 4.273127439955715
+              },
+              {
+                "id": 2,
+                "source_seconds": 1.5497213249909692,
+                "initial_fit_seconds": 0.028248151997104287,
+                "update_seconds": 0.04826827201759443,
+                "serialization_seconds": 0.0016792480018921196,
+                "evaluation_seconds": 2.986459114064928,
+                "total_seconds": 4.614376111072488
+              }
+            ]
+          }
+        },
+        "REVISED_PLAN": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 5404.666666666667,
+                  "utility": 2.6389973958333335,
+                  "steps": 379.0,
+                  "max_rank": 8.666666666666666,
+                  "seconds": 0.3831948793279783
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 3176.0,
+                    "utility": 1.55078125,
+                    "steps": 239.0,
+                    "max_rank": 8.0,
+                    "seconds": 0.24515301050269045
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 5908.0,
+                    "utility": 2.884765625,
+                    "steps": 407.5,
+                    "max_rank": 9.0,
+                    "seconds": 0.40953484948840924
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 7130.0,
+                    "utility": 3.4814453125,
+                    "steps": 490.5,
+                    "max_rank": 9.0,
+                    "seconds": 0.49489677799283527
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 2962.6666666666665,
+                  "utility": -2.5533854166666665,
+                  "steps": 242.33333333333334,
+                  "max_rank": 7.833333333333333,
+                  "seconds": 0.2438794813254693
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 2012.0,
+                    "utility": -3.017578125,
+                    "steps": 178.0,
+                    "max_rank": 7.5,
+                    "seconds": 0.188164677034365
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 2438.0,
+                    "utility": -2.8095703125,
+                    "steps": 218.0,
+                    "max_rank": 7.5,
+                    "seconds": 0.21853906646720134
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 4438.0,
+                    "utility": -1.8330078125,
+                    "steps": 331.0,
+                    "max_rank": 8.5,
+                    "seconds": 0.3249347004748415
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            }
+          },
+          "cumulative_costs": {
+            "totals": {
+              "source_seconds": 4.217164248984773,
+              "initial_fit_seconds": 0.6487237050314434,
+              "update_seconds": 0.1986952259321697,
+              "serialization_seconds": 0.003821687016170472,
+              "evaluation_seconds": 7.979382791789249,
+              "total_seconds": 13.047787658753805
+            },
+            "lifecycles": [
+              {
+                "id": 0,
+                "source_seconds": 1.303380149998702,
+                "initial_fit_seconds": 0.6018218240351416,
+                "update_seconds": 0.0600174599676393,
+                "serialization_seconds": 0.001285185047890991,
+                "evaluation_seconds": 2.1407357499119826,
+                "total_seconds": 4.107240368961357
+              },
+              {
+                "id": 1,
+                "source_seconds": 1.3640627739951015,
+                "initial_fit_seconds": 0.018653728999197483,
+                "update_seconds": 0.06371617497643456,
+                "serialization_seconds": 0.0011155269457958639,
+                "evaluation_seconds": 2.85258231399348,
+                "total_seconds": 4.300130518910009
+              },
+              {
+                "id": 2,
+                "source_seconds": 1.5497213249909692,
+                "initial_fit_seconds": 0.028248151997104287,
+                "update_seconds": 0.07496159098809585,
+                "serialization_seconds": 0.001420975022483617,
+                "evaluation_seconds": 2.986064727883786,
+                "total_seconds": 4.640416770882439
+              }
+            ]
+          }
+        },
+        "REVISED_DIRECT": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 1692.6666666666667,
+                  "utility": 0.8264973958333334,
+                  "steps": 159.0,
+                  "max_rank": 7.0,
+                  "seconds": 0.05399570650964355
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 1132.0,
+                    "utility": 0.552734375,
+                    "steps": 119.5,
+                    "max_rank": 6.5,
+                    "seconds": 0.04213869900559075
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 1250.0,
+                    "utility": 0.6103515625,
+                    "steps": 134.0,
+                    "max_rank": 6.5,
+                    "seconds": 0.04390902450541034
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 2696.0,
+                    "utility": 1.31640625,
+                    "steps": 223.5,
+                    "max_rank": 8.0,
+                    "seconds": 0.07593939601792954
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 1302.0,
+                  "utility": -3.3642578125,
+                  "steps": 135.5,
+                  "max_rank": 6.666666666666667,
+                  "seconds": 0.04579427217443784
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 910.0,
+                    "utility": -3.5556640625,
+                    "steps": 101.0,
+                    "max_rank": 6.5,
+                    "seconds": 0.035620524489786476
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 1992.0,
+                    "utility": -3.02734375,
+                    "steps": 192.5,
+                    "max_rank": 7.0,
+                    "seconds": 0.06398573450860567
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 1004.0,
+                    "utility": -3.509765625,
+                    "steps": 113.0,
+                    "max_rank": 6.5,
+                    "seconds": 0.03777655752492137
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            }
+          },
+          "cumulative_costs": {
+            "totals": {
+              "source_seconds": 4.217164248984773,
+              "initial_fit_seconds": 0.6487237050314434,
+              "update_seconds": 0.1986952259321697,
+              "serialization_seconds": 0.003821687016170472,
+              "evaluation_seconds": 1.2009613698464818,
+              "total_seconds": 6.269366236811038
+            },
+            "lifecycles": [
+              {
+                "id": 0,
+                "source_seconds": 1.303380149998702,
+                "initial_fit_seconds": 0.6018218240351416,
+                "update_seconds": 0.0600174599676393,
+                "serialization_seconds": 0.001285185047890991,
+                "evaluation_seconds": 0.3835622889455408,
+                "total_seconds": 2.350066907994915
+              },
+              {
+                "id": 1,
+                "source_seconds": 1.3640627739951015,
+                "initial_fit_seconds": 0.018653728999197483,
+                "update_seconds": 0.06371617497643456,
+                "serialization_seconds": 0.0011155269457958639,
+                "evaluation_seconds": 0.4022837419179268,
+                "total_seconds": 1.8498319468344562
+              },
+              {
+                "id": 2,
+                "source_seconds": 1.5497213249909692,
+                "initial_fit_seconds": 0.028248151997104287,
+                "update_seconds": 0.07496159098809585,
+                "serialization_seconds": 0.001420975022483617,
+                "evaluation_seconds": 0.4151153389830142,
+                "total_seconds": 2.069467381981667
+              }
+            ]
+          }
+        }
+      },
+      "models": [
+        {
+          "id": 0,
+          "FROZEN": {
+            "nodes": 115,
+            "leaves": 59,
+            "bytes": 7322,
+            "counts": {
+              "metadata_rows_read": 4728
+            }
+          },
+          "FIXED": {
+            "nodes": 115,
+            "leaves": 59,
+            "bytes": 7862,
+            "counts": {
+              "metadata_rows_read": 4728,
+              "training_rows_read": 3812,
+              "feature_rows": 3812,
+              "tree_apply_rows": 3812,
+              "tree_split_visits": 22360,
+              "leaf_stat_rows": 3812,
+              "leaf_stats_updated": 59,
+              "leaf_values_changed": 58
+            }
+          },
+          "REVISED": {
+            "nodes": 191,
+            "leaves": 97,
+            "bytes": 12231,
+            "counts": {
+              "metadata_rows_read": 4728,
+              "training_rows_read": 3812,
+              "feature_rows": 4728,
+              "tree_apply_rows": 5644,
+              "tree_split_visits": 33368,
+              "leaf_stat_rows": 3812,
+              "leaf_stats_updated": 59,
+              "leaf_values_changed": 58,
+              "tree_fits": 3,
+              "fit_rows": 3812,
+              "validation_rows_read": 916,
+              "proposals_accepted": 2,
+              "accepted_structure_changes": 2,
+              "accepted_split_nodes_changed": 108,
+              "proposals_rejected": 1
+            }
+          }
+        },
+        {
+          "id": 1,
+          "FROZEN": {
+            "nodes": 121,
+            "leaves": 62,
+            "bytes": 7661,
+            "counts": {
+              "metadata_rows_read": 4856
+            }
+          },
+          "FIXED": {
+            "nodes": 121,
+            "leaves": 62,
+            "bytes": 8233,
+            "counts": {
+              "metadata_rows_read": 4856,
+              "training_rows_read": 4090,
+              "feature_rows": 4090,
+              "tree_apply_rows": 4090,
+              "tree_split_visits": 22712,
+              "leaf_stat_rows": 4090,
+              "leaf_stats_updated": 62,
+              "leaf_values_changed": 57
+            }
+          },
+          "REVISED": {
+            "nodes": 121,
+            "leaves": 62,
+            "bytes": 8315,
+            "counts": {
+              "metadata_rows_read": 4856,
+              "training_rows_read": 4090,
+              "feature_rows": 4856,
+              "tree_apply_rows": 5622,
+              "tree_split_visits": 32464,
+              "leaf_stat_rows": 4090,
+              "leaf_stats_updated": 62,
+              "leaf_values_changed": 57,
+              "tree_fits": 3,
+              "fit_rows": 4090,
+              "validation_rows_read": 766,
+              "proposals_rejected": 3
+            }
+          }
+        },
+        {
+          "id": 2,
+          "FROZEN": {
+            "nodes": 131,
+            "leaves": 67,
+            "bytes": 8336,
+            "counts": {
+              "metadata_rows_read": 5482
+            }
+          },
+          "FIXED": {
+            "nodes": 131,
+            "leaves": 67,
+            "bytes": 8929,
+            "counts": {
+              "metadata_rows_read": 5482,
+              "training_rows_read": 4400,
+              "feature_rows": 4400,
+              "tree_apply_rows": 4400,
+              "tree_split_visits": 26344,
+              "leaf_stat_rows": 4400,
+              "leaf_stats_updated": 67,
+              "leaf_values_changed": 63
+            }
+          },
+          "REVISED": {
+            "nodes": 131,
+            "leaves": 67,
+            "bytes": 9012,
+            "counts": {
+              "metadata_rows_read": 5482,
+              "training_rows_read": 4400,
+              "feature_rows": 5482,
+              "tree_apply_rows": 6564,
+              "tree_split_visits": 40182,
+              "leaf_stat_rows": 4400,
+              "leaf_stats_updated": 67,
+              "leaf_values_changed": 63,
+              "tree_fits": 3,
+              "fit_rows": 4400,
+              "validation_rows_read": 1082,
+              "proposals_rejected": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "episodes": 75,
+      "methods": {
+        "H2_ONLY": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 7860.666666666667,
+                  "utility": 3.8382161458333335,
+                  "steps": 521.3333333333334,
+                  "max_rank": 9.0,
+                  "seconds": 0.36176452867221087
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 6270.0,
+                    "utility": 3.0615234375,
+                    "steps": 431.5,
+                    "max_rank": 9.0,
+                    "seconds": 0.2947378450189717
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 5482.0,
+                    "utility": 2.6767578125,
+                    "steps": 400.5,
+                    "max_rank": 8.5,
+                    "seconds": 0.2708545725035947
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 11830.0,
+                    "utility": 5.7763671875,
+                    "steps": 732.0,
+                    "max_rank": 9.5,
+                    "seconds": 0.5197011684940662
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 7951.333333333333,
+                  "utility": -0.11751302083333333,
+                  "steps": 526.8333333333334,
+                  "max_rank": 9.0,
+                  "seconds": 0.3703223146731034
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 7068.0,
+                    "utility": -0.548828125,
+                    "steps": 481.0,
+                    "max_rank": 9.0,
+                    "seconds": 0.3295980349939782
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 5482.0,
+                    "utility": -1.3232421875,
+                    "steps": 400.5,
+                    "max_rank": 8.5,
+                    "seconds": 0.29310759701183997
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 11304.0,
+                    "utility": 1.51953125,
+                    "steps": 699.0,
+                    "max_rank": 9.5,
+                    "seconds": 0.488261312013492
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            }
+          },
+          "cumulative_costs": {
+            "totals": {
+              "source_seconds": 0.0,
+              "initial_fit_seconds": 0.0,
+              "update_seconds": 0.0,
+              "serialization_seconds": 0.0,
+              "evaluation_seconds": 13.650735019065905,
+              "total_seconds": 13.650735019065905
+            },
+            "lifecycles": [
+              {
+                "id": 0,
+                "source_seconds": 0.0,
+                "initial_fit_seconds": 0.0,
+                "update_seconds": 0.0,
+                "serialization_seconds": 0.0,
+                "evaluation_seconds": 3.9727341839461587,
+                "total_seconds": 3.9727341839461587
+              },
+              {
+                "id": 1,
+                "source_seconds": 0.0,
+                "initial_fit_seconds": 0.0,
+                "update_seconds": 0.0,
+                "serialization_seconds": 0.0,
+                "evaluation_seconds": 3.430697538948152,
+                "total_seconds": 3.430697538948152
+              },
+              {
+                "id": 2,
+                "source_seconds": 0.0,
+                "initial_fit_seconds": 0.0,
+                "update_seconds": 0.0,
+                "serialization_seconds": 0.0,
+                "evaluation_seconds": 6.247303296171594,
+                "total_seconds": 6.247303296171594
+              }
+            ]
+          }
+        },
+        "FROZEN_PLAN": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 4248.0,
+                  "utility": 2.07421875,
+                  "steps": 317.0,
+                  "max_rank": 8.166666666666666,
+                  "seconds": 0.31139650582917966
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 3084.0,
+                    "utility": 1.505859375,
+                    "steps": 237.5,
+                    "max_rank": 8.0,
+                    "seconds": 0.2396342254942283
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 5394.0,
+                    "utility": 2.6337890625,
+                    "steps": 398.0,
+                    "max_rank": 8.5,
+                    "seconds": 0.38258951701573096
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 4266.0,
+                    "utility": 2.0830078125,
+                    "steps": 315.5,
+                    "max_rank": 8.0,
+                    "seconds": 0.3119657749775797
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 4986.0,
+                  "utility": -1.5654296875,
+                  "steps": 362.1666666666667,
+                  "max_rank": 8.5,
+                  "seconds": 0.3561882338253781
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 5208.0,
+                    "utility": -1.45703125,
+                    "steps": 381.5,
+                    "max_rank": 8.5,
+                    "seconds": 0.3788033449964132
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 5496.0,
+                    "utility": -1.31640625,
+                    "steps": 389.0,
+                    "max_rank": 8.5,
+                    "seconds": 0.37448984949151054
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 4254.0,
+                    "utility": -1.9228515625,
+                    "steps": 316.0,
+                    "max_rank": 8.5,
+                    "seconds": 0.3152715069882106
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            }
+          },
+          "cumulative_costs": {
+            "totals": {
+              "source_seconds": 1.497010798950214,
+              "initial_fit_seconds": 0.6487237050314434,
+              "update_seconds": 0.005518323974683881,
+              "serialization_seconds": 0.007293737086001784,
+              "evaluation_seconds": 12.329112842620816,
+              "total_seconds": 14.487659407663159
+            },
+            "lifecycles": [
+              {
+                "id": 0,
+                "source_seconds": 0.48463122599059716,
+                "initial_fit_seconds": 0.6018218240351416,
+                "update_seconds": 0.0015840919804759324,
+                "serialization_seconds": 0.001816223026253283,
+                "evaluation_seconds": 3.800108456867747,
+                "total_seconds": 4.889961821900215
+              },
+              {
+                "id": 1,
+                "source_seconds": 0.4283284159610048,
+                "initial_fit_seconds": 0.018653728999197483,
+                "update_seconds": 0.0017462209798395634,
+                "serialization_seconds": 0.002739780058618635,
+                "evaluation_seconds": 4.66042819689028,
+                "total_seconds": 5.11189634288894
+              },
+              {
+                "id": 2,
+                "source_seconds": 0.584051156998612,
+                "initial_fit_seconds": 0.028248151997104287,
+                "update_seconds": 0.002188011014368385,
+                "serialization_seconds": 0.0027377340011298656,
+                "evaluation_seconds": 3.8685761888627894,
+                "total_seconds": 4.485801242874004
+              }
+            ]
+          }
+        },
+        "FIXED_PLAN": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 7442.666666666667,
+                  "utility": 3.6341145833333335,
+                  "steps": 490.6666666666667,
+                  "max_rank": 9.166666666666666,
+                  "seconds": 0.48974665050627664
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 9338.0,
+                    "utility": 4.5595703125,
+                    "steps": 584.0,
+                    "max_rank": 9.5,
+                    "seconds": 0.584375139005715
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 5952.0,
+                    "utility": 2.90625,
+                    "steps": 408.0,
+                    "max_rank": 9.0,
+                    "seconds": 0.4065270200080704
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 7038.0,
+                    "utility": 3.4365234375,
+                    "steps": 480.0,
+                    "max_rank": 9.0,
+                    "seconds": 0.4783377925050445
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 2634.0,
+                  "utility": -2.7138671875,
+                  "steps": 231.5,
+                  "max_rank": 7.5,
+                  "seconds": 0.2314081215299666
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 2756.0,
+                    "utility": -2.654296875,
+                    "steps": 242.0,
+                    "max_rank": 7.5,
+                    "seconds": 0.24402676202589646
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 1656.0,
+                    "utility": -3.19140625,
+                    "steps": 167.5,
+                    "max_rank": 7.0,
+                    "seconds": 0.16834369153366424
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 3490.0,
+                    "utility": -2.2958984375,
+                    "steps": 285.0,
+                    "max_rank": 8.0,
+                    "seconds": 0.2818539110303391
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            }
+          },
+          "cumulative_costs": {
+            "totals": {
+              "source_seconds": 7.978099281957839,
+              "initial_fit_seconds": 0.6487237050314434,
+              "update_seconds": 0.38660233397968113,
+              "serialization_seconds": 0.007781610009260476,
+              "evaluation_seconds": 13.033131291042082,
+              "total_seconds": 22.054338222020306
+            },
+            "lifecycles": [
+              {
+                "id": 0,
+                "source_seconds": 2.5007001889753155,
+                "initial_fit_seconds": 0.6018218240351416,
+                "update_seconds": 0.12432811298640445,
+                "serialization_seconds": 0.0017200480215251446,
+                "evaluation_seconds": 4.457829577964731,
+                "total_seconds": 7.686399751983117
+              },
+              {
+                "id": 1,
+                "source_seconds": 2.6906115239835344,
+                "initial_fit_seconds": 0.018653728999197483,
+                "update_seconds": 0.1258224819903262,
+                "serialization_seconds": 0.0038279820000752807,
+                "evaluation_seconds": 4.025050098018255,
+                "total_seconds": 6.8639658149913885
+              },
+              {
+                "id": 2,
+                "source_seconds": 2.7867875689989887,
+                "initial_fit_seconds": 0.028248151997104287,
+                "update_seconds": 0.1364517390029505,
+                "serialization_seconds": 0.0022335799876600504,
+                "evaluation_seconds": 4.550251615059096,
+                "total_seconds": 7.5039726550458
+              }
+            ]
+          }
+        },
+        "REVISED_PLAN": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 3138.6666666666665,
+                  "utility": 1.5325520833333333,
+                  "steps": 253.0,
+                  "max_rank": 8.0,
+                  "seconds": 0.26604755499283783
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 4482.0,
+                    "utility": 2.1884765625,
+                    "steps": 334.5,
+                    "max_rank": 8.5,
+                    "seconds": 0.35666724797920324
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 1804.0,
+                    "utility": 0.880859375,
+                    "steps": 166.0,
+                    "max_rank": 7.5,
+                    "seconds": 0.17052759148646146
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 3130.0,
+                    "utility": 1.5283203125,
+                    "steps": 258.5,
+                    "max_rank": 8.0,
+                    "seconds": 0.2709478255128488
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 4835.333333333333,
+                  "utility": -1.6389973958333333,
+                  "steps": 354.5,
+                  "max_rank": 8.5,
+                  "seconds": 0.36486902033599716
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 3256.0,
+                    "utility": -2.41015625,
+                    "steps": 266.5,
+                    "max_rank": 8.0,
+                    "seconds": 0.28526079349103384
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 6162.0,
+                    "utility": -0.9912109375,
+                    "steps": 427.0,
+                    "max_rank": 9.0,
+                    "seconds": 0.43155113951070234
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 5088.0,
+                    "utility": -1.515625,
+                    "steps": 370.0,
+                    "max_rank": 8.5,
+                    "seconds": 0.37779512800625525
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            }
+          },
+          "cumulative_costs": {
+            "totals": {
+              "source_seconds": 7.978099281957839,
+              "initial_fit_seconds": 0.6487237050314434,
+              "update_seconds": 0.563023492868524,
+              "serialization_seconds": 0.006859529006760567,
+              "evaluation_seconds": 11.867326617764775,
+              "total_seconds": 21.06403262662934
+            },
+            "lifecycles": [
+              {
+                "id": 0,
+                "source_seconds": 2.5007001889753155,
+                "initial_fit_seconds": 0.6018218240351416,
+                "update_seconds": 0.17754045996116474,
+                "serialization_seconds": 0.0025901890476234257,
+                "evaluation_seconds": 3.4570239899330772,
+                "total_seconds": 6.739676651952323
+              },
+              {
+                "id": 1,
+                "source_seconds": 2.6906115239835344,
+                "initial_fit_seconds": 0.018653728999197483,
+                "update_seconds": 0.18620189995272085,
+                "serialization_seconds": 0.0020243769395165145,
+                "evaluation_seconds": 4.0894280829816125,
+                "total_seconds": 6.986919612856582
+              },
+              {
+                "id": 2,
+                "source_seconds": 2.7867875689989887,
+                "initial_fit_seconds": 0.028248151997104287,
+                "update_seconds": 0.19928113295463845,
+                "serialization_seconds": 0.002244963019620627,
+                "evaluation_seconds": 4.320874544850085,
+                "total_seconds": 7.337436361820437
+              }
+            ]
+          }
+        },
+        "REVISED_DIRECT": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 1296.6666666666667,
+                  "utility": 0.6331380208333334,
+                  "steps": 132.5,
+                  "max_rank": 6.666666666666667,
+                  "seconds": 0.05815769017014342
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 1486.0,
+                    "utility": 0.7255859375,
+                    "steps": 142.5,
+                    "max_rank": 7.0,
+                    "seconds": 0.08230413749697618
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 1078.0,
+                    "utility": 0.5263671875,
+                    "steps": 121.0,
+                    "max_rank": 6.5,
+                    "seconds": 0.043355562491342425
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 1326.0,
+                    "utility": 0.6474609375,
+                    "steps": 134.0,
+                    "max_rank": 6.5,
+                    "seconds": 0.048813370522111654
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "means": {
+                  "score": 1307.3333333333333,
+                  "utility": -3.3616536458333335,
+                  "steps": 136.33333333333334,
+                  "max_rank": 6.666666666666667,
+                  "seconds": 0.051544826807609447
+                },
+                "status_counts": {
+                  "LOST": 6
+                },
+                "win_fraction": 0.0,
+                "lost_fraction": 1.0,
+                "cutoff_fraction": 0.0
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "means": {
+                    "score": 1114.0,
+                    "utility": -3.4560546875,
+                    "steps": 123.5,
+                    "max_rank": 6.0,
+                    "seconds": 0.051203047478338704
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "means": {
+                    "score": 1338.0,
+                    "utility": -3.3466796875,
+                    "steps": 140.0,
+                    "max_rank": 7.0,
+                    "seconds": 0.05075930696330033
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "means": {
+                    "score": 1470.0,
+                    "utility": -3.2822265625,
+                    "steps": 145.5,
+                    "max_rank": 7.0,
+                    "seconds": 0.05267212598118931
+                  },
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "win_fraction": 0.0,
+                  "lost_fraction": 1.0,
+                  "cutoff_fraction": 0.0
+                }
+              ]
+            }
+          },
+          "cumulative_costs": {
+            "totals": {
+              "source_seconds": 7.978099281957839,
+              "initial_fit_seconds": 0.6487237050314434,
+              "update_seconds": 0.563023492868524,
+              "serialization_seconds": 0.006859529006760567,
+              "evaluation_seconds": 1.9035918117733672,
+              "total_seconds": 11.100297820637934
+            },
+            "lifecycles": [
+              {
+                "id": 0,
+                "source_seconds": 2.5007001889753155,
+                "initial_fit_seconds": 0.6018218240351416,
+                "update_seconds": 0.17754045996116474,
+                "serialization_seconds": 0.0025901890476234257,
+                "evaluation_seconds": 0.6657796319341287,
+                "total_seconds": 3.948432293953374
+              },
+              {
+                "id": 1,
+                "source_seconds": 2.6906115239835344,
+                "initial_fit_seconds": 0.018653728999197483,
+                "update_seconds": 0.18620189995272085,
+                "serialization_seconds": 0.0020243769395165145,
+                "evaluation_seconds": 0.6046891009318642,
+                "total_seconds": 3.5021806308068335
+              },
+              {
+                "id": 2,
+                "source_seconds": 2.7867875689989887,
+                "initial_fit_seconds": 0.028248151997104287,
+                "update_seconds": 0.19928113295463845,
+                "serialization_seconds": 0.002244963019620627,
+                "evaluation_seconds": 0.6331230789073743,
+                "total_seconds": 3.6496848958777264
+              }
+            ]
+          }
+        }
+      },
+      "models": [
+        {
+          "id": 0,
+          "FROZEN": {
+            "nodes": 115,
+            "leaves": 59,
+            "bytes": 7323,
+            "counts": {
+              "metadata_rows_read": 13846
+            }
+          },
+          "FIXED": {
+            "nodes": 115,
+            "leaves": 59,
+            "bytes": 8106,
+            "counts": {
+              "metadata_rows_read": 13846,
+              "training_rows_read": 11316,
+              "feature_rows": 11316,
+              "tree_apply_rows": 11316,
+              "tree_split_visits": 65390,
+              "leaf_stat_rows": 11316,
+              "leaf_stats_updated": 118,
+              "leaf_values_changed": 116
+            }
+          },
+          "REVISED": {
+            "nodes": 375,
+            "leaves": 189,
+            "bytes": 22899,
+            "counts": {
+              "metadata_rows_read": 13846,
+              "training_rows_read": 11316,
+              "feature_rows": 13846,
+              "tree_apply_rows": 16376,
+              "tree_split_visits": 102188,
+              "leaf_stat_rows": 11316,
+              "leaf_stats_updated": 156,
+              "leaf_values_changed": 154,
+              "tree_fits": 6,
+              "fit_rows": 11316,
+              "validation_rows_read": 2530,
+              "proposals_accepted": 4,
+              "accepted_structure_changes": 4,
+              "accepted_split_nodes_changed": 310,
+              "proposals_rejected": 2
+            }
+          }
+        },
+        {
+          "id": 1,
+          "FROZEN": {
+            "nodes": 121,
+            "leaves": 62,
+            "bytes": 7662,
+            "counts": {
+              "metadata_rows_read": 14396
+            }
+          },
+          "FIXED": {
+            "nodes": 121,
+            "leaves": 62,
+            "bytes": 8481,
+            "counts": {
+              "metadata_rows_read": 14396,
+              "training_rows_read": 11954,
+              "feature_rows": 11954,
+              "tree_apply_rows": 11954,
+              "tree_split_visits": 65772,
+              "leaf_stat_rows": 11954,
+              "leaf_stats_updated": 124,
+              "leaf_values_changed": 119
+            }
+          },
+          "REVISED": {
+            "nodes": 195,
+            "leaves": 99,
+            "bytes": 12908,
+            "counts": {
+              "metadata_rows_read": 14396,
+              "training_rows_read": 11954,
+              "feature_rows": 14396,
+              "tree_apply_rows": 16838,
+              "tree_split_visits": 97450,
+              "leaf_stat_rows": 11954,
+              "leaf_stats_updated": 124,
+              "leaf_values_changed": 119,
+              "tree_fits": 6,
+              "fit_rows": 11954,
+              "validation_rows_read": 2442,
+              "proposals_rejected": 5,
+              "proposals_accepted": 1,
+              "accepted_structure_changes": 1,
+              "accepted_split_nodes_changed": 65
+            }
+          }
+        },
+        {
+          "id": 2,
+          "FROZEN": {
+            "nodes": 131,
+            "leaves": 67,
+            "bytes": 8337,
+            "counts": {
+              "metadata_rows_read": 15568
+            }
+          },
+          "FIXED": {
+            "nodes": 131,
+            "leaves": 67,
+            "bytes": 9207,
+            "counts": {
+              "metadata_rows_read": 15568,
+              "training_rows_read": 12290,
+              "feature_rows": 12290,
+              "tree_apply_rows": 12290,
+              "tree_split_visits": 74310,
+              "leaf_stat_rows": 12290,
+              "leaf_stats_updated": 134,
+              "leaf_values_changed": 129
+            }
+          },
+          "REVISED": {
+            "nodes": 221,
+            "leaves": 112,
+            "bytes": 14521,
+            "counts": {
+              "metadata_rows_read": 15568,
+              "training_rows_read": 12290,
+              "feature_rows": 15568,
+              "tree_apply_rows": 18846,
+              "tree_split_visits": 117258,
+              "leaf_stat_rows": 12290,
+              "leaf_stats_updated": 134,
+              "leaf_values_changed": 129,
+              "tree_fits": 6,
+              "fit_rows": 12290,
+              "validation_rows_read": 3278,
+              "proposals_rejected": 5,
+              "proposals_accepted": 1,
+              "accepted_structure_changes": 1,
+              "accepted_split_nodes_changed": 77
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "final_revised_plan_minus_comparator": {
+    "FIXED_PLAN": {
+      "reward": {
+        "complete": true,
+        "lifecycles": [
+          {
+            "id": 0,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": -2.37109375,
+            "differences": [
+              {
+                "seed": 7790000,
+                "replica": 0,
+                "utility_delta": -2.978515625
+              },
+              {
+                "seed": 7790001,
+                "replica": 1,
+                "utility_delta": -1.763671875
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": -2.025390625,
+            "differences": [
+              {
+                "seed": 7790100,
+                "replica": 0,
+                "utility_delta": -2.5
+              },
+              {
+                "seed": 7790101,
+                "replica": 1,
+                "utility_delta": -1.55078125
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": -1.908203125,
+            "differences": [
+              {
+                "seed": 7790200,
+                "replica": 0,
+                "utility_delta": -2.08203125
+              },
+              {
+                "seed": 7790201,
+                "replica": 1,
+                "utility_delta": -1.734375
+              }
+            ]
+          }
+        ],
+        "lifecycle_mean_deltas": [
+          -2.37109375,
+          -2.025390625,
+          -1.908203125
+        ],
+        "mean_delta": -2.1015625,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 3,
+        "tied_lifecycles": 0,
+        "all_lifecycles_positive": false
+      },
+      "risk_goal": {
+        "complete": true,
+        "lifecycles": [
+          {
+            "id": 0,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.244140625,
+            "differences": [
+              {
+                "seed": 7790000,
+                "replica": 0,
+                "utility_delta": -0.068359375
+              },
+              {
+                "seed": 7790001,
+                "replica": 1,
+                "utility_delta": 0.556640625
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 2.2001953125,
+            "differences": [
+              {
+                "seed": 7790100,
+                "replica": 0,
+                "utility_delta": 1.71875
+              },
+              {
+                "seed": 7790101,
+                "replica": 1,
+                "utility_delta": 2.681640625
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.7802734375,
+            "differences": [
+              {
+                "seed": 7790200,
+                "replica": 0,
+                "utility_delta": -0.23828125
+              },
+              {
+                "seed": 7790201,
+                "replica": 1,
+                "utility_delta": 1.798828125
+              }
+            ]
+          }
+        ],
+        "lifecycle_mean_deltas": [
+          0.244140625,
+          2.2001953125,
+          0.7802734375
+        ],
+        "mean_delta": 1.0748697916666667,
+        "positive_lifecycles": 3,
+        "negative_lifecycles": 0,
+        "tied_lifecycles": 0,
+        "all_lifecycles_positive": true
+      }
+    },
+    "FROZEN_PLAN": {
+      "reward": {
+        "complete": true,
+        "lifecycles": [
+          {
+            "id": 0,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.6826171875,
+            "differences": [
+              {
+                "seed": 7790000,
+                "replica": 0,
+                "utility_delta": 0.3671875
+              },
+              {
+                "seed": 7790001,
+                "replica": 1,
+                "utility_delta": 0.998046875
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": -1.7529296875,
+            "differences": [
+              {
+                "seed": 7790100,
+                "replica": 0,
+                "utility_delta": -3.0
+              },
+              {
+                "seed": 7790101,
+                "replica": 1,
+                "utility_delta": -0.505859375
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": -0.5546875,
+            "differences": [
+              {
+                "seed": 7790200,
+                "replica": 0,
+                "utility_delta": 0.755859375
+              },
+              {
+                "seed": 7790201,
+                "replica": 1,
+                "utility_delta": -1.865234375
+              }
+            ]
+          }
+        ],
+        "lifecycle_mean_deltas": [
+          0.6826171875,
+          -1.7529296875,
+          -0.5546875
+        ],
+        "mean_delta": -0.5416666666666666,
+        "positive_lifecycles": 1,
+        "negative_lifecycles": 2,
+        "tied_lifecycles": 0,
+        "all_lifecycles_positive": false
+      },
+      "risk_goal": {
+        "complete": true,
+        "lifecycles": [
+          {
+            "id": 0,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": -0.953125,
+            "differences": [
+              {
+                "seed": 7790000,
+                "replica": 0,
+                "utility_delta": -2.03125
+              },
+              {
+                "seed": 7790001,
+                "replica": 1,
+                "utility_delta": 0.125
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.3251953125,
+            "differences": [
+              {
+                "seed": 7790100,
+                "replica": 0,
+                "utility_delta": -0.794921875
+              },
+              {
+                "seed": 7790101,
+                "replica": 1,
+                "utility_delta": 1.4453125
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.4072265625,
+            "differences": [
+              {
+                "seed": 7790200,
+                "replica": 0,
+                "utility_delta": -0.236328125
+              },
+              {
+                "seed": 7790201,
+                "replica": 1,
+                "utility_delta": 1.05078125
+              }
+            ]
+          }
+        ],
+        "lifecycle_mean_deltas": [
+          -0.953125,
+          0.3251953125,
+          0.4072265625
+        ],
+        "mean_delta": -0.07356770833333333,
+        "positive_lifecycles": 2,
+        "negative_lifecycles": 1,
+        "tied_lifecycles": 0,
+        "all_lifecycles_positive": false
+      }
+    },
+    "REVISED_DIRECT": {
+      "reward": {
+        "complete": true,
+        "lifecycles": [
+          {
+            "id": 0,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 1.462890625,
+            "differences": [
+              {
+                "seed": 7790000,
+                "replica": 0,
+                "utility_delta": 1.5703125
+              },
+              {
+                "seed": 7790001,
+                "replica": 1,
+                "utility_delta": 1.35546875
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.3544921875,
+            "differences": [
+              {
+                "seed": 7790100,
+                "replica": 0,
+                "utility_delta": -0.08984375
+              },
+              {
+                "seed": 7790101,
+                "replica": 1,
+                "utility_delta": 0.798828125
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.880859375,
+            "differences": [
+              {
+                "seed": 7790200,
+                "replica": 0,
+                "utility_delta": 0.994140625
+              },
+              {
+                "seed": 7790201,
+                "replica": 1,
+                "utility_delta": 0.767578125
+              }
+            ]
+          }
+        ],
+        "lifecycle_mean_deltas": [
+          1.462890625,
+          0.3544921875,
+          0.880859375
+        ],
+        "mean_delta": 0.8994140625,
+        "positive_lifecycles": 3,
+        "negative_lifecycles": 0,
+        "tied_lifecycles": 0,
+        "all_lifecycles_positive": true
+      },
+      "risk_goal": {
+        "complete": true,
+        "lifecycles": [
+          {
+            "id": 0,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 1.0458984375,
+            "differences": [
+              {
+                "seed": 7790000,
+                "replica": 0,
+                "utility_delta": 0.66015625
+              },
+              {
+                "seed": 7790001,
+                "replica": 1,
+                "utility_delta": 1.431640625
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 2.35546875,
+            "differences": [
+              {
+                "seed": 7790100,
+                "replica": 0,
+                "utility_delta": 1.9140625
+              },
+              {
+                "seed": 7790101,
+                "replica": 1,
+                "utility_delta": 2.796875
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 1.7666015625,
+            "differences": [
+              {
+                "seed": 7790200,
+                "replica": 0,
+                "utility_delta": 0.96875
+              },
+              {
+                "seed": 7790201,
+                "replica": 1,
+                "utility_delta": 2.564453125
+              }
+            ]
+          }
+        ],
+        "lifecycle_mean_deltas": [
+          1.0458984375,
+          2.35546875,
+          1.7666015625
+        ],
+        "mean_delta": 1.72265625,
+        "positive_lifecycles": 3,
+        "negative_lifecycles": 0,
+        "tied_lifecycles": 0,
+        "all_lifecycles_positive": true
+      }
+    },
+    "H2_ONLY": {
+      "reward": {
+        "complete": true,
+        "lifecycles": [
+          {
+            "id": 0,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": -0.873046875,
+            "differences": [
+              {
+                "seed": 7790000,
+                "replica": 0,
+                "utility_delta": -0.783203125
+              },
+              {
+                "seed": 7790001,
+                "replica": 1,
+                "utility_delta": -0.962890625
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": -1.7958984375,
+            "differences": [
+              {
+                "seed": 7790100,
+                "replica": 0,
+                "utility_delta": -2.845703125
+              },
+              {
+                "seed": 7790101,
+                "replica": 1,
+                "utility_delta": -0.74609375
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": -4.248046875,
+            "differences": [
+              {
+                "seed": 7790200,
+                "replica": 0,
+                "utility_delta": -2.880859375
+              },
+              {
+                "seed": 7790201,
+                "replica": 1,
+                "utility_delta": -5.615234375
+              }
+            ]
+          }
+        ],
+        "lifecycle_mean_deltas": [
+          -0.873046875,
+          -1.7958984375,
+          -4.248046875
+        ],
+        "mean_delta": -2.3056640625,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 3,
+        "tied_lifecycles": 0,
+        "all_lifecycles_positive": false
+      },
+      "risk_goal": {
+        "complete": true,
+        "lifecycles": [
+          {
+            "id": 0,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": -1.861328125,
+            "differences": [
+              {
+                "seed": 7790000,
+                "replica": 0,
+                "utility_delta": -1.98046875
+              },
+              {
+                "seed": 7790001,
+                "replica": 1,
+                "utility_delta": -1.7421875
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.33203125,
+            "differences": [
+              {
+                "seed": 7790100,
+                "replica": 0,
+                "utility_delta": -0.80859375
+              },
+              {
+                "seed": 7790101,
+                "replica": 1,
+                "utility_delta": 1.47265625
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": -3.03515625,
+            "differences": [
+              {
+                "seed": 7790200,
+                "replica": 0,
+                "utility_delta": -2.443359375
+              },
+              {
+                "seed": 7790201,
+                "replica": 1,
+                "utility_delta": -3.626953125
+              }
+            ]
+          }
+        ],
+        "lifecycle_mean_deltas": [
+          -1.861328125,
+          0.33203125,
+          -3.03515625
+        ],
+        "mean_delta": -1.521484375,
+        "positive_lifecycles": 1,
+        "negative_lifecycles": 2,
+        "tied_lifecycles": 0,
+        "all_lifecycles_positive": false
+      }
+    }
+  },
+  "first_to_last_checkpoint_utility_change": {
+    "H2_ONLY": {
+      "reward": {
+        "complete": true,
+        "lifecycles": [
+          {
+            "id": 0,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.0,
+            "differences": [
+              {
+                "seed": 7790000,
+                "replica": 0,
+                "utility_delta": 0.0
+              },
+              {
+                "seed": 7790001,
+                "replica": 1,
+                "utility_delta": 0.0
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.0,
+            "differences": [
+              {
+                "seed": 7790100,
+                "replica": 0,
+                "utility_delta": 0.0
+              },
+              {
+                "seed": 7790101,
+                "replica": 1,
+                "utility_delta": 0.0
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.0,
+            "differences": [
+              {
+                "seed": 7790200,
+                "replica": 0,
+                "utility_delta": 0.0
+              },
+              {
+                "seed": 7790201,
+                "replica": 1,
+                "utility_delta": 0.0
+              }
+            ]
+          }
+        ],
+        "lifecycle_mean_deltas": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mean_delta": 0.0,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 0,
+        "tied_lifecycles": 3,
+        "all_lifecycles_positive": false
+      },
+      "risk_goal": {
+        "complete": true,
+        "lifecycles": [
+          {
+            "id": 0,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.0,
+            "differences": [
+              {
+                "seed": 7790000,
+                "replica": 0,
+                "utility_delta": 0.0
+              },
+              {
+                "seed": 7790001,
+                "replica": 1,
+                "utility_delta": 0.0
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.0,
+            "differences": [
+              {
+                "seed": 7790100,
+                "replica": 0,
+                "utility_delta": 0.0
+              },
+              {
+                "seed": 7790101,
+                "replica": 1,
+                "utility_delta": 0.0
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.0,
+            "differences": [
+              {
+                "seed": 7790200,
+                "replica": 0,
+                "utility_delta": 0.0
+              },
+              {
+                "seed": 7790201,
+                "replica": 1,
+                "utility_delta": 0.0
+              }
+            ]
+          }
+        ],
+        "lifecycle_mean_deltas": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mean_delta": 0.0,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 0,
+        "tied_lifecycles": 3,
+        "all_lifecycles_positive": false
+      }
+    },
+    "FROZEN_PLAN": {
+      "reward": {
+        "complete": true,
+        "lifecycles": [
+          {
+            "id": 0,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.0,
+            "differences": [
+              {
+                "seed": 7790000,
+                "replica": 0,
+                "utility_delta": 0.0
+              },
+              {
+                "seed": 7790001,
+                "replica": 1,
+                "utility_delta": 0.0
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.0,
+            "differences": [
+              {
+                "seed": 7790100,
+                "replica": 0,
+                "utility_delta": 0.0
+              },
+              {
+                "seed": 7790101,
+                "replica": 1,
+                "utility_delta": 0.0
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.0,
+            "differences": [
+              {
+                "seed": 7790200,
+                "replica": 0,
+                "utility_delta": 0.0
+              },
+              {
+                "seed": 7790201,
+                "replica": 1,
+                "utility_delta": 0.0
+              }
+            ]
+          }
+        ],
+        "lifecycle_mean_deltas": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mean_delta": 0.0,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 0,
+        "tied_lifecycles": 3,
+        "all_lifecycles_positive": false
+      },
+      "risk_goal": {
+        "complete": true,
+        "lifecycles": [
+          {
+            "id": 0,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.0,
+            "differences": [
+              {
+                "seed": 7790000,
+                "replica": 0,
+                "utility_delta": 0.0
+              },
+              {
+                "seed": 7790001,
+                "replica": 1,
+                "utility_delta": 0.0
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.0,
+            "differences": [
+              {
+                "seed": 7790100,
+                "replica": 0,
+                "utility_delta": 0.0
+              },
+              {
+                "seed": 7790101,
+                "replica": 1,
+                "utility_delta": 0.0
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.0,
+            "differences": [
+              {
+                "seed": 7790200,
+                "replica": 0,
+                "utility_delta": 0.0
+              },
+              {
+                "seed": 7790201,
+                "replica": 1,
+                "utility_delta": 0.0
+              }
+            ]
+          }
+        ],
+        "lifecycle_mean_deltas": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mean_delta": 0.0,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 0,
+        "tied_lifecycles": 3,
+        "all_lifecycles_positive": false
+      }
+    },
+    "FIXED_PLAN": {
+      "reward": {
+        "complete": true,
+        "lifecycles": [
+          {
+            "id": 0,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 3.0537109375,
+            "differences": [
+              {
+                "seed": 7790000,
+                "replica": 0,
+                "utility_delta": 3.345703125
+              },
+              {
+                "seed": 7790001,
+                "replica": 1,
+                "utility_delta": 2.76171875
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.2724609375,
+            "differences": [
+              {
+                "seed": 7790100,
+                "replica": 0,
+                "utility_delta": -0.5
+              },
+              {
+                "seed": 7790101,
+                "replica": 1,
+                "utility_delta": 1.044921875
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 1.353515625,
+            "differences": [
+              {
+                "seed": 7790200,
+                "replica": 0,
+                "utility_delta": 2.837890625
+              },
+              {
+                "seed": 7790201,
+                "replica": 1,
+                "utility_delta": -0.130859375
+              }
+            ]
+          }
+        ],
+        "lifecycle_mean_deltas": [
+          3.0537109375,
+          0.2724609375,
+          1.353515625
+        ],
+        "mean_delta": 1.5598958333333333,
+        "positive_lifecycles": 3,
+        "negative_lifecycles": 0,
+        "tied_lifecycles": 0,
+        "all_lifecycles_positive": true
+      },
+      "risk_goal": {
+        "complete": true,
+        "lifecycles": [
+          {
+            "id": 0,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": -1.197265625,
+            "differences": [
+              {
+                "seed": 7790000,
+                "replica": 0,
+                "utility_delta": -1.962890625
+              },
+              {
+                "seed": 7790001,
+                "replica": 1,
+                "utility_delta": -0.431640625
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": -1.875,
+            "differences": [
+              {
+                "seed": 7790100,
+                "replica": 0,
+                "utility_delta": -2.513671875
+              },
+              {
+                "seed": 7790101,
+                "replica": 1,
+                "utility_delta": -1.236328125
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": -0.373046875,
+            "differences": [
+              {
+                "seed": 7790200,
+                "replica": 0,
+                "utility_delta": 0.001953125
+              },
+              {
+                "seed": 7790201,
+                "replica": 1,
+                "utility_delta": -0.748046875
+              }
+            ]
+          }
+        ],
+        "lifecycle_mean_deltas": [
+          -1.197265625,
+          -1.875,
+          -0.373046875
+        ],
+        "mean_delta": -1.1484375,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 3,
+        "tied_lifecycles": 0,
+        "all_lifecycles_positive": false
+      }
+    },
+    "REVISED_PLAN": {
+      "reward": {
+        "complete": true,
+        "lifecycles": [
+          {
+            "id": 0,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.6826171875,
+            "differences": [
+              {
+                "seed": 7790000,
+                "replica": 0,
+                "utility_delta": 0.3671875
+              },
+              {
+                "seed": 7790001,
+                "replica": 1,
+                "utility_delta": 0.998046875
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": -1.7529296875,
+            "differences": [
+              {
+                "seed": 7790100,
+                "replica": 0,
+                "utility_delta": -3.0
+              },
+              {
+                "seed": 7790101,
+                "replica": 1,
+                "utility_delta": -0.505859375
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": -0.5546875,
+            "differences": [
+              {
+                "seed": 7790200,
+                "replica": 0,
+                "utility_delta": 0.755859375
+              },
+              {
+                "seed": 7790201,
+                "replica": 1,
+                "utility_delta": -1.865234375
+              }
+            ]
+          }
+        ],
+        "lifecycle_mean_deltas": [
+          0.6826171875,
+          -1.7529296875,
+          -0.5546875
+        ],
+        "mean_delta": -0.5416666666666666,
+        "positive_lifecycles": 1,
+        "negative_lifecycles": 2,
+        "tied_lifecycles": 0,
+        "all_lifecycles_positive": false
+      },
+      "risk_goal": {
+        "complete": true,
+        "lifecycles": [
+          {
+            "id": 0,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": -0.953125,
+            "differences": [
+              {
+                "seed": 7790000,
+                "replica": 0,
+                "utility_delta": -2.03125
+              },
+              {
+                "seed": 7790001,
+                "replica": 1,
+                "utility_delta": 0.125
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.3251953125,
+            "differences": [
+              {
+                "seed": 7790100,
+                "replica": 0,
+                "utility_delta": -0.794921875
+              },
+              {
+                "seed": 7790101,
+                "replica": 1,
+                "utility_delta": 1.4453125
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.4072265625,
+            "differences": [
+              {
+                "seed": 7790200,
+                "replica": 0,
+                "utility_delta": -0.236328125
+              },
+              {
+                "seed": 7790201,
+                "replica": 1,
+                "utility_delta": 1.05078125
+              }
+            ]
+          }
+        ],
+        "lifecycle_mean_deltas": [
+          -0.953125,
+          0.3251953125,
+          0.4072265625
+        ],
+        "mean_delta": -0.07356770833333333,
+        "positive_lifecycles": 2,
+        "negative_lifecycles": 1,
+        "tied_lifecycles": 0,
+        "all_lifecycles_positive": false
+      }
+    },
+    "REVISED_DIRECT": {
+      "reward": {
+        "complete": true,
+        "lifecycles": [
+          {
+            "id": 0,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": -0.1123046875,
+            "differences": [
+              {
+                "seed": 7790000,
+                "replica": 0,
+                "utility_delta": 0.63671875
+              },
+              {
+                "seed": 7790001,
+                "replica": 1,
+                "utility_delta": -0.861328125
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": -0.0947265625,
+            "differences": [
+              {
+                "seed": 7790100,
+                "replica": 0,
+                "utility_delta": 0.068359375
+              },
+              {
+                "seed": 7790101,
+                "replica": 1,
+                "utility_delta": -0.2578125
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.0830078125,
+            "differences": [
+              {
+                "seed": 7790200,
+                "replica": 0,
+                "utility_delta": -0.107421875
+              },
+              {
+                "seed": 7790201,
+                "replica": 1,
+                "utility_delta": 0.2734375
+              }
+            ]
+          }
+        ],
+        "lifecycle_mean_deltas": [
+          -0.1123046875,
+          -0.0947265625,
+          0.0830078125
+        ],
+        "mean_delta": -0.041341145833333336,
+        "positive_lifecycles": 1,
+        "negative_lifecycles": 2,
+        "tied_lifecycles": 0,
+        "all_lifecycles_positive": false
+      },
+      "risk_goal": {
+        "complete": true,
+        "lifecycles": [
+          {
+            "id": 0,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": -0.2314453125,
+            "differences": [
+              {
+                "seed": 7790000,
+                "replica": 0,
+                "utility_delta": 0.349609375
+              },
+              {
+                "seed": 7790001,
+                "replica": 1,
+                "utility_delta": -0.8125
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.2998046875,
+            "differences": [
+              {
+                "seed": 7790100,
+                "replica": 0,
+                "utility_delta": 0.3671875
+              },
+              {
+                "seed": 7790101,
+                "replica": 1,
+                "utility_delta": 0.232421875
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "complete": true,
+            "pairs": 2,
+            "mean_delta": 0.310546875,
+            "differences": [
+              {
+                "seed": 7790200,
+                "replica": 0,
+                "utility_delta": 0.208984375
+              },
+              {
+                "seed": 7790201,
+                "replica": 1,
+                "utility_delta": 0.412109375
+              }
+            ]
+          }
+        ],
+        "lifecycle_mean_deltas": [
+          -0.2314453125,
+          0.2998046875,
+          0.310546875
+        ],
+        "mean_delta": 0.12630208333333334,
+        "positive_lifecycles": 2,
+        "negative_lifecycles": 1,
+        "tied_lifecycles": 0,
+        "all_lifecycles_positive": false
+      }
+    }
+  },
+  "structure_updates": {
+    "proposals": 18,
+    "accepted": 6,
+    "rejected": 12,
+    "accepted_structure_changes": 6,
+    "validation_row_weighted_mse": {
+      "old": {
+        "incumbent": {
+          "rows": 3900,
+          "mean_mse": 0.029310943083370546
+        },
+        "candidate": {
+          "rows": 3900,
+          "mean_mse": 0.03157277336592646
+        }
+      },
+      "new": {
+        "incumbent": {
+          "rows": 4350,
+          "mean_mse": 0.033961631410448626
+        },
+        "candidate": {
+          "rows": 4350,
+          "mean_mse": 0.03537671266641284
+        }
+      }
+    },
+    "events": [
+      {
+        "id": 0,
+        "episodes": 39,
+        "policy": "GREEDY",
+        "leaves_updated": 19,
+        "leaf_values_changed": 19,
+        "training_rows": 1382,
+        "structure_changed": true,
+        "old_nodes": 37,
+        "new_nodes": 73,
+        "old_leaves": 19,
+        "new_leaves": 37,
+        "split_nodes_changed": 52,
+        "validation_rows": {
+          "old": 154,
+          "new": 146
+        },
+        "validation_mse": {
+          "old": {
+            "incumbent": 0.026874940918353976,
+            "candidate": 0.024446442227547206
+          },
+          "new": {
+            "incumbent": 0.020492992253305597,
+            "candidate": 0.017436251548526977
+          }
+        },
+        "accepted": true
+      },
+      {
+        "id": 0,
+        "episodes": 39,
+        "policy": "SPACE",
+        "leaves_updated": 21,
+        "leaf_values_changed": 21,
+        "training_rows": 1248,
+        "structure_changed": true,
+        "old_nodes": 41,
+        "new_nodes": 95,
+        "old_leaves": 21,
+        "new_leaves": 48,
+        "split_nodes_changed": 65,
+        "validation_rows": {
+          "old": 164,
+          "new": 260
+        },
+        "validation_mse": {
+          "old": {
+            "incumbent": 0.019085284497426976,
+            "candidate": 0.03495134850355955
+          },
+          "new": {
+            "incumbent": 0.025567755790985684,
+            "candidate": 0.034961682896264085
+          }
+        },
+        "accepted": false
+      },
+      {
+        "id": 0,
+        "episodes": 39,
+        "policy": "SNAKE",
+        "leaves_updated": 19,
+        "leaf_values_changed": 18,
+        "training_rows": 1182,
+        "structure_changed": true,
+        "old_nodes": 37,
+        "new_nodes": 77,
+        "old_leaves": 19,
+        "new_leaves": 39,
+        "split_nodes_changed": 56,
+        "validation_rows": {
+          "old": 122,
+          "new": 70
+        },
+        "validation_mse": {
+          "old": {
+            "incumbent": 0.022842937553414683,
+            "candidate": 0.023101457941458948
+          },
+          "new": {
+            "incumbent": 0.042161779050786004,
+            "candidate": 0.03009876142991129
+          }
+        },
+        "accepted": true
+      },
+      {
+        "id": 0,
+        "episodes": 75,
+        "policy": "GREEDY",
+        "leaves_updated": 37,
+        "leaf_values_changed": 37,
+        "training_rows": 2662,
+        "structure_changed": true,
+        "old_nodes": 73,
+        "new_nodes": 125,
+        "old_leaves": 37,
+        "new_leaves": 63,
+        "split_nodes_changed": 96,
+        "validation_rows": {
+          "old": 300,
+          "new": 232
+        },
+        "validation_mse": {
+          "old": {
+            "incumbent": 0.019929425605304255,
+            "candidate": 0.012884646564031904
+          },
+          "new": {
+            "incumbent": 0.040558204818375986,
+            "candidate": 0.03888696059717951
+          }
+        },
+        "accepted": true
+      },
+      {
+        "id": 0,
+        "episodes": 75,
+        "policy": "SPACE",
+        "leaves_updated": 21,
+        "leaf_values_changed": 21,
+        "training_rows": 2748,
+        "structure_changed": true,
+        "old_nodes": 41,
+        "new_nodes": 173,
+        "old_leaves": 21,
+        "new_leaves": 87,
+        "split_nodes_changed": 106,
+        "validation_rows": {
+          "old": 424,
+          "new": 206
+        },
+        "validation_mse": {
+          "old": {
+            "incumbent": 0.023789859585696415,
+            "candidate": 0.022080136387786907
+          },
+          "new": {
+            "incumbent": 0.04623806518457185,
+            "candidate": 0.03351566443251435
+          }
+        },
+        "accepted": true
+      },
+      {
+        "id": 0,
+        "episodes": 75,
+        "policy": "SNAKE",
+        "leaves_updated": 39,
+        "leaf_values_changed": 38,
+        "training_rows": 2094,
+        "structure_changed": true,
+        "old_nodes": 77,
+        "new_nodes": 123,
+        "old_leaves": 39,
+        "new_leaves": 62,
+        "split_nodes_changed": 97,
+        "validation_rows": {
+          "old": 192,
+          "new": 260
+        },
+        "validation_mse": {
+          "old": {
+            "incumbent": 0.022440633157565726,
+            "candidate": 0.02872496140309644
+          },
+          "new": {
+            "incumbent": 0.05242477937497282,
+            "candidate": 0.049252806674830944
+          }
+        },
+        "accepted": false
+      },
+      {
+        "id": 1,
+        "episodes": 39,
+        "policy": "GREEDY",
+        "leaves_updated": 18,
+        "leaf_values_changed": 18,
+        "training_rows": 1430,
+        "structure_changed": true,
+        "old_nodes": 35,
+        "new_nodes": 83,
+        "old_leaves": 18,
+        "new_leaves": 42,
+        "split_nodes_changed": 58,
+        "validation_rows": {
+          "old": 148,
+          "new": 124
+        },
+        "validation_mse": {
+          "old": {
+            "incumbent": 0.03144728740467226,
+            "candidate": 0.04032187603841262
+          },
+          "new": {
+            "incumbent": 0.03274765284635133,
+            "candidate": 0.032345732422465134
+          }
+        },
+        "accepted": false
+      },
+      {
+        "id": 1,
+        "episodes": 39,
+        "policy": "SPACE",
+        "leaves_updated": 29,
+        "leaf_values_changed": 24,
+        "training_rows": 1448,
+        "structure_changed": true,
+        "old_nodes": 57,
+        "new_nodes": 79,
+        "old_leaves": 29,
+        "new_leaves": 40,
+        "split_nodes_changed": 65,
+        "validation_rows": {
+          "old": 84,
+          "new": 212
+        },
+        "validation_mse": {
+          "old": {
+            "incumbent": 0.0555752941018392,
+            "candidate": 0.06433396463031806
+          },
+          "new": {
+            "incumbent": 0.03863825561665648,
+            "candidate": 0.04048988600886583
+          }
+        },
+        "accepted": false
+      },
+      {
+        "id": 1,
+        "episodes": 39,
+        "policy": "SNAKE",
+        "leaves_updated": 15,
+        "leaf_values_changed": 15,
+        "training_rows": 1212,
+        "structure_changed": true,
+        "old_nodes": 29,
+        "new_nodes": 57,
+        "old_leaves": 15,
+        "new_leaves": 29,
+        "split_nodes_changed": 42,
+        "validation_rows": {
+          "old": 70,
+          "new": 128
+        },
+        "validation_mse": {
+          "old": {
+            "incumbent": 0.06800213984444477,
+            "candidate": 0.061596781570784735
+          },
+          "new": {
+            "incumbent": 0.03701939240629585,
+            "candidate": 0.048359426845440624
+          }
+        },
+        "accepted": false
+      },
+      {
+        "id": 1,
+        "episodes": 75,
+        "policy": "GREEDY",
+        "leaves_updated": 18,
+        "leaf_values_changed": 18,
+        "training_rows": 2662,
+        "structure_changed": true,
+        "old_nodes": 35,
+        "new_nodes": 123,
+        "old_leaves": 18,
+        "new_leaves": 62,
+        "split_nodes_changed": 76,
+        "validation_rows": {
+          "old": 272,
+          "new": 406
+        },
+        "validation_mse": {
+          "old": {
+            "incumbent": 0.029621205617586018,
+            "candidate": 0.03736601236540928
+          },
+          "new": {
+            "incumbent": 0.037335885199668406,
+            "candidate": 0.03568283616315414
+          }
+        },
+        "accepted": false
+      },
+      {
+        "id": 1,
+        "episodes": 75,
+        "policy": "SPACE",
+        "leaves_updated": 29,
+        "leaf_values_changed": 29,
+        "training_rows": 2796,
+        "structure_changed": true,
+        "old_nodes": 57,
+        "new_nodes": 179,
+        "old_leaves": 29,
+        "new_leaves": 90,
+        "split_nodes_changed": 117,
+        "validation_rows": {
+          "old": 296,
+          "new": 234
+        },
+        "validation_mse": {
+          "old": {
+            "incumbent": 0.040766226038864636,
+            "candidate": 0.044610922096073376
+          },
+          "new": {
+            "incumbent": 0.04159816961175335,
+            "candidate": 0.056314020728332005
+          }
+        },
+        "accepted": false
+      },
+      {
+        "id": 1,
+        "episodes": 75,
+        "policy": "SNAKE",
+        "leaves_updated": 15,
+        "leaf_values_changed": 15,
+        "training_rows": 2406,
+        "structure_changed": true,
+        "old_nodes": 29,
+        "new_nodes": 103,
+        "old_leaves": 15,
+        "new_leaves": 52,
+        "split_nodes_changed": 65,
+        "validation_rows": {
+          "old": 198,
+          "new": 270
+        },
+        "validation_mse": {
+          "old": {
+            "incumbent": 0.04820415307357614,
+            "candidate": 0.04326724385701036
+          },
+          "new": {
+            "incumbent": 0.042518843427079685,
+            "candidate": 0.03857809115906082
+          }
+        },
+        "accepted": true
+      },
+      {
+        "id": 2,
+        "episodes": 39,
+        "policy": "GREEDY",
+        "leaves_updated": 24,
+        "leaf_values_changed": 21,
+        "training_rows": 1518,
+        "structure_changed": true,
+        "old_nodes": 47,
+        "new_nodes": 85,
+        "old_leaves": 24,
+        "new_leaves": 43,
+        "split_nodes_changed": 63,
+        "validation_rows": {
+          "old": 184,
+          "new": 204
+        },
+        "validation_mse": {
+          "old": {
+            "incumbent": 0.02420219954093658,
+            "candidate": 0.043089948449053415
+          },
+          "new": {
+            "incumbent": 0.014529451380042625,
+            "candidate": 0.011824428747013609
+          }
+        },
+        "accepted": false
+      },
+      {
+        "id": 2,
+        "episodes": 39,
+        "policy": "SPACE",
+        "leaves_updated": 26,
+        "leaf_values_changed": 26,
+        "training_rows": 1442,
+        "structure_changed": true,
+        "old_nodes": 51,
+        "new_nodes": 89,
+        "old_leaves": 26,
+        "new_leaves": 45,
+        "split_nodes_changed": 69,
+        "validation_rows": {
+          "old": 108,
+          "new": 396
+        },
+        "validation_mse": {
+          "old": {
+            "incumbent": 0.01770785781883174,
+            "candidate": 0.02380606646244979
+          },
+          "new": {
+            "incumbent": 0.025514216057146103,
+            "candidate": 0.025180993538720414
+          }
+        },
+        "accepted": false
+      },
+      {
+        "id": 2,
+        "episodes": 39,
+        "policy": "SNAKE",
+        "leaves_updated": 17,
+        "leaf_values_changed": 16,
+        "training_rows": 1440,
+        "structure_changed": true,
+        "old_nodes": 33,
+        "new_nodes": 65,
+        "old_leaves": 17,
+        "new_leaves": 33,
+        "split_nodes_changed": 48,
+        "validation_rows": {
+          "old": 102,
+          "new": 88
+        },
+        "validation_mse": {
+          "old": {
+            "incumbent": 0.037674713608863854,
+            "candidate": 0.029848227519955212
+          },
+          "new": {
+            "incumbent": 0.05960629456833766,
+            "candidate": 0.06094962564085785
+          }
+        },
+        "accepted": false
+      },
+      {
+        "id": 2,
+        "episodes": 75,
+        "policy": "GREEDY",
+        "leaves_updated": 24,
+        "leaf_values_changed": 24,
+        "training_rows": 2772,
+        "structure_changed": true,
+        "old_nodes": 47,
+        "new_nodes": 161,
+        "old_leaves": 24,
+        "new_leaves": 81,
+        "split_nodes_changed": 103,
+        "validation_rows": {
+          "old": 388,
+          "new": 402
+        },
+        "validation_mse": {
+          "old": {
+            "incumbent": 0.02531310038492258,
+            "candidate": 0.03685780624180466
+          },
+          "new": {
+            "incumbent": 0.024376451670935377,
+            "candidate": 0.033258031743862326
+          }
+        },
+        "accepted": false
+      },
+      {
+        "id": 2,
+        "episodes": 75,
+        "policy": "SPACE",
+        "leaves_updated": 26,
+        "leaf_values_changed": 26,
+        "training_rows": 2732,
+        "structure_changed": true,
+        "old_nodes": 51,
+        "new_nodes": 135,
+        "old_leaves": 26,
+        "new_leaves": 68,
+        "split_nodes_changed": 92,
+        "validation_rows": {
+          "old": 504,
+          "new": 304
+        },
+        "validation_mse": {
+          "old": {
+            "incumbent": 0.022451877325197916,
+            "candidate": 0.022926179568223334
+          },
+          "new": {
+            "incumbent": 0.023656922534816032,
+            "candidate": 0.04339838592316539
+          }
+        },
+        "accepted": false
+      },
+      {
+        "id": 2,
+        "episodes": 75,
+        "policy": "SNAKE",
+        "leaves_updated": 17,
+        "leaf_values_changed": 16,
+        "training_rows": 2386,
+        "structure_changed": true,
+        "old_nodes": 33,
+        "new_nodes": 123,
+        "old_leaves": 17,
+        "new_leaves": 62,
+        "split_nodes_changed": 77,
+        "validation_rows": {
+          "old": 190,
+          "new": 408
+        },
+        "validation_mse": {
+          "old": {
+            "incumbent": 0.046243225944801736,
+            "candidate": 0.0266188653141528
+          },
+          "new": {
+            "incumbent": 0.03409370436812617,
+            "candidate": 0.02509444307033336
+          }
+        },
+        "accepted": true
+      }
+    ],
+    "scope": "Validation rows can reappear in the old prefix at later updates; these are loss evaluations, not independent samples."
+  },
+  "actual_executed_work": {
+    "source_once_counts": {
+      "environment_random_draws": 113868,
+      "initial_spawns": 450,
+      "ground_state_status_calls": 56709,
+      "ground_status_internal_swipe_calls": 226836,
+      "ground_swipe_calls": 283320,
+      "ground_explicit_swipe_calls": 56484,
+      "sampled_transitions": 56484
+    },
+    "source_lifecycles": [
+      {
+        "id": 0,
+        "episodes": 75,
+        "records": 9118,
+        "work": {
+          "environment_random_draws": 36110,
+          "initial_spawns": 150,
+          "ground_state_status_calls": 17980,
+          "ground_status_internal_swipe_calls": 71920,
+          "ground_swipe_calls": 89825,
+          "ground_explicit_swipe_calls": 17905,
+          "sampled_transitions": 17905
+        },
+        "policy_work": {
+          "learned_terminal_checks": 17905,
+          "learned_swipe_calls": 71620,
+          "learned_line_rewrites": 286480,
+          "legal_swipes": 62732
+        },
+        "seconds": 2.5007001889753155,
+        "warmup_seconds": 0.48463122599059716,
+        "outcomes": {
+          "LOST": 75
+        },
+        "by_policy": {
+          "GREEDY": {
+            "episodes": 25,
+            "transitions": 6276,
+            "records": 3194,
+            "won": 0,
+            "lost": 25,
+            "cutoff": 0
+          },
+          "SPACE": {
+            "episodes": 25,
+            "transitions": 6647,
+            "records": 3378,
+            "won": 0,
+            "lost": 25,
+            "cutoff": 0
+          },
+          "SNAKE": {
+            "episodes": 25,
+            "transitions": 4982,
+            "records": 2546,
+            "won": 0,
+            "lost": 25,
+            "cutoff": 0
+          }
+        },
+        "exact_teacher_calls": 0
+      },
+      {
+        "id": 1,
+        "episodes": 75,
+        "records": 9540,
+        "work": {
+          "environment_random_draws": 37800,
+          "initial_spawns": 150,
+          "ground_state_status_calls": 18825,
+          "ground_status_internal_swipe_calls": 75300,
+          "ground_swipe_calls": 94050,
+          "ground_explicit_swipe_calls": 18750,
+          "sampled_transitions": 18750
+        },
+        "policy_work": {
+          "learned_terminal_checks": 18750,
+          "learned_swipe_calls": 75000,
+          "learned_line_rewrites": 300000,
+          "legal_swipes": 65740
+        },
+        "seconds": 2.6906115239835344,
+        "warmup_seconds": 0.4283284159610048,
+        "outcomes": {
+          "LOST": 75
+        },
+        "by_policy": {
+          "GREEDY": {
+            "episodes": 25,
+            "transitions": 6563,
+            "records": 3340,
+            "won": 0,
+            "lost": 25,
+            "cutoff": 0
+          },
+          "SPACE": {
+            "episodes": 25,
+            "transitions": 6548,
+            "records": 3326,
+            "won": 0,
+            "lost": 25,
+            "cutoff": 0
+          },
+          "SNAKE": {
+            "episodes": 25,
+            "transitions": 5639,
+            "records": 2874,
+            "won": 0,
+            "lost": 25,
+            "cutoff": 0
+          }
+        },
+        "exact_teacher_calls": 0
+      },
+      {
+        "id": 2,
+        "episodes": 75,
+        "records": 10086,
+        "work": {
+          "environment_random_draws": 39958,
+          "initial_spawns": 150,
+          "ground_state_status_calls": 19904,
+          "ground_status_internal_swipe_calls": 79616,
+          "ground_swipe_calls": 99445,
+          "ground_explicit_swipe_calls": 19829,
+          "sampled_transitions": 19829
+        },
+        "policy_work": {
+          "learned_terminal_checks": 19829,
+          "learned_swipe_calls": 79316,
+          "learned_line_rewrites": 317264,
+          "legal_swipes": 69262
+        },
+        "seconds": 2.7867875689989887,
+        "warmup_seconds": 0.584051156998612,
+        "outcomes": {
+          "LOST": 75
+        },
+        "by_policy": {
+          "GREEDY": {
+            "episodes": 25,
+            "transitions": 7010,
+            "records": 3562,
+            "won": 0,
+            "lost": 25,
+            "cutoff": 0
+          },
+          "SPACE": {
+            "episodes": 25,
+            "transitions": 6969,
+            "records": 3540,
+            "won": 0,
+            "lost": 25,
+            "cutoff": 0
+          },
+          "SNAKE": {
+            "episodes": 25,
+            "transitions": 5850,
+            "records": 2984,
+            "won": 0,
+            "lost": 25,
+            "cutoff": 0
+          }
+        },
+        "exact_teacher_calls": 0
+      }
+    ],
+    "source_records": 28744,
+    "common_initialization_once_counts": {
+      "metadata_rows_read": 5422,
+      "training_rows_read": 4286,
+      "feature_rows": 4286,
+      "tree_fits": 9,
+      "fit_rows": 4286
+    },
+    "knowledge_update_counts": {
+      "FROZEN": {
+        "metadata_rows_read": 43810
+      },
+      "FIXED": {
+        "metadata_rows_read": 43810,
+        "training_rows_read": 35560,
+        "feature_rows": 35560,
+        "tree_apply_rows": 35560,
+        "tree_split_visits": 205472,
+        "leaf_stat_rows": 35560,
+        "leaf_stats_updated": 376,
+        "leaf_values_changed": 364
+      },
+      "REVISED": {
+        "metadata_rows_read": 43810,
+        "training_rows_read": 35560,
+        "feature_rows": 43810,
+        "tree_apply_rows": 52060,
+        "tree_split_visits": 316896,
+        "leaf_stat_rows": 35560,
+        "leaf_stats_updated": 414,
+        "leaf_values_changed": 402,
+        "tree_fits": 18,
+        "fit_rows": 35560,
+        "validation_rows_read": 8250,
+        "proposals_accepted": 6,
+        "accepted_structure_changes": 6,
+        "accepted_split_nodes_changed": 452,
+        "proposals_rejected": 12
+      }
+    },
+    "evaluation": {
+      "H2_ONLY": {
+        "environment": {
+          "environment_random_draws": 37878,
+          "initial_spawns": 72,
+          "ground_state_status_calls": 18903,
+          "ground_status_internal_swipe_calls": 75612,
+          "ground_swipe_calls": 94479,
+          "ground_explicit_swipe_calls": 18867,
+          "sampled_transitions": 18867
+        },
+        "planning": {
+          "learned_terminal_checks": 18867,
+          "learned_swipe_calls": 75468,
+          "learned_line_rewrites": 301872,
+          "legal_swipes": 526245,
+          "model_uniform_draws": 75468,
+          "model_spawn_samples": 132702,
+          "h2_cutoff_contracts": 132702,
+          "h2_contract_compiled_programs": 18867,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 132702,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 95658,
+          "h2_contract_effect_key_constructions": 459894,
+          "h2_contract_effect_cache_lookups": 459894,
+          "h2_contract_effect_cache_hits": 94905,
+          "h2_contract_effect_cache_entries": 364989,
+          "h2_contract_effect_score_aggregations": 364989,
+          "h2_contract_effect_output_line_references": 1839576,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 459894,
+          "h2_contract_direct_observation_evaluations": 132702,
+          "h2_contract_prepare_calls": 132702,
+          "h2_contract_line_lookups": 2123232,
+          "h2_contract_line_evaluations": 1050591,
+          "h2_contract_line_summary_adjacent_tests": 3110358,
+          "h2_contract_line_cache_hits": 1072641,
+          "h2_contract_context_contract_evaluations": 132702,
+          "h2_contract_predicate_calls": 132702,
+          "h2_contract_candidate_action_changed_tests": 530808,
+          "h2_contract_candidate_action_predicate_evaluations": 364989,
+          "h2_contract_terminal_predicate_evaluations": 364989,
+          "h2_contract_terminal_spawn_rank_classifications": 729978,
+          "h2_contract_predicate_materializations": 132702,
+          "h2_contract_contract_cache_lookups": 132702,
+          "h2_contract_contract_fraction_accumulations": 652002,
+          "h2_contract_terminal_probability_combinations": 652002,
+          "h2_contract_contract_cache_hits": 37044,
+          "h2_contract_base_adjacent_tests": 79674,
+          "h2_contract_cross_line_adjacent_tests": 48096,
+          "h2_contract_hole_neighbor_rank_reads": 6066,
+          "h2_contract_base_hole_neighbor_reads": 2652
+        },
+        "prediction": {}
+      },
+      "FROZEN_PLAN": {
+        "environment": {
+          "environment_random_draws": 24594,
+          "initial_spawns": 72,
+          "ground_state_status_calls": 12261,
+          "ground_status_internal_swipe_calls": 49044,
+          "ground_swipe_calls": 61269,
+          "ground_explicit_swipe_calls": 12225,
+          "sampled_transitions": 12225
+        },
+        "planning": {
+          "learned_terminal_checks": 96741,
+          "learned_swipe_calls": 386964,
+          "learned_line_rewrites": 1547856,
+          "legal_swipes": 329652,
+          "model_uniform_draws": 48900,
+          "model_spawn_samples": 84516,
+          "knowledge_batch_calls": 12198,
+          "predicted_afterstates": 287394,
+          "policy_vectors": 862182
+        },
+        "prediction": {
+          "prediction_boards": 287394,
+          "feature_rows": 287394,
+          "policy_prediction_rows": 862182,
+          "tree_apply_rows": 862182,
+          "tree_split_visits": 3698148
+        }
+      },
+      "FIXED_PLAN": {
+        "environment": {
+          "environment_random_draws": 25668,
+          "initial_spawns": 72,
+          "ground_state_status_calls": 12798,
+          "ground_status_internal_swipe_calls": 51192,
+          "ground_swipe_calls": 63954,
+          "ground_explicit_swipe_calls": 12762,
+          "sampled_transitions": 12762
+        },
+        "planning": {
+          "learned_terminal_checks": 102136,
+          "learned_swipe_calls": 408544,
+          "learned_line_rewrites": 1634176,
+          "legal_swipes": 352736,
+          "model_uniform_draws": 51048,
+          "model_spawn_samples": 89374,
+          "knowledge_batch_calls": 12739,
+          "predicted_afterstates": 308049,
+          "policy_vectors": 924147
+        },
+        "prediction": {
+          "prediction_boards": 308049,
+          "feature_rows": 308049,
+          "policy_prediction_rows": 924147,
+          "tree_apply_rows": 924147,
+          "tree_split_visits": 4116869
+        }
+      },
+      "REVISED_PLAN": {
+        "environment": {
+          "environment_random_draws": 23040,
+          "initial_spawns": 72,
+          "ground_state_status_calls": 11484,
+          "ground_status_internal_swipe_calls": 45936,
+          "ground_swipe_calls": 57384,
+          "ground_explicit_swipe_calls": 11448,
+          "sampled_transitions": 11448
+        },
+        "planning": {
+          "learned_terminal_checks": 91428,
+          "learned_swipe_calls": 365712,
+          "learned_line_rewrites": 1462848,
+          "legal_swipes": 315257,
+          "model_uniform_draws": 45792,
+          "model_spawn_samples": 79980,
+          "knowledge_batch_calls": 11428,
+          "predicted_afterstates": 275267,
+          "policy_vectors": 825801
+        },
+        "prediction": {
+          "prediction_boards": 275267,
+          "feature_rows": 275267,
+          "policy_prediction_rows": 825801,
+          "tree_apply_rows": 825801,
+          "tree_split_visits": 3971408
+        }
+      },
+      "REVISED_DIRECT": {
+        "environment": {
+          "environment_random_draws": 9984,
+          "initial_spawns": 72,
+          "ground_state_status_calls": 4956,
+          "ground_status_internal_swipe_calls": 19824,
+          "ground_swipe_calls": 24744,
+          "ground_explicit_swipe_calls": 4920,
+          "sampled_transitions": 4920
+        },
+        "planning": {
+          "learned_terminal_checks": 4920,
+          "learned_swipe_calls": 19680,
+          "learned_line_rewrites": 78720,
+          "legal_swipes": 17193,
+          "model_uniform_draws": 19680,
+          "knowledge_batch_calls": 4920,
+          "predicted_afterstates": 17193,
+          "policy_vectors": 51579
+        },
+        "prediction": {
+          "prediction_boards": 17193,
+          "feature_rows": 17193,
+          "policy_prediction_rows": 51579,
+          "tree_apply_rows": 51579,
+          "tree_split_visits": 263606
+        }
+      }
+    },
+    "actual_wall_seconds": 62.59055761701893,
+    "source_sampled_transitions": 56484,
+    "evaluation_sampled_transitions": 60222,
+    "imagined_model_spawn_samples": 386572,
+    "tree_fits": 27
+  },
+  "signals": {
+    "quality_gain_over_fixed_all_lifecycles_by_query": {
+      "reward": false,
+      "risk_goal": true
+    },
+    "source_streams_complete": true,
+    "all_games_terminal": true,
+    "observed_evidence_for_further_partition_revision": true
+  },
+  "evidence_scope": "Paired utility changes are summarized within each independent source lifecycle first. Evaluation replicas and repeated checkpoints are not independent learning runs; no confidence interval is inferred.",
+  "cost_scope": "Method costs are cumulative at each checkpoint. Shared source and initialization work is attributed to each method that needs it; attributed method costs must not be summed as actual executed cost. Actual source counts use only each final prefix, initialization is counted once, and all newly executed evaluation games are counted.",
+  "learning_scope": "First-to-last changes reuse the same evaluation seeds and establish no extrapolation beyond these checkpoints. Accepted proposals revise partitions of fixed features and policies, not the learning algorithm or mechanisms."
+}

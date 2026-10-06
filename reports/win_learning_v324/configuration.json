@@ -1,0 +1,92 @@
+{
+  "schema": "acfqp.win_learning_freeze.v324",
+  "source_summary": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/fresh_source_v312/source_summary.json",
+  "protocol": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/specs/WIN_LEARNING_V324.md",
+  "lifecycles": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "parents": 4,
+  "workers": 4,
+  "tasks": [
+    "A",
+    "B"
+  ],
+  "arms": [
+    "SOURCE",
+    "FIRST_LOCAL",
+    "FACTUAL_WIN",
+    "QUERY_WIN"
+  ],
+  "updating_arms": [
+    "FACTUAL_WIN",
+    "QUERY_WIN"
+  ],
+  "rounds": [
+    1,
+    2
+  ],
+  "initial_raw_per_task": 131072,
+  "round_raw_per_collector": 65536,
+  "fit_fraction": 0.8,
+  "alpha": 0.0025,
+  "groups_per_arm_task_round": 16384,
+  "replicas_per_group": 4,
+  "census_anchors_per_task_round": 32768,
+  "true_probabilities": {
+    "A": 0.1,
+    "B": 0.5
+  },
+  "query": {
+    "reward_weight": 1.0,
+    "failure_penalty": 4.0,
+    "goal_bonus": 4.0
+  },
+  "initial_contexts": "V309_CONFIRMED_NEW_BANKS_DISTINCT_PRECONDITION",
+  "teacher": "IMMUTABLE_NEW_FIRST_LOCAL_V0_ALL_ROUNDS_AND_BOTH_ARMS",
+  "planning_probability": "IMMUTABLE_ACTUAL_BANK_FIRST_FIT_BELIEF",
+  "collector": "FROZEN_NEW_FIRST_LOCAL_V0_SHARED_PHYSICALLY_CHARGED_PER_ARM",
+  "reward": "ACTUAL_FIRST_REWARD_FROZEN_WITH_ZERO_WRITES_BOTH_ROUNDS",
+  "query_root": "ONE_UNIFORM_POOL_INDEX_DRAW_PER_ANCHOR_ACTUAL_H2_CALL_MULTIPLICITY",
+  "valid_selection": "EQUIDISTANT_VALID_CENSUS_POSITIONS_SHARED_BETWEEN_ARMS",
+  "reset_access": "ARBITRARY_AFTERSTATE_GENERATIVE_ACCESS_FOR_BOTH_ARMS",
+  "target": "GROUND_POSTSPAWN_SINGLE_COMBINED_FIRST_DIRECT_BRANCH_WIN_COMPONENT_ONLY",
+  "update": "V319_IDENTICAL_WIN_TRAJECTORY_GROUP_CURRENT_PREDICTION_MEAN_REPLICAS",
+  "max_steps": 8192,
+  "evaluation_games_per_cell": 64,
+  "seed_initial_warmup": 324100000000,
+  "seed_initial_training": 324200000000,
+  "seed_collection": 324500000000,
+  "seed_selector": 324300000000,
+  "seed_ground": 324600000000,
+  "collection_life_stride": 10000000,
+  "collection_task_stride": 1000000,
+  "collection_round_stride": 100000,
+  "seed_evaluation": 324900000000,
+  "bootstrap_seed": 32400001,
+  "bootstrap_draws": 20000,
+  "primary": "QUERY_WIN_minus_FIRST_LOCAL_FINAL_AB",
+  "query_distribution_contribution": "QUERY_WIN_minus_FACTUAL_WIN_FINAL_AB",
+  "retention": "FINAL_QUERY_MINUS_OWN_FIRST_PER_TASK_CI_LOWER_NONNEGATIVE",
+  "expected_initial_training_raw_tiles": 4194304,
+  "expected_post_raw_physical": 4194304,
+  "expected_supervision_raw_tiles": 8388608,
+  "expected_new_evaluation_games": 12288,
+  "evidence_scope": "NEW_TARGET_LEARNING_HISTORIES_UNDER_FOUR_FIXED_V312_SOURCE_PARENTS_GENERATIVE_ACCESS",
+  "candidate_selection": "V322_WIN_COMPONENT_DEVELOPMENT_AND_V323_NEW_EXECUTION_GAIN_B_RETENTION_UNRESOLVED",
+  "stop_rule": "WHOLE_COHORT_HOLD_ON_BANK_CENSUS_OR_CUTOFF_NO_REPLACEMENTS_OR_TUNING"
+}

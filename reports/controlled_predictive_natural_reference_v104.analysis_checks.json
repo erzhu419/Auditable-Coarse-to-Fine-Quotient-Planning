@@ -1,0 +1,14 @@
+{
+  "schema": "acfqp.natural_reference_analysis_checks.v104",
+  "status": "passed",
+  "test_file": "tests/test_analyze_controlled_predictive_natural_reference_v104.py",
+  "tests": 6,
+  "attempts": 1,
+  "seconds": 0.53,
+  "counts": {
+    "new_environment_transitions": 0,
+    "new_model_prefix_transitions": 0,
+    "new_model_fits": 0
+  },
+  "scope": "Synthetic dictionaries only: full-cohort quarter/three-quarter weights, inherited versus new costs, preserved reference planning work, A/B suffix independence, frozen decisions, and incomplete-reference handling. No fit, candidate scoring, or sampling."
+}

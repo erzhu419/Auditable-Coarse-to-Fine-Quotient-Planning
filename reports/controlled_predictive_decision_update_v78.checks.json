@@ -1,0 +1,22 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_decision_update_v78.py",
+      "session_failures": 0,
+      "scope": "Synthetic low/high afterstates and paired utility rows only.",
+      "ground_calls": 0,
+      "main_campaign_calls": 0,
+      "metadata_rows_read": 4320,
+      "training_rows_read": 1920,
+      "feature_rows": 2304,
+      "tree_fits": 6,
+      "fit_rows": 1152,
+      "tree_apply_rows": 1536,
+      "leaf_stat_rows": 768,
+      "leaf_stats_updated": 3,
+      "leaf_values_changed": 3,
+      "validation_rows_read": 384,
+      "tree_split_visits": 384
+    }
+  ]
+}

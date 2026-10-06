@@ -1,0 +1,15 @@
+{
+  "schema": "acfqp.frozen_head_analysis_checks.v109",
+  "status": "passed",
+  "test_file": "tests/test_analyze_controlled_predictive_frozen_head_v109.py",
+  "tests": 6,
+  "attempts": 1,
+  "seconds": 0.54,
+  "counts": {
+    "new_environment_transitions": 0,
+    "new_model_prefix_transitions": 0,
+    "new_neural_model_fits": 0,
+    "new_neural_candidate_predictions": 0
+  },
+  "scope": "Synthetic retained-data fixtures: common-root six contrasts, exact head-only update metadata and frozen-hidden checks, active-head versus full gradient semantics, new head-parameter work counted once, inherited costs separated, missing decisions and censored references. No production analysis, fitting, model scoring or sampling."
+}

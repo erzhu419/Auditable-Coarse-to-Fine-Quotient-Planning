@@ -1,0 +1,255 @@
+{
+  "valid": true,
+  "complete": true,
+  "checks": [
+    {
+      "name": "fixed_opaque_private_worlds",
+      "passed": true
+    },
+    {
+      "name": "complete_unique_lifecycles",
+      "passed": true
+    },
+    {
+      "name": "four_arm_shared_potential_prefix_seeds",
+      "passed": true
+    },
+    {
+      "name": "source_empty_starts_and_minimum_pilot",
+      "passed": true
+    },
+    {
+      "name": "full_source_pays_unchanged_budget",
+      "passed": true
+    },
+    {
+      "name": "early_source_exact_full_acquisition_and_count_prefixes",
+      "passed": true
+    },
+    {
+      "name": "early_and_oracle_source_acquisition_identical",
+      "passed": true
+    },
+    {
+      "name": "life_0_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_0_choices_stops_and_fallbacks",
+      "passed": true
+    },
+    {
+      "name": "life_0_actual_paired_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_0_candidates_and_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_1_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_1_choices_stops_and_fallbacks",
+      "passed": true
+    },
+    {
+      "name": "life_1_actual_paired_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_1_candidates_and_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_2_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_2_choices_stops_and_fallbacks",
+      "passed": true
+    },
+    {
+      "name": "life_2_actual_paired_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_2_candidates_and_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_3_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_3_choices_stops_and_fallbacks",
+      "passed": true
+    },
+    {
+      "name": "life_3_actual_paired_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_3_candidates_and_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_4_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_4_choices_stops_and_fallbacks",
+      "passed": true
+    },
+    {
+      "name": "life_4_actual_paired_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_4_candidates_and_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_5_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_5_choices_stops_and_fallbacks",
+      "passed": true
+    },
+    {
+      "name": "life_5_actual_paired_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_5_candidates_and_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_6_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_6_choices_stops_and_fallbacks",
+      "passed": true
+    },
+    {
+      "name": "life_6_actual_paired_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_6_candidates_and_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_7_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_7_choices_stops_and_fallbacks",
+      "passed": true
+    },
+    {
+      "name": "life_7_actual_paired_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_7_candidates_and_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_8_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_8_choices_stops_and_fallbacks",
+      "passed": true
+    },
+    {
+      "name": "life_8_actual_paired_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_8_candidates_and_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_9_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_9_choices_stops_and_fallbacks",
+      "passed": true
+    },
+    {
+      "name": "life_9_actual_paired_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_9_candidates_and_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_10_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_10_choices_stops_and_fallbacks",
+      "passed": true
+    },
+    {
+      "name": "life_10_actual_paired_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_10_candidates_and_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_11_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_11_choices_stops_and_fallbacks",
+      "passed": true
+    },
+    {
+      "name": "life_11_actual_paired_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_11_candidates_and_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "true_joint_and_own_query_results",
+      "passed": true
+    },
+    {
+      "name": "paired_statistics_and_frozen_gates",
+      "passed": true
+    },
+    {
+      "name": "paid_source_target_and_environment_costs",
+      "passed": true
+    },
+    {
+      "name": "frozen_bootstrap_costs",
+      "passed": true
+    },
+    {
+      "name": "oracle_scoring_after_all_decisions",
+      "passed": true
+    }
+  ],
+  "costs": {
+    "regenerated_consumed_samples": 213040,
+    "interval_calls": 316470,
+    "optimizer_pure_checks": 77592,
+    "mixture_components": 524979,
+    "optimizer_pair_checks": 116388,
+    "kl_calls": 33593984
+  },
+  "seconds": 34.921791179978754
+}

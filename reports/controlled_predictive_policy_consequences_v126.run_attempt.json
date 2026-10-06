@@ -1,0 +1,11 @@
+{
+  "command": [
+    ".venv-lmta-v42/bin/python",
+    "scripts/run_controlled_predictive_policy_consequences_v126.py"
+  ],
+  "started_utc": "2026-09-19T23:32:55.704410+00:00",
+  "status": "completed",
+  "exit_code": 0,
+  "seconds": 458.15482281601,
+  "stderr_bytes": 0
+}

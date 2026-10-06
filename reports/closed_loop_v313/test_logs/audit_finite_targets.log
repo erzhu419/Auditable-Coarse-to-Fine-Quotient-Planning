@@ -1,0 +1,4 @@
+COMMAND: python3 -m pytest -q tests/test_verify_closed_loop_v313.py -k complete_finite_raw_batch or scalar_only_actor or saved_probe or actual_masked_fit
+.....                                                                    [100%]
+5 passed, 12 deselected in 11.83s
+EXIT_CODE: 0

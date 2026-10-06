@@ -1,0 +1,354 @@
+{
+  "valid": true,
+  "complete": true,
+  "records": 949,
+  "terminal_records": 432,
+  "primary_terminals": 16,
+  "life_arm_jobs": 6,
+  "independently_checked_D_supports": 1898,
+  "all_prefixes": {
+    "snapshots": 949,
+    "old_impossible": 16,
+    "new_impossible": 16,
+    "newly_impossible": 0,
+    "upper_strictly_reduced": 160,
+    "bound_reduction_sum": "1273126824016896688118984460797834182541376095794348627130519101450245603266042028260595172806963228020013385415921883448620408216509024670032604857641/516821329800173546672554620681738803313154407050975033782268067840000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "mean_bound_reduction": "1273126824016896688118984460797834182541376095794348627130519101450245603266042028260595172806963228020013385415921883448620408216509024670032604857641/490463441980364695792254335026970124344183532291375307059372396380160000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "max_bound_reduction": "1051996390264924153532015731977858528430783330888236037639886982066117694156869309651233273/34166133640937500000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "false_old_uppers": 0,
+    "false_new_uppers": 0,
+    "false_impossible_certificates": 0
+  },
+  "terminals": {
+    "snapshots": 432,
+    "old_impossible": 16,
+    "new_impossible": 16,
+    "newly_impossible": 0,
+    "upper_strictly_reduced": 160,
+    "bound_reduction_sum": "1273126824016896688118984460797834182541376095794348627130519101450245603266042028260595172806963228020013385415921883448620408216509024670032604857641/516821329800173546672554620681738803313154407050975033782268067840000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "mean_bound_reduction": "1273126824016896688118984460797834182541376095794348627130519101450245603266042028260595172806963228020013385415921883448620408216509024670032604857641/223266814473674972162543596134511163031282703846021214593939805306880000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "max_bound_reduction": "1051996390264924153532015731977858528430783330888236037639886982066117694156869309651233273/34166133640937500000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "false_old_uppers": 0,
+    "false_new_uppers": 0,
+    "false_impossible_certificates": 0
+  },
+  "primary": {
+    "snapshots": 16,
+    "old_impossible": 0,
+    "new_impossible": 0,
+    "newly_impossible": 0,
+    "upper_strictly_reduced": 0,
+    "bound_reduction_sum": "0",
+    "mean_bound_reduction": "0",
+    "max_bound_reduction": "0",
+    "false_old_uppers": 0,
+    "false_new_uppers": 0,
+    "false_impossible_certificates": 0
+  },
+  "primary_histories": [
+    {
+      "life": 0,
+      "arm": "TRAJECTORY_REUSE",
+      "index": 31,
+      "identity": 2,
+      "terminal_snapshot_id": 49,
+      "terminal_new_impossible": false,
+      "earliest_newly_certified_prefix": null,
+      "retained_terminal_member_samples": 384
+    },
+    {
+      "life": 0,
+      "arm": "TRAJECTORY_REUSE",
+      "index": 32,
+      "identity": 2,
+      "terminal_snapshot_id": 74,
+      "terminal_new_impossible": false,
+      "earliest_newly_certified_prefix": null,
+      "retained_terminal_member_samples": 384
+    },
+    {
+      "life": 0,
+      "arm": "TRAJECTORY_REUSE",
+      "index": 35,
+      "identity": 2,
+      "terminal_snapshot_id": 101,
+      "terminal_new_impossible": false,
+      "earliest_newly_certified_prefix": null,
+      "retained_terminal_member_samples": 384
+    },
+    {
+      "life": 0,
+      "arm": "TRAJECTORY_REUSE",
+      "index": 37,
+      "identity": 2,
+      "terminal_snapshot_id": 127,
+      "terminal_new_impossible": false,
+      "earliest_newly_certified_prefix": null,
+      "retained_terminal_member_samples": 384
+    },
+    {
+      "life": 0,
+      "arm": "TRAJECTORY_REUSE",
+      "index": 41,
+      "identity": 2,
+      "terminal_snapshot_id": 144,
+      "terminal_new_impossible": false,
+      "earliest_newly_certified_prefix": null,
+      "retained_terminal_member_samples": 208
+    },
+    {
+      "life": 0,
+      "arm": "TRAJECTORY_REUSE",
+      "index": 45,
+      "identity": 2,
+      "terminal_snapshot_id": 148,
+      "terminal_new_impossible": false,
+      "earliest_newly_certified_prefix": null,
+      "retained_terminal_member_samples": 0
+    },
+    {
+      "life": 0,
+      "arm": "TRAJECTORY_REUSE",
+      "index": 46,
+      "identity": 2,
+      "terminal_snapshot_id": 150,
+      "terminal_new_impossible": false,
+      "earliest_newly_certified_prefix": null,
+      "retained_terminal_member_samples": 16
+    },
+    {
+      "life": 0,
+      "arm": "TRAJECTORY_REUSE",
+      "index": 48,
+      "identity": 2,
+      "terminal_snapshot_id": 152,
+      "terminal_new_impossible": false,
+      "earliest_newly_certified_prefix": null,
+      "retained_terminal_member_samples": 0
+    },
+    {
+      "life": 1,
+      "arm": "TRAJECTORY_REUSE",
+      "index": 33,
+      "identity": 1,
+      "terminal_snapshot_id": 306,
+      "terminal_new_impossible": false,
+      "earliest_newly_certified_prefix": null,
+      "retained_terminal_member_samples": 384
+    },
+    {
+      "life": 1,
+      "arm": "TRAJECTORY_REUSE",
+      "index": 37,
+      "identity": 1,
+      "terminal_snapshot_id": 334,
+      "terminal_new_impossible": false,
+      "earliest_newly_certified_prefix": null,
+      "retained_terminal_member_samples": 384
+    },
+    {
+      "life": 1,
+      "arm": "TRAJECTORY_REUSE",
+      "index": 40,
+      "identity": 1,
+      "terminal_snapshot_id": 361,
+      "terminal_new_impossible": false,
+      "earliest_newly_certified_prefix": null,
+      "retained_terminal_member_samples": 384
+    },
+    {
+      "life": 1,
+      "arm": "TRAJECTORY_REUSE",
+      "index": 42,
+      "identity": 1,
+      "terminal_snapshot_id": 387,
+      "terminal_new_impossible": false,
+      "earliest_newly_certified_prefix": null,
+      "retained_terminal_member_samples": 384
+    },
+    {
+      "life": 1,
+      "arm": "TRAJECTORY_REUSE",
+      "index": 46,
+      "identity": 1,
+      "terminal_snapshot_id": 415,
+      "terminal_new_impossible": false,
+      "earliest_newly_certified_prefix": null,
+      "retained_terminal_member_samples": 384
+    },
+    {
+      "life": 1,
+      "arm": "TRAJECTORY_REUSE",
+      "index": 47,
+      "identity": 1,
+      "terminal_snapshot_id": 440,
+      "terminal_new_impossible": false,
+      "earliest_newly_certified_prefix": null,
+      "retained_terminal_member_samples": 384
+    },
+    {
+      "life": 1,
+      "arm": "TRAJECTORY_REUSE",
+      "index": 48,
+      "identity": 1,
+      "terminal_snapshot_id": 465,
+      "terminal_new_impossible": false,
+      "earliest_newly_certified_prefix": null,
+      "retained_terminal_member_samples": 384
+    },
+    {
+      "life": 1,
+      "arm": "TRAJECTORY_REUSE",
+      "index": 52,
+      "identity": 1,
+      "terminal_snapshot_id": 493,
+      "terminal_new_impossible": false,
+      "earliest_newly_certified_prefix": null,
+      "retained_terminal_member_samples": 384
+    }
+  ],
+  "retained_fee_ledger": [
+    {
+      "life": 0,
+      "arm": "TRAJECTORY_REUSE",
+      "fees": {
+        "source": 4608,
+        "shared": 7680,
+        "member": 1760,
+        "execution": 59
+      },
+      "total_samples": 14107,
+      "baseline_provenance": {
+        "directory": "trajectory_lifecycle_v256",
+        "worker_artifact_file": "worker_artifacts_life_00_TRAJECTORY_REUSE.json"
+      }
+    },
+    {
+      "life": 0,
+      "arm": "TRAJECTORY_REBUILD",
+      "fees": {
+        "source": 4608,
+        "shared": 9417,
+        "member": 16,
+        "execution": 52
+      },
+      "total_samples": 14093,
+      "baseline_provenance": {
+        "directory": "trajectory_lifecycle_v256",
+        "worker_artifact_file": "worker_artifacts_life_00_TRAJECTORY_REBUILD.json"
+      }
+    },
+    {
+      "life": 1,
+      "arm": "TRAJECTORY_REUSE",
+      "fees": {
+        "source": 4608,
+        "shared": 7936,
+        "member": 3072,
+        "execution": 65
+      },
+      "total_samples": 15681,
+      "baseline_provenance": {
+        "directory": "trajectory_lifecycle_v256",
+        "worker_artifact_file": "worker_artifacts_life_01_TRAJECTORY_REUSE.json"
+      }
+    },
+    {
+      "life": 1,
+      "arm": "TRAJECTORY_REBUILD",
+      "fees": {
+        "source": 4608,
+        "shared": 7936,
+        "member": 3392,
+        "execution": 64
+      },
+      "total_samples": 16000,
+      "baseline_provenance": {
+        "directory": "trajectory_lifecycle_v256",
+        "worker_artifact_file": "worker_artifacts_life_01_TRAJECTORY_REBUILD.json"
+      }
+    },
+    {
+      "life": 2,
+      "arm": "TRAJECTORY_REUSE",
+      "fees": {
+        "source": 4608,
+        "shared": 12440,
+        "member": 0,
+        "execution": 62
+      },
+      "total_samples": 17110,
+      "baseline_provenance": {
+        "directory": "trajectory_lifecycle_v256",
+        "worker_artifact_file": "worker_artifacts_life_02_TRAJECTORY_REUSE.json"
+      }
+    },
+    {
+      "life": 2,
+      "arm": "TRAJECTORY_REBUILD",
+      "fees": {
+        "source": 4608,
+        "shared": 12440,
+        "member": 32,
+        "execution": 54
+      },
+      "total_samples": 17134,
+      "baseline_provenance": {
+        "directory": "trajectory_lifecycle_v256",
+        "worker_artifact_file": "worker_artifacts_life_02_TRAJECTORY_REBUILD.json"
+      }
+    }
+  ],
+  "conditions": {
+    "all_primary_terminal_impossibilities": false,
+    "nonlooser_bounds": true,
+    "valid_upper_bounds": true,
+    "valid_impossibility_certificates": true
+  },
+  "method_condition_met": false,
+  "new_environment_observations": 0,
+  "new_event_allocations": 0,
+  "lifecycle_cost_savings_measured": false,
+  "scientific_gate_changed": false,
+  "u006_started": false,
+  "checks": {
+    "immutable_V256_complete_and_independently_valid": 1,
+    "all949_original_initial_member_snapshots432_unique_terminals_and16_observable_primary": 1,
+    "exact_original_snapshots_native_rows_regions_query_plans_mix_and_prefix_provenance": 1,
+    "exact_terminal_subset_and_full16_primary_histories_selected_without_oracle": 1,
+    "full_original_source_shared_member_execution_fees_unchanged_and_not_new_savings": 1,
+    "same_original_execution_pool_member_confidence_allocation_no_new_events": 1,
+    "frozen_same_evidence_protocol_all_bounds_before_posthoc_truth_barrier": 1,
+    "all_new_implementation_spec_and_focused_tests_captured_before_bounds": 1,
+    "captured_source_exact_bytes_unchanged": 80,
+    "private_life_arm_all_original_snapshots_retained_once_in_chronology": 6,
+    "immutable_original_paid_snapshot_case_prefix_plan_and_provenance": 949,
+    "original_native_source_pool_member_and_compatible_event_labels_no_new_alpha": 2847,
+    "exact_original_four_rectangle_LP_dual_and_smallest_lambda_tie": 949,
+    "same_lambda_complete_vertex_policy_paired_box_and_dominance": 949,
+    "original_settled_binary_CS_upper_and_retry_monotonicity": 949,
+    "both_original_D_region_directions_only_at_fixed_old_lambda": 949,
+    "exact_original_joint_D_support_coefficients": 1898,
+    "outward_D_weak_dual_independent_100_digit_verification": 1898,
+    "exact_four_policy_branches_joint_candidate_and_minimum_three_safe_uppers": 949,
+    "strict_goal_impossibility_threshold_and_original_decision": 949,
+    "actual_per_snapshot_model_CPU_nonnegative": 949,
+    "all_frozen_snapshot_true_safe_optima_upper_validity_and_strict_impossibility_scores": 6,
+    "actual_per_worker_bound_geometry_and_support_work": 6,
+    "diagnostic_only_no_new_physical_observations_or_resets_in_work": 6,
+    "actual_worker_CPU_output_wall_and_retained_private_normalizer_scopes": 6,
+    "private_cold_worker_normalizer_cache_statistics": 12,
+    "independent_all_prefix_terminal_primary_stage_type_history_fee_and_condition_summary": 1,
+    "actual_parent_and_worker_elapsed_cost_nonnegative": 1
+  },
+  "failures": [],
+  "elapsed_seconds": 4.784036619006656,
+  "life_arm_elapsed_seconds": {
+    "0:TRAJECTORY_REUSE": 1.5424580359831452,
+    "0:TRAJECTORY_REBUILD": 0.8297653329791501,
+    "1:TRAJECTORY_REUSE": 1.9735301419859752,
+    "1:TRAJECTORY_REBUILD": 1.925050146994181,
+    "2:TRAJECTORY_REUSE": 0.6469101010006852,
+    "2:TRAJECTORY_REBUILD": 0.6502521610236727
+  }
+}

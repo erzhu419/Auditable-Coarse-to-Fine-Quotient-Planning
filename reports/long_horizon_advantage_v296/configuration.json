@@ -1,0 +1,62 @@
+{
+  "schema": "acfqp.long_horizon_advantage_freeze.v296",
+  "protocol": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/specs/LONG_HORIZON_ADVANTAGE_V296.md",
+  "source_summary": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/conditional_bellman_v294/summary.json",
+  "lifecycles": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "parents": 4,
+  "phases": [
+    [
+      "A",
+      0.1
+    ],
+    [
+      "B",
+      0.5
+    ],
+    [
+      "A_prime",
+      0.1
+    ]
+  ],
+  "candidates": [
+    "SOURCE",
+    "BELLMAN",
+    "DISCOVERY"
+  ],
+  "replicas": 32,
+  "max_steps": 8192,
+  "seed_validation": 296600010000,
+  "bootstrap_seed": 29600001,
+  "bootstrap_draws": 20000,
+  "query": {
+    "reward_weight": 1.0,
+    "failure_penalty": 4.0,
+    "goal_bonus": 4.0
+  },
+  "primary": "DISCOVERY_minus_SOURCE",
+  "selection": "OLD_ALL_LEGAL_TOTAL_UTILITY_MEAN_LEXICAL_TIE",
+  "validation": "FROZEN_THREE_ACTION_UNION_SHARED_REPLICA_SEEDS",
+  "continuation": "READONLY_SOURCE_H2_ANCHOR_OBSERVED_P_GROUND_PHASE_P",
+  "finite_test_passes": {
+    "driver_native": 4,
+    "independent_analysis": 12,
+    "compact_verifier": 8
+  }
+}

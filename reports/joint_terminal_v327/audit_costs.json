@@ -1,0 +1,10 @@
+{
+  "schema": "acfqp.joint_terminal_full_execution_cost.v327",
+  "component_new_experiment_cpu_seconds": 398.34021364100005,
+  "full_execution_process_tree_cpu_seconds": 403.095184,
+  "final_serialization_and_shutdown_cpu_seconds": 4.7549703589999694,
+  "full_economic_source_and_experiment_cpu_seconds": 6128.481582057,
+  "independent_audit_process_tree_cpu_seconds": 20.223806,
+  "independent_audit_monotonic_wall_seconds": 5.251358895999147,
+  "scope": "Full actual SOURCE/V326 inherited once, including its failed intervention; new retained-target reads, restores, two-member fits, predictions, saves and fresh games counted once. Old fitting and physics audit not repeated. Independent audit separate; historical dynamics/failed-attempt CPU unknown."
+}

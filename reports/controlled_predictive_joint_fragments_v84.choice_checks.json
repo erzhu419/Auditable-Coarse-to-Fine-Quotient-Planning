@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "exit_code": 0,
+  "seconds": 0.7515047109918669,
+  "stdout": ".                                                                        [100%]\n1 passed in 0.21s\n",
+  "stderr": "",
+  "new_environment_transitions": 0,
+  "new_tree_fits": 0,
+  "scope": "Synthetic candidate predictions and retained means only"
+}

@@ -1,0 +1,20 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_paired_continuation_value_v92.py",
+      "session_failures": 0,
+      "scope": "Synthetic paired trees and fold models; no environment sampling.",
+      "sampled_transitions": 0,
+      "main_campaign_calls": 0,
+      "paired_metadata_rows_read": 768,
+      "paired_training_rows_read": 320,
+      "board_feature_rows": 640,
+      "paired_feature_rows": 320,
+      "tree_fits": 8,
+      "paired_continuation_tree_fits": 8,
+      "fit_rows": 640,
+      "fit_output_vectors": 640,
+      "mirrored_training_rows": 640
+    }
+  ]
+}

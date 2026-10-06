@@ -1,0 +1,14 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "tests_run": 14,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "deterministic_replay_work": {
+        "swipes": 44
+      },
+      "scope": "Fixed four-level pairing, same-action zeros, missing/censored returns, quantile source selection and deterministic terminal/spawn/accounting replay"
+    }
+  ]
+}

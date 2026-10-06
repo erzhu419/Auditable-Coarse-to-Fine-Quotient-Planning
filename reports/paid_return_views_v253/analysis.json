@@ -1,0 +1,1841 @@
+{
+  "valid": true,
+  "records": 144,
+  "snapshots": 144,
+  "new_plans": 144,
+  "independently_checked_profiles": 444,
+  "independently_checked_global_leaves": 4804,
+  "independently_checked_execution_projections": 32,
+  "checks": {
+    "complete_and_independently_valid_V251_settled_prerequisite": 1,
+    "frozen_144_all_return_endpoints_and_separate_fixed_view_protocol": 1,
+    "no_new_samples_ONE_replans_scoring_policy_or_scientific_gate_change": 1,
+    "captured_frozen_core_protocol_producer_tests_and_independent_audit": 1,
+    "captured_source_bytes_equal_audited_source": 80,
+    "source_record_literal_batch_and_prefix": 864,
+    "all_source_prefixes_reconstructed": 1,
+    "settled_source_seed_labels_without_new_random_draws": 864,
+    "settled_actual_source_banks_reused_without_new_fees_or_draws": 1,
+    "settled_probe_actual_native_row_seed_offset_and_before": 1584,
+    "settled_probe_only_native_pool_and_full_paid_pending_released_fee": 1584,
+    "settled_A_release_keeps_future_B_quota": 6,
+    "all_72_settled_targets_public_case_identity_and_native_chronology": 432,
+    "native_pool_before_own_paid_target": 432,
+    "actual_native_pool_member_and_paid_target_after": 432,
+    "own_time_all_source_ordinary_probe_pending_released_and_member_fees": 432,
+    "settled_target_seed_labels_without_redrawing_outcomes": 432,
+    "original_ONE_counts_and_execution_events_exact_at_own_terminal_time": 432,
+    "own_paid_literal_batch_offsets_and_increments": 2719,
+    "complete_settled_lifecycle_and_final_paid_probe_ledger": 6,
+    "all_return_endpoints_without_selection": 6,
+    "all_144_paired_own_time_native_snapshots_frozen_before_planning": 1,
+    "private_TWOWAY_profile_ids_complete_once": 6,
+    "private_24_plans_in_original_return_order": 6,
+    "canonical_full_paid_sufficient_counts": 340,
+    "original_fixed_comparison_and_event": 340,
+    "global_gap_preserving_zero_count_embedding": 340,
+    "outward_true_projected_mixture_numerator": 340,
+    "outward_fixed_event_threshold": 340,
+    "fixed_partition_covers_entire_retry_simplex": 340,
+    "exact_query_retry_interaction_slope": 340,
+    "partition_probability_domain": 4804,
+    "relaxed_gap_row_roster": 4804,
+    "partition_endpoint": 4804,
+    "exact_endpoint_gap": 28824,
+    "endpoint_relaxes_complete_retry_cell": 28824,
+    "exact_maximum_relaxed_gap": 4804,
+    "supported_likelihood_leaf": 4216,
+    "legal_null_multiplier": 4216,
+    "optimization_row_roster": 4216,
+    "empty_likelihood_row_simplex": 1072,
+    "outward_row_likelihood_upper": 8432,
+    "legal_row_likelihood_dual": 7360,
+    "retry_interval_mle_probability": 4216,
+    "outward_retry_interval_likelihood_upper": 4216,
+    "outward_complete_null_likelihood_upper": 4216,
+    "global_likelihood_upper_covers_every_cell": 340,
+    "outward_projected_global_likelihood_ratio": 340,
+    "strict_global_bad_null_certificate": 340,
+    "exact_empty_relaxed_null": 588,
+    "fixed_convex_direction_region_and_relevant_cost": 104,
+    "single_frozen_convex_suggestion": 104,
+    "exact_full_domain_concave_tangent": 104,
+    "outward_joint_numerator_and_frozen_tangent_multiplier": 104,
+    "strict_global_tangent_exclusion": 104,
+    "original_ONE_plan_profile_namespace_actual_execution_and_fees_unchanged": 144,
+    "actual_new_planning_CPU_and_retention_wall_nonnegative": 144,
+    "inverse_mapping_native_B_unchanged_rows_and_source_not_double_added": 144,
+    "point_counts_paid_once_and_public_case": 144,
+    "actual_execution_constraints_and_envelope_counts": 144,
+    "terminal_binary_projection_without_tolerance": 64,
+    "terminal_marginal_upper_dual": 96,
+    "terminal_marginal_lower_dual": 96,
+    "terminal_projected_detour_box": 32,
+    "point_vectors_and_robust_execution_coordinates": 144,
+    "execution_probability_mixture_and_bounds": 144,
+    "optimistic_goal_and_impossible_decision": 144,
+    "analytic_reward_query_is_wait": 144,
+    "complete_original_query_alternative_roster": 288,
+    "profile_reference_actual_paid_projection_direction_and_cost": 864,
+    "three_alternatives_and": 288,
+    "all_queries_and_and_marker_bounds": 144,
+    "actual_unresolved_acquisition_blockers": 144,
+    "all_new_private_profiles_used_only_by_TWOWAY_and_retained_once": 6,
+    "worker_artifact_actual_plan_CPU_output_wall_and_identity": 6,
+    "per_private_worker_actual_plan_and_convex_cache_work": 30,
+    "no_new_environment_observation_work": 6,
+    "private_worker_normalizer_cache_statistics": 12,
+    "independent_fixed_view_gains_losses_choices_blockers_and_actual_fees": 1,
+    "summed_actual_private_worker_model_and_retention_computation": 1
+  },
+  "failures": [],
+  "elapsed_seconds": 5.822680376993958,
+  "worker_elapsed_seconds": [
+    {
+      "life": 0,
+      "arm": "UNIFORM_SHARED",
+      "seconds": 1.9486884439829737
+    },
+    {
+      "life": 0,
+      "arm": "QUERY_SHARED",
+      "seconds": 1.9246797490050085
+    },
+    {
+      "life": 1,
+      "arm": "UNIFORM_SHARED",
+      "seconds": 3.800045987009071
+    },
+    {
+      "life": 1,
+      "arm": "QUERY_SHARED",
+      "seconds": 2.2124801579630002
+    },
+    {
+      "life": 2,
+      "arm": "UNIFORM_SHARED",
+      "seconds": 3.591838104999624
+    },
+    {
+      "life": 2,
+      "arm": "QUERY_SHARED",
+      "seconds": 5.385248081001919
+    }
+  ],
+  "arm_summaries": [
+    {
+      "arm": "UNIFORM_SHARED",
+      "views": {
+        "ONE_WAY": {
+          "targets": 72,
+          "query_ready": 48,
+          "execution_certified": 72,
+          "execution_resolved": 72,
+          "goal_impossible": 0,
+          "joint_ready": 48,
+          "certified_by_query": {
+            "reward": 72,
+            "goal": 48,
+            "risk": 50
+          },
+          "query_choice_counts": {
+            "reward": {
+              "WAIT": 72
+            },
+            "goal": {
+              "DETOUR_RETRY": 24,
+              "SHORT": 48
+            },
+            "risk": {
+              "DETOUR_RETURN": 48,
+              "SHORT": 24
+            }
+          },
+          "query_blocker_counts": {
+            "reward": {},
+            "goal": {
+              "DETOUR_RETRY": 24,
+              "DETOUR_RETURN": 17
+            },
+            "risk": {
+              "SHORT": 22
+            }
+          }
+        },
+        "TWO_WAY": {
+          "targets": 72,
+          "query_ready": 48,
+          "execution_certified": 72,
+          "execution_resolved": 72,
+          "goal_impossible": 0,
+          "joint_ready": 48,
+          "certified_by_query": {
+            "reward": 72,
+            "goal": 48,
+            "risk": 48
+          },
+          "query_choice_counts": {
+            "reward": {
+              "WAIT": 72
+            },
+            "goal": {
+              "DETOUR_RETRY": 24,
+              "SHORT": 48
+            },
+            "risk": {
+              "DETOUR_RETURN": 48,
+              "SHORT": 24
+            }
+          },
+          "query_blocker_counts": {
+            "reward": {},
+            "goal": {
+              "DETOUR_RETRY": 24,
+              "DETOUR_RETURN": 9
+            },
+            "risk": {
+              "SHORT": 24
+            }
+          }
+        }
+      },
+      "paired": {
+        "query_ready": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 72,
+          "changes": []
+        },
+        "execution_certified": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 72,
+          "changes": []
+        },
+        "execution_resolved": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 72,
+          "changes": []
+        },
+        "goal_impossible": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 72,
+          "changes": []
+        },
+        "joint_ready": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 72,
+          "changes": []
+        },
+        "certified_by_query": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 72,
+            "changes": [],
+            "gains": 0,
+            "losses": 0
+          },
+          "goal": {
+            "changed": 0,
+            "unchanged": 72,
+            "changes": [],
+            "gains": 0,
+            "losses": 0
+          },
+          "risk": {
+            "changed": 2,
+            "unchanged": 70,
+            "changes": [
+              {
+                "life": 2,
+                "index": 55,
+                "identity": 1,
+                "before": true,
+                "after": false
+              },
+              {
+                "life": 2,
+                "index": 57,
+                "identity": 1,
+                "before": true,
+                "after": false
+              }
+            ],
+            "gains": 0,
+            "losses": 2
+          }
+        },
+        "query_choices": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 72,
+            "changes": []
+          },
+          "goal": {
+            "changed": 0,
+            "unchanged": 72,
+            "changes": []
+          },
+          "risk": {
+            "changed": 0,
+            "unchanged": 72,
+            "changes": []
+          }
+        },
+        "query_blockers": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 72,
+            "changes": []
+          },
+          "goal": {
+            "changed": 8,
+            "unchanged": 64,
+            "changes": [
+              {
+                "life": 2,
+                "index": 55,
+                "identity": 1,
+                "before": [
+                  "DETOUR_RETURN",
+                  "DETOUR_RETRY"
+                ],
+                "after": [
+                  "DETOUR_RETRY"
+                ]
+              },
+              {
+                "life": 2,
+                "index": 57,
+                "identity": 1,
+                "before": [
+                  "DETOUR_RETURN",
+                  "DETOUR_RETRY"
+                ],
+                "after": [
+                  "DETOUR_RETRY"
+                ]
+              },
+              {
+                "life": 2,
+                "index": 59,
+                "identity": 1,
+                "before": [
+                  "DETOUR_RETURN",
+                  "DETOUR_RETRY"
+                ],
+                "after": [
+                  "DETOUR_RETRY"
+                ]
+              },
+              {
+                "life": 2,
+                "index": 60,
+                "identity": 1,
+                "before": [
+                  "DETOUR_RETURN",
+                  "DETOUR_RETRY"
+                ],
+                "after": [
+                  "DETOUR_RETRY"
+                ]
+              },
+              {
+                "life": 2,
+                "index": 61,
+                "identity": 1,
+                "before": [
+                  "DETOUR_RETURN",
+                  "DETOUR_RETRY"
+                ],
+                "after": [
+                  "DETOUR_RETRY"
+                ]
+              },
+              {
+                "life": 2,
+                "index": 66,
+                "identity": 1,
+                "before": [
+                  "DETOUR_RETURN",
+                  "DETOUR_RETRY"
+                ],
+                "after": [
+                  "DETOUR_RETRY"
+                ]
+              },
+              {
+                "life": 2,
+                "index": 69,
+                "identity": 1,
+                "before": [
+                  "DETOUR_RETURN",
+                  "DETOUR_RETRY"
+                ],
+                "after": [
+                  "DETOUR_RETRY"
+                ]
+              },
+              {
+                "life": 2,
+                "index": 77,
+                "identity": 1,
+                "before": [
+                  "DETOUR_RETURN",
+                  "DETOUR_RETRY"
+                ],
+                "after": [
+                  "DETOUR_RETRY"
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "changed": 2,
+            "unchanged": 70,
+            "changes": [
+              {
+                "life": 2,
+                "index": 55,
+                "identity": 1,
+                "before": [],
+                "after": [
+                  "SHORT"
+                ]
+              },
+              {
+                "life": 2,
+                "index": 57,
+                "identity": 1,
+                "before": [],
+                "after": [
+                  "SHORT"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "arm": "QUERY_SHARED",
+      "views": {
+        "ONE_WAY": {
+          "targets": 72,
+          "query_ready": 48,
+          "execution_certified": 72,
+          "execution_resolved": 72,
+          "goal_impossible": 0,
+          "joint_ready": 48,
+          "certified_by_query": {
+            "reward": 72,
+            "goal": 48,
+            "risk": 56
+          },
+          "query_choice_counts": {
+            "reward": {
+              "WAIT": 72
+            },
+            "goal": {
+              "DETOUR_RETRY": 24,
+              "SHORT": 48
+            },
+            "risk": {
+              "DETOUR_RETURN": 48,
+              "SHORT": 24
+            }
+          },
+          "query_blocker_counts": {
+            "reward": {},
+            "goal": {
+              "DETOUR_RETRY": 24,
+              "DETOUR_RETURN": 5
+            },
+            "risk": {
+              "SHORT": 16
+            }
+          }
+        },
+        "TWO_WAY": {
+          "targets": 72,
+          "query_ready": 48,
+          "execution_certified": 72,
+          "execution_resolved": 72,
+          "goal_impossible": 0,
+          "joint_ready": 48,
+          "certified_by_query": {
+            "reward": 72,
+            "goal": 48,
+            "risk": 56
+          },
+          "query_choice_counts": {
+            "reward": {
+              "WAIT": 72
+            },
+            "goal": {
+              "DETOUR_RETRY": 24,
+              "SHORT": 48
+            },
+            "risk": {
+              "DETOUR_RETURN": 48,
+              "SHORT": 24
+            }
+          },
+          "query_blocker_counts": {
+            "reward": {},
+            "goal": {
+              "DETOUR_RETRY": 24,
+              "DETOUR_RETURN": 3
+            },
+            "risk": {
+              "SHORT": 16
+            }
+          }
+        }
+      },
+      "paired": {
+        "query_ready": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 72,
+          "changes": []
+        },
+        "execution_certified": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 72,
+          "changes": []
+        },
+        "execution_resolved": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 72,
+          "changes": []
+        },
+        "goal_impossible": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 72,
+          "changes": []
+        },
+        "joint_ready": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 72,
+          "changes": []
+        },
+        "certified_by_query": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 72,
+            "changes": [],
+            "gains": 0,
+            "losses": 0
+          },
+          "goal": {
+            "changed": 0,
+            "unchanged": 72,
+            "changes": [],
+            "gains": 0,
+            "losses": 0
+          },
+          "risk": {
+            "changed": 0,
+            "unchanged": 72,
+            "changes": [],
+            "gains": 0,
+            "losses": 0
+          }
+        },
+        "query_choices": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 72,
+            "changes": []
+          },
+          "goal": {
+            "changed": 0,
+            "unchanged": 72,
+            "changes": []
+          },
+          "risk": {
+            "changed": 0,
+            "unchanged": 72,
+            "changes": []
+          }
+        },
+        "query_blockers": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 72,
+            "changes": []
+          },
+          "goal": {
+            "changed": 2,
+            "unchanged": 70,
+            "changes": [
+              {
+                "life": 2,
+                "index": 60,
+                "identity": 1,
+                "before": [
+                  "DETOUR_RETURN",
+                  "DETOUR_RETRY"
+                ],
+                "after": [
+                  "DETOUR_RETRY"
+                ]
+              },
+              {
+                "life": 2,
+                "index": 61,
+                "identity": 1,
+                "before": [
+                  "DETOUR_RETURN",
+                  "DETOUR_RETRY"
+                ],
+                "after": [
+                  "DETOUR_RETRY"
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "changed": 0,
+            "unchanged": 72,
+            "changes": []
+          }
+        }
+      }
+    }
+  ],
+  "life_summaries": [
+    {
+      "life": 0,
+      "arm": "UNIFORM_SHARED",
+      "views": {
+        "ONE_WAY": {
+          "targets": 24,
+          "query_ready": 16,
+          "execution_certified": 24,
+          "execution_resolved": 24,
+          "goal_impossible": 0,
+          "joint_ready": 16,
+          "certified_by_query": {
+            "reward": 24,
+            "goal": 16,
+            "risk": 16
+          },
+          "query_choice_counts": {
+            "reward": {
+              "WAIT": 24
+            },
+            "goal": {
+              "DETOUR_RETRY": 8,
+              "SHORT": 16
+            },
+            "risk": {
+              "DETOUR_RETURN": 16,
+              "SHORT": 8
+            }
+          },
+          "query_blocker_counts": {
+            "reward": {},
+            "goal": {
+              "DETOUR_RETRY": 8,
+              "DETOUR_RETURN": 8
+            },
+            "risk": {
+              "SHORT": 8
+            }
+          }
+        },
+        "TWO_WAY": {
+          "targets": 24,
+          "query_ready": 16,
+          "execution_certified": 24,
+          "execution_resolved": 24,
+          "goal_impossible": 0,
+          "joint_ready": 16,
+          "certified_by_query": {
+            "reward": 24,
+            "goal": 16,
+            "risk": 16
+          },
+          "query_choice_counts": {
+            "reward": {
+              "WAIT": 24
+            },
+            "goal": {
+              "DETOUR_RETRY": 8,
+              "SHORT": 16
+            },
+            "risk": {
+              "DETOUR_RETURN": 16,
+              "SHORT": 8
+            }
+          },
+          "query_blocker_counts": {
+            "reward": {},
+            "goal": {
+              "DETOUR_RETRY": 8,
+              "DETOUR_RETURN": 8
+            },
+            "risk": {
+              "SHORT": 8
+            }
+          }
+        }
+      },
+      "paired": {
+        "query_ready": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "execution_certified": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "execution_resolved": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "goal_impossible": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "joint_ready": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "certified_by_query": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": [],
+            "gains": 0,
+            "losses": 0
+          },
+          "goal": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": [],
+            "gains": 0,
+            "losses": 0
+          },
+          "risk": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": [],
+            "gains": 0,
+            "losses": 0
+          }
+        },
+        "query_choices": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          },
+          "goal": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          },
+          "risk": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          }
+        },
+        "query_blockers": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          },
+          "goal": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          },
+          "risk": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          }
+        }
+      }
+    },
+    {
+      "life": 0,
+      "arm": "QUERY_SHARED",
+      "views": {
+        "ONE_WAY": {
+          "targets": 24,
+          "query_ready": 16,
+          "execution_certified": 24,
+          "execution_resolved": 24,
+          "goal_impossible": 0,
+          "joint_ready": 16,
+          "certified_by_query": {
+            "reward": 24,
+            "goal": 16,
+            "risk": 16
+          },
+          "query_choice_counts": {
+            "reward": {
+              "WAIT": 24
+            },
+            "goal": {
+              "DETOUR_RETRY": 8,
+              "SHORT": 16
+            },
+            "risk": {
+              "DETOUR_RETURN": 16,
+              "SHORT": 8
+            }
+          },
+          "query_blocker_counts": {
+            "reward": {},
+            "goal": {
+              "DETOUR_RETRY": 8
+            },
+            "risk": {
+              "SHORT": 8
+            }
+          }
+        },
+        "TWO_WAY": {
+          "targets": 24,
+          "query_ready": 16,
+          "execution_certified": 24,
+          "execution_resolved": 24,
+          "goal_impossible": 0,
+          "joint_ready": 16,
+          "certified_by_query": {
+            "reward": 24,
+            "goal": 16,
+            "risk": 16
+          },
+          "query_choice_counts": {
+            "reward": {
+              "WAIT": 24
+            },
+            "goal": {
+              "DETOUR_RETRY": 8,
+              "SHORT": 16
+            },
+            "risk": {
+              "DETOUR_RETURN": 16,
+              "SHORT": 8
+            }
+          },
+          "query_blocker_counts": {
+            "reward": {},
+            "goal": {
+              "DETOUR_RETRY": 8
+            },
+            "risk": {
+              "SHORT": 8
+            }
+          }
+        }
+      },
+      "paired": {
+        "query_ready": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "execution_certified": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "execution_resolved": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "goal_impossible": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "joint_ready": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "certified_by_query": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": [],
+            "gains": 0,
+            "losses": 0
+          },
+          "goal": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": [],
+            "gains": 0,
+            "losses": 0
+          },
+          "risk": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": [],
+            "gains": 0,
+            "losses": 0
+          }
+        },
+        "query_choices": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          },
+          "goal": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          },
+          "risk": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          }
+        },
+        "query_blockers": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          },
+          "goal": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          },
+          "risk": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          }
+        }
+      }
+    },
+    {
+      "life": 1,
+      "arm": "UNIFORM_SHARED",
+      "views": {
+        "ONE_WAY": {
+          "targets": 24,
+          "query_ready": 16,
+          "execution_certified": 24,
+          "execution_resolved": 24,
+          "goal_impossible": 0,
+          "joint_ready": 16,
+          "certified_by_query": {
+            "reward": 24,
+            "goal": 16,
+            "risk": 16
+          },
+          "query_choice_counts": {
+            "reward": {
+              "WAIT": 24
+            },
+            "goal": {
+              "DETOUR_RETRY": 8,
+              "SHORT": 16
+            },
+            "risk": {
+              "DETOUR_RETURN": 16,
+              "SHORT": 8
+            }
+          },
+          "query_blocker_counts": {
+            "reward": {},
+            "goal": {
+              "DETOUR_RETRY": 8,
+              "DETOUR_RETURN": 1
+            },
+            "risk": {
+              "SHORT": 8
+            }
+          }
+        },
+        "TWO_WAY": {
+          "targets": 24,
+          "query_ready": 16,
+          "execution_certified": 24,
+          "execution_resolved": 24,
+          "goal_impossible": 0,
+          "joint_ready": 16,
+          "certified_by_query": {
+            "reward": 24,
+            "goal": 16,
+            "risk": 16
+          },
+          "query_choice_counts": {
+            "reward": {
+              "WAIT": 24
+            },
+            "goal": {
+              "DETOUR_RETRY": 8,
+              "SHORT": 16
+            },
+            "risk": {
+              "DETOUR_RETURN": 16,
+              "SHORT": 8
+            }
+          },
+          "query_blocker_counts": {
+            "reward": {},
+            "goal": {
+              "DETOUR_RETRY": 8,
+              "DETOUR_RETURN": 1
+            },
+            "risk": {
+              "SHORT": 8
+            }
+          }
+        }
+      },
+      "paired": {
+        "query_ready": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "execution_certified": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "execution_resolved": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "goal_impossible": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "joint_ready": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "certified_by_query": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": [],
+            "gains": 0,
+            "losses": 0
+          },
+          "goal": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": [],
+            "gains": 0,
+            "losses": 0
+          },
+          "risk": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": [],
+            "gains": 0,
+            "losses": 0
+          }
+        },
+        "query_choices": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          },
+          "goal": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          },
+          "risk": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          }
+        },
+        "query_blockers": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          },
+          "goal": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          },
+          "risk": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          }
+        }
+      }
+    },
+    {
+      "life": 1,
+      "arm": "QUERY_SHARED",
+      "views": {
+        "ONE_WAY": {
+          "targets": 24,
+          "query_ready": 16,
+          "execution_certified": 24,
+          "execution_resolved": 24,
+          "goal_impossible": 0,
+          "joint_ready": 16,
+          "certified_by_query": {
+            "reward": 24,
+            "goal": 16,
+            "risk": 16
+          },
+          "query_choice_counts": {
+            "reward": {
+              "WAIT": 24
+            },
+            "goal": {
+              "DETOUR_RETRY": 8,
+              "SHORT": 16
+            },
+            "risk": {
+              "DETOUR_RETURN": 16,
+              "SHORT": 8
+            }
+          },
+          "query_blocker_counts": {
+            "reward": {},
+            "goal": {
+              "DETOUR_RETRY": 8
+            },
+            "risk": {
+              "SHORT": 8
+            }
+          }
+        },
+        "TWO_WAY": {
+          "targets": 24,
+          "query_ready": 16,
+          "execution_certified": 24,
+          "execution_resolved": 24,
+          "goal_impossible": 0,
+          "joint_ready": 16,
+          "certified_by_query": {
+            "reward": 24,
+            "goal": 16,
+            "risk": 16
+          },
+          "query_choice_counts": {
+            "reward": {
+              "WAIT": 24
+            },
+            "goal": {
+              "DETOUR_RETRY": 8,
+              "SHORT": 16
+            },
+            "risk": {
+              "DETOUR_RETURN": 16,
+              "SHORT": 8
+            }
+          },
+          "query_blocker_counts": {
+            "reward": {},
+            "goal": {
+              "DETOUR_RETRY": 8
+            },
+            "risk": {
+              "SHORT": 8
+            }
+          }
+        }
+      },
+      "paired": {
+        "query_ready": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "execution_certified": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "execution_resolved": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "goal_impossible": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "joint_ready": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "certified_by_query": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": [],
+            "gains": 0,
+            "losses": 0
+          },
+          "goal": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": [],
+            "gains": 0,
+            "losses": 0
+          },
+          "risk": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": [],
+            "gains": 0,
+            "losses": 0
+          }
+        },
+        "query_choices": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          },
+          "goal": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          },
+          "risk": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          }
+        },
+        "query_blockers": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          },
+          "goal": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          },
+          "risk": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          }
+        }
+      }
+    },
+    {
+      "life": 2,
+      "arm": "UNIFORM_SHARED",
+      "views": {
+        "ONE_WAY": {
+          "targets": 24,
+          "query_ready": 16,
+          "execution_certified": 24,
+          "execution_resolved": 24,
+          "goal_impossible": 0,
+          "joint_ready": 16,
+          "certified_by_query": {
+            "reward": 24,
+            "goal": 16,
+            "risk": 18
+          },
+          "query_choice_counts": {
+            "reward": {
+              "WAIT": 24
+            },
+            "goal": {
+              "DETOUR_RETRY": 8,
+              "SHORT": 16
+            },
+            "risk": {
+              "DETOUR_RETURN": 16,
+              "SHORT": 8
+            }
+          },
+          "query_blocker_counts": {
+            "reward": {},
+            "goal": {
+              "DETOUR_RETRY": 8,
+              "DETOUR_RETURN": 8
+            },
+            "risk": {
+              "SHORT": 6
+            }
+          }
+        },
+        "TWO_WAY": {
+          "targets": 24,
+          "query_ready": 16,
+          "execution_certified": 24,
+          "execution_resolved": 24,
+          "goal_impossible": 0,
+          "joint_ready": 16,
+          "certified_by_query": {
+            "reward": 24,
+            "goal": 16,
+            "risk": 16
+          },
+          "query_choice_counts": {
+            "reward": {
+              "WAIT": 24
+            },
+            "goal": {
+              "DETOUR_RETRY": 8,
+              "SHORT": 16
+            },
+            "risk": {
+              "DETOUR_RETURN": 16,
+              "SHORT": 8
+            }
+          },
+          "query_blocker_counts": {
+            "reward": {},
+            "goal": {
+              "DETOUR_RETRY": 8
+            },
+            "risk": {
+              "SHORT": 8
+            }
+          }
+        }
+      },
+      "paired": {
+        "query_ready": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "execution_certified": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "execution_resolved": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "goal_impossible": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "joint_ready": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "certified_by_query": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": [],
+            "gains": 0,
+            "losses": 0
+          },
+          "goal": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": [],
+            "gains": 0,
+            "losses": 0
+          },
+          "risk": {
+            "changed": 2,
+            "unchanged": 22,
+            "changes": [
+              {
+                "life": 2,
+                "index": 55,
+                "identity": 1,
+                "before": true,
+                "after": false
+              },
+              {
+                "life": 2,
+                "index": 57,
+                "identity": 1,
+                "before": true,
+                "after": false
+              }
+            ],
+            "gains": 0,
+            "losses": 2
+          }
+        },
+        "query_choices": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          },
+          "goal": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          },
+          "risk": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          }
+        },
+        "query_blockers": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          },
+          "goal": {
+            "changed": 8,
+            "unchanged": 16,
+            "changes": [
+              {
+                "life": 2,
+                "index": 55,
+                "identity": 1,
+                "before": [
+                  "DETOUR_RETURN",
+                  "DETOUR_RETRY"
+                ],
+                "after": [
+                  "DETOUR_RETRY"
+                ]
+              },
+              {
+                "life": 2,
+                "index": 57,
+                "identity": 1,
+                "before": [
+                  "DETOUR_RETURN",
+                  "DETOUR_RETRY"
+                ],
+                "after": [
+                  "DETOUR_RETRY"
+                ]
+              },
+              {
+                "life": 2,
+                "index": 59,
+                "identity": 1,
+                "before": [
+                  "DETOUR_RETURN",
+                  "DETOUR_RETRY"
+                ],
+                "after": [
+                  "DETOUR_RETRY"
+                ]
+              },
+              {
+                "life": 2,
+                "index": 60,
+                "identity": 1,
+                "before": [
+                  "DETOUR_RETURN",
+                  "DETOUR_RETRY"
+                ],
+                "after": [
+                  "DETOUR_RETRY"
+                ]
+              },
+              {
+                "life": 2,
+                "index": 61,
+                "identity": 1,
+                "before": [
+                  "DETOUR_RETURN",
+                  "DETOUR_RETRY"
+                ],
+                "after": [
+                  "DETOUR_RETRY"
+                ]
+              },
+              {
+                "life": 2,
+                "index": 66,
+                "identity": 1,
+                "before": [
+                  "DETOUR_RETURN",
+                  "DETOUR_RETRY"
+                ],
+                "after": [
+                  "DETOUR_RETRY"
+                ]
+              },
+              {
+                "life": 2,
+                "index": 69,
+                "identity": 1,
+                "before": [
+                  "DETOUR_RETURN",
+                  "DETOUR_RETRY"
+                ],
+                "after": [
+                  "DETOUR_RETRY"
+                ]
+              },
+              {
+                "life": 2,
+                "index": 77,
+                "identity": 1,
+                "before": [
+                  "DETOUR_RETURN",
+                  "DETOUR_RETRY"
+                ],
+                "after": [
+                  "DETOUR_RETRY"
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "changed": 2,
+            "unchanged": 22,
+            "changes": [
+              {
+                "life": 2,
+                "index": 55,
+                "identity": 1,
+                "before": [],
+                "after": [
+                  "SHORT"
+                ]
+              },
+              {
+                "life": 2,
+                "index": 57,
+                "identity": 1,
+                "before": [],
+                "after": [
+                  "SHORT"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "life": 2,
+      "arm": "QUERY_SHARED",
+      "views": {
+        "ONE_WAY": {
+          "targets": 24,
+          "query_ready": 16,
+          "execution_certified": 24,
+          "execution_resolved": 24,
+          "goal_impossible": 0,
+          "joint_ready": 16,
+          "certified_by_query": {
+            "reward": 24,
+            "goal": 16,
+            "risk": 24
+          },
+          "query_choice_counts": {
+            "reward": {
+              "WAIT": 24
+            },
+            "goal": {
+              "DETOUR_RETRY": 8,
+              "SHORT": 16
+            },
+            "risk": {
+              "DETOUR_RETURN": 16,
+              "SHORT": 8
+            }
+          },
+          "query_blocker_counts": {
+            "reward": {},
+            "goal": {
+              "DETOUR_RETRY": 8,
+              "DETOUR_RETURN": 5
+            },
+            "risk": {}
+          }
+        },
+        "TWO_WAY": {
+          "targets": 24,
+          "query_ready": 16,
+          "execution_certified": 24,
+          "execution_resolved": 24,
+          "goal_impossible": 0,
+          "joint_ready": 16,
+          "certified_by_query": {
+            "reward": 24,
+            "goal": 16,
+            "risk": 24
+          },
+          "query_choice_counts": {
+            "reward": {
+              "WAIT": 24
+            },
+            "goal": {
+              "DETOUR_RETRY": 8,
+              "SHORT": 16
+            },
+            "risk": {
+              "DETOUR_RETURN": 16,
+              "SHORT": 8
+            }
+          },
+          "query_blocker_counts": {
+            "reward": {},
+            "goal": {
+              "DETOUR_RETRY": 8,
+              "DETOUR_RETURN": 3
+            },
+            "risk": {}
+          }
+        }
+      },
+      "paired": {
+        "query_ready": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "execution_certified": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "execution_resolved": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "goal_impossible": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "joint_ready": {
+          "gains": 0,
+          "losses": 0,
+          "unchanged": 24,
+          "changes": []
+        },
+        "certified_by_query": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": [],
+            "gains": 0,
+            "losses": 0
+          },
+          "goal": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": [],
+            "gains": 0,
+            "losses": 0
+          },
+          "risk": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": [],
+            "gains": 0,
+            "losses": 0
+          }
+        },
+        "query_choices": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          },
+          "goal": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          },
+          "risk": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          }
+        },
+        "query_blockers": {
+          "reward": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          },
+          "goal": {
+            "changed": 2,
+            "unchanged": 22,
+            "changes": [
+              {
+                "life": 2,
+                "index": 60,
+                "identity": 1,
+                "before": [
+                  "DETOUR_RETURN",
+                  "DETOUR_RETRY"
+                ],
+                "after": [
+                  "DETOUR_RETRY"
+                ]
+              },
+              {
+                "life": 2,
+                "index": 61,
+                "identity": 1,
+                "before": [
+                  "DETOUR_RETURN",
+                  "DETOUR_RETRY"
+                ],
+                "after": [
+                  "DETOUR_RETRY"
+                ]
+              }
+            ]
+          },
+          "risk": {
+            "changed": 0,
+            "unchanged": 24,
+            "changes": []
+          }
+        }
+      }
+    }
+  ],
+  "retained_fee_ledger": [
+    {
+      "life": 0,
+      "arm": "UNIFORM_SHARED",
+      "source_samples": 4608,
+      "ordinary_target_samples": 5312,
+      "a_probe_samples": 3072,
+      "b_probe_samples": 1152,
+      "probe_samples": 4224,
+      "released_probe_samples": 0,
+      "total_samples": 14144
+    },
+    {
+      "life": 0,
+      "arm": "QUERY_SHARED",
+      "source_samples": 4608,
+      "ordinary_target_samples": 5312,
+      "a_probe_samples": 3072,
+      "b_probe_samples": 1152,
+      "probe_samples": 4224,
+      "released_probe_samples": 0,
+      "total_samples": 14144
+    },
+    {
+      "life": 1,
+      "arm": "UNIFORM_SHARED",
+      "source_samples": 4608,
+      "ordinary_target_samples": 8240,
+      "a_probe_samples": 3072,
+      "b_probe_samples": 1152,
+      "probe_samples": 4224,
+      "released_probe_samples": 0,
+      "total_samples": 17072
+    },
+    {
+      "life": 1,
+      "arm": "QUERY_SHARED",
+      "source_samples": 4608,
+      "ordinary_target_samples": 8240,
+      "a_probe_samples": 3072,
+      "b_probe_samples": 1152,
+      "probe_samples": 4224,
+      "released_probe_samples": 0,
+      "total_samples": 17072
+    },
+    {
+      "life": 2,
+      "arm": "UNIFORM_SHARED",
+      "source_samples": 4608,
+      "ordinary_target_samples": 8336,
+      "a_probe_samples": 3072,
+      "b_probe_samples": 1152,
+      "probe_samples": 4224,
+      "released_probe_samples": 0,
+      "total_samples": 17168
+    },
+    {
+      "life": 2,
+      "arm": "QUERY_SHARED",
+      "source_samples": 4608,
+      "ordinary_target_samples": 8064,
+      "a_probe_samples": 3072,
+      "b_probe_samples": 1152,
+      "probe_samples": 4224,
+      "released_probe_samples": 0,
+      "total_samples": 16896
+    }
+  ],
+  "new_observations": 0,
+  "one_way_replans": 0,
+  "new_truth_scoring_calls": 0,
+  "adaptive_policy_changed": false,
+  "scientific_gate_changed": false,
+  "diagnostic_only": true,
+  "view_delta_scope": "separate_fixed_ONE_WAY_and_TWO_WAY_events_per_life_arm_not_OR_or_selected_union"
+}

@@ -1,0 +1,11 @@
+{
+  "status": "complete",
+  "command": [
+    "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "scripts/run_controlled_predictive_h1_continuation_v142.py"
+  ],
+  "started_at": "2026-09-26T16:39:33+0800",
+  "exit_code": 0,
+  "seconds": 9.950221325001621,
+  "stderr_bytes": 0
+}

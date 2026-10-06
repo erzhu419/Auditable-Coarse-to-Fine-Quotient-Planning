@@ -1,0 +1,11 @@
+{
+  "attempts": [
+    {
+      "tests": 5,
+      "failures": 0,
+      "newly_sampled_environment_transitions": 0,
+      "environment_random_draws": 0,
+      "scope": "Mocked corpus, divergence helper and forced-game result; no native model or environment run."
+    }
+  ]
+}

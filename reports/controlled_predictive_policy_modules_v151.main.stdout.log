@@ -1,0 +1,73 @@
+{"event": "checkpoint_evaluated", "life": 0, "query": "risk1", "checkpoint": 0}
+{"event": "checkpoint_evaluated", "life": 2, "query": "risk1", "checkpoint": 0}
+{"event": "checkpoint_evaluated", "life": 3, "query": "risk1", "checkpoint": 0}
+{"event": "checkpoint_evaluated", "life": 1, "query": "risk1", "checkpoint": 0}
+{"event": "checkpoint_evaluated", "life": 0, "query": "risk8", "checkpoint": 0}
+{"event": "checkpoint_evaluated", "life": 2, "query": "risk8", "checkpoint": 0}
+{"event": "checkpoint_evaluated", "life": 3, "query": "risk8", "checkpoint": 0}
+{"event": "checkpoint_evaluated", "life": 1, "query": "risk8", "checkpoint": 0}
+{"event": "batch_acquired", "life": 0, "query": "risk1", "batch": 1, "transitions": 65536, "complete_triplets": 45}
+{"event": "batch_acquired", "life": 2, "query": "risk1", "batch": 1, "transitions": 65536, "complete_triplets": 42}
+{"event": "batch_acquired", "life": 3, "query": "risk1", "batch": 1, "transitions": 65536, "complete_triplets": 49}
+{"event": "batch_acquired", "life": 1, "query": "risk1", "batch": 1, "transitions": 65536, "complete_triplets": 36}
+{"event": "batch_acquired", "life": 0, "query": "risk8", "batch": 1, "transitions": 65536, "complete_triplets": 41}
+{"event": "batch_acquired", "life": 2, "query": "risk8", "batch": 1, "transitions": 65536, "complete_triplets": 44}
+{"event": "batch_acquired", "life": 1, "query": "risk8", "batch": 1, "transitions": 65536, "complete_triplets": 40}
+{"event": "batch_acquired", "life": 3, "query": "risk8", "batch": 1, "transitions": 65536, "complete_triplets": 41}
+{"event": "checkpoint_evaluated", "life": 0, "query": "risk1", "checkpoint": 1}
+{"event": "checkpoint_evaluated", "life": 2, "query": "risk1", "checkpoint": 1}
+{"event": "checkpoint_evaluated", "life": 1, "query": "risk1", "checkpoint": 1}
+{"event": "checkpoint_evaluated", "life": 3, "query": "risk1", "checkpoint": 1}
+{"event": "checkpoint_evaluated", "life": 0, "query": "risk8", "checkpoint": 1}
+{"event": "checkpoint_evaluated", "life": 1, "query": "risk8", "checkpoint": 1}
+{"event": "checkpoint_evaluated", "life": 2, "query": "risk8", "checkpoint": 1}
+{"event": "checkpoint_evaluated", "life": 3, "query": "risk8", "checkpoint": 1}
+{"event": "batch_acquired", "life": 1, "query": "risk1", "batch": 2, "transitions": 65536, "complete_triplets": 44}
+{"event": "batch_acquired", "life": 2, "query": "risk1", "batch": 2, "transitions": 65536, "complete_triplets": 46}
+{"event": "batch_acquired", "life": 0, "query": "risk1", "batch": 2, "transitions": 65536, "complete_triplets": 44}
+{"event": "batch_acquired", "life": 3, "query": "risk1", "batch": 2, "transitions": 65536, "complete_triplets": 41}
+{"event": "batch_acquired", "life": 1, "query": "risk8", "batch": 2, "transitions": 65536, "complete_triplets": 48}
+{"event": "batch_acquired", "life": 2, "query": "risk8", "batch": 2, "transitions": 65536, "complete_triplets": 38}
+{"event": "batch_acquired", "life": 0, "query": "risk8", "batch": 2, "transitions": 65536, "complete_triplets": 48}
+{"event": "batch_acquired", "life": 3, "query": "risk8", "batch": 2, "transitions": 65536, "complete_triplets": 42}
+{"event": "checkpoint_evaluated", "life": 2, "query": "risk1", "checkpoint": 2}
+{"event": "checkpoint_evaluated", "life": 1, "query": "risk1", "checkpoint": 2}
+{"event": "checkpoint_evaluated", "life": 0, "query": "risk1", "checkpoint": 2}
+{"event": "checkpoint_evaluated", "life": 3, "query": "risk1", "checkpoint": 2}
+{"event": "checkpoint_evaluated", "life": 2, "query": "risk8", "checkpoint": 2}
+{"event": "checkpoint_evaluated", "life": 1, "query": "risk8", "checkpoint": 2}
+{"event": "checkpoint_evaluated", "life": 0, "query": "risk8", "checkpoint": 2}
+{"event": "checkpoint_evaluated", "life": 3, "query": "risk8", "checkpoint": 2}
+{"event": "batch_acquired", "life": 1, "query": "risk1", "batch": 3, "transitions": 65536, "complete_triplets": 41}
+{"event": "batch_acquired", "life": 2, "query": "risk1", "batch": 3, "transitions": 65536, "complete_triplets": 47}
+{"event": "batch_acquired", "life": 3, "query": "risk1", "batch": 3, "transitions": 65536, "complete_triplets": 40}
+{"event": "batch_acquired", "life": 0, "query": "risk1", "batch": 3, "transitions": 65536, "complete_triplets": 41}
+{"event": "batch_acquired", "life": 1, "query": "risk8", "batch": 3, "transitions": 65536, "complete_triplets": 41}
+{"event": "batch_acquired", "life": 2, "query": "risk8", "batch": 3, "transitions": 65536, "complete_triplets": 38}
+{"event": "batch_acquired", "life": 3, "query": "risk8", "batch": 3, "transitions": 65536, "complete_triplets": 47}
+{"event": "batch_acquired", "life": 0, "query": "risk8", "batch": 3, "transitions": 65536, "complete_triplets": 41}
+{"event": "checkpoint_evaluated", "life": 1, "query": "risk1", "checkpoint": 3}
+{"event": "checkpoint_evaluated", "life": 2, "query": "risk1", "checkpoint": 3}
+{"event": "checkpoint_evaluated", "life": 3, "query": "risk1", "checkpoint": 3}
+{"event": "checkpoint_evaluated", "life": 0, "query": "risk1", "checkpoint": 3}
+{"event": "checkpoint_evaluated", "life": 1, "query": "risk8", "checkpoint": 3}
+{"event": "checkpoint_evaluated", "life": 2, "query": "risk8", "checkpoint": 3}
+{"event": "checkpoint_evaluated", "life": 0, "query": "risk8", "checkpoint": 3}
+{"event": "checkpoint_evaluated", "life": 3, "query": "risk8", "checkpoint": 3}
+{"event": "batch_acquired", "life": 1, "query": "risk1", "batch": 4, "transitions": 65536, "complete_triplets": 36}
+{"event": "batch_acquired", "life": 2, "query": "risk1", "batch": 4, "transitions": 65536, "complete_triplets": 40}
+{"event": "batch_acquired", "life": 0, "query": "risk1", "batch": 4, "transitions": 65536, "complete_triplets": 42}
+{"event": "batch_acquired", "life": 3, "query": "risk1", "batch": 4, "transitions": 65536, "complete_triplets": 44}
+{"event": "batch_acquired", "life": 1, "query": "risk8", "batch": 4, "transitions": 65536, "complete_triplets": 40}
+{"event": "batch_acquired", "life": 2, "query": "risk8", "batch": 4, "transitions": 65536, "complete_triplets": 41}
+{"event": "batch_acquired", "life": 3, "query": "risk8", "batch": 4, "transitions": 65536, "complete_triplets": 43}
+{"event": "batch_acquired", "life": 0, "query": "risk8", "batch": 4, "transitions": 65536, "complete_triplets": 41}
+{"event": "checkpoint_evaluated", "life": 1, "query": "risk1", "checkpoint": 4}
+{"event": "checkpoint_evaluated", "life": 2, "query": "risk1", "checkpoint": 4}
+{"event": "checkpoint_evaluated", "life": 0, "query": "risk1", "checkpoint": 4}
+{"event": "checkpoint_evaluated", "life": 3, "query": "risk1", "checkpoint": 4}
+{"event": "checkpoint_evaluated", "life": 1, "query": "risk8", "checkpoint": 4}
+{"event": "checkpoint_evaluated", "life": 2, "query": "risk8", "checkpoint": 4}
+{"event": "checkpoint_evaluated", "life": 0, "query": "risk8", "checkpoint": 4}
+{"event": "checkpoint_evaluated", "life": 3, "query": "risk8", "checkpoint": 4}
+{"status": "complete", "seconds": 145.49632770700555}

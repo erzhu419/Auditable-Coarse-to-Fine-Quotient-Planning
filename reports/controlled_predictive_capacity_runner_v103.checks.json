@@ -1,0 +1,11 @@
+{
+  "attempts": [
+    {
+      "failed_tests": 0,
+      "new_environment_transitions": 0,
+      "new_model_transitions": 0,
+      "new_neural_model_fits": 0,
+      "scope": "Mock data/fits/prefixes; retained width, model age, cumulative records and ordinal deployment."
+    }
+  ]
+}

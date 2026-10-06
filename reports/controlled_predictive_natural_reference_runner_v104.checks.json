@@ -1,0 +1,12 @@
+{
+  "attempts": [
+    {
+      "failed_tests": 0,
+      "new_environment_transitions": 0,
+      "new_model_prefix_transitions": 0,
+      "new_model_fits": 0,
+      "new_candidate_predictions": 0,
+      "scope": "Mock reference execution; real dispatch and artifact binding."
+    }
+  ]
+}

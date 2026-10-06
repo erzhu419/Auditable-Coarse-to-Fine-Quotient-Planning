@@ -1,0 +1,320 @@
+{
+  "valid": true,
+  "records": 12,
+  "certificates": 60,
+  "checks": {
+    "complete_records": 1,
+    "selection_identity": 12,
+    "unchanged_retained_case": 12,
+    "unchanged_retained_counts": 12,
+    "unchanged_source_counts": 12,
+    "true_pool_counts": 12,
+    "true_index": 12,
+    "same_chosen_queries": 12,
+    "actual_query_regret": 12,
+    "no_new_observations": 12,
+    "retained_cost": 12,
+    "paid_source_evidence": 12,
+    "candidate_scope": 36,
+    "scoped_cs_identities": 180,
+    "valid_candidate_duals": 60,
+    "certificate_proven_empty_candidate": 16,
+    "joint_truth_containment": 252,
+    "certificate_correct_coefficients": 1584,
+    "certificate_valid_dual_bounds": 1584,
+    "certificate_correct_chosen_policy": 132,
+    "certificate_correct_query_maximum": 132,
+    "certificate_correct_threshold": 132,
+    "certificate_binary_corner_coverage": 396,
+    "certificate_correct_all_ready": 44,
+    "true_candidate_retained": 36,
+    "query_union_maximum": 108,
+    "aggregate_policy": 108,
+    "aggregate_threshold": 108,
+    "actual_regret_covered": 108,
+    "aggregate_all_ready": 36,
+    "complete_acquisition": 1,
+    "acquisition_actual_prefix": 6,
+    "discarded_forecasts": 6,
+    "legal_selected_operator": 6,
+    "forecast_horizons": 6,
+    "candidate_not_branch_weighted": 6,
+    "forecast_not_paid_budget": 6,
+    "exploratory_qualification_only": 1,
+    "no_environment_work": 1
+  },
+  "expected": {
+    "complete_records": 1,
+    "selection_identity": 12,
+    "unchanged_retained_case": 12,
+    "unchanged_retained_counts": 12,
+    "unchanged_source_counts": 12,
+    "true_pool_counts": 12,
+    "true_index": 12,
+    "same_chosen_queries": 12,
+    "actual_query_regret": 12,
+    "no_new_observations": 12,
+    "retained_cost": 12,
+    "paid_source_evidence": 12,
+    "candidate_scope": 36,
+    "scoped_cs_identities": 180,
+    "valid_candidate_duals": 60,
+    "certificate_proven_empty_candidate": 16,
+    "joint_truth_containment": 252,
+    "certificate_correct_coefficients": 1584,
+    "certificate_valid_dual_bounds": 1584,
+    "certificate_correct_chosen_policy": 132,
+    "certificate_correct_query_maximum": 132,
+    "certificate_correct_threshold": 132,
+    "certificate_binary_corner_coverage": 396,
+    "certificate_correct_all_ready": 44,
+    "true_candidate_retained": 36,
+    "query_union_maximum": 108,
+    "aggregate_policy": 108,
+    "aggregate_threshold": 108,
+    "actual_regret_covered": 108,
+    "aggregate_all_ready": 36,
+    "complete_acquisition": 1,
+    "acquisition_actual_prefix": 6,
+    "discarded_forecasts": 6,
+    "legal_selected_operator": 6,
+    "forecast_horizons": 6,
+    "candidate_not_branch_weighted": 6,
+    "forecast_not_paid_budget": 6,
+    "exploratory_qualification_only": 1,
+    "no_environment_work": 1
+  },
+  "evidence": [
+    {
+      "life": 0,
+      "index": 58,
+      "role": "failure",
+      "methods": {
+        "PUBLIC_SOURCE_MEMBER": {
+          "query_ready": false,
+          "truth_covered": true
+        },
+        "ORACLE_SOURCE_MEMBER": {
+          "query_ready": false,
+          "truth_covered": true
+        },
+        "ORACLE_CUMULATIVE_POOL": {
+          "query_ready": false,
+          "truth_covered": true
+        }
+      }
+    },
+    {
+      "life": 0,
+      "index": 54,
+      "role": "positive_control",
+      "methods": {
+        "PUBLIC_SOURCE_MEMBER": {
+          "query_ready": true,
+          "truth_covered": true
+        },
+        "ORACLE_SOURCE_MEMBER": {
+          "query_ready": true,
+          "truth_covered": true
+        },
+        "ORACLE_CUMULATIVE_POOL": {
+          "query_ready": true,
+          "truth_covered": true
+        }
+      }
+    },
+    {
+      "life": 1,
+      "index": 58,
+      "role": "failure",
+      "methods": {
+        "PUBLIC_SOURCE_MEMBER": {
+          "query_ready": false,
+          "truth_covered": true
+        },
+        "ORACLE_SOURCE_MEMBER": {
+          "query_ready": false,
+          "truth_covered": true
+        },
+        "ORACLE_CUMULATIVE_POOL": {
+          "query_ready": false,
+          "truth_covered": true
+        }
+      }
+    },
+    {
+      "life": 1,
+      "index": 54,
+      "role": "positive_control",
+      "methods": {
+        "PUBLIC_SOURCE_MEMBER": {
+          "query_ready": true,
+          "truth_covered": true
+        },
+        "ORACLE_SOURCE_MEMBER": {
+          "query_ready": true,
+          "truth_covered": true
+        },
+        "ORACLE_CUMULATIVE_POOL": {
+          "query_ready": true,
+          "truth_covered": true
+        }
+      }
+    },
+    {
+      "life": 2,
+      "index": 42,
+      "role": "failure",
+      "methods": {
+        "PUBLIC_SOURCE_MEMBER": {
+          "query_ready": false,
+          "truth_covered": true
+        },
+        "ORACLE_SOURCE_MEMBER": {
+          "query_ready": false,
+          "truth_covered": true
+        },
+        "ORACLE_CUMULATIVE_POOL": {
+          "query_ready": false,
+          "truth_covered": true
+        }
+      }
+    },
+    {
+      "life": 2,
+      "index": 32,
+      "role": "positive_control",
+      "methods": {
+        "PUBLIC_SOURCE_MEMBER": {
+          "query_ready": false,
+          "truth_covered": true
+        },
+        "ORACLE_SOURCE_MEMBER": {
+          "query_ready": true,
+          "truth_covered": true
+        },
+        "ORACLE_CUMULATIVE_POOL": {
+          "query_ready": true,
+          "truth_covered": true
+        }
+      }
+    },
+    {
+      "life": 2,
+      "index": 44,
+      "role": "failure",
+      "methods": {
+        "PUBLIC_SOURCE_MEMBER": {
+          "query_ready": false,
+          "truth_covered": true
+        },
+        "ORACLE_SOURCE_MEMBER": {
+          "query_ready": false,
+          "truth_covered": true
+        },
+        "ORACLE_CUMULATIVE_POOL": {
+          "query_ready": false,
+          "truth_covered": true
+        }
+      }
+    },
+    {
+      "life": 2,
+      "index": 32,
+      "role": "positive_control",
+      "methods": {
+        "PUBLIC_SOURCE_MEMBER": {
+          "query_ready": false,
+          "truth_covered": true
+        },
+        "ORACLE_SOURCE_MEMBER": {
+          "query_ready": true,
+          "truth_covered": true
+        },
+        "ORACLE_CUMULATIVE_POOL": {
+          "query_ready": true,
+          "truth_covered": true
+        }
+      }
+    },
+    {
+      "life": 4,
+      "index": 44,
+      "role": "failure",
+      "methods": {
+        "PUBLIC_SOURCE_MEMBER": {
+          "query_ready": false,
+          "truth_covered": true
+        },
+        "ORACLE_SOURCE_MEMBER": {
+          "query_ready": true,
+          "truth_covered": true
+        },
+        "ORACLE_CUMULATIVE_POOL": {
+          "query_ready": true,
+          "truth_covered": true
+        }
+      }
+    },
+    {
+      "life": 4,
+      "index": 36,
+      "role": "positive_control",
+      "methods": {
+        "PUBLIC_SOURCE_MEMBER": {
+          "query_ready": true,
+          "truth_covered": true
+        },
+        "ORACLE_SOURCE_MEMBER": {
+          "query_ready": true,
+          "truth_covered": true
+        },
+        "ORACLE_CUMULATIVE_POOL": {
+          "query_ready": true,
+          "truth_covered": true
+        }
+      }
+    },
+    {
+      "life": 4,
+      "index": 58,
+      "role": "failure",
+      "methods": {
+        "PUBLIC_SOURCE_MEMBER": {
+          "query_ready": false,
+          "truth_covered": true
+        },
+        "ORACLE_SOURCE_MEMBER": {
+          "query_ready": false,
+          "truth_covered": true
+        },
+        "ORACLE_CUMULATIVE_POOL": {
+          "query_ready": true,
+          "truth_covered": true
+        }
+      }
+    },
+    {
+      "life": 4,
+      "index": 54,
+      "role": "positive_control",
+      "methods": {
+        "PUBLIC_SOURCE_MEMBER": {
+          "query_ready": true,
+          "truth_covered": true
+        },
+        "ORACLE_SOURCE_MEMBER": {
+          "query_ready": true,
+          "truth_covered": true
+        },
+        "ORACLE_CUMULATIVE_POOL": {
+          "query_ready": true,
+          "truth_covered": true
+        }
+      }
+    }
+  ],
+  "new_observations": 0,
+  "fresh_gate_run": false,
+  "seconds": 11.938800520991208
+}

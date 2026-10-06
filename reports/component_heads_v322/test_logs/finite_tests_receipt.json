@@ -1,0 +1,19 @@
+{
+  "analysis": {
+    "passed": 32,
+    "seconds": 0.47,
+    "source": "delegated actual pytest result"
+  },
+  "driver": {
+    "passed": 2,
+    "seconds": 8.35,
+    "stdout": "driver_tests.log"
+  },
+  "audit": {
+    "passed": 14,
+    "seconds": 3.57,
+    "stdout": "audit_tests.log",
+    "source": "delegated actual pytest result"
+  },
+  "distinct_passed_cases": 48
+}

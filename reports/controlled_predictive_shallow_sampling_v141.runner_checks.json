@@ -1,0 +1,15 @@
+{
+  "attempts": [
+    {
+      "tests": 6,
+      "failures": 0,
+      "seconds": 0.016118062001623912,
+      "environment_samples": 0,
+      "environment_random_draws": 0,
+      "native_model_calls": 0,
+      "model_updates": 0,
+      "source_refits": 0,
+      "scope": "Mocked retained source references, complete stride diagnostics, paired seeds, shallow-only games and input freeze."
+    }
+  ]
+}

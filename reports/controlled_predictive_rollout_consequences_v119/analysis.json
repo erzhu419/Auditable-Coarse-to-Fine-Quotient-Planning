@@ -1,0 +1,1849 @@
+{
+  "schema": "acfqp.rollout_consequences_analysis.v119",
+  "complete": true,
+  "primary_complete": true,
+  "checks": {
+    "frozen_settings": true,
+    "lifecycle_roster": true,
+    "summary_roster": true,
+    "retained_roster": true,
+    "source_capsule_only": true,
+    "inherited_costs_match": true,
+    "source_read_only": true,
+    "fresh_paired_streams": true,
+    "terminal_games": true,
+    "utility_recomputed": true,
+    "physical_environment_counts": true,
+    "retained_summary_matches": true,
+    "retained_action_histories": true,
+    "no_new_training": true
+  },
+  "control": {
+    "methods": {
+      "H2_ONLY": {
+        "reward": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 8882.0,
+                "utility": 4.3369140625,
+                "steps": 561.0,
+                "seconds": 0.519970438501332,
+                "setup_seconds": 0.0
+              },
+              "statuses": {
+                "LOST": 2
+              },
+              "win_fraction": 0.0,
+              "lost_fraction": 1.0
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 10088.0,
+                "utility": 4.92578125,
+                "steps": 605.0,
+                "seconds": 0.5672823615022935,
+                "setup_seconds": 0.0
+              },
+              "statuses": {
+                "LOST": 2
+              },
+              "win_fraction": 0.0,
+              "lost_fraction": 1.0
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 14354.0,
+                "utility": 7.0087890625,
+                "steps": 850.0,
+                "seconds": 0.8745097895007348,
+                "setup_seconds": 0.0
+              },
+              "statuses": {
+                "LOST": 2
+              },
+              "win_fraction": 0.0,
+              "lost_fraction": 1.0
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 9752.0,
+                "utility": 4.76171875,
+                "steps": 617.5,
+                "seconds": 0.6034512789992732,
+                "setup_seconds": 0.0
+              },
+              "statuses": {
+                "LOST": 2
+              },
+              "win_fraction": 0.0,
+              "lost_fraction": 1.0
+            }
+          ],
+          "complete": true,
+          "lifecycle_mean": {
+            "score": 10769.0,
+            "utility": 5.25830078125,
+            "steps": 658.375,
+            "seconds": 0.6413034671259084,
+            "setup_seconds": 0.0
+          },
+          "win_fraction": 0.0,
+          "lost_fraction": 1.0,
+          "statuses": {
+            "LOST": 8
+          }
+        },
+        "risk_goal": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 6454.0,
+                "utility": -0.8486328125,
+                "steps": 450.0,
+                "seconds": 0.43044744999860995,
+                "setup_seconds": 0.0
+              },
+              "statuses": {
+                "LOST": 2
+              },
+              "win_fraction": 0.0,
+              "lost_fraction": 1.0
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 10244.0,
+                "utility": 1.001953125,
+                "steps": 619.0,
+                "seconds": 0.5903876134980237,
+                "setup_seconds": 0.0
+              },
+              "statuses": {
+                "LOST": 2
+              },
+              "win_fraction": 0.0,
+              "lost_fraction": 1.0
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 14024.0,
+                "utility": 2.84765625,
+                "steps": 827.5,
+                "seconds": 0.7391192274953937,
+                "setup_seconds": 0.0
+              },
+              "statuses": {
+                "LOST": 2
+              },
+              "win_fraction": 0.0,
+              "lost_fraction": 1.0
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 9754.0,
+                "utility": 0.7626953125,
+                "steps": 618.0,
+                "seconds": 0.6120533639987116,
+                "setup_seconds": 0.0
+              },
+              "statuses": {
+                "LOST": 2
+              },
+              "win_fraction": 0.0,
+              "lost_fraction": 1.0
+            }
+          ],
+          "complete": true,
+          "lifecycle_mean": {
+            "score": 10119.0,
+            "utility": 0.94091796875,
+            "steps": 628.625,
+            "seconds": 0.5930019137476847,
+            "setup_seconds": 0.0
+          },
+          "win_fraction": 0.0,
+          "lost_fraction": 1.0,
+          "statuses": {
+            "LOST": 8
+          }
+        }
+      },
+      "TREE": {
+        "reward": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 9196.0,
+                "utility": 4.490234375,
+                "steps": 573.5,
+                "seconds": 0.6885111379997397,
+                "setup_seconds": 0.0
+              },
+              "statuses": {
+                "LOST": 2
+              },
+              "win_fraction": 0.0,
+              "lost_fraction": 1.0
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 6390.0,
+                "utility": 3.1201171875,
+                "steps": 410.0,
+                "seconds": 0.5558029374988109,
+                "setup_seconds": 0.0
+              },
+              "statuses": {
+                "LOST": 2
+              },
+              "win_fraction": 0.0,
+              "lost_fraction": 1.0
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 2800.0,
+                "utility": 1.3671875,
+                "steps": 233.5,
+                "seconds": 0.2903263345033338,
+                "setup_seconds": 0.0
+              },
+              "statuses": {
+                "LOST": 2
+              },
+              "win_fraction": 0.0,
+              "lost_fraction": 1.0
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 3566.0,
+                "utility": 1.7412109375,
+                "steps": 280.5,
+                "seconds": 0.32928634650306776,
+                "setup_seconds": 0.0
+              },
+              "statuses": {
+                "LOST": 2
+              },
+              "win_fraction": 0.0,
+              "lost_fraction": 1.0
+            }
+          ],
+          "complete": true,
+          "lifecycle_mean": {
+            "score": 5488.0,
+            "utility": 2.6796875,
+            "steps": 374.375,
+            "seconds": 0.46598168912623805,
+            "setup_seconds": 0.0
+          },
+          "win_fraction": 0.0,
+          "lost_fraction": 1.0,
+          "statuses": {
+            "LOST": 8
+          }
+        },
+        "risk_goal": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 6402.0,
+                "utility": -0.8740234375,
+                "steps": 435.0,
+                "seconds": 0.5611576150040491,
+                "setup_seconds": 0.0
+              },
+              "statuses": {
+                "LOST": 2
+              },
+              "win_fraction": 0.0,
+              "lost_fraction": 1.0
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 2492.0,
+                "utility": -2.783203125,
+                "steps": 215.0,
+                "seconds": 0.3328733070011367,
+                "setup_seconds": 0.0
+              },
+              "statuses": {
+                "LOST": 2
+              },
+              "win_fraction": 0.0,
+              "lost_fraction": 1.0
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 2428.0,
+                "utility": -2.814453125,
+                "steps": 217.0,
+                "seconds": 0.29152761500154156,
+                "setup_seconds": 0.0
+              },
+              "statuses": {
+                "LOST": 2
+              },
+              "win_fraction": 0.0,
+              "lost_fraction": 1.0
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 4018.0,
+                "utility": -2.0380859375,
+                "steps": 308.0,
+                "seconds": 0.36693356050454895,
+                "setup_seconds": 0.0
+              },
+              "statuses": {
+                "LOST": 2
+              },
+              "win_fraction": 0.0,
+              "lost_fraction": 1.0
+            }
+          ],
+          "complete": true,
+          "lifecycle_mean": {
+            "score": 3835.0,
+            "utility": -2.12744140625,
+            "steps": 293.75,
+            "seconds": 0.3881230243778191,
+            "setup_seconds": 0.0
+          },
+          "win_fraction": 0.0,
+          "lost_fraction": 1.0,
+          "statuses": {
+            "LOST": 8
+          }
+        }
+      },
+      "MC4": {
+        "reward": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 14114.0,
+                "utility": 6.8916015625,
+                "steps": 750.5,
+                "seconds": 2.0322519760047726,
+                "setup_seconds": 0.32839931799753685
+              },
+              "statuses": {
+                "LOST": 1,
+                "WON": 1
+              },
+              "win_fraction": 0.5,
+              "lost_fraction": 0.5
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 18660.0,
+                "utility": 9.111328125,
+                "steps": 988.5,
+                "seconds": 2.7594598494979437,
+                "setup_seconds": 0.3546101030005957
+              },
+              "statuses": {
+                "WON": 1,
+                "LOST": 1
+              },
+              "win_fraction": 0.5,
+              "lost_fraction": 0.5
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 18172.0,
+                "utility": 8.873046875,
+                "steps": 951.5,
+                "seconds": 2.647477043497929,
+                "setup_seconds": 0.3235214365013235
+              },
+              "statuses": {
+                "WON": 1,
+                "LOST": 1
+              },
+              "win_fraction": 0.5,
+              "lost_fraction": 0.5
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 11152.0,
+                "utility": 5.4453125,
+                "steps": 683.0,
+                "seconds": 1.8828102610023052,
+                "setup_seconds": 0.3562376390036661
+              },
+              "statuses": {
+                "LOST": 2
+              },
+              "win_fraction": 0.0,
+              "lost_fraction": 1.0
+            }
+          ],
+          "complete": true,
+          "lifecycle_mean": {
+            "score": 15524.5,
+            "utility": 7.580322265625,
+            "steps": 843.375,
+            "seconds": 2.3304997825007376,
+            "setup_seconds": 0.34069212412578054
+          },
+          "win_fraction": 0.375,
+          "lost_fraction": 0.625,
+          "statuses": {
+            "LOST": 5,
+            "WON": 3
+          }
+        },
+        "risk_goal": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 8602.0,
+                "utility": 0.2001953125,
+                "steps": 533.5,
+                "seconds": 2.0679420540000137,
+                "setup_seconds": 0.00033663350041024387
+              },
+              "statuses": {
+                "LOST": 2
+              },
+              "win_fraction": 0.0,
+              "lost_fraction": 1.0
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 16242.0,
+                "utility": 7.9306640625,
+                "steps": 841.0,
+                "seconds": 3.1942969705050928,
+                "setup_seconds": 0.0003264085025875829
+              },
+              "statuses": {
+                "WON": 1,
+                "LOST": 1
+              },
+              "win_fraction": 0.5,
+              "lost_fraction": 0.5
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 18472.0,
+                "utility": 9.01953125,
+                "steps": 980.0,
+                "seconds": 3.683305216498411,
+                "setup_seconds": 0.0003093469968007412
+              },
+              "statuses": {
+                "WON": 1,
+                "LOST": 1
+              },
+              "win_fraction": 0.5,
+              "lost_fraction": 0.5
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 15968.0,
+                "utility": 7.796875,
+                "steps": 826.5,
+                "seconds": 2.956152974496945,
+                "setup_seconds": 0.00042949400085490197
+              },
+              "statuses": {
+                "LOST": 1,
+                "WON": 1
+              },
+              "win_fraction": 0.5,
+              "lost_fraction": 0.5
+            }
+          ],
+          "complete": true,
+          "lifecycle_mean": {
+            "score": 14821.0,
+            "utility": 6.23681640625,
+            "steps": 795.25,
+            "seconds": 2.9754243038751156,
+            "setup_seconds": 0.0003504707501633675
+          },
+          "win_fraction": 0.375,
+          "lost_fraction": 0.625,
+          "statuses": {
+            "LOST": 5,
+            "WON": 3
+          }
+        }
+      },
+      "MC16": {
+        "reward": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 16118.0,
+                "utility": 7.8701171875,
+                "steps": 949.5,
+                "seconds": 10.903754018498148,
+                "setup_seconds": 0.00036754699976881966
+              },
+              "statuses": {
+                "LOST": 2
+              },
+              "win_fraction": 0.0,
+              "lost_fraction": 1.0
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 20364.0,
+                "utility": 9.943359375,
+                "steps": 962.0,
+                "seconds": 10.747903661504097,
+                "setup_seconds": 0.00032619649937259965
+              },
+              "statuses": {
+                "WON": 2
+              },
+              "win_fraction": 1.0,
+              "lost_fraction": 0.0
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 20588.0,
+                "utility": 10.052734375,
+                "steps": 995.0,
+                "seconds": 10.882556333497632,
+                "setup_seconds": 0.0004672974973800592
+              },
+              "statuses": {
+                "WON": 2
+              },
+              "win_fraction": 1.0,
+              "lost_fraction": 0.0
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 10882.0,
+                "utility": 5.3134765625,
+                "steps": 556.0,
+                "seconds": 5.906101785498322,
+                "setup_seconds": 0.00029104200075380504
+              },
+              "statuses": {
+                "WON": 1,
+                "LOST": 1
+              },
+              "win_fraction": 0.5,
+              "lost_fraction": 0.5
+            }
+          ],
+          "complete": true,
+          "lifecycle_mean": {
+            "score": 16988.0,
+            "utility": 8.294921875,
+            "steps": 865.625,
+            "seconds": 9.61007894974955,
+            "setup_seconds": 0.0003630207493188209
+          },
+          "win_fraction": 0.625,
+          "lost_fraction": 0.375,
+          "statuses": {
+            "LOST": 3,
+            "WON": 5
+          }
+        },
+        "risk_goal": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 9794.0,
+                "utility": 0.7822265625,
+                "steps": 617.5,
+                "seconds": 6.546488322001096,
+                "setup_seconds": 0.0003084659983869642
+              },
+              "statuses": {
+                "LOST": 2
+              },
+              "win_fraction": 0.0,
+              "lost_fraction": 1.0
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 15730.0,
+                "utility": 3.6806640625,
+                "steps": 912.0,
+                "seconds": 9.69529548149876,
+                "setup_seconds": 0.00035410050259088166
+              },
+              "statuses": {
+                "LOST": 2
+              },
+              "win_fraction": 0.0,
+              "lost_fraction": 1.0
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 20402.0,
+                "utility": 13.9619140625,
+                "steps": 971.0,
+                "seconds": 10.191094635498303,
+                "setup_seconds": 0.00037079100002301857
+              },
+              "statuses": {
+                "WON": 2
+              },
+              "win_fraction": 1.0,
+              "lost_fraction": 0.0
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "games": 2,
+              "means": {
+                "score": 12864.0,
+                "utility": 6.28125,
+                "steps": 672.5,
+                "seconds": 8.04794917700201,
+                "setup_seconds": 0.0004281030014681164
+              },
+              "statuses": {
+                "LOST": 1,
+                "WON": 1
+              },
+              "win_fraction": 0.5,
+              "lost_fraction": 0.5
+            }
+          ],
+          "complete": true,
+          "lifecycle_mean": {
+            "score": 14697.5,
+            "utility": 6.176513671875,
+            "steps": 793.25,
+            "seconds": 8.620206904000042,
+            "setup_seconds": 0.0003653651256172452
+          },
+          "win_fraction": 0.375,
+          "lost_fraction": 0.625,
+          "statuses": {
+            "LOST": 5,
+            "WON": 3
+          }
+        }
+      }
+    },
+    "comparisons": {
+      "MC4_minus_TREE": {
+        "reward": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "deltas": {
+                "score": 4918.0,
+                "utility": 2.4013671875,
+                "steps": 177.0,
+                "seconds": 1.3437408380050329,
+                "setup_seconds": 0.32839931799753685
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "deltas": {
+                "score": 12270.0,
+                "utility": 5.9912109375,
+                "steps": 578.5,
+                "seconds": 2.2036569119991327,
+                "setup_seconds": 0.3546101030005957
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "deltas": {
+                "score": 15372.0,
+                "utility": 7.505859375,
+                "steps": 718.0,
+                "seconds": 2.3571507089945953,
+                "setup_seconds": 0.3235214365013235
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "deltas": {
+                "score": 7586.0,
+                "utility": 3.7041015625,
+                "steps": 402.5,
+                "seconds": 1.5535239144992374,
+                "setup_seconds": 0.3562376390036661
+              }
+            }
+          ],
+          "complete": true,
+          "mean_deltas": {
+            "score": 10036.5,
+            "utility": 4.900634765625,
+            "steps": 469.0,
+            "seconds": 1.8645180933744996,
+            "setup_seconds": 0.34069212412578054
+          },
+          "utility_signs": {
+            "positive": 4,
+            "negative": 0,
+            "equal": 0,
+            "missing": 0
+          }
+        },
+        "risk_goal": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "deltas": {
+                "score": 2200.0,
+                "utility": 1.07421875,
+                "steps": 98.5,
+                "seconds": 1.5067844389959646,
+                "setup_seconds": 0.00033663350041024387
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "deltas": {
+                "score": 13750.0,
+                "utility": 10.7138671875,
+                "steps": 626.0,
+                "seconds": 2.861423663503956,
+                "setup_seconds": 0.0003264085025875829
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "deltas": {
+                "score": 16044.0,
+                "utility": 11.833984375,
+                "steps": 763.0,
+                "seconds": 3.3917776014968695,
+                "setup_seconds": 0.0003093469968007412
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "deltas": {
+                "score": 11950.0,
+                "utility": 9.8349609375,
+                "steps": 518.5,
+                "seconds": 2.589219413992396,
+                "setup_seconds": 0.00042949400085490197
+              }
+            }
+          ],
+          "complete": true,
+          "mean_deltas": {
+            "score": 10986.0,
+            "utility": 8.3642578125,
+            "steps": 501.5,
+            "seconds": 2.5873012794972965,
+            "setup_seconds": 0.0003504707501633675
+          },
+          "utility_signs": {
+            "positive": 4,
+            "negative": 0,
+            "equal": 0,
+            "missing": 0
+          }
+        }
+      },
+      "MC16_minus_TREE": {
+        "reward": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "deltas": {
+                "score": 6922.0,
+                "utility": 3.3798828125,
+                "steps": 376.0,
+                "seconds": 10.215242880498408,
+                "setup_seconds": 0.00036754699976881966
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "deltas": {
+                "score": 13974.0,
+                "utility": 6.8232421875,
+                "steps": 552.0,
+                "seconds": 10.192100724005286,
+                "setup_seconds": 0.00032619649937259965
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "deltas": {
+                "score": 17788.0,
+                "utility": 8.685546875,
+                "steps": 761.5,
+                "seconds": 10.592229998994299,
+                "setup_seconds": 0.0004672974973800592
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "deltas": {
+                "score": 7316.0,
+                "utility": 3.572265625,
+                "steps": 275.5,
+                "seconds": 5.576815438995254,
+                "setup_seconds": 0.00029104200075380504
+              }
+            }
+          ],
+          "complete": true,
+          "mean_deltas": {
+            "score": 11500.0,
+            "utility": 5.615234375,
+            "steps": 491.25,
+            "seconds": 9.144097260623312,
+            "setup_seconds": 0.0003630207493188209
+          },
+          "utility_signs": {
+            "positive": 4,
+            "negative": 0,
+            "equal": 0,
+            "missing": 0
+          }
+        },
+        "risk_goal": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "deltas": {
+                "score": 3392.0,
+                "utility": 1.65625,
+                "steps": 182.5,
+                "seconds": 5.985330706997047,
+                "setup_seconds": 0.0003084659983869642
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "deltas": {
+                "score": 13238.0,
+                "utility": 6.4638671875,
+                "steps": 697.0,
+                "seconds": 9.362422174497624,
+                "setup_seconds": 0.00035410050259088166
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "deltas": {
+                "score": 17974.0,
+                "utility": 16.7763671875,
+                "steps": 754.0,
+                "seconds": 9.899567020496761,
+                "setup_seconds": 0.00037079100002301857
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "deltas": {
+                "score": 8846.0,
+                "utility": 8.3193359375,
+                "steps": 364.5,
+                "seconds": 7.6810156164974615,
+                "setup_seconds": 0.0004281030014681164
+              }
+            }
+          ],
+          "complete": true,
+          "mean_deltas": {
+            "score": 10862.5,
+            "utility": 8.303955078125,
+            "steps": 499.5,
+            "seconds": 8.232083879622223,
+            "setup_seconds": 0.0003653651256172452
+          },
+          "utility_signs": {
+            "positive": 4,
+            "negative": 0,
+            "equal": 0,
+            "missing": 0
+          }
+        }
+      },
+      "MC4_minus_H2_ONLY": {
+        "reward": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "deltas": {
+                "score": 5232.0,
+                "utility": 2.5546875,
+                "steps": 189.5,
+                "seconds": 1.5122815375034406,
+                "setup_seconds": 0.32839931799753685
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "deltas": {
+                "score": 8572.0,
+                "utility": 4.185546875,
+                "steps": 383.5,
+                "seconds": 2.19217748799565,
+                "setup_seconds": 0.3546101030005957
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "deltas": {
+                "score": 3818.0,
+                "utility": 1.8642578125,
+                "steps": 101.5,
+                "seconds": 1.7729672539971943,
+                "setup_seconds": 0.3235214365013235
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "deltas": {
+                "score": 1400.0,
+                "utility": 0.68359375,
+                "steps": 65.5,
+                "seconds": 1.279358982003032,
+                "setup_seconds": 0.3562376390036661
+              }
+            }
+          ],
+          "complete": true,
+          "mean_deltas": {
+            "score": 4755.5,
+            "utility": 2.322021484375,
+            "steps": 185.0,
+            "seconds": 1.6891963153748293,
+            "setup_seconds": 0.34069212412578054
+          },
+          "utility_signs": {
+            "positive": 4,
+            "negative": 0,
+            "equal": 0,
+            "missing": 0
+          }
+        },
+        "risk_goal": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "deltas": {
+                "score": 2148.0,
+                "utility": 1.048828125,
+                "steps": 83.5,
+                "seconds": 1.6374946040014038,
+                "setup_seconds": 0.00033663350041024387
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "deltas": {
+                "score": 5998.0,
+                "utility": 6.9287109375,
+                "steps": 222.0,
+                "seconds": 2.603909357007069,
+                "setup_seconds": 0.0003264085025875829
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "deltas": {
+                "score": 4448.0,
+                "utility": 6.171875,
+                "steps": 152.5,
+                "seconds": 2.9441859890030173,
+                "setup_seconds": 0.0003093469968007412
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "deltas": {
+                "score": 6214.0,
+                "utility": 7.0341796875,
+                "steps": 208.5,
+                "seconds": 2.3440996104982332,
+                "setup_seconds": 0.00042949400085490197
+              }
+            }
+          ],
+          "complete": true,
+          "mean_deltas": {
+            "score": 4702.0,
+            "utility": 5.2958984375,
+            "steps": 166.625,
+            "seconds": 2.382422390127431,
+            "setup_seconds": 0.0003504707501633675
+          },
+          "utility_signs": {
+            "positive": 4,
+            "negative": 0,
+            "equal": 0,
+            "missing": 0
+          }
+        }
+      },
+      "MC16_minus_H2_ONLY": {
+        "reward": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "deltas": {
+                "score": 7236.0,
+                "utility": 3.533203125,
+                "steps": 388.5,
+                "seconds": 10.383783579996816,
+                "setup_seconds": 0.00036754699976881966
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "deltas": {
+                "score": 10276.0,
+                "utility": 5.017578125,
+                "steps": 357.0,
+                "seconds": 10.180621300001803,
+                "setup_seconds": 0.00032619649937259965
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "deltas": {
+                "score": 6234.0,
+                "utility": 3.0439453125,
+                "steps": 145.0,
+                "seconds": 10.008046543996898,
+                "setup_seconds": 0.0004672974973800592
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "deltas": {
+                "score": 1130.0,
+                "utility": 0.5517578125,
+                "steps": -61.5,
+                "seconds": 5.302650506499049,
+                "setup_seconds": 0.00029104200075380504
+              }
+            }
+          ],
+          "complete": true,
+          "mean_deltas": {
+            "score": 6219.0,
+            "utility": 3.03662109375,
+            "steps": 207.25,
+            "seconds": 8.968775482623641,
+            "setup_seconds": 0.0003630207493188209
+          },
+          "utility_signs": {
+            "positive": 4,
+            "negative": 0,
+            "equal": 0,
+            "missing": 0
+          }
+        },
+        "risk_goal": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "deltas": {
+                "score": 3340.0,
+                "utility": 1.630859375,
+                "steps": 167.5,
+                "seconds": 6.116040872002486,
+                "setup_seconds": 0.0003084659983869642
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "deltas": {
+                "score": 5486.0,
+                "utility": 2.6787109375,
+                "steps": 293.0,
+                "seconds": 9.104907868000737,
+                "setup_seconds": 0.00035410050259088166
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "deltas": {
+                "score": 6378.0,
+                "utility": 11.1142578125,
+                "steps": 143.5,
+                "seconds": 9.451975408002909,
+                "setup_seconds": 0.00037079100002301857
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "deltas": {
+                "score": 3110.0,
+                "utility": 5.5185546875,
+                "steps": 54.5,
+                "seconds": 7.435895813003299,
+                "setup_seconds": 0.0004281030014681164
+              }
+            }
+          ],
+          "complete": true,
+          "mean_deltas": {
+            "score": 4578.5,
+            "utility": 5.235595703125,
+            "steps": 164.625,
+            "seconds": 8.027204990252358,
+            "setup_seconds": 0.0003653651256172452
+          },
+          "utility_signs": {
+            "positive": 4,
+            "negative": 0,
+            "equal": 0,
+            "missing": 0
+          }
+        }
+      },
+      "MC16_minus_MC4": {
+        "reward": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "deltas": {
+                "score": 2004.0,
+                "utility": 0.978515625,
+                "steps": 199.0,
+                "seconds": 8.871502042493375,
+                "setup_seconds": -0.32803177099776804
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "deltas": {
+                "score": 1704.0,
+                "utility": 0.83203125,
+                "steps": -26.5,
+                "seconds": 7.988443812006153,
+                "setup_seconds": -0.3542839065012231
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "deltas": {
+                "score": 2416.0,
+                "utility": 1.1796875,
+                "steps": 43.5,
+                "seconds": 8.235079289999703,
+                "setup_seconds": -0.3230541390039434
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "deltas": {
+                "score": -270.0,
+                "utility": -0.1318359375,
+                "steps": -127.0,
+                "seconds": 4.023291524496017,
+                "setup_seconds": -0.3559465970029123
+              }
+            }
+          ],
+          "complete": true,
+          "mean_deltas": {
+            "score": 1463.5,
+            "utility": 0.714599609375,
+            "steps": 22.25,
+            "seconds": 7.279579167248812,
+            "setup_seconds": -0.3403291033764617
+          },
+          "utility_signs": {
+            "positive": 3,
+            "negative": 1,
+            "equal": 0,
+            "missing": 0
+          }
+        },
+        "risk_goal": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "deltas": {
+                "score": 1192.0,
+                "utility": 0.58203125,
+                "steps": 84.0,
+                "seconds": 4.478546268001082,
+                "setup_seconds": -2.8167502023279667e-05
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "deltas": {
+                "score": -512.0,
+                "utility": -4.25,
+                "steps": 71.0,
+                "seconds": 6.500998510993668,
+                "setup_seconds": 2.7692000003298745e-05
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "deltas": {
+                "score": 1930.0,
+                "utility": 4.9423828125,
+                "steps": -9.0,
+                "seconds": 6.5077894189998915,
+                "setup_seconds": 6.144400322227739e-05
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "deltas": {
+                "score": -3104.0,
+                "utility": -1.515625,
+                "steps": -154.0,
+                "seconds": 5.091796202505066,
+                "setup_seconds": -1.390999386785552e-06
+              }
+            }
+          ],
+          "complete": true,
+          "mean_deltas": {
+            "score": -123.5,
+            "utility": -0.060302734375,
+            "steps": -2.0,
+            "seconds": 5.644782600124927,
+            "setup_seconds": 1.4894375453877728e-05
+          },
+          "utility_signs": {
+            "positive": 2,
+            "negative": 2,
+            "equal": 0,
+            "missing": 0
+          }
+        }
+      },
+      "TREE_minus_H2_ONLY": {
+        "reward": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "deltas": {
+                "score": 314.0,
+                "utility": 0.1533203125,
+                "steps": 12.5,
+                "seconds": 0.16854069949840778,
+                "setup_seconds": 0.0
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "deltas": {
+                "score": -3698.0,
+                "utility": -1.8056640625,
+                "steps": -195.0,
+                "seconds": -0.011479424003482563,
+                "setup_seconds": 0.0
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "deltas": {
+                "score": -11554.0,
+                "utility": -5.6416015625,
+                "steps": -616.5,
+                "seconds": -0.584183454997401,
+                "setup_seconds": 0.0
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "deltas": {
+                "score": -6186.0,
+                "utility": -3.0205078125,
+                "steps": -337.0,
+                "seconds": -0.27416493249620544,
+                "setup_seconds": 0.0
+              }
+            }
+          ],
+          "complete": true,
+          "mean_deltas": {
+            "score": -5281.0,
+            "utility": -2.57861328125,
+            "steps": -284.0,
+            "seconds": -0.1753217779996703,
+            "setup_seconds": 0.0
+          },
+          "utility_signs": {
+            "positive": 1,
+            "negative": 3,
+            "equal": 0,
+            "missing": 0
+          }
+        },
+        "risk_goal": {
+          "lifecycles": [
+            {
+              "life": 0,
+              "complete": true,
+              "deltas": {
+                "score": -52.0,
+                "utility": -0.025390625,
+                "steps": -15.0,
+                "seconds": 0.1307101650054392,
+                "setup_seconds": 0.0
+              }
+            },
+            {
+              "life": 1,
+              "complete": true,
+              "deltas": {
+                "score": -7752.0,
+                "utility": -3.78515625,
+                "steps": -404.0,
+                "seconds": -0.257514306496887,
+                "setup_seconds": 0.0
+              }
+            },
+            {
+              "life": 2,
+              "complete": true,
+              "deltas": {
+                "score": -11596.0,
+                "utility": -5.662109375,
+                "steps": -610.5,
+                "seconds": -0.44759161249385215,
+                "setup_seconds": 0.0
+              }
+            },
+            {
+              "life": 3,
+              "complete": true,
+              "deltas": {
+                "score": -5736.0,
+                "utility": -2.80078125,
+                "steps": -310.0,
+                "seconds": -0.24511980349416262,
+                "setup_seconds": 0.0
+              }
+            }
+          ],
+          "complete": true,
+          "mean_deltas": {
+            "score": -6284.0,
+            "utility": -3.068359375,
+            "steps": -334.875,
+            "seconds": -0.20487888936986565,
+            "setup_seconds": 0.0
+          },
+          "utility_signs": {
+            "positive": 0,
+            "negative": 4,
+            "equal": 0,
+            "missing": 0
+          }
+        }
+      }
+    }
+  },
+  "actual_executed_work": {
+    "total": {
+      "games": 64,
+      "environment": {
+        "environment_random_draws": 84298,
+        "initial_spawns": 128,
+        "ground_state_status_calls": 42085,
+        "ground_status_internal_swipe_calls": 168284,
+        "ground_swipe_calls": 210305,
+        "ground_explicit_swipe_calls": 42021,
+        "sampled_transitions": 42021
+      },
+      "planning": {
+        "learned_terminal_checks": 266629,
+        "learned_swipe_calls": 1066516,
+        "learned_line_rewrites": 4266064,
+        "legal_swipes": 1182012,
+        "model_uniform_draws": 168084,
+        "model_spawn_samples": 296962,
+        "h2_cutoff_contracts": 72354,
+        "h2_contract_compiled_programs": 10296,
+        "h2_contract_full_board_materializations": 0,
+        "h2_contract_factorized_contexts": 72354,
+        "h2_contract_candidate_predicate_evaluations": 0,
+        "h2_contract_contract_materializations": 51942,
+        "h2_contract_effect_key_constructions": 249871,
+        "h2_contract_effect_cache_lookups": 249871,
+        "h2_contract_effect_cache_hits": 52806,
+        "h2_contract_effect_cache_entries": 197065,
+        "h2_contract_effect_score_aggregations": 197065,
+        "h2_contract_effect_output_line_references": 999484,
+        "h2_contract_effect_vacancy_keys": 0,
+        "h2_contract_effect_exact_output_keys": 249871,
+        "h2_contract_direct_observation_evaluations": 72354,
+        "h2_contract_prepare_calls": 72354,
+        "h2_contract_line_lookups": 1157664,
+        "h2_contract_line_evaluations": 579252,
+        "h2_contract_line_summary_adjacent_tests": 1714219,
+        "h2_contract_line_cache_hits": 578412,
+        "h2_contract_context_contract_evaluations": 72354,
+        "h2_contract_predicate_calls": 72354,
+        "h2_contract_candidate_action_changed_tests": 289416,
+        "h2_contract_candidate_action_predicate_evaluations": 197065,
+        "h2_contract_terminal_predicate_evaluations": 197065,
+        "h2_contract_terminal_spawn_rank_classifications": 394130,
+        "h2_contract_predicate_materializations": 72354,
+        "h2_contract_contract_cache_lookups": 72354,
+        "h2_contract_contract_fraction_accumulations": 353184,
+        "h2_contract_terminal_probability_combinations": 353184,
+        "h2_contract_contract_cache_hits": 20412,
+        "h2_contract_base_adjacent_tests": 43949,
+        "h2_contract_cross_line_adjacent_tests": 27201,
+        "h2_contract_base_hole_neighbor_reads": 1542,
+        "h2_contract_hole_neighbor_rank_reads": 3279,
+        "knowledge_batch_calls": 31700,
+        "predicted_afterstates": 782558,
+        "policy_vectors": 2347674
+      },
+      "consequence": {
+        "predict_many_calls": 31700,
+        "prediction_boards": 782558,
+        "policy_prediction_rows": 2347674,
+        "feature_rows": 129449,
+        "tree_apply_rows": 388347,
+        "tree_split_visits": 2135448,
+        "policy_vector_rollouts": 19807704,
+        "model_uniform_draws": 16410160,
+        "model_spawn_samples": 519584080,
+        "rollout_actions": 499776376,
+        "learned_terminal_checks": 519584080,
+        "learned_swipe_calls": 2077806608,
+        "learned_line_rewrites": 8311226432,
+        "legal_swipes": 1738822484
+      },
+      "setup": {
+        "cpp_compilations": 4,
+        "lookup_line_rewrites": 58564,
+        "cpp_library_cache_hits": 28,
+        "lookup_table_cache_hits": 28
+      },
+      "episode_seconds": 204.99696027602477,
+      "setup_seconds": 2.7341678460070398,
+      "total_model_spawn_samples": 519881042
+    },
+    "methods": {
+      "H2_ONLY": {
+        "games": 16,
+        "environment": {
+          "environment_random_draws": 20656,
+          "initial_spawns": 32,
+          "ground_state_status_calls": 10312,
+          "ground_status_internal_swipe_calls": 41248,
+          "ground_swipe_calls": 51544,
+          "ground_explicit_swipe_calls": 10296,
+          "sampled_transitions": 10296
+        },
+        "planning": {
+          "learned_terminal_checks": 10296,
+          "learned_swipe_calls": 41184,
+          "learned_line_rewrites": 164736,
+          "legal_swipes": 286048,
+          "model_uniform_draws": 41184,
+          "model_spawn_samples": 72354,
+          "h2_cutoff_contracts": 72354,
+          "h2_contract_compiled_programs": 10296,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 72354,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 51942,
+          "h2_contract_effect_key_constructions": 249871,
+          "h2_contract_effect_cache_lookups": 249871,
+          "h2_contract_effect_cache_hits": 52806,
+          "h2_contract_effect_cache_entries": 197065,
+          "h2_contract_effect_score_aggregations": 197065,
+          "h2_contract_effect_output_line_references": 999484,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 249871,
+          "h2_contract_direct_observation_evaluations": 72354,
+          "h2_contract_prepare_calls": 72354,
+          "h2_contract_line_lookups": 1157664,
+          "h2_contract_line_evaluations": 579252,
+          "h2_contract_line_summary_adjacent_tests": 1714219,
+          "h2_contract_line_cache_hits": 578412,
+          "h2_contract_context_contract_evaluations": 72354,
+          "h2_contract_predicate_calls": 72354,
+          "h2_contract_candidate_action_changed_tests": 289416,
+          "h2_contract_candidate_action_predicate_evaluations": 197065,
+          "h2_contract_terminal_predicate_evaluations": 197065,
+          "h2_contract_terminal_spawn_rank_classifications": 394130,
+          "h2_contract_predicate_materializations": 72354,
+          "h2_contract_contract_cache_lookups": 72354,
+          "h2_contract_contract_fraction_accumulations": 353184,
+          "h2_contract_terminal_probability_combinations": 353184,
+          "h2_contract_contract_cache_hits": 20412,
+          "h2_contract_base_adjacent_tests": 43949,
+          "h2_contract_cross_line_adjacent_tests": 27201,
+          "h2_contract_base_hole_neighbor_reads": 1542,
+          "h2_contract_hole_neighbor_rank_reads": 3279
+        },
+        "consequence": {},
+        "setup": {},
+        "episode_seconds": 9.874443046988745,
+        "setup_seconds": 0.0,
+        "total_model_spawn_samples": 72354
+      },
+      "TREE": {
+        "games": 16,
+        "environment": {
+          "environment_random_draws": 10754,
+          "initial_spawns": 32,
+          "ground_state_status_calls": 5361,
+          "ground_status_internal_swipe_calls": 21444,
+          "ground_swipe_calls": 26789,
+          "ground_explicit_swipe_calls": 5345,
+          "sampled_transitions": 5345
+        },
+        "planning": {
+          "learned_terminal_checks": 42917,
+          "learned_swipe_calls": 171668,
+          "learned_line_rewrites": 686672,
+          "legal_swipes": 148235,
+          "model_uniform_draws": 21380,
+          "model_spawn_samples": 37572,
+          "knowledge_batch_calls": 5331,
+          "predicted_afterstates": 129449,
+          "policy_vectors": 388347
+        },
+        "consequence": {
+          "predict_many_calls": 5331,
+          "prediction_boards": 129449,
+          "policy_prediction_rows": 388347,
+          "feature_rows": 129449,
+          "tree_apply_rows": 388347,
+          "tree_split_visits": 2135448
+        },
+        "setup": {},
+        "episode_seconds": 6.832837708032457,
+        "setup_seconds": 0.0,
+        "total_model_spawn_samples": 37572
+      },
+      "MC4": {
+        "games": 16,
+        "environment": {
+          "environment_random_draws": 26282,
+          "initial_spawns": 32,
+          "ground_state_status_calls": 13125,
+          "ground_status_internal_swipe_calls": 52476,
+          "ground_swipe_calls": 65585,
+          "ground_explicit_swipe_calls": 13109,
+          "sampled_transitions": 13109
+        },
+        "planning": {
+          "learned_terminal_checks": 105443,
+          "learned_swipe_calls": 421772,
+          "learned_line_rewrites": 1687088,
+          "legal_swipes": 367237,
+          "model_uniform_draws": 52436,
+          "model_spawn_samples": 92334,
+          "knowledge_batch_calls": 13102,
+          "predicted_afterstates": 320598,
+          "policy_vectors": 961794
+        },
+        "consequence": {
+          "predict_many_calls": 13102,
+          "prediction_boards": 320598,
+          "policy_prediction_rows": 961794,
+          "policy_vector_rollouts": 3847176,
+          "model_uniform_draws": 3249296,
+          "model_spawn_samples": 98218441,
+          "rollout_actions": 94371265,
+          "learned_terminal_checks": 98218441,
+          "learned_swipe_calls": 392785736,
+          "learned_line_rewrites": 1571142944,
+          "legal_swipes": 326750809
+        },
+        "setup": {
+          "cpp_compilations": 4,
+          "lookup_line_rewrites": 58564,
+          "cpp_library_cache_hits": 12,
+          "lookup_table_cache_hits": 12
+        },
+        "episode_seconds": 42.447392691006826,
+        "setup_seconds": 2.7283407590075512,
+        "total_model_spawn_samples": 98310775
+      },
+      "MC16": {
+        "games": 16,
+        "environment": {
+          "environment_random_draws": 26606,
+          "initial_spawns": 32,
+          "ground_state_status_calls": 13287,
+          "ground_status_internal_swipe_calls": 53116,
+          "ground_swipe_calls": 66387,
+          "ground_explicit_swipe_calls": 13271,
+          "sampled_transitions": 13271
+        },
+        "planning": {
+          "learned_terminal_checks": 107973,
+          "learned_swipe_calls": 431892,
+          "learned_line_rewrites": 1727568,
+          "legal_swipes": 380492,
+          "model_uniform_draws": 53084,
+          "model_spawn_samples": 94702,
+          "knowledge_batch_calls": 13267,
+          "predicted_afterstates": 332511,
+          "policy_vectors": 997533
+        },
+        "consequence": {
+          "predict_many_calls": 13267,
+          "prediction_boards": 332511,
+          "policy_prediction_rows": 997533,
+          "policy_vector_rollouts": 15960528,
+          "model_uniform_draws": 13160864,
+          "model_spawn_samples": 421365639,
+          "rollout_actions": 405405111,
+          "learned_terminal_checks": 421365639,
+          "learned_swipe_calls": 1685020872,
+          "learned_line_rewrites": 6740083488,
+          "legal_swipes": 1412071675
+        },
+        "setup": {
+          "cpp_library_cache_hits": 16,
+          "lookup_table_cache_hits": 16
+        },
+        "episode_seconds": 145.84228682999674,
+        "setup_seconds": 0.005827086999488529,
+        "total_model_spawn_samples": 421460341
+      }
+    },
+    "newly_sampled_environment_transitions": 42021,
+    "imagined_model_spawn_samples": 519881042,
+    "new_tree_fits": 0,
+    "new_router_observations": 0,
+    "retained_cost_rows": 64,
+    "summary_only_cost_rows": 0,
+    "wall_seconds": 62.20853242400335
+  },
+  "inherited_source_work": {
+    "source_environment": {
+      "environment_random_draws": 98138,
+      "initial_spawns": 432,
+      "ground_state_status_calls": 48853,
+      "ground_status_internal_swipe_calls": 195412,
+      "ground_swipe_calls": 244049,
+      "ground_explicit_swipe_calls": 48637,
+      "sampled_transitions": 48637
+    },
+    "tree_fitting": {
+      "metadata_rows_read": 65140,
+      "training_rows_read": 65140,
+      "tree_fits": 96,
+      "constant_leaf_models": 0,
+      "fit_rows": 65140,
+      "feature_rows": 65140
+    },
+    "utility_validation_environment": {
+      "environment_random_draws": 104046,
+      "initial_spawns": 384,
+      "ground_state_status_calls": 51831,
+      "ground_status_internal_swipe_calls": 207324,
+      "ground_swipe_calls": 258963,
+      "ground_explicit_swipe_calls": 51639,
+      "sampled_transitions": 51639
+    },
+    "source_planning": {
+      "learned_terminal_checks": 48637,
+      "learned_swipe_calls": 194548,
+      "learned_line_rewrites": 778192,
+      "legal_swipes": 170250
+    },
+    "source_seconds": 7.847802990057971,
+    "source_router": {
+      "observations_received": 48637,
+      "beta_updates": 48448,
+      "predict_calls": 48637,
+      "routing_blocks": 741,
+      "candidate_predictive_scores": 1965,
+      "module_creations": 4,
+      "module_reactivations": 22
+    },
+    "mse_selection_prediction": {
+      "predict_records_calls": 32,
+      "prediction_record_requests": 47802,
+      "record_route_lookups": 47802,
+      "feature_rows": 47802,
+      "tree_apply_rows": 47802,
+      "tree_split_visits": 284822,
+      "predicted_record_rows": 47802,
+      "policy_prediction_rows": 47802
+    },
+    "utility_validation_planning": {
+      "learned_terminal_checks": 410393,
+      "learned_swipe_calls": 1641572,
+      "learned_line_rewrites": 6566288,
+      "legal_swipes": 1406810,
+      "model_uniform_draws": 206556,
+      "model_spawn_samples": 358754,
+      "knowledge_batch_calls": 51553,
+      "predicted_afterstates": 1227433,
+      "policy_vectors": 3682299
+    },
+    "utility_validation_prediction": {
+      "predict_many_calls": 51553,
+      "prediction_boards": 1227433,
+      "policy_prediction_rows": 3682299,
+      "feature_rows": 1227433,
+      "tree_apply_rows": 3682299,
+      "tree_split_visits": 18675441
+    },
+    "utility_validation_seconds": 124.827347906059,
+    "supplied_dynamics_fit_counts": {
+      "source_records": 208,
+      "rewrite_candidates": 144,
+      "candidate_observation_checks": 383,
+      "learned_swipe_calls": 383,
+      "learned_line_rewrites": 1532,
+      "consistent_rewrite_candidates": 1,
+      "source_spawn_rows": 184,
+      "source_spawn_outcomes": 1132,
+      "spawn_location_candidates": 3,
+      "spawn_location_observation_checks": 186,
+      "consistent_spawn_location_candidates": 1
+    },
+    "scope": "V117 source/fit plus V118 selection; old outer evaluation excluded"
+  },
+  "evidence_scope": "Four frozen A_RETURN source histories, two paired outer replicas per query. MC4 and MC16 are finite simulated consequences, not an oracle or learned compression. All costs and cutoffs retained; no general-learning or sampling-efficiency Gate claim."
+}

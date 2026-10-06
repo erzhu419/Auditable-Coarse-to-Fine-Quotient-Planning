@@ -1,0 +1,47 @@
+{
+  "attempts": [
+    {
+      "tests": 14,
+      "failures": 0,
+      "model_work": {
+        "choose_calls": 194,
+        "td_updates": 119,
+        "inner_value_predictions": 126,
+        "inner_table_lookups": 4032,
+        "inner_td_updates": 34,
+        "inner_table_updates": 600,
+        "inner_table_update_occurrences": 1088
+      },
+      "source_work": {},
+      "setup_counts": {
+        "cpp_compilations": 1,
+        "lookup_line_rewrites": 256,
+        "allocated_weight_parameters": 196608,
+        "allocated_weight_bytes": 1572864,
+        "cpp_library_cache_hits": 11,
+        "lookup_table_cache_hits": 11,
+        "source_parameters_copied": 98304,
+        "source_weight_bytes_copied": 786432
+      },
+      "queue_work": {
+        "queue_appends": 139,
+        "queue_removals": 85,
+        "target_constructions": 85,
+        "bootstrap_updates": 50,
+        "win_boundary_updates": 9,
+        "loss_updates": 26,
+        "censored_updates": 7
+      },
+      "scripted_environment_work": {
+        "environment_random_draws": 582,
+        "initial_spawns": 98,
+        "ground_state_status_calls": 242,
+        "ground_explicit_swipe_calls": 193,
+        "ground_swipe_calls": 193,
+        "sampled_transitions": 193
+      },
+      "newly_sampled_environment_transitions": 0,
+      "scope": "Finite scripted environment, native n-tuple update arithmetic, no natural-game samples."
+    }
+  ]
+}

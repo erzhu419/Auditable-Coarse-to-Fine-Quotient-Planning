@@ -1,0 +1,5 @@
+{"phase": "fold_complete", "heldout_life": 11, "source_lives": [12, 13, 14], "half_training_roots": 58, "full_training_roots": 115}
+{"phase": "fold_complete", "heldout_life": 12, "source_lives": [11, 13, 14], "half_training_roots": 59, "full_training_roots": 116}
+{"phase": "fold_complete", "heldout_life": 13, "source_lives": [11, 12, 14], "half_training_roots": 59, "full_training_roots": 116}
+{"phase": "fold_complete", "heldout_life": 14, "source_lives": [11, 12, 13], "half_training_roots": 58, "full_training_roots": 115}
+{"phase": "complete", "models": 16, "decisions": 256, "counts": {"model_payloads_loaded": 16, "model_root_scores": 256, "neural_candidate_predictions": 1280, "neural_hidden_activations": 12800, "new_environment_transitions": 0, "new_synthetic_transitions": 0, "neural_model_fits": 0, "optimizer_steps": 0, "model_prefix_trajectories": 0}, "seconds": 9.491578522000054}

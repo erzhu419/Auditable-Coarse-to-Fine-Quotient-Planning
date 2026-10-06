@@ -1,0 +1,17 @@
+{"event": "method_complete", "life": 0, "method": "H2_ONLY"}
+{"event": "method_complete", "life": 1, "method": "H2_ONLY"}
+{"event": "method_complete", "life": 3, "method": "H2_ONLY"}
+{"event": "method_complete", "life": 2, "method": "H2_ONLY"}
+{"event": "method_complete", "life": 3, "method": "TREE"}
+{"event": "method_complete", "life": 1, "method": "TREE"}
+{"event": "method_complete", "life": 0, "method": "TREE"}
+{"event": "method_complete", "life": 2, "method": "TREE"}
+{"event": "method_complete", "life": 0, "method": "MC4"}
+{"event": "method_complete", "life": 3, "method": "MC4"}
+{"event": "method_complete", "life": 1, "method": "MC4"}
+{"event": "method_complete", "life": 2, "method": "MC4"}
+{"event": "method_complete", "life": 3, "method": "MC16"}
+{"event": "method_complete", "life": 0, "method": "MC16"}
+{"event": "method_complete", "life": 1, "method": "MC16"}
+{"event": "method_complete", "life": 2, "method": "MC16"}
+{"status": "complete", "seconds": 62.20853242400335}

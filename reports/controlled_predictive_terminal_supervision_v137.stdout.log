@@ -1,0 +1,34 @@
+{"event": "training_pair_complete", "life": 3, "representation": "SINGLE", "teacher_query": "risk1", "episodes": 531, "transitions": 524288, "eligible_episodes": 530, "eligible_transitions": 523715, "eligible_updates": 523412, "excluded_episodes": 1, "excluded_transitions": 573}
+{"event": "training_pair_complete", "life": 0, "representation": "SINGLE", "teacher_query": "risk1", "episodes": 531, "transitions": 524288, "eligible_episodes": 530, "eligible_transitions": 524177, "eligible_updates": 523855, "excluded_episodes": 1, "excluded_transitions": 111}
+{"event": "training_pair_complete", "life": 1, "representation": "SINGLE", "teacher_query": "risk1", "episodes": 535, "transitions": 524288, "eligible_episodes": 534, "eligible_transitions": 523848, "eligible_updates": 523556, "excluded_episodes": 1, "excluded_transitions": 440}
+{"event": "training_pair_complete", "life": 2, "representation": "SINGLE", "teacher_query": "risk1", "episodes": 539, "transitions": 524288, "eligible_episodes": 538, "eligible_transitions": 524242, "eligible_updates": 523946, "excluded_episodes": 1, "excluded_transitions": 46}
+{"event": "training_pair_complete", "life": 3, "representation": "SINGLE", "teacher_query": "risk8", "episodes": 537, "transitions": 524288, "eligible_episodes": 536, "eligible_transitions": 523790, "eligible_updates": 523499, "excluded_episodes": 1, "excluded_transitions": 498}
+{"event": "training_pair_complete", "life": 1, "representation": "SINGLE", "teacher_query": "risk8", "episodes": 541, "transitions": 524288, "eligible_episodes": 540, "eligible_transitions": 523707, "eligible_updates": 523426, "excluded_episodes": 1, "excluded_transitions": 581}
+{"event": "training_pair_complete", "life": 0, "representation": "SINGLE", "teacher_query": "risk8", "episodes": 543, "transitions": 524288, "eligible_episodes": 542, "eligible_transitions": 524006, "eligible_updates": 523726, "excluded_episodes": 1, "excluded_transitions": 282}
+{"event": "training_pair_complete", "life": 2, "representation": "SINGLE", "teacher_query": "risk8", "episodes": 542, "transitions": 524288, "eligible_episodes": 541, "eligible_transitions": 523746, "eligible_updates": 523466, "excluded_episodes": 1, "excluded_transitions": 542}
+{"event": "training_pair_complete", "life": 3, "representation": "CAPACITY", "teacher_query": "risk1", "episodes": 531, "transitions": 524288, "eligible_episodes": 530, "eligible_transitions": 524075, "eligible_updates": 523761, "excluded_episodes": 1, "excluded_transitions": 213}
+{"event": "training_pair_complete", "life": 0, "representation": "CAPACITY", "teacher_query": "risk1", "episodes": 536, "transitions": 524288, "eligible_episodes": 535, "eligible_transitions": 524013, "eligible_updates": 523723, "excluded_episodes": 1, "excluded_transitions": 275}
+{"event": "training_pair_complete", "life": 2, "representation": "CAPACITY", "teacher_query": "risk1", "episodes": 538, "transitions": 524288, "eligible_episodes": 537, "eligible_transitions": 524090, "eligible_updates": 523786, "excluded_episodes": 1, "excluded_transitions": 198}
+{"event": "training_pair_complete", "life": 1, "representation": "CAPACITY", "teacher_query": "risk1", "episodes": 533, "transitions": 524288, "eligible_episodes": 532, "eligible_transitions": 523996, "eligible_updates": 523687, "excluded_episodes": 1, "excluded_transitions": 292}
+{"event": "training_pair_complete", "life": 3, "representation": "CAPACITY", "teacher_query": "risk8", "episodes": 540, "transitions": 524288, "eligible_episodes": 539, "eligible_transitions": 524112, "eligible_updates": 523835, "excluded_episodes": 1, "excluded_transitions": 176}
+{"event": "training_pair_complete", "life": 2, "representation": "CAPACITY", "teacher_query": "risk8", "episodes": 539, "transitions": 524288, "eligible_episodes": 538, "eligible_transitions": 523398, "eligible_updates": 523115, "excluded_episodes": 1, "excluded_transitions": 890}
+{"event": "training_pair_complete", "life": 0, "representation": "CAPACITY", "teacher_query": "risk8", "episodes": 542, "transitions": 524288, "eligible_episodes": 541, "eligible_transitions": 524179, "eligible_updates": 523900, "excluded_episodes": 1, "excluded_transitions": 109}
+{"event": "training_pair_complete", "life": 1, "representation": "CAPACITY", "teacher_query": "risk8", "episodes": 540, "transitions": 524288, "eligible_episodes": 539, "eligible_transitions": 524206, "eligible_updates": 523933, "excluded_episodes": 1, "excluded_transitions": 82}
+{"event": "all_training_frozen"}
+{"event": "control_pair_complete", "life": 2, "representation": "SINGLE", "teacher_query": "risk1"}
+{"event": "control_pair_complete", "life": 3, "representation": "SINGLE", "teacher_query": "risk1"}
+{"event": "control_pair_complete", "life": 0, "representation": "SINGLE", "teacher_query": "risk1"}
+{"event": "control_pair_complete", "life": 1, "representation": "SINGLE", "teacher_query": "risk1"}
+{"event": "control_pair_complete", "life": 0, "representation": "SINGLE", "teacher_query": "risk8"}
+{"event": "control_pair_complete", "life": 2, "representation": "SINGLE", "teacher_query": "risk8"}
+{"event": "control_pair_complete", "life": 1, "representation": "SINGLE", "teacher_query": "risk8"}
+{"event": "control_pair_complete", "life": 3, "representation": "SINGLE", "teacher_query": "risk8"}
+{"event": "control_pair_complete", "life": 0, "representation": "CAPACITY", "teacher_query": "risk1"}
+{"event": "control_pair_complete", "life": 2, "representation": "CAPACITY", "teacher_query": "risk1"}
+{"event": "control_pair_complete", "life": 1, "representation": "CAPACITY", "teacher_query": "risk1"}
+{"event": "control_pair_complete", "life": 3, "representation": "CAPACITY", "teacher_query": "risk1"}
+{"event": "control_pair_complete", "life": 0, "representation": "CAPACITY", "teacher_query": "risk8"}
+{"event": "control_pair_complete", "life": 2, "representation": "CAPACITY", "teacher_query": "risk8"}
+{"event": "control_pair_complete", "life": 1, "representation": "CAPACITY", "teacher_query": "risk8"}
+{"event": "control_pair_complete", "life": 3, "representation": "CAPACITY", "teacher_query": "risk8"}
+{"status": "complete", "seconds": 393.76568358500003}

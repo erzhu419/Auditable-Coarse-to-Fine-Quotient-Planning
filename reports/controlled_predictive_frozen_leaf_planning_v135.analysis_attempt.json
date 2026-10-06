@@ -1,0 +1,12 @@
+{
+  "attempt": 1,
+  "status": "complete",
+  "start_utc": "2026-09-20T04:43:47.471938+00:00",
+  "command": [
+    "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "scripts/analyze_controlled_predictive_frozen_leaf_planning_v135.py"
+  ],
+  "returncode": 0,
+  "seconds": 5.576826756994706,
+  "end_utc": "2026-09-20T04:43:50.584424+00:00"
+}

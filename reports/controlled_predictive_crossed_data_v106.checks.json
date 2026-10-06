@@ -1,0 +1,22 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "mock_work": {
+        "mock_prefixes_constructed": 1760,
+        "original_feature_calls": 2,
+        "feature_recovery_calls": 76
+      },
+      "feature_counts": {
+        "board_feature_rows": 25038,
+        "paired_feature_rows": 12480,
+        "candidate_feature_vectors": 390
+      },
+      "new_environment_transitions": 0,
+      "new_synthetic_transitions": 0,
+      "neural_model_fits": 0,
+      "neural_candidate_predictions": 0,
+      "scope": "pure feature recovery and synthetic retained-prefix fixtures"
+    }
+  ]
+}

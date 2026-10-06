@@ -1,0 +1,18 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "model_updates": 0,
+      "scope": "synthetic paired returns and deterministic recorded-prefix fixtures"
+    },
+    {
+      "failures": 0,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "model_updates": 0,
+      "scope": "synthetic paired returns and deterministic recorded-prefix fixtures"
+    }
+  ]
+}

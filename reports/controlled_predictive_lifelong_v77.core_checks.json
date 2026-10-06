@@ -1,0 +1,26 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_lifelong_v77.py",
+      "session_failures": 0,
+      "scope": "Two synthetic afterstates with 32 samples per policy per synthetic episode.",
+      "ground_calls": 0,
+      "main_campaign_calls": 0,
+      "metadata_rows_read": 4800,
+      "training_rows_read": 3072,
+      "feature_rows": 3552,
+      "tree_fits": 9,
+      "fit_rows": 2304,
+      "tree_apply_rows": 3648,
+      "leaf_stat_rows": 2688,
+      "leaf_stats_updated": 12,
+      "leaf_values_changed": 6,
+      "validation_rows_read": 480,
+      "tree_split_visits": 1920,
+      "proposals_accepted": 3,
+      "accepted_structure_changes": 3,
+      "accepted_split_nodes_changed": 3,
+      "proposals_rejected": 3
+    }
+  ]
+}

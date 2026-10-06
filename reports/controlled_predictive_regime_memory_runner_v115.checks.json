@@ -1,0 +1,28 @@
+{
+  "attempts": [
+    {
+      "command": [
+        "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_controlled_predictive_regime_memory_runner_v115.py",
+        "--basetemp=/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/.tmp/v115_runner_tests"
+      ],
+      "returncode": 0,
+      "seconds": 0.7263983390002977,
+      "stdout": "...                                                                      [100%]\n3 passed in 0.28s\n",
+      "stderr": "",
+      "development_work": {
+        "mock_source_games": 6,
+        "synthetic_source_observations": 780,
+        "learner_observations": 3130,
+        "learner_predict_calls": 3120,
+        "mocked_evaluation_games": 62
+      },
+      "real_environment_transitions": 0,
+      "model_sampled_transitions": 0,
+      "neural_fits": 0
+    }
+  ]
+}

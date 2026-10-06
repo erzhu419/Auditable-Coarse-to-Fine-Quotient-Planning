@@ -1,0 +1,25 @@
+{"phase": "root", "lifecycle": 0, "query": "reward", "root_index": 8, "override": false, "trajectories": 48, "sampled_transitions": 10793, "outcomes": {"LOST": 48}}
+{"phase": "root", "lifecycle": 0, "query": "reward", "root_index": 9, "override": true, "trajectories": 48, "sampled_transitions": 7864, "outcomes": {"LOST": 48}}
+{"phase": "root", "lifecycle": 0, "query": "reward", "root_index": 18, "override": true, "trajectories": 48, "sampled_transitions": 12867, "outcomes": {"LOST": 48}}
+{"phase": "root", "lifecycle": 0, "query": "reward", "root_index": 19, "override": true, "trajectories": 48, "sampled_transitions": 9769, "outcomes": {"LOST": 48}}
+{"phase": "root", "lifecycle": 0, "query": "risk_goal", "root_index": 8, "override": true, "trajectories": 48, "sampled_transitions": 16397, "outcomes": {"LOST": 48}}
+{"phase": "root", "lifecycle": 0, "query": "risk_goal", "root_index": 9, "override": true, "trajectories": 48, "sampled_transitions": 9953, "outcomes": {"LOST": 48}}
+{"phase": "root", "lifecycle": 0, "query": "risk_goal", "root_index": 18, "override": true, "trajectories": 48, "sampled_transitions": 16565, "outcomes": {"LOST": 48}}
+{"phase": "root", "lifecycle": 0, "query": "risk_goal", "root_index": 19, "override": true, "trajectories": 48, "sampled_transitions": 9676, "outcomes": {"LOST": 48}}
+{"phase": "root", "lifecycle": 1, "query": "reward", "root_index": 8, "override": true, "trajectories": 48, "sampled_transitions": 13526, "outcomes": {"LOST": 48}}
+{"phase": "root", "lifecycle": 1, "query": "reward", "root_index": 9, "override": true, "trajectories": 48, "sampled_transitions": 7629, "outcomes": {"LOST": 48}}
+{"phase": "root", "lifecycle": 1, "query": "reward", "root_index": 18, "override": false, "trajectories": 48, "sampled_transitions": 14745, "outcomes": {"LOST": 48}}
+{"phase": "root", "lifecycle": 1, "query": "reward", "root_index": 19, "override": true, "trajectories": 48, "sampled_transitions": 8510, "outcomes": {"LOST": 48}}
+{"phase": "root", "lifecycle": 1, "query": "risk_goal", "root_index": 8, "override": false, "trajectories": 48, "sampled_transitions": 15604, "outcomes": {"LOST": 48}}
+{"phase": "root", "lifecycle": 1, "query": "risk_goal", "root_index": 9, "override": true, "trajectories": 48, "sampled_transitions": 13565, "outcomes": {"LOST": 48}}
+{"phase": "root", "lifecycle": 1, "query": "risk_goal", "root_index": 18, "override": false, "trajectories": 48, "sampled_transitions": 11120, "outcomes": {"LOST": 48}}
+{"phase": "root", "lifecycle": 1, "query": "risk_goal", "root_index": 19, "override": false, "trajectories": 48, "sampled_transitions": 8136, "outcomes": {"LOST": 48}}
+{"phase": "root", "lifecycle": 2, "query": "reward", "root_index": 8, "override": false, "trajectories": 48, "sampled_transitions": 9702, "outcomes": {"LOST": 48}}
+{"phase": "root", "lifecycle": 2, "query": "reward", "root_index": 9, "override": true, "trajectories": 48, "sampled_transitions": 7435, "outcomes": {"LOST": 48}}
+{"phase": "root", "lifecycle": 2, "query": "reward", "root_index": 18, "override": false, "trajectories": 48, "sampled_transitions": 14261, "outcomes": {"LOST": 48}}
+{"phase": "root", "lifecycle": 2, "query": "reward", "root_index": 19, "override": false, "trajectories": 48, "sampled_transitions": 10218, "outcomes": {"LOST": 46, "WON": 2}}
+{"phase": "root", "lifecycle": 2, "query": "risk_goal", "root_index": 8, "override": true, "trajectories": 48, "sampled_transitions": 10664, "outcomes": {"LOST": 48}}
+{"phase": "root", "lifecycle": 2, "query": "risk_goal", "root_index": 9, "override": true, "trajectories": 48, "sampled_transitions": 4810, "outcomes": {"LOST": 48}}
+{"phase": "root", "lifecycle": 2, "query": "risk_goal", "root_index": 18, "override": true, "trajectories": 48, "sampled_transitions": 15784, "outcomes": {"LOST": 48}}
+{"phase": "root", "lifecycle": 2, "query": "risk_goal", "root_index": 19, "override": true, "trajectories": 48, "sampled_transitions": 9275, "outcomes": {"LOST": 48}}
+{"phase": "complete", "seconds": 208.9978016850073}

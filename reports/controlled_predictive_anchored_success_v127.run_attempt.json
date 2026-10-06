@@ -1,0 +1,11 @@
+{
+  "command": [
+    ".venv-lmta-v42/bin/python",
+    "scripts/run_controlled_predictive_anchored_success_v127.py"
+  ],
+  "started_utc": "2026-09-20T00:06:27.628267+00:00",
+  "status": "completed",
+  "exit_code": 0,
+  "seconds": 156.57933230399794,
+  "stderr_bytes": 0
+}

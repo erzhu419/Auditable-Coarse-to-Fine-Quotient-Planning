@@ -1,0 +1,74 @@
+{
+  "valid": true,
+  "complete": true,
+  "records": 9,
+  "statuses": {
+    "admitted_bad_kernel": 8,
+    "global_bad_null_excluded": 1,
+    "unknown": 0
+  },
+  "groups": {
+    "failure": {
+      "records": 8,
+      "statuses": {
+        "admitted_bad_kernel": 8,
+        "global_bad_null_excluded": 0,
+        "unknown": 0
+      }
+    },
+    "positive": {
+      "records": 1,
+      "statuses": {
+        "admitted_bad_kernel": 0,
+        "global_bad_null_excluded": 1,
+        "unknown": 0
+      }
+    }
+  },
+  "families": {
+    "S_D_FULL": {
+      "records": 6,
+      "statuses": {
+        "admitted_bad_kernel": 6,
+        "global_bad_null_excluded": 0,
+        "unknown": 0
+      }
+    },
+    "D_REC_R": {
+      "records": 3,
+      "statuses": {
+        "admitted_bad_kernel": 2,
+        "global_bad_null_excluded": 1,
+        "unknown": 0
+      }
+    }
+  },
+  "fixed_evidence_numerical_repair_ruled_out_cases": 8,
+  "global_bound_repair_cases": 1,
+  "unknown_cases": 0,
+  "settled_endpoint_audit_reused": true,
+  "scope": "selected_fixed_canonical_region_only",
+  "new_observations": 0,
+  "new_paid_samples": 0,
+  "checks": {
+    "settled_prior_qualification_valid": 1,
+    "fixed_nine_unresolved_single_comparisons": 1,
+    "unchanged_event_budget_and_static_classification_scope": 1,
+    "original_case_counts_fees_and_prior_comparison": 9,
+    "classification_retains_all_paid_canonical_region": 9,
+    "single_fixed_numerical_proposal": 9,
+    "fixed_strict_bad_parameter_repair": 9,
+    "exact_strict_bad_gap": 9,
+    "exact_joint_ratio_decision": 9,
+    "compact_outward_log_intervals": 9,
+    "legal_nonnegative_multiplier_and_original_tangent_point": 9,
+    "exact_concave_constraint_and_likelihood_gradients": 9,
+    "fixed_legal_multiplier_rule": 9,
+    "complete_domain_support_and_outward_tangent_upper": 9,
+    "outward_all_paid_mixture_and_event_threshold": 9,
+    "strict_global_exclusion_and_exact_final_status": 9,
+    "exact_static_diagnostic_summary_and_unchanged_life_costs": 1
+  },
+  "failures": [],
+  "seconds": 6.424790232995292
+}

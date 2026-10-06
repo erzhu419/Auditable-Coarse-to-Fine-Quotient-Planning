@@ -1,0 +1,47 @@
+{
+  "schema": "acfqp.natural_online_value_freeze.v286",
+  "protocol": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/specs/NATURAL_ONLINE_VALUE_V286.md",
+  "source_summary": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/natural_model_revision_v281/summary.json",
+  "lifecycles": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "parents": 4,
+  "arms": [
+    "FROZEN",
+    "ORDINARY_TD",
+    "PERSISTENT_TD"
+  ],
+  "raw_tiles_per_phase": 131072,
+  "evaluation_games": 16,
+  "alpha": 0.0025,
+  "max_steps": 8192,
+  "seed_training": 286200000000,
+  "seed_warmup": 286100000000,
+  "seed_evaluation": 286500000000,
+  "bootstrap_seed": 28600001,
+  "bootstrap_draws": 20000,
+  "finite_test_passes": {
+    "native": 10,
+    "analysis": 5,
+    "driver": 3
+  },
+  "memory_input": "ALL_RAW_SPAWN_RANKS_INCLUDING_INITIAL_TILES",
+  "primary": "PERSISTENT_TD_minus_ORDINARY_TD",
+  "retention_endpoint": "A_prime",
+  "evaluation": "FIXED_VALUE_AND_BELIEF_WITHOUT_FEEDBACK"
+}

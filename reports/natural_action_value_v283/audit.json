@@ -1,0 +1,110 @@
+{
+  "status": "PASS",
+  "independent_valid": true,
+  "lifecycles": 16,
+  "carrier_games": 384,
+  "restored_decisions": 327642,
+  "changed_action_rows": 156479,
+  "independent_changed_row_score_loss_and_rank_checks": 156479,
+  "raw_probability_game_weight_checks": 12,
+  "aggregation": "Within-game decisions, equal games per phase, equal phases per life, equal lives; integer counts kept separately.",
+  "bootstrap": "20000 draws, seed28300001; complete paired lives resampled within each of four fixed parents at equal parent weight.",
+  "diagnostic_contrasts": {
+    "LIBRARY_minus_POOLED.p_mse": {
+      "mean": -0.03671037544884079,
+      "ci95": [
+        -0.03694152552770609,
+        -0.0364573891607914
+      ],
+      "improved_equal_worse": [
+        16,
+        0,
+        0
+      ],
+      "adverse_lifecycles": []
+    },
+    "LIBRARY_minus_FROZEN.p_mse": {
+      "mean": -0.05059306555670028,
+      "ci95": [
+        -0.05215288089910237,
+        -0.04904847344279472
+      ],
+      "improved_equal_worse": [
+        16,
+        0,
+        0
+      ],
+      "adverse_lifecycles": []
+    },
+    "LIBRARY_minus_POOLED.reference_score_loss": {
+      "mean": -0.0006866933439662153,
+      "ci95": [
+        -0.0007139426681545606,
+        -0.0006569995807838456
+      ],
+      "improved_equal_worse": [
+        16,
+        0,
+        0
+      ],
+      "adverse_lifecycles": []
+    },
+    "LIBRARY_minus_FROZEN.reference_score_loss": {
+      "mean": -0.000966048846360833,
+      "ci95": [
+        -0.001002328027053606,
+        -0.0009231773636046294
+      ],
+      "improved_equal_worse": [
+        16,
+        0,
+        0
+      ],
+      "adverse_lifecycles": []
+    }
+  },
+  "oracle_tail_forecast_phase_bias": {
+    "A": {
+      "mean": -4.053419412316413,
+      "negative_zero_positive": [
+        16,
+        0,
+        0
+      ]
+    },
+    "B": {
+      "mean": -0.3924129685684802,
+      "negative_zero_positive": [
+        12,
+        0,
+        4
+      ]
+    },
+    "A_prime": {
+      "mean": -3.7522154447246288,
+      "negative_zero_positive": [
+        15,
+        0,
+        1
+      ]
+    }
+  },
+  "costs": {
+    "new_environment_observations": 0,
+    "new_value_updates": 0,
+    "shared_warmup_observations": 14543,
+    "read_retained_transitions": 1266497,
+    "parent_checkpoint_loads": 4,
+    "generated_successors": 14601214,
+    "value_predictions": 51532203,
+    "table_lookups": 1649030496,
+    "compose_calls": 2621136,
+    "recorded_run_cpu_seconds": 120.658460851,
+    "recorded_run_wall_seconds": 121.85438609500125,
+    "retained_changed_trace_bytes": 20103278,
+    "inherited_parent_training_games": 16384
+  },
+  "method": "Independent retained metadata, all eight-readout changed-row score/rank algebra, game/phase/life sums and paired bootstrap. No producer, model, planner, Beta replay or new environment call.",
+  "scope": "Diagnostic losses use oracle probability with the same learned leaf, not optimal-policy or counterfactual whole-game regret. Full-short residual includes child-action reselection. Factual suffix errors are policy-conditional and do not identify tail ranking error. Producer exact history restoration and established ground/source validity were not repeated.",
+  "errors": []
+}

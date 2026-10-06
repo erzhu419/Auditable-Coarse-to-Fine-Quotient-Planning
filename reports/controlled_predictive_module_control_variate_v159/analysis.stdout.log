@@ -1,0 +1,9 @@
+{"event": "audited_corrections", "split": "TRAIN", "life": 2, "source_rows": 1024, "critic_queries": 100836}
+{"event": "audited_corrections", "split": "TRAIN", "life": 0, "source_rows": 1024, "critic_queries": 105096}
+{"event": "audited_corrections", "split": "TRAIN", "life": 1, "source_rows": 1024, "critic_queries": 105130}
+{"event": "audited_corrections", "split": "TRAIN", "life": 3, "source_rows": 1024, "critic_queries": 112104}
+{"event": "audited_corrections", "split": "EVAL", "life": 2, "source_rows": 1024, "critic_queries": 101494}
+{"event": "audited_corrections", "split": "EVAL", "life": 0, "source_rows": 1024, "critic_queries": 105022}
+{"event": "audited_corrections", "split": "EVAL", "life": 1, "source_rows": 1024, "critic_queries": 105146}
+{"event": "audited_corrections", "split": "EVAL", "life": 3, "source_rows": 1024, "critic_queries": 111276}
+{"complete": true, "primary_complete": true, "checks": 33, "failed": [], "seconds": 48.73738462399342}

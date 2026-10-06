@@ -1,0 +1,25 @@
+{
+  "attempts": [
+    {
+      "failures": 1,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "fits": 0,
+      "scope": "synthetic source extraction, mocked actor wiring and retained seed arithmetic"
+    },
+    {
+      "failures": 0,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "fits": 0,
+      "scope": "synthetic source extraction, mocked actor wiring and retained seed arithmetic"
+    },
+    {
+      "failures": 0,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "fits": 0,
+      "scope": "synthetic source extraction, mocked actor wiring and retained seed arithmetic"
+    }
+  ]
+}

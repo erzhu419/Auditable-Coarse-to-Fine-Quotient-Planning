@@ -1,0 +1,14 @@
+{
+  "attempts": [
+    {
+      "tests": 5,
+      "failures": 0,
+      "seconds": 0.025191923006786965,
+      "newly_sampled_environment_transitions": 0,
+      "environment_random_draws": 0,
+      "native_model_calls": 0,
+      "optimizer_steps": 0,
+      "scope": "Mocked streams, policies, games and phase execution; no native or environment calls"
+    }
+  ]
+}

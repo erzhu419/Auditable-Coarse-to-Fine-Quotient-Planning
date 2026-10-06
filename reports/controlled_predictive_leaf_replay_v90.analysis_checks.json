@@ -1,0 +1,29 @@
+{
+  "attempts": [
+    {
+      "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_leaf_replay_v90.py",
+      "passed": 6,
+      "failed": 0,
+      "seconds": 0.24,
+      "new_unique_tests": 6,
+      "repeated_tests": 0
+    },
+    {
+      "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_leaf_replay_v90.py -k 'shared_controls or opposite_signs'",
+      "reason": "Make opposite-sign fields symmetric and test the reverse direction.",
+      "passed": 2,
+      "failed": 0,
+      "deselected": 5,
+      "seconds": 0.20,
+      "new_unique_tests": 1,
+      "repeated_tests": 1
+    }
+  ],
+  "unique_tests_passed": 7,
+  "test_executions_passed": 8,
+  "test_executions_failed": 0,
+  "environment_calls": 0,
+  "sampled_transitions": 0,
+  "new_tree_fits": 0,
+  "main_campaign_calls": 0
+}

@@ -1,0 +1,76 @@
+......FFF...........                                                     [100%]
+=================================== FAILURES ===================================
+_ test_all_supported_new_arm_summaries_bind_sixtyfour_paired_seeds_and_paid_work[SOURCE] _
+
+arm = 'SOURCE'
+
+    @pytest.mark.parametrize('arm', audit.ARMS)
+    def test_all_supported_new_arm_summaries_bind_sixtyfour_paired_seeds_and_paid_work(arm):
+        value, belief = fresh_evaluation(arm)
+>       result = audit.check_evaluation(value, 0, 'A', belief, value['head_version'])
+
+tests/test_verify_win_confirmation_v323.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/verify_win_confirmation_v323.py:55: in check_evaluation
+    require(len(games) == 64 and [game['seed'] for game in games]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+condition = False
+message = 'all sixty-four new paired V323 streams remain distinct from the selection evaluations'
+
+    def require(condition,message):
+>       if not condition:raise ValueError(message)
+E       ValueError: all sixty-four new paired V323 streams remain distinct from the selection evaluations
+
+scripts/verify_cumulative_critic_v289.py:13: ValueError
+_ test_all_supported_new_arm_summaries_bind_sixtyfour_paired_seeds_and_paid_work[FIRST_LOCAL] _
+
+arm = 'FIRST_LOCAL'
+
+    @pytest.mark.parametrize('arm', audit.ARMS)
+    def test_all_supported_new_arm_summaries_bind_sixtyfour_paired_seeds_and_paid_work(arm):
+        value, belief = fresh_evaluation(arm)
+>       result = audit.check_evaluation(value, 0, 'A', belief, value['head_version'])
+
+tests/test_verify_win_confirmation_v323.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/verify_win_confirmation_v323.py:55: in check_evaluation
+    require(len(games) == 64 and [game['seed'] for game in games]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+condition = False
+message = 'all sixty-four new paired V323 streams remain distinct from the selection evaluations'
+
+    def require(condition,message):
+>       if not condition:raise ValueError(message)
+E       ValueError: all sixty-four new paired V323 streams remain distinct from the selection evaluations
+
+scripts/verify_cumulative_critic_v289.py:13: ValueError
+_ test_all_supported_new_arm_summaries_bind_sixtyfour_paired_seeds_and_paid_work[WIN_ONLY] _
+
+arm = 'WIN_ONLY'
+
+    @pytest.mark.parametrize('arm', audit.ARMS)
+    def test_all_supported_new_arm_summaries_bind_sixtyfour_paired_seeds_and_paid_work(arm):
+        value, belief = fresh_evaluation(arm)
+>       result = audit.check_evaluation(value, 0, 'A', belief, value['head_version'])
+
+tests/test_verify_win_confirmation_v323.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/verify_win_confirmation_v323.py:55: in check_evaluation
+    require(len(games) == 64 and [game['seed'] for game in games]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+condition = False
+message = 'all sixty-four new paired V323 streams remain distinct from the selection evaluations'
+
+    def require(condition,message):
+>       if not condition:raise ValueError(message)
+E       ValueError: all sixty-four new paired V323 streams remain distinct from the selection evaluations
+
+scripts/verify_cumulative_critic_v289.py:13: ValueError
+=========================== short test summary info ============================
+FAILED tests/test_verify_win_confirmation_v323.py::test_all_supported_new_arm_summaries_bind_sixtyfour_paired_seeds_and_paid_work[SOURCE]
+FAILED tests/test_verify_win_confirmation_v323.py::test_all_supported_new_arm_summaries_bind_sixtyfour_paired_seeds_and_paid_work[FIRST_LOCAL]
+FAILED tests/test_verify_win_confirmation_v323.py::test_all_supported_new_arm_summaries_bind_sixtyfour_paired_seeds_and_paid_work[WIN_ONLY]
+3 failed, 17 passed in 2.29s

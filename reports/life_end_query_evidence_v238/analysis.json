@@ -1,0 +1,137 @@
+{
+  "valid": true,
+  "complete": true,
+  "records": 24,
+  "comparisons": 144,
+  "independently_checked_leaves": 2434,
+  "independently_checked_paid_segments": 6344,
+  "statuses": {
+    "certified": 100,
+    "unknown": 44
+  },
+  "families": {
+    "D_FULL_R": 13,
+    "S_D_FULL_R": 33,
+    "D_REC_R": 28,
+    "D_FULL": 15,
+    "S_D_FULL": 22,
+    "S": 20,
+    "S_D_DEL": 13
+  },
+  "witness_kinds": {
+    "global_likelihood_dual": 140,
+    "bad_null_mle": 4
+  },
+  "unique_profile_calls": 138,
+  "false_certificates": 0,
+  "groups": {
+    "failure": {
+      "targets": 12,
+      "old_query_ready": 0,
+      "v235_query_ready": 0,
+      "query_ready": 4,
+      "queries": {
+        "reward": 12,
+        "goal": 6,
+        "risk": 5
+      },
+      "blockers_by_family": {
+        "S_D_FULL_R": 6,
+        "S_D_FULL": 4,
+        "S_D_DEL": 2,
+        "D_REC_R": 3
+      },
+      "arms": {
+        "ORACLE_BALANCED": {
+          "targets": 6,
+          "query_ready": 2
+        },
+        "ORACLE_GAP": {
+          "targets": 6,
+          "query_ready": 2
+        }
+      }
+    },
+    "positive": {
+      "targets": 12,
+      "old_query_ready": 12,
+      "v235_query_ready": 11,
+      "query_ready": 2,
+      "queries": {
+        "reward": 12,
+        "goal": 4,
+        "risk": 3
+      },
+      "blockers_by_family": {
+        "S_D_FULL_R": 11,
+        "S_D_FULL": 5,
+        "D_REC_R": 7,
+        "S": 4,
+        "S_D_DEL": 2
+      },
+      "arms": {
+        "ORACLE_BALANCED": {
+          "targets": 6,
+          "query_ready": 1
+        },
+        "ORACLE_GAP": {
+          "targets": 6,
+          "query_ready": 1
+        }
+      }
+    }
+  },
+  "stage_condition_met": false,
+  "physical_source_samples": 13824,
+  "physical_target_samples": 66224,
+  "new_observations": 0,
+  "new_paid_samples": 0,
+  "checks": {
+    "paid_inputs_independently_audited": 1,
+    "frozen_whole_life_endpoint_and_event_budget": 1,
+    "original_twenty_four_case_roster": 1,
+    "original_known_case_identity_and_switch_interface": 24,
+    "every_endpoint_segment_matches_physical_paid_batch": 24,
+    "original_outcome_prefix_is_preserved": 24,
+    "new_certification_time_and_actual_last_evidence": 24,
+    "complete_life_costs_and_separate_early_reference": 24,
+    "record_keeps_endpoint_descriptors_and_full_row_lengths": 24,
+    "exact_reward_wait_policy": 24,
+    "original_policy_with_complete_alternative_roster": 48,
+    "source_training_and_validation_only_sufficient_counts": 144,
+    "unchanged_comparison_and_confidence_event": 144,
+    "global_gap_preserving_embedding": 144,
+    "independent_sequential_predictive_numerator_lower": 144,
+    "outward_event_threshold_upper": 144,
+    "fixed_partition_covers_all_retry_probabilities": 140,
+    "exact_retry_interaction_slope": 140,
+    "partition_probability_domain": 2434,
+    "relaxed_gap_row_roster": 2434,
+    "partition_endpoint": 2434,
+    "exact_endpoint_gap": 14604,
+    "endpoint_relaxes_complete_retry_cell": 14604,
+    "exact_maximum_relaxed_gap": 2434,
+    "supported_likelihood_leaf": 1854,
+    "legal_null_multiplier": 1854,
+    "optimization_row_roster": 1854,
+    "empty_likelihood_row_simplex": 1093,
+    "outward_row_likelihood_upper": 3708,
+    "legal_row_likelihood_dual": 2615,
+    "retry_interval_mle_probability": 1854,
+    "outward_retry_interval_likelihood_upper": 1854,
+    "outward_complete_null_likelihood_upper": 1854,
+    "global_validation_likelihood_upper": 140,
+    "outward_global_predictive_ratio_lower": 140,
+    "strict_complete_bad_null_decision": 140,
+    "exact_empty_relaxed_null": 580,
+    "query_is_complete_comparison_and": 48,
+    "all_queries_and_and_profile_cache_accounting": 24,
+    "saved_truth_requires_original_policies": 24,
+    "exact_bad_validation_mle_and_predictive_membership": 4,
+    "mle_is_unknown_with_no_global_certificate": 4,
+    "physical_full_life_costs_are_not_summed_across_cases": 1,
+    "exact_summary_and_fixed_stage_condition": 1
+  },
+  "failures": [],
+  "seconds": 3.626594205008587
+}

@@ -1,0 +1,28 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_evidence_fragments_v88.py",
+      "session_failures": 0,
+      "scope": "Synthetic paired samples and tree fits; no campaign fit, RNG or environment calls.",
+      "ground_calls": 0,
+      "main_campaign_calls": 0,
+      "input_roots_read": 20,
+      "training_roots_read": 16,
+      "paired_root_replicas_read": 160,
+      "board_feature_rows": 27,
+      "tree_fits": 4,
+      "classifier_tree_fits": 4,
+      "fit_rows": 16,
+      "fit_roots": 16,
+      "fit_candidate_labels": 64,
+      "leaf_stat_roots": 16,
+      "node_stat_memberships": 16,
+      "evidence_selector_decisions": 12,
+      "tree_apply_rows": 11,
+      "evidence_prediction_roots": 11,
+      "predicted_output_vectors": 44,
+      "predicted_candidate_frequencies": 44,
+      "fragment_prediction_rows": 33
+    }
+  ]
+}

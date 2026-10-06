@@ -1,0 +1,17 @@
+{
+  "command": [
+    ".venv-lmta-v42/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/test_controlled_predictive_anchored_success_runner_v127.py",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "seconds": 0.7403306649939623,
+  "stdout": ".....                                                                    [100%]\n5 passed in 0.25s\n",
+  "stderr": "",
+  "new_environment_samples": 0,
+  "native_count_updates": 0
+}

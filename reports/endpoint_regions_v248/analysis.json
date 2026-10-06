@@ -1,0 +1,615 @@
+{
+  "valid": true,
+  "records": 96,
+  "endpoints": 48,
+  "checks": {
+    "complete_and_independently_valid_V247_prerequisite": 1,
+    "frozen_all_endpoint_two_variant_diagnostic": 1,
+    "no_optimizer_observation_score_certificate_or_gate_added": 1,
+    "captured_frozen_protocol_core_runner_and_independent_audit": 1,
+    "captured_source_matches_current_audited_bytes": 24,
+    "source_record_literal_batch_and_prefix": 864,
+    "all_source_prefixes_reconstructed": 1,
+    "historical_one_way_public_identity_and_native_context": 144,
+    "native_pool_before_own_paid_target": 288,
+    "actual_native_pool_member_and_paid_target_after": 288,
+    "own_paid_literal_batch_offsets_and_increments": 2610,
+    "complete_shared_prefix_excludes_other_arms_and_old_returns": 3,
+    "actual_own_return_suffix_chronology_and_public_identity": 144,
+    "fresh_v247_suffix_seeds_without_redrawing_settled_stream": 144,
+    "original_source_past_and_new_fees_and_total_budget": 144,
+    "current_native_terminal_queries_execution_events_and_no_B_import": 144,
+    "selected_goal_reference_is_failed_query_terminal": 48,
+    "all_paid_return_targets_once_per_arm": 3,
+    "actual_full_life_fees_remain_within_original_caps": 3,
+    "complete_48_paired_failed_endpoint_roster_before_candidate_recovery": 1,
+    "whole_paid_lifecycle_cost_not_only_failed_targets": 1,
+    "exact_96_classifications_once_in_frozen_order": 1,
+    "original_profiles_resolved_before_variant_recovery": 3,
+    "actual_retained_canonical_goal_profile_direction_costs_and_native_counts": 48,
+    "original_frozen_endpoint_identity_member_counts_constraints_and_fees": 96,
+    "prespecified_candidate_recovery_R_choice_and_one_SHORT_repair": 96,
+    "descriptive_empirical_rows_and_per_row_TV_only": 96,
+    "exact_strict_bad_simplex_kernel": 96,
+    "all_eight_original_query_families_once": 96,
+    "exact_joint_mixture_membership": 1632,
+    "compact_outward_membership_log": 1632,
+    "all_nine_original_full_categorical_execution_events_once": 96,
+    "literal_original_execution_event_labels_counts_positions_thresholds": 864,
+    "bad_point_exclusion_and_full_region_status_never_add_certificate": 96,
+    "independent_groups_paired_changes_distinct_endpoint_unions_and_ceilings": 1
+  },
+  "failures": [],
+  "elapsed_seconds": 373.8774648869876,
+  "life_elapsed_seconds": {
+    "0": 368.4216718249954,
+    "1": 372.05760337103857,
+    "2": 372.3867998679634
+  },
+  "status_counts": {
+    "unknown": 0,
+    "paid_constraints_reject_candidate": 4,
+    "full_region_bad_witness": 92
+  },
+  "arm_variant_summaries": [
+    {
+      "arm": "ONE_WAY",
+      "variant": "RETAINED",
+      "records": 24,
+      "status_counts": {
+        "unknown": 0,
+        "paid_constraints_reject_candidate": 1,
+        "full_region_bad_witness": 23
+      },
+      "canonical_admitted": 24,
+      "all_query_admitted": 23,
+      "all_execution_admitted": 24,
+      "query_rejection_counts": {
+        "S_D_DEL": 1
+      },
+      "execution_rejection_counts": {}
+    },
+    {
+      "arm": "ONE_WAY",
+      "variant": "R_CENTERED",
+      "records": 24,
+      "status_counts": {
+        "unknown": 0,
+        "paid_constraints_reject_candidate": 3,
+        "full_region_bad_witness": 21
+      },
+      "canonical_admitted": 24,
+      "all_query_admitted": 21,
+      "all_execution_admitted": 22,
+      "query_rejection_counts": {
+        "S": 2,
+        "S_D_DEL": 3
+      },
+      "execution_rejection_counts": {
+        "pool:SHORT_PASS": 2
+      }
+    },
+    {
+      "arm": "JOINT_PREDICTION",
+      "variant": "RETAINED",
+      "records": 24,
+      "status_counts": {
+        "unknown": 0,
+        "paid_constraints_reject_candidate": 0,
+        "full_region_bad_witness": 24
+      },
+      "canonical_admitted": 24,
+      "all_query_admitted": 24,
+      "all_execution_admitted": 24,
+      "query_rejection_counts": {},
+      "execution_rejection_counts": {}
+    },
+    {
+      "arm": "JOINT_PREDICTION",
+      "variant": "R_CENTERED",
+      "records": 24,
+      "status_counts": {
+        "unknown": 0,
+        "paid_constraints_reject_candidate": 0,
+        "full_region_bad_witness": 24
+      },
+      "canonical_admitted": 24,
+      "all_query_admitted": 24,
+      "all_execution_admitted": 24,
+      "query_rejection_counts": {},
+      "execution_rejection_counts": {}
+    }
+  ],
+  "life_summaries": [
+    {
+      "life": 0,
+      "arm": "ONE_WAY",
+      "variant": "RETAINED",
+      "records": 8,
+      "status_counts": {
+        "unknown": 0,
+        "paid_constraints_reject_candidate": 0,
+        "full_region_bad_witness": 8
+      },
+      "canonical_admitted": 8,
+      "all_query_admitted": 8,
+      "all_execution_admitted": 8,
+      "query_rejection_counts": {},
+      "execution_rejection_counts": {}
+    },
+    {
+      "life": 0,
+      "arm": "ONE_WAY",
+      "variant": "R_CENTERED",
+      "records": 8,
+      "status_counts": {
+        "unknown": 0,
+        "paid_constraints_reject_candidate": 0,
+        "full_region_bad_witness": 8
+      },
+      "canonical_admitted": 8,
+      "all_query_admitted": 8,
+      "all_execution_admitted": 8,
+      "query_rejection_counts": {},
+      "execution_rejection_counts": {}
+    },
+    {
+      "life": 0,
+      "arm": "JOINT_PREDICTION",
+      "variant": "RETAINED",
+      "records": 8,
+      "status_counts": {
+        "unknown": 0,
+        "paid_constraints_reject_candidate": 0,
+        "full_region_bad_witness": 8
+      },
+      "canonical_admitted": 8,
+      "all_query_admitted": 8,
+      "all_execution_admitted": 8,
+      "query_rejection_counts": {},
+      "execution_rejection_counts": {}
+    },
+    {
+      "life": 0,
+      "arm": "JOINT_PREDICTION",
+      "variant": "R_CENTERED",
+      "records": 8,
+      "status_counts": {
+        "unknown": 0,
+        "paid_constraints_reject_candidate": 0,
+        "full_region_bad_witness": 8
+      },
+      "canonical_admitted": 8,
+      "all_query_admitted": 8,
+      "all_execution_admitted": 8,
+      "query_rejection_counts": {},
+      "execution_rejection_counts": {}
+    },
+    {
+      "life": 1,
+      "arm": "ONE_WAY",
+      "variant": "RETAINED",
+      "records": 8,
+      "status_counts": {
+        "unknown": 0,
+        "paid_constraints_reject_candidate": 1,
+        "full_region_bad_witness": 7
+      },
+      "canonical_admitted": 8,
+      "all_query_admitted": 7,
+      "all_execution_admitted": 8,
+      "query_rejection_counts": {
+        "S_D_DEL": 1
+      },
+      "execution_rejection_counts": {}
+    },
+    {
+      "life": 1,
+      "arm": "ONE_WAY",
+      "variant": "R_CENTERED",
+      "records": 8,
+      "status_counts": {
+        "unknown": 0,
+        "paid_constraints_reject_candidate": 3,
+        "full_region_bad_witness": 5
+      },
+      "canonical_admitted": 8,
+      "all_query_admitted": 5,
+      "all_execution_admitted": 6,
+      "query_rejection_counts": {
+        "S": 2,
+        "S_D_DEL": 3
+      },
+      "execution_rejection_counts": {
+        "pool:SHORT_PASS": 2
+      }
+    },
+    {
+      "life": 1,
+      "arm": "JOINT_PREDICTION",
+      "variant": "RETAINED",
+      "records": 8,
+      "status_counts": {
+        "unknown": 0,
+        "paid_constraints_reject_candidate": 0,
+        "full_region_bad_witness": 8
+      },
+      "canonical_admitted": 8,
+      "all_query_admitted": 8,
+      "all_execution_admitted": 8,
+      "query_rejection_counts": {},
+      "execution_rejection_counts": {}
+    },
+    {
+      "life": 1,
+      "arm": "JOINT_PREDICTION",
+      "variant": "R_CENTERED",
+      "records": 8,
+      "status_counts": {
+        "unknown": 0,
+        "paid_constraints_reject_candidate": 0,
+        "full_region_bad_witness": 8
+      },
+      "canonical_admitted": 8,
+      "all_query_admitted": 8,
+      "all_execution_admitted": 8,
+      "query_rejection_counts": {},
+      "execution_rejection_counts": {}
+    },
+    {
+      "life": 2,
+      "arm": "ONE_WAY",
+      "variant": "RETAINED",
+      "records": 8,
+      "status_counts": {
+        "unknown": 0,
+        "paid_constraints_reject_candidate": 0,
+        "full_region_bad_witness": 8
+      },
+      "canonical_admitted": 8,
+      "all_query_admitted": 8,
+      "all_execution_admitted": 8,
+      "query_rejection_counts": {},
+      "execution_rejection_counts": {}
+    },
+    {
+      "life": 2,
+      "arm": "ONE_WAY",
+      "variant": "R_CENTERED",
+      "records": 8,
+      "status_counts": {
+        "unknown": 0,
+        "paid_constraints_reject_candidate": 0,
+        "full_region_bad_witness": 8
+      },
+      "canonical_admitted": 8,
+      "all_query_admitted": 8,
+      "all_execution_admitted": 8,
+      "query_rejection_counts": {},
+      "execution_rejection_counts": {}
+    },
+    {
+      "life": 2,
+      "arm": "JOINT_PREDICTION",
+      "variant": "RETAINED",
+      "records": 8,
+      "status_counts": {
+        "unknown": 0,
+        "paid_constraints_reject_candidate": 0,
+        "full_region_bad_witness": 8
+      },
+      "canonical_admitted": 8,
+      "all_query_admitted": 8,
+      "all_execution_admitted": 8,
+      "query_rejection_counts": {},
+      "execution_rejection_counts": {}
+    },
+    {
+      "life": 2,
+      "arm": "JOINT_PREDICTION",
+      "variant": "R_CENTERED",
+      "records": 8,
+      "status_counts": {
+        "unknown": 0,
+        "paid_constraints_reject_candidate": 0,
+        "full_region_bad_witness": 8
+      },
+      "canonical_admitted": 8,
+      "all_query_admitted": 8,
+      "all_execution_admitted": 8,
+      "query_rejection_counts": {},
+      "execution_rejection_counts": {}
+    }
+  ],
+  "paired_arm_statuses": [
+    {
+      "group": "RETAINED",
+      "pairs": 24,
+      "status_transitions": {
+        "full_region_bad_witness->full_region_bad_witness": 23,
+        "paid_constraints_reject_candidate->full_region_bad_witness": 1
+      },
+      "status_changes": [
+        {
+          "life": 1,
+          "index": 70,
+          "before": "paid_constraints_reject_candidate",
+          "after": "full_region_bad_witness"
+        }
+      ]
+    },
+    {
+      "group": "R_CENTERED",
+      "pairs": 24,
+      "status_transitions": {
+        "full_region_bad_witness->full_region_bad_witness": 21,
+        "paid_constraints_reject_candidate->full_region_bad_witness": 3
+      },
+      "status_changes": [
+        {
+          "life": 1,
+          "index": 66,
+          "before": "paid_constraints_reject_candidate",
+          "after": "full_region_bad_witness"
+        },
+        {
+          "life": 1,
+          "index": 67,
+          "before": "paid_constraints_reject_candidate",
+          "after": "full_region_bad_witness"
+        },
+        {
+          "life": 1,
+          "index": 70,
+          "before": "paid_constraints_reject_candidate",
+          "after": "full_region_bad_witness"
+        }
+      ]
+    }
+  ],
+  "within_arm_variant_statuses": [
+    {
+      "group": "ONE_WAY",
+      "pairs": 24,
+      "status_transitions": {
+        "full_region_bad_witness->full_region_bad_witness": 21,
+        "full_region_bad_witness->paid_constraints_reject_candidate": 2,
+        "paid_constraints_reject_candidate->paid_constraints_reject_candidate": 1
+      },
+      "status_changes": [
+        {
+          "life": 1,
+          "index": 66,
+          "before": "full_region_bad_witness",
+          "after": "paid_constraints_reject_candidate"
+        },
+        {
+          "life": 1,
+          "index": 67,
+          "before": "full_region_bad_witness",
+          "after": "paid_constraints_reject_candidate"
+        }
+      ]
+    },
+    {
+      "group": "JOINT_PREDICTION",
+      "pairs": 24,
+      "status_transitions": {
+        "full_region_bad_witness->full_region_bad_witness": 24
+      },
+      "status_changes": []
+    }
+  ],
+  "arm_full_bad_endpoint_unions": [
+    {
+      "arm": "ONE_WAY",
+      "distinct_full_bad_endpoints": 23,
+      "endpoint_references": [
+        {
+          "life": 0,
+          "index": 58
+        },
+        {
+          "life": 0,
+          "index": 60
+        },
+        {
+          "life": 0,
+          "index": 63
+        },
+        {
+          "life": 0,
+          "index": 64
+        },
+        {
+          "life": 0,
+          "index": 65
+        },
+        {
+          "life": 0,
+          "index": 66
+        },
+        {
+          "life": 0,
+          "index": 72
+        },
+        {
+          "life": 0,
+          "index": 75
+        },
+        {
+          "life": 1,
+          "index": 56
+        },
+        {
+          "life": 1,
+          "index": 58
+        },
+        {
+          "life": 1,
+          "index": 61
+        },
+        {
+          "life": 1,
+          "index": 63
+        },
+        {
+          "life": 1,
+          "index": 66
+        },
+        {
+          "life": 1,
+          "index": 67
+        },
+        {
+          "life": 1,
+          "index": 73
+        },
+        {
+          "life": 2,
+          "index": 55
+        },
+        {
+          "life": 2,
+          "index": 57
+        },
+        {
+          "life": 2,
+          "index": 59
+        },
+        {
+          "life": 2,
+          "index": 60
+        },
+        {
+          "life": 2,
+          "index": 61
+        },
+        {
+          "life": 2,
+          "index": 66
+        },
+        {
+          "life": 2,
+          "index": 69
+        },
+        {
+          "life": 2,
+          "index": 77
+        }
+      ],
+      "same_evidence_query_certificate_ceiling": 49,
+      "required_a_return_queries": 54
+    },
+    {
+      "arm": "JOINT_PREDICTION",
+      "distinct_full_bad_endpoints": 24,
+      "endpoint_references": [
+        {
+          "life": 0,
+          "index": 58
+        },
+        {
+          "life": 0,
+          "index": 60
+        },
+        {
+          "life": 0,
+          "index": 63
+        },
+        {
+          "life": 0,
+          "index": 64
+        },
+        {
+          "life": 0,
+          "index": 65
+        },
+        {
+          "life": 0,
+          "index": 66
+        },
+        {
+          "life": 0,
+          "index": 72
+        },
+        {
+          "life": 0,
+          "index": 75
+        },
+        {
+          "life": 1,
+          "index": 56
+        },
+        {
+          "life": 1,
+          "index": 58
+        },
+        {
+          "life": 1,
+          "index": 61
+        },
+        {
+          "life": 1,
+          "index": 63
+        },
+        {
+          "life": 1,
+          "index": 66
+        },
+        {
+          "life": 1,
+          "index": 67
+        },
+        {
+          "life": 1,
+          "index": 70
+        },
+        {
+          "life": 1,
+          "index": 73
+        },
+        {
+          "life": 2,
+          "index": 55
+        },
+        {
+          "life": 2,
+          "index": 57
+        },
+        {
+          "life": 2,
+          "index": 59
+        },
+        {
+          "life": 2,
+          "index": 60
+        },
+        {
+          "life": 2,
+          "index": 61
+        },
+        {
+          "life": 2,
+          "index": 66
+        },
+        {
+          "life": 2,
+          "index": 69
+        },
+        {
+          "life": 2,
+          "index": 77
+        }
+      ],
+      "same_evidence_query_certificate_ceiling": 48,
+      "required_a_return_queries": 54
+    }
+  ],
+  "new_observations": 0,
+  "new_optimizer_calls": 0,
+  "new_query_certificates": 0,
+  "posthoc_scoring_calls": 0,
+  "scientific_gate_changed": false,
+  "diagnostic_only": true
+}

@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "scripts/run_controlled_predictive_evidence_resampling_v89.py",
+    "--output",
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_evidence_resampling_v89"
+  ],
+  "started_utc": "2026-09-13T10:20:02.047375+00:00",
+  "status": "complete",
+  "exit_code": 0,
+  "wall_seconds": 759.705664330977,
+  "stderr_bytes": 0,
+  "finished_utc": "2026-09-13T10:32:41.753302+00:00"
+}

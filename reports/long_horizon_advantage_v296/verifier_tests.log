@@ -1,0 +1,4 @@
+Initial 5 actual focused verifier cases: 5 passed in 0.24s.
+Added 3 actual statistics cases: 3 passed, 5 deselected in 0.46s.
+After matching complete frozen old-mean schema, only 2 affected selection fixtures were rerun; see verifier_selection_test.log.
+8 distinct focused verifier cases passed. No formal world, fitting or bootstrap was repeated.

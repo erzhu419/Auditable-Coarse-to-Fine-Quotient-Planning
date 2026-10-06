@@ -1,0 +1,67 @@
+{
+  "attempts": [
+    {
+      "tests": 12,
+      "failures": 0,
+      "core_work": {
+        "inner_choose_calls": 22,
+        "inner_learned_terminal_checks": 70,
+        "inner_learned_swipe_calls": 80,
+        "inner_line_table_lookups": 320,
+        "inner_legal_swipes": 48,
+        "inner_value_predictions": 42,
+        "inner_table_lookups": 1344,
+        "choose_calls": 23,
+        "inner_terminal_goal_bypasses": 12,
+        "inner_td_updates": 4,
+        "inner_table_updates": 64,
+        "inner_table_update_occurrences": 128,
+        "td_updates": 4,
+        "inner_checkpoint_saves": 1,
+        "inner_checkpoint_scanned_parameters": 16384,
+        "inner_checkpoint_saved_parameters": 14896,
+        "checkpoint_saves": 1,
+        "checkpoint_loads": 1,
+        "inner_checkpoint_loads": 1,
+        "inner_checkpoint_loaded_parameters": 14896
+      },
+      "source_work": {
+        "choose_calls": 10,
+        "learned_terminal_checks": 28,
+        "learned_swipe_calls": 32,
+        "line_table_lookups": 128,
+        "legal_swipes": 18,
+        "value_predictions": 14,
+        "table_lookups": 448,
+        "terminal_goal_bypasses": 6
+      },
+      "reference_work": {
+        "td_updates": 1,
+        "value_predictions": 1,
+        "table_lookups": 32,
+        "table_updates": 16,
+        "table_update_occurrences": 32
+      },
+      "setup_counts": {
+        "cpp_compilations": 1,
+        "lookup_line_rewrites": 256,
+        "allocated_weight_parameters": 262144,
+        "allocated_weight_bytes": 2097152,
+        "cpp_library_cache_hits": 15,
+        "lookup_table_cache_hits": 15,
+        "source_parameters_copied": 98304,
+        "source_weight_bytes_copied": 786432
+      },
+      "scripted_environment_work": {
+        "environment_random_draws": 112,
+        "initial_spawns": 26,
+        "ground_state_status_calls": 43,
+        "ground_explicit_swipe_calls": 30,
+        "ground_swipe_calls": 30,
+        "sampled_transitions": 30
+      },
+      "newly_sampled_environment_transitions": 0,
+      "scope": "Static synthetic boards and scripted environment only; no natural-game samples."
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "attempt": 1,
+  "status": "complete",
+  "command": [
+    "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "scripts/run_controlled_predictive_td_attribution_v132.py"
+  ],
+  "start_utc": "2026-09-20T02:25:19.899011+00:00",
+  "returncode": 0,
+  "seconds": 7.73773966099543
+}

@@ -1,0 +1,4 @@
+COMMAND: python3 -m pytest -q tests/test_verify_closed_loop_v313.py -k frozen_driver or actual_initial_detector or whole_v313_cost or sparse_versions or direct_and_h2
+.......                                                                  [100%]
+7 passed, 15 deselected in 5.02s
+EXIT_CODE: 0

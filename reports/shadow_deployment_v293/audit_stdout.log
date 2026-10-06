@@ -1,0 +1,660 @@
+{"event": "shadow_parent_receipts_checked", "parent": 0}
+{"event": "shadow_parent_receipts_checked", "parent": 1}
+{"event": "shadow_parent_receipts_checked", "parent": 2}
+{"event": "shadow_parent_receipts_checked", "parent": 3}
+{
+  "status": "PASS",
+  "independent_valid": true,
+  "lifecycles": 16,
+  "fixed_source_parents": 4,
+  "canonical_rows": 551543,
+  "physical_online_raw_tiles": 31457280,
+  "physical_carrier_raw_tiles": 3145728,
+  "physical_warmup_raw_tiles": 14073,
+  "physical_validation_games": 2304,
+  "physical_science_games": 9216,
+  "physical_validation_raw_tiles": {
+    "FROZEN_H2": 653962,
+    "UNCONDITIONAL_H2": 646089,
+    "VALIDATED_H2": 653769
+  },
+  "physical_deployment_raw_tiles": {
+    "FROZEN_H2": 8783222,
+    "UNCONDITIONAL_H2": 8791095,
+    "VALIDATED_H2": 8783415
+  },
+  "economic_online_raw_tiles_per_arm": {
+    "FROZEN_H2": 23876577,
+    "UNCONDITIONAL_H2": 23876577,
+    "VALIDATED_H2": 23876577
+  },
+  "physical_shadow_training_samples": 3127948,
+  "physical_parameter_writes": 44409769,
+  "physical_head_copies": 96,
+  "cutoff_totals": {
+    "carrier_cutoffs": 0,
+    "validation_cutoffs": 0,
+    "deployment_cutoffs": 0,
+    "science_cutoffs": 0
+  },
+  "accepted_submissions": {
+    "FROZEN_H2": 0,
+    "UNCONDITIONAL_H2": 48,
+    "VALIDATED_H2": 1
+  },
+  "net_gain_supported": false,
+  "mechanism_supported": false,
+  "correction_supported": false,
+  "primary": {
+    "mean": 0.02871449788411462,
+    "ci95": [
+      0.0,
+      0.08614349365234386
+    ],
+    "lifecycle_deltas": {
+      "0": 0.0,
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.0,
+      "9": 0.0,
+      "10": 0.0,
+      "11": 0.0,
+      "12": 0.4594319661458339,
+      "13": 0.0,
+      "14": 0.0,
+      "15": 0.0
+    },
+    "improved_equal_worse": [
+      1,
+      15,
+      0
+    ],
+    "adverse_lifecycles": [],
+    "parent_mean_deltas": {
+      "0": 0.11485799153645848,
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0
+    },
+    "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS"
+  },
+  "mechanism": {
+    "mean": 0.264495849609375,
+    "ci95": [
+      -0.0200232823689776,
+      0.5647387186686192
+    ],
+    "lifecycle_deltas": {
+      "0": 0.3579508463541661,
+      "1": 0.020548502604166963,
+      "2": -0.33544921875,
+      "3": 0.956583658854167,
+      "4": 0.3585205078125,
+      "5": -0.23813883463541607,
+      "6": 0.10288492838541607,
+      "7": 0.16705322265625,
+      "8": -0.7980753580729161,
+      "9": 0.050679524739583925,
+      "10": 0.8758138020833339,
+      "11": -0.38175455729166785,
+      "12": -0.2005004882812491,
+      "13": 0.933736165364583,
+      "14": 1.9434814453124991,
+      "15": 0.41859944661458304
+    },
+    "improved_equal_worse": [
+      11,
+      0,
+      5
+    ],
+    "adverse_lifecycles": [
+      2,
+      5,
+      8,
+      11,
+      12
+    ],
+    "parent_mean_deltas": {
+      "0": -0.07052612304687478,
+      "1": 0.19170633951822946,
+      "2": 0.6466827392578123,
+      "3": 0.29012044270833304
+    },
+    "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS"
+  },
+  "correction": {
+    "FROZEN_H2": {
+      "mean": 0.0,
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "lifecycle_deltas": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0,
+        "11": 0.0,
+        "12": 0.0,
+        "13": 0.0,
+        "14": 0.0,
+        "15": 0.0
+      },
+      "improved_equal_worse": [
+        0,
+        16,
+        0
+      ],
+      "adverse_lifecycles": [],
+      "parent_mean_deltas": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0
+      },
+      "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS",
+      "name": "FROZEN_H2_current_B_minus_A_head_on_B"
+    },
+    "UNCONDITIONAL_H2": {
+      "mean": -1.3136138916015625,
+      "ci95": [
+        -2.027710437774658,
+        -0.6472912788391125
+      ],
+      "lifecycle_deltas": {
+        "0": -1.958251953125,
+        "1": -4.2808837890625,
+        "2": 0.26458740234375,
+        "3": -2.8626708984375,
+        "4": -1.40997314453125,
+        "5": -1.23529052734375,
+        "6": -1.27850341796875,
+        "7": -1.22357177734375,
+        "8": 0.49554443359375,
+        "9": -1.24652099609375,
+        "10": -1.05108642578125,
+        "11": -1.2843017578125,
+        "12": 0.180908203125,
+        "13": 0.4193115234375,
+        "14": -4.47222900390625,
+        "15": -0.07489013671875
+      },
+      "improved_equal_worse": [
+        4,
+        0,
+        12
+      ],
+      "adverse_lifecycles": [
+        0,
+        1,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        14,
+        15
+      ],
+      "parent_mean_deltas": {
+        "0": -0.672943115234375,
+        "1": -1.585845947265625,
+        "2": -1.634307861328125,
+        "3": -1.361358642578125
+      },
+      "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS",
+      "name": "UNCONDITIONAL_H2_current_B_minus_A_head_on_B"
+    },
+    "VALIDATED_H2": {
+      "mean": -0.011539459228515625,
+      "ci95": [
+        -0.034618377685546875,
+        0.0
+      ],
+      "lifecycle_deltas": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0,
+        "11": 0.0,
+        "12": -0.18463134765625,
+        "13": 0.0,
+        "14": 0.0,
+        "15": 0.0
+      },
+      "improved_equal_worse": [
+        0,
+        15,
+        1
+      ],
+      "adverse_lifecycles": [
+        12
+      ],
+      "parent_mean_deltas": {
+        "0": -0.0461578369140625,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0
+      },
+      "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS",
+      "name": "VALIDATED_H2_current_B_minus_A_head_on_B"
+    }
+  },
+  "retention": {
+    "FROZEN_H2": {
+      "after_B": {
+        "mean": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "lifecycle_deltas": {
+          "0": 0.0,
+          "1": 0.0,
+          "2": 0.0,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0,
+          "6": 0.0,
+          "7": 0.0,
+          "8": 0.0,
+          "9": 0.0,
+          "10": 0.0,
+          "11": 0.0,
+          "12": 0.0,
+          "13": 0.0,
+          "14": 0.0,
+          "15": 0.0
+        },
+        "improved_equal_worse": [
+          0,
+          16,
+          0
+        ],
+        "adverse_lifecycles": [],
+        "parent_mean_deltas": {
+          "0": 0.0,
+          "1": 0.0,
+          "2": 0.0,
+          "3": 0.0
+        },
+        "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS",
+        "direction": "ZERO_OBSERVED_CHANGE"
+      },
+      "restoration": {
+        "mean": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "lifecycle_deltas": {
+          "0": 0.0,
+          "1": 0.0,
+          "2": 0.0,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0,
+          "6": 0.0,
+          "7": 0.0,
+          "8": 0.0,
+          "9": 0.0,
+          "10": 0.0,
+          "11": 0.0,
+          "12": 0.0,
+          "13": 0.0,
+          "14": 0.0,
+          "15": 0.0
+        },
+        "improved_equal_worse": [
+          0,
+          16,
+          0
+        ],
+        "adverse_lifecycles": [],
+        "parent_mean_deltas": {
+          "0": 0.0,
+          "1": 0.0,
+          "2": 0.0,
+          "3": 0.0
+        },
+        "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS",
+        "direction": "ZERO_OBSERVED_CHANGE"
+      },
+      "final_vs_A": {
+        "mean": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "lifecycle_deltas": {
+          "0": 0.0,
+          "1": 0.0,
+          "2": 0.0,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0,
+          "6": 0.0,
+          "7": 0.0,
+          "8": 0.0,
+          "9": 0.0,
+          "10": 0.0,
+          "11": 0.0,
+          "12": 0.0,
+          "13": 0.0,
+          "14": 0.0,
+          "15": 0.0
+        },
+        "improved_equal_worse": [
+          0,
+          16,
+          0
+        ],
+        "adverse_lifecycles": [],
+        "parent_mean_deltas": {
+          "0": 0.0,
+          "1": 0.0,
+          "2": 0.0,
+          "3": 0.0
+        },
+        "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS",
+        "direction": "ZERO_OBSERVED_CHANGE"
+      }
+    },
+    "UNCONDITIONAL_H2": {
+      "after_B": {
+        "mean": -2.9013938903808594,
+        "ci95": [
+          -3.723318004608154,
+          -2.1244088172912603
+        ],
+        "lifecycle_deltas": {
+          "0": -6.5531005859375,
+          "1": -5.44049072265625,
+          "2": -1.0384521484375,
+          "3": -2.7322998046875,
+          "4": -4.05157470703125,
+          "5": -3.0853271484375,
+          "6": -1.271728515625,
+          "7": -1.4794921875,
+          "8": -2.00836181640625,
+          "9": -1.686767578125,
+          "10": -3.0753173828125,
+          "11": -5.26324462890625,
+          "12": -0.72442626953125,
+          "13": -1.07110595703125,
+          "14": -3.12908935546875,
+          "15": -3.8115234375
+        },
+        "improved_equal_worse": [
+          0,
+          0,
+          16
+        ],
+        "adverse_lifecycles": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "parent_mean_deltas": {
+          "0": -3.3343658447265625,
+          "1": -2.8209228515625,
+          "2": -2.1286468505859375,
+          "3": -3.3216400146484375
+        },
+        "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS",
+        "direction": "NEGATIVE_CHANGE_SUPPORTED"
+      },
+      "restoration": {
+        "mean": 2.0897178649902344,
+        "ci95": [
+          1.2868175506591797,
+          2.9708435058593747
+        ],
+        "lifecycle_deltas": {
+          "0": 6.24334716796875,
+          "1": 4.96917724609375,
+          "2": 1.678955078125,
+          "3": 3.3585205078125,
+          "4": 1.88873291015625,
+          "5": 2.74078369140625,
+          "6": 2.07635498046875,
+          "7": 0.84930419921875,
+          "8": -0.31793212890625,
+          "9": 1.05291748046875,
+          "10": 2.6556396484375,
+          "11": 2.14398193359375,
+          "12": 0.31451416015625,
+          "13": -0.5347900390625,
+          "14": 1.3699951171875,
+          "15": 2.94598388671875
+        },
+        "improved_equal_worse": [
+          14,
+          0,
+          2
+        ],
+        "adverse_lifecycles": [
+          8,
+          13
+        ],
+        "parent_mean_deltas": {
+          "0": 2.03216552734375,
+          "1": 2.0570220947265625,
+          "2": 1.9452362060546875,
+          "3": 2.3244476318359375
+        },
+        "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS",
+        "direction": "POSITIVE_CHANGE_SUPPORTED"
+      },
+      "final_vs_A": {
+        "mean": -0.811676025390625,
+        "ci95": [
+          -1.3179121971130372,
+          -0.34379014968872085
+        ],
+        "lifecycle_deltas": {
+          "0": -0.30975341796875,
+          "1": -0.4713134765625,
+          "2": 0.6405029296875,
+          "3": 0.626220703125,
+          "4": -2.162841796875,
+          "5": -0.34454345703125,
+          "6": 0.80462646484375,
+          "7": -0.63018798828125,
+          "8": -2.3262939453125,
+          "9": -0.63385009765625,
+          "10": -0.419677734375,
+          "11": -3.1192626953125,
+          "12": -0.409912109375,
+          "13": -1.60589599609375,
+          "14": -1.75909423828125,
+          "15": -0.86553955078125
+        },
+        "improved_equal_worse": [
+          3,
+          0,
+          13
+        ],
+        "adverse_lifecycles": [
+          0,
+          1,
+          4,
+          5,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ],
+        "parent_mean_deltas": {
+          "0": -1.3022003173828125,
+          "1": -0.7639007568359375,
+          "2": -0.18341064453125,
+          "3": -0.9971923828125
+        },
+        "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS",
+        "direction": "NEGATIVE_CHANGE_SUPPORTED"
+      }
+    },
+    "VALIDATED_H2": {
+      "after_B": {
+        "mean": 0.1131591796875,
+        "ci95": [
+          0.0,
+          0.3394775390625
+        ],
+        "lifecycle_deltas": {
+          "0": 0.0,
+          "1": 0.0,
+          "2": 0.0,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0,
+          "6": 0.0,
+          "7": 0.0,
+          "8": 0.0,
+          "9": 0.0,
+          "10": 0.0,
+          "11": 0.0,
+          "12": 1.810546875,
+          "13": 0.0,
+          "14": 0.0,
+          "15": 0.0
+        },
+        "improved_equal_worse": [
+          1,
+          15,
+          0
+        ],
+        "adverse_lifecycles": [],
+        "parent_mean_deltas": {
+          "0": 0.45263671875,
+          "1": 0.0,
+          "2": 0.0,
+          "3": 0.0
+        },
+        "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS",
+        "direction": "CHANGE_UNCERTAIN"
+      },
+      "restoration": {
+        "mean": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "lifecycle_deltas": {
+          "0": 0.0,
+          "1": 0.0,
+          "2": 0.0,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0,
+          "6": 0.0,
+          "7": 0.0,
+          "8": 0.0,
+          "9": 0.0,
+          "10": 0.0,
+          "11": 0.0,
+          "12": 0.0,
+          "13": 0.0,
+          "14": 0.0,
+          "15": 0.0
+        },
+        "improved_equal_worse": [
+          0,
+          16,
+          0
+        ],
+        "adverse_lifecycles": [],
+        "parent_mean_deltas": {
+          "0": 0.0,
+          "1": 0.0,
+          "2": 0.0,
+          "3": 0.0
+        },
+        "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS",
+        "direction": "ZERO_OBSERVED_CHANGE"
+      },
+      "final_vs_A": {
+        "mean": 0.1131591796875,
+        "ci95": [
+          0.0,
+          0.3394775390625
+        ],
+        "lifecycle_deltas": {
+          "0": 0.0,
+          "1": 0.0,
+          "2": 0.0,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0,
+          "6": 0.0,
+          "7": 0.0,
+          "8": 0.0,
+          "9": 0.0,
+          "10": 0.0,
+          "11": 0.0,
+          "12": 1.810546875,
+          "13": 0.0,
+          "14": 0.0,
+          "15": 0.0
+        },
+        "improved_equal_worse": [
+          1,
+          15,
+          0
+        ],
+        "adverse_lifecycles": [],
+        "parent_mean_deltas": {
+          "0": 0.45263671875,
+          "1": 0.0,
+          "2": 0.0,
+          "3": 0.0
+        },
+        "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS",
+        "direction": "CHANGE_UNCERTAIN"
+      }
+    }
+  },
+  "method": "Shared carrier raw/router and factual complete-game shadow fits; immutable head versions, all paid validation/deployment raw/state/score/terminal receipts; eight-pair Student-t submission recomputation; independent static game utility/seed receipts; equal game/phase/life signed estimates and complete physical/economic costs.",
+  "limitations": "No world, full intermediate boards/weights or fitting replay, and no 20000-draw CI regeneration. Only carrier feedback trains belief/values; all validation and deployment observations are charged. Submission intervals are approximate decision rules. Inference is conditional on four old source parents.",
+  "errors": []
+}

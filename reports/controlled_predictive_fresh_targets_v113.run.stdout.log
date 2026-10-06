@@ -1,0 +1,70 @@
+{"phase": "target_history", "life": 15, "roots": 16, "missing": 0, "transitions": 8576}
+{"phase": "target_history", "life": 17, "roots": 16, "missing": 0, "transitions": 8295}
+{"phase": "target_history", "life": 16, "roots": 16, "missing": 0, "transitions": 10405}
+{"phase": "target_history", "life": 18, "roots": 16, "missing": 0, "transitions": 9628}
+{"phase": "frozen_crossed_predictions", "models": 16, "decisions": 1536, "counts": {"model_payloads_loaded": 16, "model_root_scores": 1024, "neural_candidate_predictions": 5120, "neural_hidden_activations": 51200, "derived_decisions": 512, "cached_decision_lookups": 512, "new_environment_transitions": 0, "new_synthetic_transitions": 0, "neural_model_fits": 0, "optimizer_steps": 0, "model_prefix_trajectories": 0}}
+{"phase": "fresh_reference", "root_id": "15_reward_2", "completed": 1, "expected": 64, "reference_complete": true, "transitions": 71139, "seconds": 91.46679423499882}
+{"phase": "fresh_reference", "root_id": "15_reward_0", "completed": 2, "expected": 64, "reference_complete": true, "transitions": 74656, "seconds": 95.69089158800125}
+{"phase": "fresh_reference", "root_id": "15_reward_3", "completed": 3, "expected": 64, "reference_complete": true, "transitions": 79075, "seconds": 97.70746763200077}
+{"phase": "fresh_reference", "root_id": "15_reward_1", "completed": 4, "expected": 64, "reference_complete": true, "transitions": 81152, "seconds": 98.66557582500172}
+{"phase": "fresh_reference", "root_id": "15_reward_4", "completed": 5, "expected": 64, "reference_complete": true, "transitions": 79653, "seconds": 167.6928551989986}
+{"phase": "fresh_reference", "root_id": "15_reward_5", "completed": 6, "expected": 64, "reference_complete": true, "transitions": 82987, "seconds": 189.266523839}
+{"phase": "fresh_reference", "root_id": "15_reward_6", "completed": 7, "expected": 64, "reference_complete": true, "transitions": 83107, "seconds": 189.32130767000126}
+{"phase": "fresh_reference", "root_id": "15_reward_7", "completed": 8, "expected": 64, "reference_complete": true, "transitions": 81551, "seconds": 190.44677784300075}
+{"phase": "fresh_reference", "root_id": "15_risk_goal_0", "completed": 9, "expected": 64, "reference_complete": true, "transitions": 77941, "seconds": 310.0108691409987}
+{"phase": "fresh_reference", "root_id": "15_risk_goal_2", "completed": 10, "expected": 64, "reference_complete": true, "transitions": 78156, "seconds": 316.4443247290001}
+{"phase": "fresh_reference", "root_id": "15_risk_goal_3", "completed": 11, "expected": 64, "reference_complete": true, "transitions": 82947, "seconds": 320.85389758699966}
+{"phase": "fresh_reference", "root_id": "15_risk_goal_1", "completed": 12, "expected": 64, "reference_complete": true, "transitions": 84770, "seconds": 322.6656643899987}
+{"phase": "fresh_reference", "root_id": "15_risk_goal_4", "completed": 13, "expected": 64, "reference_complete": true, "transitions": 80784, "seconds": 382.51584159100094}
+{"phase": "fresh_reference", "root_id": "15_risk_goal_5", "completed": 14, "expected": 64, "reference_complete": true, "transitions": 83949, "seconds": 392.60906496499956}
+{"phase": "fresh_reference", "root_id": "15_risk_goal_6", "completed": 15, "expected": 64, "reference_complete": true, "transitions": 87578, "seconds": 403.8359408870019}
+{"phase": "fresh_reference", "root_id": "15_risk_goal_7", "completed": 16, "expected": 64, "reference_complete": true, "transitions": 88687, "seconds": 404.8515838300009}
+{"phase": "fresh_reference", "root_id": "16_reward_0", "completed": 17, "expected": 64, "reference_complete": true, "transitions": 81241, "seconds": 461.0753668210018}
+{"phase": "fresh_reference", "root_id": "16_reward_1", "completed": 18, "expected": 64, "reference_complete": true, "transitions": 74803, "seconds": 465.6274112430001}
+{"phase": "fresh_reference", "root_id": "16_reward_3", "completed": 19, "expected": 64, "reference_complete": true, "transitions": 79764, "seconds": 479.80388729699916}
+{"phase": "fresh_reference", "root_id": "16_reward_2", "completed": 20, "expected": 64, "reference_complete": true, "transitions": 80402, "seconds": 481.2562846559995}
+{"phase": "fresh_reference", "root_id": "16_reward_4", "completed": 21, "expected": 64, "reference_complete": true, "transitions": 82114, "seconds": 527.2615861900013}
+{"phase": "fresh_reference", "root_id": "16_reward_5", "completed": 22, "expected": 64, "reference_complete": true, "transitions": 81249, "seconds": 531.0152552299987}
+{"phase": "fresh_reference", "root_id": "16_reward_6", "completed": 23, "expected": 64, "reference_complete": true, "transitions": 73235, "seconds": 539.2548598409994}
+{"phase": "fresh_reference", "root_id": "16_reward_7", "completed": 24, "expected": 64, "reference_complete": true, "transitions": 77692, "seconds": 544.4714328519985}
+{"phase": "fresh_reference", "root_id": "16_risk_goal_1", "completed": 25, "expected": 64, "reference_complete": true, "transitions": 78498, "seconds": 620.6103445389999}
+{"phase": "fresh_reference", "root_id": "16_risk_goal_0", "completed": 26, "expected": 64, "reference_complete": true, "transitions": 88838, "seconds": 624.2544936330014}
+{"phase": "fresh_reference", "root_id": "16_risk_goal_3", "completed": 27, "expected": 64, "reference_complete": true, "transitions": 86776, "seconds": 640.1629645979992}
+{"phase": "fresh_reference", "root_id": "16_risk_goal_2", "completed": 28, "expected": 64, "reference_complete": true, "transitions": 92432, "seconds": 641.257634075002}
+{"phase": "fresh_reference", "root_id": "16_risk_goal_4", "completed": 29, "expected": 64, "reference_complete": true, "transitions": 88914, "seconds": 697.598090800002}
+{"phase": "fresh_reference", "root_id": "16_risk_goal_5", "completed": 30, "expected": 64, "reference_complete": true, "transitions": 87454, "seconds": 700.0057068770002}
+{"phase": "fresh_reference", "root_id": "16_risk_goal_6", "completed": 31, "expected": 64, "reference_complete": true, "transitions": 78774, "seconds": 711.4929154400015}
+{"phase": "fresh_reference", "root_id": "16_risk_goal_7", "completed": 32, "expected": 64, "reference_complete": true, "transitions": 85674, "seconds": 718.6177980280008}
+{"phase": "fresh_reference", "root_id": "17_reward_1", "completed": 33, "expected": 64, "reference_complete": true, "transitions": 72823, "seconds": 761.2598454069994}
+{"phase": "fresh_reference", "root_id": "17_reward_0", "completed": 34, "expected": 64, "reference_complete": true, "transitions": 77447, "seconds": 763.4164892580011}
+{"phase": "fresh_reference", "root_id": "17_reward_3", "completed": 35, "expected": 64, "reference_complete": true, "transitions": 73292, "seconds": 778.0066301529987}
+{"phase": "fresh_reference", "root_id": "17_reward_2", "completed": 36, "expected": 64, "reference_complete": true, "transitions": 86907, "seconds": 784.3227877749996}
+{"phase": "fresh_reference", "root_id": "17_reward_4", "completed": 37, "expected": 64, "reference_complete": true, "transitions": 75731, "seconds": 822.2423184940017}
+{"phase": "fresh_reference", "root_id": "17_reward_5", "completed": 38, "expected": 64, "reference_complete": true, "transitions": 78909, "seconds": 826.0180295909995}
+{"phase": "fresh_reference", "root_id": "17_reward_6", "completed": 39, "expected": 64, "reference_complete": true, "transitions": 83386, "seconds": 847.0588891139996}
+{"phase": "fresh_reference", "root_id": "17_reward_7", "completed": 40, "expected": 64, "reference_complete": true, "transitions": 82728, "seconds": 850.8862453830006}
+{"phase": "fresh_reference", "root_id": "17_risk_goal_1", "completed": 41, "expected": 64, "reference_complete": true, "transitions": 79076, "seconds": 916.4816178770016}
+{"phase": "fresh_reference", "root_id": "17_risk_goal_0", "completed": 42, "expected": 64, "reference_complete": true, "transitions": 84022, "seconds": 917.5741079649997}
+{"phase": "fresh_reference", "root_id": "17_risk_goal_2", "completed": 43, "expected": 64, "reference_complete": true, "transitions": 88746, "seconds": 951.3604603400017}
+{"phase": "fresh_reference", "root_id": "17_risk_goal_3", "completed": 44, "expected": 64, "reference_complete": true, "transitions": 85399, "seconds": 952.989287790002}
+{"phase": "fresh_reference", "root_id": "17_risk_goal_4", "completed": 45, "expected": 64, "reference_complete": true, "transitions": 79835, "seconds": 996.3191172789993}
+{"phase": "fresh_reference", "root_id": "17_risk_goal_5", "completed": 46, "expected": 64, "reference_complete": true, "transitions": 86860, "seconds": 999.7034933870018}
+{"phase": "fresh_reference", "root_id": "17_risk_goal_6", "completed": 47, "expected": 64, "reference_complete": true, "transitions": 84783, "seconds": 1039.3995817940013}
+{"phase": "fresh_reference", "root_id": "17_risk_goal_7", "completed": 48, "expected": 64, "reference_complete": true, "transitions": 97751, "seconds": 1052.731133592999}
+{"phase": "fresh_reference", "root_id": "18_reward_1", "completed": 49, "expected": 64, "reference_complete": true, "transitions": 77075, "seconds": 1130.1400445709987}
+{"phase": "fresh_reference", "root_id": "18_reward_0", "completed": 50, "expected": 64, "reference_complete": true, "transitions": 84973, "seconds": 1149.3256945559988}
+{"phase": "fresh_reference", "root_id": "18_reward_2", "completed": 51, "expected": 64, "reference_complete": true, "transitions": 87857, "seconds": 1223.701451383}
+{"phase": "fresh_reference", "root_id": "18_reward_3", "completed": 52, "expected": 64, "reference_complete": true, "transitions": 77696, "seconds": 1227.3089591460011}
+{"phase": "fresh_reference", "root_id": "18_reward_4", "completed": 53, "expected": 64, "reference_complete": true, "transitions": 79292, "seconds": 1259.951385446002}
+{"phase": "fresh_reference", "root_id": "18_reward_5", "completed": 54, "expected": 64, "reference_complete": true, "transitions": 82404, "seconds": 1285.2508453310002}
+{"phase": "fresh_reference", "root_id": "18_reward_6", "completed": 55, "expected": 64, "reference_complete": true, "transitions": 76154, "seconds": 1337.6016778039993}
+{"phase": "fresh_reference", "root_id": "18_reward_7", "completed": 56, "expected": 64, "reference_complete": true, "transitions": 76084, "seconds": 1338.459052039001}
+{"phase": "fresh_reference", "root_id": "18_risk_goal_0", "completed": 57, "expected": 64, "reference_complete": true, "transitions": 85260, "seconds": 1433.3468054580007}
+{"phase": "fresh_reference", "root_id": "18_risk_goal_1", "completed": 58, "expected": 64, "reference_complete": true, "transitions": 87362, "seconds": 1470.9159491270002}
+{"phase": "fresh_reference", "root_id": "18_risk_goal_3", "completed": 59, "expected": 64, "reference_complete": true, "transitions": 84193, "seconds": 1551.428268358999}
+{"phase": "fresh_reference", "root_id": "18_risk_goal_2", "completed": 60, "expected": 64, "reference_complete": true, "transitions": 90550, "seconds": 1559.026958028}
+{"phase": "fresh_reference", "root_id": "18_risk_goal_4", "completed": 61, "expected": 64, "reference_complete": true, "transitions": 82886, "seconds": 1593.0679376740009}
+{"phase": "fresh_reference", "root_id": "18_risk_goal_5", "completed": 62, "expected": 64, "reference_complete": true, "transitions": 92416, "seconds": 1612.4849362570021}
+{"phase": "fresh_reference", "root_id": "18_risk_goal_6", "completed": 63, "expected": 64, "reference_complete": true, "transitions": 83875, "seconds": 1633.284647397999}
+{"phase": "fresh_reference", "root_id": "18_risk_goal_7", "completed": 64, "expected": 64, "reference_complete": true, "transitions": 84069, "seconds": 1639.0251713809994}
+{"phase": "complete", "references": 64, "seconds": 1639.1449142169986}

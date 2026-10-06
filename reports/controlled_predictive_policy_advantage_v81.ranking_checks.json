@@ -1,0 +1,17 @@
+{
+  "attempts": [
+    {
+      "session_failures": 0,
+      "scope": "Synthetic retained labels and fixed leaf predictions only.",
+      "ground_calls": 0,
+      "tree_fits": 0,
+      "main_campaign_calls": 0,
+      "learned_swipe_calls": 16,
+      "learned_line_rewrites": 64,
+      "advantage_feature_rows": 8,
+      "board_feature_rows": 24,
+      "tree_apply_rows": 8,
+      "advantage_prediction_rows": 8
+    }
+  ]
+}

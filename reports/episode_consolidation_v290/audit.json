@@ -1,0 +1,219 @@
+{
+  "status": "PASS",
+  "independent_valid": true,
+  "lifecycles": 16,
+  "fixed_source_parents": 4,
+  "new_training_environment_observations": 0,
+  "processed_training_samples": {
+    "FROZEN": 0,
+    "EPISODIC_MC": 1655968,
+    "NORMALIZED_SEQUENTIAL_MC": 1655968,
+    "EPISODE_MEAN_MC": 1655968
+  },
+  "evaluation_games": 1024,
+  "evaluation_cutoffs": 0,
+  "economic_training_raw_tiles_per_arm": 13391491,
+  "actual_parameter_writes": {
+    "FROZEN": 0,
+    "EPISODIC_MC": 51948355,
+    "NORMALIZED_SEQUENTIAL_MC": 51948355,
+    "EPISODE_MEAN_MC": 22085038
+  },
+  "primary_utility": {
+    "mean": 0.6878128051757812,
+    "ci95": [
+      -0.2835840225219726,
+      1.673881721496582
+    ],
+    "lifecycle_deltas": {
+      "0": 0.37255859375,
+      "1": 0.844482421875,
+      "2": -2.0067138671875,
+      "3": 0.0601806640625,
+      "4": -0.0406494140625,
+      "5": -2.131103515625,
+      "6": 3.832275390625,
+      "7": 2.5062255859375,
+      "8": -3.0672607421875,
+      "9": -1.7161865234375,
+      "10": 1.3460693359375,
+      "11": 1.275146484375,
+      "12": 1.3519287109375,
+      "13": 4.2359619140625,
+      "14": -0.1685791015625,
+      "15": 4.3106689453125
+    },
+    "parent_mean_deltas": {
+      "0": -0.345855712890625,
+      "1": 0.30828857421875,
+      "2": 0.750762939453125,
+      "3": 2.038055419921875
+    },
+    "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS",
+    "improved_equal_worse": [
+      10,
+      0,
+      6
+    ],
+    "adverse_lifecycles": [
+      2,
+      4,
+      5,
+      8,
+      9,
+      14
+    ]
+  },
+  "primary_full_heldout_mse": {
+    "mean": -15.727288115210309,
+    "ci95": [
+      -17.354775868151123,
+      -14.063613634005153
+    ],
+    "lifecycle_deltas": {
+      "0": -14.686716762362842,
+      "1": -15.484056256221415,
+      "2": -13.183247587034515,
+      "3": -21.537847712391308,
+      "4": -15.190060898135048,
+      "5": -7.853047817896716,
+      "6": -18.323704607053482,
+      "7": -13.755893980437811,
+      "8": -21.33489316444992,
+      "9": -14.824009618285828,
+      "10": -20.086356913228236,
+      "11": -20.77042772272204,
+      "12": -15.467399952878882,
+      "13": -5.455080714464422,
+      "14": -12.837370565821281,
+      "15": -20.84649556998118
+    },
+    "positive_equal_negative": [
+      0,
+      0,
+      16
+    ],
+    "parent_mean_deltas": {
+      "0": -16.669767694456674,
+      "1": -10.904048601717095,
+      "2": -16.10766991828438,
+      "3": -19.227666246383084
+    },
+    "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS",
+    "improved_equal_worse": [
+      16,
+      0,
+      0
+    ],
+    "adverse_lifecycles": []
+  },
+  "contrasts": {
+    "EPISODE_MEAN_MC_minus_FROZEN": {
+      "mean": 0.6878128051757812,
+      "ci95": [
+        -0.2835840225219726,
+        1.673881721496582
+      ],
+      "improved_equal_worse": [
+        10,
+        0,
+        6
+      ],
+      "adverse_lifecycles": [
+        2,
+        4,
+        5,
+        8,
+        9,
+        14
+      ]
+    },
+    "NORMALIZED_SEQUENTIAL_MC_minus_FROZEN": {
+      "mean": 0.0701446533203125,
+      "ci95": [
+        -0.8424543380737305,
+        1.0026382446289037
+      ],
+      "improved_equal_worse": [
+        8,
+        0,
+        8
+      ],
+      "adverse_lifecycles": [
+        0,
+        2,
+        3,
+        4,
+        8,
+        9,
+        11,
+        14
+      ]
+    },
+    "EPISODIC_MC_minus_FROZEN": {
+      "mean": -7.352973937988281,
+      "ci95": [
+        -8.247433090209961,
+        -6.448781967163086
+      ],
+      "improved_equal_worse": [
+        0,
+        0,
+        16
+      ],
+      "adverse_lifecycles": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ]
+    },
+    "EPISODE_MEAN_MC_minus_NORMALIZED_SEQUENTIAL_MC": {
+      "mean": 0.6176681518554688,
+      "ci95": [
+        0.09701175689697267,
+        1.091995620727539
+      ],
+      "improved_equal_worse": [
+        11,
+        0,
+        5
+      ],
+      "adverse_lifecycles": [
+        5,
+        6,
+        8,
+        10,
+        12
+      ]
+    },
+    "EPISODE_MEAN_MC_minus_EPISODIC_MC": {
+      "mean": 8.040786743164062,
+      "ci95": [
+        7.269512367248535,
+        8.862786293029783
+      ],
+      "improved_equal_worse": [
+        16,
+        0,
+        0
+      ],
+      "adverse_lifecycles": []
+    }
+  },
+  "method": "Canonical full-game factual suffix labels, original FROZEN/MC closure, normalized sample/write inventories, all terminal/utility/fresh seed receipts, equal-game/life signed endpoints and complete acquisition/processing costs.",
+  "limitations": "No formal source-weight reload or re-fitting, intermediate board/weight replay or 20000-draw CI regeneration. Finite native normalization tests and compact address/sample/write counters define the verified update scope. Conditional on four existing sources and one retained actor dataset; normalization changes effective step sizes.",
+  "errors": []
+}

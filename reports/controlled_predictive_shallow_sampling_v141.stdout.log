@@ -1,0 +1,17 @@
+{"event": "shallow_control_complete", "life": 0, "query": "risk1"}
+{"event": "shallow_control_complete", "life": 2, "query": "risk1"}
+{"event": "shallow_control_complete", "life": 3, "query": "risk1"}
+{"event": "diagnostics_complete", "life": 0, "query": "risk1", "windows": 262}
+{"event": "diagnostics_complete", "life": 2, "query": "risk1", "windows": 250}
+{"event": "diagnostics_complete", "life": 3, "query": "risk1", "windows": 235}
+{"event": "shallow_control_complete", "life": 1, "query": "risk1"}
+{"event": "diagnostics_complete", "life": 1, "query": "risk1", "windows": 260}
+{"event": "shallow_control_complete", "life": 0, "query": "risk8"}
+{"event": "shallow_control_complete", "life": 2, "query": "risk8"}
+{"event": "diagnostics_complete", "life": 0, "query": "risk8", "windows": 250}
+{"event": "shallow_control_complete", "life": 3, "query": "risk8"}
+{"event": "diagnostics_complete", "life": 2, "query": "risk8", "windows": 227}
+{"event": "diagnostics_complete", "life": 3, "query": "risk8", "windows": 241}
+{"event": "shallow_control_complete", "life": 1, "query": "risk8"}
+{"event": "diagnostics_complete", "life": 1, "query": "risk8", "windows": 248}
+{"status": "complete", "seconds": 14.121334883002419}

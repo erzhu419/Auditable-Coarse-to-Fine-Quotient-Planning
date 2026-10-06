@@ -1,0 +1,5 @@
+Command: env PYTHONPATH=src .venv-lmta-v42/bin/python -m pytest -q tests/test_native_policy_stream_v306.py
+Captured from the completed collector test execution; no repeat execution.
+Exit code: 0
+......                                                                   [100%]
+6 passed in 6.11s

@@ -1,0 +1,41 @@
+{
+  "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_half_continuation_v111.py",
+  "attempts": 2,
+  "returncode": 0,
+  "passed": 5,
+  "pytest_seconds": 0.25,
+  "scope": "Synthetic retained-log fixtures only; no production fits or analysis executed.",
+  "detected_failures": [
+    "incorrect data-versus-optimization effect decomposition",
+    "charging inherited fits or predictions as newly executed work",
+    "excluded-history or second-batch contamination of the unchanged-data control",
+    "missing new decisions silently replaced or dropped",
+    "unequal new optimizer budgets or incorrect per-stage counts",
+    "accessing removed episode cutoff metadata or interpreting acquisition budget as episode cutoff"
+  ],
+  "development_work": {
+    "new_environment_transitions": 0,
+    "new_synthetic_transitions": 0,
+    "neural_model_fits": 0,
+    "optimizer_steps": 0,
+    "neural_candidate_predictions": 0
+  },
+  "runs": [
+    {
+      "attempt": 1,
+      "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_half_continuation_v111.py",
+      "returncode": 0,
+      "passed": 5,
+      "pytest_seconds": 0.3,
+      "reason": "Initial focused implementation tests before stage-budget metadata correction."
+    },
+    {
+      "attempt": 2,
+      "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_half_continuation_v111.py",
+      "returncode": 0,
+      "passed": 5,
+      "pytest_seconds": 0.25,
+      "reason": "Remove episode_cutoff from new continuation metadata; detect missing-field accesses and preserve stage budget semantics."
+    }
+  ]
+}

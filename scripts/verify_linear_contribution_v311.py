@@ -1,0 +1,857 @@
+#!/usr/bin/env python3
+"""Independent fresh-history matched linear-WIN contribution and bank-belief audit."""
+import argparse
+from collections import Counter, defaultdict
+from copy import deepcopy
+import gzip
+import json
+from math import exp, log
+from pathlib import Path
+from statistics import mean
+
+from verify_continual_v303 import check_belief, check_contrast, check_local_fit, check_stage_split, endpoint
+from verify_context_continual_v305 import check_new_head, observed_statistics, route_scores
+from verify_cumulative_critic_v289 import close, equal_tree, json_file, require, sum_counts
+from verify_episode_consolidation_v290 import check_normalized_fit
+from verify_natural_online_value_v286 import Memory, planning_counts, terminal
+from verify_policy_data_v306 import board_status, swipe
+from verify_split_risk_v301 import check_representation, nonpeak
+from verify_stable_b_v298 import learned
+
+ARMS = ('SOURCE', 'CONTEXT_MC', 'CONTEXT_LINEAR_WIN', 'CONTEXT_LOCAL')
+LEARNERS = ARMS[1:]
+STAGES = ('A1', 'B1', 'A2', 'B2', 'A3')
+CELLS = ('A1_A', 'B1_A', 'B1_B', 'A2_A', 'A2_B', 'B2_A', 'B2_B', 'A3_A', 'A3_B')
+RAW = 131072
+PRIMARY = 'CONTEXT_LOCAL_minus_CONTEXT_LINEAR_WIN_FINAL_AB'
+PAIRS = (('CONTEXT_LOCAL', 'SOURCE'), ('CONTEXT_MC', 'SOURCE'), ('CONTEXT_LINEAR_WIN', 'SOURCE'),
+    ('CONTEXT_LOCAL', 'CONTEXT_MC'), ('CONTEXT_LOCAL', 'CONTEXT_LINEAR_WIN'), ('CONTEXT_LINEAR_WIN', 'CONTEXT_MC'))
+CHECKPOINTS = dict(A_after_B1=('B1_A', 'A1_A'), A_return_A2=('A2_A', 'A1_A'),
+    A_after_B2=('B2_A', 'A1_A'), A_final_vs_A1=('A3_A', 'A1_A'),
+    B_after_A2=('A2_B', 'B1_B'), B_return_B2=('B2_B', 'B1_B'), B_final_vs_B1=('A3_B', 'B1_B'))
+DETECTOR_CAP = 4096
+NOVELTY_LOG_ODDS = log(99.)
+INTERVAL_SCOPE = 'CONDITIONAL_ON_FOUR_FROZEN_PARENTS'
+
+
+def stage_context(row):
+    require(row['phase'] in STAGES and row['true_p_four'] == (.5 if row['phase'] in ('B1', 'B2') else .1),
+        'registered actual new A/B/A/B/A world metadata')
+
+
+def warmup_seed(life, stage, game):
+    return 311100000000+STAGES.index(stage)*100000+life*1000000+game
+
+
+def training_seed(life, stage):
+    return 311200000000+STAGES.index(stage)*100000+life*10000000
+
+
+def evaluation_seed(life, task, episode):
+    return 311900000000+(100000 if task == 'B' else 0)+life*1000000+episode
+
+
+def place(board, spawn):
+    require(spawn['rank'] in (1, 2) and 0 <= spawn['cell'] < 16 and board[spawn['cell']] == 0,
+        'actual new spawn has rank one or two and occupies an empty cell')
+    board[spawn['cell']] = spawn['rank']
+
+
+class StageWorld:
+    """Literal new-world reconstruction; no planner, training or bootstrap calls."""
+    def __init__(self, life, stage):
+        self.life, self.stage = life, stage
+        self.memory = Memory(); self.state = self.before = None
+        self.warm_games = []; self.warm_events = []; self.warm_environment = Counter(); self.warm_direct = Counter()
+        self.processing = Counter(); self.train_counts = {kind:Counter() for kind in ('environment', 'planning', 'learning')}
+        self.games = []; self.scores = defaultdict(list); self.game_memories = {}
+        self.training_events = []; self.training_rows = 0
+        self.detection = self.snapshot = self.training = None
+        self.looks = []; self.look_module_counts = []; self.last_look_games = 0
+        self.initial_raw = self.initial_games = self.confirmation_raw = self.confirmation_games = 0
+
+    def context(self, row):
+        require(row['lifecycle'] == self.life and row['parent'] == self.life%4 and row['phase'] == self.stage,
+            'new world lifecycle source-parent and stage membership')
+        if row['kind'] != 'DETECTOR_LOOK':
+            stage_context(row)
+        else:
+            require('true_p_four' not in row, 'provisional detector evidence contains no true world probability')
+
+    def warmup(self, row):
+        self.context(row)
+        require(self.detection is None, 'all detector observations precede its final decision and training')
+        extra = row['kind'] == 'CONFIRMATION'
+        if extra:
+            require(self.looks and self.looks[-1]['decision'] == 'PENDING_CONFIRMATION'
+                and not self.looks[-1]['at_cap'] and self.memory.obs < DETECTOR_CAP
+                and len(self.warm_games) == self.last_look_games,
+                'only a genuinely ambiguous uncapped look starts exactly one additional complete detector game')
+        else:
+            require(row['kind'] == 'WARMUP' and not self.looks and self.memory.obs < 256,
+                'initial detector warmup stops at the first complete game after 256 raw observations')
+        game = row['summary']; raw = row['raw_spawns']; board = [0]*16; actions = 0
+        require(game['seed'] == warmup_seed(self.life, self.stage, len(self.warm_games))
+            and len(raw) == game['steps']+2 and [spawn['kind'] for spawn in raw[:2]] == ['INITIAL', 'INITIAL']
+            and all(spawn['kind'] == 'POST_ACTION' for spawn in raw[2:]), 'fresh complete SOURCE detector game and all initial/post-action tiles')
+        for index, spawn in enumerate(raw):
+            if index >= 2:
+                require(board_status(board) == 'ACTIVE', 'detector cannot continue after a natural terminal board')
+                after, score = swipe(board, row['actions'][actions])
+                require(after != board and score == row['scores'][actions], 'detector actual legal swipe and independent merge score')
+                board = after; actions += 1
+            place(board, spawn)
+        require(actions == len(row['actions']) == len(row['scores']) == game['steps']
+            and sum(row['scores']) == game['score'] and board == row['final_board']
+            and board_status(board) == game['status'] and game['status'] in ('WON', 'LOST')
+            and game['utility'] == game['score']/2048.+(4. if game['status'] == 'WON' else -4.),
+            'detector full factual score sequence and natural terminal outcome')
+        steps, won = game['steps'], game['status'] == 'WON'
+        environment = dict(initial_spawns=2, sampled_transitions=steps, environment_random_draws=2*(steps+2),
+            ground_explicit_swipe_calls=steps, ground_state_status_calls=steps+1,
+            ground_status_internal_swipe_calls=4*(steps+1-won), ground_swipe_calls=steps+4*(steps+1-won))
+        require(Counter(row['counts']['environment']) == Counter(environment), 'all detector environment work and initial tiles are paid')
+        direct = Counter(row['counts']['direct'])
+        require(direct['choose_calls'] == direct['inner_choose_calls'] == steps
+            and direct['inner_learned_swipe_calls'] == 4*steps
+            and direct['inner_line_table_lookups'] == 4*direct['inner_learned_swipe_calls']
+            and direct['inner_table_lookups'] == 32*direct['inner_value_predictions']
+            and direct['td_updates'] == direct['inner_td_updates'] == 0, 'detector uses frozen SOURCE DIRECT and receives no learning updates')
+        events = self.memory.consume(spawn['rank'] for spawn in raw)
+        require(row['memory_events'] == events, 'every initial and confirmation rank produces its literal observed memory event')
+        self.warm_events.extend(events)
+        self.warm_games.append(game); self.warm_environment.update(environment); self.warm_direct.update(direct)
+        if extra:
+            self.confirmation_raw += len(raw); self.confirmation_games += 1
+        else:
+            self.initial_raw += len(raw); self.initial_games += 1
+        internal = 4*(not won)
+        self.processing.update(ground_explicit_swipe_calls=steps, ground_swipe_calls=steps+internal,
+            ground_state_status_calls=1, ground_status_internal_swipe_calls=internal, warmup_records=1)
+
+    def look(self, row):
+        self.context(row)
+        require(self.detection is None and self.state is None and self.memory.obs >= 256
+            and row['look_index'] == len(self.looks)
+            and (not self.looks or len(self.warm_games) == self.last_look_games+1),
+            'one detector look follows the initial minimum or exactly one new complete confirmation game')
+        statistics = observed_statistics(self.memory.learned())
+        require(row['statistics'] == statistics and row['detector_raw_tiles'] == self.memory.obs
+            and row['at_cap'] == (self.memory.obs >= DETECTOR_CAP),
+            'each detector look includes every paid initial and confirmation rank including natural overshoot')
+        require(row['prototype_committed'] is False, 'provisional detector looks never commit a bank prototype')
+        self.looks.append(row); self.look_module_counts.append(len(self.memory.modules))
+        self.last_look_games = len(self.warm_games)
+
+    def detect(self, row):
+        self.context(row)
+        require(self.detection is None and self.state is None and self.looks
+            and len(self.warm_games) == self.last_look_games
+            and (self.looks[-1]['decision'] != 'PENDING_CONFIRMATION' or self.looks[-1]['at_cap']),
+            'one final detector snapshot follows resolved evidence or capped ambiguity before any training acquisition')
+        belief = row['detector_belief']; memory = belief['memory']
+        require(memory['method'] == 'LIBRARY' and learned(memory) == self.memory.learned()
+            and belief['estimated_p_four'] == self.memory.probability(), 'blind detector belief contains only its observed completed detector games')
+        self.detection = row; self.warm_raw = self.memory.obs; self.warm_final = self.memory.learned()
+        self.warm_counts = self.memory.counts.copy()
+        self.warm_counts['predict_calls'] = 1
+
+    def train(self, row):
+        self.context(row)
+        require(self.detection is not None and self.detection['route']['created'] and self.snapshot is None,
+            'only a newly created observed context acquires a model cohort')
+        start = row['start']; raw = row['raw_spawns']; memory = self.memory
+        require(row['arm'] == 'FROZEN' and row['active_bank_id'] == 0 and row['module_id_before'] == memory.active
+            and row['model_p_four'] == memory.probability(), 'new cohort uses original SOURCE and preceding observed online LIBRARY probability')
+        require(start['stream_seed'] == training_seed(self.life, self.stage)
+            and len(raw) == min(RAW-start['raw_tiles'], 64-memory.n) and raw,
+            'fresh continuous SOURCE stream stops at each observed block and exact paid raw boundary')
+        if self.state is None:
+            require(start['raw_tiles'] == start['post_action_spawns'] == start['random_draw_position'] == 0
+                and start['status'] == 'NOT_STARTED' and start['initial_count'] == 0
+                and start['board'] == [0]*16 and start['pending_afterstate'] is start['pending_bank_id'] is None,
+                'created context acquires a new empty stream without old training facts')
+            self.state = deepcopy(start); self.before = deepcopy(start)
+        require(start == self.state, 'new cohort continuity across factual chunks')
+        state = self.state; action = starts = init_done = posts = wins = losses = 0; completed = []; events = []
+        for spawn in raw:
+            if spawn['kind'] == 'INITIAL':
+                if state['status'] != 'INITIALIZING':
+                    require(state['status'] in ('NOT_STARTED', 'WON', 'LOST'), 'initial tile cannot restart an active or censored game')
+                    state.update(board=[0]*16, episode=state['episode']+1, step=0, return_score=0,
+                        status='INITIALIZING', initial_count=0, game_start_raw=state['raw_tiles'], pending_afterstate=None, pending_bank_id=None)
+                    starts += 1
+                require(state['initial_count'] < 2, 'new game has exactly two initialization tiles')
+                state['initial_count'] += 1; init_done += state['initial_count'] == 2
+            else:
+                require(spawn['kind'] == 'POST_ACTION' and state['status'] == 'ACTIVE' and state['initial_count'] == 2,
+                    'new action follows an active two-tile initialization')
+                after, score = swipe(state['board'], row['actions'][action])
+                require(after != state['board'] and score == row['scores'][action], 'actual new cohort legal swipe and independent merge score')
+                state['board'] = after; self.scores[state['episode']].append(score); action += 1; posts += 1
+                state['step'] += 1; state['return_score'] += score; state['post_action_spawns'] += 1
+                state['pending_afterstate'] = list(after); state['pending_bank_id'] = 0
+            require(spawn['episode'] == state['episode'], 'every new raw tile belongs to its actual continuous game')
+            place(state['board'], spawn); state['raw_tiles'] += 1; state['random_draw_position'] += 2
+            events.extend(memory.consume([spawn['rank']]))
+            if state['initial_count'] == 2:
+                state['status'] = board_status(state['board'])
+            if state['status'] in ('WON', 'LOST'):
+                state.update(pending_afterstate=None, pending_bank_id=None)
+                game = dict(episode=state['episode'], stream_seed=state['stream_seed'], start_raw=state['game_start_raw'],
+                    end_raw=state['raw_tiles'], steps=state['step'], score=state['return_score'], status=state['status'])
+                completed.append(game); self.games.append(game); self.game_memories[game['episode']] = memory.learned()
+                wins += state['status'] == 'WON'; losses += state['status'] == 'LOST'
+        require(action == len(row['actions']) == len(row['scores']) and completed == row['completed_games']
+            and state == row['end'] and events == row['memory_events'],
+            'new cohort end boards pending states all natural terminals and observed memory events')
+        environment = dict(sampled_transitions=posts, post_action_spawns=posts, initial_spawns=len(raw)-posts,
+            raw_tile_productions=len(raw), environment_random_draws=2*len(raw), ground_explicit_swipe_calls=posts,
+            ground_state_status_calls=posts+init_done, ground_status_internal_swipe_calls=4*(posts+init_done-wins),
+            ground_swipe_calls=posts+4*(posts+init_done-wins), episodes_started=starts,
+            episodes_completed=wins+losses, won_games=wins, lost_games=losses)
+        require(Counter(row['counts']['environment']) == Counter(environment), 'actual new acquisition includes all initial winning and tail raw tiles')
+        planning_counts(row['counts']['planning'], posts)
+        require(not row['counts']['learning'] and not row['bank_update_counts'] and not row['td_examples'], 'SOURCE acquisition does not fit a learned bank')
+        boundary = int(state['status'] not in ('NOT_STARTED', 'INITIALIZING'))
+        internal = 4*(init_done+losses+int(boundary and state['status'] != 'WON'))
+        self.processing.update(ground_explicit_swipe_calls=posts, ground_swipe_calls=posts+internal,
+            ground_state_status_calls=init_done+wins+losses+boundary, ground_status_internal_swipe_calls=internal)
+        for kind in self.train_counts:
+            self.train_counts[kind].update(row['counts'][kind])
+        self.training_events.extend(events); self.training_rows += 1
+
+    def checkpoint(self, row):
+        self.context(row)
+        require(self.detection is not None and self.detection['route']['created'] and self.snapshot is None
+            and self.state is not None and self.state['raw_tiles'] == RAW and row['arm'] == 'FROZEN',
+            'one model snapshot follows a created context and its exact raw acquisition boundary')
+        snapshot, training = row['snapshot'], row['training']
+        require(snapshot['stream'] == self.state and snapshot['memory'] == self.memory.learned()
+            and snapshot['estimated_p_four'] == self.memory.probability() and snapshot['active_bank_id'] == 0
+            and snapshot['new_value_updates'] == 0, 'new model snapshot contains the complete observed SOURCE stream without value updates')
+        require(training['raw_tiles'] == RAW and training['chunks'] == self.training_rows
+            and training['before_stream'] == self.before and training['after_stream'] == self.state
+            and training['memory_event_count'] == len(self.training_events)
+            and all(Counter(training['counts'][kind]) == self.train_counts[kind] for kind in self.train_counts),
+            'model acquisition ledger counts all actual new blocks environment and planning')
+        require(Counter({key:value for key,value in training['memory_counts'].items() if key != 'predict_calls'})
+            == self.memory.counts-self.warm_counts and training['memory_counts']['predict_calls'] == self.training_rows+1,
+            'actor online probability is predicted once per actual chunk and once at its final boundary')
+        self.snapshot, self.training = snapshot, training
+
+
+def read_canonical(document):
+    worlds = {}; rows_read = 0
+    for parent in document['parent_receipts']:
+        ids = list(range(parent['parent'], 64, 4))
+        require(parent['lifecycle_ids'] == ids, 'all new lives retain their four frozen SOURCE parents')
+        path = Path(parent['trace_file']); require(path.stat().st_size == parent['trace_bytes'], 'new canonical tape physical byte inventory')
+        states = {(life, stage):StageWorld(life, stage) for life in ids for stage in STAGES}
+        with gzip.open(path, 'rt') as stream:
+            for line in stream:
+                row = json.loads(line); rows_read += 1; key = row['lifecycle'], row['phase']
+                require(key in states and row['parent'] == parent['parent'], 'actual new canonical parent and life membership')
+                world = states[key]
+                if row['phase'] != 'A1':
+                    previous = states[key[0], STAGES[STAGES.index(key[1])-1]]
+                    require(previous.detection is not None and (not previous.detection['route']['created'] or previous.snapshot is not None),
+                        'a new stage starts only after the previous detector or created model acquisition closes')
+                method = {'WARMUP':world.warmup, 'CONFIRMATION':world.warmup,
+                    'DETECTOR_LOOK':world.look, 'DETECTION_SNAPSHOT':world.detect,
+                    'TRAIN':world.train, 'ACQUISITION_SNAPSHOT':world.checkpoint}.get(row['kind'])
+                require(method is not None, 'canonical tape contains only actual detector and optional new cohort records')
+                method(row)
+        for key, world in states.items():
+            require(world.detection is not None and bool(world.snapshot) == world.detection['route']['created'],
+                'every stage has paid detection and exactly newly created contexts have closed model cohorts')
+            worlds[key] = world
+    require(set(worlds) == {(life, stage) for life in range(64) for stage in STAGES}, 'all 320 new stage detectors without inherited training facts')
+    return worlds, rows_read
+
+
+def expected_probe(statistics, prototypes):
+    """Literal model odds; independent of the experimental router implementation."""
+    scores = route_scores(statistics, prototypes)
+    best = max(scores, key=lambda row:(row['log_bayes_factor'], -row['context_id'])) if scores else None
+    if best is None:
+        decision, odds, posterior = 'FIRST_CONTEXT', None, None
+    else:
+        largest = best['log_bayes_factor']
+        odds = -largest-log(sum(exp(value['log_bayes_factor']-largest) for value in scores)/len(scores))
+        posterior = 1./(1.+exp(-odds)) if odds >= 0. else exp(odds)/(1.+exp(odds))
+        decision = 'REUSE' if largest >= 0. else 'CONFIRMED_NEW' if odds >= NOVELTY_LOG_ODDS else 'PENDING_CONFIRMATION'
+    created = decision in ('FIRST_CONTEXT', 'CONFIRMED_NEW')
+    context = len(prototypes) if created else best['context_id']
+    before = None if created else dict(prototypes[context])
+    return dict(statistics=statistics, scores=scores, context_id=context, created=created,
+        prototype_before=before, prototype_after=None if created else deepcopy(before),
+        prototype_committed=False, decision=decision, novelty_log_odds=odds, novelty_posterior=posterior)
+
+
+def check_detection_route(route, belief, prototypes, looks):
+    require(looks, 'every final route retains its sequential paid detector looks')
+    for index, look in enumerate(looks):
+        expected = expected_probe(look['statistics'], prototypes)
+        equal_tree({key:look[key] for key in expected}, expected,
+            'each provisional decision uses independently calculated immutable-prior Beta mixture evidence')
+        require(look['look_index'] == index and look['at_cap'] == (look['detector_raw_tiles'] >= DETECTOR_CAP)
+            and look['statistics']['observations'] == look['detector_raw_tiles'], 'ordered sequential detector look and actual soft cap')
+        if index:
+            previous = looks[index-1]
+            require(previous['decision'] == 'PENDING_CONFIRMATION' and not previous['at_cap']
+                and look['detector_raw_tiles'] > previous['detector_raw_tiles'],
+                'only genuinely ambiguous evidence below the cap permits further independent observations')
+    statistics = observed_statistics(belief['memory'])
+    expected = expected_probe(statistics, prototypes)
+    require(statistics == looks[-1]['statistics'], 'final route observes exactly the last paid detector pool without training leakage')
+    if expected['decision'] == 'PENDING_CONFIRMATION':
+        require(looks[-1]['at_cap'], 'ambiguous detector evidence cannot finalize before its frozen cap')
+        expected['decision'] = 'CAP_REUSE_UNRESOLVED'
+    else:
+        expected['prototype_committed'] = True
+        before = expected['prototype_before']; context = expected['context_id']
+        after = dict(context_id=context, observations=statistics['observations'], fours=statistics['fours'], visits=1)
+        if before is not None:
+            after.update(observations=before['observations']+statistics['observations'],
+                fours=before['fours']+statistics['fours'], visits=before['visits']+1)
+        expected['prototype_after'] = after
+    equal_tree({key:route[key] for key in expected}, expected,
+        'resolved final route commits only its full detector pool once while capped ambiguity preserves the prior prototype and visits')
+    context, created = expected['context_id'], expected['created']
+    if expected['prototype_committed']:
+        if created:
+            prototypes.append(expected['prototype_after'])
+        else:
+            prototypes[context] = expected['prototype_after']
+    return context, created
+
+
+def check_probe_route(route, belief, prototypes):
+    statistics = observed_statistics(belief['memory']); scores = route_scores(statistics, prototypes)
+    equal_tree(route['statistics'], statistics, 'retention probe uses the first task detector warmup without new data')
+    equal_tree(route['scores'], scores, 'retention probe scores all current prototypes without modifying them')
+    best = max(scores, key=lambda row:(row['log_bayes_factor'], -row['context_id']))
+    require(route['kind'] == 'READ_ONLY_FIRST_DETECTOR' and route['context_id'] == best['context_id'],
+        'readonly retention selection preserves the independently calculated highest-evidence context')
+    return best['context_id']
+
+
+def check_acquisition(row, world):
+    acquisition = row['acquisition']; warm = acquisition['warmup']; created = row['context_route']['created']
+    require(row['detector_belief'] == world.detection['detector_belief'] and row['context_route'] == world.detection['route'],
+        'receipt detector and routing evidence precede every actual training row')
+    require(warm['game_summaries'] == world.warm_games and warm['raw_tiles'] == world.warm_raw
+        and warm['memory_events'] == world.warm_events and warm['final_memory'] == world.warm_final,
+        'all original SOURCE initial and confirmation games and observed ranks remain in the detector receipt')
+    require(warm['initial_raw_tiles'] == world.initial_raw and warm['confirmation_raw_tiles'] == world.confirmation_raw
+        and warm['initial_game_count'] == world.initial_games and warm['confirmation_games'] == world.confirmation_games
+        and warm['detector_looks'] == len(world.looks)
+        and world.warm_raw == world.initial_raw+world.confirmation_raw,
+        'every independent additional detector game and its complete paid overshoot remain inventoried')
+    require(Counter(warm['environment_counts']) == world.warm_environment and Counter(warm['direct_counts']) == world.warm_direct
+        and Counter(warm['memory_counts']) == world.warm_counts, 'paid detector environment DIRECT and observed memory work')
+    require(acquisition['new_value_updates'] == acquisition['new_evaluation_games'] == 0
+        and acquisition['physical_acquisitions'] == int(created), 'only actually created contexts acquire frozen SOURCE cohorts')
+    reconstruction = acquisition['reconstruction']
+    require(Counter(reconstruction['counts']) == world.processing and reconstruction['chunks'] == world.training_rows,
+        'all actual warmup and optional cohort reconstruction work is counted')
+    expected_memory = Counter(world.memory.counts); expected_memory['predict_calls'] = world.training_rows+2 if created else 1
+    require(Counter(reconstruction['memory_counts']) == expected_memory, 'detector and optional chunk/snapshot reconstruction probabilities are counted once')
+    if not created:
+        require(row['dataset'] is row['fit_snapshot'] is acquisition['training'] is acquisition['snapshot'] is None
+            and not acquisition['native_setup_counts'] and acquisition['native_setup_seconds'] == 0.
+            and world.state is None, 'context reuse has no model cohort native actor allocation or fitting dataset')
+        return 0
+    dataset = row['dataset']
+    require(acquisition['snapshot'] == world.snapshot and acquisition['training'] == world.training,
+        'created context closes its exact new all-raw acquisition')
+    n = check_stage_split(dataset, world.games, world.scores, world.game_memories, world.warm_raw, world.training, world.stage)
+    require(learned(dataset['actor_memory_'+world.stage+'_end']) == world.memory.learned(), 'complete actor belief includes the paid unfinished acquisition tail')
+    for kind in ('environment_counts', 'direct_counts', 'memory_counts'):
+        require(dataset['costs']['warmup_'+kind] == warm[kind], 'warmup costs enter new model reconstruction')
+    require(dataset['costs']['processing_counts'] == reconstruction['counts']
+        and dataset['costs']['processing_memory_counts'] == reconstruction['memory_counts']
+        and dataset['costs']['reconstructed_chunks'] == reconstruction['chunks']
+        and dataset['costs']['processing_cpu_seconds'] == reconstruction['cpu_seconds'], 'model retains actual reconstruction costs and complete original facts')
+    return n
+
+
+def check_bank_setup(setup):
+    require(set(setup) == set(LEARNERS), 'each actual new context allocates all three matched learners')
+    mc, local = setup['CONTEXT_MC'], setup['CONTEXT_LOCAL']; check_new_head(local)
+    counts = mc['setup_counts']; size = counts['source_parameters_copied']
+    require(not mc['source_weights_shared'] and counts['source_weight_bytes_copied'] == 8*size
+        and counts['allocated_weight_parameters'] == size and counts['allocated_weight_bytes'] == mc['private_weight_bytes'] == 8*size
+        and size == local['setup_counts']['source_parameters_copied'], 'scalar MC copies the same original SOURCE prior once per created bank')
+    linear = setup['CONTEXT_LINEAR_WIN']; counts = linear['setup_counts']
+    require(not linear['source_weights_shared'] and counts['source_parameters_copied'] == size
+        and counts['source_weight_bytes_copied'] == 8*size
+        and counts['initialized_half_win_parameters'] == size
+        and counts['allocated_weight_parameters'] == 2*size
+        and counts['allocated_weight_bytes'] == linear['private_weight_bytes'] == 16*size,
+        'linear reward copies original SOURCE and a full second WIN table initializes to a half-sum prediction')
+    require(linear['private_weight_bytes'] == local['private_weight_bytes'],
+        'LINEAR_WIN and LOCAL retain exactly the same two-table parameter capacity')
+
+
+def check_linear_representation(counts, samples):
+    expected = dict(linear_win_table_lookups=32*samples,
+        combined_value_additions=2*samples, combined_value_multiplications=samples)
+    require(Counter(counts) == Counter(expected),
+        'linear WIN uses an unclipped 32-lookup sum and affine combination without sigmoid or log loss')
+
+
+def check_linear_fit(fit, mc, dataset):
+    games = dataset['games'][:dataset['fit_game_count']]
+    steps = sum(game['steps'] for game in games); wins = sum(game['status'] == 'WON' for game in games)
+    samples = steps-wins
+    require(fit['method'] == 'LINEAR_WIN2' and fit['alpha'] == .0025 and fit['frozen_game_start_targets'],
+        'fixed linear WIN learning rate and game-start residuals')
+    require(fit['fitted_games'] == len(games) and fit['fitted_steps'] == dataset['fit_step_end'] == steps
+        and fit['trained_afterstates'] == fit['reward_trained_afterstates'] == fit['win_trained_afterstates'] == samples,
+        'linear reward and WIN fit exactly the same factual nonwinning afterstates as MC and LOCAL')
+    targets = dict(terminal_game_labels=len(games), win_label_assignments=samples,
+        reward_suffix_target_assignments=steps, reward_suffix_additions=steps,
+        goal_checks=steps, skipped_winning_afterstates=wins)
+    require(Counter(fit['target_counts']) == Counter(targets), 'all linear labels use natural game WIN and reward suffix without terminal bonus')
+    writes = mc['learning_counts']['table_updates']; products = mc['consolidation_counts']['sample_unique_addresses']
+    work = dict(td_updates=samples, value_predictions=samples, table_lookups=64*samples,
+        table_updates=2*writes, table_update_occurrences=32*samples,
+        reward_predictions=samples, win_predictions=samples,
+        reward_table_lookups=32*samples, win_table_lookups=32*samples,
+        reward_table_updates=writes, win_parameter_updates=writes)
+    require(Counter(fit['learning_counts']) == Counter(work), 'linear two-table predictions reads and both actual parameter writes are paid')
+    expected = dict(games_processed=len(games), feature_extractions=samples, feature_occurrences=32*samples,
+        feature_digit_reads=192*samples, feature_address_multiply_adds=192*samples,
+        sort_calls=len(games)+samples, sort_items=64*samples,
+        denominator_occurrence_visits=32*samples, game_unique_addresses=writes,
+        reward_gradient_products=products, reward_gradient_accumulations=products,
+        win_gradient_products=products, win_gradient_accumulations=products,
+        normalization_divisions=2*writes, parameter_update_multiplications=2*writes,
+        game_parameter_commits=len(games), reward_game_commits=len(games), win_game_commits=len(games),
+        reward_parameter_writes=writes, win_parameter_writes=writes, address_denominator_searches=products)
+    require(all(fit['normalization_counts'][key] == value for key,value in expected.items()),
+        'linear reward and WIN use the same game-start normalized address multiplicities and game commits')
+    check_linear_representation(fit['representation_counts'], samples)
+    for key in ('first_sample','last_sample'):
+        value, scalar = fit[key], mc[key]; game = games[scalar['episode']]
+        win = float(game['status'] == 'WON'); bonus = 4. if win else -4.
+        require((value['episode'],value['step']) == (scalar['episode'],scalar['step'])
+            and value['win_target'] == win and value['reward_target'] == scalar['raw_target']-bonus,
+            'linear sample label is actual WIN rather than LOSS and reward target excludes terminal bonus')
+        prediction = value['win_prediction']
+        require(close(value['win_error'], win-prediction)
+            and close(value['reward_error'], value['reward_target']-value['reward_prediction'])
+            and close(value['combined_prediction'], value['reward_prediction']+8.*prediction-4.),
+            'linear unbounded WIN prediction and frozen reward/WIN residuals use R plus 8WIN minus 4')
+    require(fit['first_sample']['win_prediction'] == .5
+        and fit['first_sample']['reward_prediction'] == mc['first_sample']['raw_prediction_before_update'],
+        'each new linear bank starts at original SOURCE reward with 32 times 1/64 WIN prediction')
+    return samples
+
+
+def check_evaluation(value, life, task, belief, arm):
+    games, counts = value['game_summaries'], value['counts']
+    require(value['estimated_p_four'] == belief['estimated_p_four'] and value['static_evaluation_valid'],
+        'all four algorithms execute with the actual selected bank belief and static parameters')
+    require(len(games) == 32 and [game['seed'] for game in games] == [evaluation_seed(life, task, i) for i in range(32)],
+        'all checkpoint arms have fresh same-task paired V311 evaluation seeds')
+    for game in games:
+        require(1 <= game['steps'] <= 8192, 'actual whole-game evaluation horizon')
+        if game['status'] == 'CUTOFF':
+            require(game['steps'] == 8192 and max(game['final_board']) < 11, 'evaluation cannot fabricate an early cutoff or hide a goal')
+            bonus = 0.
+        else:
+            terminal(game['final_board'], game['status']); bonus = 4. if game['status'] == 'WON' else -4.
+        require(game['utility'] == game['score']/2048.+bonus, 'new whole-game utility includes the original natural terminal bonus')
+    steps, wins = sum(game['steps'] for game in games), sum(game['status'] == 'WON' for game in games)
+    environment = dict(sampled_transitions=steps, post_action_spawns=steps, initial_spawns=64,
+        raw_tile_productions=steps+64, environment_random_draws=2*(steps+64), ground_explicit_swipe_calls=steps,
+        ground_state_status_calls=steps+32, ground_status_internal_swipe_calls=4*(steps+32-wins),
+        ground_swipe_calls=steps+4*(steps+32-wins))
+    require(Counter(counts['environment']) == Counter(environment), 'all new evaluation initial and terminal tile production is paid')
+    planning_counts(counts['planning'], steps)
+    if arm == 'CONTEXT_LOCAL':
+        check_representation(value['representation_counts'], 'LOCAL_RISK', counts['planning'].get('value_predictions', 0))
+    elif arm == 'CONTEXT_LINEAR_WIN':
+        check_linear_representation(value['representation_counts'], counts['planning'].get('value_predictions', 0))
+    else:
+        require(not value['representation_counts'] and not value['setup_counts'], 'SOURCE and matched scalar MC use no split-risk representation')
+    return dict(games=32, mean_game_utility=mean(game['utility'] for game in games), wins=wins,
+        losses=sum(game['status'] == 'LOST' for game in games), cutoffs=sum(game['status'] == 'CUTOFF' for game in games),
+        cutoff_episodes=[i for i, game in enumerate(games) if game['status'] == 'CUTOFF'], steps=steps)
+
+
+def check_router_counts(life, worlds):
+    observations = [life['stages'][stage]['context_route'] for stage in STAGES]
+    probes = [life['stages'][stage]['evaluation_routes'][task] for stage, task in (('B1', 'A'), ('A2', 'B'), ('B2', 'A'), ('A3', 'B'))]
+    stage_worlds = [worlds[life['lifecycle'], stage] for stage in STAGES]
+    looks = [look for world in stage_worlds for look in world.looks]
+    routes = looks+probes
+    modules = sum(sum(world.look_module_counts) for world in stage_worlds)
+    modules += sum(len(life['stages'][stage]['detector_belief']['memory']['modules']) for stage in STAGES)
+    modules += 2*sum(len(life['task_detectors'][task]['memory']['modules']) for task in ('A', 'B'))
+    candidates = sum(len(route['scores']) for route in routes)
+    extractions = len(routes)+len(STAGES)
+    nonempty = sum(bool(look['scores']) for look in looks)
+    expected = dict(statistics_module_visits=modules, statistics_parameter_reads=2*modules,
+        statistics_pending_reads=2*extractions, statistics_extractions=extractions,
+        log_beta_evaluations=3*candidates, lgamma_evaluations=9*candidates,
+        candidate_scores=candidates, score_comparisons=sum(max(0, len(route['scores'])-1) for route in routes),
+        context_creations=len(life['context_bank']['banks']), probe_calls=len(looks), commit_calls=5,
+        prototype_commits=sum(route['prototype_committed'] for route in observations), select_calls=4,
+        novelty_odds_evaluations=nonempty, novelty_posterior_evaluations=nonempty,
+        pending_confirmation_probes=sum(look['decision'] == 'PENDING_CONFIRMATION' for look in looks),
+        cap_reuse_unresolved_calls=sum(route['decision'] == 'CAP_REUSE_UNRESOLVED' for route in observations))
+    require(Counter(life['context_bank']['counts']) == Counter(expected),
+        'every sequential probe final decision actual prototype commit and four readonly classifications are paid')
+
+
+def register_bank_belief(context, fit_snapshot, dataset, bank_beliefs):
+    """Retain the created context's factual FIT belief, never a task lookup."""
+    key = str(context)
+    require(key not in bank_beliefs, 'each created bank stores its first FIT belief exactly once')
+    require(fit_snapshot is not None and dataset is not None,
+        'each created bank requires its own observed complete FIT-prefix belief')
+    check_belief(fit_snapshot, dataset)
+    bank_beliefs[key] = deepcopy(fit_snapshot)
+
+
+def check_bank_planning_beliefs(row, bank_beliefs, tasks):
+    require(set(row['planning_beliefs']) == set(tasks), 'every actual checkpoint cell records its selected-bank planning belief')
+    for task in tasks:
+        context = str(row['evaluation_routes'][task]['context_id'])
+        require(context in bank_beliefs, 'evaluation executes a bank already created and fitted in this lifecycle')
+        belief = bank_beliefs[context]
+        require(row['planning_beliefs'][task] == belief,
+            'each checkpoint uses its actual selected bank first FIT belief, including misroutes and cap reuse')
+        for arm in ARMS:
+            require(row['arms'][arm]['evaluations'][task]['estimated_p_four'] == belief['estimated_p_four'],
+                'SOURCE MC LINEAR_WIN and LOCAL share the actual selected bank planning probability')
+
+
+def check_stored_bank_beliefs(saved, banks, expected):
+    require(saved == expected, 'every created bank retains its own immutable first FIT belief through all five stages')
+    require({str(bank['context_id']):bank['planning_belief'] for bank in banks} == expected,
+        'final retained context banks store the same immutable per-bank FIT beliefs')
+
+
+def check_evaluation_identity(repeated, evaluation, arm, task, selected, updates, belief):
+    identity = dict(game_summaries=evaluation['game_summaries'], counts=evaluation['counts'],
+        representation_counts=evaluation['representation_counts'])
+    key = (arm, task, -1 if arm == 'SOURCE' else selected,
+        0 if arm == 'SOURCE' else updates, belief['estimated_p_four'])
+    if key in repeated:
+        equal_tree(identity, repeated[key], 'unchanged parameters and bank probability repeat exact paired terminal outcomes')
+    repeated[key] = deepcopy(identity)
+
+
+def check_lifecycle(life, worlds):
+    require(set(life['stages']) == set(STAGES) and set(life['task_detectors']) == {'A', 'B'}
+        and 'evaluation_beliefs' not in life,
+        'all five new stages and readonly task detectors remain without task-indexed evaluation beliefs')
+    prototypes = []; updates = {arm:[] for arm in LEARNERS}; bank_beliefs = {}; detectors = {}; cells = {}; processed = Counter(); cutoffs = 0
+    repeated = {}
+    for stage in STAGES:
+        row = life['stages'][stage]; task = 'B' if stage in ('B1', 'B2') else 'A'; world = worlds[life['lifecycle'], stage]
+        context, created = check_detection_route(row['context_route'], row['detector_belief'], prototypes, world.looks)
+        if created:
+            for arm in LEARNERS:
+                updates[arm].append(0)
+        n = check_acquisition(row, world)
+        if created:
+            register_bank_belief(context, row['fit_snapshot'], row['dataset'], bank_beliefs)
+        if task not in detectors:
+            detectors[task] = row['detector_belief']
+        require(row['context_updates_before'] == {arm:{str(i):value for i,value in enumerate(values)} for arm,values in updates.items()},
+            'all matched bank update histories continue before the actual stage decision')
+        tasks = ('A',) if stage == 'A1' else ('A', 'B')
+        require(set(row['arms']) == set(ARMS) and set(row['evaluation_routes']) == set(tasks), 'same four algorithms and nine actual checkpoint task cells')
+        samples = sum(game['steps']-(game['status'] == 'WON') for game in world.games[:n]) if created else 0
+        for evaluated_task in tasks:
+            route = row['evaluation_routes'][evaluated_task]
+            if evaluated_task == task:
+                require(route == dict(kind='ACTUAL_STAGE_ROUTE', context_id=context), 'current-task utility uses the actual detector context including A2 misrouting or creation')
+            else:
+                check_probe_route(route, detectors[evaluated_task], prototypes)
+            cells[stage+'_'+evaluated_task] = dict(
+                estimated_p_four=bank_beliefs[str(route['context_id'])]['estimated_p_four'], arms={})
+        check_bank_planning_beliefs(row, bank_beliefs, tasks)
+        for arm in ARMS:
+            value = row['arms'][arm]; fit = value['fit']; count = samples if created and arm != 'SOURCE' else 0
+            before = 0 if arm == 'SOURCE' else updates[arm][context]
+            require(value['parameters_retained'] and value['processed_training_samples'] == fit['trained_afterstates'] == count
+                and value['head_updates_before'] == before and value['head_updates_after'] == before+count,
+                'only new contexts fit once and all three matched learners process exactly the same factual states')
+            if count:
+                if arm == 'CONTEXT_MC':
+                    check_normalized_fit(fit, world.games[:n], row['dataset'], world.scores, 'EPISODE_MEAN_MC')
+                elif arm == 'CONTEXT_LINEAR_WIN':
+                    check_linear_fit(fit, row['arms']['CONTEXT_MC']['fit'], row['dataset'])
+                else:
+                    check_local_fit(fit, row['arms']['CONTEXT_MC']['fit'], row['dataset'], 'A1')
+            else:
+                require(fit['method'] == 'NONE' and not fit['learning_counts'] and not fit['target_counts'], 'SOURCE and existing context banks receive no refit')
+            if arm != 'SOURCE':
+                updates[arm][context] += count
+            processed[arm] += count
+            require(set(value['evaluations']) == set(tasks), 'all algorithms retain all actual checkpoint evaluations')
+            for evaluated_task in tasks:
+                evaluation = value['evaluations'][evaluated_task]
+                selected = row['evaluation_routes'][evaluated_task]['context_id']
+                belief = bank_beliefs[str(selected)]
+                record = check_evaluation(evaluation, life['lifecycle'], evaluated_task, belief, arm)
+                cells[stage+'_'+evaluated_task]['arms'][arm] = record; cutoffs += record['cutoffs']
+                check_evaluation_identity(repeated, evaluation, arm, evaluated_task, selected,
+                    0 if arm == 'SOURCE' else updates[arm][selected], belief)
+        require(row['context_updates_after'] == {arm:{str(i):value for i,value in enumerate(values)} for arm,values in updates.items()},
+            'inactive banks and existing selected banks retain all parameters without additional fits')
+    require(life['task_detectors'] == detectors, 'readonly retention detectors preserve their first observed task facts')
+    banks = life['context_bank']['banks']
+    require(len(banks) == len(prototypes) and [bank['context_id'] for bank in banks] == list(range(len(prototypes))),
+        'all actually created contexts remain retained without forcing a two-bank answer')
+    check_stored_bank_beliefs(life['bank_beliefs'], banks, bank_beliefs)
+    private = Counter()
+    for bank, prototype in zip(banks, prototypes):
+        require({key:bank[key] for key in prototype} == prototype
+            and bank['head_updates'] == {arm:updates[arm][bank['context_id']] for arm in LEARNERS}, 'final banks retain warmup-only prototypes and one matched first adaptation')
+        check_bank_setup(bank['head_setup'])
+        for arm in LEARNERS:
+            private[arm] += bank['head_setup'][arm]['private_weight_bytes']
+    require(life['context_bank']['private_weight_bytes_per_arm'] == dict(private), 'all actually retained scalar and dual-head bank capacity is paid')
+    check_router_counts(life, worlds)
+    return dict(lifecycle=life['lifecycle'], parent=life['parent'], cells=cells), processed, cutoffs
+
+
+def check_support(summary, cutoffs):
+    complete = cutoffs == 0
+    primary = complete and summary['final_ab_contrasts']['CONTEXT_LOCAL_minus_CONTEXT_LINEAR_WIN']['ci95'][0] > 0.
+    local_mc = complete and summary['final_ab_contrasts']['CONTEXT_LOCAL_minus_CONTEXT_MC']['ci95'][0] > 0.
+    net = complete and summary['final_ab_contrasts']['CONTEXT_LOCAL_minus_SOURCE']['ci95'][0] > 0.
+    tasks = {task:complete and summary['cells']['A3_'+task]['paired_contrasts']['CONTEXT_LOCAL_minus_SOURCE']['ci95'][0] > 0.
+        for task in ('A', 'B')}
+    retention = {}
+    for name in CHECKPOINTS:
+        lower, upper = summary['checkpoint_contrasts'][name]['CONTEXT_LOCAL']['ci95']
+        retention[name] = ('INCOMPLETE_GAME_ENDPOINTS' if not complete else 'SUPPORTED_NONDECREASE' if lower >= 0.
+            else 'SUPPORTED_LOSS' if upper < 0. else 'UNRESOLVED')
+    preserved = all(value == 'SUPPORTED_NONDECREASE' for value in retention.values())
+    require(summary['complete_game_endpoints'] == complete and summary['primary_local_over_linear_supported'] == primary
+        and summary['primary_local_over_linear_status'] == ('SUPPORTED_' if primary else 'NOT_SUPPORTED_')+INTERVAL_SCOPE,
+        'LOCAL contribution requires a positive matched-capacity linear WIN interval and complete game endpoints')
+    require(summary['primary_local_over_mc_supported'] == local_mc
+        and summary['primary_local_over_mc_status'] == ('SUPPORTED_' if local_mc else 'NOT_SUPPORTED_')+INTERVAL_SCOPE,
+        'the MC comparison remains a separate diagnostic and cannot replace the linear primary')
+    require(summary['final_net_gain_supported'] == net and summary['final_task_gain_supported'] == tasks
+        and summary['final_dual_task_gain_supported'] == all(tasks.values()), 'net average and individual final task gains remain separate')
+    require(summary['retention_status'] == retention and summary['retention_supported'] == preserved
+        and summary['retained_gain_supported'] == (primary and net and preserved),
+        'retained gain requires matched-linear contribution net SOURCE gain and all seven literal zero-margin retention comparisons')
+
+
+def check_result_summary(summary, records, cutoffs):
+    equal_tree(summary['by_lifecycle'], records, 'all new four-arm nine-cell whole-game endpoints')
+    require(summary['primary_contrast'] == PRIMARY and summary['bootstrap_draws'] == 20000 and summary['bootstrap_seed'] == 31100001
+        and summary['estimator'] == 'EQUAL_FINAL_TASKS_THEN_EVALUATION_GAMES_THEN_LIFECYCLES', 'frozen new-sequence final equal-task contribution primary')
+    require(set(summary['cells']) == set(CELLS), 'all nine actual detector and retention probe cells remain present')
+    for cell in CELLS:
+        value = summary['cells'][cell]; stage, task = cell.split('_')
+        require(value['stage'] == stage and value['task'] == task, 'new checkpoint task identity')
+        require(set(value['paired_contrasts']) == {a+'_minus_'+b for a,b in PAIRS}, 'matched MC and original SOURCE comparisons remain complete')
+        for arm in ARMS:
+            rows = [record['cells'][cell]['arms'][arm] for record in records]
+            expected = dict(mean_game_utility=mean(row['mean_game_utility'] for row in rows),
+                **{key:sum(row[key] for row in rows) for key in ('games', 'wins', 'losses', 'cutoffs', 'steps')})
+            equal_tree(value['arms'][arm], expected, 'equal whole-game then lifecycle task utility '+cell+' '+arm)
+        for left, right in PAIRS:
+            check_contrast(value['paired_contrasts'][left+'_minus_'+right],
+                [a-b for a,b in zip(endpoint(records, cell, left), endpoint(records, cell, right))])
+    require(set(summary['final_ab_contrasts']) == set(summary['current_task_sequence_contrasts']) == {a+'_minus_'+b for a,b in PAIRS},
+        'all registered final and current-sequence contrasts remain separate')
+    for left, right in PAIRS:
+        differences = [{cell:record['cells'][cell]['arms'][left]['mean_game_utility']-record['cells'][cell]['arms'][right]['mean_game_utility'] for cell in CELLS}
+            for record in records]
+        check_contrast(summary['final_ab_contrasts'][left+'_minus_'+right], [(row['A3_A']+row['A3_B'])/2 for row in differences])
+        check_contrast(summary['current_task_sequence_contrasts'][left+'_minus_'+right], [mean(row[cell] for cell in ('A1_A', 'B1_B', 'A2_A', 'B2_B', 'A3_A')) for row in differences])
+    require(set(summary['checkpoint_contrasts']) == set(CHECKPOINTS), 'all signed retention and restoration contrasts remain present')
+    for name, (after, before) in CHECKPOINTS.items():
+        require(set(summary['checkpoint_contrasts'][name]) == set(ARMS), 'all algorithm retention contrasts remain present')
+        for arm in ARMS:
+            check_contrast(summary['checkpoint_contrasts'][name][arm], [a-b for a,b in zip(endpoint(records, after, arm), endpoint(records, before, arm))])
+    for arm in ARMS:
+        rows = [record['cells'][cell]['arms'][arm] for record in records for cell in CELLS]
+        expected = {key:sum(row[key] for row in rows) for key in ('games', 'wins', 'losses', 'cutoffs', 'steps')}
+        expected['mean_final_ab_game_utility'] = mean(mean(record['cells'][cell]['arms'][arm]['mean_game_utility'] for cell in ('A3_A', 'A3_B')) for record in records)
+        expected['mean_current_task_sequence_game_utility'] = mean(mean(record['cells'][cell]['arms'][arm]['mean_game_utility'] for cell in ('A1_A', 'B1_B', 'A2_A', 'B2_B', 'A3_A')) for record in records)
+        equal_tree(summary['arms'][arm], expected, 'complete algorithm utility and natural endpoint inventory '+arm)
+    check_support(summary, cutoffs)
+
+
+def check_training_budget(account, inherited, lives):
+    rows = [life['stages'][stage] for life in lives for stage in STAGES]
+    warm = sum(row['acquisition']['warmup']['raw_tiles'] for row in rows)
+    created = [row for row in rows if row['context_route']['created']]
+    actor = sum(row['acquisition']['training']['raw_tiles'] for row in created)
+    require(account['old_target_training_raw_reused'] == 0 and account['physical_detection_stages'] == 320
+        and account['physical_acquisitions'] == len(created) and account['new_training_environment_observations'] == warm+actor
+        and account['new_warmup_raw_tiles'] == warm and account['new_actor_raw_tiles'] == actor == RAW*len(created),
+        'all 320 new detector warmups and exactly actually created context cohorts including tails are paid without old target facts')
+    by_stage = {stage:sum(life['stages'][stage]['acquisition']['warmup']['raw_tiles']
+        +(RAW if life['stages'][stage]['context_route']['created'] else 0) for life in lives) for stage in STAGES}
+    require(account['new_raw_tiles_by_stage'] == by_stage, 'actual extra context creation and acquisition enter the appropriate stage budget')
+    initial = sum(row['acquisition']['warmup']['initial_raw_tiles'] for row in rows)
+    confirmation = sum(row['acquisition']['warmup']['confirmation_raw_tiles'] for row in rows)
+    require(account['new_initial_detector_raw_tiles'] == initial and account['new_confirmation_raw_tiles'] == confirmation
+        and initial+confirmation == warm
+        and account['new_confirmation_games'] == sum(row['acquisition']['warmup']['confirmation_games'] for row in rows)
+        and account['detector_looks'] == sum(row['acquisition']['warmup']['detector_looks'] for row in rows),
+        'all independent confirmation observations games and looks are paid without dropping natural overshoot')
+    unresolved = [dict(lifecycle=life['lifecycle'], stage=stage) for life in lives for stage in STAGES
+        if life['stages'][stage]['context_route']['decision'] == 'CAP_REUSE_UNRESOLVED']
+    require(account['context_decisions'] == dict(Counter(row['context_route']['decision'] for row in rows))
+        and account['context_prototype_commits'] == sum(row['context_route']['prototype_committed'] for row in rows)
+        and account['unresolved_cap_stages'] == unresolved,
+        'all actual resolved decisions prototype commits and retained unresolved cap stages enter accounting')
+    economic = inherited['source_training_raw_tiles']+inherited['dynamics_raw_tiles']+warm+actor
+    require(account['inherited_costs_per_arm'] == dict.fromkeys(ARMS, inherited)
+        and account['economic_training_raw_tiles_per_arm'] == dict.fromkeys(ARMS, economic), 'all four algorithms pay original SOURCE dynamics and the same actual new observed facts')
+    return economic
+
+
+def check_accounting(document, inherited):
+    account = document['accounting']; lives = document['by_lifecycle']; parents = document['parent_receipts']
+    economic = check_training_budget(account, inherited, lives)
+    rows = [life['stages'][stage] for life in lives for stage in STAGES]; acquisitions = [row['acquisition'] for row in rows]
+    trained = [row for row in rows if row['context_route']['created']]
+    counts_fields = (('new_warmup_environment_counts', 'environment_counts'), ('new_warmup_direct_counts', 'direct_counts'), ('new_warmup_memory_counts', 'memory_counts'))
+    for field, key in counts_fields:
+        require(account[field] == sum_counts(acquisition['warmup'][key] for acquisition in acquisitions), 'actual '+field)
+    require(account['new_training_environment_counts'] == sum_counts([acquisition['warmup']['environment_counts'] for acquisition in acquisitions]
+        +[row['acquisition']['training']['counts']['environment'] for row in trained]), 'actual all-raw new physical training environment work')
+    for kind in ('environment', 'planning', 'learning'):
+        require(account['new_actor_counts'][kind] == sum_counts(row['acquisition']['training']['counts'][kind] for row in trained), 'actual SOURCE acquisition '+kind+' work')
+    require(account['acquisition_native_setup_counts'] == sum_counts(acquisition['native_setup_counts'] for acquisition in acquisitions)
+        and close(account['acquisition_cpu_seconds'], sum(acquisition['cpu_seconds'] for acquisition in acquisitions)), 'only actually created native acquisition actors and their complete CPU are paid')
+    require(account['reconstruction_counts'] == sum_counts(acquisition['reconstruction']['counts'] for acquisition in acquisitions)
+        and account['reconstruction_memory_counts'] == sum_counts(acquisition['reconstruction']['memory_counts'] for acquisition in acquisitions)
+        and close(account['reconstruction_cpu_seconds'], sum(acquisition['reconstruction']['cpu_seconds'] for acquisition in acquisitions)), 'all detector and optional model reconstruction work remains paid')
+    require(account['excluded_tail_raw_tiles'] == sum(row['dataset']['costs']['excluded_tail_raw_tiles'] for row in trained), 'all actual new unfinished tails remain paid without labels')
+    contexts = {str(life['lifecycle']):len(life['context_bank']['banks']) for life in lives}
+    require(account['total_contexts_created'] == account['physical_acquisitions'] == sum(contexts.values())
+        and account['contexts_per_lifecycle'] == contexts and account['context_router_counts'] == sum_counts(life['context_bank']['counts'] for life in lives)
+        and close(account['context_router_cpu_seconds'], sum(life['context_bank']['route_cpu_seconds'] for life in lives)), 'actual blind context growth detections and readonly probes retain their work')
+    for arm in ARMS:
+        values = [row['arms'][arm] for row in rows]; fits = [value['fit'] for value in values]
+        require(account['processed_training_samples'][arm] == sum(value['processed_training_samples'] for value in values)
+            and close(account['fit_cpu_seconds'][arm], sum(fit['cpu_seconds'] for fit in fits)), 'actual '+arm+' fitted samples and CPU')
+        for field, key in (('fit_counts', 'learning_counts'), ('fit_target_counts', 'target_counts'), ('fit_normalization_counts', 'normalization_counts'),
+            ('fit_consolidation_counts', 'consolidation_counts'), ('fit_representation_counts', 'representation_counts'), ('fit_setup_counts', 'setup_counts')):
+            require(account[field][arm] == sum_counts(nonpeak(fit.get(key, {})) for fit in fits), 'actual '+arm+' '+field)
+        evaluations = [evaluation for value in values for evaluation in value['evaluations'].values()]
+        for kind in ('environment', 'planning'):
+            require(account['evaluation_counts_per_arm'][arm][kind] == sum_counts(evaluation['counts'][kind] for evaluation in evaluations), 'actual '+arm+' new evaluation '+kind+' costs')
+        require(account['evaluation_representation_counts'][arm] == sum_counts(evaluation['representation_counts'] for evaluation in evaluations)
+            and close(account['evaluation_cpu_seconds_per_arm'][arm], sum(evaluation['cpu_seconds'] for evaluation in evaluations)), 'all actual '+arm+' static evaluation work')
+    for arm in LEARNERS:
+        weights = [life['context_bank']['private_weight_bytes_per_arm'][arm] for life in lives]
+        setups = [bank['head_setup'][arm] for life in lives for bank in life['context_bank']['banks']]
+        require(account['private_head_weight_bytes_created'][arm] == sum(weights) and account['peak_private_weight_bytes_per_lifecycle'][arm] == max(weights)
+            and account['head_setup_counts'][arm] == sum_counts(setup['setup_counts'] for setup in setups)
+            and close(account['head_setup_cpu_seconds'][arm], sum(setup['setup_cpu_seconds'] for setup in setups)), 'actual '+arm+' private SOURCE-initialized context capacity and allocation CPU')
+    require(account['new_evaluation_games'] == 73728 and account['new_sequence_compute_closed'], 'all actual new nine-cell evaluation games and complete new-sequence compute inventory')
+    require([parent['parent'] for parent in parents] == list(range(4)) and all(parent['source_setup']['checkpoint_loads'] == 1
+        and parent['source_setup']['new_leaf_updates'] == 0 for parent in parents), 'four original SOURCE checkpoint loads with no new source fitting')
+    require(account['canonical_trace_bytes'] == sum(parent['trace_bytes'] for parent in parents), 'all actual new canonical tape storage is retained')
+    require(close(account['worker_cpu_seconds'], sum(parent['cpu_seconds'] for parent in parents))
+        and close(account['compiler_cpu_seconds'], sum(parent['compiler_cpu_seconds'] for parent in parents)), 'new worker and compiler CPU is counted within its correct scope')
+    return economic
+
+
+def audit(directory):
+    directory = Path(directory); document = json_file(directory/'summary.json'); settings = document['settings']
+    require(document['schema'] == 'acfqp.linear_contribution.v311' and document['status'] == 'EXPERIMENT_COMPLETE'
+        and document['scientific_gate'] == 'NOT_A_FORMAL_GATE', 'complete new-sequence linear-contribution terminal document')
+    equal_tree(settings, json_file(directory/'configuration.json'), 'unchanged frozen V311 complete algorithm configuration')
+    expected = dict(schema='acfqp.linear_contribution_freeze.v311',
+        source_inputs='ORIGINAL_SOURCE_PROVENANCE_AND_COSTS_ONLY_NO_OLD_TARGET_FACTS', lifecycles=list(range(64)), parents=4,
+        arms=list(ARMS), stages=list(STAGES), tasks=dict(A1='A', B1='B', A2='A', B2='B', A3='A'), true_probabilities=dict(A=.1, B=.5),
+        observations='PAID_SOURCE_DETECTION_WITH_ON_DEMAND_CONFIRMATION_COHORT_ONLY_FOR_CONFIRMED_NEW_CONTEXT',
+        router='V305_BETA_1_1_BF_REUSE_AND_SEQUENTIAL_NEW_VERSUS_UNIFORM_EXISTING_MIXTURE_CONFIRMATION',
+        reuse_log_bayes_factor_threshold=0., new_context_prior=.5, existing_context_prior='UNIFORM_WITH_TOTAL_MASS_0.5',
+        new_context_posterior_threshold=.99, minimum_detection_raw=256, maximum_detection_raw_target=DETECTOR_CAP,
+        detection_budget='START_NO_EXTRA_GAME_AT_OR_ABOVE_TARGET_PAY_ENTIRE_LAST_NATURAL_GAME',
+        cap_fallback='BEST_EXISTING_CONTEXT_WITHOUT_PROTOTYPE_COMMIT_RETAIN_UNRESOLVED_STATUS',
+        context_statistics='ALL_CURRENT_STAGE_DETECTOR_RAW_COMMITTED_ONCE_ONLY_AFTER_RESOLVED_DECISION_NO_FIT_FACTS',
+        raw_budget_per_created_context=RAW, fit_fraction=.8, alpha=.0025,
+        query=dict(reward_weight=1., failure_penalty=4., goal_bonus=4.), context_initialization='ORIGINAL_SOURCE_FOR_EVERY_NEW_BANK',
+        adaptation='ONE_FIT_ONLY_ON_CONFIRMED_CONTEXT_CREATION_REUSE_WITHOUT_REFIT', context_baseline='MC_USES_IDENTICAL_ROUTING_BANKS_AND_FACTUAL_FIT_SAMPLES',
+        representations=dict(CONTEXT_MC='UNCHANGED_V290_EPISODE_MEAN_MC',
+            CONTEXT_LINEAR_WIN='V311_ACTIVE_REWARD_AND_UNCLIPPED_LINEAR_WIN2',
+            CONTEXT_LOCAL='UNCHANGED_V301_LOCAL_REWARD_AND_SIGMOID_RISK'),
+        linear_control=dict(terminal_label='WIN', utility='R+8*LINEAR_WIN-4',
+            win_parameter_initialization=1./64, terminal_prediction='UNCLIPPED_SUM_32_NTUPLE_OCCURRENCES'),
+        seed_warmup={stage:311100000000+i*100000 for i,stage in enumerate(STAGES)}, seed_training={stage:311200000000+i*100000 for i,stage in enumerate(STAGES)},
+        seed_evaluation=311900000000, evaluation_task_offset=100000, evaluation_games_per_cell=32, evaluation_cells=list(CELLS), max_steps=8192,
+        planning_probability='IMMUTABLE_FIRST_FIT_BELIEF_OF_ACTUALLY_SELECTED_CONTEXT_BANK_SHARED_BY_ALL_ARMS',
+        belief_ownership='OBSERVED_CONTEXT_ID_ONLY_NO_TASK_INDEXED_PLANNING_BELIEF',
+        evaluation_routing='ACTUAL_STAGE_ROUTE_FOR_CURRENT_TASK_READ_ONLY_FIRST_DETECTOR_ROUTING_FOR_RETENTION_PROBES', primary=PRIMARY,
+        net_gain='CONTEXT_LOCAL_minus_SOURCE_FINAL_AB', retention='ALL_SEVEN_ZERO_MARGIN_LOCAL_CHECKPOINT_COMPARISONS_AGAINST_FIRST_A_OR_B',
+        bootstrap_draws=20000, bootstrap_seed=31100001, interval_scope=INTERVAL_SCOPE, new_evaluation_games=73728, old_target_training_raw_reused=0,
+        stop_rule='RETAIN_CAP_FALLBACK_MISROUTES_EXTRA_CONTEXTS_CUTOFFS_AND_NEGATIVE_RESULTS_NO_TUNING')
+    for key, value in expected.items():
+        require(settings[key] == value, 'registered frozen linear-contribution '+key)
+    original = json_file(settings['source_summary'])
+    require(document['source_provenance'] == original['source_provenance'] and len(document['source_provenance']['parents']) == 4,
+        'only the four original SOURCE parent identities and inherited source costs carry into the new experiment')
+    old_costs = original['accounting']['inherited_costs_per_arm']['SOURCE']
+    inherited = {key:old_costs[key] for key in ('source_training_raw_tiles', 'source_training_games', 'source_training_environment_counts',
+        'source_training_seconds', 'dynamics_raw_tiles', 'dynamics_costs')}
+    lives = document['by_lifecycle']
+    require([life['lifecycle'] for life in lives] == list(range(64)) and all(life['parent'] == life['lifecycle']%4 for life in lives),
+        'all 64 new training and evaluation lifecycles under their original four frozen SOURCE parents')
+    worlds, rows_read = read_canonical(document)
+    records = []; processed = Counter(); cutoffs = 0
+    for life in lives:
+        record, counts, value = check_lifecycle(life, worlds); records.append(record); processed.update(counts); cutoffs += value
+    check_result_summary(document['summary'], records, cutoffs); economic = check_accounting(document, inherited)
+    summary = document['summary']; account = document['accounting']
+    return dict(status='PASS', independent_valid=True, lifecycles=64, fixed_source_parents=4, canonical_rows=rows_read,
+        bank_belief_ownership_valid=True, selected_bank_probability_paired_across_arms=True, literal_local_retention_checked=True,
+        physical_detection_stages=320, physical_acquisitions=account['physical_acquisitions'], total_contexts_created=account['total_contexts_created'],
+        detector_looks=account['detector_looks'], new_confirmation_games=account['new_confirmation_games'],
+        new_confirmation_raw_tiles=account['new_confirmation_raw_tiles'], unresolved_cap_stages=account['unresolved_cap_stages'],
+        new_training_environment_observations=account['new_training_environment_observations'], old_target_training_raw_reused=0,
+        processed_training_samples=dict(processed), new_evaluation_games=73728, evaluation_cutoffs=cutoffs,
+        economic_training_raw_tiles_per_arm=dict.fromkeys(ARMS, economic), primary_local_over_linear_supported=summary['primary_local_over_linear_supported'],
+        local_over_mc_diagnostic_supported=summary['primary_local_over_mc_supported'],
+        final_net_gain_supported=summary['final_net_gain_supported'], final_task_gain_supported=summary['final_task_gain_supported'],
+        retention_status=summary['retention_status'], retained_gain_supported=summary['retained_gain_supported'],
+        primary_utility=summary['final_ab_contrasts']['CONTEXT_LOCAL_minus_CONTEXT_LINEAR_WIN'], new_sequence_compute_closed=True,
+        method='One independent literal physical reconstruction of all new initial detector, confirmation and optional model cohort tapes, '
+            'online LIBRARY raw-rank updates and complete natural game labels; sequential immutable-prior Beta mixture '
+            'evidence, exact paid additional-game stopping and resolved-only prototype commits; matched MC/LINEAR_WIN/LOCAL original-SOURCE first adaptations, '
+            'active two-table linear WIN labels, unbounded predictions, residuals and parameter work; immutable bank-owned complete FIT beliefs, '
+            'actual selected-bank probabilities shared by all four arms, task-and-probability SOURCE pairing, '
+            'actual repeated return routing, frozen reuse, full score suffix labels, paired whole-game endpoint gains, literal LOCAL retention, and actual new costs.',
+        limitations='Original SOURCE parents are reused, so intervals remain conditional on four parents. Evaluation '
+            'actions, experimental weights and bootstrap draws are not recomputed. Saved intervals are checked for '
+            'scope and feasible range. LINEAR_WIN and LOCAL match two-table capacity and parameter write inventory, '
+            'while MC uses one table; the comparison does not equalize computation. Complete new-sequence cost accounting '
+            'does not measure all historical SOURCE CPU. Continued '
+            'improvement within a known context and general strategic learning are not established by this experiment.', errors=[])
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__); parser.add_argument('--output', type=Path, required=True)
+    directory = parser.parse_args().output
+    try:
+        result = audit(directory)
+    except ValueError as error:
+        result = dict(status='FAIL', independent_valid=False, errors=[str(error)])
+    (directory/'audit.json').write_text(json.dumps(result, indent=2, allow_nan=False)+'\n')
+    print(json.dumps(result, indent=2, allow_nan=False)); raise SystemExit(not result['independent_valid'])
+
+
+if __name__ == '__main__':
+    main()

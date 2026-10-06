@@ -1,0 +1,58 @@
+{
+  "attempts": [
+    {
+      "tests": 8,
+      "failures": 0,
+      "learner_work": {
+        "feature_board_reads": 608,
+        "feature_rank_reads": 2368,
+        "feature_occurrences": 1480,
+        "unary_feature_occurrences": 592,
+        "pair_feature_occurrences": 888,
+        "pair_distinct_addresses": 139,
+        "pair_nonzero_difference_addresses": 110,
+        "pair_signed_difference_occurrences": 120,
+        "pair_predictions": 10,
+        "weight_address_lookups": 99,
+        "component_weight_reads": 297,
+        "update_calls": 5,
+        "allocated_weight_addresses": 33,
+        "pair_updates": 4,
+        "weight_address_updates": 44,
+        "component_weight_updates": 132,
+        "unidentifiable_pairs": 1,
+        "checkpoint_saves": 1,
+        "checkpoint_saved_addresses": 11,
+        "checkpoint_saved_parameters": 33
+      },
+      "selector_work": {
+        "choose_calls": 1,
+        "baseline_mock_choose_calls": 1,
+        "candidate_mock_choose_calls": 1,
+        "candidate_disagreements": 1,
+        "learner_feature_board_reads": 32,
+        "learner_feature_rank_reads": 128,
+        "learner_feature_occurrences": 80,
+        "learner_unary_feature_occurrences": 32,
+        "learner_pair_feature_occurrences": 48,
+        "learner_pair_distinct_addresses": 13,
+        "learner_pair_nonzero_difference_addresses": 11,
+        "learner_pair_signed_difference_occurrences": 12,
+        "learner_pair_predictions": 1,
+        "learner_weight_address_lookups": 11,
+        "learner_component_weight_reads": 33,
+        "selected_h1": 1
+      },
+      "setup_counts": {
+        "topology_integer_cells": 576,
+        "loaded_weight_addresses": 11,
+        "loaded_weight_parameters": 33,
+        "loaded_numeric_weight_bytes": 264
+      },
+      "newly_sampled_environment_transitions": 0,
+      "newly_sampled_model_transitions": 0,
+      "native_planner_calls": 0,
+      "scope": "Synthetic boards and targets with charged learner updates; mocked planner choices."
+    }
+  ]
+}

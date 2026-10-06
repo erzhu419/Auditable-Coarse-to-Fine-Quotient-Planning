@@ -1,0 +1,11 @@
+{
+  "command": [
+    ".venv-lmta-v42/bin/python",
+    "scripts/run_controlled_predictive_persistent_context_v123.py"
+  ],
+  "started_utc": "2026-09-19T15:56:10.907901+00:00",
+  "status": "completed",
+  "exit_code": 0,
+  "seconds": 8.385328470998502,
+  "stderr_bytes": 0
+}

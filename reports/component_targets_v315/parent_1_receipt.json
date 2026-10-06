@@ -1,0 +1,26 @@
+{
+  "parent": 1,
+  "source_setup": {
+    "wall_seconds": 0.600357596995309,
+    "cpu_seconds": 0.204014399,
+    "setup_counts": {
+      "cpp_compilations": 1,
+      "lookup_line_rewrites": 14641,
+      "allocated_weight_parameters": 14172488,
+      "allocated_weight_bytes": 113379904,
+      "cpp_library_cache_hits": 1,
+      "lookup_table_cache_hits": 1,
+      "source_parameters_copied": 7086244,
+      "source_weight_bytes_copied": 56689952
+    },
+    "checkpoint_loads": 1,
+    "checkpoint_loaded_parameters": 1821054,
+    "leaf_weight_bytes": 56689952,
+    "resident_source_and_leaf_weight_bytes": 113379904,
+    "inherited_updates": 2797691,
+    "new_leaf_updates": 0
+  },
+  "cpu_seconds": 37.964612376000005,
+  "compiler_cpu_seconds": 1.9624199999999998,
+  "wall_seconds": 43.70633645899943
+}

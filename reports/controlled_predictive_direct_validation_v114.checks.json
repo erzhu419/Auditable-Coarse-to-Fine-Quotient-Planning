@@ -1,0 +1,30 @@
+{
+  "attempts": [
+    {
+      "failed_tests": 0,
+      "development_work": {
+        "model_payloads_loaded": 32,
+        "model_root_scores": 1536,
+        "neural_candidate_predictions": 7685,
+        "neural_hidden_activations": 76820,
+        "new_environment_transitions": 0,
+        "new_synthetic_transitions": 0,
+        "neural_model_fits": 0,
+        "optimizer_steps": 0,
+        "model_prefix_trajectories": 0,
+        "scoring_calls": 2,
+        "numeric_oracle_root_scores": 1,
+        "selections": 48,
+        "validation_folds": 144,
+        "root_comparisons": 1152,
+        "cached_decision_lookups": 2304,
+        "selection_calls": 3
+      },
+      "production_neural_model_fits": 0,
+      "production_optimizer_steps": 0,
+      "environment_transitions": 0,
+      "model_transitions": 0,
+      "scope": "Synthetic migrated model payloads, features and references; no production scoring, fit or sampling."
+    }
+  ]
+}

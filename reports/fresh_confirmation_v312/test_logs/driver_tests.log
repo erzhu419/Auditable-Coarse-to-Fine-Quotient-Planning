@@ -1,0 +1,5 @@
+command: .venv-lmta-v42/bin/python -m pytest -q tests/test_fresh_confirmation_run_v312.py
+...                                                                      [100%]
+3 passed in 2.89s
+
+exit_code: 0

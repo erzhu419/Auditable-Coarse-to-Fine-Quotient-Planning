@@ -1,0 +1,503 @@
+{
+  "valid": true,
+  "complete": true,
+  "checks": [
+    {
+      "name": "fixed_public_cases_and_private_worlds",
+      "passed": true
+    },
+    {
+      "name": "original_full_initial_sources",
+      "passed": true
+    },
+    {
+      "name": "life_0_original_paid_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_0_original_paid_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_0_original_paid_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_0_original_paid_source_queries",
+      "passed": true
+    },
+    {
+      "name": "life_1_original_paid_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_1_original_paid_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_1_original_paid_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_1_original_paid_source_queries",
+      "passed": true
+    },
+    {
+      "name": "life_2_original_paid_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_2_original_paid_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_2_original_paid_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_2_original_paid_source_queries",
+      "passed": true
+    },
+    {
+      "name": "life_3_original_paid_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_3_original_paid_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_3_original_paid_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_3_original_paid_source_queries",
+      "passed": true
+    },
+    {
+      "name": "life_4_original_paid_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_4_original_paid_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_4_original_paid_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_4_original_paid_source_queries",
+      "passed": true
+    },
+    {
+      "name": "life_5_original_paid_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_5_original_paid_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_5_original_paid_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_5_original_paid_source_queries",
+      "passed": true
+    },
+    {
+      "name": "life_6_original_paid_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_6_original_paid_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_6_original_paid_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_6_original_paid_source_queries",
+      "passed": true
+    },
+    {
+      "name": "life_7_original_paid_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_7_original_paid_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_7_original_paid_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_7_original_paid_source_queries",
+      "passed": true
+    },
+    {
+      "name": "life_8_original_paid_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_8_original_paid_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_8_original_paid_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_8_original_paid_source_queries",
+      "passed": true
+    },
+    {
+      "name": "life_9_original_paid_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_9_original_paid_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_9_original_paid_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_9_original_paid_source_queries",
+      "passed": true
+    },
+    {
+      "name": "life_10_original_paid_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_10_original_paid_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_10_original_paid_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_10_original_paid_source_queries",
+      "passed": true
+    },
+    {
+      "name": "life_11_original_paid_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_11_original_paid_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_11_original_paid_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_11_original_paid_source_queries",
+      "passed": true
+    },
+    {
+      "name": "actual_historical_source_fees",
+      "passed": true
+    },
+    {
+      "name": "small_frozen_source_evidence_matches_original_prefixes",
+      "passed": true
+    },
+    {
+      "name": "original_v221_source_evidence_unchanged",
+      "passed": true
+    },
+    {
+      "name": "complete_unique_four_arm_fresh_targets",
+      "passed": true
+    },
+    {
+      "name": "four_arm_shared_fresh_target_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_0_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_0_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_0_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_0_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_0_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_1_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_1_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_1_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_1_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_1_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_2_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_2_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_2_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_2_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_2_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_3_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_3_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_3_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_3_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_3_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_4_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_4_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_4_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_4_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_4_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_5_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_5_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_5_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_5_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_5_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_6_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_6_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_6_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_6_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_6_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_7_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_7_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_7_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_7_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_7_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_8_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_8_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_8_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_8_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_8_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_9_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_9_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_9_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_9_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_9_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_10_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_10_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_10_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_10_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_10_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_11_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_11_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_11_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_11_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_11_independent_state",
+      "passed": true
+    },
+    {
+      "name": "delayed_true_history_queries_and_library_coverage",
+      "passed": true
+    },
+    {
+      "name": "paired_factorial_statistics_and_frozen_gates",
+      "passed": true
+    },
+    {
+      "name": "historical_source_fee_separate_from_fresh_sampling",
+      "passed": true
+    },
+    {
+      "name": "actual_sample_reset_draw_and_planning_costs",
+      "passed": true
+    },
+    {
+      "name": "paid_detour_pilots_and_complete_union_retention",
+      "passed": true
+    },
+    {
+      "name": "actual_factorial_bootstrap_costs",
+      "passed": true
+    },
+    {
+      "name": "oracle_scoring_after_all_decisions",
+      "passed": true
+    }
+  ],
+  "costs": {
+    "regenerated_consumed_samples": 109280,
+    "interval_calls": 18396,
+    "optimizer_pure_checks": 66908,
+    "mixture_components": 438534,
+    "optimizer_pair_checks": 100362,
+    "kl_calls": 2250752
+  },
+  "seconds": 37.515973725006916
+}

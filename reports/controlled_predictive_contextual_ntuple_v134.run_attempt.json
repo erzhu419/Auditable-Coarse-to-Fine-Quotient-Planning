@@ -1,0 +1,11 @@
+{
+  "attempt": 1,
+  "status": "complete",
+  "command": [
+    "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "scripts/run_controlled_predictive_contextual_ntuple_v134.py"
+  ],
+  "start_utc": "2026-09-20T03:06:56.759297+00:00",
+  "returncode": 0,
+  "seconds": 1457.8699299979926
+}

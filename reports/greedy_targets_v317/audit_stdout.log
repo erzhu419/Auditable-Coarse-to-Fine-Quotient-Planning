@@ -1,0 +1,122 @@
+{
+  "status": "PASS",
+  "independent_valid": true,
+  "lifecycles": 16,
+  "fixed_source_parents": 4,
+  "fresh_source_audit_status": "PASS",
+  "fresh_source_provenance_checked": true,
+  "canonical_rows": 82305,
+  "physical_initial_acquisitions": 32,
+  "physical_post_acquisitions": 64,
+  "literal_actor_action_probes": 1024,
+  "reconstructed_head_versions": 160,
+  "immutable_bank_beliefs_valid": true,
+  "fixed_first_collector_valid": true,
+  "every_native_sarsa_target_checked": true,
+  "every_native_greedy_action_and_target_checked": true,
+  "actual_postspawn_boards_valid": true,
+  "counterfactual_greedy_costs_valid": true,
+  "saved_fit_rows_per_arm": {
+    "SARSA_LOCAL": 3315123,
+    "GREEDY_LOCAL": 3315123
+  },
+  "trained_targets_per_arm": {
+    "SARSA_LOCAL": 3313217,
+    "GREEDY_LOCAL": 3313217
+  },
+  "identical_factual_states_and_writes_valid": true,
+  "new_evaluation_games": 6144,
+  "new_training_raw_tiles": 8409242,
+  "new_target_cpu_seconds": 865.2518644109999,
+  "economic_source_and_target_cpu_seconds": 2567.0898184679995,
+  "primary_utility": {
+    "mean": 0.6332607269287109,
+    "ci95": [
+      0.08675470352172851,
+      1.195742082595825
+    ],
+    "lifecycle_deltas": {
+      "0": 1.016082763671875,
+      "1": 1.608612060546875,
+      "2": -0.08056640625,
+      "3": -1.73797607421875,
+      "4": -0.771392822265625,
+      "5": 0.882659912109375,
+      "6": -0.013946533203125,
+      "7": 1.10675048828125,
+      "8": 1.108154296875,
+      "9": 0.475433349609375,
+      "10": 1.852813720703125,
+      "11": 2.99066162109375,
+      "12": -0.064544677734375,
+      "13": -0.1796875,
+      "14": 2.2264404296875,
+      "15": -0.287322998046875
+    },
+    "improved_equal_worse": [
+      9,
+      0,
+      7
+    ],
+    "adverse_lifecycles": [
+      2,
+      3,
+      4,
+      6,
+      12,
+      13,
+      15
+    ],
+    "parent_mean_deltas": {
+      "0": 0.32207489013671875,
+      "1": 0.6967544555664062,
+      "2": 0.996185302734375,
+      "3": 0.5180282592773438
+    },
+    "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS"
+  },
+  "primary_self_improvement_supported": true,
+  "primary_self_improvement_status": "SUPPORTED_GAIN",
+  "operator_intervention_supported": false,
+  "operator_intervention_status": "UNRESOLVED",
+  "final_net_gain_supported": true,
+  "final_net_gain_status": "SUPPORTED_GAIN",
+  "sarsa_self_improvement_supported": false,
+  "sarsa_self_improvement_status": "UNRESOLVED",
+  "final_task_improvement_supported": {
+    "A": false,
+    "B": true
+  },
+  "final_task_improvement_status": {
+    "A": "UNRESOLVED",
+    "B": "SUPPORTED_GAIN"
+  },
+  "task_retention_status": {
+    "A": "UNRESOLVED",
+    "B": "SUPPORTED_NONDECREASE"
+  },
+  "task_retention_supported": false,
+  "retained_improvement_supported": false,
+  "operator_mechanism_supported": false,
+  "checkpoint_status": {
+    "ROUND1_A": {
+      "SARSA_LOCAL": "UNRESOLVED",
+      "GREEDY_LOCAL": "UNRESOLVED"
+    },
+    "ROUND1_B": {
+      "SARSA_LOCAL": "SUPPORTED_NONDECREASE",
+      "GREEDY_LOCAL": "SUPPORTED_NONDECREASE"
+    },
+    "ROUND2_A": {
+      "SARSA_LOCAL": "UNRESOLVED",
+      "GREEDY_LOCAL": "UNRESOLVED"
+    },
+    "ROUND2_B": {
+      "SARSA_LOCAL": "UNRESOLVED",
+      "GREEDY_LOCAL": "SUPPORTED_NONDECREASE"
+    }
+  },
+  "method": "One independent replay of every new initial and fixed-FIRST continuous raw tape with literal seeded cell/rank physics and complete natural labels. Actual sparse v0/v1/v2 lineage reconstruction, all declared first/last candidate H2 action probes, every native SARSA target from its factual successor and every greedy selected action and coupled reward/WIN target from its actual single post-spawn board and frozen own head, same factual address normalization and writes, paired own-FIRST/target-intervention/net-SOURCE/task-retention endpoints and complete actual cost closure.",
+  "limitations": "Fresh sampled-greedy versus factual-SARSA operator comparison, conditional on four already audited V312 SOURCE parents and inherited deterministic dynamics. Supplied task/round boundaries address observed initial banks. All raw physics and saved TD targets are checked; actor choices are recomputed at the predeclared first/last probes. Complete fits, evaluation actions and bootstrap draws are not rerun. The greedy query uses one observed spawn rather than an exact expected-spawn H2 operator. Prior SOURCE audit is read without replay; historical dynamics CPU remains unknown.",
+  "errors": []
+}

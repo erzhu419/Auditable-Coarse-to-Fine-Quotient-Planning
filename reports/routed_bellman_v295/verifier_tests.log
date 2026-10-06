@@ -1,0 +1,7 @@
+Initial actual pytest run: tests/test_verify_routed_bellman_v295.py
+4 passed in 0.24s
+
+Added fixtures actual pytest run: -k 'before_action or birth_at_terminal or reactivation or counterfactual or routing_improvement or adverse'
+6 passed, 4 deselected in 0.26s
+
+10 distinct focused verifier cases passed. No formal sampling or bootstrap rerun.

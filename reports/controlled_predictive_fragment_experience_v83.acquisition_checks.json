@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "exit_code": 0,
+  "seconds": 0.7435000640107319,
+  "stdout": ".....V83_FRAGMENT_EXPERIENCE_DEVELOPMENT_WORK={\"environment_random_draws\": 10, \"ground_explicit_swipe_calls\": 5, \"ground_state_status_calls\": 10, \"ground_status_internal_swipe_calls\": 20, \"ground_swipe_calls\": 25, \"sampled_transitions\": 5, \"state_from_board_v1\": 10, \"swipe_board_v1\": 25}\n\n5 passed in 0.24s\n",
+  "stderr": "",
+  "development_work": {
+    "environment_random_draws": 10,
+    "ground_explicit_swipe_calls": 5,
+    "ground_state_status_calls": 10,
+    "ground_status_internal_swipe_calls": 20,
+    "ground_swipe_calls": 25,
+    "sampled_transitions": 5,
+    "state_from_board_v1": 10,
+    "swipe_board_v1": 25
+  },
+  "scope": "V83 source/branch acquisition tests; actual rollouts use lifecycle 99"
+}

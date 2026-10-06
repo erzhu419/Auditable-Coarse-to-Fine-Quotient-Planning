@@ -1,0 +1,11 @@
+{
+  "schema": "acfqp.win_confirmation_full_execution_cost.v323",
+  "component_new_experiment_cpu_seconds": 174.471922432,
+  "full_execution_process_tree_cpu_seconds": 175.926025,
+  "final_serialization_and_shutdown_cpu_seconds": 1.4541025679999962,
+  "full_economic_source_v317_v319_v321_v322_and_experiment_cpu_seconds": 4442.420631468,
+  "preceding_v320_diagnostic_full_cpu_seconds": 425.57845899999995,
+  "independent_audit_process_tree_cpu_seconds": 9.27756,
+  "independent_audit_monotonic_wall_seconds": 1.9251132149947807,
+  "scope": "Successful SOURCE/V317/V319/V321/V322 inherited once. Full new execution includes restore and final shutdown. V320 diagnosis and audit separate; historical dynamics and failed-attempt CPU unknown."
+}

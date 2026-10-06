@@ -1,0 +1,391 @@
+{
+  "phases": {
+    "B": {
+      "PERSISTENT": {
+        "observations": 524288,
+        "blocks": 8192,
+        "source_actions": 128,
+        "switches": 33,
+        "creations": 6,
+        "reactivations": 27,
+        "log_loss_sum": 363681.8619030145,
+        "brier_sum": 131196.67365012472,
+        "absolute_probability_error_sum": 2091.445502999046,
+        "first_expected_activation": 64,
+        "last_wrong_action": 376640,
+        "switches_after_first_expected": 32,
+        "initial_source_probability": 0.13565891472868216,
+        "max_source_probability_deviation": 0.01651499831479611,
+        "final_router": {
+          "schema": "acfqp.persistent_context.v123",
+          "method": "LIBRARY",
+          "warmup_observations": 256,
+          "block_size": 64,
+          "recent_window": 256,
+          "observations_seen": 524544,
+          "warmup_complete": true,
+          "active_module_id": 5,
+          "modules": [
+            {
+              "id": 0,
+              "alpha": 49,
+              "beta": 273,
+              "visits": 2
+            },
+            {
+              "id": 1,
+              "alpha": 139443,
+              "beta": 139727,
+              "visits": 4362
+            },
+            {
+              "id": 2,
+              "alpha": 52591,
+              "beta": 52627,
+              "visits": 1644
+            },
+            {
+              "id": 3,
+              "alpha": 15700,
+              "beta": 15790,
+              "visits": 492
+            },
+            {
+              "id": 4,
+              "alpha": 5221,
+              "beta": 5213,
+              "visits": 163
+            },
+            {
+              "id": 5,
+              "alpha": 38447,
+              "beta": 38675,
+              "visits": 1205
+            },
+            {
+              "id": 6,
+              "alpha": 10505,
+              "beta": 10297,
+              "visits": 325
+            }
+          ],
+          "pending": {
+            "n": 0,
+            "fours": 0
+          },
+          "recent_ranks": [],
+          "stored_observation_counts": {
+            "statistics": 524544,
+            "pending": 0,
+            "raw": 0
+          },
+          "counts": {
+            "observations_received": 524544,
+            "beta_updates": 524544,
+            "predict_calls": 0,
+            "routing_blocks": 8192,
+            "candidate_predictive_scores": 55750,
+            "module_creations": 6,
+            "module_reactivations": 27
+          },
+          "switch_odds": 64
+        },
+        "final_source_probability": 0.15217391304347827,
+        "source_probability_change": 0.01651499831479611,
+        "source_action_fraction": 0.000244140625,
+        "mean_log_loss": 0.6936681020794191,
+        "mean_brier": 0.25023779611611313,
+        "mean_absolute_probability_error": 0.0039891157207470815
+      },
+      "CONFIRMED": {
+        "observations": 524288,
+        "blocks": 8192,
+        "source_actions": 128,
+        "switches": 1,
+        "creations": 1,
+        "reactivations": 0,
+        "log_loss_sum": 363447.348106033,
+        "brier_sum": 131085.63817588007,
+        "absolute_probability_error_sum": 324.8845207919892,
+        "first_expected_activation": 128,
+        "last_wrong_action": 128,
+        "switches_after_first_expected": 0,
+        "initial_source_probability": 0.13565891472868216,
+        "max_source_probability_deviation": 0.0,
+        "final_router": {
+          "schema": "acfqp.confirmed_context.v124",
+          "method": "LIBRARY",
+          "warmup_observations": 256,
+          "block_size": 64,
+          "recent_window": 256,
+          "observations_seen": 524544,
+          "warmup_complete": true,
+          "active_module_id": 1,
+          "modules": [
+            {
+              "id": 0,
+              "alpha": 35,
+              "beta": 223,
+              "visits": 1
+            },
+            {
+              "id": 1,
+              "alpha": 261916,
+              "beta": 262374,
+              "visits": 8192
+            }
+          ],
+          "pending": {
+            "n": 0,
+            "fours": 0
+          },
+          "recent_ranks": [],
+          "stored_observation_counts": {
+            "statistics": 524544,
+            "pending": 0,
+            "raw": 0,
+            "quarantined": 0
+          },
+          "counts": {
+            "observations_received": 524544,
+            "beta_updates": 524544,
+            "predict_calls": 0,
+            "routing_blocks": 8192,
+            "candidate_predictive_scores": 24576,
+            "module_creations": 1,
+            "module_reactivations": 0,
+            "detection_predictive_scores": 24574,
+            "matching_predictive_scores": 2,
+            "quarantines": 9,
+            "confirmations": 1,
+            "rejections": 8,
+            "max_uncommitted_observations": 128
+          },
+          "switch_odds": 64,
+          "confirmation_blocks": 2,
+          "quarantine": {
+            "n": 0,
+            "fours": 0
+          }
+        },
+        "final_source_probability": 0.13565891472868216,
+        "source_probability_change": 0.0,
+        "source_action_fraction": 0.000244140625,
+        "mean_log_loss": 0.6932208025093708,
+        "mean_brier": 0.2500260127561189,
+        "mean_absolute_probability_error": 0.0006196680465545448
+      }
+    },
+    "A_RETURN": {
+      "PERSISTENT": {
+        "observations": 524288,
+        "blocks": 8192,
+        "source_actions": 524224,
+        "switches": 1,
+        "creations": 0,
+        "reactivations": 1,
+        "log_loss_sum": 170259.58010403241,
+        "brier_sum": 47121.81295628674,
+        "absolute_probability_error_sum": 196.74484843688396,
+        "first_expected_activation": 64,
+        "last_wrong_action": 64,
+        "switches_after_first_expected": 0,
+        "initial_source_probability": 0.15217391304347827,
+        "max_source_probability_deviation": 0.05389707153618799,
+        "final_router": {
+          "schema": "acfqp.persistent_context.v123",
+          "method": "LIBRARY",
+          "warmup_observations": 256,
+          "block_size": 64,
+          "recent_window": 256,
+          "observations_seen": 1048832,
+          "warmup_complete": true,
+          "active_module_id": 0,
+          "modules": [
+            {
+              "id": 0,
+              "alpha": 52381,
+              "beta": 472229,
+              "visits": 8194
+            },
+            {
+              "id": 1,
+              "alpha": 139443,
+              "beta": 139727,
+              "visits": 4362
+            },
+            {
+              "id": 2,
+              "alpha": 52591,
+              "beta": 52627,
+              "visits": 1644
+            },
+            {
+              "id": 3,
+              "alpha": 15700,
+              "beta": 15790,
+              "visits": 492
+            },
+            {
+              "id": 4,
+              "alpha": 5221,
+              "beta": 5213,
+              "visits": 163
+            },
+            {
+              "id": 5,
+              "alpha": 38447,
+              "beta": 38675,
+              "visits": 1205
+            },
+            {
+              "id": 6,
+              "alpha": 10505,
+              "beta": 10297,
+              "visits": 325
+            }
+          ],
+          "pending": {
+            "n": 0,
+            "fours": 0
+          },
+          "recent_ranks": [],
+          "stored_observation_counts": {
+            "statistics": 1048832,
+            "pending": 0,
+            "raw": 0
+          },
+          "counts": {
+            "observations_received": 1048832,
+            "beta_updates": 1048832,
+            "predict_calls": 0,
+            "routing_blocks": 16384,
+            "candidate_predictive_scores": 121286,
+            "module_creations": 6,
+            "module_reactivations": 28
+          },
+          "switch_odds": 64
+        },
+        "final_source_probability": 0.09984750576618821,
+        "source_probability_change": -0.05232640727729006,
+        "source_action_fraction": 0.9998779296875,
+        "mean_log_loss": 0.32474437733465655,
+        "mean_brier": 0.08987772551781986,
+        "mean_absolute_probability_error": 0.00037526101767899314
+      },
+      "CONFIRMED": {
+        "observations": 524288,
+        "blocks": 8192,
+        "source_actions": 524160,
+        "switches": 1,
+        "creations": 0,
+        "reactivations": 1,
+        "log_loss_sum": 170285.86006886506,
+        "brier_sum": 47133.45804436185,
+        "absolute_probability_error_sum": 208.95708141158755,
+        "first_expected_activation": 128,
+        "last_wrong_action": 128,
+        "switches_after_first_expected": 0,
+        "initial_source_probability": 0.13565891472868216,
+        "max_source_probability_deviation": 0.04050320538612161,
+        "final_router": {
+          "schema": "acfqp.confirmed_context.v124",
+          "method": "LIBRARY",
+          "warmup_observations": 256,
+          "block_size": 64,
+          "recent_window": 256,
+          "observations_seen": 1048832,
+          "warmup_complete": true,
+          "active_module_id": 0,
+          "modules": [
+            {
+              "id": 0,
+              "alpha": 52367,
+              "beta": 472179,
+              "visits": 8193
+            },
+            {
+              "id": 1,
+              "alpha": 261916,
+              "beta": 262374,
+              "visits": 8192
+            }
+          ],
+          "pending": {
+            "n": 0,
+            "fours": 0
+          },
+          "recent_ranks": [],
+          "stored_observation_counts": {
+            "statistics": 1048832,
+            "pending": 0,
+            "raw": 0,
+            "quarantined": 0
+          },
+          "counts": {
+            "observations_received": 1048832,
+            "beta_updates": 1048832,
+            "predict_calls": 0,
+            "routing_blocks": 16384,
+            "candidate_predictive_scores": 49155,
+            "module_creations": 1,
+            "module_reactivations": 1,
+            "detection_predictive_scores": 49150,
+            "matching_predictive_scores": 5,
+            "quarantines": 10,
+            "confirmations": 2,
+            "rejections": 8,
+            "max_uncommitted_observations": 128
+          },
+          "switch_odds": 64,
+          "confirmation_blocks": 2,
+          "quarantine": {
+            "n": 0,
+            "fours": 0
+          }
+        },
+        "final_source_probability": 0.09983299844055621,
+        "source_probability_change": -0.03582591628812595,
+        "source_action_fraction": 0.999755859375,
+        "mean_log_loss": 0.32479450238965046,
+        "mean_brier": 0.0898999367606389,
+        "mean_absolute_probability_error": 0.0003985540035468818
+      }
+    }
+  },
+  "control_exact": true,
+  "observation_conservation": true,
+  "unique_reused_ranks": 1048576,
+  "unique_reused_warmup": 256,
+  "processing_counts": {
+    "PERSISTENT": {
+      "observations_received": 1048832,
+      "beta_updates": 1048832,
+      "predict_calls": 0,
+      "routing_blocks": 16384,
+      "candidate_predictive_scores": 121286,
+      "module_creations": 6,
+      "module_reactivations": 28
+    },
+    "CONFIRMED": {
+      "observations_received": 1048832,
+      "beta_updates": 1048832,
+      "predict_calls": 0,
+      "routing_blocks": 16384,
+      "candidate_predictive_scores": 49155,
+      "module_creations": 1,
+      "module_reactivations": 1,
+      "detection_predictive_scores": 49150,
+      "matching_predictive_scores": 5,
+      "quarantines": 10,
+      "confirmations": 2,
+      "rejections": 8,
+      "max_uncommitted_observations": 128
+    }
+  },
+  "life": 1,
+  "query": "risk_goal",
+  "source": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_persistent_context_v123/life_1/risk_goal/blocks.jsonl.gz",
+  "source_trace_bytes": 1731485,
+  "seconds": 3.1766007159967558
+}

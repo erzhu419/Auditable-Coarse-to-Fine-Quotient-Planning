@@ -1,0 +1,101 @@
+{
+  "status": "PASS",
+  "independent_valid": true,
+  "lifecycles": 16,
+  "fixed_source_parents": 4,
+  "fresh_source_audit_status": "PASS",
+  "fresh_source_provenance_checked": true,
+  "canonical_rows": 107043,
+  "physical_initial_acquisitions": 32,
+  "physical_post_acquisitions": 160,
+  "literal_actor_action_probes": 2560,
+  "reconstructed_head_versions": 256,
+  "immutable_bank_beliefs_valid": true,
+  "complete_factual_suffix_labels_checked": true,
+  "shared_first_local_cohort_checked": true,
+  "actual_equal_quota_checked": true,
+  "same_head_direct_h2_checked": true,
+  "new_evaluation_games": 13312,
+  "new_training_raw_tiles": 14700915,
+  "new_target_cpu_seconds": 1463.9745695230001,
+  "economic_source_and_target_cpu_seconds": 3165.81252358,
+  "primary_utility": {
+    "mean": -0.6257858276367188,
+    "ci95": [
+      -0.9249883174896241,
+      -0.3007693767547608
+    ],
+    "lifecycle_deltas": {
+      "0": -0.835296630859375,
+      "1": -0.080291748046875,
+      "2": -1.80267333984375,
+      "3": -1.260833740234375,
+      "4": -1.087493896484375,
+      "5": -0.222259521484375,
+      "6": -0.269073486328125,
+      "7": 0.566375732421875,
+      "8": 0.54205322265625,
+      "9": -0.989959716796875,
+      "10": -1.070220947265625,
+      "11": -0.60498046875,
+      "12": -0.6109619140625,
+      "13": 0.37945556640625,
+      "14": -1.07080078125,
+      "15": -1.595611572265625
+    },
+    "improved_equal_worse": [
+      3,
+      0,
+      13
+    ],
+    "adverse_lifecycles": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      9,
+      10,
+      11,
+      12,
+      14,
+      15
+    ],
+    "parent_mean_deltas": {
+      "0": -0.4979248046875,
+      "1": -0.22826385498046875,
+      "2": -1.053192138671875,
+      "3": -0.7237625122070312
+    },
+    "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS"
+  },
+  "primary_self_improvement_supported": false,
+  "primary_self_improvement_status": "SUPPORTED_LOSS",
+  "feedback_supported": false,
+  "feedback_status": "UNRESOLVED",
+  "final_net_gain_supported": false,
+  "final_net_gain_status": "UNRESOLVED",
+  "final_task_improvement_supported": {
+    "A": false,
+    "B": false
+  },
+  "final_task_improvement_status": {
+    "A": "UNRESOLVED",
+    "B": "SUPPORTED_LOSS"
+  },
+  "task_retention_status": {
+    "A": "UNRESOLVED",
+    "B": "SUPPORTED_LOSS"
+  },
+  "task_retention_supported": false,
+  "retained_improvement_supported": false,
+  "closed_loop_mechanism_supported": false,
+  "actor_change_premise_met": true,
+  "actor_change_premise_status": "MET",
+  "unchanged_round_two_actors": [],
+  "method": "One independent replay of all new detector and continuous initial/post raw tapes, independently seeded cell/rank draws and complete natural physical game labels; sparse SOURCE-relative and actual changed-address head reconstruction; literal first/last all-action H2 values and frozen version lineage; complete factual reward suffixes and chronological equal-quota masks; same actual heads for H2/DIRECT; own-first, feedback, source and literal task-retention endpoint checks; actual scans/copies/saves and CPU closure.",
+  "limitations": "Development evidence is conditional on four audited V312 SOURCE value parents and inherited deterministic dynamics. Known task/batch boundaries address the initially observed context banks. Only fixed first-eight/last-eight collector action probes are recomputed; all physical tapes are replayed. Complete experimental fits, evaluation actions and bootstrap draws are not recomputed. Actual address writes and CPU can differ despite equal supervised-state quotas. SOURCE and target compute are accounted economically once; historical dynamics CPU remains unknown.",
+  "errors": []
+}

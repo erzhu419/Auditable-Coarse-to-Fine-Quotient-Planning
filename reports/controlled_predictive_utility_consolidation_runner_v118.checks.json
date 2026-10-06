@@ -1,0 +1,22 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "development_work": {
+        "mock_payload_reads": 5,
+        "mock_outer_control_games": 64,
+        "mock_source_validation_games": 24,
+        "new_environment_seeds_checked": 128,
+        "new_planning_seeds_checked": 56,
+        "historical_environment_seeds_checked": 748,
+        "historical_planning_seeds_checked": 104,
+        "mock_control_wrapper_games": 1,
+        "mock_planner_calls": 1
+      },
+      "newly_sampled_environment_transitions": 0,
+      "new_synthetic_transitions": 0,
+      "neural_model_fits": 0,
+      "scope": "mock inherited histories, utility games, planning and exact seed arithmetic"
+    }
+  ]
+}

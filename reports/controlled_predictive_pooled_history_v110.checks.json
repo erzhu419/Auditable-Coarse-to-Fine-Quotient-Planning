@@ -1,0 +1,25 @@
+{
+  "attempts": [
+    {
+      "failed_tests": 0,
+      "development_work": {
+        "neural_model_fits": 14,
+        "optimizer_steps": 60,
+        "optimizer_root_passes": 535,
+        "optimizer_pair_passes": 5350,
+        "optimizer_parameter_updates": 60516,
+        "diagnostic_candidate_predictions": 1005,
+        "pooled_fits": 10,
+        "pooled_optimizer_steps": 40,
+        "oracle_fits": 4,
+        "oracle_optimizer_steps": 20
+      },
+      "production_neural_model_fits": 0,
+      "production_optimizer_steps": 0,
+      "environment_transitions": 0,
+      "model_transitions": 0,
+      "scope": "Short-step synthetic learner fits and V105/V107 numerical oracles; no production fitting.",
+      "accounting_note": "Oracle root/pair/parameter passes added from the four completed five-step oracle fits; no fits repeated."
+    }
+  ]
+}

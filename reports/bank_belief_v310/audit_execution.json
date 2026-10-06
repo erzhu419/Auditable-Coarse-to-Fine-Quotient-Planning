@@ -1,0 +1,9 @@
+{
+  "exit_code": 0,
+  "started": "2026-10-05T18:31:14.369244+00:00",
+  "completed": "2026-10-05T18:33:45.134863+00:00",
+  "cpu_seconds": 150.761733,
+  "wall_seconds": 160.29428431700217,
+  "audit_exists": true,
+  "reason": "Corrected independent endpoint record assembly; original field-only FAIL preserved"
+}

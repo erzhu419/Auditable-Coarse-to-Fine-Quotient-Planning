@@ -1,0 +1,13 @@
+{
+  "attempts": 1,
+  "command": [
+    ".venv-lmta-v42/bin/python",
+    "scripts/analyze_controlled_predictive_bellman_v94.py",
+    "reports/controlled_predictive_bellman_v94"
+  ],
+  "exit_code": 0,
+  "wall_seconds": 0.5061235619941726,
+  "stderr_bytes": 0,
+  "new_tree_fits": 0,
+  "new_sampled_transitions": 0
+}

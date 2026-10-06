@@ -1,0 +1,25 @@
+{
+  "schema": "acfqp.local_targets_audit_execution.v314",
+  "status": "AUDIT_COMPLETE",
+  "command": [
+    "python3",
+    "scripts/verify_local_targets_v314.py",
+    "--output",
+    "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/local_targets_v314"
+  ],
+  "cwd": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration",
+  "started_utc": "2026-10-06T02:47:57.070684+00:00",
+  "finished_utc": "2026-10-06T02:50:38.111682+00:00",
+  "exit_code": 0,
+  "cpu_seconds": 163.159377,
+  "wall_seconds": 173.69925032599713,
+  "stdout": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/local_targets_v314/audit_stdout.log",
+  "stderr": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/local_targets_v314/audit_stderr.log",
+  "stdout_bytes": 4010,
+  "stderr_bytes": 0,
+  "audit_exists": true,
+  "source_audit": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/fresh_source_v312/audit.json",
+  "source_audit_status": "PASS",
+  "source_audit_independent_valid": true,
+  "audit_status": "PASS"
+}

@@ -1,0 +1,191 @@
+{
+  "groups": {
+    "ALL": {
+      "n": 96,
+      "pair_roots": 96,
+      "mean_regret": 0.1450730677044581,
+      "mean_LINEAR_utility_delta": -0.024991076999240455,
+      "coverage_means": {
+        "independent_distance": 0.07721426475986012,
+        "max_individual_distance": 0.09665574560730794,
+        "joint_distance": 0.12865353150670245,
+        "coupling_excess": 0.05143926674684232,
+        "block_coupling_excess": 0.05356002619211294
+      },
+      "block_min_distance_means": {
+        "aggregate": 0.06374244883020748,
+        "rank_nodes": 0.004924203861167654,
+        "rank_pairs": 0.004203918548218311,
+        "value_nodes": 0.0007108371528285515,
+        "value_pairs": 0.0004538726740097735,
+        "vacancy": 0.0010582242481577413
+      },
+      "endpoint_outlier": 3,
+      "pair_outlier": 6,
+      "composition_outlier": 4,
+      "block_composition_outlier": 0,
+      "covered_pair_errors": 46,
+      "covered_pair_label_reversals": 35,
+      "label_direction_reversed": 38,
+      "exact_pair_label_conflict": 0
+    },
+    "ERROR": {
+      "n": 50,
+      "pair_roots": 50,
+      "mean_regret": 0.27854028999255953,
+      "mean_LINEAR_utility_delta": -0.09507001302083334,
+      "coverage_means": {
+        "independent_distance": 0.08621483220653196,
+        "max_individual_distance": 0.10342418023397748,
+        "joint_distance": 0.15481471335566035,
+        "coupling_excess": 0.06859988114912839,
+        "block_coupling_excess": 0.05510859860201593
+      },
+      "block_min_distance_means": {
+        "aggregate": 0.0879645793856863,
+        "rank_nodes": 0.005024546818775066,
+        "rank_pairs": 0.00442070769128939,
+        "value_nodes": 0.0006057285074556781,
+        "value_pairs": 0.0004953814348715984,
+        "vacancy": 0.0011951709155663902
+      },
+      "endpoint_outlier": 2,
+      "pair_outlier": 4,
+      "composition_outlier": 2,
+      "block_composition_outlier": 0,
+      "covered_pair_errors": 46,
+      "covered_pair_label_reversals": 28,
+      "label_direction_reversed": 29,
+      "exact_pair_label_conflict": 0
+    },
+    "CORRECT": {
+      "n": 46,
+      "pair_roots": 46,
+      "mean_regret": 0.0,
+      "mean_LINEAR_utility_delta": 0.051181679545969215,
+      "coverage_means": {
+        "independent_distance": 0.06743103927434725,
+        "max_individual_distance": 0.08929875144788454,
+        "joint_distance": 0.10021746427957426,
+        "coupling_excess": 0.032786425005227014,
+        "block_coupling_excess": 0.051876795311783595
+      },
+      "block_min_distance_means": {
+        "aggregate": 0.037414046052513084,
+        "rank_nodes": 0.004815135428985684,
+        "rank_pairs": 0.003968278175314965,
+        "value_nodes": 0.0008250856804077617,
+        "value_pairs": 0.00040875445568170314,
+        "vacancy": 0.0009093691748874708
+      },
+      "endpoint_outlier": 1,
+      "pair_outlier": 2,
+      "composition_outlier": 2,
+      "block_composition_outlier": 0,
+      "covered_pair_errors": 0,
+      "covered_pair_label_reversals": 7,
+      "label_direction_reversed": 9,
+      "exact_pair_label_conflict": 0
+    },
+    "NEW_ERROR_VS_LINEAR": {
+      "n": 18,
+      "pair_roots": 18,
+      "mean_regret": 0.2673257800443673,
+      "mean_LINEAR_utility_delta": -0.2673257800443673,
+      "coverage_means": {
+        "independent_distance": 0.04130240139955629,
+        "max_individual_distance": 0.049773729937425085,
+        "joint_distance": 0.10215705283491229,
+        "coupling_excess": 0.06085465143535599,
+        "block_coupling_excess": 0.0505494413903922
+      },
+      "block_min_distance_means": {
+        "aggregate": 0.042494965886804986,
+        "rank_nodes": 0.004729894080964327,
+        "rank_pairs": 0.0031609182103432714,
+        "value_nodes": 0.0004531773039773608,
+        "value_pairs": 0.00010467212044881884,
+        "vacancy": 0.0006639838419813279
+      },
+      "endpoint_outlier": 0,
+      "pair_outlier": 1,
+      "composition_outlier": 1,
+      "block_composition_outlier": 0,
+      "covered_pair_errors": 17,
+      "covered_pair_label_reversals": 9,
+      "label_direction_reversed": 9,
+      "exact_pair_label_conflict": 0
+    },
+    "RESOLVED_ERROR_VS_LINEAR": {
+      "n": 10,
+      "pair_roots": 10,
+      "mean_regret": 0.0,
+      "mean_LINEAR_utility_delta": 0.2354357259114584,
+      "coverage_means": {
+        "independent_distance": 0.07497549329702796,
+        "max_individual_distance": 0.11824433055907657,
+        "joint_distance": 0.12207949499896661,
+        "coupling_excess": 0.04710400170193865,
+        "block_coupling_excess": 0.0447747740424943
+      },
+      "block_min_distance_means": {
+        "aggregate": 0.06692957127171785,
+        "rank_nodes": 0.004557343642690023,
+        "rank_pairs": 0.0046045639667189765,
+        "value_nodes": 0.00032562041771573097,
+        "value_pairs": 0.00029003619984653117,
+        "vacancy": 0.0005975854577831951
+      },
+      "endpoint_outlier": 1,
+      "pair_outlier": 1,
+      "composition_outlier": 1,
+      "block_composition_outlier": 0,
+      "covered_pair_errors": 0,
+      "covered_pair_label_reversals": 5,
+      "label_direction_reversed": 6,
+      "exact_pair_label_conflict": 0
+    }
+  },
+  "primary_utility_deltas": {
+    "NONLINEAR_MINUS_LINEAR": -0.02499107699924045,
+    "NONLINEAR_MINUS_RELATION": -0.019762936627423323,
+    "NONLINEAR_MINUS_OLD_SHARED": -0.01375127883184524
+  },
+  "new_error_ids": [
+    "v192_target_r00_07",
+    "v192_target_r00_10",
+    "v192_target_r00_11",
+    "v192_target_r00_12",
+    "v192_target_r00_14",
+    "v192_target_r00_16",
+    "v192_target_r00_17",
+    "v192_target_r00_22",
+    "v192_target_r01_08",
+    "v192_target_r01_14",
+    "v192_target_r01_17",
+    "v192_target_r01_23",
+    "v192_target_r02_07",
+    "v192_target_r02_13",
+    "v192_target_r02_15",
+    "v192_target_r03_08",
+    "v192_target_r03_14",
+    "v192_target_r03_16"
+  ],
+  "resolved_error_ids": [
+    "v192_target_r00_09",
+    "v192_target_r01_06",
+    "v192_target_r02_01",
+    "v192_target_r02_03",
+    "v192_target_r02_04",
+    "v192_target_r02_08",
+    "v192_target_r02_16",
+    "v192_target_r02_23",
+    "v192_target_r03_11",
+    "v192_target_r03_17"
+  ],
+  "largest_loss_id": "v192_target_r01_17",
+  "largest_gain_id": "v192_target_r03_17",
+  "replay_matches_all": true,
+  "predictions_match_all": true,
+  "contributions_match_all": true
+}

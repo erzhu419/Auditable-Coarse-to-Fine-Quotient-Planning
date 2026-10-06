@@ -1,0 +1,735 @@
+{
+  "schema": "acfqp.program_ranking.v166.audit",
+  "valid": true,
+  "checks": [
+    {
+      "name": "complete_semantic_roster",
+      "passed": true
+    },
+    {
+      "name": "physical_logical_counts",
+      "passed": true
+    },
+    {
+      "name": "complete_source_outcomes",
+      "passed": true
+    },
+    {
+      "name": "production_complete",
+      "passed": true
+    },
+    {
+      "name": "embedded_roster",
+      "passed": true
+    },
+    {
+      "name": "zero_new_environment_or_updates",
+      "passed": true
+    },
+    {
+      "name": "all_strata_retained",
+      "passed": true
+    },
+    {
+      "name": "metadata:S0",
+      "passed": true
+    },
+    {
+      "name": "donor_roots:S0:0",
+      "passed": true
+    },
+    {
+      "name": "donor_roots:S0:1",
+      "passed": true
+    },
+    {
+      "name": "donor_roots:S0:2",
+      "passed": true
+    },
+    {
+      "name": "donor_roots:S0:3",
+      "passed": true
+    },
+    {
+      "name": "metadata:S1",
+      "passed": true
+    },
+    {
+      "name": "donor_roots:S1:0",
+      "passed": true
+    },
+    {
+      "name": "donor_roots:S1:1",
+      "passed": true
+    },
+    {
+      "name": "donor_roots:S1:2",
+      "passed": true
+    },
+    {
+      "name": "donor_roots:S1:3",
+      "passed": true
+    },
+    {
+      "name": "metadata:S2",
+      "passed": true
+    },
+    {
+      "name": "donor_roots:S2:0",
+      "passed": true
+    },
+    {
+      "name": "donor_roots:S2:1",
+      "passed": true
+    },
+    {
+      "name": "donor_roots:S2:2",
+      "passed": true
+    },
+    {
+      "name": "donor_roots:S2:3",
+      "passed": true
+    },
+    {
+      "name": "half01:fixed_suffixes",
+      "passed": true
+    },
+    {
+      "name": "half01:full_root_roster",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S0:TRAIN_SOURCE:0:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S0:TRAIN_SOURCE:0:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S0:TRAIN_SOURCE:0:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S0:TRAIN_SOURCE:0:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S0:TRAIN_SOURCE:1:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S0:TRAIN_SOURCE:1:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S0:TRAIN_SOURCE:1:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S0:TRAIN_SOURCE:1:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S0:TRAIN_SOURCE:2:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S0:TRAIN_SOURCE:2:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S0:TRAIN_SOURCE:2:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S0:TRAIN_SOURCE:2:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S0:TRAIN_SOURCE:3:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S0:TRAIN_SOURCE:3:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S0:TRAIN_SOURCE:3:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S0:TRAIN_SOURCE:3:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S1:TRAIN_SOURCE:0:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S1:TRAIN_SOURCE:0:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S1:TRAIN_SOURCE:0:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S1:TRAIN_SOURCE:0:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S1:TRAIN_SOURCE:1:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S1:TRAIN_SOURCE:1:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S1:TRAIN_SOURCE:1:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S1:TRAIN_SOURCE:1:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S1:TRAIN_SOURCE:2:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S1:TRAIN_SOURCE:2:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S1:TRAIN_SOURCE:2:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S1:TRAIN_SOURCE:2:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S1:TRAIN_SOURCE:3:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S1:TRAIN_SOURCE:3:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S1:TRAIN_SOURCE:3:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S1:TRAIN_SOURCE:3:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S2:TRAIN_SOURCE:0:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S2:TRAIN_SOURCE:0:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S2:TRAIN_SOURCE:0:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S2:TRAIN_SOURCE:0:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S2:TRAIN_SOURCE:1:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S2:TRAIN_SOURCE:1:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S2:TRAIN_SOURCE:1:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S2:TRAIN_SOURCE:1:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S2:TRAIN_SOURCE:2:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S2:TRAIN_SOURCE:2:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S2:TRAIN_SOURCE:2:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S2:TRAIN_SOURCE:2:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S2:TRAIN_SOURCE:3:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S2:TRAIN_SOURCE:3:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S2:TRAIN_SOURCE:3:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "half01:root:S2:TRAIN_SOURCE:3:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "half01:stratum_summaries",
+      "passed": true
+    },
+    {
+      "name": "half01:no_unpaired_query_ci",
+      "passed": true
+    },
+    {
+      "name": "half23:fixed_suffixes",
+      "passed": true
+    },
+    {
+      "name": "half23:full_root_roster",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S0:TRAIN_SOURCE:0:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S0:TRAIN_SOURCE:0:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S0:TRAIN_SOURCE:0:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S0:TRAIN_SOURCE:0:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S0:TRAIN_SOURCE:1:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S0:TRAIN_SOURCE:1:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S0:TRAIN_SOURCE:1:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S0:TRAIN_SOURCE:1:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S0:TRAIN_SOURCE:2:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S0:TRAIN_SOURCE:2:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S0:TRAIN_SOURCE:2:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S0:TRAIN_SOURCE:2:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S0:TRAIN_SOURCE:3:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S0:TRAIN_SOURCE:3:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S0:TRAIN_SOURCE:3:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S0:TRAIN_SOURCE:3:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S1:TRAIN_SOURCE:0:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S1:TRAIN_SOURCE:0:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S1:TRAIN_SOURCE:0:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S1:TRAIN_SOURCE:0:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S1:TRAIN_SOURCE:1:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S1:TRAIN_SOURCE:1:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S1:TRAIN_SOURCE:1:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S1:TRAIN_SOURCE:1:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S1:TRAIN_SOURCE:2:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S1:TRAIN_SOURCE:2:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S1:TRAIN_SOURCE:2:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S1:TRAIN_SOURCE:2:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S1:TRAIN_SOURCE:3:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S1:TRAIN_SOURCE:3:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S1:TRAIN_SOURCE:3:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S1:TRAIN_SOURCE:3:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S2:TRAIN_SOURCE:0:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S2:TRAIN_SOURCE:0:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S2:TRAIN_SOURCE:0:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S2:TRAIN_SOURCE:0:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S2:TRAIN_SOURCE:1:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S2:TRAIN_SOURCE:1:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S2:TRAIN_SOURCE:1:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S2:TRAIN_SOURCE:1:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S2:TRAIN_SOURCE:2:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S2:TRAIN_SOURCE:2:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S2:TRAIN_SOURCE:2:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S2:TRAIN_SOURCE:2:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S2:TRAIN_SOURCE:3:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S2:TRAIN_SOURCE:3:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S2:TRAIN_SOURCE:3:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "half23:root:S2:TRAIN_SOURCE:3:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "half23:stratum_summaries",
+      "passed": true
+    },
+    {
+      "name": "half23:no_unpaired_query_ci",
+      "passed": true
+    },
+    {
+      "name": "full03:fixed_suffixes",
+      "passed": true
+    },
+    {
+      "name": "full03:full_root_roster",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S0:TRAIN_SOURCE:0:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S0:TRAIN_SOURCE:0:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S0:TRAIN_SOURCE:0:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S0:TRAIN_SOURCE:0:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S0:TRAIN_SOURCE:1:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S0:TRAIN_SOURCE:1:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S0:TRAIN_SOURCE:1:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S0:TRAIN_SOURCE:1:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S0:TRAIN_SOURCE:2:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S0:TRAIN_SOURCE:2:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S0:TRAIN_SOURCE:2:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S0:TRAIN_SOURCE:2:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S0:TRAIN_SOURCE:3:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S0:TRAIN_SOURCE:3:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S0:TRAIN_SOURCE:3:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S0:TRAIN_SOURCE:3:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S1:TRAIN_SOURCE:0:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S1:TRAIN_SOURCE:0:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S1:TRAIN_SOURCE:0:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S1:TRAIN_SOURCE:0:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S1:TRAIN_SOURCE:1:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S1:TRAIN_SOURCE:1:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S1:TRAIN_SOURCE:1:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S1:TRAIN_SOURCE:1:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S1:TRAIN_SOURCE:2:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S1:TRAIN_SOURCE:2:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S1:TRAIN_SOURCE:2:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S1:TRAIN_SOURCE:2:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S1:TRAIN_SOURCE:3:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S1:TRAIN_SOURCE:3:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S1:TRAIN_SOURCE:3:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S1:TRAIN_SOURCE:3:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S2:TRAIN_SOURCE:0:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S2:TRAIN_SOURCE:0:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S2:TRAIN_SOURCE:0:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S2:TRAIN_SOURCE:0:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S2:TRAIN_SOURCE:1:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S2:TRAIN_SOURCE:1:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S2:TRAIN_SOURCE:1:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S2:TRAIN_SOURCE:1:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S2:TRAIN_SOURCE:2:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S2:TRAIN_SOURCE:2:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S2:TRAIN_SOURCE:2:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S2:TRAIN_SOURCE:2:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S2:TRAIN_SOURCE:3:risk8:0:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S2:TRAIN_SOURCE:3:risk8:0:1",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S2:TRAIN_SOURCE:3:risk8:1:0",
+      "passed": true
+    },
+    {
+      "name": "full03:root:S2:TRAIN_SOURCE:3:risk8:1:1",
+      "passed": true
+    },
+    {
+      "name": "full03:stratum_summaries",
+      "passed": true
+    },
+    {
+      "name": "full03:no_unpaired_query_ci",
+      "passed": true
+    },
+    {
+      "name": "all_rank_stability:root_rows",
+      "passed": true
+    },
+    {
+      "name": "all_rank_stability:history_rows",
+      "passed": true
+    },
+    {
+      "name": "all_rank_stability:stratum_rows",
+      "passed": true
+    }
+  ],
+  "passed_checks": 181,
+  "total_checks": 181,
+  "issues": [],
+  "new_environment_samples": 0,
+  "real_training_updates": 0
+}

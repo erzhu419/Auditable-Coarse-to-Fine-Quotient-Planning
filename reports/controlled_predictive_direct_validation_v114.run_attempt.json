@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "scripts/run_controlled_predictive_direct_validation_v114.py",
+    "--output",
+    "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_direct_validation_v114"
+  ],
+  "status": "complete",
+  "started_unix": 1789813337.964288,
+  "returncode": 0,
+  "seconds": 0.8451350040049874,
+  "stderr_bytes": 0
+}

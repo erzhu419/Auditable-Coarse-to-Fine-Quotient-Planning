@@ -1,0 +1,20 @@
+{
+  "schema": "acfqp.crossed_ranking_analysis_checks.v106",
+  "status": "passed",
+  "test_file": "tests/test_analyze_controlled_predictive_crossed_ranking_v106.py",
+  "unique_tests": 6,
+  "test_executions": 7,
+  "attempts": [
+    {"tests": 6, "passed": 5, "failed": 1, "seconds": 0.32},
+    {"tests": 1, "passed": 1, "failed": 0, "seconds": 0.25}
+  ],
+  "seconds": 0.57,
+  "correction": "Synthetic pair-delta fixture accidentally multiplied an already normalized reward by 2048. Corrected fixture units and reran only the affected weighted-mean test; no analysis algorithm change.",
+  "counts": {
+    "new_environment_transitions": 0,
+    "new_model_prefix_transitions": 0,
+    "new_neural_model_fits": 0,
+    "new_neural_candidate_predictions": 0
+  },
+  "scope": "Small synthetic retained-data fixtures: equal root/history weights, additive matrix decomposition, original diagonal equality, missing decisions, censored references, inherited cost counted once and width-dependent scoring counters. No production reads, fitting, model scoring, sampling or formal analysis."
+}

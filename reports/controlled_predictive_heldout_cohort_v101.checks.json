@@ -1,0 +1,18 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "prediction_work": {
+        "prediction_calls": 108,
+        "neural_candidate_predictions": 540,
+        "neural_hidden_activations": 8640
+      },
+      "new_environment_transitions": 0,
+      "new_model_transitions": 0,
+      "new_neural_model_fits": 0,
+      "new_tree_fits": 0,
+      "new_optimizer_steps": 0,
+      "scope": "Synthetic retained rows and hand-constructed frozen payloads; no training or simulation."
+    }
+  ]
+}

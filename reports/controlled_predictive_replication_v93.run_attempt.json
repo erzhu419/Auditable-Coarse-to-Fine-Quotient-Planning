@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "scripts/run_controlled_predictive_replication_v93.py",
+    "--output",
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_replication_v93"
+  ],
+  "status": "complete",
+  "started_utc": "2026-09-13T12:53:37.765304+00:00",
+  "exit_code": 0,
+  "wall_seconds": 1118.5719196170103,
+  "completed_utc": "2026-09-13T13:12:16.337413+00:00",
+  "stderr_bytes": 0
+}

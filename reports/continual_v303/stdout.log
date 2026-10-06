@@ -1,0 +1,641 @@
+{"event": "continual_arm_complete", "lifecycle": 1, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.1358642578125}}
+{"event": "continual_arm_complete", "lifecycle": 2, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.3675537109375}}
+{"event": "continual_arm_complete", "lifecycle": 0, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.56280517578125}}
+{"event": "continual_arm_complete", "lifecycle": 3, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.43280029296875}}
+{"event": "continual_arm_complete", "lifecycle": 1, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103608, "utilities": {"A": 10.06341552734375}}
+{"event": "continual_arm_complete", "lifecycle": 2, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 104363, "utilities": {"A": 10.5645751953125}}
+{"event": "continual_arm_complete", "lifecycle": 0, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103775, "utilities": {"A": 11.56805419921875}}
+{"event": "continual_arm_complete", "lifecycle": 3, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103866, "utilities": {"A": 8.82769775390625}}
+{"event": "continual_arm_complete", "lifecycle": 1, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103608, "utilities": {"A": 8.917724609375}}
+{"event": "continual_arm_complete", "lifecycle": 2, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 104363, "utilities": {"A": 10.77069091796875}}
+{"event": "continual_arm_complete", "lifecycle": 3, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103866, "utilities": {"A": 9.390380859375}}
+{"event": "continual_arm_complete", "lifecycle": 0, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103775, "utilities": {"A": 8.7249755859375}}
+{"event": "continual_arm_complete", "lifecycle": 1, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.1358642578125, "B": 5.70465087890625}}
+{"event": "continual_arm_complete", "lifecycle": 2, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.3675537109375, "B": 4.82659912109375}}
+{"event": "continual_arm_complete", "lifecycle": 3, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.43280029296875, "B": 4.66302490234375}}
+{"event": "continual_arm_complete", "lifecycle": 0, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.56280517578125, "B": 3.5926513671875}}
+{"event": "continual_arm_complete", "lifecycle": 1, "stage": "B", "arm": "MC", "updates_before": 103608, "updates_after": 207015, "utilities": {"A": 8.22076416015625, "B": 2.32666015625}}
+{"event": "continual_arm_complete", "lifecycle": 3, "stage": "B", "arm": "MC", "updates_before": 103866, "updates_after": 208018, "utilities": {"A": 3.07904052734375, "B": 0.32244873046875}}
+{"event": "continual_arm_complete", "lifecycle": 0, "stage": "B", "arm": "MC", "updates_before": 103775, "updates_after": 206969, "utilities": {"A": 3.06915283203125, "B": 1.15216064453125}}
+{"event": "continual_arm_complete", "lifecycle": 2, "stage": "B", "arm": "MC", "updates_before": 104363, "updates_after": 209242, "utilities": {"A": 8.34906005859375, "B": 2.572998046875}}
+{"event": "continual_arm_complete", "lifecycle": 3, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103866, "updates_after": 208018, "utilities": {"A": 6.5531005859375, "B": 4.80767822265625}}
+{"event": "continual_arm_complete", "lifecycle": 0, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103775, "updates_after": 206969, "utilities": {"A": 7.60882568359375, "B": 3.6328125}}
+{"event": "continual_arm_complete", "lifecycle": 1, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103608, "updates_after": 207015, "utilities": {"A": 8.4287109375, "B": 4.3011474609375}}
+{"event": "continual_arm_complete", "lifecycle": 2, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 104363, "updates_after": 209242, "utilities": {"A": 9.35638427734375, "B": 6.21466064453125}}
+{"event": "continual_arm_complete", "lifecycle": 3, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.43280029296875, "B": 4.66302490234375}}
+{"event": "continual_arm_complete", "lifecycle": 0, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.56280517578125, "B": 3.5926513671875}}
+{"event": "continual_arm_complete", "lifecycle": 1, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.1358642578125, "B": 5.70465087890625}}
+{"event": "continual_arm_complete", "lifecycle": 2, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.3675537109375, "B": 4.82659912109375}}
+{"event": "continual_arm_complete", "lifecycle": 3, "stage": "A2", "arm": "MC", "updates_before": 208018, "updates_after": 311558, "utilities": {"A": 7.317138671875, "B": 1.80438232421875}}
+{"event": "continual_arm_complete", "lifecycle": 0, "stage": "A2", "arm": "MC", "updates_before": 206969, "updates_after": 310756, "utilities": {"A": 10.3924560546875, "B": 3.13525390625}}
+{"event": "continual_arm_complete", "lifecycle": 2, "stage": "A2", "arm": "MC", "updates_before": 209242, "updates_after": 313762, "utilities": {"A": 9.2244873046875, "B": 3.2950439453125}}
+{"event": "continual_arm_complete", "lifecycle": 1, "stage": "A2", "arm": "MC", "updates_before": 207015, "updates_after": 311144, "utilities": {"A": 7.3111572265625, "B": 3.35113525390625}}
+{"event": "continual_arm_complete", "lifecycle": 3, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 208018, "updates_after": 311558, "utilities": {"A": 9.96136474609375, "B": 6.3570556640625}}
+{"event": "recovered_sequence_complete", "lifecycle": 3}
+{"event": "continual_arm_complete", "lifecycle": 1, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 207015, "updates_after": 311144, "utilities": {"A": 9.1048583984375, "B": 3.6185302734375}}
+{"event": "recovered_sequence_complete", "lifecycle": 1}
+{"event": "continual_arm_complete", "lifecycle": 0, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 206969, "updates_after": 310756, "utilities": {"A": 10.21807861328125, "B": 4.23443603515625}}
+{"event": "recovered_sequence_complete", "lifecycle": 0}
+{"event": "continual_arm_complete", "lifecycle": 2, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 209242, "updates_after": 313762, "utilities": {"A": 10.3470458984375, "B": 5.95989990234375}}
+{"event": "recovered_sequence_complete", "lifecycle": 2}
+{"event": "continual_arm_complete", "lifecycle": 7, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.54022216796875}}
+{"event": "continual_arm_complete", "lifecycle": 4, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.761474609375}}
+{"event": "continual_arm_complete", "lifecycle": 5, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.4625244140625}}
+{"event": "continual_arm_complete", "lifecycle": 6, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.23419189453125}}
+{"event": "continual_arm_complete", "lifecycle": 7, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 104980, "utilities": {"A": 10.2100830078125}}
+{"event": "continual_arm_complete", "lifecycle": 4, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 105204, "utilities": {"A": 11.5906982421875}}
+{"event": "continual_arm_complete", "lifecycle": 5, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103205, "utilities": {"A": 9.8831787109375}}
+{"event": "continual_arm_complete", "lifecycle": 6, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 104023, "utilities": {"A": 11.532958984375}}
+{"event": "continual_arm_complete", "lifecycle": 7, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 104980, "utilities": {"A": 11.46612548828125}}
+{"event": "continual_arm_complete", "lifecycle": 4, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 105204, "utilities": {"A": 10.49407958984375}}
+{"event": "continual_arm_complete", "lifecycle": 5, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103205, "utilities": {"A": 10.55712890625}}
+{"event": "continual_arm_complete", "lifecycle": 6, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 104023, "utilities": {"A": 10.264892578125}}
+{"event": "continual_arm_complete", "lifecycle": 7, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.54022216796875, "B": 4.77398681640625}}
+{"event": "continual_arm_complete", "lifecycle": 4, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.761474609375, "B": 5.32989501953125}}
+{"event": "continual_arm_complete", "lifecycle": 5, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.4625244140625, "B": 5.14788818359375}}
+{"event": "continual_arm_complete", "lifecycle": 6, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.23419189453125, "B": 6.0352783203125}}
+{"event": "continual_arm_complete", "lifecycle": 7, "stage": "B", "arm": "MC", "updates_before": 104980, "updates_after": 208601, "utilities": {"A": 6.66583251953125, "B": 3.21258544921875}}
+{"event": "continual_arm_complete", "lifecycle": 4, "stage": "B", "arm": "MC", "updates_before": 105204, "updates_after": 207232, "utilities": {"A": 4.7447509765625, "B": 0.92181396484375}}
+{"event": "continual_arm_complete", "lifecycle": 5, "stage": "B", "arm": "MC", "updates_before": 103205, "updates_after": 207141, "utilities": {"A": 4.1849365234375, "B": 0.73760986328125}}
+{"event": "continual_arm_complete", "lifecycle": 6, "stage": "B", "arm": "MC", "updates_before": 104023, "updates_after": 206965, "utilities": {"A": 4.7247314453125, "B": 1.63995361328125}}
+{"event": "continual_arm_complete", "lifecycle": 7, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 104980, "updates_after": 208601, "utilities": {"A": 7.4140625, "B": 4.93316650390625}}
+{"event": "continual_arm_complete", "lifecycle": 5, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103205, "updates_after": 207141, "utilities": {"A": 8.94146728515625, "B": 4.49835205078125}}
+{"event": "continual_arm_complete", "lifecycle": 6, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 104023, "updates_after": 206965, "utilities": {"A": 6.64306640625, "B": 2.7264404296875}}
+{"event": "continual_arm_complete", "lifecycle": 4, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 105204, "updates_after": 207232, "utilities": {"A": 8.3616943359375, "B": 3.82745361328125}}
+{"event": "continual_arm_complete", "lifecycle": 7, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.54022216796875, "B": 4.77398681640625}}
+{"event": "continual_arm_complete", "lifecycle": 5, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.4625244140625, "B": 5.14788818359375}}
+{"event": "continual_arm_complete", "lifecycle": 6, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.23419189453125, "B": 6.0352783203125}}
+{"event": "continual_arm_complete", "lifecycle": 4, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.761474609375, "B": 5.32989501953125}}
+{"event": "continual_arm_complete", "lifecycle": 7, "stage": "A2", "arm": "MC", "updates_before": 208601, "updates_after": 313735, "utilities": {"A": 8.88079833984375, "B": 3.66534423828125}}
+{"event": "continual_arm_complete", "lifecycle": 5, "stage": "A2", "arm": "MC", "updates_before": 207141, "updates_after": 311339, "utilities": {"A": 10.1455078125, "B": 3.85076904296875}}
+{"event": "continual_arm_complete", "lifecycle": 4, "stage": "A2", "arm": "MC", "updates_before": 207232, "updates_after": 311360, "utilities": {"A": 10.42889404296875, "B": 4.3663330078125}}
+{"event": "continual_arm_complete", "lifecycle": 6, "stage": "A2", "arm": "MC", "updates_before": 206965, "updates_after": 309600, "utilities": {"A": 8.27923583984375, "B": 3.80029296875}}
+{"event": "continual_arm_complete", "lifecycle": 7, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 208601, "updates_after": 313735, "utilities": {"A": 10.12664794921875, "B": 4.1422119140625}}
+{"event": "recovered_sequence_complete", "lifecycle": 7}
+{"event": "continual_arm_complete", "lifecycle": 5, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 207141, "updates_after": 311339, "utilities": {"A": 10.90155029296875, "B": 4.04620361328125}}
+{"event": "recovered_sequence_complete", "lifecycle": 5}
+{"event": "continual_arm_complete", "lifecycle": 4, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 207232, "updates_after": 311360, "utilities": {"A": 9.26934814453125, "B": 4.6552734375}}
+{"event": "continual_arm_complete", "lifecycle": 6, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 206965, "updates_after": 309600, "utilities": {"A": 10.34759521484375, "B": 5.1873779296875}}
+{"event": "recovered_sequence_complete", "lifecycle": 4}
+{"event": "recovered_sequence_complete", "lifecycle": 6}
+{"event": "continual_arm_complete", "lifecycle": 11, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.0726318359375}}
+{"event": "continual_arm_complete", "lifecycle": 9, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.9200439453125}}
+{"event": "continual_arm_complete", "lifecycle": 8, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.64447021484375}}
+{"event": "continual_arm_complete", "lifecycle": 10, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.86102294921875}}
+{"event": "continual_arm_complete", "lifecycle": 11, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103073, "utilities": {"A": 9.77874755859375}}
+{"event": "continual_arm_complete", "lifecycle": 9, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 104269, "utilities": {"A": 11.2769775390625}}
+{"event": "continual_arm_complete", "lifecycle": 8, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103842, "utilities": {"A": 9.7576904296875}}
+{"event": "continual_arm_complete", "lifecycle": 10, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103527, "utilities": {"A": 11.0382080078125}}
+{"event": "continual_arm_complete", "lifecycle": 11, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103073, "utilities": {"A": 9.3197021484375}}
+{"event": "continual_arm_complete", "lifecycle": 9, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 104269, "utilities": {"A": 10.99493408203125}}
+{"event": "continual_arm_complete", "lifecycle": 8, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103842, "utilities": {"A": 9.5238037109375}}
+{"event": "continual_arm_complete", "lifecycle": 10, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103527, "utilities": {"A": 10.92156982421875}}
+{"event": "continual_arm_complete", "lifecycle": 11, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.0726318359375, "B": 5.00421142578125}}
+{"event": "continual_arm_complete", "lifecycle": 9, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.9200439453125, "B": 4.929931640625}}
+{"event": "continual_arm_complete", "lifecycle": 10, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.86102294921875, "B": 4.53656005859375}}
+{"event": "continual_arm_complete", "lifecycle": 8, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.64447021484375, "B": 4.37628173828125}}
+{"event": "continual_arm_complete", "lifecycle": 11, "stage": "B", "arm": "MC", "updates_before": 103073, "updates_after": 205524, "utilities": {"A": 7.07269287109375, "B": 4.06903076171875}}
+{"event": "continual_arm_complete", "lifecycle": 9, "stage": "B", "arm": "MC", "updates_before": 104269, "updates_after": 207624, "utilities": {"A": 5.206787109375, "B": 3.5853271484375}}
+{"event": "continual_arm_complete", "lifecycle": 10, "stage": "B", "arm": "MC", "updates_before": 103527, "updates_after": 208631, "utilities": {"A": 5.26605224609375, "B": 2.527099609375}}
+{"event": "continual_arm_complete", "lifecycle": 8, "stage": "B", "arm": "MC", "updates_before": 103842, "updates_after": 207573, "utilities": {"A": 4.7374267578125, "B": 3.02838134765625}}
+{"event": "continual_arm_complete", "lifecycle": 11, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103073, "updates_after": 205524, "utilities": {"A": 5.78741455078125, "B": 3.86834716796875}}
+{"event": "continual_arm_complete", "lifecycle": 9, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 104269, "updates_after": 207624, "utilities": {"A": 6.44830322265625, "B": 4.52886962890625}}
+{"event": "continual_arm_complete", "lifecycle": 8, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103842, "updates_after": 207573, "utilities": {"A": 7.6451416015625, "B": 3.637451171875}}
+{"event": "continual_arm_complete", "lifecycle": 10, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103527, "updates_after": 208631, "utilities": {"A": 10.3914794921875, "B": 3.93865966796875}}
+{"event": "continual_arm_complete", "lifecycle": 11, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.0726318359375, "B": 5.00421142578125}}
+{"event": "continual_arm_complete", "lifecycle": 8, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.64447021484375, "B": 4.37628173828125}}
+{"event": "continual_arm_complete", "lifecycle": 10, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.86102294921875, "B": 4.53656005859375}}
+{"event": "continual_arm_complete", "lifecycle": 9, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.9200439453125, "B": 4.929931640625}}
+{"event": "continual_arm_complete", "lifecycle": 11, "stage": "A2", "arm": "MC", "updates_before": 205524, "updates_after": 309213, "utilities": {"A": 9.28851318359375, "B": 5.0526123046875}}
+{"event": "continual_arm_complete", "lifecycle": 8, "stage": "A2", "arm": "MC", "updates_before": 207573, "updates_after": 311292, "utilities": {"A": 8.4093017578125, "B": 5.18951416015625}}
+{"event": "continual_arm_complete", "lifecycle": 10, "stage": "A2", "arm": "MC", "updates_before": 208631, "updates_after": 312467, "utilities": {"A": 9.3714599609375, "B": 3.1947021484375}}
+{"event": "continual_arm_complete", "lifecycle": 9, "stage": "A2", "arm": "MC", "updates_before": 207624, "updates_after": 310955, "utilities": {"A": 10.1707763671875, "B": 3.46710205078125}}
+{"event": "continual_arm_complete", "lifecycle": 11, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 205524, "updates_after": 309213, "utilities": {"A": 10.29180908203125, "B": 6.2882080078125}}
+{"event": "recovered_sequence_complete", "lifecycle": 11}
+{"event": "continual_arm_complete", "lifecycle": 10, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 208631, "updates_after": 312467, "utilities": {"A": 10.191162109375, "B": 4.78533935546875}}
+{"event": "recovered_sequence_complete", "lifecycle": 10}
+{"event": "continual_arm_complete", "lifecycle": 8, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 207573, "updates_after": 311292, "utilities": {"A": 11.50518798828125, "B": 3.2269287109375}}
+{"event": "recovered_sequence_complete", "lifecycle": 8}
+{"event": "continual_arm_complete", "lifecycle": 9, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 207624, "updates_after": 310955, "utilities": {"A": 8.6324462890625, "B": 4.5047607421875}}
+{"event": "recovered_sequence_complete", "lifecycle": 9}
+{"event": "continual_arm_complete", "lifecycle": 15, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.37957763671875}}
+{"event": "continual_arm_complete", "lifecycle": 14, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.47808837890625}}
+{"event": "continual_arm_complete", "lifecycle": 12, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.040283203125}}
+{"event": "continual_arm_complete", "lifecycle": 13, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.87200927734375}}
+{"event": "continual_arm_complete", "lifecycle": 15, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 105648, "utilities": {"A": 9.65191650390625}}
+{"event": "continual_arm_complete", "lifecycle": 14, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 104700, "utilities": {"A": 11.0474853515625}}
+{"event": "continual_arm_complete", "lifecycle": 12, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103632, "utilities": {"A": 9.2020263671875}}
+{"event": "continual_arm_complete", "lifecycle": 13, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103121, "utilities": {"A": 10.46917724609375}}
+{"event": "continual_arm_complete", "lifecycle": 15, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 105648, "utilities": {"A": 10.5462646484375}}
+{"event": "continual_arm_complete", "lifecycle": 14, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 104700, "utilities": {"A": 9.44366455078125}}
+{"event": "continual_arm_complete", "lifecycle": 12, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103632, "utilities": {"A": 12.0595703125}}
+{"event": "continual_arm_complete", "lifecycle": 13, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103121, "utilities": {"A": 10.7110595703125}}
+{"event": "continual_arm_complete", "lifecycle": 14, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.47808837890625, "B": 4.06622314453125}}
+{"event": "continual_arm_complete", "lifecycle": 15, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.37957763671875, "B": 5.22381591796875}}
+{"event": "continual_arm_complete", "lifecycle": 12, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.040283203125, "B": 5.7105712890625}}
+{"event": "continual_arm_complete", "lifecycle": 13, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.87200927734375, "B": 5.3699951171875}}
+{"event": "continual_arm_complete", "lifecycle": 15, "stage": "B", "arm": "MC", "updates_before": 105648, "updates_after": 209084, "utilities": {"A": 5.54327392578125, "B": 1.51702880859375}}
+{"event": "continual_arm_complete", "lifecycle": 14, "stage": "B", "arm": "MC", "updates_before": 104700, "updates_after": 207978, "utilities": {"A": 7.1966552734375, "B": 3.2957763671875}}
+{"event": "continual_arm_complete", "lifecycle": 12, "stage": "B", "arm": "MC", "updates_before": 103632, "updates_after": 206827, "utilities": {"A": 3.92694091796875, "B": 0.43414306640625}}
+{"event": "continual_arm_complete", "lifecycle": 13, "stage": "B", "arm": "MC", "updates_before": 103121, "updates_after": 207459, "utilities": {"A": 7.36279296875, "B": 2.82275390625}}
+{"event": "continual_arm_complete", "lifecycle": 12, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103632, "updates_after": 206827, "utilities": {"A": 4.65997314453125, "B": 2.95147705078125}}
+{"event": "continual_arm_complete", "lifecycle": 15, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 105648, "updates_after": 209084, "utilities": {"A": 7.8565673828125, "B": 3.27569580078125}}
+{"event": "continual_arm_complete", "lifecycle": 14, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 104700, "updates_after": 207978, "utilities": {"A": 9.714111328125, "B": 4.616943359375}}
+{"event": "continual_arm_complete", "lifecycle": 13, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103121, "updates_after": 207459, "utilities": {"A": 9.70367431640625, "B": 3.03662109375}}
+{"event": "continual_arm_complete", "lifecycle": 12, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.040283203125, "B": 5.7105712890625}}
+{"event": "continual_arm_complete", "lifecycle": 14, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.47808837890625, "B": 4.06622314453125}}
+{"event": "continual_arm_complete", "lifecycle": 15, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.37957763671875, "B": 5.22381591796875}}
+{"event": "continual_arm_complete", "lifecycle": 13, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.87200927734375, "B": 5.3699951171875}}
+{"event": "continual_arm_complete", "lifecycle": 12, "stage": "A2", "arm": "MC", "updates_before": 206827, "updates_after": 312006, "utilities": {"A": 9.3529052734375, "B": 3.56817626953125}}
+{"event": "continual_arm_complete", "lifecycle": 14, "stage": "A2", "arm": "MC", "updates_before": 207978, "updates_after": 312435, "utilities": {"A": 9.30035400390625, "B": 4.9500732421875}}
+{"event": "continual_arm_complete", "lifecycle": 13, "stage": "A2", "arm": "MC", "updates_before": 207459, "updates_after": 312173, "utilities": {"A": 9.80364990234375, "B": 5.90338134765625}}
+{"event": "continual_arm_complete", "lifecycle": 15, "stage": "A2", "arm": "MC", "updates_before": 209084, "updates_after": 312258, "utilities": {"A": 10.75225830078125, "B": 4.69537353515625}}
+{"event": "continual_arm_complete", "lifecycle": 12, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 206827, "updates_after": 312006, "utilities": {"A": 8.80096435546875, "B": 4.74737548828125}}
+{"event": "recovered_sequence_complete", "lifecycle": 12}
+{"event": "continual_arm_complete", "lifecycle": 14, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 207978, "updates_after": 312435, "utilities": {"A": 10.5159912109375, "B": 5.8580322265625}}
+{"event": "recovered_sequence_complete", "lifecycle": 14}
+{"event": "continual_arm_complete", "lifecycle": 13, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 207459, "updates_after": 312173, "utilities": {"A": 11.03167724609375, "B": 5.47210693359375}}
+{"event": "recovered_sequence_complete", "lifecycle": 13}
+{"event": "continual_arm_complete", "lifecycle": 15, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 209084, "updates_after": 312258, "utilities": {"A": 12.96661376953125, "B": 7.05865478515625}}
+{"event": "recovered_sequence_complete", "lifecycle": 15}
+{"event": "continual_arm_complete", "lifecycle": 16, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.53570556640625}}
+{"event": "continual_arm_complete", "lifecycle": 18, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.83868408203125}}
+{"event": "continual_arm_complete", "lifecycle": 17, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.58404541015625}}
+{"event": "continual_arm_complete", "lifecycle": 19, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.98162841796875}}
+{"event": "continual_arm_complete", "lifecycle": 16, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 104276, "utilities": {"A": 9.63140869140625}}
+{"event": "continual_arm_complete", "lifecycle": 17, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103143, "utilities": {"A": 9.0828857421875}}
+{"event": "continual_arm_complete", "lifecycle": 18, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 104073, "utilities": {"A": 10.80694580078125}}
+{"event": "continual_arm_complete", "lifecycle": 19, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 105109, "utilities": {"A": 11.36907958984375}}
+{"event": "continual_arm_complete", "lifecycle": 16, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 104276, "utilities": {"A": 10.0789794921875}}
+{"event": "continual_arm_complete", "lifecycle": 17, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103143, "utilities": {"A": 9.1318359375}}
+{"event": "continual_arm_complete", "lifecycle": 18, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 104073, "utilities": {"A": 9.33642578125}}
+{"event": "continual_arm_complete", "lifecycle": 19, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 105109, "utilities": {"A": 9.3751220703125}}
+{"event": "continual_arm_complete", "lifecycle": 16, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.53570556640625, "B": 4.28485107421875}}
+{"event": "continual_arm_complete", "lifecycle": 17, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.58404541015625, "B": 4.68121337890625}}
+{"event": "continual_arm_complete", "lifecycle": 18, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.83868408203125, "B": 5.79779052734375}}
+{"event": "continual_arm_complete", "lifecycle": 19, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.98162841796875, "B": 6.06036376953125}}
+{"event": "continual_arm_complete", "lifecycle": 16, "stage": "B", "arm": "MC", "updates_before": 104276, "updates_after": 207987, "utilities": {"A": 7.0042724609375, "B": 2.76055908203125}}
+{"event": "continual_arm_complete", "lifecycle": 17, "stage": "B", "arm": "MC", "updates_before": 103143, "updates_after": 206012, "utilities": {"A": 9.30047607421875, "B": 6.11688232421875}}
+{"event": "continual_arm_complete", "lifecycle": 18, "stage": "B", "arm": "MC", "updates_before": 104073, "updates_after": 206793, "utilities": {"A": 5.1751708984375, "B": 2.33258056640625}}
+{"event": "continual_arm_complete", "lifecycle": 19, "stage": "B", "arm": "MC", "updates_before": 105109, "updates_after": 208369, "utilities": {"A": 4.99444580078125, "B": 0.42535400390625}}
+{"event": "continual_arm_complete", "lifecycle": 16, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 104276, "updates_after": 207987, "utilities": {"A": 7.78118896484375, "B": 2.78900146484375}}
+{"event": "continual_arm_complete", "lifecycle": 18, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 104073, "updates_after": 206793, "utilities": {"A": 7.7261962890625, "B": 4.0596923828125}}
+{"event": "continual_arm_complete", "lifecycle": 17, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103143, "updates_after": 206012, "utilities": {"A": 9.098876953125, "B": 7.043212890625}}
+{"event": "continual_arm_complete", "lifecycle": 19, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 105109, "updates_after": 208369, "utilities": {"A": 8.6480712890625, "B": 3.04852294921875}}
+{"event": "continual_arm_complete", "lifecycle": 16, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.53570556640625, "B": 4.28485107421875}}
+{"event": "continual_arm_complete", "lifecycle": 18, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.83868408203125, "B": 5.79779052734375}}
+{"event": "continual_arm_complete", "lifecycle": 19, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.98162841796875, "B": 6.06036376953125}}
+{"event": "continual_arm_complete", "lifecycle": 17, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.58404541015625, "B": 4.68121337890625}}
+{"event": "continual_arm_complete", "lifecycle": 16, "stage": "A2", "arm": "MC", "updates_before": 207987, "updates_after": 311267, "utilities": {"A": 7.35443115234375, "B": 4.40765380859375}}
+{"event": "continual_arm_complete", "lifecycle": 18, "stage": "A2", "arm": "MC", "updates_before": 206793, "updates_after": 310783, "utilities": {"A": 8.245361328125, "B": 3.3604736328125}}
+{"event": "continual_arm_complete", "lifecycle": 19, "stage": "A2", "arm": "MC", "updates_before": 208369, "updates_after": 311918, "utilities": {"A": 7.01531982421875, "B": 3.5118408203125}}
+{"event": "continual_arm_complete", "lifecycle": 17, "stage": "A2", "arm": "MC", "updates_before": 206012, "updates_after": 309604, "utilities": {"A": 8.26324462890625, "B": 4.4580078125}}
+{"event": "continual_arm_complete", "lifecycle": 16, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 207987, "updates_after": 311267, "utilities": {"A": 8.01171875, "B": 5.36376953125}}
+{"event": "recovered_sequence_complete", "lifecycle": 16}
+{"event": "continual_arm_complete", "lifecycle": 18, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 206793, "updates_after": 310783, "utilities": {"A": 8.28973388671875, "B": 3.399169921875}}
+{"event": "recovered_sequence_complete", "lifecycle": 18}
+{"event": "continual_arm_complete", "lifecycle": 19, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 208369, "updates_after": 311918, "utilities": {"A": 9.8050537109375, "B": 4.02301025390625}}
+{"event": "recovered_sequence_complete", "lifecycle": 19}
+{"event": "continual_arm_complete", "lifecycle": 17, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 206012, "updates_after": 309604, "utilities": {"A": 10.487060546875, "B": 5.1357421875}}
+{"event": "recovered_sequence_complete", "lifecycle": 17}
+{"event": "continual_arm_complete", "lifecycle": 20, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.3260498046875}}
+{"event": "continual_arm_complete", "lifecycle": 22, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.10333251953125}}
+{"event": "continual_arm_complete", "lifecycle": 23, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.8289794921875}}
+{"event": "continual_arm_complete", "lifecycle": 21, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.0018310546875}}
+{"event": "continual_arm_complete", "lifecycle": 20, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 104235, "utilities": {"A": 9.1021728515625}}
+{"event": "continual_arm_complete", "lifecycle": 22, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103102, "utilities": {"A": 9.16180419921875}}
+{"event": "continual_arm_complete", "lifecycle": 23, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103709, "utilities": {"A": 10.07391357421875}}
+{"event": "continual_arm_complete", "lifecycle": 21, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103938, "utilities": {"A": 11.14715576171875}}
+{"event": "continual_arm_complete", "lifecycle": 20, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 104235, "utilities": {"A": 10.53253173828125}}
+{"event": "continual_arm_complete", "lifecycle": 22, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103102, "utilities": {"A": 10.79449462890625}}
+{"event": "continual_arm_complete", "lifecycle": 23, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103709, "utilities": {"A": 10.968017578125}}
+{"event": "continual_arm_complete", "lifecycle": 21, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103938, "utilities": {"A": 11.78302001953125}}
+{"event": "continual_arm_complete", "lifecycle": 20, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.3260498046875, "B": 4.4185791015625}}
+{"event": "continual_arm_complete", "lifecycle": 22, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.10333251953125, "B": 5.4351806640625}}
+{"event": "continual_arm_complete", "lifecycle": 23, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.8289794921875, "B": 6.53955078125}}
+{"event": "continual_arm_complete", "lifecycle": 21, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.0018310546875, "B": 4.19610595703125}}
+{"event": "continual_arm_complete", "lifecycle": 20, "stage": "B", "arm": "MC", "updates_before": 104235, "updates_after": 207576, "utilities": {"A": 7.90667724609375, "B": 4.15545654296875}}
+{"event": "continual_arm_complete", "lifecycle": 22, "stage": "B", "arm": "MC", "updates_before": 103102, "updates_after": 206557, "utilities": {"A": 6.74658203125, "B": 1.6307373046875}}
+{"event": "continual_arm_complete", "lifecycle": 23, "stage": "B", "arm": "MC", "updates_before": 103709, "updates_after": 207444, "utilities": {"A": 8.7381591796875, "B": 4.2967529296875}}
+{"event": "continual_arm_complete", "lifecycle": 21, "stage": "B", "arm": "MC", "updates_before": 103938, "updates_after": 207863, "utilities": {"A": 8.9390869140625, "B": 5.24066162109375}}
+{"event": "continual_arm_complete", "lifecycle": 22, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103102, "updates_after": 206557, "utilities": {"A": 8.98931884765625, "B": 3.115966796875}}
+{"event": "continual_arm_complete", "lifecycle": 20, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 104235, "updates_after": 207576, "utilities": {"A": 7.86627197265625, "B": 5.25372314453125}}
+{"event": "continual_arm_complete", "lifecycle": 23, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103709, "updates_after": 207444, "utilities": {"A": 11.03668212890625, "B": 4.20538330078125}}
+{"event": "continual_arm_complete", "lifecycle": 21, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103938, "updates_after": 207863, "utilities": {"A": 8.89923095703125, "B": 6.04656982421875}}
+{"event": "continual_arm_complete", "lifecycle": 20, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.3260498046875, "B": 4.4185791015625}}
+{"event": "continual_arm_complete", "lifecycle": 22, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.10333251953125, "B": 5.4351806640625}}
+{"event": "continual_arm_complete", "lifecycle": 23, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.8289794921875, "B": 6.53955078125}}
+{"event": "continual_arm_complete", "lifecycle": 21, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.0018310546875, "B": 4.19610595703125}}
+{"event": "continual_arm_complete", "lifecycle": 20, "stage": "A2", "arm": "MC", "updates_before": 207576, "updates_after": 310907, "utilities": {"A": 8.83441162109375, "B": 3.6170654296875}}
+{"event": "continual_arm_complete", "lifecycle": 22, "stage": "A2", "arm": "MC", "updates_before": 206557, "updates_after": 311103, "utilities": {"A": 9.21405029296875, "B": 5.2342529296875}}
+{"event": "continual_arm_complete", "lifecycle": 23, "stage": "A2", "arm": "MC", "updates_before": 207444, "updates_after": 310200, "utilities": {"A": 9.65789794921875, "B": 3.21417236328125}}
+{"event": "continual_arm_complete", "lifecycle": 21, "stage": "A2", "arm": "MC", "updates_before": 207863, "updates_after": 312102, "utilities": {"A": 11.25244140625, "B": 4.306640625}}
+{"event": "continual_arm_complete", "lifecycle": 20, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 207576, "updates_after": 310907, "utilities": {"A": 9.5843505859375, "B": 5.1890869140625}}
+{"event": "recovered_sequence_complete", "lifecycle": 20}
+{"event": "continual_arm_complete", "lifecycle": 22, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 206557, "updates_after": 311103, "utilities": {"A": 8.545654296875, "B": 5.2984619140625}}
+{"event": "recovered_sequence_complete", "lifecycle": 22}
+{"event": "continual_arm_complete", "lifecycle": 23, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 207444, "updates_after": 310200, "utilities": {"A": 9.21575927734375, "B": 6.078125}}
+{"event": "recovered_sequence_complete", "lifecycle": 23}
+{"event": "continual_arm_complete", "lifecycle": 21, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 207863, "updates_after": 312102, "utilities": {"A": 9.75994873046875, "B": 7.48382568359375}}
+{"event": "recovered_sequence_complete", "lifecycle": 21}
+{"event": "continual_arm_complete", "lifecycle": 24, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.48211669921875}}
+{"event": "continual_arm_complete", "lifecycle": 26, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.21533203125}}
+{"event": "continual_arm_complete", "lifecycle": 27, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.26019287109375}}
+{"event": "continual_arm_complete", "lifecycle": 25, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.92144775390625}}
+{"event": "continual_arm_complete", "lifecycle": 24, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103335, "utilities": {"A": 8.10723876953125}}
+{"event": "continual_arm_complete", "lifecycle": 26, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103692, "utilities": {"A": 9.06695556640625}}
+{"event": "continual_arm_complete", "lifecycle": 27, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 102825, "utilities": {"A": 10.2596435546875}}
+{"event": "continual_arm_complete", "lifecycle": 25, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103672, "utilities": {"A": 8.0638427734375}}
+{"event": "continual_arm_complete", "lifecycle": 24, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103335, "utilities": {"A": 8.669189453125}}
+{"event": "continual_arm_complete", "lifecycle": 26, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103692, "utilities": {"A": 10.10345458984375}}
+{"event": "continual_arm_complete", "lifecycle": 27, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 102825, "utilities": {"A": 9.79608154296875}}
+{"event": "continual_arm_complete", "lifecycle": 25, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103672, "utilities": {"A": 10.7332763671875}}
+{"event": "continual_arm_complete", "lifecycle": 24, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.48211669921875, "B": 3.6719970703125}}
+{"event": "continual_arm_complete", "lifecycle": 26, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.21533203125, "B": 5.0284423828125}}
+{"event": "continual_arm_complete", "lifecycle": 27, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.26019287109375, "B": 3.88214111328125}}
+{"event": "continual_arm_complete", "lifecycle": 25, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.92144775390625, "B": 7.693115234375}}
+{"event": "continual_arm_complete", "lifecycle": 24, "stage": "B", "arm": "MC", "updates_before": 103335, "updates_after": 207832, "utilities": {"A": 7.04327392578125, "B": 3.51708984375}}
+{"event": "continual_arm_complete", "lifecycle": 26, "stage": "B", "arm": "MC", "updates_before": 103692, "updates_after": 206712, "utilities": {"A": 7.73016357421875, "B": 5.07257080078125}}
+{"event": "continual_arm_complete", "lifecycle": 25, "stage": "B", "arm": "MC", "updates_before": 103672, "updates_after": 209880, "utilities": {"A": 3.49609375, "B": 1.05523681640625}}
+{"event": "continual_arm_complete", "lifecycle": 27, "stage": "B", "arm": "MC", "updates_before": 102825, "updates_after": 206532, "utilities": {"A": 6.51458740234375, "B": 2.03472900390625}}
+{"event": "continual_arm_complete", "lifecycle": 24, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103335, "updates_after": 207832, "utilities": {"A": 7.5745849609375, "B": 3.98809814453125}}
+{"event": "continual_arm_complete", "lifecycle": 26, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103692, "updates_after": 206712, "utilities": {"A": 7.7843017578125, "B": 5.5941162109375}}
+{"event": "continual_arm_complete", "lifecycle": 25, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103672, "updates_after": 209880, "utilities": {"A": 7.4912109375, "B": 3.445556640625}}
+{"event": "continual_arm_complete", "lifecycle": 27, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 102825, "updates_after": 206532, "utilities": {"A": 7.4432373046875, "B": 3.4268798828125}}
+{"event": "continual_arm_complete", "lifecycle": 24, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.48211669921875, "B": 3.6719970703125}}
+{"event": "continual_arm_complete", "lifecycle": 26, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.21533203125, "B": 5.0284423828125}}
+{"event": "continual_arm_complete", "lifecycle": 25, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.92144775390625, "B": 7.693115234375}}
+{"event": "continual_arm_complete", "lifecycle": 27, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.26019287109375, "B": 3.88214111328125}}
+{"event": "continual_arm_complete", "lifecycle": 24, "stage": "A2", "arm": "MC", "updates_before": 207832, "updates_after": 310884, "utilities": {"A": 10.3680419921875, "B": 4.1917724609375}}
+{"event": "continual_arm_complete", "lifecycle": 26, "stage": "A2", "arm": "MC", "updates_before": 206712, "updates_after": 309852, "utilities": {"A": 8.48883056640625, "B": 3.74798583984375}}
+{"event": "continual_arm_complete", "lifecycle": 27, "stage": "A2", "arm": "MC", "updates_before": 206532, "updates_after": 310040, "utilities": {"A": 6.6258544921875, "B": 3.042724609375}}
+{"event": "continual_arm_complete", "lifecycle": 25, "stage": "A2", "arm": "MC", "updates_before": 209880, "updates_after": 313806, "utilities": {"A": 8.88970947265625, "B": 3.79400634765625}}
+{"event": "continual_arm_complete", "lifecycle": 24, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 207832, "updates_after": 310884, "utilities": {"A": 10.777587890625, "B": 5.3450927734375}}
+{"event": "continual_arm_complete", "lifecycle": 26, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 206712, "updates_after": 309852, "utilities": {"A": 11.91839599609375, "B": 3.91741943359375}}
+{"event": "recovered_sequence_complete", "lifecycle": 24}
+{"event": "recovered_sequence_complete", "lifecycle": 26}
+{"event": "continual_arm_complete", "lifecycle": 27, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 206532, "updates_after": 310040, "utilities": {"A": 10.53399658203125, "B": 5.11090087890625}}
+{"event": "recovered_sequence_complete", "lifecycle": 27}
+{"event": "continual_arm_complete", "lifecycle": 25, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 209880, "updates_after": 313806, "utilities": {"A": 10.4776611328125, "B": 5.51495361328125}}
+{"event": "recovered_sequence_complete", "lifecycle": 25}
+{"event": "continual_arm_complete", "lifecycle": 30, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.7545166015625}}
+{"event": "continual_arm_complete", "lifecycle": 28, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.83447265625}}
+{"event": "continual_arm_complete", "lifecycle": 31, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.296142578125}}
+{"event": "continual_arm_complete", "lifecycle": 29, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.10888671875}}
+{"event": "continual_arm_complete", "lifecycle": 30, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 102750, "utilities": {"A": 9.475830078125}}
+{"event": "continual_arm_complete", "lifecycle": 28, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 102346, "utilities": {"A": 10.67840576171875}}
+{"event": "continual_arm_complete", "lifecycle": 31, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 104525, "utilities": {"A": 10.127685546875}}
+{"event": "continual_arm_complete", "lifecycle": 29, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 104678, "utilities": {"A": 11.12347412109375}}
+{"event": "continual_arm_complete", "lifecycle": 30, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 102750, "utilities": {"A": 10.31756591796875}}
+{"event": "continual_arm_complete", "lifecycle": 28, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 102346, "utilities": {"A": 11.8450927734375}}
+{"event": "continual_arm_complete", "lifecycle": 31, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 104525, "utilities": {"A": 9.920654296875}}
+{"event": "continual_arm_complete", "lifecycle": 29, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 104678, "utilities": {"A": 12.53082275390625}}
+{"event": "continual_arm_complete", "lifecycle": 30, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.7545166015625, "B": 8.35003662109375}}
+{"event": "continual_arm_complete", "lifecycle": 31, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.296142578125, "B": 4.26666259765625}}
+{"event": "continual_arm_complete", "lifecycle": 28, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.83447265625, "B": 5.56134033203125}}
+{"event": "continual_arm_complete", "lifecycle": 29, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.10888671875, "B": 5.607666015625}}
+{"event": "continual_arm_complete", "lifecycle": 30, "stage": "B", "arm": "MC", "updates_before": 102750, "updates_after": 206703, "utilities": {"A": 6.44049072265625, "B": 2.20538330078125}}
+{"event": "continual_arm_complete", "lifecycle": 31, "stage": "B", "arm": "MC", "updates_before": 104525, "updates_after": 208629, "utilities": {"A": 4.80499267578125, "B": 1.29046630859375}}
+{"event": "continual_arm_complete", "lifecycle": 28, "stage": "B", "arm": "MC", "updates_before": 102346, "updates_after": 205980, "utilities": {"A": 2.91912841796875, "B": 2.67059326171875}}
+{"event": "continual_arm_complete", "lifecycle": 29, "stage": "B", "arm": "MC", "updates_before": 104678, "updates_after": 209121, "utilities": {"A": 7.19073486328125, "B": 2.010986328125}}
+{"event": "continual_arm_complete", "lifecycle": 30, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 102750, "updates_after": 206703, "utilities": {"A": 7.2396240234375, "B": 3.755859375}}
+{"event": "continual_arm_complete", "lifecycle": 31, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 104525, "updates_after": 208629, "utilities": {"A": 8.80902099609375, "B": 3.178955078125}}
+{"event": "continual_arm_complete", "lifecycle": 28, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 102346, "updates_after": 205980, "utilities": {"A": 7.45989990234375, "B": 4.1837158203125}}
+{"event": "continual_arm_complete", "lifecycle": 29, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 104678, "updates_after": 209121, "utilities": {"A": 7.99432373046875, "B": 3.915771484375}}
+{"event": "continual_arm_complete", "lifecycle": 30, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.7545166015625, "B": 8.35003662109375}}
+{"event": "continual_arm_complete", "lifecycle": 31, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.296142578125, "B": 4.26666259765625}}
+{"event": "continual_arm_complete", "lifecycle": 28, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.83447265625, "B": 5.56134033203125}}
+{"event": "continual_arm_complete", "lifecycle": 29, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.10888671875, "B": 5.607666015625}}
+{"event": "continual_arm_complete", "lifecycle": 31, "stage": "A2", "arm": "MC", "updates_before": 208629, "updates_after": 312980, "utilities": {"A": 6.68707275390625, "B": 3.59478759765625}}
+{"event": "continual_arm_complete", "lifecycle": 30, "stage": "A2", "arm": "MC", "updates_before": 206703, "updates_after": 311027, "utilities": {"A": 10.09979248046875, "B": 4.642333984375}}
+{"event": "continual_arm_complete", "lifecycle": 28, "stage": "A2", "arm": "MC", "updates_before": 205980, "updates_after": 309496, "utilities": {"A": 8.9478759765625, "B": 3.37701416015625}}
+{"event": "continual_arm_complete", "lifecycle": 29, "stage": "A2", "arm": "MC", "updates_before": 209121, "updates_after": 312848, "utilities": {"A": 10.7205810546875, "B": 5.01251220703125}}
+{"event": "continual_arm_complete", "lifecycle": 31, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 208629, "updates_after": 312980, "utilities": {"A": 9.02691650390625, "B": 4.8480224609375}}
+{"event": "recovered_sequence_complete", "lifecycle": 31}
+{"event": "continual_arm_complete", "lifecycle": 30, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 206703, "updates_after": 311027, "utilities": {"A": 9.21533203125, "B": 5.46685791015625}}
+{"event": "recovered_sequence_complete", "lifecycle": 30}
+{"event": "continual_arm_complete", "lifecycle": 28, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 205980, "updates_after": 309496, "utilities": {"A": 8.89544677734375, "B": 3.55023193359375}}
+{"event": "recovered_sequence_complete", "lifecycle": 28}
+{"event": "continual_arm_complete", "lifecycle": 29, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 209121, "updates_after": 312848, "utilities": {"A": 8.8297119140625, "B": 5.7789306640625}}
+{"event": "recovered_sequence_complete", "lifecycle": 29}
+{"event": "continual_arm_complete", "lifecycle": 34, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.0968017578125}}
+{"event": "continual_arm_complete", "lifecycle": 35, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.80364990234375}}
+{"event": "continual_arm_complete", "lifecycle": 32, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.78570556640625}}
+{"event": "continual_arm_complete", "lifecycle": 33, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.32489013671875}}
+{"event": "continual_arm_complete", "lifecycle": 34, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 104041, "utilities": {"A": 9.181640625}}
+{"event": "continual_arm_complete", "lifecycle": 35, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103513, "utilities": {"A": 11.53350830078125}}
+{"event": "continual_arm_complete", "lifecycle": 32, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103775, "utilities": {"A": 9.53125}}
+{"event": "continual_arm_complete", "lifecycle": 33, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103847, "utilities": {"A": 9.4705810546875}}
+{"event": "continual_arm_complete", "lifecycle": 34, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 104041, "utilities": {"A": 11.12811279296875}}
+{"event": "continual_arm_complete", "lifecycle": 35, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103513, "utilities": {"A": 10.68017578125}}
+{"event": "continual_arm_complete", "lifecycle": 32, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103775, "utilities": {"A": 9.746337890625}}
+{"event": "continual_arm_complete", "lifecycle": 33, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103847, "utilities": {"A": 9.09869384765625}}
+{"event": "continual_arm_complete", "lifecycle": 34, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.0968017578125, "B": 5.11248779296875}}
+{"event": "continual_arm_complete", "lifecycle": 35, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.80364990234375, "B": 3.79962158203125}}
+{"event": "continual_arm_complete", "lifecycle": 32, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.78570556640625, "B": 4.415283203125}}
+{"event": "continual_arm_complete", "lifecycle": 33, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.32489013671875, "B": 5.8443603515625}}
+{"event": "continual_arm_complete", "lifecycle": 35, "stage": "B", "arm": "MC", "updates_before": 103513, "updates_after": 207577, "utilities": {"A": 1.6632080078125, "B": 0.681396484375}}
+{"event": "continual_arm_complete", "lifecycle": 34, "stage": "B", "arm": "MC", "updates_before": 104041, "updates_after": 208114, "utilities": {"A": 6.80194091796875, "B": 2.6817626953125}}
+{"event": "continual_arm_complete", "lifecycle": 33, "stage": "B", "arm": "MC", "updates_before": 103847, "updates_after": 207403, "utilities": {"A": 3.35748291015625, "B": 1.54180908203125}}
+{"event": "continual_arm_complete", "lifecycle": 32, "stage": "B", "arm": "MC", "updates_before": 103775, "updates_after": 208994, "utilities": {"A": 4.8690185546875, "B": 3.7247314453125}}
+{"event": "continual_arm_complete", "lifecycle": 35, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103513, "updates_after": 207577, "utilities": {"A": 9.15771484375, "B": 2.40069580078125}}
+{"event": "continual_arm_complete", "lifecycle": 34, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 104041, "updates_after": 208114, "utilities": {"A": 8.982666015625, "B": 3.4935302734375}}
+{"event": "continual_arm_complete", "lifecycle": 33, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103847, "updates_after": 207403, "utilities": {"A": 7.77001953125, "B": 5.09429931640625}}
+{"event": "continual_arm_complete", "lifecycle": 32, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103775, "updates_after": 208994, "utilities": {"A": 9.18438720703125, "B": 3.9102783203125}}
+{"event": "continual_arm_complete", "lifecycle": 35, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.80364990234375, "B": 3.79962158203125}}
+{"event": "continual_arm_complete", "lifecycle": 34, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.0968017578125, "B": 5.11248779296875}}
+{"event": "continual_arm_complete", "lifecycle": 33, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.32489013671875, "B": 5.8443603515625}}
+{"event": "continual_arm_complete", "lifecycle": 32, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.78570556640625, "B": 4.415283203125}}
+{"event": "continual_arm_complete", "lifecycle": 35, "stage": "A2", "arm": "MC", "updates_before": 207577, "updates_after": 312326, "utilities": {"A": 8.12860107421875, "B": 5.05499267578125}}
+{"event": "continual_arm_complete", "lifecycle": 34, "stage": "A2", "arm": "MC", "updates_before": 208114, "updates_after": 310814, "utilities": {"A": 8.83111572265625, "B": 4.2691650390625}}
+{"event": "continual_arm_complete", "lifecycle": 32, "stage": "A2", "arm": "MC", "updates_before": 208994, "updates_after": 313293, "utilities": {"A": 8.4288330078125, "B": 5.52337646484375}}
+{"event": "continual_arm_complete", "lifecycle": 33, "stage": "A2", "arm": "MC", "updates_before": 207403, "updates_after": 312656, "utilities": {"A": 9.7757568359375, "B": 3.61492919921875}}
+{"event": "continual_arm_complete", "lifecycle": 35, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 207577, "updates_after": 312326, "utilities": {"A": 9.22314453125, "B": 3.77044677734375}}
+{"event": "recovered_sequence_complete", "lifecycle": 35}
+{"event": "continual_arm_complete", "lifecycle": 34, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 208114, "updates_after": 310814, "utilities": {"A": 9.45855712890625, "B": 4.64605712890625}}
+{"event": "recovered_sequence_complete", "lifecycle": 34}
+{"event": "continual_arm_complete", "lifecycle": 33, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 207403, "updates_after": 312656, "utilities": {"A": 8.247314453125, "B": 5.50726318359375}}
+{"event": "recovered_sequence_complete", "lifecycle": 33}
+{"event": "continual_arm_complete", "lifecycle": 32, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 208994, "updates_after": 313293, "utilities": {"A": 9.5108642578125, "B": 5.79559326171875}}
+{"event": "recovered_sequence_complete", "lifecycle": 32}
+{"event": "continual_arm_complete", "lifecycle": 39, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.99749755859375}}
+{"event": "continual_arm_complete", "lifecycle": 38, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.423095703125}}
+{"event": "continual_arm_complete", "lifecycle": 37, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.892578125}}
+{"event": "continual_arm_complete", "lifecycle": 36, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.1083984375}}
+{"event": "continual_arm_complete", "lifecycle": 39, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103493, "utilities": {"A": 9.35614013671875}}
+{"event": "continual_arm_complete", "lifecycle": 38, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103420, "utilities": {"A": 10.35675048828125}}
+{"event": "continual_arm_complete", "lifecycle": 36, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 104030, "utilities": {"A": 9.90020751953125}}
+{"event": "continual_arm_complete", "lifecycle": 37, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103218, "utilities": {"A": 10.56280517578125}}
+{"event": "continual_arm_complete", "lifecycle": 39, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103493, "utilities": {"A": 9.42095947265625}}
+{"event": "continual_arm_complete", "lifecycle": 38, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103420, "utilities": {"A": 11.89599609375}}
+{"event": "continual_arm_complete", "lifecycle": 36, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 104030, "utilities": {"A": 9.74237060546875}}
+{"event": "continual_arm_complete", "lifecycle": 37, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103218, "utilities": {"A": 10.32476806640625}}
+{"event": "continual_arm_complete", "lifecycle": 39, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.99749755859375, "B": 5.83233642578125}}
+{"event": "continual_arm_complete", "lifecycle": 36, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.1083984375, "B": 5.534912109375}}
+{"event": "continual_arm_complete", "lifecycle": 37, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.892578125, "B": 5.03985595703125}}
+{"event": "continual_arm_complete", "lifecycle": 38, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.423095703125, "B": 4.90875244140625}}
+{"event": "continual_arm_complete", "lifecycle": 39, "stage": "B", "arm": "MC", "updates_before": 103493, "updates_after": 207967, "utilities": {"A": 3.0179443359375, "B": 0.98089599609375}}
+{"event": "continual_arm_complete", "lifecycle": 37, "stage": "B", "arm": "MC", "updates_before": 103218, "updates_after": 206530, "utilities": {"A": 6.17938232421875, "B": 2.279541015625}}
+{"event": "continual_arm_complete", "lifecycle": 36, "stage": "B", "arm": "MC", "updates_before": 104030, "updates_after": 209100, "utilities": {"A": 3.6412353515625, "B": 2.07659912109375}}
+{"event": "continual_arm_complete", "lifecycle": 38, "stage": "B", "arm": "MC", "updates_before": 103420, "updates_after": 208001, "utilities": {"A": 5.87713623046875, "B": 2.28875732421875}}
+{"event": "continual_arm_complete", "lifecycle": 39, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103493, "updates_after": 207967, "utilities": {"A": 9.768798828125, "B": 3.4766845703125}}
+{"event": "continual_arm_complete", "lifecycle": 37, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103218, "updates_after": 206530, "utilities": {"A": 8.06671142578125, "B": 5.585205078125}}
+{"event": "continual_arm_complete", "lifecycle": 36, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 104030, "updates_after": 209100, "utilities": {"A": 8.05181884765625, "B": 2.99334716796875}}
+{"event": "continual_arm_complete", "lifecycle": 38, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103420, "updates_after": 208001, "utilities": {"A": 8.70648193359375, "B": 4.10516357421875}}
+{"event": "continual_arm_complete", "lifecycle": 39, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.99749755859375, "B": 5.83233642578125}}
+{"event": "continual_arm_complete", "lifecycle": 38, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.423095703125, "B": 4.90875244140625}}
+{"event": "continual_arm_complete", "lifecycle": 37, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.892578125, "B": 5.03985595703125}}
+{"event": "continual_arm_complete", "lifecycle": 36, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.1083984375, "B": 5.534912109375}}
+{"event": "continual_arm_complete", "lifecycle": 39, "stage": "A2", "arm": "MC", "updates_before": 207967, "updates_after": 313096, "utilities": {"A": 8.13446044921875, "B": 6.3035888671875}}
+{"event": "continual_arm_complete", "lifecycle": 38, "stage": "A2", "arm": "MC", "updates_before": 208001, "updates_after": 311269, "utilities": {"A": 10.46917724609375, "B": 6.6500244140625}}
+{"event": "continual_arm_complete", "lifecycle": 37, "stage": "A2", "arm": "MC", "updates_before": 206530, "updates_after": 309993, "utilities": {"A": 10.60772705078125, "B": 3.05078125}}
+{"event": "continual_arm_complete", "lifecycle": 36, "stage": "A2", "arm": "MC", "updates_before": 209100, "updates_after": 313753, "utilities": {"A": 10.38677978515625, "B": 6.18389892578125}}
+{"event": "continual_arm_complete", "lifecycle": 39, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 207967, "updates_after": 313096, "utilities": {"A": 8.727294921875, "B": 7.23956298828125}}
+{"event": "recovered_sequence_complete", "lifecycle": 39}
+{"event": "continual_arm_complete", "lifecycle": 38, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 208001, "updates_after": 311269, "utilities": {"A": 11.84564208984375, "B": 5.56951904296875}}
+{"event": "recovered_sequence_complete", "lifecycle": 38}
+{"event": "continual_arm_complete", "lifecycle": 37, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 206530, "updates_after": 309993, "utilities": {"A": 8.90924072265625, "B": 4.4752197265625}}
+{"event": "recovered_sequence_complete", "lifecycle": 37}
+{"event": "continual_arm_complete", "lifecycle": 36, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 209100, "updates_after": 313753, "utilities": {"A": 9.71783447265625, "B": 5.8818359375}}
+{"event": "recovered_sequence_complete", "lifecycle": 36}
+{"event": "continual_arm_complete", "lifecycle": 43, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.9261474609375}}
+{"event": "continual_arm_complete", "lifecycle": 41, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.366943359375}}
+{"event": "continual_arm_complete", "lifecycle": 42, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.02496337890625}}
+{"event": "continual_arm_complete", "lifecycle": 40, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.099853515625}}
+{"event": "continual_arm_complete", "lifecycle": 43, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 104166, "utilities": {"A": 8.07110595703125}}
+{"event": "continual_arm_complete", "lifecycle": 42, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103168, "utilities": {"A": 11.22808837890625}}
+{"event": "continual_arm_complete", "lifecycle": 41, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103777, "utilities": {"A": 9.49896240234375}}
+{"event": "continual_arm_complete", "lifecycle": 40, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 104786, "utilities": {"A": 8.8228759765625}}
+{"event": "continual_arm_complete", "lifecycle": 43, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 104166, "utilities": {"A": 10.5003662109375}}
+{"event": "continual_arm_complete", "lifecycle": 42, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103168, "utilities": {"A": 9.7904052734375}}
+{"event": "continual_arm_complete", "lifecycle": 41, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103777, "utilities": {"A": 10.5511474609375}}
+{"event": "continual_arm_complete", "lifecycle": 40, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 104786, "utilities": {"A": 11.78961181640625}}
+{"event": "continual_arm_complete", "lifecycle": 43, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.9261474609375, "B": 4.6075439453125}}
+{"event": "continual_arm_complete", "lifecycle": 42, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.02496337890625, "B": 4.36474609375}}
+{"event": "continual_arm_complete", "lifecycle": 41, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.366943359375, "B": 4.87091064453125}}
+{"event": "continual_arm_complete", "lifecycle": 40, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.099853515625, "B": 3.57073974609375}}
+{"event": "continual_arm_complete", "lifecycle": 42, "stage": "B", "arm": "MC", "updates_before": 103168, "updates_after": 206713, "utilities": {"A": 1.58135986328125, "B": 0.05303955078125}}
+{"event": "continual_arm_complete", "lifecycle": 43, "stage": "B", "arm": "MC", "updates_before": 104166, "updates_after": 208206, "utilities": {"A": 10.48272705078125, "B": 5.0545654296875}}
+{"event": "continual_arm_complete", "lifecycle": 41, "stage": "B", "arm": "MC", "updates_before": 103777, "updates_after": 205279, "utilities": {"A": 4.522705078125, "B": 1.21136474609375}}
+{"event": "continual_arm_complete", "lifecycle": 40, "stage": "B", "arm": "MC", "updates_before": 104786, "updates_after": 210306, "utilities": {"A": 6.4537353515625, "B": 3.2322998046875}}
+{"event": "continual_arm_complete", "lifecycle": 42, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103168, "updates_after": 206713, "utilities": {"A": 6.53106689453125, "B": 2.5191650390625}}
+{"event": "continual_arm_complete", "lifecycle": 43, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 104166, "updates_after": 208206, "utilities": {"A": 9.43682861328125, "B": 6.22906494140625}}
+{"event": "continual_arm_complete", "lifecycle": 41, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103777, "updates_after": 205279, "utilities": {"A": 7.413818359375, "B": 2.9407958984375}}
+{"event": "continual_arm_complete", "lifecycle": 40, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 104786, "updates_after": 210306, "utilities": {"A": 8.33013916015625, "B": 4.56292724609375}}
+{"event": "continual_arm_complete", "lifecycle": 42, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.02496337890625, "B": 4.36474609375}}
+{"event": "continual_arm_complete", "lifecycle": 43, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.9261474609375, "B": 4.6075439453125}}
+{"event": "continual_arm_complete", "lifecycle": 41, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.366943359375, "B": 4.87091064453125}}
+{"event": "continual_arm_complete", "lifecycle": 40, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.099853515625, "B": 3.57073974609375}}
+{"event": "continual_arm_complete", "lifecycle": 42, "stage": "A2", "arm": "MC", "updates_before": 206713, "updates_after": 309835, "utilities": {"A": 9.7144775390625, "B": 5.62225341796875}}
+{"event": "continual_arm_complete", "lifecycle": 41, "stage": "A2", "arm": "MC", "updates_before": 205279, "updates_after": 308145, "utilities": {"A": 7.9710693359375, "B": 2.59234619140625}}
+{"event": "continual_arm_complete", "lifecycle": 43, "stage": "A2", "arm": "MC", "updates_before": 208206, "updates_after": 312690, "utilities": {"A": 9.7838134765625, "B": 5.2003173828125}}
+{"event": "continual_arm_complete", "lifecycle": 40, "stage": "A2", "arm": "MC", "updates_before": 210306, "updates_after": 314995, "utilities": {"A": 9.24285888671875, "B": 5.66021728515625}}
+{"event": "continual_arm_complete", "lifecycle": 42, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 206713, "updates_after": 309835, "utilities": {"A": 11.42120361328125, "B": 5.64031982421875}}
+{"event": "recovered_sequence_complete", "lifecycle": 42}
+{"event": "continual_arm_complete", "lifecycle": 41, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 205279, "updates_after": 308145, "utilities": {"A": 9.1260986328125, "B": 4.37872314453125}}
+{"event": "recovered_sequence_complete", "lifecycle": 41}
+{"event": "continual_arm_complete", "lifecycle": 43, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 208206, "updates_after": 312690, "utilities": {"A": 10.48565673828125, "B": 5.87567138671875}}
+{"event": "recovered_sequence_complete", "lifecycle": 43}
+{"event": "continual_arm_complete", "lifecycle": 40, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 210306, "updates_after": 314995, "utilities": {"A": 9.0145263671875, "B": 5.4908447265625}}
+{"event": "recovered_sequence_complete", "lifecycle": 40}
+{"event": "continual_arm_complete", "lifecycle": 46, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 11.0128173828125}}
+{"event": "continual_arm_complete", "lifecycle": 45, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.4495849609375}}
+{"event": "continual_arm_complete", "lifecycle": 47, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.13214111328125}}
+{"event": "continual_arm_complete", "lifecycle": 44, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.2589111328125}}
+{"event": "continual_arm_complete", "lifecycle": 46, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103900, "utilities": {"A": 11.54803466796875}}
+{"event": "continual_arm_complete", "lifecycle": 45, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 105242, "utilities": {"A": 8.518798828125}}
+{"event": "continual_arm_complete", "lifecycle": 47, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103673, "utilities": {"A": 9.8446044921875}}
+{"event": "continual_arm_complete", "lifecycle": 44, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 104337, "utilities": {"A": 7.92706298828125}}
+{"event": "continual_arm_complete", "lifecycle": 46, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103900, "utilities": {"A": 11.2998046875}}
+{"event": "continual_arm_complete", "lifecycle": 45, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 105242, "utilities": {"A": 12.4652099609375}}
+{"event": "continual_arm_complete", "lifecycle": 47, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103673, "utilities": {"A": 11.78460693359375}}
+{"event": "continual_arm_complete", "lifecycle": 44, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 104337, "utilities": {"A": 9.59375}}
+{"event": "continual_arm_complete", "lifecycle": 46, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 11.0128173828125, "B": 4.1121826171875}}
+{"event": "continual_arm_complete", "lifecycle": 45, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.4495849609375, "B": 6.5863037109375}}
+{"event": "continual_arm_complete", "lifecycle": 47, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.13214111328125, "B": 5.4088134765625}}
+{"event": "continual_arm_complete", "lifecycle": 44, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.2589111328125, "B": 5.5078125}}
+{"event": "continual_arm_complete", "lifecycle": 46, "stage": "B", "arm": "MC", "updates_before": 103900, "updates_after": 209320, "utilities": {"A": 6.3531494140625, "B": 1.33746337890625}}
+{"event": "continual_arm_complete", "lifecycle": 45, "stage": "B", "arm": "MC", "updates_before": 105242, "updates_after": 208917, "utilities": {"A": 8.34674072265625, "B": 2.68402099609375}}
+{"event": "continual_arm_complete", "lifecycle": 47, "stage": "B", "arm": "MC", "updates_before": 103673, "updates_after": 208233, "utilities": {"A": 8.10809326171875, "B": 3.76519775390625}}
+{"event": "continual_arm_complete", "lifecycle": 44, "stage": "B", "arm": "MC", "updates_before": 104337, "updates_after": 209198, "utilities": {"A": 7.26483154296875, "B": 2.5050048828125}}
+{"event": "continual_arm_complete", "lifecycle": 46, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103900, "updates_after": 209320, "utilities": {"A": 9.8359375, "B": 2.57635498046875}}
+{"event": "continual_arm_complete", "lifecycle": 45, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 105242, "updates_after": 208917, "utilities": {"A": 9.73455810546875, "B": 2.95062255859375}}
+{"event": "continual_arm_complete", "lifecycle": 47, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103673, "updates_after": 208233, "utilities": {"A": 8.9658203125, "B": 4.65869140625}}
+{"event": "continual_arm_complete", "lifecycle": 44, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 104337, "updates_after": 209198, "utilities": {"A": 6.00909423828125, "B": 3.87188720703125}}
+{"event": "continual_arm_complete", "lifecycle": 46, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 11.0128173828125, "B": 4.1121826171875}}
+{"event": "continual_arm_complete", "lifecycle": 45, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 10.4495849609375, "B": 6.5863037109375}}
+{"event": "continual_arm_complete", "lifecycle": 47, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.13214111328125, "B": 5.4088134765625}}
+{"event": "continual_arm_complete", "lifecycle": 44, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.2589111328125, "B": 5.5078125}}
+{"event": "continual_arm_complete", "lifecycle": 46, "stage": "A2", "arm": "MC", "updates_before": 209320, "updates_after": 312841, "utilities": {"A": 9.06158447265625, "B": 4.65936279296875}}
+{"event": "continual_arm_complete", "lifecycle": 45, "stage": "A2", "arm": "MC", "updates_before": 208917, "updates_after": 312554, "utilities": {"A": 9.50360107421875, "B": 5.99285888671875}}
+{"event": "continual_arm_complete", "lifecycle": 47, "stage": "A2", "arm": "MC", "updates_before": 208233, "updates_after": 312903, "utilities": {"A": 7.585693359375, "B": 4.7420654296875}}
+{"event": "continual_arm_complete", "lifecycle": 44, "stage": "A2", "arm": "MC", "updates_before": 209198, "updates_after": 311794, "utilities": {"A": 6.7647705078125, "B": 3.18841552734375}}
+{"event": "continual_arm_complete", "lifecycle": 46, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 209320, "updates_after": 312841, "utilities": {"A": 11.10736083984375, "B": 5.11920166015625}}
+{"event": "recovered_sequence_complete", "lifecycle": 46}
+{"event": "continual_arm_complete", "lifecycle": 45, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 208917, "updates_after": 312554, "utilities": {"A": 10.67938232421875, "B": 4.25885009765625}}
+{"event": "recovered_sequence_complete", "lifecycle": 45}
+{"event": "continual_arm_complete", "lifecycle": 44, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 209198, "updates_after": 311794, "utilities": {"A": 10.33428955078125, "B": 6.7130126953125}}
+{"event": "recovered_sequence_complete", "lifecycle": 44}
+{"event": "continual_arm_complete", "lifecycle": 47, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 208233, "updates_after": 312903, "utilities": {"A": 9.52679443359375, "B": 4.977783203125}}
+{"event": "recovered_sequence_complete", "lifecycle": 47}
+{"event": "continual_arm_complete", "lifecycle": 50, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.47088623046875}}
+{"event": "continual_arm_complete", "lifecycle": 49, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.02294921875}}
+{"event": "continual_arm_complete", "lifecycle": 50, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103140, "utilities": {"A": 9.865234375}}
+{"event": "continual_arm_complete", "lifecycle": 51, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 6.9605712890625}}
+{"event": "continual_arm_complete", "lifecycle": 48, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.65252685546875}}
+{"event": "continual_arm_complete", "lifecycle": 49, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103478, "utilities": {"A": 9.60614013671875}}
+{"event": "continual_arm_complete", "lifecycle": 51, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 104786, "utilities": {"A": 9.86932373046875}}
+{"event": "continual_arm_complete", "lifecycle": 48, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 104338, "utilities": {"A": 10.718994140625}}
+{"event": "continual_arm_complete", "lifecycle": 50, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103140, "utilities": {"A": 10.8798828125}}
+{"event": "continual_arm_complete", "lifecycle": 49, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103478, "utilities": {"A": 10.279052734375}}
+{"event": "continual_arm_complete", "lifecycle": 51, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 104786, "utilities": {"A": 8.56072998046875}}
+{"event": "continual_arm_complete", "lifecycle": 48, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 104338, "utilities": {"A": 9.970458984375}}
+{"event": "continual_arm_complete", "lifecycle": 50, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.47088623046875, "B": 6.69183349609375}}
+{"event": "continual_arm_complete", "lifecycle": 49, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.02294921875, "B": 5.057861328125}}
+{"event": "continual_arm_complete", "lifecycle": 51, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 6.9605712890625, "B": 6.70147705078125}}
+{"event": "continual_arm_complete", "lifecycle": 50, "stage": "B", "arm": "MC", "updates_before": 103140, "updates_after": 206559, "utilities": {"A": 3.37188720703125, "B": 1.4754638671875}}
+{"event": "continual_arm_complete", "lifecycle": 48, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.65252685546875, "B": 6.71820068359375}}
+{"event": "continual_arm_complete", "lifecycle": 49, "stage": "B", "arm": "MC", "updates_before": 103478, "updates_after": 206839, "utilities": {"A": 10.877197265625, "B": 4.10406494140625}}
+{"event": "continual_arm_complete", "lifecycle": 51, "stage": "B", "arm": "MC", "updates_before": 104786, "updates_after": 208462, "utilities": {"A": 6.857421875, "B": 4.48077392578125}}
+{"event": "continual_arm_complete", "lifecycle": 48, "stage": "B", "arm": "MC", "updates_before": 104338, "updates_after": 209154, "utilities": {"A": 6.65679931640625, "B": 2.75091552734375}}
+{"event": "continual_arm_complete", "lifecycle": 50, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103140, "updates_after": 206559, "utilities": {"A": 8.8125, "B": 3.09161376953125}}
+{"event": "continual_arm_complete", "lifecycle": 49, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103478, "updates_after": 206839, "utilities": {"A": 9.74249267578125, "B": 4.79296875}}
+{"event": "continual_arm_complete", "lifecycle": 51, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 104786, "updates_after": 208462, "utilities": {"A": 9.05609130859375, "B": 2.94354248046875}}
+{"event": "continual_arm_complete", "lifecycle": 48, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 104338, "updates_after": 209154, "utilities": {"A": 7.5400390625, "B": 5.36669921875}}
+{"event": "continual_arm_complete", "lifecycle": 50, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.47088623046875, "B": 6.69183349609375}}
+{"event": "continual_arm_complete", "lifecycle": 49, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.02294921875, "B": 5.057861328125}}
+{"event": "continual_arm_complete", "lifecycle": 50, "stage": "A2", "arm": "MC", "updates_before": 206559, "updates_after": 310579, "utilities": {"A": 8.5467529296875, "B": 4.085693359375}}
+{"event": "continual_arm_complete", "lifecycle": 51, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 6.9605712890625, "B": 6.70147705078125}}
+{"event": "continual_arm_complete", "lifecycle": 48, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.65252685546875, "B": 6.71820068359375}}
+{"event": "continual_arm_complete", "lifecycle": 49, "stage": "A2", "arm": "MC", "updates_before": 206839, "updates_after": 311155, "utilities": {"A": 9.555908203125, "B": 4.77740478515625}}
+{"event": "continual_arm_complete", "lifecycle": 51, "stage": "A2", "arm": "MC", "updates_before": 208462, "updates_after": 310798, "utilities": {"A": 11.03436279296875, "B": 3.15057373046875}}
+{"event": "continual_arm_complete", "lifecycle": 50, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 206559, "updates_after": 310579, "utilities": {"A": 9.66021728515625, "B": 5.92193603515625}}
+{"event": "recovered_sequence_complete", "lifecycle": 50}
+{"event": "continual_arm_complete", "lifecycle": 48, "stage": "A2", "arm": "MC", "updates_before": 209154, "updates_after": 314361, "utilities": {"A": 6.72509765625, "B": 4.75482177734375}}
+{"event": "continual_arm_complete", "lifecycle": 49, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 206839, "updates_after": 311155, "utilities": {"A": 9.7379150390625, "B": 5.86566162109375}}
+{"event": "recovered_sequence_complete", "lifecycle": 49}
+{"event": "continual_arm_complete", "lifecycle": 51, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 208462, "updates_after": 310798, "utilities": {"A": 9.95745849609375, "B": 4.293701171875}}
+{"event": "recovered_sequence_complete", "lifecycle": 51}
+{"event": "continual_arm_complete", "lifecycle": 48, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 209154, "updates_after": 314361, "utilities": {"A": 10.416748046875, "B": 4.7520751953125}}
+{"event": "recovered_sequence_complete", "lifecycle": 48}
+{"event": "continual_arm_complete", "lifecycle": 54, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.0809326171875}}
+{"event": "continual_arm_complete", "lifecycle": 54, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103281, "utilities": {"A": 8.8912353515625}}
+{"event": "continual_arm_complete", "lifecycle": 53, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.67498779296875}}
+{"event": "continual_arm_complete", "lifecycle": 55, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.92401123046875}}
+{"event": "continual_arm_complete", "lifecycle": 52, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 11.705078125}}
+{"event": "continual_arm_complete", "lifecycle": 53, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103201, "utilities": {"A": 8.753173828125}}
+{"event": "continual_arm_complete", "lifecycle": 54, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103281, "utilities": {"A": 10.40594482421875}}
+{"event": "continual_arm_complete", "lifecycle": 55, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103721, "utilities": {"A": 9.09478759765625}}
+{"event": "continual_arm_complete", "lifecycle": 52, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 104338, "utilities": {"A": 12.1728515625}}
+{"event": "continual_arm_complete", "lifecycle": 53, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103201, "utilities": {"A": 11.55804443359375}}
+{"event": "continual_arm_complete", "lifecycle": 55, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103721, "utilities": {"A": 11.84515380859375}}
+{"event": "continual_arm_complete", "lifecycle": 52, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 104338, "utilities": {"A": 10.73516845703125}}
+{"event": "continual_arm_complete", "lifecycle": 54, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.0809326171875, "B": 3.38299560546875}}
+{"event": "continual_arm_complete", "lifecycle": 53, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.67498779296875, "B": 5.58575439453125}}
+{"event": "continual_arm_complete", "lifecycle": 54, "stage": "B", "arm": "MC", "updates_before": 103281, "updates_after": 208025, "utilities": {"A": 6.924560546875, "B": 3.87255859375}}
+{"event": "continual_arm_complete", "lifecycle": 55, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.92401123046875, "B": 7.521728515625}}
+{"event": "continual_arm_complete", "lifecycle": 52, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 11.705078125, "B": 4.991455078125}}
+{"event": "continual_arm_complete", "lifecycle": 53, "stage": "B", "arm": "MC", "updates_before": 103201, "updates_after": 206949, "utilities": {"A": 7.8070068359375, "B": 4.982421875}}
+{"event": "continual_arm_complete", "lifecycle": 55, "stage": "B", "arm": "MC", "updates_before": 103721, "updates_after": 207210, "utilities": {"A": 5.1778564453125, "B": 1.45599365234375}}
+{"event": "continual_arm_complete", "lifecycle": 54, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103281, "updates_after": 208025, "utilities": {"A": 10.32196044921875, "B": 4.0087890625}}
+{"event": "continual_arm_complete", "lifecycle": 52, "stage": "B", "arm": "MC", "updates_before": 104338, "updates_after": 207493, "utilities": {"A": 7.05596923828125, "B": 2.247802734375}}
+{"event": "continual_arm_complete", "lifecycle": 53, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103201, "updates_after": 206949, "utilities": {"A": 8.372802734375, "B": 4.90765380859375}}
+{"event": "continual_arm_complete", "lifecycle": 55, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103721, "updates_after": 207210, "utilities": {"A": 6.3702392578125, "B": 5.54425048828125}}
+{"event": "continual_arm_complete", "lifecycle": 52, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 104338, "updates_after": 207493, "utilities": {"A": 7.26971435546875, "B": 3.125}}
+{"event": "continual_arm_complete", "lifecycle": 54, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.0809326171875, "B": 3.38299560546875}}
+{"event": "continual_arm_complete", "lifecycle": 53, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.67498779296875, "B": 5.58575439453125}}
+{"event": "continual_arm_complete", "lifecycle": 55, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.92401123046875, "B": 7.521728515625}}
+{"event": "continual_arm_complete", "lifecycle": 54, "stage": "A2", "arm": "MC", "updates_before": 208025, "updates_after": 311458, "utilities": {"A": 10.26275634765625, "B": 3.8203125}}
+{"event": "continual_arm_complete", "lifecycle": 52, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 11.705078125, "B": 4.991455078125}}
+{"event": "continual_arm_complete", "lifecycle": 53, "stage": "A2", "arm": "MC", "updates_before": 206949, "updates_after": 310589, "utilities": {"A": 10.5283203125, "B": 5.47467041015625}}
+{"event": "continual_arm_complete", "lifecycle": 55, "stage": "A2", "arm": "MC", "updates_before": 207210, "updates_after": 310745, "utilities": {"A": 9.9403076171875, "B": 4.07928466796875}}
+{"event": "continual_arm_complete", "lifecycle": 52, "stage": "A2", "arm": "MC", "updates_before": 207493, "updates_after": 310946, "utilities": {"A": 11.04425048828125, "B": 4.76025390625}}
+{"event": "continual_arm_complete", "lifecycle": 54, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 208025, "updates_after": 311458, "utilities": {"A": 10.75311279296875, "B": 4.2962646484375}}
+{"event": "recovered_sequence_complete", "lifecycle": 54}
+{"event": "continual_arm_complete", "lifecycle": 53, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 206949, "updates_after": 310589, "utilities": {"A": 9.40216064453125, "B": 6.0152587890625}}
+{"event": "recovered_sequence_complete", "lifecycle": 53}
+{"event": "continual_arm_complete", "lifecycle": 52, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 207493, "updates_after": 310946, "utilities": {"A": 10.4324951171875, "B": 3.91705322265625}}
+{"event": "recovered_sequence_complete", "lifecycle": 52}
+{"event": "continual_arm_complete", "lifecycle": 55, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 207210, "updates_after": 310745, "utilities": {"A": 9.66461181640625, "B": 5.9112548828125}}
+{"event": "recovered_sequence_complete", "lifecycle": 55}
+{"event": "continual_arm_complete", "lifecycle": 58, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.05145263671875}}
+{"event": "continual_arm_complete", "lifecycle": 58, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103172, "utilities": {"A": 10.454345703125}}
+{"event": "continual_arm_complete", "lifecycle": 57, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.67254638671875}}
+{"event": "continual_arm_complete", "lifecycle": 56, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.42205810546875}}
+{"event": "continual_arm_complete", "lifecycle": 59, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 11.5308837890625}}
+{"event": "continual_arm_complete", "lifecycle": 58, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103172, "utilities": {"A": 8.90155029296875}}
+{"event": "continual_arm_complete", "lifecycle": 57, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 104474, "utilities": {"A": 12.470703125}}
+{"event": "continual_arm_complete", "lifecycle": 56, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103610, "utilities": {"A": 8.9559326171875}}
+{"event": "continual_arm_complete", "lifecycle": 59, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 104746, "utilities": {"A": 8.2080078125}}
+{"event": "continual_arm_complete", "lifecycle": 57, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 104474, "utilities": {"A": 10.8961181640625}}
+{"event": "continual_arm_complete", "lifecycle": 56, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103610, "utilities": {"A": 11.3936767578125}}
+{"event": "continual_arm_complete", "lifecycle": 59, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 104746, "utilities": {"A": 9.33660888671875}}
+{"event": "continual_arm_complete", "lifecycle": 58, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.05145263671875, "B": 6.1204833984375}}
+{"event": "continual_arm_complete", "lifecycle": 58, "stage": "B", "arm": "MC", "updates_before": 103172, "updates_after": 206053, "utilities": {"A": 10.27117919921875, "B": 2.44500732421875}}
+{"event": "continual_arm_complete", "lifecycle": 57, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.67254638671875, "B": 5.55035400390625}}
+{"event": "continual_arm_complete", "lifecycle": 59, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 11.5308837890625, "B": 5.30316162109375}}
+{"event": "continual_arm_complete", "lifecycle": 56, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.42205810546875, "B": 6.90460205078125}}
+{"event": "continual_arm_complete", "lifecycle": 57, "stage": "B", "arm": "MC", "updates_before": 104474, "updates_after": 207805, "utilities": {"A": 4.3505859375, "B": 1.215576171875}}
+{"event": "continual_arm_complete", "lifecycle": 58, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103172, "updates_after": 206053, "utilities": {"A": 8.97222900390625, "B": 6.55426025390625}}
+{"event": "continual_arm_complete", "lifecycle": 59, "stage": "B", "arm": "MC", "updates_before": 104746, "updates_after": 208822, "utilities": {"A": 7.35382080078125, "B": 3.1126708984375}}
+{"event": "continual_arm_complete", "lifecycle": 56, "stage": "B", "arm": "MC", "updates_before": 103610, "updates_after": 206166, "utilities": {"A": 8.12548828125, "B": 3.30926513671875}}
+{"event": "continual_arm_complete", "lifecycle": 57, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 104474, "updates_after": 207805, "utilities": {"A": 8.6865234375, "B": 3.8719482421875}}
+{"event": "continual_arm_complete", "lifecycle": 59, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 104746, "updates_after": 208822, "utilities": {"A": 7.324462890625, "B": 5.12005615234375}}
+{"event": "continual_arm_complete", "lifecycle": 56, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103610, "updates_after": 206166, "utilities": {"A": 8.7471923828125, "B": 4.6292724609375}}
+{"event": "continual_arm_complete", "lifecycle": 58, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.05145263671875, "B": 6.1204833984375}}
+{"event": "continual_arm_complete", "lifecycle": 58, "stage": "A2", "arm": "MC", "updates_before": 206053, "updates_after": 309222, "utilities": {"A": 9.0596923828125, "B": 4.3033447265625}}
+{"event": "continual_arm_complete", "lifecycle": 57, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.67254638671875, "B": 5.55035400390625}}
+{"event": "continual_arm_complete", "lifecycle": 59, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 11.5308837890625, "B": 5.30316162109375}}
+{"event": "continual_arm_complete", "lifecycle": 56, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.42205810546875, "B": 6.90460205078125}}
+{"event": "continual_arm_complete", "lifecycle": 57, "stage": "A2", "arm": "MC", "updates_before": 207805, "updates_after": 311740, "utilities": {"A": 8.32305908203125, "B": 4.3148193359375}}
+{"event": "continual_arm_complete", "lifecycle": 58, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 206053, "updates_after": 309222, "utilities": {"A": 9.919189453125, "B": 5.60052490234375}}
+{"event": "recovered_sequence_complete", "lifecycle": 58}
+{"event": "continual_arm_complete", "lifecycle": 59, "stage": "A2", "arm": "MC", "updates_before": 208822, "updates_after": 312703, "utilities": {"A": 10.02191162109375, "B": 4.23004150390625}}
+{"event": "continual_arm_complete", "lifecycle": 56, "stage": "A2", "arm": "MC", "updates_before": 206166, "updates_after": 310288, "utilities": {"A": 9.82110595703125, "B": 6.38250732421875}}
+{"event": "continual_arm_complete", "lifecycle": 57, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 207805, "updates_after": 311740, "utilities": {"A": 8.468017578125, "B": 5.45745849609375}}
+{"event": "recovered_sequence_complete", "lifecycle": 57}
+{"event": "continual_arm_complete", "lifecycle": 59, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 208822, "updates_after": 312703, "utilities": {"A": 7.48004150390625, "B": 6.48638916015625}}
+{"event": "recovered_sequence_complete", "lifecycle": 59}
+{"event": "continual_arm_complete", "lifecycle": 56, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 206166, "updates_after": 310288, "utilities": {"A": 9.22137451171875, "B": 5.87506103515625}}
+{"event": "recovered_sequence_complete", "lifecycle": 56}
+{"event": "continual_arm_complete", "lifecycle": 62, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.3919677734375}}
+{"event": "continual_arm_complete", "lifecycle": 62, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 104013, "utilities": {"A": 10.45050048828125}}
+{"event": "continual_arm_complete", "lifecycle": 61, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.72686767578125}}
+{"event": "continual_arm_complete", "lifecycle": 63, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.01983642578125}}
+{"event": "continual_arm_complete", "lifecycle": 60, "stage": "A1", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.99249267578125}}
+{"event": "continual_arm_complete", "lifecycle": 62, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 104013, "utilities": {"A": 9.610107421875}}
+{"event": "continual_arm_complete", "lifecycle": 61, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 102989, "utilities": {"A": 9.26947021484375}}
+{"event": "continual_arm_complete", "lifecycle": 63, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103912, "utilities": {"A": 8.7086181640625}}
+{"event": "continual_arm_complete", "lifecycle": 60, "stage": "A1", "arm": "MC", "updates_before": 0, "updates_after": 103851, "utilities": {"A": 10.0341796875}}
+{"event": "continual_arm_complete", "lifecycle": 61, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 102989, "utilities": {"A": 9.22723388671875}}
+{"event": "continual_arm_complete", "lifecycle": 63, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103912, "utilities": {"A": 11.13226318359375}}
+{"event": "continual_arm_complete", "lifecycle": 60, "stage": "A1", "arm": "LOCAL_RISK", "updates_before": 0, "updates_after": 103851, "utilities": {"A": 9.9876708984375}}
+{"event": "continual_arm_complete", "lifecycle": 62, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.3919677734375, "B": 7.36602783203125}}
+{"event": "continual_arm_complete", "lifecycle": 61, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.72686767578125, "B": 4.36102294921875}}
+{"event": "continual_arm_complete", "lifecycle": 62, "stage": "B", "arm": "MC", "updates_before": 104013, "updates_after": 207829, "utilities": {"A": 8.7733154296875, "B": 6.0751953125}}
+{"event": "continual_arm_complete", "lifecycle": 63, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.01983642578125, "B": 4.41717529296875}}
+{"event": "continual_arm_complete", "lifecycle": 60, "stage": "B", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.99249267578125, "B": 5.60296630859375}}
+{"event": "continual_arm_complete", "lifecycle": 61, "stage": "B", "arm": "MC", "updates_before": 102989, "updates_after": 207958, "utilities": {"A": 8.873291015625, "B": 1.89031982421875}}
+{"event": "continual_arm_complete", "lifecycle": 62, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 104013, "updates_after": 207829, "utilities": {"A": 9.73736572265625, "B": 5.05938720703125}}
+{"event": "continual_arm_complete", "lifecycle": 60, "stage": "B", "arm": "MC", "updates_before": 103851, "updates_after": 206834, "utilities": {"A": 4.29949951171875, "B": 0.31011962890625}}
+{"event": "continual_arm_complete", "lifecycle": 63, "stage": "B", "arm": "MC", "updates_before": 103912, "updates_after": 207869, "utilities": {"A": 4.9873046875, "B": 1.71038818359375}}
+{"event": "continual_arm_complete", "lifecycle": 61, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 102989, "updates_after": 207958, "utilities": {"A": 8.96697998046875, "B": 3.12493896484375}}
+{"event": "continual_arm_complete", "lifecycle": 60, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103851, "updates_after": 206834, "utilities": {"A": 5.9774169921875, "B": 2.57830810546875}}
+{"event": "continual_arm_complete", "lifecycle": 63, "stage": "B", "arm": "LOCAL_RISK", "updates_before": 103912, "updates_after": 207869, "utilities": {"A": 8.31341552734375, "B": 3.61419677734375}}
+{"event": "continual_arm_complete", "lifecycle": 62, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.3919677734375, "B": 7.36602783203125}}
+{"event": "continual_arm_complete", "lifecycle": 61, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 7.72686767578125, "B": 4.36102294921875}}
+{"event": "continual_arm_complete", "lifecycle": 62, "stage": "A2", "arm": "MC", "updates_before": 207829, "updates_after": 313045, "utilities": {"A": 9.44024658203125, "B": 4.42425537109375}}
+{"event": "continual_arm_complete", "lifecycle": 60, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 8.99249267578125, "B": 5.60296630859375}}
+{"event": "continual_arm_complete", "lifecycle": 63, "stage": "A2", "arm": "SOURCE", "updates_before": 0, "updates_after": 0, "utilities": {"A": 9.01983642578125, "B": 4.41717529296875}}
+{"event": "continual_arm_complete", "lifecycle": 61, "stage": "A2", "arm": "MC", "updates_before": 207958, "updates_after": 311400, "utilities": {"A": 9.1695556640625, "B": 5.67303466796875}}
+{"event": "continual_arm_complete", "lifecycle": 60, "stage": "A2", "arm": "MC", "updates_before": 206834, "updates_after": 311603, "utilities": {"A": 7.5028076171875, "B": 5.46124267578125}}
+{"event": "continual_arm_complete", "lifecycle": 62, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 207829, "updates_after": 313045, "utilities": {"A": 10.00885009765625, "B": 6.48065185546875}}
+{"event": "recovered_sequence_complete", "lifecycle": 62}
+{"event": "continual_arm_complete", "lifecycle": 63, "stage": "A2", "arm": "MC", "updates_before": 207869, "updates_after": 312181, "utilities": {"A": 9.6954345703125, "B": 4.31634521484375}}
+{"event": "continual_arm_complete", "lifecycle": 61, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 207958, "updates_after": 311400, "utilities": {"A": 9.3790283203125, "B": 4.70068359375}}
+{"event": "recovered_sequence_complete", "lifecycle": 61}
+{"event": "continual_arm_complete", "lifecycle": 60, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 206834, "updates_after": 311603, "utilities": {"A": 10.64813232421875, "B": 5.740234375}}
+{"event": "recovered_sequence_complete", "lifecycle": 60}
+{"event": "continual_arm_complete", "lifecycle": 63, "stage": "A2", "arm": "LOCAL_RISK", "updates_before": 207869, "updates_after": 312181, "utilities": {"A": 9.61907958984375, "B": 5.91766357421875}}
+{"event": "recovered_sequence_complete", "lifecycle": 63}
+{"event": "continual_complete", "primary_sequence_gain_supported": true, "primary": {"mean": 0.41019344329833984, "ci95": [0.13324235677719118, 0.6782712936401365], "lifecycle_deltas": {"0": 0.648529052734375, "1": -1.558563232421875, "2": 2.056396484375, "3": 1.611297607421875, "4": -0.5833740234375, "5": 0.668670654296875, "6": -0.36724853515625, "7": 0.477325439453125, "8": 0.855682373046875, "9": -1.35638427734375, "10": 0.789459228515625, "11": 2.2515869140625, "12": -1.10125732421875, "13": 0.630889892578125, "14": 1.91485595703125, "15": 3.2109375, "16": 0.7774658203125, "17": 1.67877197265625, "18": -1.973785400390625, "19": -1.606964111328125, "20": 0.014404296875, "21": 2.022918701171875, "22": -0.347198486328125, "23": -1.037322998046875, "24": 1.484283447265625, "25": -0.31097412109375, "26": 0.7960205078125, "27": 1.75128173828125, "28": -1.475067138671875, "29": 0.946044921875, "30": -0.711181640625, "31": 0.65606689453125, "32": 1.552734375, "33": -0.20733642578125, "34": 0.947662353515625, "35": 0.195159912109375, "36": 0.478179931640625, "37": -0.77398681640625, "38": 1.541656494140625, "39": 0.068511962890625, "40": 1.417388916015625, "41": 0.13348388671875, "42": 2.335906982421875, "43": 1.413818359375, "44": 1.140289306640625, "45": -1.048828125, "46": 0.55078125, "47": 0.9818115234375, "48": -0.1009521484375, "49": 0.761383056640625, "50": 0.209716796875, "51": 0.2945556640625, "52": -1.173492431640625, "53": 0.578338623046875, "54": 1.292724609375, "55": -0.9349365234375, "56": -0.1151123046875, "57": -0.648712158203125, "58": 1.17388916015625, "59": -1.433807373046875, "60": 0.896453857421875, "61": 0.99591064453125, "62": -0.134246826171875, "63": 1.04986572265625}, "improved_equal_worse": [42, 0, 22], "adverse_lifecycles": [1, 4, 6, 9, 12, 18, 19, 22, 23, 25, 28, 30, 33, 37, 45, 48, 52, 55, 56, 57, 59, 62], "parent_mean_deltas": {"0": 0.29475975036621094, "1": 0.15697669982910156, "2": 0.6297130584716797, "3": 0.5593242645263672}, "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS"}, "recovery": {"status": "RECOVERED_SAME_FROZEN_COHORT", "original_exit_code": 143, "original_completed_arm_receipts": 448, "regenerated_logged_arm_receipts": 448, "reused_complete_acquisition_stages": 148, "current_new_acquisition_raw_tiles": 5797597, "interrupted_retained_raw_tiles": 20027715, "additional_retained_incomplete_prefix_raw_tiles": 518592, "interrupted_retained_environment_counts": {"environment_random_draws": 40055430, "initial_spawns": 48638, "ground_state_status_calls": 20003396, "ground_status_internal_swipe_calls": 79974696, "ground_swipe_calls": 99953773, "ground_explicit_swipe_calls": 19979077, "sampled_transitions": 19979077, "raw_tile_productions": 19915264, "post_action_spawns": 19866950, "episodes_started": 24157, "episodes_completed": 24006, "won_games": 9707, "lost_games": 14299}, "interrupted_logged_evaluation_counts": {"environment": {"sampled_transitions": 19368929, "environment_random_draws": 38832578, "ground_explicit_swipe_calls": 19368929, "ground_swipe_calls": 96901989, "ground_state_status_calls": 19392609, "ground_status_internal_swipe_calls": 77533060, "raw_tile_productions": 19416289, "initial_spawns": 47360, "post_action_spawns": 19368929}, "planning": {"learned_swipe_calls": 3243320212, "line_table_lookups": 12973280848, "legal_swipes": 2852293844, "learned_terminal_checks": 3663123897, "value_predictions": 2782087794, "table_lookups": 89026809408, "terminal_goal_bypasses": 965522, "root_swipe_calls": 77475716, "root_legal_actions": 69292374, "root_goal_actions": 51846, "leaf_choose_calls": 791461124, "second_ply_swipe_calls": 3165844496, "generated_spawn_outcomes": 791461124, "spawn_rank1_outcomes": 395730562, "spawn_rank2_outcomes": 395730562, "expanded_postspawn_states": 791461124, "leaf_terminal_loss_states": 395592, "expectimax_probability_products": 791461124, "expectimax_probability_sums": 791461124, "choose_calls": 19368929}}, "retained_original_native_actor_cpu_seconds": 907.461612230983, "retained_original_training_loop_cpu_seconds": 1499.9182962609998, "historical_total_compute_closed": false, "unavailable": "Original warmup/setup, fitted-head/scoring/evaluation and process CPU were not persisted; unflushed work or a running evaluation at termination is also unavailable. Known ledgers are lower bounds.", "scope": "Each frozen life appears once. Complete original acquisitions reused, unfinished acquisitions use the same seeds. All original logged head updates/utility means reproduced exactly. Extra original evaluation is additional physical work, never additional independent statistical evidence; current worker/compiler CPU is measured separately.", "training_raw_tiles_physical_lower_bound": 25825312, "economic_training_raw_tiles_lower_bound_per_arm": {"SOURCE": 37104904, "MC": 37104904, "LOCAL_RISK": 37104904}}}

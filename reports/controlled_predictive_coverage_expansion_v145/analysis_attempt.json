@@ -1,0 +1,13 @@
+{
+  "status": "complete",
+  "command": [
+    "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "scripts/analyze_controlled_predictive_coverage_expansion_v145.py",
+    "--input",
+    "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_coverage_expansion_v145"
+  ],
+  "started_utc": "2026-09-26T12:07:30.354630+00:00",
+  "exit_code": 0,
+  "seconds": 205.52894863999973,
+  "stderr_bytes": 0
+}

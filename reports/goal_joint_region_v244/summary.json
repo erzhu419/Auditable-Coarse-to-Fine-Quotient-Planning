@@ -1,0 +1,63 @@
+{
+  "complete": true,
+  "records": 24,
+  "arm": "ONE_WAY",
+  "comparison": {
+    "query": "goal",
+    "chosen": "SHORT",
+    "other": "DETOUR_RETRY"
+  },
+  "status_counts": {
+    "unknown": 2,
+    "paid_constraints_reject_candidate": 3,
+    "full_region_bad_witness": 19
+  },
+  "life_summaries": [
+    {
+      "life": 0,
+      "records": 8,
+      "status_counts": {
+        "unknown": 2,
+        "paid_constraints_reject_candidate": 3,
+        "full_region_bad_witness": 3
+      }
+    },
+    {
+      "life": 1,
+      "records": 8,
+      "status_counts": {
+        "unknown": 0,
+        "paid_constraints_reject_candidate": 0,
+        "full_region_bad_witness": 8
+      }
+    },
+    {
+      "life": 2,
+      "records": 8,
+      "status_counts": {
+        "unknown": 0,
+        "paid_constraints_reject_candidate": 0,
+        "full_region_bad_witness": 8
+      }
+    }
+  ],
+  "canonical_admitted": 22,
+  "all_query_admitted": 19,
+  "all_execution_admitted": 21,
+  "query_rejection_counts": {
+    "S": 3,
+    "S_D_DEL": 5,
+    "S_D_FULL": 3,
+    "S_D_FULL_R": 2
+  },
+  "execution_rejection_counts": {
+    "pool:SHORT_PASS": 3
+  },
+  "new_observations": 0,
+  "new_optimizer_calls": 0,
+  "new_query_certificates": 0,
+  "posthoc_scoring_calls": 0,
+  "scientific_gate_changed": false,
+  "diagnostic_only": true,
+  "elapsed_seconds": 376.87929351400817
+}

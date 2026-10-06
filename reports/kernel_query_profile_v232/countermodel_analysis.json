@@ -1,0 +1,65 @@
+{
+  "valid": true,
+  "complete": true,
+  "cases": 13,
+  "verified_countermodels": 12,
+  "exact_prefix_constraints": 50,
+  "groups": {
+    "failure": {
+      "cases": 12,
+      "found": 11
+    },
+    "positive": {
+      "cases": 1,
+      "found": 1
+    }
+  },
+  "unknown_cases": [
+    {
+      "life": 1,
+      "index": 56,
+      "arm": "ORACLE_GAP",
+      "kind": "failure",
+      "phase": "A_RETURN"
+    }
+  ],
+  "minimum_exact_gap": "633746399761555595266486027527/12500000000000000000000000000000",
+  "scope": "selected pure policy and fixed unresolved query in the full applicable product-prefix intersection",
+  "checks": {
+    "original_certificates_already_audited": 1,
+    "frozen_complete_failure_selection": 1,
+    "fixed_primal_proposal_protocol": 1,
+    "no_new_observations_or_gate_changes": 1,
+    "fixed_first_unresolved_query_and_policy": 13,
+    "ordered_fixed_primal_attempts": 13,
+    "zero_observation_witness": 13,
+    "complete_exact_kernel_simplex": 12,
+    "complete_same_kernel_prefix_roster": 12,
+    "exact_intersection_region_membership": 50,
+    "different_supported_alternative": 12,
+    "exact_reported_query_gap": 12,
+    "strict_bad_null_witness": 12,
+    "unknown_without_negative_inference": 1,
+    "countermodel_summary": 1
+  },
+  "expected": {
+    "original_certificates_already_audited": 1,
+    "frozen_complete_failure_selection": 1,
+    "fixed_primal_proposal_protocol": 1,
+    "no_new_observations_or_gate_changes": 1,
+    "fixed_first_unresolved_query_and_policy": 13,
+    "ordered_fixed_primal_attempts": 13,
+    "zero_observation_witness": 13,
+    "complete_exact_kernel_simplex": 12,
+    "complete_same_kernel_prefix_roster": 12,
+    "exact_intersection_region_membership": 50,
+    "different_supported_alternative": 12,
+    "exact_reported_query_gap": 12,
+    "strict_bad_null_witness": 12,
+    "unknown_without_negative_inference": 1,
+    "countermodel_summary": 1
+  },
+  "failures": {},
+  "new_observations": 0,
+  "seconds": 1.0465152350079734
+}

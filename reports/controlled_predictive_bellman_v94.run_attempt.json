@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/scripts/run_controlled_predictive_bellman_v94.py",
+    "--output",
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_bellman_v94"
+  ],
+  "started_utc": "2026-09-13T13:43:53.191787+00:00",
+  "status": "complete",
+  "main_attempt": 1,
+  "exit_code": 0,
+  "seconds": 543.1975835060002,
+  "stderr_bytes": 0,
+  "finished_utc": "2026-09-13T13:52:56.389708+00:00"
+}

@@ -1,0 +1,114 @@
+{"event": "checkpoint_saved", "life": 0, "query": "risk1", "kind": "SINGLE", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 2, "query": "risk1", "kind": "SINGLE", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 3, "query": "risk1", "kind": "SINGLE", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 1, "query": "risk1", "kind": "SINGLE", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 1, "query": "risk1", "kind": "SINGLE", "age": 32768, "updates": 32762, "episodes": 39}
+{"event": "checkpoint_saved", "life": 0, "query": "risk1", "kind": "SINGLE", "age": 32768, "updates": 32762, "episodes": 41}
+{"event": "checkpoint_saved", "life": 2, "query": "risk1", "kind": "SINGLE", "age": 32768, "updates": 32767, "episodes": 40}
+{"event": "checkpoint_saved", "life": 3, "query": "risk1", "kind": "SINGLE", "age": 32768, "updates": 32764, "episodes": 40}
+{"event": "checkpoint_saved", "life": 1, "query": "risk1", "kind": "SINGLE", "age": 131072, "updates": 131056, "episodes": 168}
+{"event": "checkpoint_saved", "life": 2, "query": "risk1", "kind": "SINGLE", "age": 131072, "updates": 131060, "episodes": 165}
+{"event": "checkpoint_saved", "life": 3, "query": "risk1", "kind": "SINGLE", "age": 131072, "updates": 131055, "episodes": 160}
+{"event": "checkpoint_saved", "life": 0, "query": "risk1", "kind": "SINGLE", "age": 131072, "updates": 131058, "episodes": 165}
+{"event": "checkpoint_saved", "life": 1, "query": "risk1", "kind": "SINGLE", "age": 524288, "updates": 524212, "episodes": 641}
+{"event": "checkpoint_saved", "life": 1, "query": "risk1", "kind": "MULTI", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 2, "query": "risk1", "kind": "SINGLE", "age": 524288, "updates": 524218, "episodes": 649}
+{"event": "checkpoint_saved", "life": 0, "query": "risk1", "kind": "SINGLE", "age": 524288, "updates": 524220, "episodes": 644}
+{"event": "checkpoint_saved", "life": 2, "query": "risk1", "kind": "MULTI", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 0, "query": "risk1", "kind": "MULTI", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 3, "query": "risk1", "kind": "SINGLE", "age": 524288, "updates": 524226, "episodes": 644}
+{"event": "checkpoint_saved", "life": 3, "query": "risk1", "kind": "MULTI", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 1, "query": "risk1", "kind": "MULTI", "age": 32768, "updates": 32735, "episodes": 54}
+{"event": "checkpoint_saved", "life": 2, "query": "risk1", "kind": "MULTI", "age": 32768, "updates": 32733, "episodes": 55}
+{"event": "checkpoint_saved", "life": 0, "query": "risk1", "kind": "MULTI", "age": 32768, "updates": 32735, "episodes": 54}
+{"event": "checkpoint_saved", "life": 3, "query": "risk1", "kind": "MULTI", "age": 32768, "updates": 32736, "episodes": 52}
+{"event": "checkpoint_saved", "life": 1, "query": "risk1", "kind": "MULTI", "age": 131072, "updates": 131038, "episodes": 266}
+{"event": "checkpoint_saved", "life": 2, "query": "risk1", "kind": "MULTI", "age": 131072, "updates": 131035, "episodes": 263}
+{"event": "checkpoint_saved", "life": 0, "query": "risk1", "kind": "MULTI", "age": 131072, "updates": 131039, "episodes": 260}
+{"event": "checkpoint_saved", "life": 3, "query": "risk1", "kind": "MULTI", "age": 131072, "updates": 131039, "episodes": 264}
+{"event": "checkpoint_saved", "life": 1, "query": "risk1", "kind": "MULTI", "age": 524288, "updates": 524252, "episodes": 1123}
+{"event": "checkpoint_saved", "life": 0, "query": "risk1", "kind": "MULTI", "age": 524288, "updates": 524253, "episodes": 1151}
+{"event": "checkpoint_saved", "life": 2, "query": "risk1", "kind": "MULTI", "age": 524288, "updates": 524249, "episodes": 1152}
+{"event": "checkpoint_saved", "life": 1, "query": "risk8", "kind": "SINGLE", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 0, "query": "risk8", "kind": "SINGLE", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 2, "query": "risk8", "kind": "SINGLE", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 3, "query": "risk1", "kind": "MULTI", "age": 524288, "updates": 524253, "episodes": 1133}
+{"event": "checkpoint_saved", "life": 3, "query": "risk8", "kind": "SINGLE", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 1, "query": "risk8", "kind": "SINGLE", "age": 32768, "updates": 32764, "episodes": 41}
+{"event": "checkpoint_saved", "life": 0, "query": "risk8", "kind": "SINGLE", "age": 32768, "updates": 32767, "episodes": 41}
+{"event": "checkpoint_saved", "life": 2, "query": "risk8", "kind": "SINGLE", "age": 32768, "updates": 32762, "episodes": 38}
+{"event": "checkpoint_saved", "life": 3, "query": "risk8", "kind": "SINGLE", "age": 32768, "updates": 32760, "episodes": 42}
+{"event": "checkpoint_saved", "life": 1, "query": "risk8", "kind": "SINGLE", "age": 131072, "updates": 131054, "episodes": 164}
+{"event": "checkpoint_saved", "life": 2, "query": "risk8", "kind": "SINGLE", "age": 131072, "updates": 131053, "episodes": 156}
+{"event": "checkpoint_saved", "life": 0, "query": "risk8", "kind": "SINGLE", "age": 131072, "updates": 131059, "episodes": 163}
+{"event": "checkpoint_saved", "life": 3, "query": "risk8", "kind": "SINGLE", "age": 131072, "updates": 131054, "episodes": 168}
+{"event": "checkpoint_saved", "life": 1, "query": "risk8", "kind": "SINGLE", "age": 524288, "updates": 524216, "episodes": 628}
+{"event": "checkpoint_saved", "life": 1, "query": "risk8", "kind": "MULTI", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 2, "query": "risk8", "kind": "SINGLE", "age": 524288, "updates": 524214, "episodes": 635}
+{"event": "checkpoint_saved", "life": 0, "query": "risk8", "kind": "SINGLE", "age": 524288, "updates": 524227, "episodes": 635}
+{"event": "checkpoint_saved", "life": 2, "query": "risk8", "kind": "MULTI", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 3, "query": "risk8", "kind": "SINGLE", "age": 524288, "updates": 524225, "episodes": 651}
+{"event": "checkpoint_saved", "life": 0, "query": "risk8", "kind": "MULTI", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 3, "query": "risk8", "kind": "MULTI", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 1, "query": "risk8", "kind": "MULTI", "age": 32768, "updates": 32733, "episodes": 47}
+{"event": "checkpoint_saved", "life": 2, "query": "risk8", "kind": "MULTI", "age": 32768, "updates": 32734, "episodes": 45}
+{"event": "checkpoint_saved", "life": 0, "query": "risk8", "kind": "MULTI", "age": 32768, "updates": 32735, "episodes": 46}
+{"event": "checkpoint_saved", "life": 3, "query": "risk8", "kind": "MULTI", "age": 32768, "updates": 32733, "episodes": 45}
+{"event": "checkpoint_saved", "life": 1, "query": "risk8", "kind": "MULTI", "age": 131072, "updates": 131035, "episodes": 238}
+{"event": "checkpoint_saved", "life": 2, "query": "risk8", "kind": "MULTI", "age": 131072, "updates": 131037, "episodes": 242}
+{"event": "checkpoint_saved", "life": 0, "query": "risk8", "kind": "MULTI", "age": 131072, "updates": 131039, "episodes": 233}
+{"event": "checkpoint_saved", "life": 3, "query": "risk8", "kind": "MULTI", "age": 131072, "updates": 131033, "episodes": 228}
+{"event": "checkpoint_saved", "life": 1, "query": "risk8", "kind": "MULTI", "age": 524288, "updates": 524251, "episodes": 2090}
+{"event": "checkpoint_saved", "life": 2, "query": "risk8", "kind": "MULTI", "age": 524288, "updates": 524252, "episodes": 2078}
+{"event": "checkpoint_saved", "life": 0, "query": "risk8", "kind": "MULTI", "age": 524288, "updates": 524255, "episodes": 2089}
+{"event": "checkpoint_saved", "life": 3, "query": "risk8", "kind": "MULTI", "age": 524288, "updates": 524249, "episodes": 2061}
+{"event": "all_training_frozen"}
+{"event": "control_complete", "life": 0, "query": "risk1", "kind": "SINGLE", "age": 32768}
+{"event": "control_complete", "life": 3, "query": "risk1", "kind": "SINGLE", "age": 32768}
+{"event": "control_complete", "life": 2, "query": "risk1", "kind": "SINGLE", "age": 32768}
+{"event": "control_complete", "life": 1, "query": "risk1", "kind": "SINGLE", "age": 32768}
+{"event": "control_complete", "life": 3, "query": "risk1", "kind": "SINGLE", "age": 131072}
+{"event": "control_complete", "life": 2, "query": "risk1", "kind": "SINGLE", "age": 131072}
+{"event": "control_complete", "life": 0, "query": "risk1", "kind": "SINGLE", "age": 131072}
+{"event": "control_complete", "life": 1, "query": "risk1", "kind": "SINGLE", "age": 131072}
+{"event": "control_complete", "life": 2, "query": "risk1", "kind": "SINGLE", "age": 524288}
+{"event": "control_complete", "life": 3, "query": "risk1", "kind": "SINGLE", "age": 524288}
+{"event": "control_complete", "life": 0, "query": "risk1", "kind": "SINGLE", "age": 524288}
+{"event": "control_complete", "life": 1, "query": "risk1", "kind": "SINGLE", "age": 524288}
+{"event": "control_complete", "life": 2, "query": "risk1", "kind": "MULTI", "age": 32768}
+{"event": "control_complete", "life": 0, "query": "risk1", "kind": "MULTI", "age": 32768}
+{"event": "control_complete", "life": 3, "query": "risk1", "kind": "MULTI", "age": 32768}
+{"event": "control_complete", "life": 1, "query": "risk1", "kind": "MULTI", "age": 32768}
+{"event": "control_complete", "life": 0, "query": "risk1", "kind": "MULTI", "age": 131072}
+{"event": "control_complete", "life": 2, "query": "risk1", "kind": "MULTI", "age": 131072}
+{"event": "control_complete", "life": 3, "query": "risk1", "kind": "MULTI", "age": 131072}
+{"event": "control_complete", "life": 0, "query": "risk1", "kind": "MULTI", "age": 524288}
+{"event": "control_complete", "life": 2, "query": "risk1", "kind": "MULTI", "age": 524288}
+{"event": "control_complete", "life": 1, "query": "risk1", "kind": "MULTI", "age": 131072}
+{"event": "control_complete", "life": 3, "query": "risk1", "kind": "MULTI", "age": 524288}
+{"event": "control_complete", "life": 1, "query": "risk1", "kind": "MULTI", "age": 524288}
+{"event": "control_complete", "life": 0, "query": "risk8", "kind": "SINGLE", "age": 32768}
+{"event": "control_complete", "life": 2, "query": "risk8", "kind": "SINGLE", "age": 32768}
+{"event": "control_complete", "life": 3, "query": "risk8", "kind": "SINGLE", "age": 32768}
+{"event": "control_complete", "life": 1, "query": "risk8", "kind": "SINGLE", "age": 32768}
+{"event": "control_complete", "life": 0, "query": "risk8", "kind": "SINGLE", "age": 131072}
+{"event": "control_complete", "life": 2, "query": "risk8", "kind": "SINGLE", "age": 131072}
+{"event": "control_complete", "life": 3, "query": "risk8", "kind": "SINGLE", "age": 131072}
+{"event": "control_complete", "life": 1, "query": "risk8", "kind": "SINGLE", "age": 131072}
+{"event": "control_complete", "life": 0, "query": "risk8", "kind": "SINGLE", "age": 524288}
+{"event": "control_complete", "life": 2, "query": "risk8", "kind": "SINGLE", "age": 524288}
+{"event": "control_complete", "life": 3, "query": "risk8", "kind": "SINGLE", "age": 524288}
+{"event": "control_complete", "life": 0, "query": "risk8", "kind": "MULTI", "age": 32768}
+{"event": "control_complete", "life": 1, "query": "risk8", "kind": "SINGLE", "age": 524288}
+{"event": "control_complete", "life": 0, "query": "risk8", "kind": "MULTI", "age": 131072}
+{"event": "control_complete", "life": 2, "query": "risk8", "kind": "MULTI", "age": 32768}
+{"event": "control_complete", "life": 3, "query": "risk8", "kind": "MULTI", "age": 32768}
+{"event": "control_complete", "life": 1, "query": "risk8", "kind": "MULTI", "age": 32768}
+{"event": "control_complete", "life": 0, "query": "risk8", "kind": "MULTI", "age": 524288}
+{"event": "control_complete", "life": 2, "query": "risk8", "kind": "MULTI", "age": 131072}
+{"event": "control_complete", "life": 1, "query": "risk8", "kind": "MULTI", "age": 131072}
+{"event": "control_complete", "life": 3, "query": "risk8", "kind": "MULTI", "age": 131072}
+{"event": "control_complete", "life": 2, "query": "risk8", "kind": "MULTI", "age": 524288}
+{"event": "control_complete", "life": 1, "query": "risk8", "kind": "MULTI", "age": 524288}
+{"event": "control_complete", "life": 3, "query": "risk8", "kind": "MULTI", "age": 524288}
+{"status": "complete", "seconds": 683.5205245980032}

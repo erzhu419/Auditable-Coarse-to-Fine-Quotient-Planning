@@ -1,0 +1,15 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "work": {
+        "objective_evaluations": 61,
+        "neural_model_fits": 6,
+        "optimizer_steps": 72
+      },
+      "new_environment_transitions": 0,
+      "new_synthetic_transitions": 0,
+      "scope": "Synthetic gradients, frozen-wide identity, small narrow fits and query interaction."
+    }
+  ]
+}

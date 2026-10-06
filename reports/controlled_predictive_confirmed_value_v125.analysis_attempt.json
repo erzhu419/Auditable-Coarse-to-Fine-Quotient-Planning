@@ -1,0 +1,14 @@
+{
+  "command": [
+    ".venv-lmta-v42/bin/python",
+    "scripts/analyze_controlled_predictive_confirmed_value_v125.py",
+    "--run-dir",
+    "reports/controlled_predictive_confirmed_value_v125"
+  ],
+  "started_utc": "2026-09-19T17:00:06.099417+00:00",
+  "status": "completed",
+  "analysis_attempt": 2,
+  "exit_code": 0,
+  "seconds": 92.71409936699638,
+  "stderr_bytes": 0
+}

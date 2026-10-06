@@ -1,0 +1,55 @@
+{
+  "attempts": [
+    {
+      "tests": 7,
+      "failures": 0,
+      "prefix_work": {
+        "learned_swipe_calls": 3,
+        "learned_line_rewrites": 12,
+        "recorded_spawns_replayed": 3
+      },
+      "scripted_game_work": {
+        "ground_state_status_calls": 7,
+        "ground_status_internal_swipe_calls": 24,
+        "ground_swipe_calls": 28,
+        "forced_actions": 3,
+        "ground_explicit_swipe_calls": 4,
+        "scripted_spawns": 4,
+        "sampled_transitions": 4
+      },
+      "core_work": {
+        "training_games": 2,
+        "training_observed_afterstates": 3,
+        "success_observation_updates": 2,
+        "unique_feature_updates": 34,
+        "count_array_writes": 68,
+        "feature_address_occurrences": 64,
+        "training_analytic_goals": 1,
+        "checkpoint_saves": 1,
+        "checkpoint_scanned_entries": 16384,
+        "checkpoint_saved_addresses": 25,
+        "checkpoint_saved_count_entries": 50,
+        "success_predictions": 2,
+        "probability_feature_occurrences": 64,
+        "count_array_reads": 128,
+        "checkpoint_loads": 1,
+        "checkpoint_loaded_addresses": 25,
+        "checkpoint_loaded_count_entries": 50
+      },
+      "source_work": {},
+      "setup_counts": {
+        "cpp_compilations": 2,
+        "allocated_count_entries": 65536,
+        "allocated_count_bytes": 524288,
+        "cpp_library_cache_hits": 1,
+        "lookup_line_rewrites": 256,
+        "allocated_weight_parameters": 16384,
+        "allocated_weight_bytes": 131072
+      },
+      "newly_sampled_environment_transitions": 0,
+      "environment_random_draws": 0,
+      "scripted_transitions": 4,
+      "scope": "All test spawns scripted; ground swipes/status checks are deterministic, no random environment draw."
+    }
+  ]
+}

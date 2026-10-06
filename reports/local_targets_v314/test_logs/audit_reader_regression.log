@@ -1,0 +1,5 @@
+Command: python3 -m pytest -q tests/test_verify_local_targets_v314.py -k source_cpu_is_once or exact_new_freeze
+..                                                                       [100%]
+2 passed, 16 deselected in 0.30s
+
+Exit code: 0

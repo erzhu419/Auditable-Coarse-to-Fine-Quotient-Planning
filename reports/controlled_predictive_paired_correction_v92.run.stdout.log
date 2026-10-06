@@ -1,0 +1,277 @@
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "reward", "episode": 0, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "reward", "episode": 0, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "reward", "episode": 0, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "reward", "episode": 1, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "reward", "episode": 1, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "reward", "episode": 1, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "reward", "episode": 2, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "reward", "episode": 2, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "reward", "episode": 2, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "reward", "episode": 3, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "reward", "episode": 3, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "reward", "episode": 3, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "reward", "episode": 4, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "reward", "episode": 4, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "reward", "episode": 4, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "reward", "episode": 5, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "reward", "episode": 5, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "reward", "episode": 5, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "risk_goal", "episode": 0, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "risk_goal", "episode": 0, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "risk_goal", "episode": 0, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "risk_goal", "episode": 1, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "risk_goal", "episode": 1, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "risk_goal", "episode": 1, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "risk_goal", "episode": 2, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "risk_goal", "episode": 2, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "risk_goal", "episode": 2, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "risk_goal", "episode": 3, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "risk_goal", "episode": 3, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "risk_goal", "episode": 3, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "risk_goal", "episode": 4, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "risk_goal", "episode": 4, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "risk_goal", "episode": 4, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "risk_goal", "episode": 5, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "risk_goal", "episode": 5, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "risk_goal", "episode": 5, "transitions": 1280}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 0, "scores": {"H2_ONLY": 2464, "MC": 2464, "V91_DECOMPOSED": 5552, "PAIR_ONLY": 12248, "CORRECTED": 5552}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 0, "scores": {"H2_ONLY": 8784, "MC": 8784, "V91_DECOMPOSED": 7388, "PAIR_ONLY": 7388, "CORRECTED": 8784}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 0, "scores": {"H2_ONLY": 7288, "MC": 7288, "V91_DECOMPOSED": 12208, "PAIR_ONLY": 7404, "CORRECTED": 7288}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 0, "scores": {"H2_ONLY": 12096, "MC": 12248, "V91_DECOMPOSED": 12248, "PAIR_ONLY": 12248, "CORRECTED": 12096}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 0, "scores": {"H2_ONLY": 8784, "MC": 6604, "V91_DECOMPOSED": 7388, "PAIR_ONLY": 7156, "CORRECTED": 6604}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 0, "scores": {"H2_ONLY": 7068, "MC": 7068, "V91_DECOMPOSED": 7068, "PAIR_ONLY": 7416, "CORRECTED": 7068}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 1, "scores": {"H2_ONLY": 7192, "MC": 7192, "V91_DECOMPOSED": 3120, "PAIR_ONLY": 3120, "CORRECTED": 7192}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 1, "scores": {"H2_ONLY": 7336, "MC": 7336, "V91_DECOMPOSED": 7348, "PAIR_ONLY": 7348, "CORRECTED": 7348}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 1, "scores": {"H2_ONLY": 6696, "MC": 15252, "V91_DECOMPOSED": 15252, "PAIR_ONLY": 15252, "CORRECTED": 11148}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 1, "scores": {"H2_ONLY": 7256, "MC": 7484, "V91_DECOMPOSED": 7484, "PAIR_ONLY": 7484, "CORRECTED": 7484}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 1, "scores": {"H2_ONLY": 7332, "MC": 14432, "V91_DECOMPOSED": 14432, "PAIR_ONLY": 14432, "CORRECTED": 7332}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 2, "scores": {"H2_ONLY": 15212, "MC": 3552, "V91_DECOMPOSED": 2480, "PAIR_ONLY": 3552, "CORRECTED": 3552}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 1, "scores": {"H2_ONLY": 15560, "MC": 15560, "V91_DECOMPOSED": 15560, "PAIR_ONLY": 15560, "CORRECTED": 15560}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 2, "scores": {"H2_ONLY": 11824, "MC": 11824, "V91_DECOMPOSED": 11824, "PAIR_ONLY": 11824, "CORRECTED": 11824}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 2, "scores": {"H2_ONLY": 15988, "MC": 12340, "V91_DECOMPOSED": 12340, "PAIR_ONLY": 12340, "CORRECTED": 12340}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 2, "scores": {"H2_ONLY": 7076, "MC": 16148, "V91_DECOMPOSED": 16148, "PAIR_ONLY": 16148, "CORRECTED": 7076}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 3, "scores": {"H2_ONLY": 3536, "MC": 7248, "V91_DECOMPOSED": 7140, "PAIR_ONLY": 7248, "CORRECTED": 7248}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 2, "scores": {"H2_ONLY": 12308, "MC": 13868, "V91_DECOMPOSED": 12308, "PAIR_ONLY": 12308, "CORRECTED": 13868}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 3, "scores": {"H2_ONLY": 3460, "MC": 3460, "V91_DECOMPOSED": 7300, "PAIR_ONLY": 3460, "CORRECTED": 3460}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 3, "scores": {"H2_ONLY": 7480, "MC": 7480, "V91_DECOMPOSED": 7404, "PAIR_ONLY": 11252, "CORRECTED": 7480}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 2, "scores": {"H2_ONLY": 15384, "MC": 15384, "V91_DECOMPOSED": 16856, "PAIR_ONLY": 7592, "CORRECTED": 15384}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 4, "scores": {"H2_ONLY": 6092, "MC": 6092, "V91_DECOMPOSED": 7316, "PAIR_ONLY": 12200, "CORRECTED": 6092}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 4, "scores": {"H2_ONLY": 6496, "MC": 7316, "V91_DECOMPOSED": 14488, "PAIR_ONLY": 6496, "CORRECTED": 7316}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 3, "scores": {"H2_ONLY": 3152, "MC": 14692, "V91_DECOMPOSED": 14692, "PAIR_ONLY": 14692, "CORRECTED": 8120}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 3, "scores": {"H2_ONLY": 7480, "MC": 15988, "V91_DECOMPOSED": 15988, "PAIR_ONLY": 15988, "CORRECTED": 7480}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 3, "scores": {"H2_ONLY": 6912, "MC": 6912, "V91_DECOMPOSED": 6912, "PAIR_ONLY": 12136, "CORRECTED": 6912}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 5, "scores": {"H2_ONLY": 12300, "MC": 12300, "V91_DECOMPOSED": 14484, "PAIR_ONLY": 14484, "CORRECTED": 12300}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 4, "scores": {"H2_ONLY": 7152, "MC": 3416, "V91_DECOMPOSED": 14564, "PAIR_ONLY": 7572, "CORRECTED": 3416}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 4, "scores": {"H2_ONLY": 12200, "MC": 16208, "V91_DECOMPOSED": 16208, "PAIR_ONLY": 16208, "CORRECTED": 16208}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 4, "scores": {"H2_ONLY": 7152, "MC": 7152, "V91_DECOMPOSED": 7152, "PAIR_ONLY": 7280, "CORRECTED": 7152}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 5, "scores": {"H2_ONLY": 10740, "MC": 12164, "V91_DECOMPOSED": 7268, "PAIR_ONLY": 12164, "CORRECTED": 12164}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 4, "scores": {"H2_ONLY": 12248, "MC": 15980, "V91_DECOMPOSED": 16212, "PAIR_ONLY": 12248, "CORRECTED": 15980}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 6, "scores": {"H2_ONLY": 3076, "MC": 7136, "V91_DECOMPOSED": 5724, "PAIR_ONLY": 7136, "CORRECTED": 7136}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 5, "scores": {"H2_ONLY": 5156, "MC": 11400, "V91_DECOMPOSED": 11400, "PAIR_ONLY": 11400, "CORRECTED": 5156}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 5, "scores": {"H2_ONLY": 3192, "MC": 7756, "V91_DECOMPOSED": 3192, "PAIR_ONLY": 7756, "CORRECTED": 3192}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 6, "scores": {"H2_ONLY": 3076, "MC": 7136, "V91_DECOMPOSED": 7136, "PAIR_ONLY": 7136, "CORRECTED": 7136}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 5, "scores": {"H2_ONLY": 7436, "MC": 7436, "V91_DECOMPOSED": 7436, "PAIR_ONLY": 12156, "CORRECTED": 7436}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 6, "scores": {"H2_ONLY": 3160, "MC": 5736, "V91_DECOMPOSED": 5736, "PAIR_ONLY": 5736, "CORRECTED": 7328}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 7, "scores": {"H2_ONLY": 8676, "MC": 8676, "V91_DECOMPOSED": 7352, "PAIR_ONLY": 7352, "CORRECTED": 8676}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 5, "scores": {"H2_ONLY": 7132, "MC": 14636, "V91_DECOMPOSED": 14636, "PAIR_ONLY": 14636, "CORRECTED": 14636}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 6, "scores": {"H2_ONLY": 7484, "MC": 7484, "V91_DECOMPOSED": 7484, "PAIR_ONLY": 3504, "CORRECTED": 7484}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 6, "scores": {"H2_ONLY": 7772, "MC": 7144, "V91_DECOMPOSED": 7144, "PAIR_ONLY": 7144, "CORRECTED": 7144}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 7, "scores": {"H2_ONLY": 8668, "MC": 14432, "V91_DECOMPOSED": 11436, "PAIR_ONLY": 14432, "CORRECTED": 14432}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 7, "scores": {"H2_ONLY": 6920, "MC": 6920, "V91_DECOMPOSED": 7224, "PAIR_ONLY": 7140, "CORRECTED": 6920}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 6, "scores": {"H2_ONLY": 7772, "MC": 7772, "V91_DECOMPOSED": 7144, "PAIR_ONLY": 7772, "CORRECTED": 7040}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 8, "scores": {"H2_ONLY": 7196, "MC": 7196, "V91_DECOMPOSED": 12484, "PAIR_ONLY": 12248, "CORRECTED": 7196}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 7, "scores": {"H2_ONLY": 7024, "MC": 7024, "V91_DECOMPOSED": 7024, "PAIR_ONLY": 7024, "CORRECTED": 7024}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 7, "scores": {"H2_ONLY": 7188, "MC": 7188, "V91_DECOMPOSED": 7172, "PAIR_ONLY": 6720, "CORRECTED": 7172}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 8, "scores": {"H2_ONLY": 7196, "MC": 12484, "V91_DECOMPOSED": 12248, "PAIR_ONLY": 7196, "CORRECTED": 12484}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 8, "scores": {"H2_ONLY": 20332, "MC": 7124, "V91_DECOMPOSED": 12352, "PAIR_ONLY": 14464, "CORRECTED": 7124}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 7, "scores": {"H2_ONLY": 7188, "MC": 10432, "V91_DECOMPOSED": 10432, "PAIR_ONLY": 10432, "CORRECTED": 7188}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 8, "scores": {"H2_ONLY": 5420, "MC": 3360, "V91_DECOMPOSED": 3360, "PAIR_ONLY": 3360, "CORRECTED": 3360}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 9, "scores": {"H2_ONLY": 16220, "MC": 16220, "V91_DECOMPOSED": 7096, "PAIR_ONLY": 7096, "CORRECTED": 16220}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 8, "scores": {"H2_ONLY": 5420, "MC": 5376, "V91_DECOMPOSED": 3360, "PAIR_ONLY": 5420, "CORRECTED": 5376}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 8, "scores": {"H2_ONLY": 16128, "MC": 16128, "V91_DECOMPOSED": 16128, "PAIR_ONLY": 12100, "CORRECTED": 16128}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 9, "scores": {"H2_ONLY": 7280, "MC": 2700, "V91_DECOMPOSED": 2700, "PAIR_ONLY": 2700, "CORRECTED": 7280}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 9, "scores": {"H2_ONLY": 7188, "MC": 5780, "V91_DECOMPOSED": 7096, "PAIR_ONLY": 5780, "CORRECTED": 5780}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 9, "scores": {"H2_ONLY": 6408, "MC": 5372, "V91_DECOMPOSED": 5372, "PAIR_ONLY": 5372, "CORRECTED": 6408}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 9, "scores": {"H2_ONLY": 7280, "MC": 7024, "V91_DECOMPOSED": 7024, "PAIR_ONLY": 7024, "CORRECTED": 7024}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 10, "scores": {"H2_ONLY": 7104, "MC": 7104, "V91_DECOMPOSED": 7392, "PAIR_ONLY": 7392, "CORRECTED": 7104}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 9, "scores": {"H2_ONLY": 6408, "MC": 6408, "V91_DECOMPOSED": 12204, "PAIR_ONLY": 12204, "CORRECTED": 6408}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 10, "scores": {"H2_ONLY": 7960, "MC": 7112, "V91_DECOMPOSED": 7112, "PAIR_ONLY": 7112, "CORRECTED": 7112}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 10, "scores": {"H2_ONLY": 10596, "MC": 7680, "V91_DECOMPOSED": 7680, "PAIR_ONLY": 7680, "CORRECTED": 7680}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 10, "scores": {"H2_ONLY": 3272, "MC": 3272, "V91_DECOMPOSED": 16504, "PAIR_ONLY": 7612, "CORRECTED": 3272}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 11, "scores": {"H2_ONLY": 7084, "MC": 7084, "V91_DECOMPOSED": 7156, "PAIR_ONLY": 7156, "CORRECTED": 7084}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 10, "scores": {"H2_ONLY": 7960, "MC": 7960, "V91_DECOMPOSED": 7300, "PAIR_ONLY": 7960, "CORRECTED": 6240}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 10, "scores": {"H2_ONLY": 3272, "MC": 3272, "V91_DECOMPOSED": 3272, "PAIR_ONLY": 3272, "CORRECTED": 3272}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 11, "scores": {"H2_ONLY": 6156, "MC": 6156, "V91_DECOMPOSED": 5780, "PAIR_ONLY": 5780, "CORRECTED": 6156}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 11, "scores": {"H2_ONLY": 12264, "MC": 12264, "V91_DECOMPOSED": 7800, "PAIR_ONLY": 7800, "CORRECTED": 12264}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 11, "scores": {"H2_ONLY": 7176, "MC": 14700, "V91_DECOMPOSED": 14700, "PAIR_ONLY": 10512, "CORRECTED": 14700}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 11, "scores": {"H2_ONLY": 6156, "MC": 13756, "V91_DECOMPOSED": 16012, "PAIR_ONLY": 6156, "CORRECTED": 13756}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 12, "scores": {"H2_ONLY": 7192, "MC": 7192, "V91_DECOMPOSED": 8384, "PAIR_ONLY": 8384, "CORRECTED": 7192}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 11, "scores": {"H2_ONLY": 7180, "MC": 7180, "V91_DECOMPOSED": 7180, "PAIR_ONLY": 16172, "CORRECTED": 7180}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 12, "scores": {"H2_ONLY": 6416, "MC": 6416, "V91_DECOMPOSED": 3056, "PAIR_ONLY": 3056, "CORRECTED": 3056}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 12, "scores": {"H2_ONLY": 7196, "MC": 7060, "V91_DECOMPOSED": 8492, "PAIR_ONLY": 3600, "CORRECTED": 7060}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 12, "scores": {"H2_ONLY": 7144, "MC": 7276, "V91_DECOMPOSED": 7276, "PAIR_ONLY": 7276, "CORRECTED": 11932}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 12, "scores": {"H2_ONLY": 6416, "MC": 14552, "V91_DECOMPOSED": 7120, "PAIR_ONLY": 6416, "CORRECTED": 14552}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 12, "scores": {"H2_ONLY": 7144, "MC": 7144, "V91_DECOMPOSED": 7144, "PAIR_ONLY": 5140, "CORRECTED": 7144}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 13, "scores": {"H2_ONLY": 5724, "MC": 3048, "V91_DECOMPOSED": 5724, "PAIR_ONLY": 3048, "CORRECTED": 3048}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 13, "scores": {"H2_ONLY": 12032, "MC": 16008, "V91_DECOMPOSED": 6860, "PAIR_ONLY": 16008, "CORRECTED": 16008}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 13, "scores": {"H2_ONLY": 7064, "MC": 13764, "V91_DECOMPOSED": 7448, "PAIR_ONLY": 7064, "CORRECTED": 7172}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 13, "scores": {"H2_ONLY": 6696, "MC": 12144, "V91_DECOMPOSED": 7108, "PAIR_ONLY": 20532, "CORRECTED": 12144}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 13, "scores": {"H2_ONLY": 12032, "MC": 10476, "V91_DECOMPOSED": 15648, "PAIR_ONLY": 12032, "CORRECTED": 10476}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 13, "scores": {"H2_ONLY": 6696, "MC": 6696, "V91_DECOMPOSED": 6696, "PAIR_ONLY": 3164, "CORRECTED": 6696}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 14, "scores": {"H2_ONLY": 13856, "MC": 13856, "V91_DECOMPOSED": 3944, "PAIR_ONLY": 3944, "CORRECTED": 3944}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 14, "scores": {"H2_ONLY": 3236, "MC": 3236, "V91_DECOMPOSED": 7056, "PAIR_ONLY": 7056, "CORRECTED": 3236}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 14, "scores": {"H2_ONLY": 7052, "MC": 7552, "V91_DECOMPOSED": 7552, "PAIR_ONLY": 7552, "CORRECTED": 3032}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 14, "scores": {"H2_ONLY": 7384, "MC": 6948, "V91_DECOMPOSED": 6948, "PAIR_ONLY": 6948, "CORRECTED": 7384}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 14, "scores": {"H2_ONLY": 6264, "MC": 14656, "V91_DECOMPOSED": 7096, "PAIR_ONLY": 14656, "CORRECTED": 14656}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 14, "scores": {"H2_ONLY": 7052, "MC": 7052, "V91_DECOMPOSED": 7052, "PAIR_ONLY": 7052, "CORRECTED": 7052}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 15, "scores": {"H2_ONLY": 13152, "MC": 13152, "V91_DECOMPOSED": 11556, "PAIR_ONLY": 11556, "CORRECTED": 11556}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 15, "scores": {"H2_ONLY": 5824, "MC": 5884, "V91_DECOMPOSED": 5884, "PAIR_ONLY": 5884, "CORRECTED": 7392}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 15, "scores": {"H2_ONLY": 14696, "MC": 14696, "V91_DECOMPOSED": 12500, "PAIR_ONLY": 12500, "CORRECTED": 14696}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 15, "scores": {"H2_ONLY": 5824, "MC": 5824, "V91_DECOMPOSED": 5824, "PAIR_ONLY": 7380, "CORRECTED": 5824}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 15, "scores": {"H2_ONLY": 13104, "MC": 7340, "V91_DECOMPOSED": 7340, "PAIR_ONLY": 7340, "CORRECTED": 7016}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 15, "scores": {"H2_ONLY": 14668, "MC": 12260, "V91_DECOMPOSED": 6344, "PAIR_ONLY": 12260, "CORRECTED": 12260}}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "reward", "episode": 6, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "reward", "episode": 6, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "reward", "episode": 7, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "reward", "episode": 7, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "reward", "episode": 8, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "reward", "episode": 8, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "reward", "episode": 6, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "reward", "episode": 9, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "reward", "episode": 9, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "reward", "episode": 7, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "reward", "episode": 10, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "reward", "episode": 10, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "reward", "episode": 11, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "reward", "episode": 11, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "reward", "episode": 8, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "risk_goal", "episode": 6, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "risk_goal", "episode": 6, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "reward", "episode": 9, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "risk_goal", "episode": 7, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "risk_goal", "episode": 7, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "reward", "episode": 10, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "risk_goal", "episode": 8, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "risk_goal", "episode": 8, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "reward", "episode": 11, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "risk_goal", "episode": 9, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "risk_goal", "episode": 6, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "risk_goal", "episode": 9, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "risk_goal", "episode": 10, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "risk_goal", "episode": 7, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "risk_goal", "episode": 10, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 0, "query": "risk_goal", "episode": 11, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "risk_goal", "episode": 8, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 1, "query": "risk_goal", "episode": 11, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "risk_goal", "episode": 9, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "risk_goal", "episode": 10, "transitions": 1280}
+{"phase": "training_prefix_root", "lifecycle": 2, "query": "risk_goal", "episode": 11, "transitions": 1280}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 0, "scores": {"H2_ONLY": 6436, "MC": 3372, "V91_DECOMPOSED": 12052, "PAIR_ONLY": 3372, "CORRECTED": 3372, "CORRECTED_FROZEN_6": 12052}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 0, "scores": {"H2_ONLY": 7148, "MC": 6924, "V91_DECOMPOSED": 7504, "PAIR_ONLY": 7148, "CORRECTED": 6924, "CORRECTED_FROZEN_6": 14500}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 0, "scores": {"H2_ONLY": 6436, "MC": 6436, "V91_DECOMPOSED": 12896, "PAIR_ONLY": 6436, "CORRECTED": 6436, "CORRECTED_FROZEN_6": 6436}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 0, "scores": {"H2_ONLY": 5508, "MC": 7504, "V91_DECOMPOSED": 10392, "PAIR_ONLY": 7504, "CORRECTED": 7504, "CORRECTED_FROZEN_6": 7504}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 0, "scores": {"H2_ONLY": 12208, "MC": 12208, "V91_DECOMPOSED": 10788, "PAIR_ONLY": 12208, "CORRECTED": 7472, "CORRECTED_FROZEN_6": 12208}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 1, "scores": {"H2_ONLY": 6148, "MC": 7244, "V91_DECOMPOSED": 7244, "PAIR_ONLY": 6148, "CORRECTED": 12180, "CORRECTED_FROZEN_6": 3052}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 1, "scores": {"H2_ONLY": 7052, "MC": 7052, "V91_DECOMPOSED": 7052, "PAIR_ONLY": 7052, "CORRECTED": 7196, "CORRECTED_FROZEN_6": 7052}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 1, "scores": {"H2_ONLY": 5312, "MC": 5312, "V91_DECOMPOSED": 12180, "PAIR_ONLY": 5312, "CORRECTED": 5312, "CORRECTED_FROZEN_6": 5312}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 0, "scores": {"H2_ONLY": 15492, "MC": 15492, "V91_DECOMPOSED": 15492, "PAIR_ONLY": 7472, "CORRECTED": 15492, "CORRECTED_FROZEN_6": 10772}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 1, "scores": {"H2_ONLY": 7052, "MC": 7480, "V91_DECOMPOSED": 11568, "PAIR_ONLY": 11568, "CORRECTED": 11568, "CORRECTED_FROZEN_6": 7052}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 1, "scores": {"H2_ONLY": 3636, "MC": 6500, "V91_DECOMPOSED": 6500, "PAIR_ONLY": 6500, "CORRECTED": 6500, "CORRECTED_FROZEN_6": 3636}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 2, "scores": {"H2_ONLY": 7352, "MC": 7352, "V91_DECOMPOSED": 14312, "PAIR_ONLY": 7352, "CORRECTED": 7388, "CORRECTED_FROZEN_6": 7388}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 2, "scores": {"H2_ONLY": 16356, "MC": 3264, "V91_DECOMPOSED": 6448, "PAIR_ONLY": 16356, "CORRECTED": 6448, "CORRECTED_FROZEN_6": 3264}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 2, "scores": {"H2_ONLY": 7352, "MC": 7352, "V91_DECOMPOSED": 5584, "PAIR_ONLY": 5584, "CORRECTED": 7352, "CORRECTED_FROZEN_6": 7352}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 1, "scores": {"H2_ONLY": 3636, "MC": 7124, "V91_DECOMPOSED": 15416, "PAIR_ONLY": 15416, "CORRECTED": 7124, "CORRECTED_FROZEN_6": 3636}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 3, "scores": {"H2_ONLY": 5576, "MC": 6960, "V91_DECOMPOSED": 7164, "PAIR_ONLY": 5576, "CORRECTED": 6960, "CORRECTED_FROZEN_6": 5576}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 2, "scores": {"H2_ONLY": 7412, "MC": 6168, "V91_DECOMPOSED": 7412, "PAIR_ONLY": 7412, "CORRECTED": 6168, "CORRECTED_FROZEN_6": 7412}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 2, "scores": {"H2_ONLY": 15372, "MC": 15372, "V91_DECOMPOSED": 10388, "PAIR_ONLY": 7452, "CORRECTED": 15372, "CORRECTED_FROZEN_6": 10388}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 3, "scores": {"H2_ONLY": 5576, "MC": 5576, "V91_DECOMPOSED": 6960, "PAIR_ONLY": 6960, "CORRECTED": 5576, "CORRECTED_FROZEN_6": 5576}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 3, "scores": {"H2_ONLY": 3376, "MC": 3172, "V91_DECOMPOSED": 7084, "PAIR_ONLY": 3176, "CORRECTED": 7084, "CORRECTED_FROZEN_6": 3172}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 2, "scores": {"H2_ONLY": 7412, "MC": 11600, "V91_DECOMPOSED": 11600, "PAIR_ONLY": 6168, "CORRECTED": 11600, "CORRECTED_FROZEN_6": 11600}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 3, "scores": {"H2_ONLY": 7168, "MC": 6900, "V91_DECOMPOSED": 7104, "PAIR_ONLY": 6900, "CORRECTED": 7104, "CORRECTED_FROZEN_6": 7900}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 4, "scores": {"H2_ONLY": 5420, "MC": 12204, "V91_DECOMPOSED": 5496, "PAIR_ONLY": 12204, "CORRECTED": 15836, "CORRECTED_FROZEN_6": 15836}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 3, "scores": {"H2_ONLY": 7740, "MC": 7740, "V91_DECOMPOSED": 7740, "PAIR_ONLY": 7740, "CORRECTED": 7204, "CORRECTED_FROZEN_6": 7740}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 3, "scores": {"H2_ONLY": 3072, "MC": 3072, "V91_DECOMPOSED": 3072, "PAIR_ONLY": 7132, "CORRECTED": 3072, "CORRECTED_FROZEN_6": 3072}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 4, "scores": {"H2_ONLY": 6680, "MC": 7356, "V91_DECOMPOSED": 13716, "PAIR_ONLY": 6680, "CORRECTED": 7080, "CORRECTED_FROZEN_6": 6680}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 4, "scores": {"H2_ONLY": 12176, "MC": 12316, "V91_DECOMPOSED": 12316, "PAIR_ONLY": 12176, "CORRECTED": 7240, "CORRECTED_FROZEN_6": 12316}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 5, "scores": {"H2_ONLY": 12048, "MC": 3216, "V91_DECOMPOSED": 12048, "PAIR_ONLY": 3216, "CORRECTED": 7036, "CORRECTED_FROZEN_6": 3216}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 4, "scores": {"H2_ONLY": 7236, "MC": 15872, "V91_DECOMPOSED": 7236, "PAIR_ONLY": 7104, "CORRECTED": 15872, "CORRECTED_FROZEN_6": 7236}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 4, "scores": {"H2_ONLY": 7464, "MC": 7396, "V91_DECOMPOSED": 7240, "PAIR_ONLY": 12316, "CORRECTED": 7396, "CORRECTED_FROZEN_6": 7464}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 4, "scores": {"H2_ONLY": 7228, "MC": 7228, "V91_DECOMPOSED": 7228, "PAIR_ONLY": 6944, "CORRECTED": 7228, "CORRECTED_FROZEN_6": 7112}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 5, "scores": {"H2_ONLY": 11452, "MC": 3184, "V91_DECOMPOSED": 15960, "PAIR_ONLY": 15960, "CORRECTED": 11452, "CORRECTED_FROZEN_6": 3184}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 5, "scores": {"H2_ONLY": 6512, "MC": 4936, "V91_DECOMPOSED": 12408, "PAIR_ONLY": 12408, "CORRECTED": 4936, "CORRECTED_FROZEN_6": 7864}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 6, "scores": {"H2_ONLY": 7152, "MC": 15412, "V91_DECOMPOSED": 7152, "PAIR_ONLY": 15412, "CORRECTED": 15412, "CORRECTED_FROZEN_6": 7152}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 5, "scores": {"H2_ONLY": 14380, "MC": 14380, "V91_DECOMPOSED": 14380, "PAIR_ONLY": 7124, "CORRECTED": 14380, "CORRECTED_FROZEN_6": 14380}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 5, "scores": {"H2_ONLY": 7184, "MC": 7184, "V91_DECOMPOSED": 12432, "PAIR_ONLY": 7264, "CORRECTED": 7184, "CORRECTED_FROZEN_6": 12432}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 6, "scores": {"H2_ONLY": 7204, "MC": 7204, "V91_DECOMPOSED": 7204, "PAIR_ONLY": 7204, "CORRECTED": 7204, "CORRECTED_FROZEN_6": 7204}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 6, "scores": {"H2_ONLY": 3544, "MC": 12196, "V91_DECOMPOSED": 7088, "PAIR_ONLY": 7088, "CORRECTED": 12196, "CORRECTED_FROZEN_6": 3544}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 5, "scores": {"H2_ONLY": 15568, "MC": 15568, "V91_DECOMPOSED": 15568, "PAIR_ONLY": 15568, "CORRECTED": 15568, "CORRECTED_FROZEN_6": 7172}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 6, "scores": {"H2_ONLY": 3552, "MC": 5888, "V91_DECOMPOSED": 7088, "PAIR_ONLY": 7088, "CORRECTED": 5888, "CORRECTED_FROZEN_6": 7088}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 7, "scores": {"H2_ONLY": 14616, "MC": 12120, "V91_DECOMPOSED": 7140, "PAIR_ONLY": 14616, "CORRECTED": 12120, "CORRECTED_FROZEN_6": 14616}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 7, "scores": {"H2_ONLY": 14328, "MC": 3180, "V91_DECOMPOSED": 3128, "PAIR_ONLY": 14328, "CORRECTED": 3128, "CORRECTED_FROZEN_6": 3180}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 6, "scores": {"H2_ONLY": 11656, "MC": 11656, "V91_DECOMPOSED": 6500, "PAIR_ONLY": 6500, "CORRECTED": 7648, "CORRECTED_FROZEN_6": 11656}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 6, "scores": {"H2_ONLY": 11856, "MC": 6484, "V91_DECOMPOSED": 7132, "PAIR_ONLY": 7132, "CORRECTED": 6484, "CORRECTED_FROZEN_6": 11856}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 7, "scores": {"H2_ONLY": 14616, "MC": 7140, "V91_DECOMPOSED": 16120, "PAIR_ONLY": 14616, "CORRECTED": 14616, "CORRECTED_FROZEN_6": 14616}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 7, "scores": {"H2_ONLY": 14328, "MC": 14328, "V91_DECOMPOSED": 15468, "PAIR_ONLY": 15468, "CORRECTED": 14328, "CORRECTED_FROZEN_6": 15468}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 7, "scores": {"H2_ONLY": 6408, "MC": 6760, "V91_DECOMPOSED": 11908, "PAIR_ONLY": 14404, "CORRECTED": 6760, "CORRECTED_FROZEN_6": 6408}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 8, "scores": {"H2_ONLY": 11480, "MC": 7480, "V91_DECOMPOSED": 11480, "PAIR_ONLY": 7480, "CORRECTED": 13776, "CORRECTED_FROZEN_6": 13776}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 8, "scores": {"H2_ONLY": 3260, "MC": 7432, "V91_DECOMPOSED": 11576, "PAIR_ONLY": 11576, "CORRECTED": 7432, "CORRECTED_FROZEN_6": 3260}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 7, "scores": {"H2_ONLY": 3468, "MC": 12508, "V91_DECOMPOSED": 12508, "PAIR_ONLY": 3468, "CORRECTED": 12508, "CORRECTED_FROZEN_6": 12508}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 8, "scores": {"H2_ONLY": 11480, "MC": 11480, "V91_DECOMPOSED": 7524, "PAIR_ONLY": 11480, "CORRECTED": 11480, "CORRECTED_FROZEN_6": 11480}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 8, "scores": {"H2_ONLY": 3232, "MC": 7440, "V91_DECOMPOSED": 11748, "PAIR_ONLY": 12124, "CORRECTED": 7440, "CORRECTED_FROZEN_6": 12124}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 8, "scores": {"H2_ONLY": 8196, "MC": 8196, "V91_DECOMPOSED": 8196, "PAIR_ONLY": 7476, "CORRECTED": 8196, "CORRECTED_FROZEN_6": 8196}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 9, "scores": {"H2_ONLY": 3220, "MC": 10220, "V91_DECOMPOSED": 1712, "PAIR_ONLY": 1712, "CORRECTED": 1712, "CORRECTED_FROZEN_6": 10220}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 9, "scores": {"H2_ONLY": 10352, "MC": 12208, "V91_DECOMPOSED": 10352, "PAIR_ONLY": 10352, "CORRECTED": 12208, "CORRECTED_FROZEN_6": 10352}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 9, "scores": {"H2_ONLY": 3220, "MC": 14460, "V91_DECOMPOSED": 1744, "PAIR_ONLY": 1744, "CORRECTED": 14460, "CORRECTED_FROZEN_6": 1744}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 8, "scores": {"H2_ONLY": 10660, "MC": 10660, "V91_DECOMPOSED": 10660, "PAIR_ONLY": 7068, "CORRECTED": 10660, "CORRECTED_FROZEN_6": 7472}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 10, "scores": {"H2_ONLY": 7044, "MC": 7044, "V91_DECOMPOSED": 7044, "PAIR_ONLY": 7044, "CORRECTED": 16092, "CORRECTED_FROZEN_6": 7044}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 9, "scores": {"H2_ONLY": 14776, "MC": 14776, "V91_DECOMPOSED": 6432, "PAIR_ONLY": 14776, "CORRECTED": 14776, "CORRECTED_FROZEN_6": 14776}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 9, "scores": {"H2_ONLY": 12076, "MC": 15440, "V91_DECOMPOSED": 12076, "PAIR_ONLY": 7388, "CORRECTED": 15440, "CORRECTED_FROZEN_6": 12076}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 10, "scores": {"H2_ONLY": 7628, "MC": 7392, "V91_DECOMPOSED": 7628, "PAIR_ONLY": 7628, "CORRECTED": 7392, "CORRECTED_FROZEN_6": 7324}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 10, "scores": {"H2_ONLY": 7088, "MC": 7088, "V91_DECOMPOSED": 16092, "PAIR_ONLY": 6528, "CORRECTED": 7088, "CORRECTED_FROZEN_6": 16092}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 9, "scores": {"H2_ONLY": 14504, "MC": 14464, "V91_DECOMPOSED": 14464, "PAIR_ONLY": 14464, "CORRECTED": 14464, "CORRECTED_FROZEN_6": 7432}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 10, "scores": {"H2_ONLY": 7248, "MC": 7248, "V91_DECOMPOSED": 12236, "PAIR_ONLY": 7392, "CORRECTED": 7248, "CORRECTED_FROZEN_6": 7248}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 11, "scores": {"H2_ONLY": 7100, "MC": 7100, "V91_DECOMPOSED": 7100, "PAIR_ONLY": 7100, "CORRECTED": 7100, "CORRECTED_FROZEN_6": 7100}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 10, "scores": {"H2_ONLY": 3168, "MC": 3168, "V91_DECOMPOSED": 3168, "PAIR_ONLY": 3168, "CORRECTED": 7856, "CORRECTED_FROZEN_6": 3168}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 11, "scores": {"H2_ONLY": 3116, "MC": 11780, "V91_DECOMPOSED": 7116, "PAIR_ONLY": 11780, "CORRECTED": 7192, "CORRECTED_FROZEN_6": 7192}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 11, "scores": {"H2_ONLY": 7100, "MC": 7100, "V91_DECOMPOSED": 12276, "PAIR_ONLY": 7208, "CORRECTED": 7100, "CORRECTED_FROZEN_6": 7100}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 10, "scores": {"H2_ONLY": 3168, "MC": 3168, "V91_DECOMPOSED": 14436, "PAIR_ONLY": 7856, "CORRECTED": 3168, "CORRECTED_FROZEN_6": 14436}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 11, "scores": {"H2_ONLY": 3120, "MC": 3120, "V91_DECOMPOSED": 5620, "PAIR_ONLY": 5620, "CORRECTED": 3120, "CORRECTED_FROZEN_6": 3120}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 12, "scores": {"H2_ONLY": 16132, "MC": 6444, "V91_DECOMPOSED": 6444, "PAIR_ONLY": 16132, "CORRECTED": 6692, "CORRECTED_FROZEN_6": 6444}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 12, "scores": {"H2_ONLY": 5676, "MC": 5676, "V91_DECOMPOSED": 6080, "PAIR_ONLY": 5676, "CORRECTED": 7160, "CORRECTED_FROZEN_6": 7160}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 11, "scores": {"H2_ONLY": 14476, "MC": 16368, "V91_DECOMPOSED": 6900, "PAIR_ONLY": 6900, "CORRECTED": 14476, "CORRECTED_FROZEN_6": 14476}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 12, "scores": {"H2_ONLY": 15508, "MC": 10860, "V91_DECOMPOSED": 6692, "PAIR_ONLY": 6692, "CORRECTED": 6692, "CORRECTED_FROZEN_6": 15508}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 12, "scores": {"H2_ONLY": 14332, "MC": 14332, "V91_DECOMPOSED": 14332, "PAIR_ONLY": 14332, "CORRECTED": 14332, "CORRECTED_FROZEN_6": 14332}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 11, "scores": {"H2_ONLY": 14476, "MC": 14476, "V91_DECOMPOSED": 3260, "PAIR_ONLY": 14476, "CORRECTED": 14476, "CORRECTED_FROZEN_6": 3260}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 13, "scores": {"H2_ONLY": 7812, "MC": 5660, "V91_DECOMPOSED": 5660, "PAIR_ONLY": 7812, "CORRECTED": 11540, "CORRECTED_FROZEN_6": 5660}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 13, "scores": {"H2_ONLY": 5652, "MC": 6640, "V91_DECOMPOSED": 5652, "PAIR_ONLY": 5652, "CORRECTED": 6640, "CORRECTED_FROZEN_6": 5652}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 12, "scores": {"H2_ONLY": 7240, "MC": 7240, "V91_DECOMPOSED": 3328, "PAIR_ONLY": 7240, "CORRECTED": 7240, "CORRECTED_FROZEN_6": 7240}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 13, "scores": {"H2_ONLY": 5652, "MC": 5652, "V91_DECOMPOSED": 5652, "PAIR_ONLY": 5652, "CORRECTED": 5652, "CORRECTED_FROZEN_6": 5652}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 13, "scores": {"H2_ONLY": 7644, "MC": 6388, "V91_DECOMPOSED": 6388, "PAIR_ONLY": 11548, "CORRECTED": 6388, "CORRECTED_FROZEN_6": 7644}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 12, "scores": {"H2_ONLY": 7148, "MC": 7148, "V91_DECOMPOSED": 12276, "PAIR_ONLY": 7148, "CORRECTED": 7148, "CORRECTED_FROZEN_6": 12276}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 14, "scores": {"H2_ONLY": 5384, "MC": 8608, "V91_DECOMPOSED": 5384, "PAIR_ONLY": 5072, "CORRECTED": 8608, "CORRECTED_FROZEN_6": 5072}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 14, "scores": {"H2_ONLY": 10412, "MC": 14476, "V91_DECOMPOSED": 10904, "PAIR_ONLY": 12236, "CORRECTED": 14476, "CORRECTED_FROZEN_6": 10904}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 14, "scores": {"H2_ONLY": 5384, "MC": 5072, "V91_DECOMPOSED": 14664, "PAIR_ONLY": 14664, "CORRECTED": 5384, "CORRECTED_FROZEN_6": 5072}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 13, "scores": {"H2_ONLY": 6972, "MC": 14260, "V91_DECOMPOSED": 6296, "PAIR_ONLY": 6972, "CORRECTED": 14260, "CORRECTED_FROZEN_6": 6972}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 14, "scores": {"H2_ONLY": 10412, "MC": 12248, "V91_DECOMPOSED": 12248, "PAIR_ONLY": 15632, "CORRECTED": 14476, "CORRECTED_FROZEN_6": 12248}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 15, "scores": {"H2_ONLY": 14292, "MC": 12424, "V91_DECOMPOSED": 6552, "PAIR_ONLY": 14292, "CORRECTED": 12424, "CORRECTED_FROZEN_6": 12424}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 13, "scores": {"H2_ONLY": 14824, "MC": 14824, "V91_DECOMPOSED": 15864, "PAIR_ONLY": 15736, "CORRECTED": 14824, "CORRECTED_FROZEN_6": 15864}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 15, "scores": {"H2_ONLY": 14412, "MC": 12824, "V91_DECOMPOSED": 6572, "PAIR_ONLY": 12824, "CORRECTED": 12824, "CORRECTED_FROZEN_6": 14412}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 15, "scores": {"H2_ONLY": 14320, "MC": 14320, "V91_DECOMPOSED": 3764, "PAIR_ONLY": 3764, "CORRECTED": 14320, "CORRECTED_FROZEN_6": 14320}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 14, "scores": {"H2_ONLY": 15748, "MC": 15748, "V91_DECOMPOSED": 15748, "PAIR_ONLY": 15748, "CORRECTED": 5860, "CORRECTED_FROZEN_6": 15748}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 15, "scores": {"H2_ONLY": 7968, "MC": 12108, "V91_DECOMPOSED": 7968, "PAIR_ONLY": 6528, "CORRECTED": 12108, "CORRECTED_FROZEN_6": 12108}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 14, "scores": {"H2_ONLY": 12476, "MC": 12216, "V91_DECOMPOSED": 7480, "PAIR_ONLY": 5644, "CORRECTED": 12216, "CORRECTED_FROZEN_6": 7480}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 15, "scores": {"H2_ONLY": 11400, "MC": 11400, "V91_DECOMPOSED": 12044, "PAIR_ONLY": 12044, "CORRECTED": 5548, "CORRECTED_FROZEN_6": 11400}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 15, "scores": {"H2_ONLY": 11400, "MC": 6904, "V91_DECOMPOSED": 6904, "PAIR_ONLY": 7280, "CORRECTED": 6904, "CORRECTED_FROZEN_6": 6904}}
+{"phase": "reference_root", "lifecycle": 0, "query": "reward", "episode": 0, "estimation_complete": true, "reference_complete": true, "transitions": 56666}
+{"phase": "reference_root", "lifecycle": 1, "query": "reward", "episode": 0, "estimation_complete": true, "reference_complete": true, "transitions": 65891}
+{"phase": "reference_root", "lifecycle": 2, "query": "reward", "episode": 0, "estimation_complete": true, "reference_complete": true, "transitions": 66138}
+{"phase": "reference_root", "lifecycle": 0, "query": "risk_goal", "episode": 0, "estimation_complete": true, "reference_complete": true, "transitions": 61876}
+{"phase": "reference_root", "lifecycle": 1, "query": "risk_goal", "episode": 0, "estimation_complete": true, "reference_complete": true, "transitions": 71095}
+{"phase": "reference_root", "lifecycle": 2, "query": "risk_goal", "episode": 0, "estimation_complete": true, "reference_complete": true, "transitions": 64699}
+{"phase": "reference_root", "lifecycle": 0, "query": "reward", "episode": 1, "estimation_complete": true, "reference_complete": true, "transitions": 61699}
+{"phase": "reference_root", "lifecycle": 1, "query": "reward", "episode": 1, "estimation_complete": true, "reference_complete": true, "transitions": 55148}
+{"phase": "reference_root", "lifecycle": 2, "query": "reward", "episode": 1, "estimation_complete": true, "reference_complete": true, "transitions": 59296}
+{"phase": "reference_root", "lifecycle": 0, "query": "risk_goal", "episode": 1, "estimation_complete": true, "reference_complete": true, "transitions": 60543}
+{"phase": "reference_root", "lifecycle": 1, "query": "risk_goal", "episode": 1, "estimation_complete": true, "reference_complete": true, "transitions": 63415}
+{"phase": "reference_root", "lifecycle": 2, "query": "risk_goal", "episode": 1, "estimation_complete": true, "reference_complete": true, "transitions": 63597}
+{"phase": "complete", "seconds": 464.45243649103213}

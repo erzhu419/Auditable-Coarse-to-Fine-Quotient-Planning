@@ -1,0 +1,12 @@
+{
+  "attempts": [
+    {
+      "tests": 15,
+      "failures": 0,
+      "newly_sampled_environment_transitions": 0,
+      "newly_sampled_model_transitions": 0,
+      "native_planner_calls": 0,
+      "scope": "Synthetic retained game arrays, deterministic root identities and terminal outcome components."
+    }
+  ]
+}

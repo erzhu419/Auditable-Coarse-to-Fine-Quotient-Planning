@@ -1,0 +1,17 @@
+{
+  "command": [
+    ".venv-lmta-v42/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/test_controlled_predictive_policy_consequences_runner_v126.py",
+    "-p",
+    "no:cacheprovider"
+  ],
+  "exit_code": 0,
+  "seconds": 1.1015535259939497,
+  "stdout": ".....                                                                    [100%]\n5 passed in 0.30s\n",
+  "stderr": "",
+  "newly_sampled_environment_transitions": 0,
+  "native_parameter_updates": 0
+}

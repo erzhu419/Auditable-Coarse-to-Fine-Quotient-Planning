@@ -1,0 +1,88 @@
+{
+  "status": "PASS",
+  "independent_valid": true,
+  "lifecycles": 16,
+  "fixed_source_parents": 4,
+  "canonical_rows": 11976,
+  "new_training_environment_raw_tiles": 0,
+  "new_ranking_rollouts": 0,
+  "reused_carrier_raw_tiles": 3145728,
+  "reused_warmup_raw_tiles": 14073,
+  "economic_training_raw_tiles_per_arm": {
+    "FROZEN": 14439393,
+    "SMOOTH_BELLMAN": 14439393,
+    "ROUTED_BELLMAN": 14439393
+  },
+  "physical_science_games": 8704,
+  "logical_science_game_references": 10752,
+  "science_cutoffs": 0,
+  "processed_training_samples_per_arm": {
+    "FROZEN": 0,
+    "SMOOTH_BELLMAN": 2456034,
+    "ROUTED_BELLMAN": 2456034
+  },
+  "actual_experts_created": 25,
+  "no_update_experts_created": 23,
+  "materializations": 192,
+  "source_setup_counts": {
+    "cpp_compilations": 4,
+    "lookup_line_rewrites": 58564,
+    "allocated_weight_parameters": 56689952,
+    "allocated_weight_bytes": 453519616,
+    "cpp_library_cache_hits": 4,
+    "lookup_table_cache_hits": 4,
+    "source_parameters_copied": 28344976,
+    "source_weight_bytes_copied": 226759808
+  },
+  "source_setup_cpu_seconds": 0.99995356,
+  "source_setup_cpu_scope": "Already included in worker CPU; separate operation receipt, not additional process time.",
+  "net_gain_supported": false,
+  "correction_supported": false,
+  "actual_A_prime_same_observed_module": 16,
+  "primary": {
+    "mean": -0.028006235758463727,
+    "ci95": [
+      -0.39100093841552747,
+      0.33531490961710575
+    ],
+    "lifecycle_deltas": {
+      "0": 0.33951822916666696,
+      "1": 0.887532552083333,
+      "2": 1.126017252604166,
+      "3": 0.06203206380208304,
+      "4": 0.43890380859375,
+      "5": -0.9272664388020839,
+      "6": 0.7663777669270839,
+      "7": -1.537577311197917,
+      "8": 0.47261555989583304,
+      "9": -1.735677083333333,
+      "10": 0.06646728515625,
+      "11": 0.4207560221354161,
+      "12": 0.987019856770833,
+      "13": 0.009256998697916075,
+      "14": -0.753926595052083,
+      "15": -1.070149739583334
+    },
+    "improved_equal_worse": [
+      11,
+      0,
+      5
+    ],
+    "adverse_lifecycles": [
+      5,
+      7,
+      9,
+      14,
+      15
+    ],
+    "parent_mean_deltas": {
+      "0": 0.5595143636067708,
+      "1": -0.44153849283854196,
+      "2": 0.30123392740885424,
+      "3": -0.5312347412109379
+    },
+    "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS"
+  },
+  "errors": [],
+  "limitations": "Independent compact route/sample/copy, terminal game, signed mean and accounting audit. No old carrier/world or SOURCE-weight replay, refitting, or 20000-draw CI regeneration. Before-action module counts use the actual carrier protocol which stops at every memory-block boundary. Target/normalization mathematics have finite literal tests. Known-A context probes are separate from actual A-prime routing and independent net control. Four source parents are fixed."
+}

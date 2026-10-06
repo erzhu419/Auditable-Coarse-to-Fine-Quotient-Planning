@@ -1,0 +1,14 @@
+{
+  "attempts": [
+    {
+      "tests": 4,
+      "passed": 4,
+      "failures": 0,
+      "seconds": 0.22,
+      "ground_transitions": 0,
+      "tree_fits": 0,
+      "main_campaign_calls": 0,
+      "scope": "Mock lifecycle history/prefix reuse and frozen heads; real estimator with synthetic disjoint reference and censoring fixtures."
+    }
+  ]
+}

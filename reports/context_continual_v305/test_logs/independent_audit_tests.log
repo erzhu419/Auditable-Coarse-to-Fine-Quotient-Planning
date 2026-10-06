@@ -1,0 +1,6 @@
+Command: .venv-lmta-v42/bin/python -m pytest tests/test_verify_context_continual_v305.py -q
+Exit code: 0
+...................                                                      [100%]
+19 passed in 0.63s
+
+Retained from the completed focused-test execution; no repeat run performed.

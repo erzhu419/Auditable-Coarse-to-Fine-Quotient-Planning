@@ -1,0 +1,18 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "tests_run": 9,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "scope": "finite logical roster, censored returns, equal game/history conditional errors, shallow sampling and cost equations"
+    },
+    {
+      "failures": 0,
+      "tests_run": 9,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "scope": "finite logical roster, censored returns, equal game/history conditional errors, shallow sampling and cost equations"
+    }
+  ]
+}

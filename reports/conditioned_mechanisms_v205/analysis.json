@@ -1,0 +1,404 @@
+{
+  "checks": [
+    {
+      "name": "fixed_task_roster_and_analytic_qualification",
+      "passed": true
+    },
+    {
+      "name": "frozen_source_roster",
+      "passed": true
+    },
+    {
+      "name": "complete_chronological_four_arm_rosters",
+      "passed": true
+    },
+    {
+      "name": "life_0_continuous_source_and_revision_observations",
+      "passed": true
+    },
+    {
+      "name": "life_0_five_source_only_condition_models",
+      "passed": true
+    },
+    {
+      "name": "life_0_zero_before_target_and_old_source_final_policies",
+      "passed": true
+    },
+    {
+      "name": "life_0_common_projection_pilot_ratio_and_stopping",
+      "passed": true
+    },
+    {
+      "name": "life_0_paired_consumed_target_observations",
+      "passed": true
+    },
+    {
+      "name": "life_0_raw_member_plans_and_fixed_condition_integer_updates",
+      "passed": true
+    },
+    {
+      "name": "life_1_continuous_source_and_revision_observations",
+      "passed": true
+    },
+    {
+      "name": "life_1_five_source_only_condition_models",
+      "passed": true
+    },
+    {
+      "name": "life_1_zero_before_target_and_old_source_final_policies",
+      "passed": true
+    },
+    {
+      "name": "life_1_common_projection_pilot_ratio_and_stopping",
+      "passed": true
+    },
+    {
+      "name": "life_1_paired_consumed_target_observations",
+      "passed": true
+    },
+    {
+      "name": "life_1_raw_member_plans_and_fixed_condition_integer_updates",
+      "passed": true
+    },
+    {
+      "name": "life_2_continuous_source_and_revision_observations",
+      "passed": true
+    },
+    {
+      "name": "life_2_five_source_only_condition_models",
+      "passed": true
+    },
+    {
+      "name": "life_2_zero_before_target_and_old_source_final_policies",
+      "passed": true
+    },
+    {
+      "name": "life_2_common_projection_pilot_ratio_and_stopping",
+      "passed": true
+    },
+    {
+      "name": "life_2_paired_consumed_target_observations",
+      "passed": true
+    },
+    {
+      "name": "life_2_raw_member_plans_and_fixed_condition_integer_updates",
+      "passed": true
+    },
+    {
+      "name": "life_3_continuous_source_and_revision_observations",
+      "passed": true
+    },
+    {
+      "name": "life_3_five_source_only_condition_models",
+      "passed": true
+    },
+    {
+      "name": "life_3_zero_before_target_and_old_source_final_policies",
+      "passed": true
+    },
+    {
+      "name": "life_3_common_projection_pilot_ratio_and_stopping",
+      "passed": true
+    },
+    {
+      "name": "life_3_paired_consumed_target_observations",
+      "passed": true
+    },
+    {
+      "name": "life_3_raw_member_plans_and_fixed_condition_integer_updates",
+      "passed": true
+    },
+    {
+      "name": "life_4_continuous_source_and_revision_observations",
+      "passed": true
+    },
+    {
+      "name": "life_4_five_source_only_condition_models",
+      "passed": true
+    },
+    {
+      "name": "life_4_zero_before_target_and_old_source_final_policies",
+      "passed": true
+    },
+    {
+      "name": "life_4_common_projection_pilot_ratio_and_stopping",
+      "passed": true
+    },
+    {
+      "name": "life_4_paired_consumed_target_observations",
+      "passed": true
+    },
+    {
+      "name": "life_4_raw_member_plans_and_fixed_condition_integer_updates",
+      "passed": true
+    },
+    {
+      "name": "life_5_continuous_source_and_revision_observations",
+      "passed": true
+    },
+    {
+      "name": "life_5_five_source_only_condition_models",
+      "passed": true
+    },
+    {
+      "name": "life_5_zero_before_target_and_old_source_final_policies",
+      "passed": true
+    },
+    {
+      "name": "life_5_common_projection_pilot_ratio_and_stopping",
+      "passed": true
+    },
+    {
+      "name": "life_5_paired_consumed_target_observations",
+      "passed": true
+    },
+    {
+      "name": "life_5_raw_member_plans_and_fixed_condition_integer_updates",
+      "passed": true
+    },
+    {
+      "name": "life_6_continuous_source_and_revision_observations",
+      "passed": true
+    },
+    {
+      "name": "life_6_five_source_only_condition_models",
+      "passed": true
+    },
+    {
+      "name": "life_6_zero_before_target_and_old_source_final_policies",
+      "passed": true
+    },
+    {
+      "name": "life_6_common_projection_pilot_ratio_and_stopping",
+      "passed": true
+    },
+    {
+      "name": "life_6_paired_consumed_target_observations",
+      "passed": true
+    },
+    {
+      "name": "life_6_raw_member_plans_and_fixed_condition_integer_updates",
+      "passed": true
+    },
+    {
+      "name": "life_7_continuous_source_and_revision_observations",
+      "passed": true
+    },
+    {
+      "name": "life_7_five_source_only_condition_models",
+      "passed": true
+    },
+    {
+      "name": "life_7_zero_before_target_and_old_source_final_policies",
+      "passed": true
+    },
+    {
+      "name": "life_7_common_projection_pilot_ratio_and_stopping",
+      "passed": true
+    },
+    {
+      "name": "life_7_paired_consumed_target_observations",
+      "passed": true
+    },
+    {
+      "name": "life_7_raw_member_plans_and_fixed_condition_integer_updates",
+      "passed": true
+    },
+    {
+      "name": "life_8_continuous_source_and_revision_observations",
+      "passed": true
+    },
+    {
+      "name": "life_8_five_source_only_condition_models",
+      "passed": true
+    },
+    {
+      "name": "life_8_zero_before_target_and_old_source_final_policies",
+      "passed": true
+    },
+    {
+      "name": "life_8_common_projection_pilot_ratio_and_stopping",
+      "passed": true
+    },
+    {
+      "name": "life_8_paired_consumed_target_observations",
+      "passed": true
+    },
+    {
+      "name": "life_8_raw_member_plans_and_fixed_condition_integer_updates",
+      "passed": true
+    },
+    {
+      "name": "life_9_continuous_source_and_revision_observations",
+      "passed": true
+    },
+    {
+      "name": "life_9_five_source_only_condition_models",
+      "passed": true
+    },
+    {
+      "name": "life_9_zero_before_target_and_old_source_final_policies",
+      "passed": true
+    },
+    {
+      "name": "life_9_common_projection_pilot_ratio_and_stopping",
+      "passed": true
+    },
+    {
+      "name": "life_9_paired_consumed_target_observations",
+      "passed": true
+    },
+    {
+      "name": "life_9_raw_member_plans_and_fixed_condition_integer_updates",
+      "passed": true
+    },
+    {
+      "name": "life_10_continuous_source_and_revision_observations",
+      "passed": true
+    },
+    {
+      "name": "life_10_five_source_only_condition_models",
+      "passed": true
+    },
+    {
+      "name": "life_10_zero_before_target_and_old_source_final_policies",
+      "passed": true
+    },
+    {
+      "name": "life_10_common_projection_pilot_ratio_and_stopping",
+      "passed": true
+    },
+    {
+      "name": "life_10_paired_consumed_target_observations",
+      "passed": true
+    },
+    {
+      "name": "life_10_raw_member_plans_and_fixed_condition_integer_updates",
+      "passed": true
+    },
+    {
+      "name": "life_11_continuous_source_and_revision_observations",
+      "passed": true
+    },
+    {
+      "name": "life_11_five_source_only_condition_models",
+      "passed": true
+    },
+    {
+      "name": "life_11_zero_before_target_and_old_source_final_policies",
+      "passed": true
+    },
+    {
+      "name": "life_11_common_projection_pilot_ratio_and_stopping",
+      "passed": true
+    },
+    {
+      "name": "life_11_paired_consumed_target_observations",
+      "passed": true
+    },
+    {
+      "name": "life_11_raw_member_plans_and_fixed_condition_integer_updates",
+      "passed": true
+    },
+    {
+      "name": "true_joint_policy_references",
+      "passed": true
+    },
+    {
+      "name": "life_0_own_policy_joint_target_transfer_and_retention",
+      "passed": true
+    },
+    {
+      "name": "life_1_own_policy_joint_target_transfer_and_retention",
+      "passed": true
+    },
+    {
+      "name": "life_2_own_policy_joint_target_transfer_and_retention",
+      "passed": true
+    },
+    {
+      "name": "life_3_own_policy_joint_target_transfer_and_retention",
+      "passed": true
+    },
+    {
+      "name": "life_4_own_policy_joint_target_transfer_and_retention",
+      "passed": true
+    },
+    {
+      "name": "life_5_own_policy_joint_target_transfer_and_retention",
+      "passed": true
+    },
+    {
+      "name": "life_6_own_policy_joint_target_transfer_and_retention",
+      "passed": true
+    },
+    {
+      "name": "life_7_own_policy_joint_target_transfer_and_retention",
+      "passed": true
+    },
+    {
+      "name": "life_8_own_policy_joint_target_transfer_and_retention",
+      "passed": true
+    },
+    {
+      "name": "life_9_own_policy_joint_target_transfer_and_retention",
+      "passed": true
+    },
+    {
+      "name": "life_10_own_policy_joint_target_transfer_and_retention",
+      "passed": true
+    },
+    {
+      "name": "life_11_own_policy_joint_target_transfer_and_retention",
+      "passed": true
+    },
+    {
+      "name": "covered_raw_members_imply_true_risk_and_goal_bounds",
+      "passed": true
+    },
+    {
+      "name": "lifecycle_bootstrap_and_five_frozen_conditions",
+      "passed": true
+    },
+    {
+      "name": "actual_acquisition_and_source_fit_costs",
+      "passed": true
+    },
+    {
+      "name": "paid_source_and_per_arm_accounting",
+      "passed": true
+    },
+    {
+      "name": "plans_and_zero_probes_frozen_before_performance_oracle",
+      "passed": true
+    }
+  ],
+  "complete": true,
+  "costs": {
+    "bootstrap_index_draws": 60000,
+    "bootstrap_mean_terms": 360000,
+    "bootstrap_resamples": 5000,
+    "field_score_candidates": 684,
+    "field_score_count_additions": 9744,
+    "field_score_lgamma_calls": 14646,
+    "input_bytes_read": 9550301,
+    "input_files_read": 16,
+    "interval_calls": 25571,
+    "kl_calls": 1868416,
+    "mixture_components": 98715,
+    "model_context_scans": 266813,
+    "model_count_additions": 196620,
+    "optimizer_pair_checks": 22038,
+    "optimizer_pure_checks": 14720,
+    "real_count_updates": 9132,
+    "reconstructed_model_fits": 60,
+    "regenerated_consumed_samples": 28672,
+    "regenerated_source_samples": 36864,
+    "source_table_count_additions": 1008,
+    "utility_calls": 17640,
+    "utility_component_reads": 52920
+  },
+  "schema": "acfqp.conditioned_mechanisms.v205.analysis",
+  "seconds": 3.20244495299994,
+  "valid": true
+}

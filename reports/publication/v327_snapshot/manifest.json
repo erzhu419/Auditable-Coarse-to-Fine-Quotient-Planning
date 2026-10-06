@@ -1,0 +1,845 @@
+{
+  "schema": "acfqp.publication_snapshot.v327",
+  "files": [
+    {
+      "source": "reports/b_control_v300/summary.json",
+      "archive": "reports/publication/v327_snapshot/b_control_v300/summary.json.gz",
+      "source_bytes": 11948311,
+      "archive_bytes": 1613501
+    },
+    {
+      "source": "reports/b_mechanism_v299/summary.json",
+      "archive": "reports/publication/v327_snapshot/b_mechanism_v299/summary.json.gz",
+      "source_bytes": 42362297,
+      "archive_bytes": 12597367
+    },
+    {
+      "source": "reports/bank_belief_v310/summary.json",
+      "archive": "reports/publication/v327_snapshot/bank_belief_v310/summary.json.gz",
+      "source_bytes": 60914676,
+      "archive_bytes": 4446396
+    },
+    {
+      "source": "reports/closed_loop_v313/summary.json",
+      "archive": "reports/publication/v327_snapshot/closed_loop_v313/summary.json.gz",
+      "source_bytes": 27400429,
+      "archive_bytes": 2367053
+    },
+    {
+      "source": "reports/component_heads_v322/summary.json",
+      "archive": "reports/publication/v327_snapshot/component_heads_v322/summary.json.gz",
+      "source_bytes": 4151710,
+      "archive_bytes": 319230
+    },
+    {
+      "source": "reports/component_targets_v315/summary.json",
+      "archive": "reports/publication/v327_snapshot/component_targets_v315/summary.json.gz",
+      "source_bytes": 6317658,
+      "archive_bytes": 369923
+    },
+    {
+      "source": "reports/conditional_bellman_v294/summary.json",
+      "archive": "reports/publication/v327_snapshot/conditional_bellman_v294/summary.json.gz",
+      "source_bytes": 37107907,
+      "archive_bytes": 2767860
+    },
+    {
+      "source": "reports/confirmed_context_v309/summary.json",
+      "archive": "reports/publication/v327_snapshot/confirmed_context_v309/summary.json.gz",
+      "source_bytes": 59933985,
+      "archive_bytes": 4336985
+    },
+    {
+      "source": "reports/context_continual_v305/summary.json",
+      "archive": "reports/publication/v327_snapshot/context_continual_v305/summary.json.gz",
+      "source_bytes": 55683530,
+      "archive_bytes": 6095170
+    },
+    {
+      "source": "reports/continual_v303/parent_0_receipt.json",
+      "archive": "reports/publication/v327_snapshot/continual_v303/parent_0_receipt.json.gz",
+      "source_bytes": 5263690,
+      "archive_bytes": 1020515
+    },
+    {
+      "source": "reports/continual_v303/parent_1_receipt.json",
+      "archive": "reports/publication/v327_snapshot/continual_v303/parent_1_receipt.json.gz",
+      "source_bytes": 5259050,
+      "archive_bytes": 1018670
+    },
+    {
+      "source": "reports/continual_v303/parent_2_receipt.json",
+      "archive": "reports/publication/v327_snapshot/continual_v303/parent_2_receipt.json.gz",
+      "source_bytes": 5254125,
+      "archive_bytes": 1017260
+    },
+    {
+      "source": "reports/continual_v303/parent_3_receipt.json",
+      "archive": "reports/publication/v327_snapshot/continual_v303/parent_3_receipt.json.gz",
+      "source_bytes": 5255903,
+      "archive_bytes": 1016002
+    },
+    {
+      "source": "reports/continual_v303/summary.json",
+      "archive": "reports/publication/v327_snapshot/continual_v303/summary.json.gz",
+      "source_bytes": 54072624,
+      "archive_bytes": 5655977
+    },
+    {
+      "source": "reports/controlled_predictive_bellman_consequences_v136/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_bellman_consequences_v136/analysis.json.gz",
+      "source_bytes": 2501753,
+      "archive_bytes": 190659
+    },
+    {
+      "source": "reports/controlled_predictive_bellman_v94/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_bellman_v94/analysis.json.gz",
+      "source_bytes": 2529950,
+      "archive_bytes": 196216
+    },
+    {
+      "source": "reports/controlled_predictive_boundary_learning_v97/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_boundary_learning_v97/analysis.json.gz",
+      "source_bytes": 7525431,
+      "archive_bytes": 680712
+    },
+    {
+      "source": "reports/controlled_predictive_capacity_ranking_v103/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_capacity_ranking_v103/analysis.json.gz",
+      "source_bytes": 2120090,
+      "archive_bytes": 113491
+    },
+    {
+      "source": "reports/controlled_predictive_conditional_pairs_v194/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_conditional_pairs_v194/analysis.json.gz",
+      "source_bytes": 1228244,
+      "archive_bytes": 48667
+    },
+    {
+      "source": "reports/controlled_predictive_conditional_pairs_v194/source_diagnostics.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_conditional_pairs_v194/source_diagnostics.json.gz",
+      "source_bytes": 2106311,
+      "archive_bytes": 232151
+    },
+    {
+      "source": "reports/controlled_predictive_conditional_pairs_v194/summary.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_conditional_pairs_v194/summary.json.gz",
+      "source_bytes": 1064221,
+      "archive_bytes": 39513
+    },
+    {
+      "source": "reports/controlled_predictive_consequence_generation_v168/summary.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_consequence_generation_v168/summary.json.gz",
+      "source_bytes": 1074118,
+      "archive_bytes": 65823
+    },
+    {
+      "source": "reports/controlled_predictive_contextual_ntuple_v134/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_contextual_ntuple_v134/analysis.json.gz",
+      "source_bytes": 1921945,
+      "archive_bytes": 126034
+    },
+    {
+      "source": "reports/controlled_predictive_counterfactual_outcomes_v143/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_counterfactual_outcomes_v143/analysis.json.gz",
+      "source_bytes": 3031261,
+      "archive_bytes": 198192
+    },
+    {
+      "source": "reports/controlled_predictive_coverage_expansion_v145/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_coverage_expansion_v145/analysis.json.gz",
+      "source_bytes": 1494774,
+      "archive_bytes": 184461
+    },
+    {
+      "source": "reports/controlled_predictive_direct_validation_v114/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_direct_validation_v114/analysis.json.gz",
+      "source_bytes": 1038126,
+      "archive_bytes": 141126
+    },
+    {
+      "source": "reports/controlled_predictive_direct_value_v95/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_direct_value_v95/analysis.json.gz",
+      "source_bytes": 1626393,
+      "archive_bytes": 116944
+    },
+    {
+      "source": "reports/controlled_predictive_factored_fragments_v139/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_factored_fragments_v139/analysis.json.gz",
+      "source_bytes": 2382852,
+      "archive_bytes": 153837
+    },
+    {
+      "source": "reports/controlled_predictive_feature_conflicts_v189/diagnostics.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_feature_conflicts_v189/diagnostics.json.gz",
+      "source_bytes": 1228236,
+      "archive_bytes": 35899
+    },
+    {
+      "source": "reports/controlled_predictive_fixed_board_replication_v175/branch_roster.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_fixed_board_replication_v175/branch_roster.json.gz",
+      "source_bytes": 2691896,
+      "archive_bytes": 90389
+    },
+    {
+      "source": "reports/controlled_predictive_forced_actions_v128/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_forced_actions_v128/analysis.json.gz",
+      "source_bytes": 1281565,
+      "archive_bytes": 186265
+    },
+    {
+      "source": "reports/controlled_predictive_fresh_ranking_v105/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_fresh_ranking_v105/analysis.json.gz",
+      "source_bytes": 4389968,
+      "archive_bytes": 213305
+    },
+    {
+      "source": "reports/controlled_predictive_frozen_head_v109/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_frozen_head_v109/analysis.json.gz",
+      "source_bytes": 1534969,
+      "archive_bytes": 215076
+    },
+    {
+      "source": "reports/controlled_predictive_frozen_leaf_planning_v135/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_frozen_leaf_planning_v135/analysis.json.gz",
+      "source_bytes": 1812935,
+      "archive_bytes": 119458
+    },
+    {
+      "source": "reports/controlled_predictive_frozen_program_replication_v197/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_frozen_program_replication_v197/analysis.json.gz",
+      "source_bytes": 1696839,
+      "archive_bytes": 62534
+    },
+    {
+      "source": "reports/controlled_predictive_frozen_program_replication_v197/inputs/inherited/v196_summary.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_frozen_program_replication_v197/inputs/inherited/v196_summary.json.gz",
+      "source_bytes": 1534697,
+      "archive_bytes": 56886
+    },
+    {
+      "source": "reports/controlled_predictive_frozen_program_replication_v197/summary.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_frozen_program_replication_v197/summary.json.gz",
+      "source_bytes": 1516795,
+      "archive_bytes": 54671
+    },
+    {
+      "source": "reports/controlled_predictive_guarded_fragments_v138/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_guarded_fragments_v138/analysis.json.gz",
+      "source_bytes": 2314885,
+      "archive_bytes": 150050
+    },
+    {
+      "source": "reports/controlled_predictive_h1_continuation_v142/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_h1_continuation_v142/analysis.json.gz",
+      "source_bytes": 2521491,
+      "archive_bytes": 194998
+    },
+    {
+      "source": "reports/controlled_predictive_heldout_replication_v101/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_heldout_replication_v101/analysis.json.gz",
+      "source_bytes": 1894210,
+      "archive_bytes": 119293
+    },
+    {
+      "source": "reports/controlled_predictive_incremental_ranking_v107/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_incremental_ranking_v107/analysis.json.gz",
+      "source_bytes": 1286888,
+      "archive_bytes": 180962
+    },
+    {
+      "source": "reports/controlled_predictive_joint_feedback_generation_v169/summary.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_joint_feedback_generation_v169/summary.json.gz",
+      "source_bytes": 1422466,
+      "archive_bytes": 65141
+    },
+    {
+      "source": "reports/controlled_predictive_kernel_transfer_v193/diagnostics.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_kernel_transfer_v193/diagnostics.json.gz",
+      "source_bytes": 2700878,
+      "archive_bytes": 376578
+    },
+    {
+      "source": "reports/controlled_predictive_label_precision_v149/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_label_precision_v149/analysis.json.gz",
+      "source_bytes": 1105652,
+      "archive_bytes": 185473
+    },
+    {
+      "source": "reports/controlled_predictive_merge_relations_v190/inputs/inherited/v189_diagnostics.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_merge_relations_v190/inputs/inherited/v189_diagnostics.json.gz",
+      "source_bytes": 1228236,
+      "archive_bytes": 35899
+    },
+    {
+      "source": "reports/controlled_predictive_module_diagnosis_v153/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_module_diagnosis_v153/analysis.json.gz",
+      "source_bytes": 1327498,
+      "archive_bytes": 223230
+    },
+    {
+      "source": "reports/controlled_predictive_module_holdout_v155/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_module_holdout_v155/analysis.json.gz",
+      "source_bytes": 2970912,
+      "archive_bytes": 334153
+    },
+    {
+      "source": "reports/controlled_predictive_module_repair_v154/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_module_repair_v154/analysis.json.gz",
+      "source_bytes": 1606791,
+      "archive_bytes": 246822
+    },
+    {
+      "source": "reports/controlled_predictive_module_replication_v152/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_module_replication_v152/analysis.json.gz",
+      "source_bytes": 1997730,
+      "archive_bytes": 279807
+    },
+    {
+      "source": "reports/controlled_predictive_module_semantics_v156/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_module_semantics_v156/analysis.json.gz",
+      "source_bytes": 2057331,
+      "archive_bytes": 261380
+    },
+    {
+      "source": "reports/controlled_predictive_multistep_query_td_v133/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_multistep_query_td_v133/analysis.json.gz",
+      "source_bytes": 1508484,
+      "archive_bytes": 99674
+    },
+    {
+      "source": "reports/controlled_predictive_natural_reference_v104/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_natural_reference_v104/analysis.json.gz",
+      "source_bytes": 2614094,
+      "archive_bytes": 166899
+    },
+    {
+      "source": "reports/controlled_predictive_pair_regions_v195/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_pair_regions_v195/analysis.json.gz",
+      "source_bytes": 1421681,
+      "archive_bytes": 56200
+    },
+    {
+      "source": "reports/controlled_predictive_pair_regions_v195/source_diagnostics.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_pair_regions_v195/source_diagnostics.json.gz",
+      "source_bytes": 2595217,
+      "archive_bytes": 184966
+    },
+    {
+      "source": "reports/controlled_predictive_pair_regions_v195/summary.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_pair_regions_v195/summary.json.gz",
+      "source_bytes": 1251464,
+      "archive_bytes": 46570
+    },
+    {
+      "source": "reports/controlled_predictive_paired_bellman_v96/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_paired_bellman_v96/analysis.json.gz",
+      "source_bytes": 6796650,
+      "archive_bytes": 597657
+    },
+    {
+      "source": "reports/controlled_predictive_policy_calibration_v129/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_policy_calibration_v129/analysis.json.gz",
+      "source_bytes": 1092956,
+      "archive_bytes": 110257
+    },
+    {
+      "source": "reports/controlled_predictive_program_planning_v140/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_program_planning_v140/analysis.json.gz",
+      "source_bytes": 2286191,
+      "archive_bytes": 162521
+    },
+    {
+      "source": "reports/controlled_predictive_query_update_v108/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_query_update_v108/analysis.json.gz",
+      "source_bytes": 1796391,
+      "archive_bytes": 254087
+    },
+    {
+      "source": "reports/controlled_predictive_relational_programs_v196/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_relational_programs_v196/analysis.json.gz",
+      "source_bytes": 1735041,
+      "archive_bytes": 66670
+    },
+    {
+      "source": "reports/controlled_predictive_relational_programs_v196/source_diagnostics.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_relational_programs_v196/source_diagnostics.json.gz",
+      "source_bytes": 3739313,
+      "archive_bytes": 184636
+    },
+    {
+      "source": "reports/controlled_predictive_relational_programs_v196/summary.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_relational_programs_v196/summary.json.gz",
+      "source_bytes": 1534697,
+      "archive_bytes": 56886
+    },
+    {
+      "source": "reports/controlled_predictive_replica_ranking_v102/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_replica_ranking_v102/analysis.json.gz",
+      "source_bytes": 1211801,
+      "archive_bytes": 69175
+    },
+    {
+      "source": "reports/controlled_predictive_replication_v93/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_replication_v93/analysis.json.gz",
+      "source_bytes": 1824119,
+      "archive_bytes": 96072
+    },
+    {
+      "source": "reports/controlled_predictive_shallow_sampling_v141/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_shallow_sampling_v141/analysis.json.gz",
+      "source_bytes": 2407340,
+      "archive_bytes": 179800
+    },
+    {
+      "source": "reports/controlled_predictive_source_coverage_v185/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_source_coverage_v185/analysis.json.gz",
+      "source_bytes": 1116221,
+      "archive_bytes": 52772
+    },
+    {
+      "source": "reports/controlled_predictive_spawn_stratification_v176/branch_roster.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_spawn_stratification_v176/branch_roster.json.gz",
+      "source_bytes": 5379218,
+      "archive_bytes": 178284
+    },
+    {
+      "source": "reports/controlled_predictive_td_attribution_v132/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_td_attribution_v132/analysis.json.gz",
+      "source_bytes": 1589191,
+      "archive_bytes": 147105
+    },
+    {
+      "source": "reports/controlled_predictive_terminal_anchor_v99/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_terminal_anchor_v99/analysis.json.gz",
+      "source_bytes": 1970416,
+      "archive_bytes": 135847
+    },
+    {
+      "source": "reports/controlled_predictive_terminal_supervision_v137/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_terminal_supervision_v137/analysis.json.gz",
+      "source_bytes": 2831071,
+      "archive_bytes": 231493
+    },
+    {
+      "source": "reports/controlled_predictive_utility_consolidation_v118/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_utility_consolidation_v118/analysis.json.gz",
+      "source_bytes": 1200727,
+      "archive_bytes": 66810
+    },
+    {
+      "source": "reports/controlled_predictive_utility_program_partition_v198/analysis.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_utility_program_partition_v198/analysis.json.gz",
+      "source_bytes": 1818507,
+      "archive_bytes": 68621
+    },
+    {
+      "source": "reports/controlled_predictive_utility_program_partition_v198/inputs/inherited/v197_summary.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_utility_program_partition_v198/inputs/inherited/v197_summary.json.gz",
+      "source_bytes": 1516795,
+      "archive_bytes": 54671
+    },
+    {
+      "source": "reports/controlled_predictive_utility_program_partition_v198/source_diagnostics.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_utility_program_partition_v198/source_diagnostics.json.gz",
+      "source_bytes": 1314951,
+      "archive_bytes": 67958
+    },
+    {
+      "source": "reports/controlled_predictive_utility_program_partition_v198/summary.json",
+      "archive": "reports/publication/v327_snapshot/controlled_predictive_utility_program_partition_v198/summary.json.gz",
+      "source_bytes": 1617701,
+      "archive_bytes": 59166
+    },
+    {
+      "source": "reports/crossed_factor_continual_v271/summary.json",
+      "archive": "reports/publication/v327_snapshot/crossed_factor_continual_v271/summary.json.gz",
+      "source_bytes": 1930307,
+      "archive_bytes": 38031
+    },
+    {
+      "source": "reports/crossed_factor_query_continual_v272/summary.json",
+      "archive": "reports/publication/v327_snapshot/crossed_factor_query_continual_v272/summary.json.gz",
+      "source_bytes": 2141185,
+      "archive_bytes": 35743
+    },
+    {
+      "source": "reports/crossed_factor_structure_continual_v273/summary.json",
+      "archive": "reports/publication/v327_snapshot/crossed_factor_structure_continual_v273/summary.json.gz",
+      "source_bytes": 2398121,
+      "archive_bytes": 34955
+    },
+    {
+      "source": "reports/crossed_factor_structure_continual_v273/summary_final.json",
+      "archive": "reports/publication/v327_snapshot/crossed_factor_structure_continual_v273/summary_final.json.gz",
+      "source_bytes": 2651248,
+      "archive_bytes": 36428
+    },
+    {
+      "source": "reports/crossed_factor_support_continual_v274/summary_final.json",
+      "archive": "reports/publication/v327_snapshot/crossed_factor_support_continual_v274/summary_final.json.gz",
+      "source_bytes": 3108123,
+      "archive_bytes": 58903
+    },
+    {
+      "source": "reports/crossed_factor_support_continual_v274/summary_final_v2.json",
+      "archive": "reports/publication/v327_snapshot/crossed_factor_support_continual_v274/summary_final_v2.json.gz",
+      "source_bytes": 3706395,
+      "archive_bytes": 68784
+    },
+    {
+      "source": "reports/crossed_factor_support_continual_v274/summary_final_v3.json",
+      "archive": "reports/publication/v327_snapshot/crossed_factor_support_continual_v274/summary_final_v3.json.gz",
+      "source_bytes": 3699908,
+      "archive_bytes": 67324
+    },
+    {
+      "source": "reports/crossed_factor_support_continual_v274/summary_final_v4.json",
+      "archive": "reports/publication/v327_snapshot/crossed_factor_support_continual_v274/summary_final_v4.json.gz",
+      "source_bytes": 3699962,
+      "archive_bytes": 67427
+    },
+    {
+      "source": "reports/cumulative_critic_v289/summary.json",
+      "archive": "reports/publication/v327_snapshot/cumulative_critic_v289/summary.json.gz",
+      "source_bytes": 13771839,
+      "archive_bytes": 2136255
+    },
+    {
+      "source": "reports/direct_strategy_v297/summary.json",
+      "archive": "reports/publication/v327_snapshot/direct_strategy_v297/summary.json.gz",
+      "source_bytes": 11894912,
+      "archive_bytes": 1051029
+    },
+    {
+      "source": "reports/episode_consolidation_v290/summary.json",
+      "archive": "reports/publication/v327_snapshot/episode_consolidation_v290/summary.json.gz",
+      "source_bytes": 2498219,
+      "archive_bytes": 289218
+    },
+    {
+      "source": "reports/experience_replay_v307/summary.json",
+      "archive": "reports/publication/v327_snapshot/experience_replay_v307/summary.json.gz",
+      "source_bytes": 19858893,
+      "archive_bytes": 1784921
+    },
+    {
+      "source": "reports/first_adapt_v308/summary.json",
+      "archive": "reports/publication/v327_snapshot/first_adapt_v308/summary.json.gz",
+      "source_bytes": 38012806,
+      "archive_bytes": 2881947
+    },
+    {
+      "source": "reports/fresh_confirmation_v312/summary.json",
+      "archive": "reports/publication/v327_snapshot/fresh_confirmation_v312/summary.json.gz",
+      "source_bytes": 77084374,
+      "archive_bytes": 5419644
+    },
+    {
+      "source": "reports/greedy_targets_v317/summary.json",
+      "archive": "reports/publication/v327_snapshot/greedy_targets_v317/summary.json.gz",
+      "source_bytes": 14742035,
+      "archive_bytes": 1380753
+    },
+    {
+      "source": "reports/history_control_v304/summary.json",
+      "archive": "reports/publication/v327_snapshot/history_control_v304/summary.json.gz",
+      "source_bytes": 24592084,
+      "archive_bytes": 3271126
+    },
+    {
+      "source": "reports/independent_episode_v291/summary.json",
+      "archive": "reports/publication/v327_snapshot/independent_episode_v291/summary.json.gz",
+      "source_bytes": 10392628,
+      "archive_bytes": 1339563
+    },
+    {
+      "source": "reports/joint_terminal_v327/summary.json",
+      "archive": "reports/publication/v327_snapshot/joint_terminal_v327/summary.json.gz",
+      "source_bytes": 21251405,
+      "archive_bytes": 1485325
+    },
+    {
+      "source": "reports/linear_contribution_v311/summary.json",
+      "archive": "reports/publication/v327_snapshot/linear_contribution_v311/summary.json.gz",
+      "source_bytes": 77191463,
+      "archive_bytes": 5428679
+    },
+    {
+      "source": "reports/local_risk_v302/summary.json",
+      "archive": "reports/publication/v327_snapshot/local_risk_v302/summary.json.gz",
+      "source_bytes": 14135443,
+      "archive_bytes": 1916895
+    },
+    {
+      "source": "reports/local_targets_v314/summary.json",
+      "archive": "reports/publication/v327_snapshot/local_targets_v314/summary.json.gz",
+      "source_bytes": 14303410,
+      "archive_bytes": 1316413
+    },
+    {
+      "source": "reports/local_targets_v316/summary.json",
+      "archive": "reports/publication/v327_snapshot/local_targets_v316/summary.json.gz",
+      "source_bytes": 14277985,
+      "archive_bytes": 1314530
+    },
+    {
+      "source": "reports/long_horizon_advantage_v296/summary.json",
+      "archive": "reports/publication/v327_snapshot/long_horizon_advantage_v296/summary.json.gz",
+      "source_bytes": 24153013,
+      "archive_bytes": 1373721
+    },
+    {
+      "source": "reports/natural_action_value_v283/summary.json",
+      "archive": "reports/publication/v327_snapshot/natural_action_value_v283/summary.json.gz",
+      "source_bytes": 1521951,
+      "archive_bytes": 229392
+    },
+    {
+      "source": "reports/natural_continuation_value_v285/summary.json",
+      "archive": "reports/publication/v327_snapshot/natural_continuation_value_v285/summary.json.gz",
+      "source_bytes": 1649223,
+      "archive_bytes": 178730
+    },
+    {
+      "source": "reports/natural_episode_v292/summary.json",
+      "archive": "reports/publication/v327_snapshot/natural_episode_v292/summary.json.gz",
+      "source_bytes": 14373089,
+      "archive_bytes": 1168676
+    },
+    {
+      "source": "reports/natural_model_revision_v281/summary.json",
+      "archive": "reports/publication/v327_snapshot/natural_model_revision_v281/summary.json.gz",
+      "source_bytes": 4762227,
+      "archive_bytes": 544741
+    },
+    {
+      "source": "reports/natural_online_value_v286/summary.json",
+      "archive": "reports/publication/v327_snapshot/natural_online_value_v286/summary.json.gz",
+      "source_bytes": 3503274,
+      "archive_bytes": 287494
+    },
+    {
+      "source": "reports/natural_oracle_reference_v284/summary.json",
+      "archive": "reports/publication/v327_snapshot/natural_oracle_reference_v284/summary.json.gz",
+      "source_bytes": 1181986,
+      "archive_bytes": 130603
+    },
+    {
+      "source": "reports/net_learning_campaign_v280/summary.json",
+      "archive": "reports/publication/v327_snapshot/net_learning_campaign_v280/summary.json.gz",
+      "source_bytes": 1915410,
+      "archive_bytes": 82761
+    },
+    {
+      "source": "reports/ntuple_interference_v288/summary.json",
+      "archive": "reports/publication/v327_snapshot/ntuple_interference_v288/summary.json.gz",
+      "source_bytes": 8613056,
+      "archive_bytes": 502419
+    },
+    {
+      "source": "reports/online_factor_repair_v276/summary.json",
+      "archive": "reports/publication/v327_snapshot/online_factor_repair_v276/summary.json.gz",
+      "source_bytes": 5420861,
+      "archive_bytes": 126639
+    },
+    {
+      "source": "reports/online_support_continual_v275/summary_final.json",
+      "archive": "reports/publication/v327_snapshot/online_support_continual_v275/summary_final.json.gz",
+      "source_bytes": 4761001,
+      "archive_bytes": 88274
+    },
+    {
+      "source": "reports/online_support_continual_v275/summary_final_v2.json",
+      "archive": "reports/publication/v327_snapshot/online_support_continual_v275/summary_final_v2.json.gz",
+      "source_bytes": 5515399,
+      "archive_bytes": 121831
+    },
+    {
+      "source": "reports/online_support_continual_v275/summary_final_v3.json",
+      "archive": "reports/publication/v327_snapshot/online_support_continual_v275/summary_final_v3.json.gz",
+      "source_bytes": 5515399,
+      "archive_bytes": 121831
+    },
+    {
+      "source": "reports/policy_alignment_v306/summary.json",
+      "archive": "reports/publication/v327_snapshot/policy_alignment_v306/summary.json.gz",
+      "source_bytes": 13109890,
+      "archive_bytes": 1151843
+    },
+    {
+      "source": "reports/query_supervision_v319/summary.json",
+      "archive": "reports/publication/v327_snapshot/query_supervision_v319/summary.json.gz",
+      "source_bytes": 11853389,
+      "archive_bytes": 997583
+    },
+    {
+      "source": "reports/retained_critic_v287/summary.json",
+      "archive": "reports/publication/v327_snapshot/retained_critic_v287/summary.json.gz",
+      "source_bytes": 1986612,
+      "archive_bytes": 234273
+    },
+    {
+      "source": "reports/retention_mechanism_v318/summary.json",
+      "archive": "reports/publication/v327_snapshot/retention_mechanism_v318/summary.json.gz",
+      "source_bytes": 4497009,
+      "archive_bytes": 332655
+    },
+    {
+      "source": "reports/reward_targets_v321/summary.json",
+      "archive": "reports/publication/v327_snapshot/reward_targets_v321/summary.json.gz",
+      "source_bytes": 22580324,
+      "archive_bytes": 1374044
+    },
+    {
+      "source": "reports/routed_bellman_v295/summary.json",
+      "archive": "reports/publication/v327_snapshot/routed_bellman_v295/summary.json.gz",
+      "source_bytes": 14443101,
+      "archive_bytes": 1252379
+    },
+    {
+      "source": "reports/shadow_deployment_v293/summary.json",
+      "archive": "reports/publication/v327_snapshot/shadow_deployment_v293/summary.json.gz",
+      "source_bytes": 24737722,
+      "archive_bytes": 1994494
+    },
+    {
+      "source": "reports/split_risk_v301/summary.json",
+      "archive": "reports/publication/v327_snapshot/split_risk_v301/summary.json.gz",
+      "source_bytes": 17906839,
+      "archive_bytes": 2565486
+    },
+    {
+      "source": "reports/stable_b_v298/summary.json",
+      "archive": "reports/publication/v327_snapshot/stable_b_v298/summary.json.gz",
+      "source_bytes": 12518911,
+      "archive_bytes": 1643693
+    },
+    {
+      "source": "reports/teacher_calibration_v320/summary.json",
+      "archive": "reports/publication/v327_snapshot/teacher_calibration_v320/summary.json.gz",
+      "source_bytes": 32705331,
+      "archive_bytes": 2492051
+    },
+    {
+      "source": "reports/terminal_win_v326/summary.json",
+      "archive": "reports/publication/v327_snapshot/terminal_win_v326/summary.json.gz",
+      "source_bytes": 37509278,
+      "archive_bytes": 2722050
+    },
+    {
+      "source": "reports/v175_runtime_tmp/failed_attempt1/output/branch_roster.json",
+      "archive": "reports/publication/v327_snapshot/v175_runtime_tmp/failed_attempt1/output/branch_roster.json.gz",
+      "source_bytes": 2691896,
+      "archive_bytes": 90389
+    },
+    {
+      "source": "reports/win_confirmation_v323/summary.json",
+      "archive": "reports/publication/v327_snapshot/win_confirmation_v323/summary.json.gz",
+      "source_bytes": 4500069,
+      "archive_bytes": 370379
+    },
+    {
+      "source": "reports/win_learning_v324/summary.json",
+      "archive": "reports/publication/v327_snapshot/win_learning_v324/summary.json.gz",
+      "source_bytes": 22881124,
+      "archive_bytes": 1962731
+    },
+    {
+      "source": "reports/win_terminal_v325/summary.json",
+      "archive": "reports/publication/v327_snapshot/win_terminal_v325/summary.json.gz",
+      "source_bytes": 37735977,
+      "archive_bytes": 3085642
+    }
+  ],
+  "updated_link_documents": [
+    "reports/BANK_BELIEF_V310_RESULTS.md",
+    "reports/BELLMAN_CONSEQUENCES_V136_RESULTS.md",
+    "reports/B_CONTROL_V300_RESULTS.md",
+    "reports/B_MECHANISM_V299_RESULTS.md",
+    "reports/CAPACITY_RANKING_V103_RESULTS.md",
+    "reports/CLOSED_LOOP_V313_RESULTS.md",
+    "reports/COMPONENT_HEADS_V322_RESULTS.md",
+    "reports/COMPONENT_TARGETS_V315_RESULTS.md",
+    "reports/CONDITIONAL_PAIRS_V194_RESULTS.md",
+    "reports/CONFIRMED_CONTEXT_V309_RESULTS.md",
+    "reports/CONTEXTUAL_NTUPLE_V134_RESULTS.md",
+    "reports/CONTEXT_CONTINUAL_V305_RESULTS.md",
+    "reports/CONTINUAL_V303_RESULTS.md",
+    "reports/COUNTERFACTUAL_OUTCOMES_V143_RESULTS.md",
+    "reports/COVERAGE_EXPANSION_V145_RESULTS.md",
+    "reports/CROSSED_FACTOR_CONTINUAL_V271_RESULTS.md",
+    "reports/CROSSED_FACTOR_QUERY_CONTINUAL_V272_RESULTS.md",
+    "reports/CROSSED_FACTOR_STRUCTURE_CONTINUAL_V273_RESULTS.md",
+    "reports/CROSSED_FACTOR_SUPPORT_CONTINUAL_V274_RESULTS.md",
+    "reports/DIRECT_SHARED_VALUE_V95_RESULTS.md",
+    "reports/DIRECT_STRATEGY_V297_RESULTS.md",
+    "reports/DIRECT_VALIDATION_V114_RESULTS.md",
+    "reports/EXPERIENCE_REPLAY_V307_RESULTS.md",
+    "reports/FACTORED_FRAGMENTS_V139_RESULTS.md",
+    "reports/FEATURE_CONFLICTS_V189_RESULTS.md",
+    "reports/FIRST_ADAPT_V308_RESULTS.md",
+    "reports/FORCED_ACTIONS_V128_RESULTS.md",
+    "reports/FRESH_CONFIRMATION_V312_RESULTS.md",
+    "reports/FRESH_RANKING_V105_RESULTS.md",
+    "reports/FROZEN_HEAD_V109_RESULTS.md",
+    "reports/FROZEN_LEAF_PLANNING_V135_RESULTS.md",
+    "reports/GREEDY_TARGETS_V317_RESULTS.md",
+    "reports/GUARDED_FRAGMENTS_V138_RESULTS.md",
+    "reports/H1_CONTINUATION_V142_RESULTS.md",
+    "reports/HELDOUT_ORDER_REPLICATION_V101_RESULTS.md",
+    "reports/HISTORY_CONTROL_V304_RESULTS.md",
+    "reports/INCREMENTAL_RANKING_V107_RESULTS.md",
+    "reports/INDEPENDENT_EPISODE_V291_RESULTS.md",
+    "reports/INDEPENDENT_HISTORY_REPLICATION_V93_RESULTS.md",
+    "reports/JOINT_TERMINAL_V327_RESULTS.md",
+    "reports/KERNEL_TRANSFER_V193_RESULTS.md",
+    "reports/LABEL_PRECISION_V149_RESULTS.md",
+    "reports/LINEAR_CONTRIBUTION_V311_RESULTS.md",
+    "reports/LOCAL_RISK_V302_RESULTS.md",
+    "reports/LOCAL_TARGETS_V314_RESULTS.md",
+    "reports/LOCAL_TARGETS_V316_RESULTS.md",
+    "reports/LONG_HORIZON_ADVANTAGE_V296_RESULTS.md",
+    "reports/MODULE_DIAGNOSIS_V153_RESULTS.md",
+    "reports/MODULE_HOLDOUT_V155_RESULTS.md",
+    "reports/MODULE_REPAIR_V154_RESULTS.md",
+    "reports/MODULE_REPLICATION_V152_RESULTS.md",
+    "reports/MODULE_SEMANTICS_V156_RESULTS.md",
+    "reports/MULTISTEP_QUERY_TD_V133_RESULTS.md",
+    "reports/NATURAL_EPISODE_V292_RESULTS.md",
+    "reports/NATURAL_MODEL_DECISION_V283_V284_RESULTS.md",
+    "reports/NATURAL_REFERENCE_V104_RESULTS.md",
+    "reports/ONLINE_SUPPORT_CONTINUAL_V275_RESULTS.md",
+    "reports/PAIRED_BELLMAN_ADVANTAGE_V96_RESULTS.md",
+    "reports/PAIR_REGIONS_V195_RESULTS.md",
+    "reports/PAPER_EVIDENCE_STAGES_V280_V282_RESULTS.md",
+    "reports/POLICY_CALIBRATION_V129_RESULTS.md",
+    "reports/POLICY_DATA_V306_RESULTS.md",
+    "reports/PROGRAM_PLANNING_V140_RESULTS.md",
+    "reports/QUERY_BOUNDARY_LEARNING_V97_RESULTS.md",
+    "reports/QUERY_SUPERVISION_V319_RESULTS.md",
+    "reports/QUERY_UPDATE_V108_RESULTS.md",
+    "reports/REPLICA_RANKING_V102_RESULTS.md",
+    "reports/RETENTION_MECHANISM_V318_RESULTS.md",
+    "reports/REWARD_TARGETS_V321_RESULTS.md",
+    "reports/SHALLOW_SAMPLING_V141_RESULTS.md",
+    "reports/SHARED_BELLMAN_VALUE_V94_RESULTS.md",
+    "reports/SOURCE_COVERAGE_V185_RESULTS.md",
+    "reports/SPLIT_RISK_V301_RESULTS.md",
+    "reports/STABLE_B_V298_RESULTS.md",
+    "reports/TD_ATTRIBUTION_V132_RESULTS.md",
+    "reports/TEACHER_CALIBRATION_V320_RESULTS.md",
+    "reports/TERMINAL_ANCHOR_V99_RESULTS.md",
+    "reports/TERMINAL_SUPERVISION_V137_RESULTS.md",
+    "reports/TERMINAL_WIN_V326_RESULTS.md",
+    "reports/UTILITY_CONSOLIDATION_V118_RESULTS.md",
+    "reports/WIN_CONFIRMATION_V323_RESULTS.md",
+    "reports/WIN_LEARNING_V324_RESULTS.md",
+    "reports/WIN_TERMINAL_V325_RESULTS.md"
+  ],
+  "source_bytes": 1230750575,
+  "archive_bytes": 112863498,
+  "scientific_content": "Complete original JSON, compressed without modifying results, labels or provenance.",
+  "omitted": "Raw trajectories, NPZ heads, native builds, environments and caches remain local.",
+  "snapshot_generation": "One-time packaging of unpublished report JSON at least 1000000 bytes before the V327 commit."
+}

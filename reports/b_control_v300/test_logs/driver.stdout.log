@@ -1,0 +1,122 @@
+FF.F                                                                     [100%]
+=================================== FAILURES ===================================
+_ test_same_retained_data_fresh_source_heads_fixed_observed_target_and_static_eval _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x73517a356d40>
+
+    def test_same_retained_data_fresh_source_heads_fixed_observed_target_and_static_eval(monkeypatch):
+        template,data,old = fixture()
+        fresh_counts, target_probs = [],[]
+        def fresh(parent,kind,runtime):
+            head=QueryTD(parent,kind,runtime)
+            np.testing.assert_array_equal(head.weights,template.weights)
+            fresh_counts.append(head.updates)
+            return head
+        native_target = core.fit_control
+        def control(head,dataset,p,runtime):
+            target_probs.append(p)
+            return native_target(head,dataset,p,runtime)
+        monkeypatch.setattr(core,'QueryTD',fresh)
+        monkeypatch.setattr(core,'fit_control',control)
+        engine=Evaluator()
+>       row=core._run_lifecycle(template,data,old,BUILD,engine)
+
+tests/test_b_control_v300.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+template = <acfqp.science.controlled_predictive_online_query_td_v131.QueryTD object at 0x73517a356ad0>
+data = {'actor_memory_B_end': {'active_module_id': 0, 'block_size': 64, 'counts': {'beta_updates': 512, 'candidate_predictive...0],
+       [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], dtype=int32), 'costs': {}, 'ends': array([2, 4, 7]), ...}
+old = {'arms': {'EPISODE_MEAN_MC': {'fit': {'alpha': 0.0025, 'consolidation_counts': {'address_denominator_search_comparison...ve_scores': 0, 'module_creations': 0, 'module_reactivations': 0, ...}, 'method': 'LIBRARY', ...}}, 'lifecycle': 0, ...}
+runtime = PosixPath('/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/b_control_v300/runtime/tests_driver')
+engine = <test_b_control_v300.Evaluator object at 0x73517a2f9090>
+
+    def _run_lifecycle(template, data, old, runtime, engine):
+        life, parent = old['lifecycle'], old['parent']
+        memory = SpawnMemory.from_payload(data['fit_memory'])
+        p = memory.predict()
+        snapshot = dict(memory=memory.to_payload(), estimated_p_four=p)
+        if compact_dataset(data) != old['dataset'] or snapshot != old['evaluation_snapshot']:
+>           raise ValueError('Retained B data or fixed fit-prefix belief changed')
+E           ValueError: Retained B data or fixed fit-prefix belief changed
+
+src/acfqp/science/b_control_v300.py:57: ValueError
+___________________ test_driver_rejects_evaluation_feedback ____________________
+
+    def test_driver_rejects_evaluation_feedback():
+        template,data,old = fixture()
+        class Feedback(Evaluator):
+            def evaluate_games(self,*args,**kwargs):
+                result=super().evaluate_games(*args,**kwargs)
+                self.stream['cursor']+=1
+                return result
+        with pytest.raises(ValueError,match='Static scoring/evaluation'):
+>           core._run_lifecycle(template,data,old,BUILD,Feedback())
+
+tests/test_b_control_v300.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+template = <acfqp.science.controlled_predictive_online_query_td_v131.QueryTD object at 0x7351ca5e9480>
+data = {'actor_memory_B_end': {'active_module_id': 0, 'block_size': 64, 'counts': {'beta_updates': 512, 'candidate_predictive...0],
+       [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], dtype=int32), 'costs': {}, 'ends': array([2, 4, 7]), ...}
+old = {'arms': {'EPISODE_MEAN_MC': {'fit': {'alpha': 0.0025, 'consolidation_counts': {'address_denominator_search_comparison...ve_scores': 0, 'module_creations': 0, 'module_reactivations': 0, ...}, 'method': 'LIBRARY', ...}}, 'lifecycle': 0, ...}
+runtime = PosixPath('/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/b_control_v300/runtime/tests_driver')
+engine = <test_b_control_v300.test_driver_rejects_evaluation_feedback.<locals>.Feedback object at 0x7351ca5ea1d0>
+
+    def _run_lifecycle(template, data, old, runtime, engine):
+        life, parent = old['lifecycle'], old['parent']
+        memory = SpawnMemory.from_payload(data['fit_memory'])
+        p = memory.predict()
+        snapshot = dict(memory=memory.to_payload(), estimated_p_four=p)
+        if compact_dataset(data) != old['dataset'] or snapshot != old['evaluation_snapshot']:
+>           raise ValueError('Retained B data or fixed fit-prefix belief changed')
+E           ValueError: Retained B data or fixed fit-prefix belief changed
+
+src/acfqp/science/b_control_v300.py:57: ValueError
+
+During handling of the above exception, another exception occurred:
+
+    def test_driver_rejects_evaluation_feedback():
+        template,data,old = fixture()
+        class Feedback(Evaluator):
+            def evaluate_games(self,*args,**kwargs):
+                result=super().evaluate_games(*args,**kwargs)
+                self.stream['cursor']+=1
+                return result
+>       with pytest.raises(ValueError,match='Static scoring/evaluation'):
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'Static scoring/evaluation'
+E         Actual message: 'Retained B data or fixed fit-prefix belief changed'
+
+tests/test_b_control_v300.py:90: AssertionError
+__ test_costs_inherit_all_raw_once_and_charge_target_planning_and_processing ___
+
+    def test_costs_inherit_all_raw_once_and_charge_target_planning_and_processing():
+        template,data,old_life = fixture()
+>       life=core._run_lifecycle(template,data,old_life,BUILD,Evaluator())
+
+tests/test_b_control_v300.py:106: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+template = <acfqp.science.controlled_predictive_online_query_td_v131.QueryTD object at 0x73517a25ba00>
+data = {'actor_memory_B_end': {'active_module_id': 0, 'block_size': 64, 'counts': {'beta_updates': 512, 'candidate_predictive...0],
+       [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], dtype=int32), 'costs': {}, 'ends': array([2, 4, 7]), ...}
+old = {'arms': {'EPISODE_MEAN_MC': {'fit': {'alpha': 0.0025, 'consolidation_counts': {'address_denominator_search_comparison...ve_scores': 0, 'module_creations': 0, 'module_reactivations': 0, ...}, 'method': 'LIBRARY', ...}}, 'lifecycle': 0, ...}
+runtime = PosixPath('/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/b_control_v300/runtime/tests_driver')
+engine = <test_b_control_v300.Evaluator object at 0x73517a25b9a0>
+
+    def _run_lifecycle(template, data, old, runtime, engine):
+        life, parent = old['lifecycle'], old['parent']
+        memory = SpawnMemory.from_payload(data['fit_memory'])
+        p = memory.predict()
+        snapshot = dict(memory=memory.to_payload(), estimated_p_four=p)
+        if compact_dataset(data) != old['dataset'] or snapshot != old['evaluation_snapshot']:
+>           raise ValueError('Retained B data or fixed fit-prefix belief changed')
+E           ValueError: Retained B data or fixed fit-prefix belief changed
+
+src/acfqp/science/b_control_v300.py:57: ValueError
+=========================== short test summary info ============================
+FAILED tests/test_b_control_v300.py::test_same_retained_data_fresh_source_heads_fixed_observed_target_and_static_eval
+FAILED tests/test_b_control_v300.py::test_driver_rejects_evaluation_feedback
+FAILED tests/test_b_control_v300.py::test_costs_inherit_all_raw_once_and_charge_target_planning_and_processing
+3 failed, 1 passed in 2.03s

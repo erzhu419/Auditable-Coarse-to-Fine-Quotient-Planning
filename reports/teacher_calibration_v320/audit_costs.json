@@ -1,0 +1,16 @@
+{
+  "schema": "acfqp.teacher_calibration_complete_cost.v320",
+  "audit_status": "PASS",
+  "new_calibration_component_cpu_seconds": 422.618242729,
+  "full_calibration_process_tree_cpu_seconds": 425.57845899999995,
+  "final_serialization_and_shutdown_cpu_seconds": 2.960216270999979,
+  "calibration_monotonic_wall_seconds": 119.20475545499357,
+  "inherited_successful_source_v317_v319_full_cpu_seconds": 3012.9680964679997,
+  "full_economic_source_v317_v319_and_calibration_cpu_seconds": 3438.5465554679995,
+  "independent_audit_process_tree_cpu_seconds": 170.35255,
+  "independent_audit_monotonic_wall_seconds": 182.42133709500195,
+  "independent_audit_stderr_bytes": 0,
+  "new_raw_tiles": 13606558,
+  "reused_initial_spawn_members": 32768,
+  "scope": "Complete original calibration process tree includes final summary serialization and shutdown. Successful SOURCE/V317/V319 cost is inherited once. Independent reader CPU and wall are separate. No old full audit, source retraining, FIRST adaptation, new fitting, continuation acquisition or bootstrap resampling is repeated by the reader. Historical dynamics and archived failed-attempt CPU remain unknown."
+}

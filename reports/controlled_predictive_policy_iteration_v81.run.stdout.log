@@ -1,0 +1,181 @@
+{"phase": "behavior", "lifecycle": 0, "iteration": 1, "outcomes": {"LOST": 24}, "transitions": 12731}
+{"phase": "branches", "lifecycle": 0, "iteration": 1, "query": "reward", "completed_query_roots": 6, "transitions": 15985, "outcomes": {"LOST": 46}}
+{"phase": "branches", "lifecycle": 0, "iteration": 1, "query": "reward", "completed_query_roots": 12, "transitions": 29741, "outcomes": {"LOST": 83, "WON": 1}}
+{"phase": "branches", "lifecycle": 0, "iteration": 1, "query": "reward", "completed_query_roots": 18, "transitions": 43096, "outcomes": {"LOST": 124, "WON": 2}}
+{"phase": "branches", "lifecycle": 0, "iteration": 1, "query": "reward", "completed_query_roots": 24, "transitions": 55109, "outcomes": {"LOST": 164, "WON": 2}}
+{"phase": "branches", "lifecycle": 0, "iteration": 1, "query": "risk_goal", "completed_query_roots": 6, "transitions": 74638, "outcomes": {"LOST": 210, "WON": 2}}
+{"phase": "branches", "lifecycle": 0, "iteration": 1, "query": "risk_goal", "completed_query_roots": 12, "transitions": 88537, "outcomes": {"LOST": 246, "WON": 2}}
+{"phase": "branches", "lifecycle": 0, "iteration": 1, "query": "risk_goal", "completed_query_roots": 18, "transitions": 100896, "outcomes": {"LOST": 284, "WON": 2}}
+{"phase": "branches", "lifecycle": 0, "iteration": 1, "query": "risk_goal", "completed_query_roots": 24, "transitions": 113548, "outcomes": {"LOST": 326, "WON": 2}}
+{"phase": "learned", "lifecycle": 0, "iteration": 1, "records": 116, "training": 94, "heldout": 22}
+{"phase": "game", "lifecycle": 0, "iteration": 1, "method": "CURRENT", "query": "reward", "replica": 0, "score": 636, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 1, "method": "FROZEN_1", "query": "reward", "replica": 0, "score": 636, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 1, "method": "SHORT_REF", "query": "reward", "replica": 0, "score": 1640, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 1, "method": "TERMINAL_REF", "query": "reward", "replica": 0, "score": 3232, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 1, "method": "H2_ONLY", "query": "reward", "replica": 0, "score": 15904, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 1, "method": "FROZEN_1", "query": "risk_goal", "replica": 0, "score": 6336, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 1, "method": "SHORT_REF", "query": "risk_goal", "replica": 0, "score": 3456, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 1, "method": "TERMINAL_REF", "query": "risk_goal", "replica": 0, "score": 3232, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 1, "method": "H2_ONLY", "query": "risk_goal", "replica": 0, "score": 15904, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 1, "method": "CURRENT", "query": "risk_goal", "replica": 0, "score": 6336, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 1, "method": "FROZEN_1", "query": "reward", "replica": 1, "score": 200, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 1, "method": "SHORT_REF", "query": "reward", "replica": 1, "score": 1508, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 1, "method": "TERMINAL_REF", "query": "reward", "replica": 1, "score": 3168, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 1, "method": "H2_ONLY", "query": "reward", "replica": 1, "score": 15864, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 1, "method": "CURRENT", "query": "reward", "replica": 1, "score": 200, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 1, "method": "SHORT_REF", "query": "risk_goal", "replica": 1, "score": 5280, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 1, "method": "TERMINAL_REF", "query": "risk_goal", "replica": 1, "score": 3168, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 1, "method": "H2_ONLY", "query": "risk_goal", "replica": 1, "score": 15968, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 1, "method": "CURRENT", "query": "risk_goal", "replica": 1, "score": 6420, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 1, "method": "FROZEN_1", "query": "risk_goal", "replica": 1, "score": 6420, "status": "LOST"}
+{"phase": "behavior", "lifecycle": 0, "iteration": 2, "outcomes": {"LOST": 24}, "transitions": 6458}
+{"phase": "branches", "lifecycle": 0, "iteration": 2, "query": "reward", "completed_query_roots": 6, "transitions": 2079, "outcomes": {"LOST": 40}}
+{"phase": "branches", "lifecycle": 0, "iteration": 2, "query": "reward", "completed_query_roots": 12, "transitions": 5393, "outcomes": {"LOST": 84}}
+{"phase": "branches", "lifecycle": 0, "iteration": 2, "query": "reward", "completed_query_roots": 18, "transitions": 8940, "outcomes": {"LOST": 132}}
+{"phase": "branches", "lifecycle": 0, "iteration": 2, "query": "reward", "completed_query_roots": 24, "transitions": 12992, "outcomes": {"LOST": 176}}
+{"phase": "branches", "lifecycle": 0, "iteration": 2, "query": "risk_goal", "completed_query_roots": 6, "transitions": 19095, "outcomes": {"LOST": 210}}
+{"phase": "branches", "lifecycle": 0, "iteration": 2, "query": "risk_goal", "completed_query_roots": 12, "transitions": 25408, "outcomes": {"LOST": 252}}
+{"phase": "branches", "lifecycle": 0, "iteration": 2, "query": "risk_goal", "completed_query_roots": 18, "transitions": 34365, "outcomes": {"LOST": 294}}
+{"phase": "branches", "lifecycle": 0, "iteration": 2, "query": "risk_goal", "completed_query_roots": 24, "transitions": 41699, "outcomes": {"LOST": 336}}
+{"phase": "learned", "lifecycle": 0, "iteration": 2, "records": 120, "training": 98, "heldout": 22}
+{"phase": "game", "lifecycle": 0, "iteration": 2, "method": "FROZEN_1", "query": "reward", "replica": 0, "score": 636, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 2, "method": "SHORT_REF", "query": "reward", "replica": 0, "score": 1640, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 2, "method": "TERMINAL_REF", "query": "reward", "replica": 0, "score": 3232, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 2, "method": "H2_ONLY", "query": "reward", "replica": 0, "score": 15904, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 2, "method": "CURRENT", "query": "reward", "replica": 0, "score": 672, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 2, "method": "SHORT_REF", "query": "risk_goal", "replica": 0, "score": 3456, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 2, "method": "TERMINAL_REF", "query": "risk_goal", "replica": 0, "score": 3232, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 2, "method": "H2_ONLY", "query": "risk_goal", "replica": 0, "score": 15904, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 2, "method": "CURRENT", "query": "risk_goal", "replica": 0, "score": 5368, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 2, "method": "FROZEN_1", "query": "risk_goal", "replica": 0, "score": 6336, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 2, "method": "SHORT_REF", "query": "reward", "replica": 1, "score": 1508, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 2, "method": "TERMINAL_REF", "query": "reward", "replica": 1, "score": 3168, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 2, "method": "H2_ONLY", "query": "reward", "replica": 1, "score": 15864, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 2, "method": "CURRENT", "query": "reward", "replica": 1, "score": 1484, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 2, "method": "FROZEN_1", "query": "reward", "replica": 1, "score": 200, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 2, "method": "TERMINAL_REF", "query": "risk_goal", "replica": 1, "score": 3168, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 2, "method": "H2_ONLY", "query": "risk_goal", "replica": 1, "score": 15968, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 2, "method": "CURRENT", "query": "risk_goal", "replica": 1, "score": 3236, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 2, "method": "FROZEN_1", "query": "risk_goal", "replica": 1, "score": 6420, "status": "LOST"}
+{"phase": "game", "lifecycle": 0, "iteration": 2, "method": "SHORT_REF", "query": "risk_goal", "replica": 1, "score": 5280, "status": "LOST"}
+{"phase": "behavior", "lifecycle": 1, "iteration": 1, "outcomes": {"LOST": 24}, "transitions": 12178}
+{"phase": "branches", "lifecycle": 1, "iteration": 1, "query": "reward", "completed_query_roots": 6, "transitions": 12871, "outcomes": {"LOST": 38}}
+{"phase": "branches", "lifecycle": 1, "iteration": 1, "query": "reward", "completed_query_roots": 12, "transitions": 28246, "outcomes": {"LOST": 84}}
+{"phase": "branches", "lifecycle": 1, "iteration": 1, "query": "reward", "completed_query_roots": 18, "transitions": 48311, "outcomes": {"LOST": 128}}
+{"phase": "branches", "lifecycle": 1, "iteration": 1, "query": "reward", "completed_query_roots": 24, "transitions": 63557, "outcomes": {"LOST": 172}}
+{"phase": "branches", "lifecycle": 1, "iteration": 1, "query": "risk_goal", "completed_query_roots": 6, "transitions": 79260, "outcomes": {"LOST": 209, "WON": 1}}
+{"phase": "branches", "lifecycle": 1, "iteration": 1, "query": "risk_goal", "completed_query_roots": 12, "transitions": 89402, "outcomes": {"LOST": 251, "WON": 1}}
+{"phase": "branches", "lifecycle": 1, "iteration": 1, "query": "risk_goal", "completed_query_roots": 18, "transitions": 107957, "outcomes": {"LOST": 295, "WON": 1}}
+{"phase": "branches", "lifecycle": 1, "iteration": 1, "query": "risk_goal", "completed_query_roots": 24, "transitions": 127990, "outcomes": {"LOST": 341, "WON": 1}}
+{"phase": "learned", "lifecycle": 1, "iteration": 1, "records": 123, "training": 102, "heldout": 21}
+{"phase": "game", "lifecycle": 1, "iteration": 1, "method": "FROZEN_1", "query": "reward", "replica": 0, "score": 740, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 1, "method": "SHORT_REF", "query": "reward", "replica": 0, "score": 3772, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 1, "method": "TERMINAL_REF", "query": "reward", "replica": 0, "score": 2456, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 1, "method": "H2_ONLY", "query": "reward", "replica": 0, "score": 5632, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 1, "method": "CURRENT", "query": "reward", "replica": 0, "score": 740, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 1, "method": "SHORT_REF", "query": "risk_goal", "replica": 0, "score": 2420, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 1, "method": "TERMINAL_REF", "query": "risk_goal", "replica": 0, "score": 2456, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 1, "method": "H2_ONLY", "query": "risk_goal", "replica": 0, "score": 5632, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 1, "method": "CURRENT", "query": "risk_goal", "replica": 0, "score": 1308, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 1, "method": "FROZEN_1", "query": "risk_goal", "replica": 0, "score": 1308, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 1, "method": "SHORT_REF", "query": "reward", "replica": 1, "score": 3240, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 1, "method": "TERMINAL_REF", "query": "reward", "replica": 1, "score": 5616, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 1, "method": "H2_ONLY", "query": "reward", "replica": 1, "score": 7232, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 1, "method": "CURRENT", "query": "reward", "replica": 1, "score": 276, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 1, "method": "FROZEN_1", "query": "reward", "replica": 1, "score": 276, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 1, "method": "TERMINAL_REF", "query": "risk_goal", "replica": 1, "score": 5616, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 1, "method": "H2_ONLY", "query": "risk_goal", "replica": 1, "score": 7232, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 1, "method": "CURRENT", "query": "risk_goal", "replica": 1, "score": 1156, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 1, "method": "FROZEN_1", "query": "risk_goal", "replica": 1, "score": 1156, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 1, "method": "SHORT_REF", "query": "risk_goal", "replica": 1, "score": 1432, "status": "LOST"}
+{"phase": "behavior", "lifecycle": 1, "iteration": 2, "outcomes": {"LOST": 24}, "transitions": 3289}
+{"phase": "branches", "lifecycle": 1, "iteration": 2, "query": "reward", "completed_query_roots": 6, "transitions": 2226, "outcomes": {"LOST": 44}}
+{"phase": "branches", "lifecycle": 1, "iteration": 2, "query": "reward", "completed_query_roots": 12, "transitions": 4540, "outcomes": {"LOST": 90}}
+{"phase": "branches", "lifecycle": 1, "iteration": 2, "query": "reward", "completed_query_roots": 18, "transitions": 6522, "outcomes": {"LOST": 132}}
+{"phase": "branches", "lifecycle": 1, "iteration": 2, "query": "reward", "completed_query_roots": 24, "transitions": 8215, "outcomes": {"LOST": 176}}
+{"phase": "branches", "lifecycle": 1, "iteration": 2, "query": "risk_goal", "completed_query_roots": 6, "transitions": 12106, "outcomes": {"LOST": 214}}
+{"phase": "branches", "lifecycle": 1, "iteration": 2, "query": "risk_goal", "completed_query_roots": 12, "transitions": 15652, "outcomes": {"LOST": 248}}
+{"phase": "branches", "lifecycle": 1, "iteration": 2, "query": "risk_goal", "completed_query_roots": 18, "transitions": 21056, "outcomes": {"LOST": 294}}
+{"phase": "branches", "lifecycle": 1, "iteration": 2, "query": "risk_goal", "completed_query_roots": 24, "transitions": 26695, "outcomes": {"LOST": 340}}
+{"phase": "learned", "lifecycle": 1, "iteration": 2, "records": 122, "training": 103, "heldout": 19}
+{"phase": "game", "lifecycle": 1, "iteration": 2, "method": "SHORT_REF", "query": "reward", "replica": 0, "score": 3772, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 2, "method": "TERMINAL_REF", "query": "reward", "replica": 0, "score": 2456, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 2, "method": "H2_ONLY", "query": "reward", "replica": 0, "score": 5632, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 2, "method": "CURRENT", "query": "reward", "replica": 0, "score": 1356, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 2, "method": "FROZEN_1", "query": "reward", "replica": 0, "score": 740, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 2, "method": "TERMINAL_REF", "query": "risk_goal", "replica": 0, "score": 2456, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 2, "method": "H2_ONLY", "query": "risk_goal", "replica": 0, "score": 5632, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 2, "method": "CURRENT", "query": "risk_goal", "replica": 0, "score": 1272, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 2, "method": "FROZEN_1", "query": "risk_goal", "replica": 0, "score": 1308, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 2, "method": "SHORT_REF", "query": "risk_goal", "replica": 0, "score": 2420, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 2, "method": "TERMINAL_REF", "query": "reward", "replica": 1, "score": 5616, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 2, "method": "H2_ONLY", "query": "reward", "replica": 1, "score": 7232, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 2, "method": "CURRENT", "query": "reward", "replica": 1, "score": 616, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 2, "method": "FROZEN_1", "query": "reward", "replica": 1, "score": 276, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 2, "method": "SHORT_REF", "query": "reward", "replica": 1, "score": 3240, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 2, "method": "H2_ONLY", "query": "risk_goal", "replica": 1, "score": 7232, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 2, "method": "CURRENT", "query": "risk_goal", "replica": 1, "score": 1116, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 2, "method": "FROZEN_1", "query": "risk_goal", "replica": 1, "score": 1156, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 2, "method": "SHORT_REF", "query": "risk_goal", "replica": 1, "score": 1432, "status": "LOST"}
+{"phase": "game", "lifecycle": 1, "iteration": 2, "method": "TERMINAL_REF", "query": "risk_goal", "replica": 1, "score": 5616, "status": "LOST"}
+{"phase": "behavior", "lifecycle": 2, "iteration": 1, "outcomes": {"LOST": 24}, "transitions": 13609}
+{"phase": "branches", "lifecycle": 2, "iteration": 1, "query": "reward", "completed_query_roots": 6, "transitions": 9957, "outcomes": {"LOST": 42}}
+{"phase": "branches", "lifecycle": 2, "iteration": 1, "query": "reward", "completed_query_roots": 12, "transitions": 22348, "outcomes": {"LOST": 82}}
+{"phase": "branches", "lifecycle": 2, "iteration": 1, "query": "reward", "completed_query_roots": 18, "transitions": 38430, "outcomes": {"LOST": 128}}
+{"phase": "branches", "lifecycle": 2, "iteration": 1, "query": "reward", "completed_query_roots": 24, "transitions": 53332, "outcomes": {"LOST": 172}}
+{"phase": "branches", "lifecycle": 2, "iteration": 1, "query": "risk_goal", "completed_query_roots": 6, "transitions": 68717, "outcomes": {"LOST": 216}}
+{"phase": "branches", "lifecycle": 2, "iteration": 1, "query": "risk_goal", "completed_query_roots": 12, "transitions": 82392, "outcomes": {"LOST": 260}}
+{"phase": "branches", "lifecycle": 2, "iteration": 1, "query": "risk_goal", "completed_query_roots": 18, "transitions": 101657, "outcomes": {"LOST": 308}}
+{"phase": "branches", "lifecycle": 2, "iteration": 1, "query": "risk_goal", "completed_query_roots": 24, "transitions": 116678, "outcomes": {"LOST": 352}}
+{"phase": "learned", "lifecycle": 2, "iteration": 1, "records": 128, "training": 105, "heldout": 23}
+{"phase": "game", "lifecycle": 2, "iteration": 1, "method": "SHORT_REF", "query": "reward", "replica": 0, "score": 1704, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 1, "method": "TERMINAL_REF", "query": "reward", "replica": 0, "score": 2728, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 1, "method": "H2_ONLY", "query": "reward", "replica": 0, "score": 3224, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 1, "method": "CURRENT", "query": "reward", "replica": 0, "score": 1192, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 1, "method": "FROZEN_1", "query": "reward", "replica": 0, "score": 1192, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 1, "method": "TERMINAL_REF", "query": "risk_goal", "replica": 0, "score": 2728, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 1, "method": "H2_ONLY", "query": "risk_goal", "replica": 0, "score": 16056, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 1, "method": "CURRENT", "query": "risk_goal", "replica": 0, "score": 896, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 1, "method": "FROZEN_1", "query": "risk_goal", "replica": 0, "score": 896, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 1, "method": "SHORT_REF", "query": "risk_goal", "replica": 0, "score": 5420, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 1, "method": "TERMINAL_REF", "query": "reward", "replica": 1, "score": 2408, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 1, "method": "H2_ONLY", "query": "reward", "replica": 1, "score": 14864, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 1, "method": "CURRENT", "query": "reward", "replica": 1, "score": 1368, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 1, "method": "FROZEN_1", "query": "reward", "replica": 1, "score": 1368, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 1, "method": "SHORT_REF", "query": "reward", "replica": 1, "score": 4016, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 1, "method": "H2_ONLY", "query": "risk_goal", "replica": 1, "score": 14912, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 1, "method": "CURRENT", "query": "risk_goal", "replica": 1, "score": 568, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 1, "method": "FROZEN_1", "query": "risk_goal", "replica": 1, "score": 568, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 1, "method": "SHORT_REF", "query": "risk_goal", "replica": 1, "score": 1684, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 1, "method": "TERMINAL_REF", "query": "risk_goal", "replica": 1, "score": 2408, "status": "LOST"}
+{"phase": "behavior", "lifecycle": 2, "iteration": 2, "outcomes": {"LOST": 24}, "transitions": 3283}
+{"phase": "branches", "lifecycle": 2, "iteration": 2, "query": "reward", "completed_query_roots": 6, "transitions": 3639, "outcomes": {"LOST": 44}}
+{"phase": "branches", "lifecycle": 2, "iteration": 2, "query": "reward", "completed_query_roots": 12, "transitions": 7813, "outcomes": {"LOST": 88}}
+{"phase": "branches", "lifecycle": 2, "iteration": 2, "query": "reward", "completed_query_roots": 18, "transitions": 11299, "outcomes": {"LOST": 130}}
+{"phase": "branches", "lifecycle": 2, "iteration": 2, "query": "reward", "completed_query_roots": 24, "transitions": 16195, "outcomes": {"LOST": 178}}
+{"phase": "branches", "lifecycle": 2, "iteration": 2, "query": "risk_goal", "completed_query_roots": 6, "transitions": 18558, "outcomes": {"LOST": 226}}
+{"phase": "branches", "lifecycle": 2, "iteration": 2, "query": "risk_goal", "completed_query_roots": 12, "transitions": 20248, "outcomes": {"LOST": 266}}
+{"phase": "branches", "lifecycle": 2, "iteration": 2, "query": "risk_goal", "completed_query_roots": 18, "transitions": 22441, "outcomes": {"LOST": 310}}
+{"phase": "branches", "lifecycle": 2, "iteration": 2, "query": "risk_goal", "completed_query_roots": 24, "transitions": 24896, "outcomes": {"LOST": 354}}
+{"phase": "learned", "lifecycle": 2, "iteration": 2, "records": 129, "training": 108, "heldout": 21}
+{"phase": "game", "lifecycle": 2, "iteration": 2, "method": "TERMINAL_REF", "query": "reward", "replica": 0, "score": 2728, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 2, "method": "H2_ONLY", "query": "reward", "replica": 0, "score": 3224, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 2, "method": "CURRENT", "query": "reward", "replica": 0, "score": 1444, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 2, "method": "FROZEN_1", "query": "reward", "replica": 0, "score": 1192, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 2, "method": "SHORT_REF", "query": "reward", "replica": 0, "score": 1704, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 2, "method": "H2_ONLY", "query": "risk_goal", "replica": 0, "score": 16056, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 2, "method": "CURRENT", "query": "risk_goal", "replica": 0, "score": 660, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 2, "method": "FROZEN_1", "query": "risk_goal", "replica": 0, "score": 896, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 2, "method": "SHORT_REF", "query": "risk_goal", "replica": 0, "score": 5420, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 2, "method": "TERMINAL_REF", "query": "risk_goal", "replica": 0, "score": 2728, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 2, "method": "H2_ONLY", "query": "reward", "replica": 1, "score": 14864, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 2, "method": "CURRENT", "query": "reward", "replica": 1, "score": 3148, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 2, "method": "FROZEN_1", "query": "reward", "replica": 1, "score": 1368, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 2, "method": "SHORT_REF", "query": "reward", "replica": 1, "score": 4016, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 2, "method": "TERMINAL_REF", "query": "reward", "replica": 1, "score": 2408, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 2, "method": "CURRENT", "query": "risk_goal", "replica": 1, "score": 788, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 2, "method": "FROZEN_1", "query": "risk_goal", "replica": 1, "score": 568, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 2, "method": "SHORT_REF", "query": "risk_goal", "replica": 1, "score": 1684, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 2, "method": "TERMINAL_REF", "query": "risk_goal", "replica": 1, "score": 2408, "status": "LOST"}
+{"phase": "game", "lifecycle": 2, "iteration": 2, "method": "H2_ONLY", "query": "risk_goal", "replica": 1, "score": 14912, "status": "LOST"}
+{"phase": "complete", "seconds": 426.44978586101206}

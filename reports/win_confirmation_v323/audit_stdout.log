@@ -1,0 +1,17 @@
+{"event": "independent_win_confirmation_life_checked", "lifecycle": 1}
+{"event": "independent_win_confirmation_life_checked", "lifecycle": 2}
+{"event": "independent_win_confirmation_life_checked", "lifecycle": 3}
+{"event": "independent_win_confirmation_life_checked", "lifecycle": 0}
+{"event": "independent_win_confirmation_life_checked", "lifecycle": 5}
+{"event": "independent_win_confirmation_life_checked", "lifecycle": 6}
+{"event": "independent_win_confirmation_life_checked", "lifecycle": 7}
+{"event": "independent_win_confirmation_life_checked", "lifecycle": 4}
+{"event": "independent_win_confirmation_life_checked", "lifecycle": 9}
+{"event": "independent_win_confirmation_life_checked", "lifecycle": 10}
+{"event": "independent_win_confirmation_life_checked", "lifecycle": 11}
+{"event": "independent_win_confirmation_life_checked", "lifecycle": 8}
+{"event": "independent_win_confirmation_life_checked", "lifecycle": 13}
+{"event": "independent_win_confirmation_life_checked", "lifecycle": 14}
+{"event": "independent_win_confirmation_life_checked", "lifecycle": 15}
+{"event": "independent_win_confirmation_life_checked", "lifecycle": 12}
+{"event": "independent_win_confirmation_audit_complete", "status": "PASS", "primary_status": "SUPPORTED_GAIN", "retained_execution_gain": false}

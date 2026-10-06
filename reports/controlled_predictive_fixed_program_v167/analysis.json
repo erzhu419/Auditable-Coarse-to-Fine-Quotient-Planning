@@ -1,0 +1,2450 @@
+{
+  "schema": "acfqp.fixed_program.v167.analysis",
+  "valid": true,
+  "complete": true,
+  "primary_complete": true,
+  "checks": [
+    {
+      "name": "fixed_original_S0_candidate",
+      "passed": true
+    },
+    {
+      "name": "deterministic_original_fold_candidate",
+      "passed": true
+    },
+    {
+      "name": "fixed_source_EVAL_roots",
+      "passed": true
+    },
+    {
+      "name": "forced_BB_whole_suffix_program",
+      "passed": true
+    },
+    {
+      "name": "prelaunch_inputs_fixed",
+      "passed": true
+    },
+    {
+      "name": "frozen_execution_settings",
+      "passed": true
+    },
+    {
+      "name": "run_phase_complete",
+      "passed": true
+    },
+    {
+      "name": "all_fresh_branch_plans",
+      "passed": true
+    },
+    {
+      "name": "four_fresh_lifecycles",
+      "passed": true
+    },
+    {
+      "name": "life_0:fixed_branch_cohort",
+      "passed": true
+    },
+    {
+      "name": "life_0:compact_cohort",
+      "passed": true
+    },
+    {
+      "name": "life_0:readonly_rule",
+      "passed": true
+    },
+    {
+      "name": "life_0:cost:physical_branches",
+      "passed": true
+    },
+    {
+      "name": "life_0:cost:environment_counts",
+      "passed": true
+    },
+    {
+      "name": "life_0:cost:policy_counts",
+      "passed": true
+    },
+    {
+      "name": "life_0:cost:program_setup_counts",
+      "passed": true
+    },
+    {
+      "name": "life_0:cost:statuses",
+      "passed": true
+    },
+    {
+      "name": "life_1:fixed_branch_cohort",
+      "passed": true
+    },
+    {
+      "name": "life_1:compact_cohort",
+      "passed": true
+    },
+    {
+      "name": "life_1:readonly_rule",
+      "passed": true
+    },
+    {
+      "name": "life_1:cost:physical_branches",
+      "passed": true
+    },
+    {
+      "name": "life_1:cost:environment_counts",
+      "passed": true
+    },
+    {
+      "name": "life_1:cost:policy_counts",
+      "passed": true
+    },
+    {
+      "name": "life_1:cost:program_setup_counts",
+      "passed": true
+    },
+    {
+      "name": "life_1:cost:statuses",
+      "passed": true
+    },
+    {
+      "name": "life_2:fixed_branch_cohort",
+      "passed": true
+    },
+    {
+      "name": "life_2:compact_cohort",
+      "passed": true
+    },
+    {
+      "name": "life_2:readonly_rule",
+      "passed": true
+    },
+    {
+      "name": "life_2:cost:physical_branches",
+      "passed": true
+    },
+    {
+      "name": "life_2:cost:environment_counts",
+      "passed": true
+    },
+    {
+      "name": "life_2:cost:policy_counts",
+      "passed": true
+    },
+    {
+      "name": "life_2:cost:program_setup_counts",
+      "passed": true
+    },
+    {
+      "name": "life_2:cost:statuses",
+      "passed": true
+    },
+    {
+      "name": "life_3:fixed_branch_cohort",
+      "passed": true
+    },
+    {
+      "name": "life_3:compact_cohort",
+      "passed": true
+    },
+    {
+      "name": "life_3:readonly_rule",
+      "passed": true
+    },
+    {
+      "name": "life_3:cost:physical_branches",
+      "passed": true
+    },
+    {
+      "name": "life_3:cost:environment_counts",
+      "passed": true
+    },
+    {
+      "name": "life_3:cost:policy_counts",
+      "passed": true
+    },
+    {
+      "name": "life_3:cost:program_setup_counts",
+      "passed": true
+    },
+    {
+      "name": "life_3:cost:statuses",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:branch_arrays",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:branch_settings",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:branch_actions",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:branch_rng",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:branch_terminal",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:branch_returns",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:branch_environment",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:branch_phases",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:branch_program_attempt",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:branch_program_work",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:branch_program_orientation",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:branch_feedback_event",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:branch_feedback_observed_state",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:branch_program_exit",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:branch_h2_choice",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:branch_policy_totals",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:branch_no_learning",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:branch_seconds",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:complete_root_action_values",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:root_action_values",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:greedy_choice",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:frozen_trace_identity",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:frozen_root_board",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:frozen_executed_program",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:compact_matches_trace",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:teacher_bank",
+      "passed": true
+    },
+    {
+      "name": "fresh_replay:teacher_totals",
+      "passed": true
+    },
+    {
+      "name": "fresh_complete_fixed_roster",
+      "passed": true
+    },
+    {
+      "name": "all_32_roots_retained",
+      "passed": true
+    },
+    {
+      "name": "fresh_primary_statistics",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:0:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:0:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:0:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:0:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:0:risk1:2:0",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:0:risk1:2:1",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:0:risk1:3:0",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:0:risk1:3:1",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:1:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:1:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:1:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:1:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:1:risk1:2:0",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:1:risk1:2:1",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:1:risk1:3:0",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:1:risk1:3:1",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:2:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:2:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:2:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:2:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:2:risk1:2:0",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:2:risk1:2:1",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:2:risk1:3:0",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:2:risk1:3:1",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:3:risk1:0:0",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:3:risk1:0:1",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:3:risk1:1:0",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:3:risk1:1:1",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:3:risk1:2:0",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:3:risk1:2:1",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:3:risk1:3:0",
+      "passed": true
+    },
+    {
+      "name": "fresh_root:EVAL_SOURCE:3:risk1:3:1",
+      "passed": true
+    },
+    {
+      "name": "program_execution_diagnostics",
+      "passed": true
+    }
+  ],
+  "passed_checks": 104,
+  "total_checks": 104,
+  "comparison": {
+    "query": "risk1",
+    "contrast": "S0_B-H2",
+    "roots": 32,
+    "metrics": {
+      "utility": {
+        "complete": true,
+        "mean": -0.20189285278320312,
+        "mean_variance": 0.008450918294450578,
+        "conditional_suffix_se": 0.0919288762818875,
+        "conditional_suffix_ci95": [
+          -0.3820734502957026,
+          -0.021712255270703612
+        ]
+      },
+      "reward": {
+        "complete": true,
+        "mean": -0.09251785278320312,
+        "mean_variance": 0.0036707191640743984,
+        "conditional_suffix_se": 0.0605864602372048,
+        "conditional_suffix_ci95": [
+          -0.21126731484812453,
+          0.026231609281718277
+        ]
+      },
+      "failure": {
+        "complete": true,
+        "mean": 0.0546875,
+        "mean_variance": 0.0003072102864583333,
+        "conditional_suffix_se": 0.017527415281733166,
+        "conditional_suffix_ci95": [
+          0.020333766047802994,
+          0.08904123395219701
+        ]
+      },
+      "success": {
+        "complete": true,
+        "mean": -0.0546875,
+        "mean_variance": 0.0003072102864583333,
+        "conditional_suffix_se": 0.017527415281733166,
+        "conditional_suffix_ci95": [
+          -0.08904123395219701,
+          -0.020333766047802994
+        ]
+      }
+    },
+    "per_history": [
+      {
+        "life": 0,
+        "roots": 8,
+        "metrics": {
+          "utility": {
+            "complete": true,
+            "mean": -0.0846099853515625,
+            "mean_variance": 0.0354721505039682,
+            "conditional_suffix_se": 0.18834051742513666,
+            "conditional_suffix_ci95": [
+              -0.45375739950483035,
+              0.28453742880170535
+            ]
+          },
+          "reward": {
+            "complete": true,
+            "mean": 0.0091400146484375,
+            "mean_variance": 0.017182298361634214,
+            "conditional_suffix_se": 0.13108126624973615,
+            "conditional_suffix_ci95": [
+              -0.24777926720104537,
+              0.2660592964979204
+            ]
+          },
+          "failure": {
+            "complete": true,
+            "mean": 0.046875,
+            "mean_variance": 0.0011881510416666668,
+            "conditional_suffix_se": 0.03446956689119646,
+            "conditional_suffix_ci95": [
+              -0.020685351106745048,
+              0.11443535110674505
+            ]
+          },
+          "success": {
+            "complete": true,
+            "mean": -0.046875,
+            "mean_variance": 0.0011881510416666668,
+            "conditional_suffix_se": 0.03446956689119646,
+            "conditional_suffix_ci95": [
+              -0.11443535110674505,
+              0.020685351106745048
+            ]
+          }
+        }
+      },
+      {
+        "life": 1,
+        "roots": 8,
+        "metrics": {
+          "utility": {
+            "complete": true,
+            "mean": -0.2816925048828125,
+            "mean_variance": 0.026826748919362823,
+            "conditional_suffix_se": 0.16378873257755805,
+            "conditional_suffix_ci95": [
+              -0.6027184207348263,
+              0.03933341096920129
+            ]
+          },
+          "reward": {
+            "complete": true,
+            "mean": -0.1879425048828125,
+            "mean_variance": 0.0108595069963485,
+            "conditional_suffix_se": 0.10420895833059891,
+            "conditional_suffix_ci95": [
+              -0.39219206321078637,
+              0.016307053445161368
+            ]
+          },
+          "failure": {
+            "complete": true,
+            "mean": 0.046875,
+            "mean_variance": 0.00107421875,
+            "conditional_suffix_se": 0.03277527650531724,
+            "conditional_suffix_ci95": [
+              -0.01736454195042178,
+              0.11111454195042178
+            ]
+          },
+          "success": {
+            "complete": true,
+            "mean": -0.046875,
+            "mean_variance": 0.00107421875,
+            "conditional_suffix_se": 0.03277527650531724,
+            "conditional_suffix_ci95": [
+              -0.11111454195042178,
+              0.01736454195042178
+            ]
+          }
+        }
+      },
+      {
+        "life": 2,
+        "roots": 8,
+        "metrics": {
+          "utility": {
+            "complete": true,
+            "mean": -0.1139678955078125,
+            "mean_variance": 0.04076140142666797,
+            "conditional_suffix_se": 0.20189453045258055,
+            "conditional_suffix_ci95": [
+              -0.5096811751948704,
+              0.2817453841792454
+            ]
+          },
+          "reward": {
+            "complete": true,
+            "mean": -0.0514678955078125,
+            "mean_variance": 0.018121872516348957,
+            "conditional_suffix_se": 0.13461750449458257,
+            "conditional_suffix_ci95": [
+              -0.3153182043171943,
+              0.21238241330156932
+            ]
+          },
+          "failure": {
+            "complete": true,
+            "mean": 0.03125,
+            "mean_variance": 0.001318359375,
+            "conditional_suffix_se": 0.036309218870694535,
+            "conditional_suffix_ci95": [
+              -0.03991606898656129,
+              0.10241606898656129
+            ]
+          },
+          "success": {
+            "complete": true,
+            "mean": -0.03125,
+            "mean_variance": 0.001318359375,
+            "conditional_suffix_se": 0.036309218870694535,
+            "conditional_suffix_ci95": [
+              -0.10241606898656129,
+              0.03991606898656129
+            ]
+          }
+        }
+      },
+      {
+        "life": 3,
+        "roots": 8,
+        "metrics": {
+          "utility": {
+            "complete": true,
+            "mean": -0.327301025390625,
+            "mean_variance": 0.03215439186121027,
+            "conditional_suffix_se": 0.17931645730721502,
+            "conditional_suffix_ci95": [
+              -0.6787612817127664,
+              0.02415923093151645
+            ]
+          },
+          "reward": {
+            "complete": true,
+            "mean": -0.139801025390625,
+            "mean_variance": 0.012567828750858705,
+            "conditional_suffix_se": 0.11210632788053806,
+            "conditional_suffix_ci95": [
+              -0.3595294280364796,
+              0.07992737725522961
+            ]
+          },
+          "failure": {
+            "complete": true,
+            "mean": 0.09375,
+            "mean_variance": 0.0013346354166666667,
+            "conditional_suffix_se": 0.03653266232656288,
+            "conditional_suffix_ci95": [
+              0.022145981839936754,
+              0.16535401816006323
+            ]
+          },
+          "success": {
+            "complete": true,
+            "mean": -0.09375,
+            "mean_variance": 0.0013346354166666667,
+            "conditional_suffix_se": 0.03653266232656288,
+            "conditional_suffix_ci95": [
+              -0.16535401816006323,
+              -0.022145981839936754
+            ]
+          }
+        }
+      }
+    ],
+    "complete": true
+  },
+  "metrics": {
+    "utility": {
+      "complete": true,
+      "mean": -0.20189285278320312,
+      "mean_variance": 0.008450918294450578,
+      "conditional_suffix_se": 0.0919288762818875,
+      "conditional_suffix_ci95": [
+        -0.3820734502957026,
+        -0.021712255270703612
+      ]
+    },
+    "reward": {
+      "complete": true,
+      "mean": -0.09251785278320312,
+      "mean_variance": 0.0036707191640743984,
+      "conditional_suffix_se": 0.0605864602372048,
+      "conditional_suffix_ci95": [
+        -0.21126731484812453,
+        0.026231609281718277
+      ]
+    },
+    "failure": {
+      "complete": true,
+      "mean": 0.0546875,
+      "mean_variance": 0.0003072102864583333,
+      "conditional_suffix_se": 0.017527415281733166,
+      "conditional_suffix_ci95": [
+        0.020333766047802994,
+        0.08904123395219701
+      ]
+    },
+    "success": {
+      "complete": true,
+      "mean": -0.0546875,
+      "mean_variance": 0.0003072102864583333,
+      "conditional_suffix_se": 0.017527415281733166,
+      "conditional_suffix_ci95": [
+        -0.08904123395219701,
+        -0.020333766047802994
+      ]
+    }
+  },
+  "costs": {
+    "physical_games": 0,
+    "physical_branches": 1024,
+    "environment_counts": {
+      "ground_state_status_calls": 502026,
+      "ground_status_internal_swipe_calls": 2005672,
+      "ground_swipe_calls": 2506674,
+      "ground_explicit_swipe_calls": 501002,
+      "environment_random_draws": 1002004,
+      "sampled_transitions": 501002
+    },
+    "policy_counts": {
+      "forced_decisions": 499918,
+      "policy_risk1_choose_calls": 499918,
+      "policy_risk1_learned_swipe_calls": 79128464,
+      "policy_risk1_line_table_lookups": 316513856,
+      "policy_risk1_legal_swipes": 68886692,
+      "policy_risk1_learned_terminal_checks": 88668808,
+      "policy_risk1_value_predictions": 67042969,
+      "policy_risk1_table_lookups": 2145375008,
+      "policy_risk1_root_swipe_calls": 1999672,
+      "policy_risk1_root_legal_actions": 1786095,
+      "policy_risk1_leaf_choose_calls": 19282198,
+      "policy_risk1_second_ply_swipe_calls": 77128792,
+      "policy_risk1_generated_spawn_outcomes": 19282198,
+      "policy_risk1_spawn_rank1_outcomes": 9641099,
+      "policy_risk1_spawn_rank2_outcomes": 9641099,
+      "policy_risk1_expanded_postspawn_states": 19282198,
+      "policy_risk1_expectimax_probability_products": 19282198,
+      "policy_risk1_expectimax_probability_sums": 19282198,
+      "policy_risk1_terminal_goal_bypasses": 60882,
+      "policy_risk1_root_goal_actions": 3254,
+      "program_action_checks": 1410,
+      "program_learned_swipe_calls": 1410,
+      "program_learned_line_rewrites": 5640,
+      "feedback_probe_checks": 416,
+      "feedback_learned_swipe_calls": 416,
+      "feedback_learned_line_rewrites": 1664,
+      "policy_risk1_leaf_terminal_loss_states": 9734
+    },
+    "program_setup_counts": {
+      "program_board_transforms": 4096,
+      "program_action_transports": 4096
+    },
+    "statuses": {
+      "WON": 608,
+      "LOST": 416
+    },
+    "decision_seconds": 52.99499130779441,
+    "analysis_replay_swipes": 4006086,
+    "new_environment_samples": 501002,
+    "new_parameter_updates": 0,
+    "inherited_cost_refs": [
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_coverage_expansion_v145/analysis.json",
+        "fields": [
+          "costs",
+          "inherited_work"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_transfer_diagnosis_v146/analysis.json",
+        "fields": [
+          "costs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_transfer_diagnosis_v146/verification.json",
+        "fields": [
+          "work"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_shared_local_advantage_v147/analysis.json",
+        "fields": [
+          "costs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_independent_labels_v148/analysis.json",
+        "fields": [
+          "costs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v148_runtime_tmp/provisional_summary.json",
+        "fields": [
+          "work",
+          "seconds"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_label_precision_v149/analysis.json",
+        "fields": [
+          "costs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v149_runtime_tmp/retained_label_preflight.json",
+        "fields": [
+          "seconds",
+          "source_reads_per_implementation",
+          "implementations"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v149_runtime_tmp/provisional_summary.json",
+        "fields": [
+          "work"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_crossfit_shrinkage_v150/analysis.json",
+        "fields": [
+          "costs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v150_runtime_tmp/retained_label_preflight.json",
+        "fields": [
+          "seconds",
+          "source_reads_per_implementation",
+          "implementations"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v150_runtime_tmp/provisional_summary.json",
+        "fields": [
+          "work",
+          "seconds"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_policy_modules_v151/analysis.json",
+        "fields": [
+          "costs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v151_runtime_tmp/provisional_summary.json",
+        "fields": [
+          "work",
+          "seconds"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v151_runtime_tmp/runner_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v151_runtime_tmp/analyzer_checks.json",
+        "fields": [
+          "work_refs",
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_module_replication_v152/analysis.json",
+        "fields": [
+          "costs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v152_runtime_tmp/runner_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v152_runtime_tmp/analyzer_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_module_diagnosis_v153/analysis.json",
+        "fields": [
+          "costs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v153_runtime_tmp/core_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v153_runtime_tmp/runner_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v153_runtime_tmp/metrics_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v153_runtime_tmp/analyzer_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_module_repair_v154/analysis.json",
+        "fields": [
+          "costs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v154_runtime_tmp/runner_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v154_runtime_tmp/metrics_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v154_runtime_tmp/analyzer_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_module_holdout_v155/analysis.json",
+        "fields": [
+          "costs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v155_runtime_tmp/runner_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v155_runtime_tmp/metrics_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v155_runtime_tmp/analyzer_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_module_semantics_v156/analysis.json",
+        "fields": [
+          "costs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v156_runtime_tmp/core_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v156_runtime_tmp/runner_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v156_runtime_tmp/metrics_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v156_runtime_tmp/analyzer_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_module_split_half_v157/analysis.json",
+        "fields": [
+          "costs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v157_runtime_tmp/core_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v157_runtime_tmp/runner_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v157_runtime_tmp/analyzer_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_module_precision_v158/analysis.json",
+        "fields": [
+          "costs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v158_runtime_tmp/core_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v158_runtime_tmp/runner_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v158_runtime_tmp/analyzer_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_module_control_variate_v159/analysis.json",
+        "fields": [
+          "costs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v159_runtime_tmp/core_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v159_runtime_tmp/runner_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v159_runtime_tmp/analyzer_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_module_mobility_v160/analysis.json",
+        "fields": [
+          "costs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v160_runtime_tmp/core_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v160_runtime_tmp/runner_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v160_runtime_tmp/analyzer_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_program_consolidation_v161/analysis.json",
+        "fields": [
+          "costs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v161_runtime_tmp/core_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v161_runtime_tmp/runner_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v161_runtime_tmp/analyzer_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_feedback_program_v162/analysis.json",
+        "fields": [
+          "costs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v162_runtime_tmp/core_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v162_runtime_tmp/runner_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v162_runtime_tmp/analyzer_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_consequence_program_v163/analysis.json",
+        "fields": [
+          "costs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v163_runtime_tmp/core_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v163_runtime_tmp/runner_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v163_runtime_tmp/analyzer_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_supported_program_v164/analysis.json",
+        "fields": [
+          "costs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v164_runtime_tmp/core_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v164_runtime_tmp/runner_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v164_runtime_tmp/analyzer_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_program_headroom_v165/result.json",
+        "fields": [
+          "costs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v165_runtime_tmp/core_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v165_runtime_tmp/analyzer_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v165_runtime_tmp/stage_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_program_ranking_v166/result.json",
+        "fields": [
+          "costs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v166_runtime_tmp/core_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v166_runtime_tmp/analyzer_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v166_runtime_tmp/stage_checks.json",
+        "fields": [
+          "attempts"
+        ]
+      }
+    ],
+    "inherited_v164_environment_samples": 4122785,
+    "this_stage_test_refs": [
+      "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v167_runtime_tmp/core_checks.json",
+      "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v167_runtime_tmp/runner_checks.json",
+      "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v167_runtime_tmp/analyzer_checks.json"
+    ],
+    "teacher_accounting": [
+      {
+        "phase": "EVAL",
+        "life": 0,
+        "query": "risk1",
+        "loads": {
+          "reference": {
+            "checkpoint": 524288,
+            "model_ref": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_contextual_ntuple_v134/life_0/risk1_SINGLE_524288.npz",
+            "updates": 524210,
+            "parameter_count": 7086244
+          },
+          "parent": {
+            "source_policy": "reward",
+            "source_updates": 2712659,
+            "load_counts": {
+              "checkpoint_loads": 1,
+              "checkpoint_loaded_parameters": 1325377
+            },
+            "load_seconds": 0.5421565400010877,
+            "setup_counts": {
+              "cpp_compilations": 1,
+              "lookup_line_rewrites": 14641,
+              "allocated_weight_parameters": 7086244,
+              "allocated_weight_bytes": 56689952
+            },
+            "setup_seconds": 0.41796611199970357
+          },
+          "leaf": {
+            "setup_counts": {
+              "cpp_library_cache_hits": 1,
+              "lookup_table_cache_hits": 1,
+              "allocated_weight_parameters": 7086244,
+              "allocated_weight_bytes": 56689952
+            },
+            "setup_seconds": 0.12065558500034967,
+            "load_counts": {
+              "checkpoint_loads": 1,
+              "inner_checkpoint_loads": 1,
+              "inner_checkpoint_loaded_parameters": 1412046
+            },
+            "load_seconds": 0.12065558500034967,
+            "state": {
+              "updates": 524210,
+              "readonly": true,
+              "kind": "PRIOR",
+              "offset": -0.7886421387173326
+            }
+          },
+          "teacher": {
+            "setup_counts": {
+              "cpp_compilations": 1,
+              "cpp_translation_units_compiled": 3
+            },
+            "setup_seconds": 0.7189195899991319,
+            "spawn_probabilities": [
+              0.8946377132727675,
+              0.10536228672723244
+            ]
+          }
+        },
+        "parent_before": {
+          "updates": 2712659,
+          "readonly": true
+        },
+        "leaf_before": {
+          "updates": 524210,
+          "readonly": true,
+          "kind": "PRIOR",
+          "offset": -0.7886421387173326
+        },
+        "parent_after": {
+          "updates": 2712659,
+          "readonly": true
+        },
+        "leaf_after": {
+          "updates": 524210,
+          "readonly": true,
+          "kind": "PRIOR",
+          "offset": -0.7886421387173326
+        },
+        "total_counts": {
+          "choose_calls": 119083,
+          "learned_swipe_calls": 18779572,
+          "line_table_lookups": 75118288,
+          "legal_swipes": 16356325,
+          "learned_terminal_checks": 21051218,
+          "value_predictions": 15916910,
+          "table_lookups": 509341120,
+          "root_swipe_calls": 476332,
+          "root_legal_actions": 425663,
+          "leaf_choose_calls": 4575810,
+          "second_ply_swipe_calls": 18303240,
+          "generated_spawn_outcomes": 4575810,
+          "spawn_rank1_outcomes": 2287905,
+          "spawn_rank2_outcomes": 2287905,
+          "expanded_postspawn_states": 4575810,
+          "expectimax_probability_products": 4575810,
+          "expectimax_probability_sums": 4575810,
+          "terminal_goal_bypasses": 14530,
+          "root_goal_actions": 778,
+          "leaf_terminal_loss_states": 2389
+        }
+      },
+      {
+        "phase": "EVAL",
+        "life": 0,
+        "query": "risk8",
+        "loads": {
+          "reference": {
+            "checkpoint": 524288,
+            "model_ref": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_contextual_ntuple_v134/life_0/risk8_SINGLE_524288.npz",
+            "updates": 524213,
+            "parameter_count": 7086244
+          },
+          "parent": {
+            "source_policy": "risk_goal",
+            "source_updates": 2765038,
+            "load_counts": {
+              "checkpoint_loads": 1,
+              "checkpoint_loaded_parameters": 1783258
+            },
+            "load_seconds": 0.4732540679997328,
+            "setup_counts": {
+              "cpp_compilations": 1,
+              "lookup_table_cache_hits": 1,
+              "allocated_weight_parameters": 7086244,
+              "allocated_weight_bytes": 56689952
+            },
+            "setup_seconds": 0.3117548979989806
+          },
+          "leaf": {
+            "setup_counts": {
+              "cpp_library_cache_hits": 1,
+              "lookup_table_cache_hits": 1,
+              "allocated_weight_parameters": 7086244,
+              "allocated_weight_bytes": 56689952
+            },
+            "setup_seconds": 0.16493578500012518,
+            "load_counts": {
+              "checkpoint_loads": 1,
+              "inner_checkpoint_loads": 1,
+              "inner_checkpoint_loaded_parameters": 1892448
+            },
+            "load_seconds": 0.16493578500012518,
+            "state": {
+              "updates": 524213,
+              "readonly": true,
+              "kind": "PRIOR",
+              "offset": -2.9634244560580076
+            }
+          },
+          "teacher": {
+            "setup_counts": {
+              "cpp_compilations": 1,
+              "cpp_translation_units_compiled": 3
+            },
+            "setup_seconds": 0.7461073489994305,
+            "spawn_probabilities": [
+              0.8946377132727675,
+              0.10536228672723244
+            ]
+          }
+        },
+        "parent_before": {
+          "updates": 2765038,
+          "readonly": true
+        },
+        "leaf_before": {
+          "updates": 524213,
+          "readonly": true,
+          "kind": "PRIOR",
+          "offset": -2.9634244560580076
+        },
+        "parent_after": {
+          "updates": 2765038,
+          "readonly": true
+        },
+        "leaf_after": {
+          "updates": 524213,
+          "readonly": true,
+          "kind": "PRIOR",
+          "offset": -2.9634244560580076
+        },
+        "total_counts": {}
+      },
+      {
+        "phase": "EVAL",
+        "life": 1,
+        "query": "risk1",
+        "loads": {
+          "reference": {
+            "checkpoint": 524288,
+            "model_ref": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_contextual_ntuple_v134/life_1/risk1_SINGLE_524288.npz",
+            "updates": 524214,
+            "parameter_count": 7086244
+          },
+          "parent": {
+            "source_policy": "reward",
+            "source_updates": 2751197,
+            "load_counts": {
+              "checkpoint_loads": 1,
+              "checkpoint_loaded_parameters": 1377945
+            },
+            "load_seconds": 0.543334796999261,
+            "setup_counts": {
+              "cpp_compilations": 1,
+              "lookup_line_rewrites": 14641,
+              "allocated_weight_parameters": 7086244,
+              "allocated_weight_bytes": 56689952
+            },
+            "setup_seconds": 0.41754981800113455
+          },
+          "leaf": {
+            "setup_counts": {
+              "cpp_library_cache_hits": 1,
+              "lookup_table_cache_hits": 1,
+              "allocated_weight_parameters": 7086244,
+              "allocated_weight_bytes": 56689952
+            },
+            "setup_seconds": 0.12598930399872188,
+            "load_counts": {
+              "checkpoint_loads": 1,
+              "inner_checkpoint_loads": 1,
+              "inner_checkpoint_loaded_parameters": 1458550
+            },
+            "load_seconds": 0.12598930399872188,
+            "state": {
+              "updates": 524214,
+              "readonly": true,
+              "kind": "PRIOR",
+              "offset": -0.7276690485072842
+            }
+          },
+          "teacher": {
+            "setup_counts": {
+              "cpp_compilations": 1,
+              "cpp_translation_units_compiled": 3
+            },
+            "setup_seconds": 0.7344315939990338,
+            "spawn_probabilities": [
+              0.8950804383306132,
+              0.1049195616693868
+            ]
+          }
+        },
+        "parent_before": {
+          "updates": 2751197,
+          "readonly": true
+        },
+        "leaf_before": {
+          "updates": 524214,
+          "readonly": true,
+          "kind": "PRIOR",
+          "offset": -0.7276690485072842
+        },
+        "parent_after": {
+          "updates": 2751197,
+          "readonly": true
+        },
+        "leaf_after": {
+          "updates": 524214,
+          "readonly": true,
+          "kind": "PRIOR",
+          "offset": -0.7276690485072842
+        },
+        "total_counts": {
+          "choose_calls": 125569,
+          "learned_swipe_calls": 20260716,
+          "line_table_lookups": 81042864,
+          "legal_swipes": 17649542,
+          "learned_terminal_checks": 22714721,
+          "value_predictions": 17181784,
+          "table_lookups": 549817088,
+          "root_swipe_calls": 502276,
+          "root_legal_actions": 449198,
+          "leaf_choose_calls": 4939610,
+          "second_ply_swipe_calls": 19758440,
+          "generated_spawn_outcomes": 4939610,
+          "spawn_rank1_outcomes": 2469805,
+          "spawn_rank2_outcomes": 2469805,
+          "expanded_postspawn_states": 4939610,
+          "expectimax_probability_products": 4939610,
+          "expectimax_probability_sums": 4939610,
+          "terminal_goal_bypasses": 19534,
+          "root_goal_actions": 974,
+          "leaf_terminal_loss_states": 2264
+        }
+      },
+      {
+        "phase": "EVAL",
+        "life": 1,
+        "query": "risk8",
+        "loads": {
+          "reference": {
+            "checkpoint": 524288,
+            "model_ref": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_contextual_ntuple_v134/life_1/risk8_SINGLE_524288.npz",
+            "updates": 524219,
+            "parameter_count": 7086244
+          },
+          "parent": {
+            "source_policy": "risk_goal",
+            "source_updates": 2808438,
+            "load_counts": {
+              "checkpoint_loads": 1,
+              "checkpoint_loaded_parameters": 1796218
+            },
+            "load_seconds": 0.5098128019999422,
+            "setup_counts": {
+              "cpp_compilations": 1,
+              "lookup_table_cache_hits": 1,
+              "allocated_weight_parameters": 7086244,
+              "allocated_weight_bytes": 56689952
+            },
+            "setup_seconds": 0.3389748650006368
+          },
+          "leaf": {
+            "setup_counts": {
+              "cpp_library_cache_hits": 1,
+              "lookup_table_cache_hits": 1,
+              "allocated_weight_parameters": 7086244,
+              "allocated_weight_bytes": 56689952
+            },
+            "setup_seconds": 0.16600612599904707,
+            "load_counts": {
+              "checkpoint_loads": 1,
+              "inner_checkpoint_loads": 1,
+              "inner_checkpoint_loaded_parameters": 1912132
+            },
+            "load_seconds": 0.16600612599904707,
+            "state": {
+              "updates": 524219,
+              "readonly": true,
+              "kind": "PRIOR",
+              "offset": -2.92701036502059
+            }
+          },
+          "teacher": {
+            "setup_counts": {
+              "cpp_compilations": 1,
+              "cpp_translation_units_compiled": 3
+            },
+            "setup_seconds": 0.7742130680016999,
+            "spawn_probabilities": [
+              0.8950804383306132,
+              0.1049195616693868
+            ]
+          }
+        },
+        "parent_before": {
+          "updates": 2808438,
+          "readonly": true
+        },
+        "leaf_before": {
+          "updates": 524219,
+          "readonly": true,
+          "kind": "PRIOR",
+          "offset": -2.92701036502059
+        },
+        "parent_after": {
+          "updates": 2808438,
+          "readonly": true
+        },
+        "leaf_after": {
+          "updates": 524219,
+          "readonly": true,
+          "kind": "PRIOR",
+          "offset": -2.92701036502059
+        },
+        "total_counts": {}
+      },
+      {
+        "phase": "EVAL",
+        "life": 2,
+        "query": "risk1",
+        "loads": {
+          "reference": {
+            "checkpoint": 524288,
+            "model_ref": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_contextual_ntuple_v134/life_2/risk1_SINGLE_524288.npz",
+            "updates": 524222,
+            "parameter_count": 7086244
+          },
+          "parent": {
+            "source_policy": "reward",
+            "source_updates": 2734023,
+            "load_counts": {
+              "checkpoint_loads": 1,
+              "checkpoint_loaded_parameters": 1334662
+            },
+            "load_seconds": 0.5417418929991982,
+            "setup_counts": {
+              "cpp_compilations": 1,
+              "lookup_line_rewrites": 14641,
+              "allocated_weight_parameters": 7086244,
+              "allocated_weight_bytes": 56689952
+            },
+            "setup_seconds": 0.4166142949998175
+          },
+          "leaf": {
+            "setup_counts": {
+              "cpp_library_cache_hits": 1,
+              "lookup_table_cache_hits": 1,
+              "allocated_weight_parameters": 7086244,
+              "allocated_weight_bytes": 56689952
+            },
+            "setup_seconds": 0.12190892800026631,
+            "load_counts": {
+              "checkpoint_loads": 1,
+              "inner_checkpoint_loads": 1,
+              "inner_checkpoint_loaded_parameters": 1412440
+            },
+            "load_seconds": 0.12190892800026631,
+            "state": {
+              "updates": 524222,
+              "readonly": true,
+              "kind": "PRIOR",
+              "offset": -0.8114080687223489
+            }
+          },
+          "teacher": {
+            "setup_counts": {
+              "cpp_compilations": 1,
+              "cpp_translation_units_compiled": 3
+            },
+            "setup_seconds": 0.7876100659996155,
+            "spawn_probabilities": [
+              0.8942011834319527,
+              0.10579881656804734
+            ]
+          }
+        },
+        "parent_before": {
+          "updates": 2734023,
+          "readonly": true
+        },
+        "leaf_before": {
+          "updates": 524222,
+          "readonly": true,
+          "kind": "PRIOR",
+          "offset": -0.8114080687223489
+        },
+        "parent_after": {
+          "updates": 2734023,
+          "readonly": true
+        },
+        "leaf_after": {
+          "updates": 524222,
+          "readonly": true,
+          "kind": "PRIOR",
+          "offset": -0.8114080687223489
+        },
+        "total_counts": {
+          "choose_calls": 133541,
+          "learned_swipe_calls": 21247340,
+          "line_table_lookups": 84989360,
+          "legal_swipes": 18498314,
+          "learned_terminal_checks": 23810149,
+          "value_predictions": 18005830,
+          "table_lookups": 576186560,
+          "root_swipe_calls": 534164,
+          "root_legal_actions": 476952,
+          "leaf_choose_calls": 5178294,
+          "second_ply_swipe_calls": 20713176,
+          "generated_spawn_outcomes": 5178294,
+          "spawn_rank1_outcomes": 2589147,
+          "spawn_rank2_outcomes": 2589147,
+          "expanded_postspawn_states": 5178294,
+          "expectimax_probability_products": 5178294,
+          "expectimax_probability_sums": 5178294,
+          "leaf_terminal_loss_states": 2309,
+          "terminal_goal_bypasses": 16374,
+          "root_goal_actions": 842
+        }
+      },
+      {
+        "phase": "EVAL",
+        "life": 2,
+        "query": "risk8",
+        "loads": {
+          "reference": {
+            "checkpoint": 524288,
+            "model_ref": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_contextual_ntuple_v134/life_2/risk8_SINGLE_524288.npz",
+            "updates": 524218,
+            "parameter_count": 7086244
+          },
+          "parent": {
+            "source_policy": "risk_goal",
+            "source_updates": 2819175,
+            "load_counts": {
+              "checkpoint_loads": 1,
+              "checkpoint_loaded_parameters": 1802353
+            },
+            "load_seconds": 0.5983567080002103,
+            "setup_counts": {
+              "cpp_compilations": 1,
+              "lookup_table_cache_hits": 1,
+              "allocated_weight_parameters": 7086244,
+              "allocated_weight_bytes": 56689952
+            },
+            "setup_seconds": 0.4324427730007301
+          },
+          "leaf": {
+            "setup_counts": {
+              "cpp_library_cache_hits": 1,
+              "lookup_table_cache_hits": 1,
+              "allocated_weight_parameters": 7086244,
+              "allocated_weight_bytes": 56689952
+            },
+            "setup_seconds": 0.16349186499974167,
+            "load_counts": {
+              "checkpoint_loads": 1,
+              "inner_checkpoint_loads": 1,
+              "inner_checkpoint_loaded_parameters": 1915277
+            },
+            "load_seconds": 0.16349186499974167,
+            "state": {
+              "updates": 524218,
+              "readonly": true,
+              "kind": "PRIOR",
+              "offset": -2.989447112526064
+            }
+          },
+          "teacher": {
+            "setup_counts": {
+              "cpp_compilations": 1,
+              "cpp_translation_units_compiled": 3
+            },
+            "setup_seconds": 0.7704320650009322,
+            "spawn_probabilities": [
+              0.8942011834319527,
+              0.10579881656804734
+            ]
+          }
+        },
+        "parent_before": {
+          "updates": 2819175,
+          "readonly": true
+        },
+        "leaf_before": {
+          "updates": 524218,
+          "readonly": true,
+          "kind": "PRIOR",
+          "offset": -2.989447112526064
+        },
+        "parent_after": {
+          "updates": 2819175,
+          "readonly": true
+        },
+        "leaf_after": {
+          "updates": 524218,
+          "readonly": true,
+          "kind": "PRIOR",
+          "offset": -2.989447112526064
+        },
+        "total_counts": {}
+      },
+      {
+        "phase": "EVAL",
+        "life": 3,
+        "query": "risk1",
+        "loads": {
+          "reference": {
+            "checkpoint": 524288,
+            "model_ref": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_contextual_ntuple_v134/life_3/risk1_SINGLE_524288.npz",
+            "updates": 524231,
+            "parameter_count": 7086244
+          },
+          "parent": {
+            "source_policy": "reward",
+            "source_updates": 2728487,
+            "load_counts": {
+              "checkpoint_loads": 1,
+              "checkpoint_loaded_parameters": 1351926
+            },
+            "load_seconds": 0.5418928149993008,
+            "setup_counts": {
+              "cpp_compilations": 1,
+              "lookup_line_rewrites": 14641,
+              "allocated_weight_parameters": 7086244,
+              "allocated_weight_bytes": 56689952
+            },
+            "setup_seconds": 0.41658030200051144
+          },
+          "leaf": {
+            "setup_counts": {
+              "cpp_library_cache_hits": 1,
+              "lookup_table_cache_hits": 1,
+              "allocated_weight_parameters": 7086244,
+              "allocated_weight_bytes": 56689952
+            },
+            "setup_seconds": 0.12784450000071956,
+            "load_counts": {
+              "checkpoint_loads": 1,
+              "inner_checkpoint_loads": 1,
+              "inner_checkpoint_loaded_parameters": 1435991
+            },
+            "load_seconds": 0.12784450000071956,
+            "state": {
+              "updates": 524231,
+              "readonly": true,
+              "kind": "PRIOR",
+              "offset": -0.7811936490651994
+            }
+          },
+          "teacher": {
+            "setup_counts": {
+              "cpp_compilations": 1,
+              "cpp_translation_units_compiled": 3
+            },
+            "setup_seconds": 0.7114279380002699,
+            "spawn_probabilities": [
+              0.8935431613052535,
+              0.10645683869474659
+            ]
+          }
+        },
+        "parent_before": {
+          "updates": 2728487,
+          "readonly": true
+        },
+        "leaf_before": {
+          "updates": 524231,
+          "readonly": true,
+          "kind": "PRIOR",
+          "offset": -0.7811936490651994
+        },
+        "parent_after": {
+          "updates": 2728487,
+          "readonly": true
+        },
+        "leaf_after": {
+          "updates": 524231,
+          "readonly": true,
+          "kind": "PRIOR",
+          "offset": -0.7811936490651994
+        },
+        "total_counts": {
+          "choose_calls": 121725,
+          "learned_swipe_calls": 18840836,
+          "line_table_lookups": 75363344,
+          "legal_swipes": 16382511,
+          "learned_terminal_checks": 21092720,
+          "value_predictions": 15938445,
+          "table_lookups": 510030240,
+          "root_swipe_calls": 486900,
+          "root_legal_actions": 434282,
+          "leaf_choose_calls": 4588484,
+          "second_ply_swipe_calls": 18353936,
+          "generated_spawn_outcomes": 4588484,
+          "spawn_rank1_outcomes": 2294242,
+          "spawn_rank2_outcomes": 2294242,
+          "expanded_postspawn_states": 4588484,
+          "expectimax_probability_products": 4588484,
+          "expectimax_probability_sums": 4588484,
+          "leaf_terminal_loss_states": 2772,
+          "terminal_goal_bypasses": 10444,
+          "root_goal_actions": 660
+        }
+      },
+      {
+        "phase": "EVAL",
+        "life": 3,
+        "query": "risk8",
+        "loads": {
+          "reference": {
+            "checkpoint": 524288,
+            "model_ref": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_contextual_ntuple_v134/life_3/risk8_SINGLE_524288.npz",
+            "updates": 524210,
+            "parameter_count": 7086244
+          },
+          "parent": {
+            "source_policy": "risk_goal",
+            "source_updates": 2804386,
+            "load_counts": {
+              "checkpoint_loads": 1,
+              "checkpoint_loaded_parameters": 1807827
+            },
+            "load_seconds": 0.47966127000108827,
+            "setup_counts": {
+              "cpp_compilations": 1,
+              "lookup_table_cache_hits": 1,
+              "allocated_weight_parameters": 7086244,
+              "allocated_weight_bytes": 56689952
+            },
+            "setup_seconds": 0.31246140700022806
+          },
+          "leaf": {
+            "setup_counts": {
+              "cpp_library_cache_hits": 1,
+              "lookup_table_cache_hits": 1,
+              "allocated_weight_parameters": 7086244,
+              "allocated_weight_bytes": 56689952
+            },
+            "setup_seconds": 0.16396112700022059,
+            "load_counts": {
+              "checkpoint_loads": 1,
+              "inner_checkpoint_loads": 1,
+              "inner_checkpoint_loaded_parameters": 1914650
+            },
+            "load_seconds": 0.16396112700022059,
+            "state": {
+              "updates": 524210,
+              "readonly": true,
+              "kind": "PRIOR",
+              "offset": -2.845378033033552
+            }
+          },
+          "teacher": {
+            "setup_counts": {
+              "cpp_compilations": 1,
+              "cpp_translation_units_compiled": 3
+            },
+            "setup_seconds": 0.7393621119990712,
+            "spawn_probabilities": [
+              0.8935431613052535,
+              0.10645683869474659
+            ]
+          }
+        },
+        "parent_before": {
+          "updates": 2804386,
+          "readonly": true
+        },
+        "leaf_before": {
+          "updates": 524210,
+          "readonly": true,
+          "kind": "PRIOR",
+          "offset": -2.845378033033552
+        },
+        "parent_after": {
+          "updates": 2804386,
+          "readonly": true
+        },
+        "leaf_after": {
+          "updates": 524210,
+          "readonly": true,
+          "kind": "PRIOR",
+          "offset": -2.845378033033552
+        },
+        "total_counts": {}
+      }
+    ]
+  },
+  "inherited_cost_refs": [
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_coverage_expansion_v145/analysis.json",
+      "fields": [
+        "costs",
+        "inherited_work"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_transfer_diagnosis_v146/analysis.json",
+      "fields": [
+        "costs"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_transfer_diagnosis_v146/verification.json",
+      "fields": [
+        "work"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_shared_local_advantage_v147/analysis.json",
+      "fields": [
+        "costs"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_independent_labels_v148/analysis.json",
+      "fields": [
+        "costs"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v148_runtime_tmp/provisional_summary.json",
+      "fields": [
+        "work",
+        "seconds"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_label_precision_v149/analysis.json",
+      "fields": [
+        "costs"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v149_runtime_tmp/retained_label_preflight.json",
+      "fields": [
+        "seconds",
+        "source_reads_per_implementation",
+        "implementations"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v149_runtime_tmp/provisional_summary.json",
+      "fields": [
+        "work"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_crossfit_shrinkage_v150/analysis.json",
+      "fields": [
+        "costs"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v150_runtime_tmp/retained_label_preflight.json",
+      "fields": [
+        "seconds",
+        "source_reads_per_implementation",
+        "implementations"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v150_runtime_tmp/provisional_summary.json",
+      "fields": [
+        "work",
+        "seconds"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_policy_modules_v151/analysis.json",
+      "fields": [
+        "costs"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v151_runtime_tmp/provisional_summary.json",
+      "fields": [
+        "work",
+        "seconds"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v151_runtime_tmp/runner_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v151_runtime_tmp/analyzer_checks.json",
+      "fields": [
+        "work_refs",
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_module_replication_v152/analysis.json",
+      "fields": [
+        "costs"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v152_runtime_tmp/runner_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v152_runtime_tmp/analyzer_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_module_diagnosis_v153/analysis.json",
+      "fields": [
+        "costs"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v153_runtime_tmp/core_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v153_runtime_tmp/runner_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v153_runtime_tmp/metrics_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v153_runtime_tmp/analyzer_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_module_repair_v154/analysis.json",
+      "fields": [
+        "costs"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v154_runtime_tmp/runner_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v154_runtime_tmp/metrics_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v154_runtime_tmp/analyzer_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_module_holdout_v155/analysis.json",
+      "fields": [
+        "costs"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v155_runtime_tmp/runner_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v155_runtime_tmp/metrics_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v155_runtime_tmp/analyzer_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_module_semantics_v156/analysis.json",
+      "fields": [
+        "costs"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v156_runtime_tmp/core_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v156_runtime_tmp/runner_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v156_runtime_tmp/metrics_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v156_runtime_tmp/analyzer_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_module_split_half_v157/analysis.json",
+      "fields": [
+        "costs"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v157_runtime_tmp/core_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v157_runtime_tmp/runner_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v157_runtime_tmp/analyzer_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_module_precision_v158/analysis.json",
+      "fields": [
+        "costs"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v158_runtime_tmp/core_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v158_runtime_tmp/runner_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v158_runtime_tmp/analyzer_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_module_control_variate_v159/analysis.json",
+      "fields": [
+        "costs"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v159_runtime_tmp/core_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v159_runtime_tmp/runner_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v159_runtime_tmp/analyzer_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_module_mobility_v160/analysis.json",
+      "fields": [
+        "costs"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v160_runtime_tmp/core_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v160_runtime_tmp/runner_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v160_runtime_tmp/analyzer_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_program_consolidation_v161/analysis.json",
+      "fields": [
+        "costs"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v161_runtime_tmp/core_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v161_runtime_tmp/runner_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v161_runtime_tmp/analyzer_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_feedback_program_v162/analysis.json",
+      "fields": [
+        "costs"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v162_runtime_tmp/core_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v162_runtime_tmp/runner_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v162_runtime_tmp/analyzer_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_consequence_program_v163/analysis.json",
+      "fields": [
+        "costs"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v163_runtime_tmp/core_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v163_runtime_tmp/runner_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v163_runtime_tmp/analyzer_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_supported_program_v164/analysis.json",
+      "fields": [
+        "costs"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v164_runtime_tmp/core_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v164_runtime_tmp/runner_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v164_runtime_tmp/analyzer_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_program_headroom_v165/result.json",
+      "fields": [
+        "costs"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v165_runtime_tmp/core_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v165_runtime_tmp/analyzer_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v165_runtime_tmp/stage_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_program_ranking_v166/result.json",
+      "fields": [
+        "costs"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v166_runtime_tmp/core_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v166_runtime_tmp/analyzer_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v166_runtime_tmp/stage_checks.json",
+      "fields": [
+        "attempts"
+      ]
+    }
+  ],
+  "seconds": 75.33801312200012
+}

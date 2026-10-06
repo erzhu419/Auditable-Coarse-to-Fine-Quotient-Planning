@@ -1,0 +1,12 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "tests_run": 8,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "model_updates": 0,
+      "scope": "finite prefix novelty, fixed local footprint, runtime fitting exclusion and paired coverage"
+    }
+  ]
+}

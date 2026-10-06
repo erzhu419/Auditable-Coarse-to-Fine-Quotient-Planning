@@ -1,0 +1,98 @@
+{"event": "reward_control_life_exact", "lifecycle": 0}
+{"event": "reward_control_life_exact", "lifecycle": 2}
+{"event": "reward_control_life_exact", "lifecycle": 1}
+{"event": "reward_control_life_exact", "lifecycle": 3}
+{"event": "reward_control_life_exact", "lifecycle": 4}
+{"event": "reward_control_life_exact", "lifecycle": 6}
+{"event": "reward_control_life_exact", "lifecycle": 5}
+{"event": "reward_control_life_exact", "lifecycle": 7}
+{"event": "reward_control_life_exact", "lifecycle": 8}
+{"event": "reward_control_life_exact", "lifecycle": 10}
+{"event": "reward_control_life_exact", "lifecycle": 11}
+{"event": "reward_control_life_exact", "lifecycle": 9}
+{"event": "reward_control_life_exact", "lifecycle": 12}
+{"event": "reward_control_life_exact", "lifecycle": 14}
+{"event": "reward_control_life_exact", "lifecycle": 15}
+{"event": "reward_control_life_exact", "lifecycle": 13}
+{"event": "reward_all_controls_exact_before_acquisition", "matched_versions": 128}
+{"event": "reward_intervention_round_complete", "lifecycle": 1, "task": "A", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 2, "task": "A", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 0, "task": "A", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 3, "task": "A", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 0, "task": "A", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 2, "task": "A", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 3, "task": "A", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 1, "task": "A", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 2, "task": "B", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 1, "task": "B", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 0, "task": "B", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 3, "task": "B", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 2, "task": "B", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 1, "task": "B", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 3, "task": "B", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 0, "task": "B", "round": 2}
+{"event": "reward_intervention_life_complete", "lifecycle": 2}
+{"event": "reward_intervention_life_complete", "lifecycle": 1}
+{"event": "reward_intervention_life_complete", "lifecycle": 3}
+{"event": "reward_intervention_life_complete", "lifecycle": 0}
+{"event": "reward_intervention_round_complete", "lifecycle": 6, "task": "A", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 5, "task": "A", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 7, "task": "A", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 4, "task": "A", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 6, "task": "A", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 5, "task": "A", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 7, "task": "A", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 4, "task": "A", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 6, "task": "B", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 5, "task": "B", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 7, "task": "B", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 4, "task": "B", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 5, "task": "B", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 6, "task": "B", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 7, "task": "B", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 4, "task": "B", "round": 2}
+{"event": "reward_intervention_life_complete", "lifecycle": 5}
+{"event": "reward_intervention_life_complete", "lifecycle": 6}
+{"event": "reward_intervention_life_complete", "lifecycle": 7}
+{"event": "reward_intervention_life_complete", "lifecycle": 4}
+{"event": "reward_intervention_round_complete", "lifecycle": 9, "task": "A", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 10, "task": "A", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 11, "task": "A", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 8, "task": "A", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 9, "task": "A", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 10, "task": "A", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 11, "task": "A", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 8, "task": "A", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 9, "task": "B", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 10, "task": "B", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 11, "task": "B", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 8, "task": "B", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 9, "task": "B", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 11, "task": "B", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 10, "task": "B", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 8, "task": "B", "round": 2}
+{"event": "reward_intervention_life_complete", "lifecycle": 9}
+{"event": "reward_intervention_life_complete", "lifecycle": 11}
+{"event": "reward_intervention_life_complete", "lifecycle": 10}
+{"event": "reward_intervention_life_complete", "lifecycle": 8}
+{"event": "reward_intervention_round_complete", "lifecycle": 15, "task": "A", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 13, "task": "A", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 14, "task": "A", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 12, "task": "A", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 13, "task": "A", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 15, "task": "A", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 14, "task": "A", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 12, "task": "A", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 15, "task": "B", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 13, "task": "B", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 14, "task": "B", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 12, "task": "B", "round": 1}
+{"event": "reward_intervention_round_complete", "lifecycle": 15, "task": "B", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 14, "task": "B", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 13, "task": "B", "round": 2}
+{"event": "reward_intervention_round_complete", "lifecycle": 12, "task": "B", "round": 2}
+{"event": "reward_intervention_life_complete", "lifecycle": 15}
+{"event": "reward_intervention_life_complete", "lifecycle": 14}
+{"event": "reward_intervention_life_complete", "lifecycle": 13}
+{"event": "reward_intervention_life_complete", "lifecycle": 12}
+{"event": "reward_targets_complete", "status": "EXPERIMENT_COMPLETE", "primary": "UNRESOLVED", "repaired": false}

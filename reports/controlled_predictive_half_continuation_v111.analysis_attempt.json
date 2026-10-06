@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "scripts/analyze_controlled_predictive_half_continuation_v111.py",
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_half_continuation_v111"
+  ],
+  "status": "complete",
+  "started_unix": 1789807853.1496704,
+  "returncode": 0,
+  "seconds": 0.2285849749969202,
+  "stderr_bytes": 0
+}

@@ -1,0 +1,17 @@
+{
+  "attempts": [
+    {
+      "tests": 8,
+      "failures": 0,
+      "geometry_work": {
+        "gram_dot_products": 26,
+        "eigendecompositions": 8,
+        "query_measures": 9,
+        "query_dot_products": 16
+      },
+      "newly_sampled_environment_transitions": 0,
+      "newly_sampled_model_transitions": 0,
+      "scope": "Synthetic signed sparse vectors; no environment, planner or model training."
+    }
+  ]
+}

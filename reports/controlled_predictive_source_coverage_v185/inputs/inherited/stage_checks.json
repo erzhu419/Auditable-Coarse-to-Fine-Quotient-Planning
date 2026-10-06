@@ -1,0 +1,341 @@
+{
+  "attempts": [
+    {
+      "stage": "main",
+      "command": [
+        "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+        "scripts/run_controlled_predictive_fresh_h3_confirmation_v184.py"
+      ],
+      "seconds": 24.70613668501028,
+      "exit_code": 0,
+      "stdout_ref": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v184_runtime_tmp/main.stdout",
+      "stderr_ref": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v184_runtime_tmp/main.stderr",
+      "stderr_bytes": 0
+    },
+    {
+      "stage": "audit",
+      "command": [
+        "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+        "scripts/analyze_controlled_predictive_fresh_h3_confirmation_v184.py",
+        "--directory",
+        "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_fresh_h3_confirmation_v184"
+      ],
+      "seconds": 3.33391818900418,
+      "exit_code": 0,
+      "stdout_ref": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v184_runtime_tmp/audit.stdout",
+      "stderr_ref": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v184_runtime_tmp/audit.stderr",
+      "stderr_bytes": 0
+    }
+  ],
+  "source_comparisons": [
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v184_runtime_tmp/run_checks.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v184_runtime_tmp/run_stage.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/__init__.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_afterstate_structure_v178.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_bellman_consequences_v136.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_causal_quotient_v171.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_confirmed_partition_v173.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_consequence_partition_v172.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_contextual_ntuple_v134.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_counterfactual_outcomes_v143.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_coverage_expansion_v145.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_exact_h3_v177.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_feedback_program_v162.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_fixed_program_v167.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_fresh_h3_confirmation_v184.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_frozen_leaf_planning_v135.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_h1_continuation_v142.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_module_diagnosis_v153.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_module_mobility_v160.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_module_split_half_v157.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_ntuple_regime_v121.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_paired_advantage_v144.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_policy_consequences_v126.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_policy_modules_v151.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_program_consolidation_v161.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_program_planning_v140.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_rank_layout_consequences_v182.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_shallow_sampling_v141.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_shared_consequences_v179.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_shared_local_advantage_v147.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/analyze_controlled_predictive_utility_partition_v174.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/run_controlled_predictive_exact_h3_v177.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/run_controlled_predictive_fresh_h3_confirmation_v184.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/verify_controlled_predictive_transfer_diagnosis_v146.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/specs/FRESH_H3_CONFIRMATION_V184.md",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/__init__.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/artifacts.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/build_coverage.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/core.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/domains/__init__.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/domains/g2048.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/domains/matching_buffer.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/domains/semantic.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/domains/standard_2048.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/enumeration.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/__init__.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/controlled_predictive_causal_forgetting_v66.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/controlled_predictive_causal_quotient_v171.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/controlled_predictive_compositional_contract_v69.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/controlled_predictive_consequence_partition_v172.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/controlled_predictive_exact_h3_v177.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/controlled_predictive_fresh_h3_confirmation_v184.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/controlled_predictive_lifelong_experience_v77.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/controlled_predictive_lifelong_planner_v77.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/controlled_predictive_ntuple_td_v120.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/controlled_predictive_paired_advantage_v144.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/controlled_predictive_paired_ntuple_v130.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/controlled_predictive_policy_modules_v151.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/controlled_predictive_program_consolidation_v161.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/controlled_predictive_quotient_v1.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/controlled_predictive_rank_layout_consequences_v182.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/controlled_predictive_regime_experience_v115.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/controlled_predictive_relational_dynamics_v69.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/controlled_predictive_rollout_consequences_v119.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/controlled_predictive_shared_consequences_v179.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/controlled_predictive_shared_local_advantage_v147.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/controlled_predictive_utility_partition_v174.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/src/acfqp/science/latent_resource_2048_v1.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/tests/test_fresh_h3_confirmation_analysis_v184.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/tests/test_fresh_h3_confirmation_core_v184.py",
+      "same": true
+    },
+    {
+      "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/tests/test_fresh_h3_confirmation_runner_v184.py",
+      "same": true
+    }
+  ],
+  "input_checks": [
+    {
+      "name": "retained_input:inputs/inherited/stage_checks.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input:inputs/inherited/v183_run.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input:inputs/inherited/ridge_models.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input:inputs/inherited/baseline_models.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input:inputs/inherited/learned_rule.json",
+      "passed": true
+    }
+  ],
+  "frozen_source_same": true,
+  "frozen_inputs_same": true,
+  "valid": true
+}

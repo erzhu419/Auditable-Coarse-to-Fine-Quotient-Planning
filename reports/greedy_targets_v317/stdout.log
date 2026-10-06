@@ -1,0 +1,97 @@
+{"event": "local_target_initial_complete", "lifecycle": 3, "task": "A", "context": 0}
+{"event": "local_target_initial_complete", "lifecycle": 1, "task": "A", "context": 0}
+{"event": "local_target_initial_complete", "lifecycle": 2, "task": "A", "context": 0}
+{"event": "local_target_initial_complete", "lifecycle": 0, "task": "A", "context": 0}
+{"event": "local_target_initial_complete", "lifecycle": 3, "task": "B", "context": 1}
+{"event": "local_target_initial_complete", "lifecycle": 1, "task": "B", "context": 1}
+{"event": "local_target_initial_complete", "lifecycle": 2, "task": "B", "context": 1}
+{"event": "local_target_initial_complete", "lifecycle": 0, "task": "B", "context": 1}
+{"event": "local_target_round_complete", "lifecycle": 3, "task": "A", "round_index": 1, "quota": 52248}
+{"event": "local_target_round_complete", "lifecycle": 1, "task": "A", "round_index": 1, "quota": 52277}
+{"event": "local_target_round_complete", "lifecycle": 2, "task": "A", "round_index": 1, "quota": 50866}
+{"event": "local_target_round_complete", "lifecycle": 0, "task": "A", "round_index": 1, "quota": 51168}
+{"event": "local_target_round_complete", "lifecycle": 3, "task": "B", "round_index": 1, "quota": 51320}
+{"event": "local_target_round_complete", "lifecycle": 1, "task": "B", "round_index": 1, "quota": 52472}
+{"event": "local_target_round_complete", "lifecycle": 2, "task": "B", "round_index": 1, "quota": 51483}
+{"event": "local_target_round_complete", "lifecycle": 0, "task": "B", "round_index": 1, "quota": 51909}
+{"event": "local_target_round_complete", "lifecycle": 3, "task": "A", "round_index": 2, "quota": 50995}
+{"event": "local_target_round_complete", "lifecycle": 1, "task": "A", "round_index": 2, "quota": 52188}
+{"event": "local_target_round_complete", "lifecycle": 2, "task": "A", "round_index": 2, "quota": 51282}
+{"event": "local_target_round_complete", "lifecycle": 0, "task": "A", "round_index": 2, "quota": 51578}
+{"event": "local_target_round_complete", "lifecycle": 3, "task": "B", "round_index": 2, "quota": 52968}
+{"event": "local_target_round_complete", "lifecycle": 1, "task": "B", "round_index": 2, "quota": 50924}
+{"event": "local_target_round_complete", "lifecycle": 2, "task": "B", "round_index": 2, "quota": 51608}
+{"event": "local_target_round_complete", "lifecycle": 0, "task": "B", "round_index": 2, "quota": 50826}
+{"event": "local_target_initial_complete", "lifecycle": 7, "task": "A", "context": 0}
+{"event": "local_target_initial_complete", "lifecycle": 5, "task": "A", "context": 0}
+{"event": "local_target_initial_complete", "lifecycle": 6, "task": "A", "context": 0}
+{"event": "local_target_initial_complete", "lifecycle": 4, "task": "A", "context": 0}
+{"event": "local_target_initial_complete", "lifecycle": 7, "task": "B", "context": 1}
+{"event": "local_target_initial_complete", "lifecycle": 5, "task": "B", "context": 1}
+{"event": "local_target_initial_complete", "lifecycle": 6, "task": "B", "context": 1}
+{"event": "local_target_initial_complete", "lifecycle": 4, "task": "B", "context": 1}
+{"event": "local_target_round_complete", "lifecycle": 7, "task": "A", "round_index": 1, "quota": 52408}
+{"event": "local_target_round_complete", "lifecycle": 5, "task": "A", "round_index": 1, "quota": 52436}
+{"event": "local_target_round_complete", "lifecycle": 6, "task": "A", "round_index": 1, "quota": 51157}
+{"event": "local_target_round_complete", "lifecycle": 4, "task": "A", "round_index": 1, "quota": 51021}
+{"event": "local_target_round_complete", "lifecycle": 7, "task": "B", "round_index": 1, "quota": 51634}
+{"event": "local_target_round_complete", "lifecycle": 5, "task": "B", "round_index": 1, "quota": 51204}
+{"event": "local_target_round_complete", "lifecycle": 4, "task": "B", "round_index": 1, "quota": 51511}
+{"event": "local_target_round_complete", "lifecycle": 6, "task": "B", "round_index": 1, "quota": 51844}
+{"event": "local_target_round_complete", "lifecycle": 7, "task": "A", "round_index": 2, "quota": 50711}
+{"event": "local_target_round_complete", "lifecycle": 5, "task": "A", "round_index": 2, "quota": 51513}
+{"event": "local_target_round_complete", "lifecycle": 4, "task": "A", "round_index": 2, "quota": 51603}
+{"event": "local_target_round_complete", "lifecycle": 6, "task": "A", "round_index": 2, "quota": 51629}
+{"event": "local_target_round_complete", "lifecycle": 7, "task": "B", "round_index": 2, "quota": 51754}
+{"event": "local_target_round_complete", "lifecycle": 5, "task": "B", "round_index": 2, "quota": 51645}
+{"event": "local_target_round_complete", "lifecycle": 4, "task": "B", "round_index": 2, "quota": 52268}
+{"event": "local_target_round_complete", "lifecycle": 6, "task": "B", "round_index": 2, "quota": 52010}
+{"event": "local_target_initial_complete", "lifecycle": 11, "task": "A", "context": 0}
+{"event": "local_target_initial_complete", "lifecycle": 9, "task": "A", "context": 0}
+{"event": "local_target_initial_complete", "lifecycle": 10, "task": "A", "context": 0}
+{"event": "local_target_initial_complete", "lifecycle": 8, "task": "A", "context": 0}
+{"event": "local_target_initial_complete", "lifecycle": 11, "task": "B", "context": 1}
+{"event": "local_target_initial_complete", "lifecycle": 9, "task": "B", "context": 1}
+{"event": "local_target_initial_complete", "lifecycle": 8, "task": "B", "context": 1}
+{"event": "local_target_initial_complete", "lifecycle": 10, "task": "B", "context": 1}
+{"event": "local_target_round_complete", "lifecycle": 11, "task": "A", "round_index": 1, "quota": 51831}
+{"event": "local_target_round_complete", "lifecycle": 9, "task": "A", "round_index": 1, "quota": 51774}
+{"event": "local_target_round_complete", "lifecycle": 10, "task": "A", "round_index": 1, "quota": 51095}
+{"event": "local_target_round_complete", "lifecycle": 8, "task": "A", "round_index": 1, "quota": 51855}
+{"event": "local_target_round_complete", "lifecycle": 11, "task": "B", "round_index": 1, "quota": 51988}
+{"event": "local_target_round_complete", "lifecycle": 9, "task": "B", "round_index": 1, "quota": 52842}
+{"event": "local_target_round_complete", "lifecycle": 10, "task": "B", "round_index": 1, "quota": 51311}
+{"event": "local_target_round_complete", "lifecycle": 8, "task": "B", "round_index": 1, "quota": 51521}
+{"event": "local_target_round_complete", "lifecycle": 11, "task": "A", "round_index": 2, "quota": 51345}
+{"event": "local_target_round_complete", "lifecycle": 9, "task": "A", "round_index": 2, "quota": 51025}
+{"event": "local_target_round_complete", "lifecycle": 10, "task": "A", "round_index": 2, "quota": 51185}
+{"event": "local_target_round_complete", "lifecycle": 8, "task": "A", "round_index": 2, "quota": 52552}
+{"event": "local_target_round_complete", "lifecycle": 11, "task": "B", "round_index": 2, "quota": 51327}
+{"event": "local_target_round_complete", "lifecycle": 9, "task": "B", "round_index": 2, "quota": 51037}
+{"event": "local_target_round_complete", "lifecycle": 10, "task": "B", "round_index": 2, "quota": 51624}
+{"event": "local_target_round_complete", "lifecycle": 8, "task": "B", "round_index": 2, "quota": 52424}
+{"event": "local_target_initial_complete", "lifecycle": 15, "task": "A", "context": 0}
+{"event": "local_target_initial_complete", "lifecycle": 13, "task": "A", "context": 0}
+{"event": "local_target_initial_complete", "lifecycle": 14, "task": "A", "context": 0}
+{"event": "local_target_initial_complete", "lifecycle": 12, "task": "A", "context": 0}
+{"event": "local_target_initial_complete", "lifecycle": 15, "task": "B", "context": 1}
+{"event": "local_target_initial_complete", "lifecycle": 13, "task": "B", "context": 1}
+{"event": "local_target_initial_complete", "lifecycle": 14, "task": "B", "context": 1}
+{"event": "local_target_initial_complete", "lifecycle": 12, "task": "B", "context": 1}
+{"event": "local_target_round_complete", "lifecycle": 15, "task": "A", "round_index": 1, "quota": 51943}
+{"event": "local_target_round_complete", "lifecycle": 13, "task": "A", "round_index": 1, "quota": 51689}
+{"event": "local_target_round_complete", "lifecycle": 14, "task": "A", "round_index": 1, "quota": 52373}
+{"event": "local_target_round_complete", "lifecycle": 12, "task": "A", "round_index": 1, "quota": 52289}
+{"event": "local_target_round_complete", "lifecycle": 15, "task": "B", "round_index": 1, "quota": 51509}
+{"event": "local_target_round_complete", "lifecycle": 13, "task": "B", "round_index": 1, "quota": 51867}
+{"event": "local_target_round_complete", "lifecycle": 14, "task": "B", "round_index": 1, "quota": 51058}
+{"event": "local_target_round_complete", "lifecycle": 12, "task": "B", "round_index": 1, "quota": 52565}
+{"event": "local_target_round_complete", "lifecycle": 15, "task": "A", "round_index": 2, "quota": 52651}
+{"event": "local_target_round_complete", "lifecycle": 13, "task": "A", "round_index": 2, "quota": 52300}
+{"event": "local_target_round_complete", "lifecycle": 14, "task": "A", "round_index": 2, "quota": 52960}
+{"event": "local_target_round_complete", "lifecycle": 12, "task": "A", "round_index": 2, "quota": 52816}
+{"event": "local_target_round_complete", "lifecycle": 15, "task": "B", "round_index": 2, "quota": 51081}
+{"event": "local_target_round_complete", "lifecycle": 13, "task": "B", "round_index": 2, "quota": 52465}
+{"event": "local_target_round_complete", "lifecycle": 14, "task": "B", "round_index": 2, "quota": 52093}
+{"event": "local_target_round_complete", "lifecycle": 12, "task": "B", "round_index": 2, "quota": 52362}
+{"event": "local_targets_complete", "status": "EXPERIMENT_COMPLETE"}

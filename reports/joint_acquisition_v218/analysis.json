@@ -1,0 +1,263 @@
+{
+  "valid": true,
+  "complete": true,
+  "checks": [
+    {
+      "name": "fixed_opaque_private_worlds",
+      "passed": true
+    },
+    {
+      "name": "complete_unique_lifecycles",
+      "passed": true
+    },
+    {
+      "name": "five_arm_shared_physical_prefix_seeds",
+      "passed": true
+    },
+    {
+      "name": "initial_sources_empty_starts_and_minimum_pilot",
+      "passed": true
+    },
+    {
+      "name": "full_source_pays_unchanged_budget",
+      "passed": true
+    },
+    {
+      "name": "initial_early_sources_exact_full_acquisition_and_count_prefixes",
+      "passed": true
+    },
+    {
+      "name": "initial_early_sources_acquisition_counts_and_costs_identical",
+      "passed": true
+    },
+    {
+      "name": "life_0_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_0_finite_choices_stops_and_separate_budgets",
+      "passed": true
+    },
+    {
+      "name": "life_0_continued_physical_prefixes_and_paid_events",
+      "passed": true
+    },
+    {
+      "name": "life_0_chronological_live_library_plans",
+      "passed": true
+    },
+    {
+      "name": "life_1_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_1_finite_choices_stops_and_separate_budgets",
+      "passed": true
+    },
+    {
+      "name": "life_1_continued_physical_prefixes_and_paid_events",
+      "passed": true
+    },
+    {
+      "name": "life_1_chronological_live_library_plans",
+      "passed": true
+    },
+    {
+      "name": "life_2_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_2_finite_choices_stops_and_separate_budgets",
+      "passed": true
+    },
+    {
+      "name": "life_2_continued_physical_prefixes_and_paid_events",
+      "passed": true
+    },
+    {
+      "name": "life_2_chronological_live_library_plans",
+      "passed": true
+    },
+    {
+      "name": "life_3_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_3_finite_choices_stops_and_separate_budgets",
+      "passed": true
+    },
+    {
+      "name": "life_3_continued_physical_prefixes_and_paid_events",
+      "passed": true
+    },
+    {
+      "name": "life_3_chronological_live_library_plans",
+      "passed": true
+    },
+    {
+      "name": "life_4_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_4_finite_choices_stops_and_separate_budgets",
+      "passed": true
+    },
+    {
+      "name": "life_4_continued_physical_prefixes_and_paid_events",
+      "passed": true
+    },
+    {
+      "name": "life_4_chronological_live_library_plans",
+      "passed": true
+    },
+    {
+      "name": "life_5_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_5_finite_choices_stops_and_separate_budgets",
+      "passed": true
+    },
+    {
+      "name": "life_5_continued_physical_prefixes_and_paid_events",
+      "passed": true
+    },
+    {
+      "name": "life_5_chronological_live_library_plans",
+      "passed": true
+    },
+    {
+      "name": "life_6_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_6_finite_choices_stops_and_separate_budgets",
+      "passed": true
+    },
+    {
+      "name": "life_6_continued_physical_prefixes_and_paid_events",
+      "passed": true
+    },
+    {
+      "name": "life_6_chronological_live_library_plans",
+      "passed": true
+    },
+    {
+      "name": "life_7_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_7_finite_choices_stops_and_separate_budgets",
+      "passed": true
+    },
+    {
+      "name": "life_7_continued_physical_prefixes_and_paid_events",
+      "passed": true
+    },
+    {
+      "name": "life_7_chronological_live_library_plans",
+      "passed": true
+    },
+    {
+      "name": "life_8_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_8_finite_choices_stops_and_separate_budgets",
+      "passed": true
+    },
+    {
+      "name": "life_8_continued_physical_prefixes_and_paid_events",
+      "passed": true
+    },
+    {
+      "name": "life_8_chronological_live_library_plans",
+      "passed": true
+    },
+    {
+      "name": "life_9_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_9_finite_choices_stops_and_separate_budgets",
+      "passed": true
+    },
+    {
+      "name": "life_9_continued_physical_prefixes_and_paid_events",
+      "passed": true
+    },
+    {
+      "name": "life_9_chronological_live_library_plans",
+      "passed": true
+    },
+    {
+      "name": "life_10_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_10_finite_choices_stops_and_separate_budgets",
+      "passed": true
+    },
+    {
+      "name": "life_10_continued_physical_prefixes_and_paid_events",
+      "passed": true
+    },
+    {
+      "name": "life_10_chronological_live_library_plans",
+      "passed": true
+    },
+    {
+      "name": "life_11_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_11_finite_choices_stops_and_separate_budgets",
+      "passed": true
+    },
+    {
+      "name": "life_11_continued_physical_prefixes_and_paid_events",
+      "passed": true
+    },
+    {
+      "name": "life_11_chronological_live_library_plans",
+      "passed": true
+    },
+    {
+      "name": "final_libraries_from_paid_source_events",
+      "passed": true
+    },
+    {
+      "name": "frozen_history_true_joint_and_own_query_results",
+      "passed": true
+    },
+    {
+      "name": "paired_statistics_and_frozen_gates",
+      "passed": true
+    },
+    {
+      "name": "paid_source_member_and_environment_costs",
+      "passed": true
+    },
+    {
+      "name": "source_revisits_paid_once_and_reflected_in_final_library",
+      "passed": true
+    },
+    {
+      "name": "frozen_bootstrap_costs",
+      "passed": true
+    },
+    {
+      "name": "oracle_scoring_after_all_decisions",
+      "passed": true
+    }
+  ],
+  "costs": {
+    "regenerated_consumed_samples": 195072,
+    "interval_calls": 525812,
+    "optimizer_pure_checks": 111044,
+    "mixture_components": 749670,
+    "optimizer_pair_checks": 166566,
+    "kl_calls": 62359424
+  },
+  "seconds": 191.88454000701313
+}

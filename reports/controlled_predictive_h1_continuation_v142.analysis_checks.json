@@ -1,0 +1,11 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "tests_run": 11,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "scope": "finite 256-game pairing, cutoff suppression, equal game/history fixed-root errors and complete H1 accounting"
+    }
+  ]
+}

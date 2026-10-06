@@ -1,0 +1,25 @@
+{
+  "schema": "acfqp.retention_mechanism_audit_execution.v318",
+  "status": "AUDIT_COMPLETE",
+  "command": [
+    "python3",
+    "scripts/verify_retention_mechanism_v318.py",
+    "--output",
+    "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/retention_mechanism_v318"
+  ],
+  "cwd": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration",
+  "started_utc": "2026-10-06T04:34:35.002095+00:00",
+  "finished_utc": "2026-10-06T04:35:27.203996+00:00",
+  "exit_code": 0,
+  "cpu_seconds": 56.013163999999996,
+  "wall_seconds": 57.56016600099974,
+  "stdout": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/retention_mechanism_v318/audit_stdout.log",
+  "stderr": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/retention_mechanism_v318/audit_stderr.log",
+  "stdout_bytes": 2159,
+  "stderr_bytes": 0,
+  "audit_exists": true,
+  "prior_audit": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/greedy_targets_v317/audit.json",
+  "prior_audit_status": "PASS",
+  "prior_audit_independent_valid": true,
+  "audit_status": "PASS"
+}

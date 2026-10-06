@@ -1,0 +1,15 @@
+{
+  "attempts": [
+    {
+      "tests": 8,
+      "failures": 0,
+      "seconds": 0.020846989002166083,
+      "environment_samples": 0,
+      "environment_random_draws": 0,
+      "native_model_calls": 0,
+      "model_updates": 0,
+      "source_refits": 0,
+      "scope": "Mocked V141 source references, every retained diagnostic, paired streams, H1-only games, separated work and input freeze."
+    }
+  ]
+}

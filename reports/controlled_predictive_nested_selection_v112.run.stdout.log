@@ -1,0 +1,7 @@
+{"phase": "pair_complete", "pair_id": "11_12", "models": 4}
+{"phase": "pair_complete", "pair_id": "11_13", "models": 4}
+{"phase": "pair_complete", "pair_id": "11_14", "models": 4}
+{"phase": "pair_complete", "pair_id": "12_13", "models": 4}
+{"phase": "pair_complete", "pair_id": "12_14", "models": 4}
+{"phase": "pair_complete", "pair_id": "13_14", "models": 4}
+{"phase": "complete", "inner_models": 24, "new_inner_decisions": 768, "derived_outer_decisions": 128, "seconds": 12.960902160000842}

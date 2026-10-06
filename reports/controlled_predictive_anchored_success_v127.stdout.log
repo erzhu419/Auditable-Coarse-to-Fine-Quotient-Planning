@@ -1,0 +1,65 @@
+{"event": "replay_block", "life": 1, "policy": "reward", "episodes": 256, "updates": 211032, "successes": 33349}
+{"event": "replay_block", "life": 3, "policy": "reward", "episodes": 256, "updates": 204946, "successes": 15339}
+{"event": "replay_block", "life": 0, "policy": "reward", "episodes": 256, "updates": 205232, "successes": 17326}
+{"event": "replay_block", "life": 2, "policy": "reward", "episodes": 256, "updates": 206257, "successes": 24996}
+{"event": "replay_block", "life": 1, "policy": "risk_goal", "episodes": 256, "updates": 206330, "successes": 26429}
+{"event": "replay_block", "life": 3, "policy": "risk_goal", "episodes": 256, "updates": 212189, "successes": 26233}
+{"event": "replay_block", "life": 0, "policy": "risk_goal", "episodes": 256, "updates": 211979, "successes": 37512}
+{"event": "replay_block", "life": 2, "policy": "risk_goal", "episodes": 256, "updates": 207831, "successes": 26591}
+{"event": "outer_query_complete", "life": 1, "query": "reward", "age": 256}
+{"event": "outer_query_complete", "life": 0, "query": "reward", "age": 256}
+{"event": "outer_query_complete", "life": 3, "query": "reward", "age": 256}
+{"event": "outer_query_complete", "life": 2, "query": "reward", "age": 256}
+{"event": "outer_query_complete", "life": 1, "query": "risk_goal", "age": 256}
+{"event": "outer_query_complete", "life": 0, "query": "risk_goal", "age": 256}
+{"event": "outer_query_complete", "life": 3, "query": "risk_goal", "age": 256}
+{"event": "outer_query_complete", "life": 2, "query": "risk_goal", "age": 256}
+{"event": "outer_query_complete", "life": 1, "query": "risk1", "age": 256}
+{"event": "outer_query_complete", "life": 0, "query": "risk1", "age": 256}
+{"event": "outer_query_complete", "life": 3, "query": "risk1", "age": 256}
+{"event": "outer_query_complete", "life": 2, "query": "risk1", "age": 256}
+{"event": "outer_query_complete", "life": 0, "query": "risk8", "age": 256}
+{"event": "outer_query_complete", "life": 1, "query": "risk8", "age": 256}
+{"event": "replay_block", "life": 0, "policy": "reward", "episodes": 512, "updates": 401368, "successes": 40257}
+{"event": "replay_block", "life": 1, "policy": "reward", "episodes": 512, "updates": 414218, "successes": 58050}
+{"event": "replay_block", "life": 0, "policy": "reward", "episodes": 768, "updates": 606709, "successes": 61794}
+{"event": "replay_block", "life": 1, "policy": "reward", "episodes": 768, "updates": 626524, "successes": 85848}
+{"event": "replay_block", "life": 0, "policy": "reward", "episodes": 1024, "updates": 809906, "successes": 85590}
+{"event": "replay_block", "life": 1, "policy": "reward", "episodes": 1024, "updates": 836328, "successes": 113879}
+{"event": "replay_block", "life": 0, "policy": "risk_goal", "episodes": 512, "updates": 418705, "successes": 59258}
+{"event": "replay_block", "life": 1, "policy": "risk_goal", "episodes": 512, "updates": 414522, "successes": 54020}
+{"event": "replay_block", "life": 0, "policy": "risk_goal", "episodes": 768, "updates": 622408, "successes": 77910}
+{"event": "replay_block", "life": 1, "policy": "risk_goal", "episodes": 768, "updates": 621780, "successes": 85335}
+{"event": "replay_block", "life": 0, "policy": "risk_goal", "episodes": 1024, "updates": 835613, "successes": 108272}
+{"event": "outer_query_complete", "life": 3, "query": "risk8", "age": 256}
+{"event": "replay_block", "life": 1, "policy": "risk_goal", "episodes": 1024, "updates": 828556, "successes": 111129}
+{"event": "replay_block", "life": 3, "policy": "reward", "episodes": 512, "updates": 416336, "successes": 44860}
+{"event": "replay_block", "life": 3, "policy": "reward", "episodes": 768, "updates": 624880, "successes": 69682}
+{"event": "replay_block", "life": 3, "policy": "reward", "episodes": 1024, "updates": 830177, "successes": 90824}
+{"event": "replay_block", "life": 3, "policy": "risk_goal", "episodes": 512, "updates": 422009, "successes": 58555}
+{"event": "replay_block", "life": 3, "policy": "risk_goal", "episodes": 768, "updates": 633103, "successes": 91712}
+{"event": "outer_query_complete", "life": 2, "query": "risk8", "age": 256}
+{"event": "replay_block", "life": 3, "policy": "risk_goal", "episodes": 1024, "updates": 838723, "successes": 121051}
+{"event": "replay_block", "life": 2, "policy": "reward", "episodes": 512, "updates": 410837, "successes": 39538}
+{"event": "replay_block", "life": 2, "policy": "reward", "episodes": 768, "updates": 611234, "successes": 63590}
+{"event": "replay_block", "life": 2, "policy": "reward", "episodes": 1024, "updates": 806026, "successes": 76005}
+{"event": "replay_block", "life": 2, "policy": "risk_goal", "episodes": 512, "updates": 412723, "successes": 48773}
+{"event": "replay_block", "life": 2, "policy": "risk_goal", "episodes": 768, "updates": 628537, "successes": 76225}
+{"event": "replay_block", "life": 2, "policy": "risk_goal", "episodes": 1024, "updates": 849341, "successes": 107288}
+{"event": "outer_query_complete", "life": 1, "query": "reward", "age": 1024}
+{"event": "outer_query_complete", "life": 0, "query": "reward", "age": 1024}
+{"event": "outer_query_complete", "life": 3, "query": "reward", "age": 1024}
+{"event": "outer_query_complete", "life": 2, "query": "reward", "age": 1024}
+{"event": "outer_query_complete", "life": 1, "query": "risk_goal", "age": 1024}
+{"event": "outer_query_complete", "life": 0, "query": "risk_goal", "age": 1024}
+{"event": "outer_query_complete", "life": 3, "query": "risk_goal", "age": 1024}
+{"event": "outer_query_complete", "life": 2, "query": "risk_goal", "age": 1024}
+{"event": "outer_query_complete", "life": 1, "query": "risk1", "age": 1024}
+{"event": "outer_query_complete", "life": 3, "query": "risk1", "age": 1024}
+{"event": "outer_query_complete", "life": 0, "query": "risk1", "age": 1024}
+{"event": "outer_query_complete", "life": 1, "query": "risk8", "age": 1024}
+{"event": "outer_query_complete", "life": 2, "query": "risk1", "age": 1024}
+{"event": "outer_query_complete", "life": 3, "query": "risk8", "age": 1024}
+{"event": "outer_query_complete", "life": 0, "query": "risk8", "age": 1024}
+{"event": "outer_query_complete", "life": 2, "query": "risk8", "age": 1024}
+{"status": "complete", "seconds": 156.36391580000054}

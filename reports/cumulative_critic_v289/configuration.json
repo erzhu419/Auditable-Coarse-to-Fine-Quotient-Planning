@@ -1,0 +1,50 @@
+{
+  "schema": "acfqp.cumulative_critic_freeze.v289",
+  "protocol": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/specs/CUMULATIVE_CRITIC_V289.md",
+  "source_summary": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/retained_critic_v287/summary.json",
+  "query_trace": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/ntuple_interference_v288/queries.jsonl.gz",
+  "lifecycles": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "parents": 4,
+  "alpha": 0.0025,
+  "fit": "ORIGINAL_COMPLETE_GAME_MC_CHRONOLOGY",
+  "anchors_per_heldout_game": 4,
+  "anchor_selection": "EQUALLY_SPACED_NONWINNING_TIME_INDICES",
+  "snapshots": "ZERO_AND_EVERY_FIT_GAME_END",
+  "h2_fractions": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "h2_cohort": "V288_UNIFORM_A_PREACTION_BOARDS",
+  "h2_boards_per_lifecycle": 4,
+  "h2_belief": "FIXED_V287_FIT_PREFIX_MEMORY",
+  "reference": "IMMEDIATE_SCORE_PLUS_V285_VALIDATION_ORACLE_H2_SUFFIX_MEAN",
+  "primary": "FINAL_MINUS_SOURCE_ANCHOR_MSE",
+  "bootstrap_draws": 20000,
+  "bootstrap_seed": 28900001,
+  "new_environment_observations": 0,
+  "finite_test_passes": {
+    "replay": 4,
+    "analysis": 10,
+    "driver": 4
+  }
+}

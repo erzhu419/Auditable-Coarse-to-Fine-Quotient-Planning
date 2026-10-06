@@ -1,0 +1,2793 @@
+{
+  "schema": "acfqp.relation_capacity.v191.analysis",
+  "valid": true,
+  "complete": true,
+  "primary_complete": true,
+  "checks": [
+    {
+      "name": "eight_protocol_frozen_retained_inputs",
+      "passed": true
+    },
+    {
+      "name": "retained_input:inputs/inherited/v190_stage_checks.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input:inputs/inherited/v190_metadata_amendment.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input:inputs/inherited/v190_run.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input:inputs/inherited/v190_roots.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input:inputs/inherited/v190_labels.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input:inputs/inherited/v190_model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input:inputs/inherited/v190_choices.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input:inputs/inherited/v190_summary.json",
+      "passed": true
+    },
+    {
+      "name": "settled_amended_V190_original_negative_audit_preserved",
+      "passed": true
+    },
+    {
+      "name": "fixed_SOURCE143_36groups_retained_TARGET96",
+      "passed": true
+    },
+    {
+      "name": "one_new_SOURCE_projection_and_no_TARGET_recomputation",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:independent_98_binary_coordinates_all_legal_actions_and_optimal_sets",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:all_paid_problem_construction",
+      "passed": true
+    },
+    {
+      "name": "TARGET:independent_98_binary_coordinates_all_legal_actions_and_optimal_sets",
+      "passed": true
+    },
+    {
+      "name": "TARGET:all_paid_problem_construction",
+      "passed": true
+    },
+    {
+      "name": "JOINT:independent_98_binary_coordinates_all_legal_actions_and_optimal_sets",
+      "passed": true
+    },
+    {
+      "name": "JOINT:all_paid_problem_construction",
+      "passed": true
+    },
+    {
+      "name": "SOURCE_actual_frozen_full_RFS_choices_and_regrets",
+      "passed": true
+    },
+    {
+      "name": "SOURCE_actual_frozen_choice_paid_work",
+      "passed": true
+    },
+    {
+      "name": "complete_retained_TARGET_choice_summary_label_binding",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_00",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_01",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_02",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_03",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_04",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_05",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_06",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_07",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_08",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_09",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_10",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_11",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_12",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_13",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_14",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_15",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_16",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_17",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_18",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_19",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_20",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_21",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_22",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r00_23",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_00",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_01",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_02",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_03",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_04",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_05",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_06",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_07",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_08",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_09",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_10",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_11",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_12",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_13",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_14",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_15",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_16",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_17",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_18",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_19",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_20",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_21",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_22",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r01_23",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_00",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_01",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_02",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_03",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_04",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_05",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_06",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_07",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_08",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_09",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_10",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_11",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_12",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_13",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_14",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_15",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_16",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_17",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_18",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_19",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_20",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_21",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_22",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r02_23",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_00",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_01",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_02",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_03",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_04",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_05",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_06",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_07",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_08",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_09",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_10",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_11",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_12",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_13",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_14",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_15",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_16",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_17",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_18",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_19",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_20",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_21",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_22",
+      "passed": true
+    },
+    {
+      "name": "settled_target_choice_RFS_binding:v190_target_r03_23",
+      "passed": true
+    },
+    {
+      "name": "settled_target_aggregate_RFS_binding",
+      "passed": true
+    },
+    {
+      "name": "settled_TARGET_only_binding_paid_work",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node_ids",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node0:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node0:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node0:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node0:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node0:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node0:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node0:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node0:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node1:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node1:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node1:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node1:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node1:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node1:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node1:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node1:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node2:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node2:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node2:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node2:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node2:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node2:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node2:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node2:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node3:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node3:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node3:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node3:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node3:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node3:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node3:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node3:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node4:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node4:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node4:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node4:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node4:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node4:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node4:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node4:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node5:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node5:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node5:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node5:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node5:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node5:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node5:nonpositive_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node4:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node6:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node6:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node6:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node6:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node6:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node6:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node6:nonpositive_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node4:child1:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node4:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node3:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node7:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node7:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node7:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node7:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node7:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node7:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node7:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node7:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node8:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node8:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node8:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node8:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node8:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node8:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node8:nonpositive_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node7:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node9:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node9:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node9:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node9:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node9:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node9:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node9:nonpositive_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node7:child1:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node7:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node3:child1:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node3:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node2:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node10:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node10:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node10:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node10:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node10:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node10:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node10:nonpositive_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node2:child1:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node2:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node1:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node11:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node11:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node11:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node11:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node11:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node11:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node11:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node11:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node12:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node12:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node12:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node12:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node12:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node12:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node12:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node12:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node13:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node13:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node13:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node13:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node13:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node13:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node13:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node13:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node14:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node14:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node14:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node14:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node14:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node14:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node14:nonpositive_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node13:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node15:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node15:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node15:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node15:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node15:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node15:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node15:nonpositive_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node13:child1:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node13:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node12:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node16:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node16:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node16:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node16:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node16:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node16:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node16:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node16:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node17:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node17:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node17:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node17:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node17:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node17:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node17:nonpositive_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node16:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node18:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node18:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node18:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node18:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node18:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node18:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node18:nonpositive_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node16:child1:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node16:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node12:child1:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node12:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node11:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node19:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node19:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node19:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node19:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node19:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node19:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node19:nonpositive_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node11:child1:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node11:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node1:child1:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node1:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node0:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node20:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node20:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node20:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node20:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node20:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node20:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node20:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node20:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node21:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node21:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node21:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node21:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node21:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node21:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node21:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node21:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node22:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node22:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node22:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node22:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node22:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node22:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node22:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node22:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node23:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node23:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node23:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node23:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node23:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node23:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node23:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node23:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node24:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node24:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node24:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node24:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node24:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node24:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node24:nonpositive_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node23:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node25:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node25:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node25:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node25:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node25:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node25:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node25:nonpositive_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node23:child1:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node23:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node22:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node26:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node26:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node26:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node26:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node26:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node26:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node26:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node26:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node27:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node27:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node27:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node27:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node27:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node27:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node27:nonpositive_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node26:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node28:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node28:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node28:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node28:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node28:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node28:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node28:nonpositive_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node26:child1:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node26:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node22:child1:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node22:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node21:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node29:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node29:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node29:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node29:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node29:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node29:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node29:nonpositive_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node21:child1:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node21:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node20:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node30:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node30:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node30:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node30:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node30:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node30:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node30:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node30:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node31:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node31:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node31:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node31:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node31:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node31:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node31:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node31:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node32:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node32:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node32:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node32:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node32:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node32:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node32:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node32:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node33:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node33:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node33:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node33:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node33:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node33:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node33:nonpositive_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node32:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node34:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node34:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node34:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node34:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node34:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node34:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node34:nonpositive_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node32:child1:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node32:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node31:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node35:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node35:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node35:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node35:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node35:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node35:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node35:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node35:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node36:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node36:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node36:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node36:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node36:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node36:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node36:nonpositive_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node35:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node37:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node37:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node37:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node37:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node37:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node37:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node37:nonpositive_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node35:child1:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node35:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node31:child1:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node31:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node30:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node38:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node38:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node38:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node38:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node38:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node38:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node38:nonpositive_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node30:child1:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node30:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node20:child1:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node20:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node0:child1:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:node0:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:all_nodes_in_DFS_order",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:retained_weak_witness_requires_exact_nonnegative_gap",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:exhaustive_nonpositive_subtree_bounds",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:recorded_solver_and_symbolic_work",
+      "passed": true
+    },
+    {
+      "name": "SOURCE:once_retained_solver_costs",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node_ids",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node0:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node0:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node0:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node0:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node0:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node0:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node0:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node0:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node1:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node1:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node1:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node1:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node1:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node1:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node1:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node1:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node2:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node2:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node2:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node2:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node2:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node2:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node2:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node2:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node3:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node3:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node3:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node3:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node3:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node3:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node3:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node3:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node4:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node4:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node4:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node4:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node4:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node4:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node4:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node4:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node5:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node5:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node5:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node5:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node5:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node5:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node5:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node5:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node6:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node6:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node6:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node6:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node6:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node6:branch_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node6:first_unassigned_optimal_disjunction",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node6:all_visited_or_recorded_unexplored_alternatives",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node7:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node7:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node7:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node7:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node7:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node7:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node7:strict_rational_gap_and_actual_float_optima",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node7:strict_cap_bound_needs_no_symbolic_balance",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node6:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node6:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node5:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node5:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node4:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node4:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node3:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node3:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node2:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node2:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node1:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node1:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node0:child0:DFS_stops_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node0:unexplored_only_after_verified_witness",
+      "passed": true
+    },
+    {
+      "name": "TARGET:all_nodes_in_DFS_order",
+      "passed": true
+    },
+    {
+      "name": "TARGET:retained_weak_witness_requires_exact_nonnegative_gap",
+      "passed": true
+    },
+    {
+      "name": "TARGET:strict_result_matches_verified_whole_scope_primal",
+      "passed": true
+    },
+    {
+      "name": "TARGET:recorded_solver_and_symbolic_work",
+      "passed": true
+    },
+    {
+      "name": "TARGET:once_retained_solver_costs",
+      "passed": true
+    },
+    {
+      "name": "JOINT:node_ids",
+      "passed": true
+    },
+    {
+      "name": "JOINT:node0:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "JOINT:node0:exact_binary_feature_constraints",
+      "passed": true
+    },
+    {
+      "name": "JOINT:node0:exact_nonnegative_99_coordinate_dual_and_bound",
+      "passed": true
+    },
+    {
+      "name": "JOINT:node0:native_success_exact_beta_and_actual_float_choice",
+      "passed": true
+    },
+    {
+      "name": "JOINT:node0:verified_primal_before_exact_bound_disposition",
+      "passed": true
+    },
+    {
+      "name": "JOINT:node0:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "JOINT:node0:nonpositive_bound_is_exact_native_support",
+      "passed": true
+    },
+    {
+      "name": "JOINT:all_nodes_in_DFS_order",
+      "passed": true
+    },
+    {
+      "name": "JOINT:retained_weak_witness_requires_exact_nonnegative_gap",
+      "passed": true
+    },
+    {
+      "name": "JOINT:exhaustive_nonpositive_subtree_bounds",
+      "passed": true
+    },
+    {
+      "name": "JOINT:recorded_solver_and_symbolic_work",
+      "passed": true
+    },
+    {
+      "name": "JOINT:once_retained_solver_costs",
+      "passed": true
+    },
+    {
+      "name": "certified_capacity_and_actual_learned_loss_summary",
+      "passed": true
+    },
+    {
+      "name": "all_paid_summary_work",
+      "passed": true
+    },
+    {
+      "name": "fixed_problems_before_three_capacity_scopes",
+      "passed": true
+    },
+    {
+      "name": "all_paid_retained_input_counts",
+      "passed": true
+    },
+    {
+      "name": "three_scopes_no_new_boards_labels_fits_or_samples",
+      "passed": true
+    }
+  ],
+  "passed_checks": 576,
+  "total_checks": 576,
+  "summary": {
+    "schema": "acfqp.relation_capacity.v191.summary",
+    "complete": true,
+    "scopes": {
+      "SOURCE": {
+        "roots": 143,
+        "status": "weak_infeasible",
+        "upper_bound": "-133981239844341330380220240747268606788014264827591734114945500244071837049650458680192476933169211660551682665619971054876884891334518038793809190533194657446483934998885542536308350160345250794740280229998819196483898803588441457763883595146188696822220970056484758729826406731100477909975335964861653354518629328778049823098699640473919997475586376193805401811253475594684951108597336683549648568391311819296119006653364109220525862562165641610701514341614764968860078207039781157296127116942349197494873903057823966246728509580668693791174194633932479254407028075634162232639382663258910054045567145977044989936597658452327977264091249101591300584153150924414413242574725053240310627682768644893483540897699341782144241344411700223706958169932893099020331468352935382144345598632543760194168957420263838715338810905032614041496837479217837324992851168448680323652712773716548604268277360443085873546836315441600264604626673097853015955889649022207770483932997075212050201928191701776631544097924169597656652001811965614949938663712748360678940641345606383414657977085412275348203847586013186696739389718309657201608833029156872629597335914570418152026902896163672896160665225221/296895594516446190151100987468325092226192763213230808454186917158657104557540508887731714696674990949803792249785734136204135632774275783169840622197060767580971167177069673481769168130432632703462833233114235948357485733248940985931015257119600886083238734371415367212590800023933503658329715626412038393262682789625668174183732595079200282028834413522467052760070155617070745102868608903619576231474625275345878712288770465820975160287990849148913307245978545102440528807959233501138257424501029418736062901057694707999421418574441206754825360160507935856820714193956734895653840460221028797537452439576097389716000742975371081426977776957585840875816061698398613064516371866643093657456812209490170844037538920147333673185179682090471429939176889855190179938511894461181395383490120358771690574970919938345546335661851778198533451782251596513753763381656847527796019150724758489372400136535565087313268883247017841736329100836363034620316790956201016026734016167634990446495369880227117238237019018339303654378636196343830971128571011555395623074478682552725020161155821757780124524986904330795887384964657273762694168711193022957273506693901115003748041435165323809422369761369344",
+        "strict_witness_margin": null,
+        "solver_nodes": 39,
+        "lp_solves": 39,
+        "native_lp_status_counts": {
+          "0": 39
+        },
+        "strict_witness_actual_all_optimal": null,
+        "strict_witness_rational_all_optimal": null,
+        "actual_tie_policy_attainability": "impossible_on_retained_roots",
+        "weak_witness_all_optimal": null,
+        "learned": {
+          "roots": 143,
+          "components": [
+            0.8306740721409668,
+            0.03864335664335664,
+            0.43512043512043513
+          ],
+          "utility": 1.2271511506180452,
+          "oracle_components": [
+            0.912163179788961,
+            0.02238811188811189,
+            0.4473581973581974
+          ],
+          "oracle_utility": 1.3371332652590464,
+          "regret_mean": 0.10998211464100136,
+          "positive_regret_roots": 72,
+          "fallback_roots": 0
+        }
+      },
+      "TARGET": {
+        "roots": 96,
+        "status": "strict_feasible",
+        "upper_bound": "1",
+        "strict_witness_margin": "57589568167653793103159068137980635/83076749736557242056487941267521536",
+        "solver_nodes": 8,
+        "lp_solves": 8,
+        "native_lp_status_counts": {
+          "0": 8
+        },
+        "strict_witness_actual_all_optimal": true,
+        "strict_witness_rational_all_optimal": true,
+        "actual_tie_policy_attainability": "attained_by_retained_strict_witness",
+        "weak_witness_all_optimal": true,
+        "learned": {
+          "roots": 96,
+          "components": [
+            0.7636832544397425,
+            0.018322916666666668,
+            0.34027777777777773
+          ],
+          "utility": 1.0856381155508537,
+          "positive_regret_roots": 37,
+          "fallback_roots": 0,
+          "oracle_components": [
+            0.8045988184772471,
+            0.016609375,
+            0.3576388888888889
+          ],
+          "oracle_utility": 1.145628332366136,
+          "regret_mean": 0.05999021681528238
+        }
+      },
+      "JOINT": {
+        "roots": 239,
+        "status": "weak_infeasible",
+        "upper_bound": "-94814313228939714830421666086632024787531286280701922158971937177164023586615283321940899609689933484332500672765671933099858176031628813064630793603277078705134952658105459576607521389165672561152338315665780841485506353320802228217037713473310179224223445876716217513623298708072179286535119162589849379006189314449384949940132249137526676623096570678608834815586962231533648662518253420182309052427184873778591873617494648204951988901833891391836004362426934269516424159504803903245412336220783880097633530104229649210266859972041022044151775544063745645278028934474083166598899959348837170602325485694721742003058723248371362169211415929751958805387823079302744188260999944545948706381403926205059253516035844956675562459308860700621467665938298634439276691514428204671775700658520413792495102236799620103702279250867587349382163888987476136124084591390517553358253558732188604785302355060038289174322105048542097795843332826745708924319222696714314152996504655608310501615379300138989364953288465199499247985322368874428752897867358362950828737747890869230454888471419483555444507188840340639830456061712901794250437668410346602861865873452430233444153586859313161636381058276984280112474272697765/1510943267697579035752316909387373415672839641943303237166606627488616388983735534856316509398662940148290025072556711624821435311410661704486155032261160574209879872897736806676407578635510042847889644461007973371083071091187430198009973526384424698657129635574510195781288255162034111731996794653516002657025839893547027676487431971667325294861566408372151133243584954049536231091691797004020100605711088823908979625151169117886614835735993392699024408675780649365293358551771622679643062875041604199936851696274413085540040213311822618073186978979836111610626211937875417884397485204353693386216221589774179509997968205856063355497353518333238488919562430803383074481692386956844941846023708664126377411040669144199391158665191872256242862650142235787410672271265935648706860591567058857910682629847003464353807387949354250503916926092498067222896206952082471247184526294876269399396358902115604454026418296509948798204756391135055894593248392191528989439420813194396361199320915591422967206851837214514171061708999404483813726103650665755614115890324468538810065814793303372200676562959284447374967720077696967214965310857660468448329587170902139464032813655792669850555123783322565920686326266402112",
+        "strict_witness_margin": null,
+        "solver_nodes": 1,
+        "lp_solves": 1,
+        "native_lp_status_counts": {
+          "0": 1
+        },
+        "strict_witness_actual_all_optimal": null,
+        "strict_witness_rational_all_optimal": null,
+        "actual_tie_policy_attainability": "impossible_on_retained_roots",
+        "weak_witness_all_optimal": null,
+        "learned": {
+          "roots": 239,
+          "components": [
+            0.8037656265371277,
+            0.030481171548117154,
+            0.39702463970246393
+          ],
+          "oracle_components": [
+            0.8689574112286074,
+            0.020066945606694562,
+            0.4113203161320316
+          ],
+          "utility": 1.1703090946914745,
+          "oracle_utility": 1.2602107817539443,
+          "regret_mean": 0.0899016870624699,
+          "positive_regret_roots": 109,
+          "fallback_roots": 0
+        }
+      }
+    },
+    "new_environment_samples": 0,
+    "new_fits": 0,
+    "new_labels": 0,
+    "new_capacity_scopes": 3,
+    "work": {
+      "summary_scope_records": 3,
+      "summary_learned_weighted_component_products": 12,
+      "summary_learned_weighted_scalar_products": 6,
+      "summary_learned_count_reads": 4
+    }
+  },
+  "costs": {
+    "independent_lp_solves": 0,
+    "independent_svd_solves": 0,
+    "old_models_refitted": 0,
+    "new_kernels_reintegrated": 0,
+    "new_environment_samples": 0,
+    "physical_branches_replayed": 0,
+    "independent_input_counts": {
+      "json_read_operations": 15,
+      "input_bytes_read": 124312877,
+      "input_byte_comparisons": 8,
+      "input_comparison_bytes_read": 45098386
+    },
+    "independent_source_cache_counts": {
+      "relation_contracts_built": 534,
+      "relation_token_kind_reads": 21360,
+      "relation_cell_token_records_read": 8544,
+      "relation_cell_positions_read": 8544,
+      "relation_cell_rank_reads": 8544,
+      "relation_node_occupancy_tests": 8544,
+      "relation_node_records": 7178,
+      "relation_side_rank_reads": 43068,
+      "relation_node_neighbor_tests": 28712,
+      "relation_node_neighbor_rank_reads": 22065,
+      "relation_node_zero_normalizations": 28712,
+      "relation_packed_coordinates_computed": 28712,
+      "relation_once_scan_lines": 8544,
+      "relation_once_packing_cell_reads": 34176,
+      "relation_once_positive_tile_reads": 28712,
+      "relation_once_rank_comparisons": 19450,
+      "relation_packing_node_placements": 28712,
+      "relation_equal_rank_pair_tests": 44996,
+      "relation_pair_packing_projections": 16680,
+      "relation_pair_packing_coordinate_reads": 33360,
+      "relation_pair_projected_between_cells_read": 2208,
+      "relation_pair_projected_blocker_rank_reads": 2161,
+      "relation_equal_pair_records": 4170,
+      "relation_pair_raw_between_rank_reads": 1071,
+      "relation_once_pair_membership_tests": 16680,
+      "relation_vacancy_cell_tests": 8544,
+      "relation_vacancy_direction_checks": 5464,
+      "relation_vacancy_neighbor_rank_reads": 3567,
+      "relation_vacancy_neighbor_contributions": 464,
+      "relation_aggregate_values_copied": 3204,
+      "relation_rank_basis_evaluations": 22696,
+      "relation_node_moment_accumulations": 129204,
+      "relation_pair_moment_accumulations": 275220,
+      "relation_node_projection_normalizations": 9612,
+      "relation_pair_projection_normalizations": 35244,
+      "relation_vacancy_projection_values_copied": 4272,
+      "relation_feature_vectors_computed": 534,
+      "relation_once_pairs_selected": 1292,
+      "relation_feature_maps_derived": 143
+    },
+    "independent_source_evaluation_counts": {
+      "relation_decisions": 143,
+      "relation_legal_action_reads": 534,
+      "relation_action_support_lookups": 534,
+      "relation_pair_support_lookups": 759,
+      "relation_component_membership_lookups": 534,
+      "relation_prediction_feature_reads": 156996,
+      "relation_prediction_coefficient_reads": 156996,
+      "relation_prediction_component_evaluations": 1602,
+      "relation_immediate_reward_reads": 534,
+      "relation_reward_additions": 534,
+      "relation_predicted_pair_subtractions": 2277,
+      "relation_utility_evaluations": 534,
+      "relation_feature_cache_hits": 143,
+      "relation_cached_feature_reads": 52332,
+      "source_observable_root_preparations": 143,
+      "source_complete_component_reads": 1602,
+      "source_action_utility_evaluations": 534,
+      "source_selected_component_reads": 429,
+      "source_oracle_component_reads": 429,
+      "source_regret_subtractions": 143,
+      "source_oracle_action_comparisons": 322,
+      "source_diagnostic_root_records": 143,
+      "source_summary_component_reads": 858,
+      "source_summary_scalar_reads": 429,
+      "source_summary_flag_reads": 286
+    },
+    "independent_target_binding_counts": {
+      "independent_retained_target_root_bindings": 96,
+      "independent_retained_target_complete_component_reads": 1086,
+      "independent_retained_target_selected_components_read": 288,
+      "independent_retained_target_oracle_components_read": 288
+    },
+    "independent_certificate_counts": {
+      "nodes_verified": 48,
+      "ranking_constraints_rebuilt": 16130,
+      "dual_support_rows_verified": 2916,
+      "dual_balance_scalar_products": 288684,
+      "beta_evaluations": 48,
+      "beta_rational_conversions": 4704,
+      "beta_float_conversions": 4704,
+      "beta_root_records": 6584,
+      "beta_action_records": 24618,
+      "beta_feature_fraction_reads": 2412564,
+      "beta_rational_scalar_products": 2412564,
+      "beta_float_feature_reads": 2412564,
+      "beta_float_scalar_products": 2412564,
+      "beta_exact_score_evaluations": 24618,
+      "beta_float_score_evaluations": 24618,
+      "beta_exact_choice_comparisons": 24618,
+      "beta_float_choice_comparisons": 24618,
+      "beta_gap_subtractions": 6406
+    },
+    "original_run_costs": {
+      "source_cache": {
+        "seconds": 0.2229058189986972,
+        "counts": {
+          "relation_contracts_built": 534,
+          "relation_token_kind_reads": 21360,
+          "relation_cell_token_records_read": 8544,
+          "relation_cell_positions_read": 8544,
+          "relation_cell_rank_reads": 8544,
+          "relation_node_occupancy_tests": 8544,
+          "relation_node_neighbor_tests": 28712,
+          "relation_node_neighbor_rank_reads": 22065,
+          "relation_node_records": 7178,
+          "relation_side_rank_reads": 43068,
+          "relation_node_zero_normalizations": 28712,
+          "relation_packed_coordinates_computed": 28712,
+          "relation_once_scan_lines": 8544,
+          "relation_once_packing_cell_reads": 34176,
+          "relation_once_positive_tile_reads": 28712,
+          "relation_once_rank_comparisons": 19450,
+          "relation_packing_node_placements": 28712,
+          "relation_equal_rank_pair_tests": 44996,
+          "relation_pair_packing_projections": 16680,
+          "relation_pair_packing_coordinate_reads": 33360,
+          "relation_pair_projected_between_cells_read": 2208,
+          "relation_pair_projected_blocker_rank_reads": 2161,
+          "relation_equal_pair_records": 4170,
+          "relation_pair_raw_between_rank_reads": 1071,
+          "relation_once_pair_membership_tests": 16680,
+          "relation_vacancy_cell_tests": 8544,
+          "relation_vacancy_direction_checks": 5464,
+          "relation_vacancy_neighbor_rank_reads": 3567,
+          "relation_vacancy_neighbor_contributions": 464,
+          "relation_aggregate_values_copied": 3204,
+          "relation_rank_basis_evaluations": 22696,
+          "relation_node_moment_accumulations": 129204,
+          "relation_pair_moment_accumulations": 275220,
+          "relation_node_projection_normalizations": 9612,
+          "relation_pair_projection_normalizations": 35244,
+          "relation_vacancy_projection_values_copied": 4272,
+          "relation_feature_vectors_computed": 534,
+          "relation_once_pairs_selected": 1292,
+          "relation_feature_maps_derived": 143
+        }
+      },
+      "problem_SOURCE": {
+        "seconds": 0.052723879009136,
+        "counts": {
+          "problem_action_records": 534,
+          "problem_feature_values_read": 52332,
+          "problem_feature_fraction_conversions": 52332,
+          "problem_terminal_components_read": 1602,
+          "problem_immediate_rewards_read": 534,
+          "problem_reward_fraction_conversions": 534,
+          "problem_action_utility_evaluations": 534,
+          "problem_root_records": 143
+        }
+      },
+      "problem_TARGET": {
+        "seconds": 0.035839999007293954,
+        "counts": {
+          "problem_action_records": 362,
+          "problem_feature_values_read": 35476,
+          "problem_feature_fraction_conversions": 35476,
+          "problem_terminal_components_read": 1086,
+          "problem_immediate_rewards_read": 362,
+          "problem_reward_fraction_conversions": 362,
+          "problem_action_utility_evaluations": 362,
+          "problem_root_records": 96
+        }
+      },
+      "problem_JOINT": {
+        "seconds": 0.09199279600579757,
+        "counts": {
+          "problem_action_records": 896,
+          "problem_feature_values_read": 87808,
+          "problem_feature_fraction_conversions": 87808,
+          "problem_terminal_components_read": 2688,
+          "problem_immediate_rewards_read": 896,
+          "problem_reward_fraction_conversions": 896,
+          "problem_action_utility_evaluations": 896,
+          "problem_root_records": 239
+        }
+      },
+      "source_evaluation": {
+        "seconds": 0.01779062500281725,
+        "counts": {
+          "relation_decisions": 143,
+          "relation_legal_action_reads": 534,
+          "relation_action_support_lookups": 534,
+          "relation_pair_support_lookups": 759,
+          "relation_component_membership_lookups": 534,
+          "relation_prediction_feature_reads": 156996,
+          "relation_prediction_coefficient_reads": 156996,
+          "relation_prediction_component_evaluations": 1602,
+          "relation_immediate_reward_reads": 534,
+          "relation_reward_additions": 534,
+          "relation_predicted_pair_subtractions": 2277,
+          "relation_utility_evaluations": 534,
+          "relation_feature_cache_hits": 143,
+          "relation_cached_feature_reads": 52332,
+          "source_observable_root_preparations": 143,
+          "source_complete_component_reads": 1602,
+          "source_action_utility_evaluations": 534,
+          "source_selected_component_reads": 429,
+          "source_oracle_component_reads": 429,
+          "source_regret_subtractions": 143,
+          "source_oracle_action_comparisons": 322,
+          "source_diagnostic_root_records": 143,
+          "source_summary_component_reads": 858,
+          "source_summary_scalar_reads": 429,
+          "source_summary_flag_reads": 286
+        }
+      },
+      "retained_target_bindings": {
+        "seconds": 0.000227422991883941,
+        "counts": {
+          "retained_target_root_bindings": 96,
+          "retained_target_choice_bindings": 96,
+          "retained_target_summary_root_bindings": 96,
+          "retained_target_aggregate_reads": 12
+        }
+      },
+      "capacity_SOURCE": {
+        "seconds": 537.5757776499959,
+        "counts": {
+          "lp_solves": 39,
+          "lp_constraint_rows": 13630,
+          "lp_matrix_cells": 1349370,
+          "constraint_exact_feature_subtractions": 1331918,
+          "constraint_exact_reward_subtractions": 13591,
+          "lp_seconds": 0.9063677459635073,
+          "beta_evaluations": 39,
+          "beta_rational_conversions": 3822,
+          "beta_float_conversions": 3822,
+          "beta_root_records": 5577,
+          "beta_action_records": 20826,
+          "beta_feature_fraction_reads": 2040948,
+          "beta_rational_scalar_products": 2040948,
+          "beta_float_feature_reads": 2040948,
+          "beta_float_scalar_products": 2040948,
+          "beta_exact_score_evaluations": 20826,
+          "beta_float_score_evaluations": 20826,
+          "beta_exact_choice_comparisons": 20826,
+          "beta_float_choice_comparisons": 20826,
+          "beta_gap_subtractions": 5421,
+          "symbolic_balance_solves": 39,
+          "symbolic_balance_matrix_cells": 279675,
+          "dual_support_rows": 2825,
+          "dual_balance_scalar_products": 279675,
+          "symbolic_balance_seconds": 518.6357838850672
+        }
+      },
+      "capacity_TARGET": {
+        "seconds": 2.6792254659958417,
+        "counts": {
+          "lp_solves": 8,
+          "lp_constraint_rows": 1925,
+          "lp_matrix_cells": 190575,
+          "constraint_exact_feature_subtractions": 187866,
+          "constraint_exact_reward_subtractions": 1917,
+          "lp_seconds": 0.10216506198048592,
+          "beta_evaluations": 8,
+          "beta_rational_conversions": 784,
+          "beta_float_conversions": 784,
+          "beta_root_records": 768,
+          "beta_action_records": 2896,
+          "beta_feature_fraction_reads": 283808,
+          "beta_rational_scalar_products": 283808,
+          "beta_float_feature_reads": 283808,
+          "beta_float_scalar_products": 283808,
+          "beta_exact_score_evaluations": 2896,
+          "beta_float_score_evaluations": 2896,
+          "beta_exact_choice_comparisons": 2896,
+          "beta_float_choice_comparisons": 2896,
+          "beta_gap_subtractions": 752,
+          "symbolic_balance_solves": 7,
+          "symbolic_balance_matrix_cells": 693,
+          "dual_support_rows": 8,
+          "dual_balance_scalar_products": 792,
+          "symbolic_balance_seconds": 0.018480951999663375,
+          "trivial_margin_cap_certificates": 1
+        }
+      },
+      "capacity_JOINT": {
+        "seconds": 16.32645257501281,
+        "counts": {
+          "lp_solves": 1,
+          "lp_constraint_rows": 575,
+          "lp_matrix_cells": 56925,
+          "constraint_exact_feature_subtractions": 56252,
+          "constraint_exact_reward_subtractions": 574,
+          "lp_seconds": 0.04192755400435999,
+          "beta_evaluations": 1,
+          "beta_rational_conversions": 98,
+          "beta_float_conversions": 98,
+          "beta_root_records": 239,
+          "beta_action_records": 896,
+          "beta_feature_fraction_reads": 87808,
+          "beta_rational_scalar_products": 87808,
+          "beta_float_feature_reads": 87808,
+          "beta_float_scalar_products": 87808,
+          "beta_exact_score_evaluations": 896,
+          "beta_float_score_evaluations": 896,
+          "beta_exact_choice_comparisons": 896,
+          "beta_float_choice_comparisons": 896,
+          "beta_gap_subtractions": 233,
+          "symbolic_balance_solves": 1,
+          "symbolic_balance_matrix_cells": 8217,
+          "dual_support_rows": 83,
+          "dual_balance_scalar_products": 8217,
+          "symbolic_balance_seconds": 15.494608759006951
+        }
+      },
+      "summary": {
+        "seconds": 0.00019172599422745407,
+        "counts": {
+          "summary_scope_records": 3,
+          "summary_learned_weighted_component_products": 12,
+          "summary_learned_weighted_scalar_products": 6,
+          "summary_learned_count_reads": 4
+        }
+      },
+      "input_counts": {
+        "json_read_operations": 8,
+        "input_bytes_read": 22549193,
+        "input_bytes_retained": 22549193
+      }
+    },
+    "inherited_cost_refs": [
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_merge_relations_v190/run.json",
+        "fields": [
+          "costs",
+          "inherited_cost_refs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_merge_relations_v190/analysis.json",
+        "fields": [
+          "costs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_merge_relations_v190/metadata_binding_amendment/result.json",
+        "fields": [
+          "costs"
+        ]
+      }
+    ],
+    "test_refs": [
+      "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v191_runtime_tmp/core_checks.json",
+      "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v191_runtime_tmp/runner_checks.json",
+      "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v191_runtime_tmp/analyzer_checks.json"
+    ],
+    "seconds": 27.943256390994065
+  }
+}

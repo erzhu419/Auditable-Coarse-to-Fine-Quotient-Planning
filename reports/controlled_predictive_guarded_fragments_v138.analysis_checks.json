@@ -1,0 +1,12 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "tests_run": 7,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "model_updates": 0,
+      "scope": "finite deterministic fragment outputs, exact novelty, coverage weighting and continuation root values"
+    }
+  ]
+}

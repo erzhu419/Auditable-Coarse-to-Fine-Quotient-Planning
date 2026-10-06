@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "distinct_finite_cases": 36,
+  "analysis_cases": 10,
+  "independent_reader_cases": 19,
+  "native_and_execution_cases": 7,
+  "all_exit_zero": true,
+  "all_stderr_empty": true,
+  "scope": "New terminal-learning, independently reconstructed labels/effects/costs, fixed replay optimization and disjoint prospective seed roles. Source/old target tests not rerun.",
+  "receipts": [
+    "analysis_tests_receipt.json",
+    "audit_tests_receipt.json",
+    "run_tests_receipt.json"
+  ]
+}

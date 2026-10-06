@@ -1,0 +1,121 @@
+{
+  "attempts": [
+    {
+      "tests": 8,
+      "failures": 0,
+      "reference_work": {
+        "inner_choose_calls": 12,
+        "inner_learned_terminal_checks": 50,
+        "inner_learned_swipe_calls": 48,
+        "inner_line_table_lookups": 192,
+        "inner_legal_swipes": 38,
+        "inner_value_predictions": 43,
+        "inner_table_lookups": 1376,
+        "choose_calls": 12,
+        "inner_td_updates": 7,
+        "inner_table_updates": 107,
+        "inner_table_update_occurrences": 224,
+        "td_updates": 7,
+        "inner_terminal_goal_bypasses": 2
+      },
+      "replay_work": {
+        "replayed_transitions": 6,
+        "greedy_action_checks": 6,
+        "chosen_value_checks": 12,
+        "replayed_updates": 5,
+        "raw_target_checks": 5,
+        "td_error_checks": 5,
+        "update_feature_occurrences": 160,
+        "unique_address_updates": 75,
+        "learned_swipe_calls": 24,
+        "line_table_lookups": 96,
+        "choose_value_predictions": 17,
+        "choose_table_lookups": 544,
+        "recorded_spawns": 6,
+        "probe_value_predictions": 18,
+        "probe_table_lookups": 576,
+        "synthetic_status_checks": 6,
+        "retained_segments": 6,
+        "final_compared_parameters": 81920,
+        "attributed_address_updates": 43,
+        "reverse_posting_visits": 43,
+        "exact_board_probe_update_visits": 3
+      },
+      "setup_counts": {
+        "private_parameters_copied": 147456,
+        "private_weight_bytes_copied": 1179648,
+        "cpp_compilations": 1,
+        "probe_features": 320,
+        "cpp_library_cache_hits": 8,
+        "probe_nonzero_signed_addresses": 59,
+        "probe_union_addresses": 59
+      },
+      "newly_sampled_environment_transitions": 0,
+      "newly_sampled_model_transitions": 0,
+      "scope": "Hand specified boards, deterministic recorded empty-cell insertions and TD arithmetic. No random draws."
+    },
+    {
+      "tests": 9,
+      "failures": 0,
+      "teardown_errors": 1,
+      "error": "Ledger serialization rejected numpy.int64 probe_feature_occurrences after all 9 tests passed; corrected to Python int before main execution.",
+      "seconds": 2.0,
+      "newly_sampled_environment_transitions": 0,
+      "newly_sampled_model_transitions": 0
+    },
+    {
+      "tests": 9,
+      "failures": 0,
+      "reference_work": {
+        "inner_choose_calls": 13,
+        "inner_learned_terminal_checks": 54,
+        "inner_learned_swipe_calls": 52,
+        "inner_line_table_lookups": 208,
+        "inner_legal_swipes": 41,
+        "inner_value_predictions": 47,
+        "inner_table_lookups": 1504,
+        "choose_calls": 13,
+        "inner_td_updates": 8,
+        "inner_table_updates": 123,
+        "inner_table_update_occurrences": 256,
+        "td_updates": 8,
+        "inner_terminal_goal_bypasses": 2
+      },
+      "replay_work": {
+        "replayed_transitions": 10,
+        "greedy_action_checks": 10,
+        "chosen_value_checks": 20,
+        "replayed_updates": 6,
+        "raw_target_checks": 6,
+        "td_error_checks": 6,
+        "update_feature_occurrences": 192,
+        "unique_address_updates": 91,
+        "learned_swipe_calls": 44,
+        "line_table_lookups": 176,
+        "choose_value_predictions": 32,
+        "choose_table_lookups": 1024,
+        "recorded_spawns": 9,
+        "probe_value_predictions": 22,
+        "probe_table_lookups": 704,
+        "synthetic_status_checks": 9,
+        "retained_segments": 9,
+        "final_compared_parameters": 114688,
+        "attributed_address_updates": 59,
+        "reverse_posting_visits": 59,
+        "exact_board_probe_update_visits": 3
+      },
+      "setup_counts": {
+        "private_parameters_copied": 163840,
+        "private_weight_bytes_copied": 1310720,
+        "cpp_compilations": 1,
+        "probe_feature_occurrences": 704,
+        "cpp_library_cache_hits": 9,
+        "probe_nonzero_signed_addresses": 75,
+        "probe_union_addresses": 75
+      },
+      "newly_sampled_environment_transitions": 0,
+      "newly_sampled_model_transitions": 0,
+      "scope": "Hand specified boards, deterministic recorded empty-cell insertions and TD arithmetic. No random draws."
+    }
+  ]
+}

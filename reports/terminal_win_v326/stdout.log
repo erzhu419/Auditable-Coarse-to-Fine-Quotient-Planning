@@ -1,0 +1,161 @@
+{"event": "win_learning_initial_complete", "lifecycle": 3, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 2, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 0, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 1, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 3, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 2, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 0, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 1, "task": "B"}
+{"event": "terminal_labels_complete", "lifecycle": 3, "task": "A", "round": 1, "rollouts": 4096, "new_raw_tiles": 2042623, "bootstrap_mean_win": 0.5340413064626813, "terminal_mean_win": 0.604248046875}
+{"event": "terminal_labels_complete", "lifecycle": 2, "task": "A", "round": 1, "rollouts": 4096, "new_raw_tiles": 2041096, "bootstrap_mean_win": 0.5261770074171925, "terminal_mean_win": 0.60986328125}
+{"event": "terminal_labels_complete", "lifecycle": 1, "task": "A", "round": 1, "rollouts": 4096, "new_raw_tiles": 2016887, "bootstrap_mean_win": 0.49795178595444367, "terminal_mean_win": 0.613525390625}
+{"event": "terminal_labels_complete", "lifecycle": 0, "task": "A", "round": 1, "rollouts": 4096, "new_raw_tiles": 2013823, "bootstrap_mean_win": 0.5037642860708944, "terminal_mean_win": 0.589599609375}
+{"event": "win_learning_round_complete", "lifecycle": 3, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 2, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 1, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 0, "task": "A", "round": 1}
+{"event": "terminal_labels_complete", "lifecycle": 3, "task": "B", "round": 1, "rollouts": 4096, "new_raw_tiles": 1299040, "bootstrap_mean_win": 0.39630940828353756, "terminal_mean_win": 0.34130859375}
+{"event": "terminal_labels_complete", "lifecycle": 2, "task": "B", "round": 1, "rollouts": 4096, "new_raw_tiles": 1330996, "bootstrap_mean_win": 0.4447443318043467, "terminal_mean_win": 0.34716796875}
+{"event": "win_learning_round_complete", "lifecycle": 3, "task": "B", "round": 1}
+{"event": "terminal_labels_complete", "lifecycle": 0, "task": "B", "round": 1, "rollouts": 4096, "new_raw_tiles": 1307437, "bootstrap_mean_win": 0.40446302671843193, "terminal_mean_win": 0.32177734375}
+{"event": "win_learning_round_complete", "lifecycle": 2, "task": "B", "round": 1}
+{"event": "terminal_labels_complete", "lifecycle": 1, "task": "B", "round": 1, "rollouts": 4096, "new_raw_tiles": 1315295, "bootstrap_mean_win": 0.36358446310513554, "terminal_mean_win": 0.3037109375}
+{"event": "win_learning_round_complete", "lifecycle": 0, "task": "B", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 1, "task": "B", "round": 1}
+{"event": "terminal_labels_complete", "lifecycle": 3, "task": "A", "round": 2, "rollouts": 4096, "new_raw_tiles": 2005363, "bootstrap_mean_win": 0.5323471012961395, "terminal_mean_win": 0.58837890625}
+{"event": "terminal_labels_complete", "lifecycle": 2, "task": "A", "round": 2, "rollouts": 4096, "new_raw_tiles": 2011347, "bootstrap_mean_win": 0.525402238581907, "terminal_mean_win": 0.585205078125}
+{"event": "win_learning_round_complete", "lifecycle": 3, "task": "A", "round": 2}
+{"event": "terminal_labels_complete", "lifecycle": 0, "task": "A", "round": 2, "rollouts": 4096, "new_raw_tiles": 1991113, "bootstrap_mean_win": 0.5032382437883297, "terminal_mean_win": 0.6015625}
+{"event": "terminal_labels_complete", "lifecycle": 1, "task": "A", "round": 2, "rollouts": 4096, "new_raw_tiles": 1994721, "bootstrap_mean_win": 0.4954903126483622, "terminal_mean_win": 0.60498046875}
+{"event": "win_learning_round_complete", "lifecycle": 2, "task": "A", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 0, "task": "A", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 1, "task": "A", "round": 2}
+{"event": "terminal_labels_complete", "lifecycle": 3, "task": "B", "round": 2, "rollouts": 4096, "new_raw_tiles": 1269381, "bootstrap_mean_win": 0.39703380741598127, "terminal_mean_win": 0.32275390625}
+{"event": "win_learning_round_complete", "lifecycle": 3, "task": "B", "round": 2}
+{"event": "terminal_labels_complete", "lifecycle": 2, "task": "B", "round": 2, "rollouts": 4096, "new_raw_tiles": 1335426, "bootstrap_mean_win": 0.4469299151597486, "terminal_mean_win": 0.342529296875}
+{"event": "terminal_labels_complete", "lifecycle": 0, "task": "B", "round": 2, "rollouts": 4096, "new_raw_tiles": 1285957, "bootstrap_mean_win": 0.4102820982866312, "terminal_mean_win": 0.330810546875}
+{"event": "win_learning_round_complete", "lifecycle": 2, "task": "B", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 0, "task": "B", "round": 2}
+{"event": "terminal_labels_complete", "lifecycle": 1, "task": "B", "round": 2, "rollouts": 4096, "new_raw_tiles": 1307388, "bootstrap_mean_win": 0.36652396471945203, "terminal_mean_win": 0.30908203125}
+{"event": "win_learning_round_complete", "lifecycle": 1, "task": "B", "round": 2}
+{"event": "win_learning_initial_complete", "lifecycle": 7, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 6, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 4, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 5, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 7, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 6, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 4, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 5, "task": "B"}
+{"event": "terminal_labels_complete", "lifecycle": 7, "task": "A", "round": 1, "rollouts": 4096, "new_raw_tiles": 2059233, "bootstrap_mean_win": 0.5081661073108829, "terminal_mean_win": 0.62646484375}
+{"event": "terminal_labels_complete", "lifecycle": 6, "task": "A", "round": 1, "rollouts": 4096, "new_raw_tiles": 1998857, "bootstrap_mean_win": 0.5374314726261378, "terminal_mean_win": 0.61376953125}
+{"event": "terminal_labels_complete", "lifecycle": 4, "task": "A", "round": 1, "rollouts": 4096, "new_raw_tiles": 1978075, "bootstrap_mean_win": 0.5223606290904709, "terminal_mean_win": 0.608642578125}
+{"event": "win_learning_round_complete", "lifecycle": 7, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 6, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 4, "task": "A", "round": 1}
+{"event": "terminal_labels_complete", "lifecycle": 5, "task": "A", "round": 1, "rollouts": 4096, "new_raw_tiles": 2013910, "bootstrap_mean_win": 0.49639008642300597, "terminal_mean_win": 0.573974609375}
+{"event": "win_learning_round_complete", "lifecycle": 5, "task": "A", "round": 1}
+{"event": "terminal_labels_complete", "lifecycle": 7, "task": "B", "round": 1, "rollouts": 4096, "new_raw_tiles": 1324031, "bootstrap_mean_win": 0.41971354404418637, "terminal_mean_win": 0.3603515625}
+{"event": "terminal_labels_complete", "lifecycle": 4, "task": "B", "round": 1, "rollouts": 4096, "new_raw_tiles": 1304531, "bootstrap_mean_win": 0.4037473378353075, "terminal_mean_win": 0.321533203125}
+{"event": "terminal_labels_complete", "lifecycle": 6, "task": "B", "round": 1, "rollouts": 4096, "new_raw_tiles": 1333895, "bootstrap_mean_win": 0.3807888144112501, "terminal_mean_win": 0.328369140625}
+{"event": "win_learning_round_complete", "lifecycle": 7, "task": "B", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 4, "task": "B", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 6, "task": "B", "round": 1}
+{"event": "terminal_labels_complete", "lifecycle": 5, "task": "B", "round": 1, "rollouts": 4096, "new_raw_tiles": 1308874, "bootstrap_mean_win": 0.4106383598928071, "terminal_mean_win": 0.287841796875}
+{"event": "win_learning_round_complete", "lifecycle": 5, "task": "B", "round": 1}
+{"event": "terminal_labels_complete", "lifecycle": 7, "task": "A", "round": 2, "rollouts": 4096, "new_raw_tiles": 1971149, "bootstrap_mean_win": 0.5077245220735562, "terminal_mean_win": 0.6240234375}
+{"event": "terminal_labels_complete", "lifecycle": 4, "task": "A", "round": 2, "rollouts": 4096, "new_raw_tiles": 2039346, "bootstrap_mean_win": 0.5233853257507786, "terminal_mean_win": 0.611572265625}
+{"event": "terminal_labels_complete", "lifecycle": 6, "task": "A", "round": 2, "rollouts": 4096, "new_raw_tiles": 1995502, "bootstrap_mean_win": 0.5369953047063738, "terminal_mean_win": 0.600830078125}
+{"event": "win_learning_round_complete", "lifecycle": 7, "task": "A", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 6, "task": "A", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 4, "task": "A", "round": 2}
+{"event": "terminal_labels_complete", "lifecycle": 5, "task": "A", "round": 2, "rollouts": 4096, "new_raw_tiles": 2020834, "bootstrap_mean_win": 0.49914185203993944, "terminal_mean_win": 0.57177734375}
+{"event": "win_learning_round_complete", "lifecycle": 5, "task": "A", "round": 2}
+{"event": "terminal_labels_complete", "lifecycle": 7, "task": "B", "round": 2, "rollouts": 4096, "new_raw_tiles": 1318648, "bootstrap_mean_win": 0.4205434641599114, "terminal_mean_win": 0.355224609375}
+{"event": "terminal_labels_complete", "lifecycle": 6, "task": "B", "round": 2, "rollouts": 4096, "new_raw_tiles": 1288084, "bootstrap_mean_win": 0.38724753623608493, "terminal_mean_win": 0.327880859375}
+{"event": "terminal_labels_complete", "lifecycle": 4, "task": "B", "round": 2, "rollouts": 4096, "new_raw_tiles": 1309941, "bootstrap_mean_win": 0.40332053381154215, "terminal_mean_win": 0.32763671875}
+{"event": "win_learning_round_complete", "lifecycle": 7, "task": "B", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 6, "task": "B", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 4, "task": "B", "round": 2}
+{"event": "terminal_labels_complete", "lifecycle": 5, "task": "B", "round": 2, "rollouts": 4096, "new_raw_tiles": 1298103, "bootstrap_mean_win": 0.4083430129536034, "terminal_mean_win": 0.2822265625}
+{"event": "win_learning_round_complete", "lifecycle": 5, "task": "B", "round": 2}
+{"event": "win_learning_initial_complete", "lifecycle": 11, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 10, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 8, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 11, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 10, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 9, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 8, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 9, "task": "B"}
+{"event": "terminal_labels_complete", "lifecycle": 11, "task": "A", "round": 1, "rollouts": 4096, "new_raw_tiles": 2027631, "bootstrap_mean_win": 0.5529457346123233, "terminal_mean_win": 0.601806640625}
+{"event": "terminal_labels_complete", "lifecycle": 10, "task": "A", "round": 1, "rollouts": 4096, "new_raw_tiles": 1983331, "bootstrap_mean_win": 0.5318654294466751, "terminal_mean_win": 0.5947265625}
+{"event": "terminal_labels_complete", "lifecycle": 8, "task": "A", "round": 1, "rollouts": 4096, "new_raw_tiles": 2022894, "bootstrap_mean_win": 0.5156072705724597, "terminal_mean_win": 0.6162109375}
+{"event": "win_learning_round_complete", "lifecycle": 11, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 10, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 8, "task": "A", "round": 1}
+{"event": "terminal_labels_complete", "lifecycle": 9, "task": "A", "round": 1, "rollouts": 4096, "new_raw_tiles": 1993537, "bootstrap_mean_win": 0.5440518013868945, "terminal_mean_win": 0.57763671875}
+{"event": "win_learning_round_complete", "lifecycle": 9, "task": "A", "round": 1}
+{"event": "terminal_labels_complete", "lifecycle": 10, "task": "B", "round": 1, "rollouts": 4096, "new_raw_tiles": 1276094, "bootstrap_mean_win": 0.3941198847446604, "terminal_mean_win": 0.306396484375}
+{"event": "terminal_labels_complete", "lifecycle": 11, "task": "B", "round": 1, "rollouts": 4096, "new_raw_tiles": 1300366, "bootstrap_mean_win": 0.4098535523699305, "terminal_mean_win": 0.32177734375}
+{"event": "terminal_labels_complete", "lifecycle": 8, "task": "B", "round": 1, "rollouts": 4096, "new_raw_tiles": 1285691, "bootstrap_mean_win": 0.37873877750777885, "terminal_mean_win": 0.345947265625}
+{"event": "win_learning_round_complete", "lifecycle": 10, "task": "B", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 11, "task": "B", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 8, "task": "B", "round": 1}
+{"event": "terminal_labels_complete", "lifecycle": 9, "task": "B", "round": 1, "rollouts": 4096, "new_raw_tiles": 1279496, "bootstrap_mean_win": 0.39726551037519253, "terminal_mean_win": 0.27392578125}
+{"event": "win_learning_round_complete", "lifecycle": 9, "task": "B", "round": 1}
+{"event": "terminal_labels_complete", "lifecycle": 10, "task": "A", "round": 2, "rollouts": 4096, "new_raw_tiles": 2029564, "bootstrap_mean_win": 0.528903304651948, "terminal_mean_win": 0.595947265625}
+{"event": "terminal_labels_complete", "lifecycle": 11, "task": "A", "round": 2, "rollouts": 4096, "new_raw_tiles": 2071374, "bootstrap_mean_win": 0.5563021908448307, "terminal_mean_win": 0.61083984375}
+{"event": "terminal_labels_complete", "lifecycle": 8, "task": "A", "round": 2, "rollouts": 4096, "new_raw_tiles": 2087975, "bootstrap_mean_win": 0.5161058508861016, "terminal_mean_win": 0.596923828125}
+{"event": "win_learning_round_complete", "lifecycle": 10, "task": "A", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 11, "task": "A", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 8, "task": "A", "round": 2}
+{"event": "terminal_labels_complete", "lifecycle": 9, "task": "A", "round": 2, "rollouts": 4096, "new_raw_tiles": 1989957, "bootstrap_mean_win": 0.5466905386215091, "terminal_mean_win": 0.601318359375}
+{"event": "win_learning_round_complete", "lifecycle": 9, "task": "A", "round": 2}
+{"event": "terminal_labels_complete", "lifecycle": 10, "task": "B", "round": 2, "rollouts": 4096, "new_raw_tiles": 1298358, "bootstrap_mean_win": 0.3907346092293154, "terminal_mean_win": 0.30224609375}
+{"event": "win_learning_round_complete", "lifecycle": 10, "task": "B", "round": 2}
+{"event": "terminal_labels_complete", "lifecycle": 8, "task": "B", "round": 2, "rollouts": 4096, "new_raw_tiles": 1263763, "bootstrap_mean_win": 0.3821518560492062, "terminal_mean_win": 0.3232421875}
+{"event": "terminal_labels_complete", "lifecycle": 11, "task": "B", "round": 2, "rollouts": 4096, "new_raw_tiles": 1289041, "bootstrap_mean_win": 0.40746837269541225, "terminal_mean_win": 0.3173828125}
+{"event": "win_learning_round_complete", "lifecycle": 8, "task": "B", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 11, "task": "B", "round": 2}
+{"event": "terminal_labels_complete", "lifecycle": 9, "task": "B", "round": 2, "rollouts": 4096, "new_raw_tiles": 1273356, "bootstrap_mean_win": 0.39708561467267156, "terminal_mean_win": 0.277099609375}
+{"event": "win_learning_round_complete", "lifecycle": 9, "task": "B", "round": 2}
+{"event": "win_learning_initial_complete", "lifecycle": 14, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 12, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 15, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 13, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 14, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 12, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 15, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 13, "task": "B"}
+{"event": "terminal_labels_complete", "lifecycle": 14, "task": "A", "round": 1, "rollouts": 4096, "new_raw_tiles": 2004957, "bootstrap_mean_win": 0.520347738672271, "terminal_mean_win": 0.6005859375}
+{"event": "terminal_labels_complete", "lifecycle": 12, "task": "A", "round": 1, "rollouts": 4096, "new_raw_tiles": 2011413, "bootstrap_mean_win": 0.49056718058560145, "terminal_mean_win": 0.61279296875}
+{"event": "win_learning_round_complete", "lifecycle": 14, "task": "A", "round": 1}
+{"event": "terminal_labels_complete", "lifecycle": 15, "task": "A", "round": 1, "rollouts": 4096, "new_raw_tiles": 2019623, "bootstrap_mean_win": 0.5085744446762916, "terminal_mean_win": 0.62841796875}
+{"event": "win_learning_round_complete", "lifecycle": 12, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 15, "task": "A", "round": 1}
+{"event": "terminal_labels_complete", "lifecycle": 13, "task": "A", "round": 1, "rollouts": 4096, "new_raw_tiles": 2044040, "bootstrap_mean_win": 0.5243677076852475, "terminal_mean_win": 0.610595703125}
+{"event": "win_learning_round_complete", "lifecycle": 13, "task": "A", "round": 1}
+{"event": "terminal_labels_complete", "lifecycle": 14, "task": "B", "round": 1, "rollouts": 4096, "new_raw_tiles": 1283620, "bootstrap_mean_win": 0.39707626764019277, "terminal_mean_win": 0.298095703125}
+{"event": "win_learning_round_complete", "lifecycle": 14, "task": "B", "round": 1}
+{"event": "terminal_labels_complete", "lifecycle": 12, "task": "B", "round": 1, "rollouts": 4096, "new_raw_tiles": 1310238, "bootstrap_mean_win": 0.42363184097449047, "terminal_mean_win": 0.30517578125}
+{"event": "win_learning_round_complete", "lifecycle": 12, "task": "B", "round": 1}
+{"event": "terminal_labels_complete", "lifecycle": 15, "task": "B", "round": 1, "rollouts": 4096, "new_raw_tiles": 1318046, "bootstrap_mean_win": 0.4012814208535664, "terminal_mean_win": 0.330078125}
+{"event": "win_learning_round_complete", "lifecycle": 15, "task": "B", "round": 1}
+{"event": "terminal_labels_complete", "lifecycle": 13, "task": "B", "round": 1, "rollouts": 4096, "new_raw_tiles": 1317196, "bootstrap_mean_win": 0.39866452924819495, "terminal_mean_win": 0.299560546875}
+{"event": "win_learning_round_complete", "lifecycle": 13, "task": "B", "round": 1}
+{"event": "terminal_labels_complete", "lifecycle": 14, "task": "A", "round": 2, "rollouts": 4096, "new_raw_tiles": 1978688, "bootstrap_mean_win": 0.5213624276465443, "terminal_mean_win": 0.590087890625}
+{"event": "win_learning_round_complete", "lifecycle": 14, "task": "A", "round": 2}
+{"event": "terminal_labels_complete", "lifecycle": 12, "task": "A", "round": 2, "rollouts": 4096, "new_raw_tiles": 2034378, "bootstrap_mean_win": 0.49242574326953403, "terminal_mean_win": 0.621826171875}
+{"event": "win_learning_round_complete", "lifecycle": 12, "task": "A", "round": 2}
+{"event": "terminal_labels_complete", "lifecycle": 15, "task": "A", "round": 2, "rollouts": 4096, "new_raw_tiles": 2049479, "bootstrap_mean_win": 0.5063533281949416, "terminal_mean_win": 0.595947265625}
+{"event": "win_learning_round_complete", "lifecycle": 15, "task": "A", "round": 2}
+{"event": "terminal_labels_complete", "lifecycle": 13, "task": "A", "round": 2, "rollouts": 4096, "new_raw_tiles": 2016746, "bootstrap_mean_win": 0.5243304104843944, "terminal_mean_win": 0.611572265625}
+{"event": "win_learning_round_complete", "lifecycle": 13, "task": "A", "round": 2}
+{"event": "terminal_labels_complete", "lifecycle": 14, "task": "B", "round": 2, "rollouts": 4096, "new_raw_tiles": 1322818, "bootstrap_mean_win": 0.3938238184391912, "terminal_mean_win": 0.288818359375}
+{"event": "win_learning_round_complete", "lifecycle": 14, "task": "B", "round": 2}
+{"event": "terminal_labels_complete", "lifecycle": 12, "task": "B", "round": 2, "rollouts": 4096, "new_raw_tiles": 1289896, "bootstrap_mean_win": 0.4273230349352817, "terminal_mean_win": 0.311279296875}
+{"event": "win_learning_round_complete", "lifecycle": 12, "task": "B", "round": 2}
+{"event": "terminal_labels_complete", "lifecycle": 15, "task": "B", "round": 2, "rollouts": 4096, "new_raw_tiles": 1281514, "bootstrap_mean_win": 0.4062325118813491, "terminal_mean_win": 0.339599609375}
+{"event": "win_learning_round_complete", "lifecycle": 15, "task": "B", "round": 2}
+{"event": "terminal_labels_complete", "lifecycle": 13, "task": "B", "round": 2, "rollouts": 4096, "new_raw_tiles": 1291641, "bootstrap_mean_win": 0.39926203767086244, "terminal_mean_win": 0.30810546875}
+{"event": "win_learning_round_complete", "lifecycle": 13, "task": "B", "round": 2}
+{"event": "win_learning_complete", "status": "EXPERIMENT_COMPLETE", "primary": "SUPPORTED_LOSS", "retained": false}

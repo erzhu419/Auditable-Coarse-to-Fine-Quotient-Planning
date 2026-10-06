@@ -1,0 +1,9 @@
+Command:
+PYTHONPATH=src .venv-lmta-v42/bin/python -m pytest -q tests/test_native_conditional_bellman_v294.py --basetemp=reports/conditional_bellman_v294/pytest_tmp_native
+
+..........                                                               [100%]
+10 passed in 2.31s
+
+Exit code: 0
+Tool elapsed: 2.612599403 seconds
+Finite synthetic goal-rank-4 models only. No environment sampling or formal seed families consumed.

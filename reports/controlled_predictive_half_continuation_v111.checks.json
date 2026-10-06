@@ -1,0 +1,24 @@
+{
+  "attempts": [
+    {
+      "failed_tests": 0,
+      "development_work": {
+        "neural_model_fits": 9,
+        "optimizer_steps": 35,
+        "optimizer_root_passes": 525,
+        "optimizer_pair_passes": 5250,
+        "optimizer_parameter_updates": 33456,
+        "diagnostic_candidate_predictions": 945,
+        "continuation_fits": 7,
+        "continuation_optimizer_steps": 25,
+        "oracle_fits": 2,
+        "oracle_optimizer_steps": 10
+      },
+      "production_neural_model_fits": 0,
+      "production_optimizer_steps": 0,
+      "environment_transitions": 0,
+      "model_transitions": 0,
+      "scope": "Short-step synthetic fits and V110 numerical oracles; half payloads are constructed, not fitted."
+    }
+  ]
+}

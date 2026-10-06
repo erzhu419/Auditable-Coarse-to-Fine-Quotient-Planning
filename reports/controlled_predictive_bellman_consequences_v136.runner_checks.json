@@ -1,0 +1,14 @@
+{
+  "attempts": [
+    {
+      "tests": 5,
+      "failures": 0,
+      "seconds": 0.023115953998058103,
+      "environment_samples": 0,
+      "environment_random_draws": 0,
+      "native_model_calls": 0,
+      "model_updates": 0,
+      "scope": "Mocked teachers, students, streams and games; aliases, diagnostics and frozen phase ordering"
+    }
+  ]
+}

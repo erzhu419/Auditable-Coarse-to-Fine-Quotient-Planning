@@ -1,0 +1,11 @@
+{
+  "command": [
+    ".venv-lmta-v42/bin/python",
+    "scripts/run_controlled_predictive_policy_calibration_v129.py"
+  ],
+  "started_utc": "2026-09-20T01:04:38.259628+00:00",
+  "status": "completed",
+  "exit_code": 0,
+  "seconds": 41.89696937400731,
+  "stderr_bytes": 0
+}

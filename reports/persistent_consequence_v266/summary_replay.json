@@ -1,0 +1,2862 @@
+{
+  "limitations": [
+    "Paired development streams reuse V265's finite route data.",
+    "The action agreement rule covers only three supplied queries.",
+    "No confidence certificate, general strategic claim or original Gate is changed."
+  ],
+  "records": [
+    {
+      "arms": {
+        "ACTION_AGREEMENT": [
+          {
+            "assignment": {
+              "audit_brier": "15259289/94128804",
+              "candidate_checks": [],
+              "candidate_count_before": 0,
+              "module_count_after": 1,
+              "module_id": 0,
+              "query_action_agreement": {},
+              "reason": "initial",
+              "reused": false
+            },
+            "audit_brier": "15259289/94128804",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "253/70"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660"
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "72104297/282386412",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                }
+              ],
+              "candidate_count_before": 1,
+              "module_count_after": 2,
+              "module_id": 1,
+              "query_action_agreement": {},
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_brier": "72104297/282386412",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1851/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1791/490"
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "assignment": {
+              "audit_brier": "25911553/85866534",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": true,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "module_count_after": 2,
+              "module_id": 0,
+              "query_action_agreement": {
+                "goal": true,
+                "reward": true,
+                "risk": true
+              },
+              "reason": "reuse_all_query_actions",
+              "reused": true
+            },
+            "audit_brier": "25911553/85866534",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "3443/970"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2521/780"
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "59008309/141193206",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "module_count_after": 3,
+              "module_id": 2,
+              "query_action_agreement": {},
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_brier": "59008309/141193206",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "53267/16170"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "5981/1980"
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "GLOBAL": [
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "253/70"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660"
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "3603/970"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "3423/970"
+              }
+            },
+            "modules": 1,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "211/58"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "21/100",
+                "policy_correct": false,
+                "predicted_policy": "SHORT",
+                "predicted_value": "979/290"
+              }
+            },
+            "modules": 1,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "1547/2000",
+                "policy_correct": false,
+                "predicted_policy": "SHORT",
+                "predicted_value": "6627/1930"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "23933/7740"
+              }
+            },
+            "modules": 1,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "RESET": [
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "253/70"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660"
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1851/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1791/490"
+              }
+            },
+            "modules": 1,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "5981/1980"
+              }
+            },
+            "modules": 1,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "53267/16170"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "5981/1980"
+              }
+            },
+            "modules": 1,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "V265_GUARDED": [
+          {
+            "assignment": {
+              "audit_brier": "15259289/94128804",
+              "existing_route_brier": null,
+              "local_route_brier": "2780600/14665563",
+              "module_count_after": 1,
+              "module_id": 0,
+              "reason": "initial"
+            },
+            "audit_brier": "15259289/94128804",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "253/70"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660"
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "72104297/282386412",
+              "existing_route_brier": "29194765/47064402",
+              "local_route_brier": "140375/875556",
+              "module_count_after": 2,
+              "module_id": 1,
+              "reason": "abstain_local_split"
+            },
+            "audit_brier": "72104297/282386412",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1851/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1791/490"
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "assignment": {
+              "audit_brier": "25911553/85866534",
+              "existing_route_brier": "28356989/94128804",
+              "local_route_brier": "947233/3259014",
+              "module_count_after": 2,
+              "module_id": 0,
+              "reason": "reuse_confident"
+            },
+            "audit_brier": "25911553/85866534",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "3443/970"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2521/780"
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "59008309/141193206",
+              "existing_route_brier": "20289122/42933267",
+              "local_route_brier": "11551955/29331126",
+              "module_count_after": 3,
+              "module_id": 2,
+              "reason": "abstain_local_split"
+            },
+            "audit_brier": "59008309/141193206",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "53267/16170"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "5981/1980"
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ]
+      },
+      "seed": 265401
+    },
+    {
+      "arms": {
+        "ACTION_AGREEMENT": [
+          {
+            "assignment": {
+              "audit_brier": "24504503/94128804",
+              "candidate_checks": [],
+              "candidate_count_before": 0,
+              "module_count_after": 1,
+              "module_id": 0,
+              "query_action_agreement": {},
+              "reason": "initial",
+              "reused": false
+            },
+            "audit_brier": "24504503/94128804",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660"
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "14455379/70596603",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                }
+              ],
+              "candidate_count_before": 1,
+              "module_count_after": 2,
+              "module_id": 1,
+              "query_action_agreement": {},
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_brier": "14455379/70596603",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1891/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1871/490"
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "assignment": {
+              "audit_brier": "360476459/1431108900",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": true,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "module_count_after": 2,
+              "module_id": 0,
+              "query_action_agreement": {
+                "goal": true,
+                "reward": true,
+                "risk": true
+              },
+              "reason": "reuse_all_query_actions",
+              "reused": true
+            },
+            "audit_brier": "360476459/1431108900",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "3363/970"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "883/260"
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "48100361/94128804",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "module_count_after": 3,
+              "module_id": 2,
+              "query_action_agreement": {},
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_brier": "48100361/94128804",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "18407/5390"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660"
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "GLOBAL": [
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660"
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "3563/970"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "3343/970"
+              }
+            },
+            "modules": 1,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1047/290"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "21/100",
+                "policy_correct": false,
+                "predicted_policy": "SHORT",
+                "predicted_value": "963/290"
+              }
+            },
+            "modules": 1,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "1547/2000",
+                "policy_correct": false,
+                "predicted_policy": "SHORT",
+                "predicted_value": "6747/1930"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "24253/7740"
+              }
+            },
+            "modules": 1,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "RESET": [
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660"
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1891/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1871/490"
+              }
+            },
+            "modules": 1,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660"
+              }
+            },
+            "modules": 1,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "18407/5390"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660"
+              }
+            },
+            "modules": 1,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "V265_GUARDED": [
+          {
+            "assignment": {
+              "audit_brier": "24504503/94128804",
+              "existing_route_brier": null,
+              "local_route_brier": "311469/1086338",
+              "module_count_after": 1,
+              "module_id": 0,
+              "reason": "initial"
+            },
+            "audit_brier": "24504503/94128804",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660"
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "14455379/70596603",
+              "existing_route_brier": "10102733/23532201",
+              "local_route_brier": "5710039/29331126",
+              "module_count_after": 2,
+              "module_id": 1,
+              "reason": "abstain_local_split"
+            },
+            "audit_brier": "14455379/70596603",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1891/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1871/490"
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "assignment": {
+              "audit_brier": "360476459/1431108900",
+              "existing_route_brier": "22515593/94128804",
+              "local_route_brier": "397624/1629507",
+              "module_count_after": 2,
+              "module_id": 0,
+              "reason": "reuse_confident"
+            },
+            "audit_brier": "360476459/1431108900",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "3363/970"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "883/260"
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "6381743/12278745",
+              "existing_route_brier": "508240439/1431108900",
+              "local_route_brier": "20325235/58662252",
+              "module_count_after": 2,
+              "module_id": 0,
+              "reason": "reuse_confident"
+            },
+            "audit_brier": "6381743/12278745",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "97117/28130"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "6623/1940"
+              }
+            },
+            "modules": 2,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ]
+      },
+      "seed": 265402
+    },
+    {
+      "arms": {
+        "ACTION_AGREEMENT": [
+          {
+            "assignment": {
+              "audit_brier": "41753113/141193206",
+              "candidate_checks": [],
+              "candidate_count_before": 0,
+              "module_count_after": 1,
+              "module_id": 0,
+              "query_action_agreement": {},
+              "reason": "initial",
+              "reused": false
+            },
+            "audit_brier": "41753113/141193206",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "5981/1980"
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "49885625/282386412",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                }
+              ],
+              "candidate_count_before": 1,
+              "module_count_after": 2,
+              "module_id": 1,
+              "query_action_agreement": {},
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_brier": "49885625/282386412",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1891/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1871/490"
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "assignment": {
+              "audit_brier": "1905128/6351075",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": true,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "module_count_after": 2,
+              "module_id": 1,
+              "query_action_agreement": {
+                "goal": true,
+                "reward": true,
+                "risk": true
+              },
+              "reason": "reuse_all_query_actions",
+              "reused": true
+            },
+            "audit_brier": "1905128/6351075",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "3723/970"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "21/100",
+                "policy_correct": false,
+                "predicted_policy": "SHORT",
+                "predicted_value": "3663/970"
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "2860481/5762988",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "module_count_after": 3,
+              "module_id": 2,
+              "query_action_agreement": {},
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_brier": "2860481/5762988",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "911/330"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "4061/1980"
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "GLOBAL": [
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "5981/1980"
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "3563/970"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "3343/970"
+              }
+            },
+            "modules": 1,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1079/290"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "21/100",
+                "policy_correct": false,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1027/290"
+              }
+            },
+            "modules": 1,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "1547/2000",
+                "policy_correct": false,
+                "predicted_policy": "SHORT",
+                "predicted_value": "6587/1930"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "201/100",
+                "policy_correct": false,
+                "predicted_policy": "SHORT",
+                "predicted_value": "5647/1930"
+              }
+            },
+            "modules": 1,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "RESET": [
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "5981/1980"
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1891/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1871/490"
+              }
+            },
+            "modules": 1,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1851/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "21/100",
+                "policy_correct": false,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1791/490"
+              }
+            },
+            "modules": 1,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "911/330"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "4061/1980"
+              }
+            },
+            "modules": 1,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "V265_GUARDED": [
+          {
+            "assignment": {
+              "audit_brier": "41753113/141193206",
+              "existing_route_brier": null,
+              "local_route_brier": "947233/3259014",
+              "module_count_after": 1,
+              "module_id": 0,
+              "reason": "initial"
+            },
+            "audit_brier": "41753113/141193206",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "5981/1980"
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "49885625/282386412",
+              "existing_route_brier": "73944349/141193206",
+              "local_route_brier": "3683815/14665563",
+              "module_count_after": 2,
+              "module_id": 1,
+              "reason": "abstain_local_split"
+            },
+            "audit_brier": "49885625/282386412",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1891/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1871/490"
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "assignment": {
+              "audit_brier": "26683562/82563975",
+              "existing_route_brier": "57490313/282386412",
+              "local_route_brier": "2817743/14665563",
+              "module_count_after": 2,
+              "module_id": 0,
+              "reason": "reuse_confident"
+            },
+            "audit_brier": "26683562/82563975",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "3523/970"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "21/100",
+                "policy_correct": false,
+                "predicted_policy": "SHORT",
+                "predicted_value": "3263/970"
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "2860481/5762988",
+              "existing_route_brier": "3904349/6351075",
+              "local_route_brier": "32566751/58662252",
+              "module_count_after": 3,
+              "module_id": 2,
+              "reason": "abstain_local_split"
+            },
+            "audit_brier": "2860481/5762988",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "911/330"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "4061/1980"
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ]
+      },
+      "seed": 265403
+    },
+    {
+      "arms": {
+        "ACTION_AGREEMENT": [
+          {
+            "assignment": {
+              "audit_brier": "23858627/94128804",
+              "candidate_checks": [],
+              "candidate_count_before": 0,
+              "module_count_after": 1,
+              "module_id": 0,
+              "query_action_agreement": {},
+              "reason": "initial",
+              "reused": false
+            },
+            "audit_brier": "23858627/94128804",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660"
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "18285293/70596603",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                }
+              ],
+              "candidate_count_before": 1,
+              "module_count_after": 2,
+              "module_id": 1,
+              "query_action_agreement": {},
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_brier": "18285293/70596603",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1891/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1871/490"
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "assignment": {
+              "audit_brier": "418005119/1073331675",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": true,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "module_count_after": 2,
+              "module_id": 1,
+              "query_action_agreement": {
+                "goal": true,
+                "reward": true,
+                "risk": true
+              },
+              "reason": "reuse_all_query_actions",
+              "reused": true
+            },
+            "audit_brier": "418005119/1073331675",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "3683/970"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "21/100",
+                "policy_correct": false,
+                "predicted_policy": "SHORT",
+                "predicted_value": "3583/970"
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "116873963/282386412",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "module_count_after": 3,
+              "module_id": 2,
+              "query_action_agreement": {},
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_brier": "116873963/282386412",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "127811/48510"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "4381/1980"
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "GLOBAL": [
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660"
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "3563/970"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "3343/970"
+              }
+            },
+            "modules": 1,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1071/290"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "21/100",
+                "policy_correct": false,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1011/290"
+              }
+            },
+            "modules": 1,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "1547/2000",
+                "policy_correct": false,
+                "predicted_policy": "SHORT",
+                "predicted_value": "6587/1930"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "201/100",
+                "policy_correct": false,
+                "predicted_policy": "SHORT",
+                "predicted_value": "5647/1930"
+              }
+            },
+            "modules": 1,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "RESET": [
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660"
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1891/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1871/490"
+              }
+            },
+            "modules": 1,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1811/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "21/100",
+                "policy_correct": false,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1711/490"
+              }
+            },
+            "modules": 1,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "127811/48510"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "4381/1980"
+              }
+            },
+            "modules": 1,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "V265_GUARDED": [
+          {
+            "assignment": {
+              "audit_brier": "23858627/94128804",
+              "existing_route_brier": null,
+              "local_route_brier": "397624/1629507",
+              "module_count_after": 1,
+              "module_id": 0,
+              "reason": "initial"
+            },
+            "audit_brier": "23858627/94128804",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660"
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "18285293/70596603",
+              "existing_route_brier": "20314267/47064402",
+              "local_route_brier": "7306985/29331126",
+              "module_count_after": 2,
+              "module_id": 1,
+              "reason": "abstain_local_split"
+            },
+            "audit_brier": "18285293/70596603",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1891/490"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "1871/490"
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "assignment": {
+              "audit_brier": "1373818019/4293326700",
+              "existing_route_brier": "25934855/94128804",
+              "local_route_brier": "16694153/58662252",
+              "module_count_after": 2,
+              "module_id": 0,
+              "reason": "reuse_confident"
+            },
+            "audit_brier": "1373818019/4293326700",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "SHORT",
+                "predicted_value": "3483/970"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "21/100",
+                "policy_correct": false,
+                "predicted_policy": "SHORT",
+                "predicted_value": "3183/970"
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "116873963/282386412",
+              "existing_route_brier": "2357360189/4293326700",
+              "local_route_brier": "27875849/58662252",
+              "module_count_after": 3,
+              "module_id": 2,
+              "reason": "abstain_local_split"
+            },
+            "audit_brier": "116873963/282386412",
+            "audit_observations": 48,
+            "checkpoint": "shared_fit_prefix",
+            "metrics": {
+              "goal": {
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "127811/48510"
+              },
+              "reward": {
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "WAIT",
+                "predicted_value": "0"
+              },
+              "risk": {
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "4381/1980"
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ]
+      },
+      "seed": 265404
+    }
+  ],
+  "schema": "acfqp.persistent_consequence_library.v266",
+  "scientific_gate": "NOT_A_FORMAL_GATE",
+  "settings": {
+    "audit_per_operator": 16,
+    "fit_per_operator": 48,
+    "queries": {
+      "goal": [
+        "1",
+        "0",
+        "4"
+      ],
+      "reward": [
+        "1",
+        "0",
+        "0"
+      ],
+      "risk": [
+        "1",
+        "4",
+        "4"
+      ]
+    },
+    "rule": "reuse iff all three query optimal-action sets agree; otherwise abstain and create a local module",
+    "seeds": [
+      265401,
+      265402,
+      265403,
+      265404
+    ]
+  },
+  "status": "DEVELOPMENT_COMPLETE",
+  "summary": {
+    "ACTION_AGREEMENT": {
+      "exact_regrets": [
+        "0",
+        "0",
+        "21/100",
+        "21/100"
+      ],
+      "mean_exact_regret": "21/200",
+      "mean_policy_correct": 11.5,
+      "policy_correct_counts": [
+        12,
+        12,
+        11,
+        11
+      ]
+    },
+    "GLOBAL": {
+      "exact_regrets": [
+        "1967/2000",
+        "1967/2000",
+        "5987/2000",
+        "5987/2000"
+      ],
+      "mean_exact_regret": "3977/2000",
+      "mean_policy_correct": 9.5,
+      "policy_correct_counts": [
+        10,
+        10,
+        9,
+        9
+      ]
+    },
+    "RESET": {
+      "exact_regrets": [
+        "0",
+        "0",
+        "21/100",
+        "21/100"
+      ],
+      "mean_exact_regret": "21/200",
+      "mean_policy_correct": 11.5,
+      "policy_correct_counts": [
+        12,
+        12,
+        11,
+        11
+      ]
+    },
+    "V265_GUARDED": {
+      "exact_regrets": [
+        "0",
+        "0",
+        "21/100",
+        "21/100"
+      ],
+      "mean_exact_regret": "21/200",
+      "mean_policy_correct": 11.5,
+      "policy_correct_counts": [
+        12,
+        12,
+        11,
+        11
+      ]
+    }
+  }
+}

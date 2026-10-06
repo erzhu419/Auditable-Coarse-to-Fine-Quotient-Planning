@@ -1,0 +1,253 @@
+{
+  "valid": true,
+  "complete": true,
+  "checks": [
+    {
+      "name": "fixed_twelve_task_sequence",
+      "passed": true
+    },
+    {
+      "name": "complete_rosters",
+      "passed": true
+    },
+    {
+      "name": "life_0_policies_before_after",
+      "passed": true
+    },
+    {
+      "name": "life_0_common_choice_and_stop",
+      "passed": true
+    },
+    {
+      "name": "life_0_actual_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_0_online_fields_and_raw_plans",
+      "passed": true
+    },
+    {
+      "name": "life_1_policies_before_after",
+      "passed": true
+    },
+    {
+      "name": "life_1_common_choice_and_stop",
+      "passed": true
+    },
+    {
+      "name": "life_1_actual_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_1_online_fields_and_raw_plans",
+      "passed": true
+    },
+    {
+      "name": "life_2_policies_before_after",
+      "passed": true
+    },
+    {
+      "name": "life_2_common_choice_and_stop",
+      "passed": true
+    },
+    {
+      "name": "life_2_actual_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_2_online_fields_and_raw_plans",
+      "passed": true
+    },
+    {
+      "name": "life_3_policies_before_after",
+      "passed": true
+    },
+    {
+      "name": "life_3_common_choice_and_stop",
+      "passed": true
+    },
+    {
+      "name": "life_3_actual_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_3_online_fields_and_raw_plans",
+      "passed": true
+    },
+    {
+      "name": "life_4_policies_before_after",
+      "passed": true
+    },
+    {
+      "name": "life_4_common_choice_and_stop",
+      "passed": true
+    },
+    {
+      "name": "life_4_actual_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_4_online_fields_and_raw_plans",
+      "passed": true
+    },
+    {
+      "name": "life_5_policies_before_after",
+      "passed": true
+    },
+    {
+      "name": "life_5_common_choice_and_stop",
+      "passed": true
+    },
+    {
+      "name": "life_5_actual_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_5_online_fields_and_raw_plans",
+      "passed": true
+    },
+    {
+      "name": "life_6_policies_before_after",
+      "passed": true
+    },
+    {
+      "name": "life_6_common_choice_and_stop",
+      "passed": true
+    },
+    {
+      "name": "life_6_actual_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_6_online_fields_and_raw_plans",
+      "passed": true
+    },
+    {
+      "name": "life_7_policies_before_after",
+      "passed": true
+    },
+    {
+      "name": "life_7_common_choice_and_stop",
+      "passed": true
+    },
+    {
+      "name": "life_7_actual_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_7_online_fields_and_raw_plans",
+      "passed": true
+    },
+    {
+      "name": "life_8_policies_before_after",
+      "passed": true
+    },
+    {
+      "name": "life_8_common_choice_and_stop",
+      "passed": true
+    },
+    {
+      "name": "life_8_actual_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_8_online_fields_and_raw_plans",
+      "passed": true
+    },
+    {
+      "name": "life_9_policies_before_after",
+      "passed": true
+    },
+    {
+      "name": "life_9_common_choice_and_stop",
+      "passed": true
+    },
+    {
+      "name": "life_9_actual_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_9_online_fields_and_raw_plans",
+      "passed": true
+    },
+    {
+      "name": "life_10_policies_before_after",
+      "passed": true
+    },
+    {
+      "name": "life_10_common_choice_and_stop",
+      "passed": true
+    },
+    {
+      "name": "life_10_actual_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_10_online_fields_and_raw_plans",
+      "passed": true
+    },
+    {
+      "name": "life_11_policies_before_after",
+      "passed": true
+    },
+    {
+      "name": "life_11_common_choice_and_stop",
+      "passed": true
+    },
+    {
+      "name": "life_11_actual_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_11_online_fields_and_raw_plans",
+      "passed": true
+    },
+    {
+      "name": "independent_contract_boundary_replay",
+      "passed": true
+    },
+    {
+      "name": "true_joint_results",
+      "passed": true
+    },
+    {
+      "name": "true_own_queries",
+      "passed": true
+    },
+    {
+      "name": "old_policy_retention",
+      "passed": true
+    },
+    {
+      "name": "paired_statistics_and_frozen_conditions",
+      "passed": true
+    },
+    {
+      "name": "all_costs_paid_and_no_pretraining",
+      "passed": true
+    },
+    {
+      "name": "oracle_after_decisions",
+      "passed": true
+    }
+  ],
+  "costs": {
+    "regenerated_consumed_samples": 45888,
+    "field_score_candidates": 27006,
+    "utility_calls": 30240,
+    "utility_component_reads": 90720,
+    "interval_calls": 34279,
+    "optimizer_pure_checks": 19588,
+    "mixture_components": 132123,
+    "optimizer_pair_checks": 29382,
+    "real_count_updates": 11641,
+    "field_score_count_additions": 294724,
+    "field_score_lgamma_calls": 269300,
+    "model_context_scans": 146729,
+    "model_count_additions": 112985,
+    "kl_calls": 3812480,
+    "bootstrap_index_draws": 60000,
+    "bootstrap_mean_terms": 180000
+  },
+  "seconds": 5.579061244003242
+}

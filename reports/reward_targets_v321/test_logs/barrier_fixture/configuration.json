@@ -1,0 +1,84 @@
+{
+  "schema": "acfqp.reward_targets_freeze.v321",
+  "source_summary": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/query_supervision_v319/summary.json",
+  "protocol": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/specs/REWARD_TARGETS_V321.md",
+  "lifecycles": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "parents": 4,
+  "workers": 4,
+  "tasks": [
+    "A",
+    "B"
+  ],
+  "arms": [
+    "OLD_FACTUAL",
+    "OLD_QUERY",
+    "NSTEP_FACTUAL",
+    "NSTEP_QUERY"
+  ],
+  "distributions": [
+    "FACTUAL_LOCAL",
+    "QUERY_LOCAL"
+  ],
+  "rounds": [
+    1,
+    2
+  ],
+  "groups": 16384,
+  "replicas": 4,
+  "horizon": 4,
+  "alpha": 0.0025,
+  "true_probabilities": {
+    "A": 0.1,
+    "B": 0.5
+  },
+  "teacher": "ACTUAL_IMMUTABLE_V317_FIRST_LOCAL_V0",
+  "planning_belief": "ACTUAL_IMMUTABLE_V319_FIRST_BANK_BELIEF",
+  "controls": "ALL_SIXTEEN_LIVES_ALL_ROUND_DELTAS_EXACT_V319_BEFORE_ANY_NEW_ACQUISITION",
+  "reward": "SAVED_DIRECT_THEN_FIRST_H2_SCORE_PLUS_FIRST_REWARD_LAST_AFTERSTATE_BEFORE_SPAWN",
+  "win": "UNCHANGED_V319_MEMBER_TARGETS_AND_EXACT_MATCHED_RISK_PARAMETERS",
+  "bootstrap": "PLANNED_NONTERMINAL_TARGET_NOT_TERMINAL_TRUTH_OR_CUTOFF",
+  "seed_continuation": 321500000000,
+  "life_stride": 10000000,
+  "task_stride": 1000000,
+  "round_stride": 100000,
+  "group_stride": 4,
+  "expected_rollouts": 8388608,
+  "maximum_new_training_raw_tiles": 25165824,
+  "evaluation_games_per_cell": 32,
+  "evaluation_arms": [
+    "SOURCE",
+    "FIRST_LOCAL",
+    "OLD_FACTUAL",
+    "OLD_QUERY",
+    "NSTEP_FACTUAL",
+    "NSTEP_QUERY"
+  ],
+  "evaluation_checkpoints": [
+    "FINAL"
+  ],
+  "seed_evaluation": 321900000000,
+  "expected_evaluation_games": 6144,
+  "max_steps": 8192,
+  "primary": "NSTEP_QUERY_minus_OLD_QUERY_FINAL_AB",
+  "bootstrap_draws": 20000,
+  "bootstrap_seed": 32100001,
+  "stop_rule": "CONTROL_MISMATCH_NO_ACQUISITION_ANY_NATURAL_EVALUATION_CUTOFF_GLOBAL_HOLD",
+  "cost_scope": "NEW_TARGETS_PHYSICAL_ONCE_CHARGED_TO_NSTEP_NOT_MATCHED_RAW_BUDGET_WITH_OLD"
+}

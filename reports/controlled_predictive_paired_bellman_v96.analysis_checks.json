@@ -1,0 +1,43 @@
+{
+  "schema": "acfqp.paired_bellman_analysis_checks.v96",
+  "status": "passed",
+  "unique_tests": 7,
+  "test_executions": 9,
+  "failed_tests": 0,
+  "attempts": [
+    {
+      "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_paired_bellman_v96.py",
+      "passed": 7,
+      "failed": 0,
+      "pytest_seconds": 0.28,
+      "process_seconds": 0.676053787,
+      "exit_code": 0
+    },
+    {
+      "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_paired_bellman_v96.py -k 'actual_full_only or mass_error'",
+      "reason": "Final heldout schema integration: diagnostics and timing counted once.",
+      "passed": 2,
+      "failed": 0,
+      "deselected": 5,
+      "pytest_seconds": 0.23,
+      "process_seconds": 0.634319667,
+      "exit_code": 0
+    }
+  ],
+  "actual_work": {
+    "tree_fits": 0,
+    "sampled_environment_transitions": 0,
+    "synthetic_model_transitions": 0,
+    "real_analysis_runs": 0
+  },
+  "coverage": [
+    "12 primary contrasts and equal-history standard error",
+    "Cancelled intervention recovery is not new intervention benefit",
+    "Eight DIRECT methods, paired versus unary prediction rosters, counters counted once",
+    "Independent finite terminal reference",
+    "Cutoffs preserve fitting, ground and model costs",
+    "Whole-episode heldout exclusion and actual fitting counts",
+    "Signed and absolute mass diagnostics are not integrity gates",
+    "Final heldout diagnostics and timing included once"
+  ]
+}

@@ -1,0 +1,10 @@
+command: python3 -m pytest -q tests/test_verify_bank_belief_v310.py
+..........................                                               [100%]
+26 passed in 0.56s
+exit_code: 0
+
+V310 terminal-field contract regression after original audit FAIL
+command: python3 -m pytest -q tests/test_verify_bank_belief_v310.py::test_lifecycle_endpoint_cell_keeps_selected_bank_probability_as_required_by_v310_summary
+.                                                                        [100%]
+1 passed in 0.26s
+exit_code: 0

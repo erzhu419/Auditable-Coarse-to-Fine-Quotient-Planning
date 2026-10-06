@@ -1,0 +1,11 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "tests_run": 11,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "scope": "finite full roster, paired history means, censored returns, tree structure and explicit budget accounting"
+    }
+  ]
+}

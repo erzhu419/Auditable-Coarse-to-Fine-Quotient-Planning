@@ -1,0 +1,29 @@
+{
+  "attempts": [
+    {
+      "tests": 10,
+      "failures": 0,
+      "environment_work": {
+        "ground_state_status_calls": 21,
+        "ground_status_internal_swipe_calls": 76,
+        "ground_swipe_calls": 89,
+        "forced_actions": 8,
+        "ground_explicit_swipe_calls": 13,
+        "environment_random_draws": 26,
+        "sampled_transitions": 13,
+        "continuation_actions": 5
+      },
+      "policy_stub_work": {
+        "choose_calls": 5,
+        "value_predictions": 20
+      },
+      "deterministic_oracle_work": {
+        "explicit_ground_swipe_calls": 13,
+        "replayed_uniform_draws": 26
+      },
+      "newly_sampled_environment_transitions": 13,
+      "newly_sampled_model_transitions": 0,
+      "scope": "Fixed boards and 1-3 action suffixes; no natural games or training."
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "attempts": [
+    {
+      "tests": 5,
+      "failures": 0,
+      "seconds": 0.019294751997222193,
+      "environment_samples": 0,
+      "environment_random_draws": 0,
+      "native_model_calls": 0,
+      "model_updates": 0,
+      "scope": "Mocked frozen leaves, planners and games; source selection, shared objects, costs and ordering"
+    },
+    {
+      "tests": 1,
+      "failures": 0,
+      "seconds": 0.0061276409978745505,
+      "environment_samples": 0,
+      "environment_random_draws": 0,
+      "native_model_calls": 0,
+      "model_updates": 0,
+      "scope": "Mocked frozen leaves, planners and games; source selection, shared objects, costs and ordering"
+    }
+  ]
+}

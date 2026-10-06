@@ -1,0 +1,50 @@
+{
+  "schema": "acfqp.ntuple_interference_freeze.v288",
+  "source_summary": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/natural_continuation_value_v285/summary.json",
+  "protocol": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/specs/NTUPLE_INTERFERENCE_V288.md",
+  "lifecycles": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "parents": 4,
+  "phase": "A",
+  "groups": [
+    "uniform",
+    "competition"
+  ],
+  "alpha": 0.0025,
+  "feature_occurrences": 32,
+  "replicas_per_batch": 32,
+  "batches": [
+    "discovery",
+    "validation"
+  ],
+  "bootstrap_draws": 20000,
+  "bootstrap_seed": 28800001,
+  "primary": {
+    "group": "uniform",
+    "category": "OTHER_BOARD",
+    "metric": "mean_label_delta_mse"
+  },
+  "fit": "ISOLATED_ANALYTIC_UPDATES_WITHOUT_WEIGHT_MUTATION",
+  "continuation": "RETAINED_FIXED_TRUE_P_ORACLE_H2",
+  "finite_test_passes": {
+    "kernel": 5,
+    "analysis": 5,
+    "driver": 3
+  }
+}

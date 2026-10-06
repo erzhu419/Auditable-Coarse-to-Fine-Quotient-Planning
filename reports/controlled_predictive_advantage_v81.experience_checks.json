@@ -1,0 +1,25 @@
+{
+  "command": ".venv-lmta-v42/bin/python -m pytest -q -s tests/test_controlled_predictive_advantage_experience_v81.py",
+  "exit_code": 0,
+  "passed": 4,
+  "pytest_seconds": 0.20,
+  "attempts": 1,
+  "development_ground_work": {
+    "environment_random_draws": 16,
+    "ground_explicit_swipe_calls": 8,
+    "ground_state_status_calls": 16,
+    "ground_status_internal_swipe_calls": 32,
+    "ground_swipe_calls": 40,
+    "sampled_transitions": 8,
+    "state_from_board_v1": 16,
+    "swipe_board_v1": 40,
+    "step_v1": 0
+  },
+  "development_data": "Controlled mock rollouts and one synthetic all-rank-10 active board, lifecycle 99; no main-cohort data or full-support teacher calls.",
+  "checks": [
+    "Matched environment/model seeds and unchanged continuation parent after one forced action",
+    "Complete first-action reward and jointly paired terminal consequence differences",
+    "Whole-root censoring with raw trajectories and costs retained",
+    "Eight real first-action terminal samples require zero continuation model draws"
+  ]
+}

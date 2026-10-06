@@ -1,0 +1,195 @@
+{
+  "attempts": [
+    {
+      "scope": "Synthetic episode labels 0..14; five development games capped at 3 actions.",
+      "lifecycle": 99,
+      "replica": 99,
+      "max_steps": 3,
+      "main_experiment": false,
+      "source_environment_transitions": 0,
+      "sampled_transitions": 15,
+      "full_support_ground_calls": 0,
+      "games": [
+        {
+          "method": "H2_ONLY",
+          "seed": 7799999,
+          "status": "CUTOFF",
+          "steps": 3,
+          "environment_counts": {
+            "environment_random_draws": 10,
+            "initial_spawns": 2,
+            "ground_state_status_calls": 4,
+            "ground_status_internal_swipe_calls": 16,
+            "ground_swipe_calls": 19,
+            "ground_explicit_swipe_calls": 3,
+            "sampled_transitions": 3
+          },
+          "planning_counts": {
+            "learned_terminal_checks": 3,
+            "learned_swipe_calls": 12,
+            "learned_line_rewrites": 48,
+            "legal_swipes": 102,
+            "model_uniform_draws": 12,
+            "model_spawn_samples": 24,
+            "h2_cutoff_contracts": 24,
+            "h2_contract_compiled_programs": 3,
+            "h2_contract_full_board_materializations": 0,
+            "h2_contract_factorized_contexts": 24,
+            "h2_contract_candidate_predicate_evaluations": 0,
+            "h2_contract_contract_materializations": 10,
+            "h2_contract_effect_key_constructions": 90,
+            "h2_contract_effect_cache_lookups": 90,
+            "h2_contract_effect_cache_hits": 43,
+            "h2_contract_effect_cache_entries": 47,
+            "h2_contract_effect_score_aggregations": 47,
+            "h2_contract_effect_output_line_references": 360,
+            "h2_contract_effect_vacancy_keys": 0,
+            "h2_contract_effect_exact_output_keys": 90,
+            "h2_contract_direct_observation_evaluations": 24,
+            "h2_contract_prepare_calls": 24,
+            "h2_contract_line_lookups": 384,
+            "h2_contract_line_evaluations": 57,
+            "h2_contract_line_summary_adjacent_tests": 164,
+            "h2_contract_line_cache_hits": 327,
+            "h2_contract_context_contract_evaluations": 24,
+            "h2_contract_predicate_calls": 24,
+            "h2_contract_candidate_action_changed_tests": 96,
+            "h2_contract_candidate_action_predicate_evaluations": 47,
+            "h2_contract_terminal_predicate_evaluations": 47,
+            "h2_contract_terminal_spawn_rank_classifications": 94,
+            "h2_contract_predicate_materializations": 24,
+            "h2_contract_contract_cache_lookups": 24,
+            "h2_contract_contract_fraction_accumulations": 70,
+            "h2_contract_terminal_probability_combinations": 70,
+            "h2_contract_contract_cache_hits": 14
+          }
+        },
+        {
+          "method": "FROZEN_PLAN",
+          "seed": 7799999,
+          "status": "CUTOFF",
+          "steps": 3,
+          "environment_counts": {
+            "environment_random_draws": 10,
+            "initial_spawns": 2,
+            "ground_state_status_calls": 4,
+            "ground_status_internal_swipe_calls": 16,
+            "ground_swipe_calls": 19,
+            "ground_explicit_swipe_calls": 3,
+            "sampled_transitions": 3
+          },
+          "planning_counts": {
+            "learned_terminal_checks": 25,
+            "learned_swipe_calls": 100,
+            "learned_line_rewrites": 400,
+            "legal_swipes": 93,
+            "model_uniform_draws": 12,
+            "model_spawn_samples": 22,
+            "knowledge_batch_calls": 3,
+            "predicted_afterstates": 82,
+            "policy_vectors": 246
+          }
+        },
+        {
+          "method": "FIXED_PLAN",
+          "seed": 7799999,
+          "status": "CUTOFF",
+          "steps": 3,
+          "environment_counts": {
+            "environment_random_draws": 10,
+            "initial_spawns": 2,
+            "ground_state_status_calls": 4,
+            "ground_status_internal_swipe_calls": 16,
+            "ground_swipe_calls": 19,
+            "ground_explicit_swipe_calls": 3,
+            "sampled_transitions": 3
+          },
+          "planning_counts": {
+            "learned_terminal_checks": 25,
+            "learned_swipe_calls": 100,
+            "learned_line_rewrites": 400,
+            "legal_swipes": 93,
+            "model_uniform_draws": 12,
+            "model_spawn_samples": 22,
+            "knowledge_batch_calls": 3,
+            "predicted_afterstates": 82,
+            "policy_vectors": 246
+          }
+        },
+        {
+          "method": "REVISED_PLAN",
+          "seed": 7799999,
+          "status": "CUTOFF",
+          "steps": 3,
+          "environment_counts": {
+            "environment_random_draws": 10,
+            "initial_spawns": 2,
+            "ground_state_status_calls": 4,
+            "ground_status_internal_swipe_calls": 16,
+            "ground_swipe_calls": 19,
+            "ground_explicit_swipe_calls": 3,
+            "sampled_transitions": 3
+          },
+          "planning_counts": {
+            "learned_terminal_checks": 25,
+            "learned_swipe_calls": 100,
+            "learned_line_rewrites": 400,
+            "legal_swipes": 93,
+            "model_uniform_draws": 12,
+            "model_spawn_samples": 22,
+            "knowledge_batch_calls": 3,
+            "predicted_afterstates": 82,
+            "policy_vectors": 246
+          }
+        },
+        {
+          "method": "REVISED_DIRECT",
+          "seed": 7799999,
+          "status": "CUTOFF",
+          "steps": 3,
+          "environment_counts": {
+            "environment_random_draws": 10,
+            "initial_spawns": 2,
+            "ground_state_status_calls": 4,
+            "ground_status_internal_swipe_calls": 16,
+            "ground_swipe_calls": 19,
+            "ground_explicit_swipe_calls": 3,
+            "sampled_transitions": 3
+          },
+          "planning_counts": {
+            "learned_terminal_checks": 3,
+            "learned_swipe_calls": 12,
+            "learned_line_rewrites": 48,
+            "legal_swipes": 11,
+            "model_uniform_draws": 12,
+            "knowledge_batch_calls": 3,
+            "predicted_afterstates": 11,
+            "policy_vectors": 33
+          }
+        }
+      ],
+      "synthetic_training_rows": 120,
+      "fit_counts": {
+        "metadata_rows_read": 120,
+        "training_rows_read": 96,
+        "feature_rows": 96,
+        "tree_fits": 3,
+        "fit_rows": 96
+      },
+      "environment_counts": {
+        "environment_random_draws": 50,
+        "initial_spawns": 10,
+        "ground_state_status_calls": 20,
+        "ground_status_internal_swipe_calls": 80,
+        "ground_swipe_calls": 95,
+        "ground_explicit_swipe_calls": 15,
+        "sampled_transitions": 15
+      },
+      "same_checkpoint": 15,
+      "same_revised_payload": true,
+      "json_serializable": true,
+      "test_failures": 0,
+      "seconds": 0.7464613909833133
+    }
+  ]
+}

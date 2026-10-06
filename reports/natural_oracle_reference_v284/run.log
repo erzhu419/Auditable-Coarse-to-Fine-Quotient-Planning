@@ -1,0 +1,17 @@
+{"event": "oracle_lifecycle_complete", "lifecycle": 0, "parent": 0, "total_utility": 188.3359375}
+{"event": "oracle_lifecycle_complete", "lifecycle": 1, "parent": 1, "total_utility": 130.662109375}
+{"event": "oracle_lifecycle_complete", "lifecycle": 2, "parent": 2, "total_utility": 155.716796875}
+{"event": "oracle_lifecycle_complete", "lifecycle": 3, "parent": 3, "total_utility": 211.58984375}
+{"event": "oracle_lifecycle_complete", "lifecycle": 4, "parent": 0, "total_utility": 189.83984375}
+{"event": "oracle_lifecycle_complete", "lifecycle": 5, "parent": 1, "total_utility": 218.76171875}
+{"event": "oracle_lifecycle_complete", "lifecycle": 6, "parent": 2, "total_utility": 151.078125}
+{"event": "oracle_lifecycle_complete", "lifecycle": 7, "parent": 3, "total_utility": 162.44140625}
+{"event": "oracle_lifecycle_complete", "lifecycle": 8, "parent": 0, "total_utility": 194.37890625}
+{"event": "oracle_lifecycle_complete", "lifecycle": 9, "parent": 1, "total_utility": 188.0}
+{"event": "oracle_lifecycle_complete", "lifecycle": 10, "parent": 2, "total_utility": 210.0859375}
+{"event": "oracle_lifecycle_complete", "lifecycle": 11, "parent": 3, "total_utility": 142.224609375}
+{"event": "oracle_lifecycle_complete", "lifecycle": 12, "parent": 0, "total_utility": 186.029296875}
+{"event": "oracle_lifecycle_complete", "lifecycle": 13, "parent": 1, "total_utility": 159.162109375}
+{"event": "oracle_lifecycle_complete", "lifecycle": 14, "parent": 2, "total_utility": 179.603515625}
+{"event": "oracle_lifecycle_complete", "lifecycle": 15, "parent": 3, "total_utility": 195.150390625}
+{"status": "DIAGNOSTIC_COMPLETE", "games": 384, "trace_bytes": 9805796, "summary_bytes": 1181986}

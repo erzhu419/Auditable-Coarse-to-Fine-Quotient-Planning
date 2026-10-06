@@ -1,0 +1,97 @@
+{"event": "fit_block", "life": 3, "policy": "reward", "episodes": 256, "offset": 2.075225291445279}
+{"event": "fit_block", "life": 2, "policy": "reward", "episodes": 256, "offset": 2.1742434360679033}
+{"event": "fit_block", "life": 0, "policy": "reward", "episodes": 256, "offset": 2.1303314478217583}
+{"event": "fit_block", "life": 3, "policy": "risk_goal", "episodes": 256, "offset": -0.6410661114137145}
+{"event": "fit_block", "life": 2, "policy": "risk_goal", "episodes": 256, "offset": -0.706167604053488}
+{"event": "fit_block", "life": 1, "policy": "reward", "episodes": 256, "offset": 2.4116378473304048}
+{"event": "fit_block", "life": 0, "policy": "risk_goal", "episodes": 256, "offset": -0.1422474851042134}
+{"event": "fit_block", "life": 3, "policy": "reward", "episodes": 512, "offset": 2.2031093756492863}
+{"event": "fit_block", "life": 2, "policy": "reward", "episodes": 512, "offset": 2.1413070763021564}
+{"event": "fit_block", "life": 1, "policy": "risk_goal", "episodes": 256, "offset": -0.7271228467864901}
+{"event": "fit_block", "life": 0, "policy": "reward", "episodes": 512, "offset": 2.080852419714437}
+{"event": "fit_block", "life": 3, "policy": "reward", "episodes": 768, "offset": 2.211110820341568}
+{"event": "fit_block", "life": 2, "policy": "reward", "episodes": 768, "offset": 2.121411165482503}
+{"event": "fit_block", "life": 1, "policy": "reward", "episodes": 512, "offset": 2.2918876080153865}
+{"event": "fit_block", "life": 0, "policy": "reward", "episodes": 768, "offset": 2.1147015426607636}
+{"event": "fit_block", "life": 2, "policy": "reward", "episodes": 1024, "offset": 2.067177442538505}
+{"event": "fit_block", "life": 3, "policy": "reward", "episodes": 1024, "offset": 2.193924210551589}
+{"event": "fit_block", "life": 1, "policy": "reward", "episodes": 768, "offset": 2.3193314906781803}
+{"event": "fit_block", "life": 0, "policy": "reward", "episodes": 1024, "offset": 2.130525675944797}
+{"event": "fit_block", "life": 2, "policy": "risk_goal", "episodes": 512, "offset": -0.8416786636498995}
+{"event": "fit_block", "life": 3, "policy": "risk_goal", "episodes": 512, "offset": -0.5271632094149467}
+{"event": "fit_block", "life": 1, "policy": "reward", "episodes": 1024, "offset": 2.3210495108765166}
+{"event": "fit_block", "life": 0, "policy": "risk_goal", "episodes": 512, "offset": -0.549246031076823}
+{"event": "fit_block", "life": 2, "policy": "risk_goal", "episodes": 768, "offset": -0.7538245235893218}
+{"event": "fit_block", "life": 3, "policy": "risk_goal", "episodes": 768, "offset": -0.46908966681989595}
+{"event": "fit_block", "life": 1, "policy": "risk_goal", "episodes": 512, "offset": -0.686946308509922}
+{"event": "fit_block", "life": 0, "policy": "risk_goal", "episodes": 768, "offset": -0.7356384744688914}
+{"event": "fit_block", "life": 2, "policy": "risk_goal", "episodes": 1024, "offset": -0.6466052253741809}
+{"event": "fit_block", "life": 3, "policy": "risk_goal", "episodes": 1024, "offset": -0.49084224415442873}
+{"event": "fit_block", "life": 1, "policy": "risk_goal", "episodes": 768, "offset": -0.6318365450789768}
+{"event": "fit_block", "life": 0, "policy": "risk_goal", "episodes": 1024, "offset": -0.6664991710933454}
+{"event": "fit_block", "life": 1, "policy": "risk_goal", "episodes": 1024, "offset": -0.663070147640463}
+{"event": "calibration_frozen", "schema": "acfqp.policy_calibration.v129.frozen", "lifecycles": [{"life": 0, "offsets": {"reward": 2.130525675944797, "risk_goal": -0.6664991710933454}}, {"life": 1, "offsets": {"reward": 2.3210495108765166, "risk_goal": -0.663070147640463}}, {"life": 2, "offsets": {"reward": 2.067177442538505, "risk_goal": -0.6466052253741809}}, {"life": 3, "offsets": {"reward": 2.193924210551589, "risk_goal": -0.49084224415442873}}]}
+{"event": "roster_frozen", "cases": 32, "roots": 30, "physical_attempts": 880}
+{"event": "root_complete", "life": 2, "root_id": 15}
+{"event": "root_complete", "life": 0, "root_id": 0}
+{"event": "root_complete", "life": 1, "root_id": 8}
+{"event": "root_complete", "life": 0, "root_id": 1}
+{"event": "root_complete", "life": 1, "root_id": 9}
+{"event": "root_complete", "life": 3, "root_id": 23}
+{"event": "root_complete", "life": 2, "root_id": 16}
+{"event": "root_complete", "life": 3, "root_id": 24}
+{"event": "root_complete", "life": 2, "root_id": 17}
+{"event": "root_complete", "life": 1, "root_id": 10}
+{"event": "root_complete", "life": 0, "root_id": 2}
+{"event": "root_complete", "life": 1, "root_id": 11}
+{"event": "root_complete", "life": 2, "root_id": 18}
+{"event": "root_complete", "life": 0, "root_id": 3}
+{"event": "root_complete", "life": 3, "root_id": 25}
+{"event": "root_complete", "life": 0, "root_id": 4}
+{"event": "root_complete", "life": 1, "root_id": 12}
+{"event": "root_complete", "life": 3, "root_id": 26}
+{"event": "root_complete", "life": 0, "root_id": 5}
+{"event": "root_complete", "life": 2, "root_id": 19}
+{"event": "root_complete", "life": 0, "root_id": 6}
+{"event": "root_complete", "life": 2, "root_id": 20}
+{"event": "root_complete", "life": 1, "root_id": 13}
+{"event": "root_complete", "life": 2, "root_id": 21}
+{"event": "root_complete", "life": 0, "root_id": 7}
+{"event": "root_complete", "life": 1, "root_id": 14}
+{"event": "root_complete", "life": 3, "root_id": 27}
+{"event": "root_complete", "life": 2, "root_id": 22}
+{"event": "root_complete", "life": 3, "root_id": 28}
+{"event": "control_complete", "life": 1, "query": "risk1", "method": "UNCAL_LEARNED"}
+{"event": "control_complete", "life": 0, "query": "risk1", "method": "UNCAL_LEARNED"}
+{"event": "root_complete", "life": 3, "root_id": 29}
+{"event": "control_complete", "life": 0, "query": "risk1", "method": "CAL_LEARNED"}
+{"event": "control_complete", "life": 1, "query": "risk1", "method": "CAL_LEARNED"}
+{"event": "control_complete", "life": 2, "query": "risk1", "method": "UNCAL_LEARNED"}
+{"event": "control_complete", "life": 2, "query": "risk1", "method": "CAL_LEARNED"}
+{"event": "control_complete", "life": 0, "query": "risk1", "method": "UNCAL_CONSTANT"}
+{"event": "control_complete", "life": 1, "query": "risk1", "method": "UNCAL_CONSTANT"}
+{"event": "control_complete", "life": 3, "query": "risk1", "method": "UNCAL_LEARNED"}
+{"event": "control_complete", "life": 3, "query": "risk1", "method": "CAL_LEARNED"}
+{"event": "control_complete", "life": 1, "query": "risk1", "method": "CAL_CONSTANT"}
+{"event": "control_complete", "life": 2, "query": "risk1", "method": "UNCAL_CONSTANT"}
+{"event": "control_complete", "life": 0, "query": "risk1", "method": "CAL_CONSTANT"}
+{"event": "control_complete", "life": 1, "query": "risk8", "method": "UNCAL_LEARNED"}
+{"event": "control_complete", "life": 3, "query": "risk1", "method": "UNCAL_CONSTANT"}
+{"event": "control_complete", "life": 2, "query": "risk1", "method": "CAL_CONSTANT"}
+{"event": "control_complete", "life": 0, "query": "risk8", "method": "UNCAL_LEARNED"}
+{"event": "control_complete", "life": 1, "query": "risk8", "method": "CAL_LEARNED"}
+{"event": "control_complete", "life": 3, "query": "risk1", "method": "CAL_CONSTANT"}
+{"event": "control_complete", "life": 0, "query": "risk8", "method": "CAL_LEARNED"}
+{"event": "control_complete", "life": 2, "query": "risk8", "method": "UNCAL_LEARNED"}
+{"event": "control_complete", "life": 1, "query": "risk8", "method": "UNCAL_CONSTANT"}
+{"event": "control_complete", "life": 3, "query": "risk8", "method": "UNCAL_LEARNED"}
+{"event": "control_complete", "life": 0, "query": "risk8", "method": "UNCAL_CONSTANT"}
+{"event": "control_complete", "life": 2, "query": "risk8", "method": "CAL_LEARNED"}
+{"event": "control_complete", "life": 1, "query": "risk8", "method": "CAL_CONSTANT"}
+{"event": "control_complete", "life": 3, "query": "risk8", "method": "CAL_LEARNED"}
+{"event": "control_complete", "life": 0, "query": "risk8", "method": "CAL_CONSTANT"}
+{"event": "control_complete", "life": 2, "query": "risk8", "method": "UNCAL_CONSTANT"}
+{"event": "control_complete", "life": 3, "query": "risk8", "method": "UNCAL_CONSTANT"}
+{"event": "control_complete", "life": 2, "query": "risk8", "method": "CAL_CONSTANT"}
+{"event": "control_complete", "life": 3, "query": "risk8", "method": "CAL_CONSTANT"}
+{"status": "complete", "seconds": 41.69799987200531}

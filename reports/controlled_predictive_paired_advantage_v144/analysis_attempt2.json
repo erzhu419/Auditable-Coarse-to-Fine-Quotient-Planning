@@ -1,0 +1,14 @@
+{
+  "status": "complete",
+  "command": [
+    "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "scripts/analyze_controlled_predictive_paired_advantage_v144.py",
+    "--input",
+    "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_paired_advantage_v144"
+  ],
+  "started_utc": "2026-09-26T09:23:25.753973+00:00",
+  "reason": "Authorized repair of selector/native counter prefix collision; original failure preserved.",
+  "exit_code": 0,
+  "seconds": 58.81467532800161,
+  "stderr_bytes": 0
+}

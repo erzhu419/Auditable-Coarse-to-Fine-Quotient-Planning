@@ -1,0 +1,27 @@
+{
+  "attempts": [
+    {
+      "tests": 10,
+      "failures": 0,
+      "seconds": 0.08581260199571261,
+      "environment_samples": 0,
+      "environment_random_draws": 0,
+      "native_model_calls": 0,
+      "model_updates": 0,
+      "source_refits": 0,
+      "scope": "Mocked old/new schedules, held-out games, retained prior, frozen models, fresh paired streams and acquisition phase order."
+    },
+    {
+      "tests": 6,
+      "failures": 0,
+      "seconds": 0.02915820699854521,
+      "reason": "Changed source and phase checks after preserving the original failed V144 analysis work",
+      "environment_samples": 0,
+      "environment_random_draws": 0,
+      "native_model_calls": 0,
+      "model_updates": 0,
+      "source_refits": 0,
+      "scope": "Mocked old/new schedules, held-out games, retained prior, frozen models, fresh paired streams and acquisition phase order."
+    }
+  ]
+}

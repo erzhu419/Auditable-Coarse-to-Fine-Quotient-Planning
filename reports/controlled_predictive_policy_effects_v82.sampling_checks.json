@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "exit_code": 0,
+  "seconds": 0.9414669940015301,
+  "stdout": "...V82_POLICY_EFFECTS_DEVELOPMENT_WORK={\"environment_random_draws\": 24, \"ground_explicit_swipe_calls\": 12, \"ground_state_status_calls\": 18, \"ground_status_internal_swipe_calls\": 60, \"ground_swipe_calls\": 72, \"sampled_transitions\": 12, \"state_from_board_v1\": 18, \"swipe_board_v1\": 72}\n\n3 passed in 0.26s\n",
+  "stderr": "",
+  "development_work": {
+    "environment_random_draws": 24,
+    "ground_explicit_swipe_calls": 12,
+    "ground_state_status_calls": 18,
+    "ground_status_internal_swipe_calls": 60,
+    "ground_swipe_calls": 72,
+    "sampled_transitions": 12,
+    "state_from_board_v1": 18,
+    "swipe_board_v1": 72
+  },
+  "scope": "V82 sampling tests; all actual rollouts use lifecycle 99"
+}

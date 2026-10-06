@@ -1,0 +1,5 @@
+Command: env PYTHONPATH=src .venv-lmta-v42/bin/python -m pytest -q tests/test_native_replay_fit_v307.py
+Captured from the completed masked-fit test execution; no repeat execution.
+Exit code: 0
+.......                                                                  [100%]
+7 passed in 4.62s

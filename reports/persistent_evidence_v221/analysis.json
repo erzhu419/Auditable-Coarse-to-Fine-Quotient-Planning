@@ -1,0 +1,499 @@
+{
+  "valid": true,
+  "complete": true,
+  "checks": [
+    {
+      "name": "fixed_opaque_private_worlds",
+      "passed": true
+    },
+    {
+      "name": "only_complete_actual_initial_full_and_local_sources",
+      "passed": true
+    },
+    {
+      "name": "life_0_historical_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_0_historical_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_0_historical_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_0_historical_source_queries",
+      "passed": true
+    },
+    {
+      "name": "life_1_historical_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_1_historical_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_1_historical_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_1_historical_source_queries",
+      "passed": true
+    },
+    {
+      "name": "life_2_historical_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_2_historical_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_2_historical_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_2_historical_source_queries",
+      "passed": true
+    },
+    {
+      "name": "life_3_historical_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_3_historical_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_3_historical_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_3_historical_source_queries",
+      "passed": true
+    },
+    {
+      "name": "life_4_historical_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_4_historical_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_4_historical_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_4_historical_source_queries",
+      "passed": true
+    },
+    {
+      "name": "life_5_historical_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_5_historical_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_5_historical_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_5_historical_source_queries",
+      "passed": true
+    },
+    {
+      "name": "life_6_historical_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_6_historical_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_6_historical_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_6_historical_source_queries",
+      "passed": true
+    },
+    {
+      "name": "life_7_historical_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_7_historical_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_7_historical_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_7_historical_source_queries",
+      "passed": true
+    },
+    {
+      "name": "life_8_historical_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_8_historical_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_8_historical_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_8_historical_source_queries",
+      "passed": true
+    },
+    {
+      "name": "life_9_historical_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_9_historical_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_9_historical_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_9_historical_source_queries",
+      "passed": true
+    },
+    {
+      "name": "life_10_historical_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_10_historical_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_10_historical_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_10_historical_source_queries",
+      "passed": true
+    },
+    {
+      "name": "life_11_historical_source_plans",
+      "passed": true
+    },
+    {
+      "name": "life_11_historical_source_counts",
+      "passed": true
+    },
+    {
+      "name": "life_11_historical_source_choices",
+      "passed": true
+    },
+    {
+      "name": "life_11_historical_source_queries",
+      "passed": true
+    },
+    {
+      "name": "actual_historical_source_costs",
+      "passed": true
+    },
+    {
+      "name": "frozen_library_from_actual_full_source_prefixes",
+      "passed": true
+    },
+    {
+      "name": "complete_unique_fresh_targets",
+      "passed": true
+    },
+    {
+      "name": "four_arm_shared_fresh_target_prefix_seeds",
+      "passed": true
+    },
+    {
+      "name": "life_0_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_0_choices_stops_and_target_only_budget",
+      "passed": true
+    },
+    {
+      "name": "life_0_actual_paired_fresh_target_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_0_raw_member_and_persistent_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_0_chronological_once_only_commits_and_source_provenance",
+      "passed": true
+    },
+    {
+      "name": "life_1_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_1_choices_stops_and_target_only_budget",
+      "passed": true
+    },
+    {
+      "name": "life_1_actual_paired_fresh_target_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_1_raw_member_and_persistent_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_1_chronological_once_only_commits_and_source_provenance",
+      "passed": true
+    },
+    {
+      "name": "life_2_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_2_choices_stops_and_target_only_budget",
+      "passed": true
+    },
+    {
+      "name": "life_2_actual_paired_fresh_target_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_2_raw_member_and_persistent_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_2_chronological_once_only_commits_and_source_provenance",
+      "passed": true
+    },
+    {
+      "name": "life_3_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_3_choices_stops_and_target_only_budget",
+      "passed": true
+    },
+    {
+      "name": "life_3_actual_paired_fresh_target_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_3_raw_member_and_persistent_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_3_chronological_once_only_commits_and_source_provenance",
+      "passed": true
+    },
+    {
+      "name": "life_4_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_4_choices_stops_and_target_only_budget",
+      "passed": true
+    },
+    {
+      "name": "life_4_actual_paired_fresh_target_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_4_raw_member_and_persistent_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_4_chronological_once_only_commits_and_source_provenance",
+      "passed": true
+    },
+    {
+      "name": "life_5_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_5_choices_stops_and_target_only_budget",
+      "passed": true
+    },
+    {
+      "name": "life_5_actual_paired_fresh_target_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_5_raw_member_and_persistent_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_5_chronological_once_only_commits_and_source_provenance",
+      "passed": true
+    },
+    {
+      "name": "life_6_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_6_choices_stops_and_target_only_budget",
+      "passed": true
+    },
+    {
+      "name": "life_6_actual_paired_fresh_target_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_6_raw_member_and_persistent_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_6_chronological_once_only_commits_and_source_provenance",
+      "passed": true
+    },
+    {
+      "name": "life_7_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_7_choices_stops_and_target_only_budget",
+      "passed": true
+    },
+    {
+      "name": "life_7_actual_paired_fresh_target_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_7_raw_member_and_persistent_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_7_chronological_once_only_commits_and_source_provenance",
+      "passed": true
+    },
+    {
+      "name": "life_8_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_8_choices_stops_and_target_only_budget",
+      "passed": true
+    },
+    {
+      "name": "life_8_actual_paired_fresh_target_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_8_raw_member_and_persistent_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_8_chronological_once_only_commits_and_source_provenance",
+      "passed": true
+    },
+    {
+      "name": "life_9_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_9_choices_stops_and_target_only_budget",
+      "passed": true
+    },
+    {
+      "name": "life_9_actual_paired_fresh_target_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_9_raw_member_and_persistent_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_9_chronological_once_only_commits_and_source_provenance",
+      "passed": true
+    },
+    {
+      "name": "life_10_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_10_choices_stops_and_target_only_budget",
+      "passed": true
+    },
+    {
+      "name": "life_10_actual_paired_fresh_target_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_10_raw_member_and_persistent_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_10_chronological_once_only_commits_and_source_provenance",
+      "passed": true
+    },
+    {
+      "name": "life_11_full_policy_queries",
+      "passed": true
+    },
+    {
+      "name": "life_11_choices_stops_and_target_only_budget",
+      "passed": true
+    },
+    {
+      "name": "life_11_actual_paired_fresh_target_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_11_raw_member_and_persistent_intersection_plans",
+      "passed": true
+    },
+    {
+      "name": "life_11_chronological_once_only_commits_and_source_provenance",
+      "passed": true
+    },
+    {
+      "name": "frozen_history_true_joint_and_own_query_results",
+      "passed": true
+    },
+    {
+      "name": "total_lifecycle_statistics_and_frozen_gates",
+      "passed": true
+    },
+    {
+      "name": "historical_source_fee_is_separate_from_fresh_sampling",
+      "passed": true
+    },
+    {
+      "name": "actual_fresh_target_and_planning_costs",
+      "passed": true
+    },
+    {
+      "name": "actual_persistent_preparations_plans_and_committed_evidence_costs",
+      "passed": true
+    },
+    {
+      "name": "frozen_bootstrap_costs",
+      "passed": true
+    },
+    {
+      "name": "oracle_scoring_after_all_decisions",
+      "passed": true
+    }
+  ],
+  "costs": {
+    "regenerated_consumed_samples": 157600,
+    "interval_calls": 157990,
+    "optimizer_pure_checks": 58188,
+    "mixture_components": 373410,
+    "optimizer_pair_checks": 87282,
+    "kl_calls": 16304000
+  },
+  "seconds": 23.02688900800422
+}

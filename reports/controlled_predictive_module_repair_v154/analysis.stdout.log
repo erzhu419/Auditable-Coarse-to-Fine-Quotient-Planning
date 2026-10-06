@@ -1,0 +1,5 @@
+{"event": "audited_lifecycle", "life": 0, "physical_games": 128, "replayed_swipes": 1004032}
+{"event": "audited_lifecycle", "life": 3, "physical_games": 128, "replayed_swipes": 1008068}
+{"event": "audited_lifecycle", "life": 2, "physical_games": 128, "replayed_swipes": 989060}
+{"event": "audited_lifecycle", "life": 1, "physical_games": 128, "replayed_swipes": 996628}
+{"complete": true, "primary_complete": true, "checks": 53, "failed": [], "seconds": 55.3213790430018}

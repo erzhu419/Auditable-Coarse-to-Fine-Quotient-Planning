@@ -1,0 +1,752 @@
+{
+  "schema": "acfqp.feature_conflicts.v189.analysis",
+  "valid": true,
+  "complete": true,
+  "primary_complete": true,
+  "checks": [
+    {
+      "name": "five_protocol_frozen_retained_inputs",
+      "passed": true
+    },
+    {
+      "name": "retained_input:inputs/inherited/stage_checks.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input:inputs/inherited/run.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input:inputs/inherited/roots.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input:inputs/inherited/labels.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input:inputs/inherited/summary.json",
+      "passed": true
+    },
+    {
+      "name": "settled_V188_complete",
+      "passed": true
+    },
+    {
+      "name": "fixed_SOURCE143_36_groups_and_TARGET96",
+      "passed": true
+    },
+    {
+      "name": "independent_alias_regret_directed_coverage_and_TARGET_problem",
+      "passed": true
+    },
+    {
+      "name": "all_paid_diagnostics_work",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node_ids",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node0:parent_and_optimal_assignment",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node0:independent_incidence_constraints",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node0:exact_nonnegative_vertex_balance_and_bound",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node0:native_success_and_exact_binary_potentials",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node0:disposition",
+      "passed": true
+    },
+    {
+      "name": "TARGET:node0:terminal_has_no_branches",
+      "passed": true
+    },
+    {
+      "name": "TARGET:all_nodes_in_DFS_order",
+      "passed": true
+    },
+    {
+      "name": "TARGET:weak_witness_has_exact_nonnegative_gaps",
+      "passed": true
+    },
+    {
+      "name": "TARGET:exhaustive_nonpositive_subtree_bounds",
+      "passed": true
+    },
+    {
+      "name": "TARGET:recorded_sparse_LP_and_symbolic_work",
+      "passed": true
+    },
+    {
+      "name": "one_retained_TARGET_capacity_cost",
+      "passed": true
+    },
+    {
+      "name": "alias_coverage_and_verified_capacity_claim_summary",
+      "passed": true
+    },
+    {
+      "name": "paid_summary_and_exact_dual_explanation_work",
+      "passed": true
+    },
+    {
+      "name": "retained_inputs_and_TARGET_only_capacity_freeze",
+      "passed": true
+    },
+    {
+      "name": "all_paid_retained_input_counts",
+      "passed": true
+    },
+    {
+      "name": "one_new_capacity_scope_no_fits_labels_or_samples",
+      "passed": true
+    }
+  ],
+  "passed_checks": 27,
+  "total_checks": 27,
+  "summary": {
+    "schema": "acfqp.feature_conflicts.v189.summary",
+    "complete": true,
+    "roots": 96,
+    "alias": {
+      "oracle": {
+        "reference_components": [
+          0.8591680489191934,
+          0.015114583333333334,
+          0.3899739583333333
+        ],
+        "utility": 1.2340274239191933
+      },
+      "alias": {
+        "reference_components": [
+          0.8477792970768357,
+          0.015654513888888888,
+          0.3795572916666667
+        ],
+        "utility": 1.2116820748546135
+      },
+      "linear": {
+        "reference_components": [
+          0.8230374424121999,
+          0.02855034722222222,
+          0.3802083333333333
+        ],
+        "utility": 1.1746954285233109
+      },
+      "linear_error_roots": 44,
+      "within_root_loss_roots": 20,
+      "linear_errors_affected_by_alias": 20,
+      "within_root_regret_mean": 0.022345349064579714,
+      "remaining_regret_mean": 0.036986646331302706,
+      "linear_regret_mean": 0.059331995395882416,
+      "within_root_loss_root_ids": [
+        "v188_target_r00_01",
+        "v188_target_r00_03",
+        "v188_target_r00_14",
+        "v188_target_r00_17",
+        "v188_target_r00_18",
+        "v188_target_r00_20",
+        "v188_target_r00_22",
+        "v188_target_r01_00",
+        "v188_target_r01_13",
+        "v188_target_r01_18",
+        "v188_target_r01_20",
+        "v188_target_r01_22",
+        "v188_target_r01_23",
+        "v188_target_r02_11",
+        "v188_target_r02_15",
+        "v188_target_r02_20",
+        "v188_target_r03_00",
+        "v188_target_r03_10",
+        "v188_target_r03_20",
+        "v188_target_r03_23"
+      ],
+      "linear_error_root_ids": [
+        "v188_target_r00_01",
+        "v188_target_r00_02",
+        "v188_target_r00_03",
+        "v188_target_r00_08",
+        "v188_target_r00_10",
+        "v188_target_r00_11",
+        "v188_target_r00_13",
+        "v188_target_r00_14",
+        "v188_target_r00_17",
+        "v188_target_r00_18",
+        "v188_target_r00_20",
+        "v188_target_r00_22",
+        "v188_target_r00_23",
+        "v188_target_r01_00",
+        "v188_target_r01_03",
+        "v188_target_r01_04",
+        "v188_target_r01_08",
+        "v188_target_r01_09",
+        "v188_target_r01_10",
+        "v188_target_r01_11",
+        "v188_target_r01_13",
+        "v188_target_r01_15",
+        "v188_target_r01_17",
+        "v188_target_r01_18",
+        "v188_target_r01_20",
+        "v188_target_r01_21",
+        "v188_target_r01_22",
+        "v188_target_r01_23",
+        "v188_target_r02_01",
+        "v188_target_r02_10",
+        "v188_target_r02_11",
+        "v188_target_r02_13",
+        "v188_target_r02_15",
+        "v188_target_r02_20",
+        "v188_target_r02_21",
+        "v188_target_r02_22",
+        "v188_target_r03_00",
+        "v188_target_r03_03",
+        "v188_target_r03_08",
+        "v188_target_r03_10",
+        "v188_target_r03_14",
+        "v188_target_r03_20",
+        "v188_target_r03_21",
+        "v188_target_r03_23"
+      ]
+    },
+    "coverage": {
+      "source_roots": 143,
+      "source_groups": 36,
+      "all_roots": {
+        "roots": 96,
+        "all_tuples_seen": 70,
+        "all_contrast_structures_seen": 37,
+        "all_reward_thresholds_seen": 17
+      },
+      "linear_errors": {
+        "roots": 44,
+        "all_tuples_seen": 34,
+        "all_contrast_structures_seen": 19,
+        "all_reward_thresholds_seen": 9
+      }
+    },
+    "capacity": {
+      "status": "weak_infeasible",
+      "upper_bound": "-17/160",
+      "vertices": 89,
+      "solver_nodes": 1,
+      "lp_solves": 1,
+      "interpretation": "incompatible_alias_rankings_on_retained_TARGET",
+      "actual_tie_policy_attainability": "unknown",
+      "weak_witness_all_optimal": null
+    },
+    "dual_explanations": [
+      {
+        "node_id": 0,
+        "disposition": "pruned_negative",
+        "assigned": [],
+        "upper_bound": "-17/160",
+        "weighted_reward_difference_sum": "-17/160",
+        "margin_weight_sum": "1",
+        "margin_cap_support": [],
+        "edges": [
+          {
+            "constraint_index": 25,
+            "root_id": "v188_target_r00_13",
+            "weight": "1/5",
+            "best": {
+              "action": "RIGHT",
+              "vertex_id": 13,
+              "features": [
+                0,
+                2,
+                1,
+                0,
+                0,
+                0
+              ],
+              "immediate_reward_fraction": "1/512",
+              "components": [
+                0.1560546875,
+                0.0,
+                0.0
+              ],
+              "utility": 0.1560546875
+            },
+            "bad": {
+              "action": "DOWN",
+              "vertex_id": 43,
+              "features": [
+                0,
+                4,
+                1,
+                0,
+                0,
+                0
+              ],
+              "immediate_reward_fraction": "19/128",
+              "components": [
+                0.15237076822916668,
+                0.0,
+                0.0
+              ],
+              "utility": 0.15237076822916668
+            },
+            "reward_difference_fraction": "-75/512",
+            "weighted_reward_difference_fraction": "-15/512"
+          },
+          {
+            "constraint_index": 47,
+            "root_id": "v188_target_r01_03",
+            "weight": "1/5",
+            "best": {
+              "action": "RIGHT",
+              "vertex_id": 22,
+              "features": [
+                0,
+                2,
+                3,
+                0,
+                0,
+                0
+              ],
+              "immediate_reward_fraction": "5/256",
+              "components": [
+                1.54296875,
+                0.0,
+                1.0
+              ],
+              "utility": 2.54296875
+            },
+            "bad": {
+              "action": "UP",
+              "vertex_id": 13,
+              "features": [
+                0,
+                2,
+                1,
+                0,
+                0,
+                0
+              ],
+              "immediate_reward_fraction": "33/64",
+              "components": [
+                0.52861328125,
+                0.0,
+                0.0
+              ],
+              "utility": 0.52861328125
+            },
+            "reward_difference_fraction": "-127/256",
+            "weighted_reward_difference_fraction": "-127/1280"
+          },
+          {
+            "constraint_index": 95,
+            "root_id": "v188_target_r02_06",
+            "weight": "1/5",
+            "best": {
+              "action": "LEFT",
+              "vertex_id": 17,
+              "features": [
+                0,
+                2,
+                2,
+                0,
+                0,
+                0
+              ],
+              "immediate_reward_fraction": "3/8",
+              "components": [
+                1.1776692708333334,
+                0.0,
+                0.0
+              ],
+              "utility": 1.1776692708333334
+            },
+            "bad": {
+              "action": "UP",
+              "vertex_id": 22,
+              "features": [
+                0,
+                2,
+                3,
+                0,
+                0,
+                0
+              ],
+              "immediate_reward_fraction": "5/32",
+              "components": [
+                1.09462890625,
+                0.0,
+                0.0
+              ],
+              "utility": 1.09462890625
+            },
+            "reward_difference_fraction": "7/32",
+            "weighted_reward_difference_fraction": "7/160"
+          },
+          {
+            "constraint_index": 121,
+            "root_id": "v188_target_r02_22",
+            "weight": "1/5",
+            "best": {
+              "action": "DOWN",
+              "vertex_id": 29,
+              "features": [
+                0,
+                3,
+                1,
+                0,
+                0,
+                0
+              ],
+              "immediate_reward_fraction": "5/512",
+              "components": [
+                0.8848958333333333,
+                0.0,
+                0.0
+              ],
+              "utility": 0.8848958333333333
+            },
+            "bad": {
+              "action": "LEFT",
+              "vertex_id": 17,
+              "features": [
+                0,
+                2,
+                2,
+                0,
+                0,
+                0
+              ],
+              "immediate_reward_fraction": "1/8",
+              "components": [
+                0.8813321940104166,
+                0.0,
+                0.0
+              ],
+              "utility": 0.8813321940104166
+            },
+            "reward_difference_fraction": "-59/512",
+            "weighted_reward_difference_fraction": "-59/2560"
+          },
+          {
+            "constraint_index": 148,
+            "root_id": "v188_target_r03_17",
+            "weight": "1/5",
+            "best": {
+              "action": "RIGHT",
+              "vertex_id": 43,
+              "features": [
+                0,
+                4,
+                1,
+                0,
+                0,
+                0
+              ],
+              "immediate_reward_fraction": "33/128",
+              "components": [
+                1.00899951171875,
+                0.0,
+                0.0
+              ],
+              "utility": 1.00899951171875
+            },
+            "bad": {
+              "action": "DOWN",
+              "vertex_id": 29,
+              "features": [
+                0,
+                3,
+                1,
+                0,
+                0,
+                0
+              ],
+              "immediate_reward_fraction": "1/4",
+              "components": [
+                0.5102907986111112,
+                0.0,
+                0.0
+              ],
+              "utility": 0.5102907986111112
+            },
+            "reward_difference_fraction": "1/128",
+            "weighted_reward_difference_fraction": "1/640"
+          }
+        ],
+        "vertex_flows": [
+          {
+            "vertex_id": 13,
+            "features": [
+              0,
+              2,
+              1,
+              0,
+              0,
+              0
+            ],
+            "net_flow": "0"
+          },
+          {
+            "vertex_id": 17,
+            "features": [
+              0,
+              2,
+              2,
+              0,
+              0,
+              0
+            ],
+            "net_flow": "0"
+          },
+          {
+            "vertex_id": 22,
+            "features": [
+              0,
+              2,
+              3,
+              0,
+              0,
+              0
+            ],
+            "net_flow": "0"
+          },
+          {
+            "vertex_id": 29,
+            "features": [
+              0,
+              3,
+              1,
+              0,
+              0,
+              0
+            ],
+            "net_flow": "0"
+          },
+          {
+            "vertex_id": 43,
+            "features": [
+              0,
+              4,
+              1,
+              0,
+              0,
+              0
+            ],
+            "net_flow": "0"
+          }
+        ],
+        "balanced_vertex_flow": true
+      }
+    ],
+    "new_environment_samples": 0,
+    "new_fits": 0,
+    "new_labels": 0,
+    "work": {
+      "summary_alias_root_records": 96,
+      "summary_reference_component_reads": 864,
+      "summary_regret_scalar_reads": 288,
+      "summary_coverage_flags_read": 420,
+      "explanation_constraint_records_read": 5,
+      "explanation_exact_weight_conversions": 5,
+      "explanation_reward_fraction_conversions": 5,
+      "explanation_weighted_reward_products": 5,
+      "explanation_vertex_flow_accumulations": 10,
+      "explanation_feature_values_copied": 60,
+      "explanation_terminal_component_reads": 30,
+      "explanation_dual_nodes": 1,
+      "explanation_vertex_balances_read": 5
+    }
+  },
+  "costs": {
+    "new_environment_samples": 0,
+    "physical_branches_replayed": 0,
+    "old_kernels_reevaluated": 0,
+    "old_models_refitted": 0,
+    "features_recomputed": 0,
+    "independent_lp_solves": 0,
+    "independent_input_counts": {
+      "json_read_operations": 10,
+      "input_bytes_read": 8272163,
+      "input_byte_comparisons": 5,
+      "input_comparison_bytes_read": 13812032
+    },
+    "independent_certificate_counts": {
+      "nodes_verified": 1,
+      "incidence_constraints_rebuilt": 163,
+      "dual_support_rows_verified": 5,
+      "dual_vertex_flow_additions": 10,
+      "potential_evaluations": 1,
+      "potential_root_records": 96,
+      "potential_rational_conversions": 89
+    },
+    "independent_diagnostics_counts": {
+      "problem_feature_values_read": 2184,
+      "problem_action_alias_classifications": 364,
+      "problem_terminal_components_read": 825,
+      "problem_immediate_rewards_read": 453,
+      "problem_root_records": 96,
+      "problem_representative_utility_evaluations": 275,
+      "problem_alias_reward_comparisons": 89,
+      "lift_class_records": 275,
+      "lift_feature_values_read": 1650,
+      "lift_terminal_components_copied": 825,
+      "lift_vertex_assignments": 275,
+      "lift_roots_copied": 96,
+      "lift_distinct_vertices": 89,
+      "diagnostic_label_root_bindings": 96,
+      "diagnostic_summary_root_bindings": 96,
+      "alias_action_utility_evaluations": 639,
+      "alias_root_records": 96,
+      "alias_original_terminal_component_reads": 1092,
+      "alias_linear_component_reads": 288,
+      "alias_regret_subtractions": 288,
+      "alias_linear_utility_evaluations": 96,
+      "coverage_source_feature_values_read": 3204,
+      "coverage_source_legal_actions": 534,
+      "coverage_source_ordered_pairs": 1518,
+      "coverage_source_reward_difference_subtractions": 1518,
+      "coverage_source_roots": 143,
+      "coverage_source_reward_fraction_conversions": 534,
+      "coverage_target_feature_values_read": 2184,
+      "coverage_target_legal_actions": 364,
+      "coverage_target_tuple_lookups": 364,
+      "coverage_target_ordered_pairs": 1048,
+      "coverage_target_structure_lookups": 1048,
+      "coverage_target_reward_threshold_lookups": 1048,
+      "coverage_target_reward_difference_subtractions": 1048,
+      "coverage_alias_optimal_linear_records": 104,
+      "coverage_target_roots": 96,
+      "coverage_target_reward_fraction_conversions": 364
+    },
+    "independent_summary_counts": {
+      "summary_alias_root_records": 96,
+      "summary_reference_component_reads": 864,
+      "summary_regret_scalar_reads": 288,
+      "summary_coverage_flags_read": 420,
+      "explanation_constraint_records_read": 5,
+      "explanation_exact_weight_conversions": 5,
+      "explanation_reward_fraction_conversions": 5,
+      "explanation_weighted_reward_products": 5,
+      "explanation_vertex_flow_accumulations": 10,
+      "explanation_feature_values_copied": 60,
+      "explanation_terminal_component_reads": 30,
+      "explanation_dual_nodes": 1,
+      "explanation_vertex_balances_read": 5
+    },
+    "original_run_costs": {
+      "diagnostics": {
+        "seconds": 0.018559873002232052,
+        "counts": {
+          "problem_feature_values_read": 2184,
+          "problem_action_alias_classifications": 364,
+          "problem_terminal_components_read": 825,
+          "problem_immediate_rewards_read": 453,
+          "problem_root_records": 96,
+          "problem_representative_utility_evaluations": 275,
+          "problem_alias_reward_comparisons": 89,
+          "lift_class_records": 275,
+          "lift_feature_values_read": 1650,
+          "lift_terminal_components_copied": 825,
+          "lift_vertex_assignments": 275,
+          "lift_roots_copied": 96,
+          "lift_distinct_vertices": 89,
+          "diagnostic_label_root_bindings": 96,
+          "diagnostic_summary_root_bindings": 96,
+          "alias_action_utility_evaluations": 639,
+          "alias_root_records": 96,
+          "alias_original_terminal_component_reads": 1092,
+          "alias_linear_component_reads": 288,
+          "alias_regret_subtractions": 288,
+          "alias_linear_utility_evaluations": 96,
+          "coverage_source_feature_values_read": 3204,
+          "coverage_source_legal_actions": 534,
+          "coverage_source_ordered_pairs": 1518,
+          "coverage_source_reward_difference_subtractions": 1518,
+          "coverage_source_roots": 143,
+          "coverage_source_reward_fraction_conversions": 534,
+          "coverage_target_feature_values_read": 2184,
+          "coverage_target_legal_actions": 364,
+          "coverage_target_tuple_lookups": 364,
+          "coverage_target_ordered_pairs": 1048,
+          "coverage_target_structure_lookups": 1048,
+          "coverage_target_reward_threshold_lookups": 1048,
+          "coverage_target_reward_difference_subtractions": 1048,
+          "coverage_alias_optimal_linear_records": 104,
+          "coverage_target_roots": 96,
+          "coverage_target_reward_fraction_conversions": 364
+        }
+      },
+      "target_capacity": {
+        "seconds": 0.04447367000102531,
+        "counts": {
+          "lp_solves": 1,
+          "lp_constraint_rows": 163,
+          "lp_variables": 90,
+          "lp_incidence_entries": 487,
+          "lp_seconds": 0.011868735993630253,
+          "symbolic_balance_solves": 1,
+          "dual_vertex_flow_accumulations": 10,
+          "dual_support_rows": 5,
+          "dual_balance_vertices_checked": 89,
+          "dual_margin_weight_accumulations": 5,
+          "symbolic_balance_seconds": 0.027807578997453675,
+          "potential_evaluations": 1,
+          "potential_root_records": 96,
+          "potential_rational_conversions": 89
+        }
+      },
+      "summary": {
+        "seconds": 0.0004932349984301254,
+        "counts": {
+          "summary_alias_root_records": 96,
+          "summary_reference_component_reads": 864,
+          "summary_regret_scalar_reads": 288,
+          "summary_coverage_flags_read": 420,
+          "explanation_constraint_records_read": 5,
+          "explanation_exact_weight_conversions": 5,
+          "explanation_reward_fraction_conversions": 5,
+          "explanation_weighted_reward_products": 5,
+          "explanation_vertex_flow_accumulations": 10,
+          "explanation_feature_values_copied": 60,
+          "explanation_terminal_component_reads": 30,
+          "explanation_dual_nodes": 1,
+          "explanation_vertex_balances_read": 5
+        }
+      },
+      "input_counts": {
+        "json_read_operations": 5,
+        "input_bytes_read": 6906016,
+        "input_bytes_retained": 6906016
+      }
+    },
+    "inherited_cost_refs": [
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_mechanism_interactions_v188/run.json",
+        "fields": [
+          "costs",
+          "inherited_cost_refs"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_mechanism_interactions_v188/analysis.json",
+        "fields": [
+          "costs"
+        ]
+      }
+    ],
+    "test_refs": [
+      "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v189_runtime_tmp/core_checks.json",
+      "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v189_runtime_tmp/runner_checks.json",
+      "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v189_runtime_tmp/analyzer_checks.json"
+    ],
+    "seconds": 0.08813811899744906
+  }
+}

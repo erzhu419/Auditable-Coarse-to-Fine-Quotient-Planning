@@ -1,0 +1,25 @@
+{
+  "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_direct_validation_v114.py",
+  "cwd": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration",
+  "attempts": 1,
+  "returncode": 0,
+  "passed": 5,
+  "pytest_seconds": 0.61,
+  "scope": "Synthetic cached-log fixtures only. No production analyses, sampling, fitting, model loading or neural predictions.",
+  "temporary_fixture_files": false,
+  "invocation_note": "Completed before the project-local TMPDIR/basetemp instruction arrived; no repeated passing tests.",
+  "detected_failures": [
+    "validating proxy models instead of actual deployment pairs or incorrect source means",
+    "charging inherited target sampling as new work",
+    "missing source candidate or overlap with training samples",
+    "target-root feedback or changes to inherited selected decisions",
+    "censored target references dropped from crossed matrices"
+  ],
+  "development_work": {
+    "new_environment_transitions": 0,
+    "new_synthetic_transitions": 0,
+    "neural_model_fits": 0,
+    "optimizer_steps": 0,
+    "neural_candidate_predictions": 0
+  }
+}

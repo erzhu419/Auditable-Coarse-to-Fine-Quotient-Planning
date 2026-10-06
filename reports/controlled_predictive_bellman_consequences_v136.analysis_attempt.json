@@ -1,0 +1,12 @@
+{
+  "attempt": 1,
+  "status": "complete",
+  "start_utc": "2026-09-20T05:29:05.678500+00:00",
+  "command": [
+    "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "scripts/analyze_controlled_predictive_bellman_consequences_v136.py"
+  ],
+  "returncode": 0,
+  "seconds": 135.342066762998,
+  "end_utc": "2026-09-20T05:31:11.026474+00:00"
+}

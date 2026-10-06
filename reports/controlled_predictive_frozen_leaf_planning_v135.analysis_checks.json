@@ -1,0 +1,19 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "model_updates": 0,
+      "scope": "synthetic paired terminal returns and explicit model-enumeration work"
+    },
+    {
+      "failures": 0,
+      "tests_run": 4,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "model_updates": 0,
+      "scope": "synthetic paired terminal returns and explicit model-enumeration work"
+    }
+  ]
+}

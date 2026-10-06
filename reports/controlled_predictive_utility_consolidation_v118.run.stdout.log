@@ -1,0 +1,13 @@
+{"event": "phase_complete", "life": 1, "phase": "A", "selected": "NEW_SHARED", "complete": true, "origin": {"batch": 0, "mode": "SHARED"}}
+{"event": "phase_complete", "life": 3, "phase": "A", "selected": "NEW_SHARED", "complete": true, "origin": {"batch": 0, "mode": "SHARED"}}
+{"event": "phase_complete", "life": 0, "phase": "A", "selected": "NEW_SHARED", "complete": true, "origin": {"batch": 0, "mode": "SHARED"}}
+{"event": "phase_complete", "life": 2, "phase": "A", "selected": "NEW_SHARED", "complete": true, "origin": {"batch": 0, "mode": "SHARED"}}
+{"event": "phase_complete", "life": 1, "phase": "B", "selected": "NEW_SHARED", "complete": true, "origin": {"batch": 1, "mode": "SHARED"}}
+{"event": "phase_complete", "life": 3, "phase": "B", "selected": "NEW_SPLIT", "complete": true, "origin": {"batch": 1, "mode": "SPLIT"}}
+{"event": "phase_complete", "life": 0, "phase": "B", "selected": "NEW_SPLIT", "complete": true, "origin": {"batch": 1, "mode": "SPLIT"}}
+{"event": "phase_complete", "life": 2, "phase": "B", "selected": "NEW_SPLIT", "complete": true, "origin": {"batch": 1, "mode": "SPLIT"}}
+{"event": "phase_complete", "life": 1, "phase": "A_RETURN", "selected": "KEEP", "complete": true, "origin": {"batch": 1, "mode": "SHARED"}}
+{"event": "phase_complete", "life": 2, "phase": "A_RETURN", "selected": "NEW_SHARED", "complete": true, "origin": {"batch": 2, "mode": "SHARED"}}
+{"event": "phase_complete", "life": 3, "phase": "A_RETURN", "selected": "NEW_SPLIT", "complete": true, "origin": {"batch": 2, "mode": "SPLIT"}}
+{"event": "phase_complete", "life": 0, "phase": "A_RETURN", "selected": "NEW_SPLIT", "complete": true, "origin": {"batch": 2, "mode": "SPLIT"}}
+{"status": "complete", "lifecycles": 4, "seconds": 89.75660018499912}

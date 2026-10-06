@@ -1,0 +1,15 @@
+{
+  "attempts": [
+    {
+      "tests": 10,
+      "failures": 0,
+      "seconds": 0.1976382510001713,
+      "environment_samples": 0,
+      "environment_random_draws": 0,
+      "native_model_calls": 0,
+      "model_updates": 0,
+      "source_refits": 0,
+      "scope": "Mocked complete retained cohort, quantile roots, shared suffix streams, action deduplication, cost separation and freeze before workers."
+    }
+  ]
+}

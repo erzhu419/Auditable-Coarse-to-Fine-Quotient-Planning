@@ -1,0 +1,23 @@
+# V174：按来源留出行动效用生成状态分割（冻结协议）
+
+承接V173科学FAIL与训练反例：完整向量SSE下降不能保证实际行动收益。本轮只改变候选分割的生成目标；独立CONFIRM与VALID、教师、原U005 Gate及U006未启动状态保持。当前H2仍为V135，不作整局自主控制、迁移或采样效率主张。
+
+DISCOVERY精确沿用V171 TRAIN128根/1880完整后果及V172 TRAIN256根/3700后果，共384根、每history96根/12SOURCE/每SOURCE8根。V173 CONFIRM/VALID及旧VALID/EVAL不入拟合或选择；全部已付成本引用留存。V172原零和审计失败及补充observable equivalence通过保留，使用现有显式零和求解器。
+
+每history在读取行动标签前按SOURCE字符串排序交替固定为两折，每折6SOURCE；同SOURCE的全部根和4suffix永不拆折。每候选rank谓词cell0..15、threshold0..9，在一折的节点区域内拟合collapsed parent及直接左右child的完整reward/failure/success配对相对续局向量，反折评价，再交换。每fit方向的两个child各至少8根及2SOURCE；所有heldout区域根的父/对应子模型，每合法行动至少4个fit根且动作处于同一observed-pair连通分量，任何根不支持则整个候选不可比较。single-legal根也遵守此支持门槛；不伪造旧根缺失的teacher_action，不删不支持根以挑选收益。
+
+支持完整时按系数加入该heldout根精确首步reward，选择utility=reward−failure+success最大的行动，1e-12并列按DOWN/LEFT/RIGHT/UP。实际完整终局向量child行动减parent行动按4suffix→root→每SOURCE全部8根均值，节点区域外差为0；两个方向的6SOURCE均值等权，得到12SOURCE等权utility增益。完整三分量与SOURCE贡献留存；不将这种反复使用的训练留出分数称独立确认或性能CI。
+
+每active节点按cell/threshold次序寻找正utility增益>1e-12候选，全局按node_id及同1e-12规则贪心，最多16leaf；候选/无支持拒绝/两折完整工作计数留存。结构决定后仅用全部DISCOVERY重新拟合每节点完整三向量，禁止用heldout拟合器代替最终模型。首步reward保留为具体根数值参数。
+
+同数据SSE对照完整沿用V173的V172贪心全向量损失生成及全DISCOVERY节点估计；ONE_LATE同数据一次拟合。UTILITY包含两折支持约束，本轮比较整个来源留出效用生成机制，不将差异单归因于标量目标。UTILITY和SSE各4history提议全部在新采样前冻结。共享CONFIRM_SOURCE为每history8个新H2整局，各预定8中段分位根，具体canonical棋盘与DISCOVERY精确相同者排除、不补，每SOURCE须至少1根。全部两系路径节点collapsed-parent/direct-child选择冻结后，才取得每根全部合法行动×4配对suffix的H2完整终局后果。
+
+接纳规则完全沿用V173：区域外差0，每SOURCE全部留存根等权，8SOURCE簇均值/SE；K在CONFIRM前固定为两系四history全部internal节点（含以后不可达节点），z=NormalDist.inv_cdf(1−.05/(2K))。每child至少2CONFIRM SOURCE、支持且改变模型行动的根至少2SOURCE、utility下界>0才local_pass；所有根含fallback参与差。固定topdown剪枝，父拒绝则collapsed、不启用后代。确认不能加候选、重拟合、追加样本或改变门槛。
+
+冻结PART_UTILITY_CONFIRMED、PART_SSE_CONFIRMED、PART_UTILITY_UNPRUNED、PART_SSE_UNPRUNED、ONE_LATE共20模型及剪枝记录后，获取全新VALID_SOURCE32H2局/256候选根；排除DISCOVERY与CONFIRM留存具体canonical棋盘，不补，每SOURCE至少1根。全部6政策在标签前冻结，共用全部合法行动×4全新配对suffix的完整终局。主对比UTILITY_CONFIRMED−SSE_CONFIRMED与UTILITY_CONFIRMED−H2，两个SOURCE簇条件95%区间下界都>0且UTILITY实际至少1retained split才PASS。次对比UTILITY_UNPRUNED−SSE_UNPRUNED、UTILITY_CONFIRMED−UTILITY_UNPRUNED/ONE_LATE、SSE_CONFIRMED−H2。无新增事后Gate。
+
+统计仍为4suffix→root→SOURCE→每history8SOURCE均值/簇方差→四既有history等权正态95%CI。仅评价固定首行动之后H2续局；确认数据属于学习，VALID绝不反馈。保留完整向量MSE、fallback、选择差异与搜索拒绝原因诊断。
+
+BASE=17400000000；CONFIRM_SOURCE=BASE+10M+life×1M+replica0..7；CONFIRM=BASE+20M+life×1M+replica×100K+slot×1K+suffix0..3。VALID_SOURCE/VALID分别+30M/+40M；行动/方法不进seed。max_steps8192、p_four=.1、四workers，新游戏上限8256/转移67,633,152。required SOURCE/branch缺失、重复、cutoff、null或身份/向量不一致保留成本并HOLD，不补样；方法无正候选/未确认是科学FAIL而非执行HOLD。
+
+搜索两折所有叶估计、准备/最终节点fit、两系确认及决策工作分别计入一次；无新增神经权重更新。独立审计重建384compact训练根、折分、每候选完整支持/行动实际效用/贪心结构、全数据nodefit、两系确认和VALID簇统计，并重放本轮四物理阶段。旧tapes不重放。源码/协议/tests/wrappers原字节在新采样前留存，结束只比较一次。中途文件仅reports/v174_runtime_tmp/与reports/controlled_predictive_utility_partition_v174/；无服务器下载；FAIL不得调Gate挽救。

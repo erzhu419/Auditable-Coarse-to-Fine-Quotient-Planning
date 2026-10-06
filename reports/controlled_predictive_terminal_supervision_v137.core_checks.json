@@ -1,0 +1,57 @@
+{
+  "attempts": [
+    {
+      "tests": 12,
+      "failures": 0,
+      "model_work": {
+        "value_calls": 24,
+        "td_updates": 25,
+        "reward_td_updates": 25,
+        "success_td_updates": 25,
+        "learned_terminal_checks": 4,
+        "joint_predictions": 10,
+        "reward_predictions": 10,
+        "success_predictions": 10,
+        "table_lookups": 640,
+        "sigmoid_evaluations": 10,
+        "bank_0_prediction_occurrences": 68,
+        "feature_address_occurrences": 320,
+        "reward_table_update_occurrences": 192,
+        "success_table_update_occurrences": 192,
+        "reward_table_updates": 69,
+        "success_table_updates": 69,
+        "update_feature_squared_norm": 600,
+        "bank_0_update_occurrences": 102,
+        "context_cell_reads": 160,
+        "context_bank_selections": 160,
+        "context_bank_offset_additions": 160,
+        "bank_1_prediction_occurrences": 60,
+        "bank_1_update_occurrences": 90
+      },
+      "setup_work": {
+        "cpp_compilations": 3,
+        "allocated_weight_parameters": 96228,
+        "allocated_weight_bytes": 769824,
+        "source_parameters_copied": 52488,
+        "source_weight_bytes_copied": 419904,
+        "cpp_library_cache_hits": 15,
+        "lookup_line_rewrites": 81,
+        "lookup_table_cache_hits": 11
+      },
+      "replay_work": {
+        "replay_swipes": 21,
+        "replayed_transitions": 21,
+        "replayed_spawn_events": 21,
+        "replay_ground_state_status_calls": 11,
+        "replay_ground_status_internal_swipe_calls": 24,
+        "replay_ground_swipe_calls": 24
+      },
+      "fixture_work": {
+        "swipes": 30
+      },
+      "newly_sampled_environment_transitions": 0,
+      "newly_sampled_model_transitions": 0,
+      "scope": "Finite recorded boards and unchanged native updates; no natural-game sampling."
+    }
+  ]
+}

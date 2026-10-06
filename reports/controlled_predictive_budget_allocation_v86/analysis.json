@@ -1,0 +1,5265 @@
+{
+  "schema": "acfqp.budget_allocation_analysis.v86",
+  "complete": true,
+  "cohort": {
+    "lifecycle_roster_complete": true,
+    "evaluation_roster_complete": true,
+    "paired_seeds_complete": true,
+    "controller_wiring_complete": true,
+    "actual_acquisition_budgets_matched": true,
+    "training_root_accounting_complete": true,
+    "validation_roster_complete": true,
+    "paired_histories_complete": true,
+    "paired_terminal_cohorts": [
+      {
+        "id": 0,
+        "query": "reward",
+        "roster_complete": true,
+        "seeds_paired": true,
+        "complete_replicas": 8,
+        "excluded_replicas": []
+      },
+      {
+        "id": 0,
+        "query": "risk_goal",
+        "roster_complete": true,
+        "seeds_paired": true,
+        "complete_replicas": 8,
+        "excluded_replicas": []
+      },
+      {
+        "id": 1,
+        "query": "reward",
+        "roster_complete": true,
+        "seeds_paired": true,
+        "complete_replicas": 8,
+        "excluded_replicas": []
+      },
+      {
+        "id": 1,
+        "query": "risk_goal",
+        "roster_complete": true,
+        "seeds_paired": true,
+        "complete_replicas": 8,
+        "excluded_replicas": []
+      },
+      {
+        "id": 2,
+        "query": "reward",
+        "roster_complete": true,
+        "seeds_paired": true,
+        "complete_replicas": 8,
+        "excluded_replicas": []
+      },
+      {
+        "id": 2,
+        "query": "risk_goal",
+        "roster_complete": true,
+        "seeds_paired": true,
+        "complete_replicas": 8,
+        "excluded_replicas": []
+      }
+    ],
+    "expected_games": 192,
+    "all_evaluation_games_terminal": true,
+    "games": 192,
+    "terminal_games": 192,
+    "status_counts": {
+      "LOST": 190,
+      "WON": 2
+    },
+    "terminal_means": {
+      "score": 9156.0625,
+      "utility": 2.5540669759114585,
+      "steps": 581.984375,
+      "max_rank": 9.328125
+    },
+    "selected_options": {
+      "NO_SELECTION": 48,
+      "SPACE_4": 37,
+      "H2": 27,
+      "SPACE_1": 24,
+      "SNAKE_1": 34,
+      "SNAKE_4": 22
+    },
+    "duration_budgets": {
+      "0": 75,
+      "4": 59,
+      "1": 58
+    },
+    "actual_fragment_lengths": {
+      "0": 75,
+      "4": 59,
+      "1": 58
+    },
+    "games_with_fragment": 117,
+    "completed_four_step_fragments": 59,
+    "fragment_actions": 294,
+    "seconds": 99.51622670586221
+  },
+  "methods": {
+    "H2_ONLY": {
+      "queries": {
+        "reward": {
+          "pooled": {
+            "games": 24,
+            "terminal_games": 24,
+            "status_counts": {
+              "LOST": 24
+            },
+            "terminal_means": {
+              "score": 9538.166666666666,
+              "utility": 4.657307942708333,
+              "steps": 604.7916666666666,
+              "max_rank": 9.375
+            },
+            "selected_options": {
+              "NO_SELECTION": 24
+            },
+            "duration_budgets": {
+              "0": 24
+            },
+            "actual_fragment_lengths": {
+              "0": 24
+            },
+            "games_with_fragment": 0,
+            "completed_four_step_fragments": 0,
+            "fragment_actions": 0,
+            "seconds": 12.476801306940615
+          },
+          "lifecycles": [
+            {
+              "id": 0,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 8
+              },
+              "terminal_means": {
+                "score": 8301.5,
+                "utility": 4.053466796875,
+                "steps": 544.0,
+                "max_rank": 9.125
+              },
+              "selected_options": {
+                "NO_SELECTION": 8
+              },
+              "duration_budgets": {
+                "0": 8
+              },
+              "actual_fragment_lengths": {
+                "0": 8
+              },
+              "games_with_fragment": 0,
+              "completed_four_step_fragments": 0,
+              "fragment_actions": 0,
+              "seconds": 3.5845442868885584
+            },
+            {
+              "id": 1,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 8
+              },
+              "terminal_means": {
+                "score": 9431.0,
+                "utility": 4.60498046875,
+                "steps": 598.625,
+                "max_rank": 9.375
+              },
+              "selected_options": {
+                "NO_SELECTION": 8
+              },
+              "duration_budgets": {
+                "0": 8
+              },
+              "actual_fragment_lengths": {
+                "0": 8
+              },
+              "games_with_fragment": 0,
+              "completed_four_step_fragments": 0,
+              "fragment_actions": 0,
+              "seconds": 4.28342238208279
+            },
+            {
+              "id": 2,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 8
+              },
+              "terminal_means": {
+                "score": 10882.0,
+                "utility": 5.3134765625,
+                "steps": 671.75,
+                "max_rank": 9.625
+              },
+              "selected_options": {
+                "NO_SELECTION": 8
+              },
+              "duration_budgets": {
+                "0": 8
+              },
+              "actual_fragment_lengths": {
+                "0": 8
+              },
+              "games_with_fragment": 0,
+              "completed_four_step_fragments": 0,
+              "fragment_actions": 0,
+              "seconds": 4.608834637969267
+            }
+          ]
+        },
+        "risk_goal": {
+          "pooled": {
+            "games": 24,
+            "terminal_games": 24,
+            "status_counts": {
+              "LOST": 23,
+              "WON": 1
+            },
+            "terminal_means": {
+              "score": 10438.0,
+              "utility": 1.4300130208333333,
+              "steps": 646.2083333333334,
+              "max_rank": 9.5
+            },
+            "selected_options": {
+              "NO_SELECTION": 24
+            },
+            "duration_budgets": {
+              "0": 24
+            },
+            "actual_fragment_lengths": {
+              "0": 24
+            },
+            "games_with_fragment": 0,
+            "completed_four_step_fragments": 0,
+            "fragment_actions": 0,
+            "seconds": 14.089976858987939
+          },
+          "lifecycles": [
+            {
+              "id": 0,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 8
+              },
+              "terminal_means": {
+                "score": 9819.0,
+                "utility": 0.79443359375,
+                "steps": 626.125,
+                "max_rank": 9.375
+              },
+              "selected_options": {
+                "NO_SELECTION": 8
+              },
+              "duration_budgets": {
+                "0": 8
+              },
+              "actual_fragment_lengths": {
+                "0": 8
+              },
+              "games_with_fragment": 0,
+              "completed_four_step_fragments": 0,
+              "fragment_actions": 0,
+              "seconds": 4.2960993069573306
+            },
+            {
+              "id": 1,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 7,
+                "WON": 1
+              },
+              "terminal_means": {
+                "score": 10240.0,
+                "utility": 2.0,
+                "steps": 621.25,
+                "max_rank": 9.5
+              },
+              "selected_options": {
+                "NO_SELECTION": 8
+              },
+              "duration_budgets": {
+                "0": 8
+              },
+              "actual_fragment_lengths": {
+                "0": 8
+              },
+              "games_with_fragment": 0,
+              "completed_four_step_fragments": 0,
+              "fragment_actions": 0,
+              "seconds": 4.60383323795395
+            },
+            {
+              "id": 2,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 8
+              },
+              "terminal_means": {
+                "score": 11255.0,
+                "utility": 1.49560546875,
+                "steps": 691.25,
+                "max_rank": 9.625
+              },
+              "selected_options": {
+                "NO_SELECTION": 8
+              },
+              "duration_budgets": {
+                "0": 8
+              },
+              "actual_fragment_lengths": {
+                "0": 8
+              },
+              "games_with_fragment": 0,
+              "completed_four_step_fragments": 0,
+              "fragment_actions": 0,
+              "seconds": 5.190044314076658
+            }
+          ]
+        }
+      },
+      "paired_histories": {
+        "pairs": 48,
+        "identical_to_h2": 48
+      },
+      "cumulative_cost_attribution": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "evaluation_seconds": 8.165769292972982,
+            "total_seconds": 8.165769292972982
+          },
+          {
+            "id": 1,
+            "evaluation_seconds": 9.197555863007437,
+            "total_seconds": 9.197555863007437
+          },
+          {
+            "id": 2,
+            "evaluation_seconds": 10.132077294983901,
+            "total_seconds": 10.132077294983901
+          }
+        ],
+        "totals": {
+          "evaluation_seconds": 27.49540245096432,
+          "total_seconds": 27.49540245096432
+        }
+      }
+    },
+    "FROZEN_V85": {
+      "queries": {
+        "reward": {
+          "pooled": {
+            "games": 24,
+            "terminal_games": 24,
+            "status_counts": {
+              "LOST": 24
+            },
+            "terminal_means": {
+              "score": 8166.5,
+              "utility": 3.987548828125,
+              "steps": 526.4166666666666,
+              "max_rank": 9.208333333333334
+            },
+            "selected_options": {
+              "SPACE_4": 9,
+              "SPACE_1": 2,
+              "SNAKE_4": 9,
+              "SNAKE_1": 3,
+              "H2": 1
+            },
+            "duration_budgets": {
+              "4": 18,
+              "1": 5,
+              "0": 1
+            },
+            "actual_fragment_lengths": {
+              "4": 18,
+              "1": 5,
+              "0": 1
+            },
+            "games_with_fragment": 23,
+            "completed_four_step_fragments": 18,
+            "fragment_actions": 77,
+            "seconds": 10.903839971928392
+          },
+          "lifecycles": [
+            {
+              "id": 0,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 8
+              },
+              "terminal_means": {
+                "score": 9556.5,
+                "utility": 4.666259765625,
+                "steps": 594.875,
+                "max_rank": 9.5
+              },
+              "selected_options": {
+                "SPACE_4": 4,
+                "SPACE_1": 1,
+                "SNAKE_4": 1,
+                "SNAKE_1": 1,
+                "H2": 1
+              },
+              "duration_budgets": {
+                "4": 5,
+                "1": 2,
+                "0": 1
+              },
+              "actual_fragment_lengths": {
+                "4": 5,
+                "1": 2,
+                "0": 1
+              },
+              "games_with_fragment": 7,
+              "completed_four_step_fragments": 5,
+              "fragment_actions": 22,
+              "seconds": 3.9959856750210747
+            },
+            {
+              "id": 1,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 8
+              },
+              "terminal_means": {
+                "score": 8152.5,
+                "utility": 3.980712890625,
+                "steps": 526.25,
+                "max_rank": 9.125
+              },
+              "selected_options": {
+                "SNAKE_4": 5,
+                "SNAKE_1": 1,
+                "SPACE_1": 1,
+                "SPACE_4": 1
+              },
+              "duration_budgets": {
+                "4": 6,
+                "1": 2
+              },
+              "actual_fragment_lengths": {
+                "4": 6,
+                "1": 2
+              },
+              "games_with_fragment": 8,
+              "completed_four_step_fragments": 6,
+              "fragment_actions": 26,
+              "seconds": 3.6678136799600907
+            },
+            {
+              "id": 2,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 8
+              },
+              "terminal_means": {
+                "score": 6790.5,
+                "utility": 3.315673828125,
+                "steps": 458.125,
+                "max_rank": 9.0
+              },
+              "selected_options": {
+                "SPACE_4": 4,
+                "SNAKE_4": 3,
+                "SNAKE_1": 1
+              },
+              "duration_budgets": {
+                "4": 7,
+                "1": 1
+              },
+              "actual_fragment_lengths": {
+                "4": 7,
+                "1": 1
+              },
+              "games_with_fragment": 8,
+              "completed_four_step_fragments": 7,
+              "fragment_actions": 29,
+              "seconds": 3.2400406169472262
+            }
+          ]
+        },
+        "risk_goal": {
+          "pooled": {
+            "games": 24,
+            "terminal_games": 24,
+            "status_counts": {
+              "LOST": 24
+            },
+            "terminal_means": {
+              "score": 9099.333333333334,
+              "utility": 0.4430338541666667,
+              "steps": 582.9583333333334,
+              "max_rank": 9.333333333333334
+            },
+            "selected_options": {
+              "H2": 9,
+              "SNAKE_1": 8,
+              "SNAKE_4": 3,
+              "SPACE_1": 3,
+              "SPACE_4": 1
+            },
+            "duration_budgets": {
+              "0": 9,
+              "1": 11,
+              "4": 4
+            },
+            "actual_fragment_lengths": {
+              "0": 9,
+              "1": 11,
+              "4": 4
+            },
+            "games_with_fragment": 15,
+            "completed_four_step_fragments": 4,
+            "fragment_actions": 27,
+            "seconds": 12.675981294887606
+          },
+          "lifecycles": [
+            {
+              "id": 0,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 8
+              },
+              "terminal_means": {
+                "score": 7741.0,
+                "utility": -0.22021484375,
+                "steps": 522.125,
+                "max_rank": 9.125
+              },
+              "selected_options": {
+                "H2": 5,
+                "SNAKE_1": 2,
+                "SNAKE_4": 1
+              },
+              "duration_budgets": {
+                "0": 5,
+                "1": 2,
+                "4": 1
+              },
+              "actual_fragment_lengths": {
+                "0": 5,
+                "1": 2,
+                "4": 1
+              },
+              "games_with_fragment": 3,
+              "completed_four_step_fragments": 1,
+              "fragment_actions": 6,
+              "seconds": 3.741751159832347
+            },
+            {
+              "id": 1,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 8
+              },
+              "terminal_means": {
+                "score": 9441.5,
+                "utility": 0.610107421875,
+                "steps": 594.5,
+                "max_rank": 9.375
+              },
+              "selected_options": {
+                "SNAKE_1": 4,
+                "SNAKE_4": 2,
+                "SPACE_1": 2
+              },
+              "duration_budgets": {
+                "1": 6,
+                "4": 2
+              },
+              "actual_fragment_lengths": {
+                "1": 6,
+                "4": 2
+              },
+              "games_with_fragment": 8,
+              "completed_four_step_fragments": 2,
+              "fragment_actions": 14,
+              "seconds": 4.154380500025582
+            },
+            {
+              "id": 2,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 8
+              },
+              "terminal_means": {
+                "score": 10115.5,
+                "utility": 0.939208984375,
+                "steps": 632.25,
+                "max_rank": 9.5
+              },
+              "selected_options": {
+                "SPACE_1": 1,
+                "SNAKE_1": 2,
+                "H2": 4,
+                "SPACE_4": 1
+              },
+              "duration_budgets": {
+                "1": 3,
+                "0": 4,
+                "4": 1
+              },
+              "actual_fragment_lengths": {
+                "1": 3,
+                "0": 4,
+                "4": 1
+              },
+              "games_with_fragment": 4,
+              "completed_four_step_fragments": 1,
+              "fragment_actions": 7,
+              "seconds": 4.779849635029677
+            }
+          ]
+        }
+      },
+      "paired_histories": {
+        "pairs": 48,
+        "identical_to_h2": 18
+      },
+      "cumulative_cost_attribution": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "evaluation_seconds": 8.035249623120762,
+            "inherited_construction_seconds": 511.1321202419931,
+            "base_load_seconds": 0.0019049959955736995,
+            "total_seconds": 519.1692748611094
+          },
+          {
+            "id": 1,
+            "evaluation_seconds": 8.107703999034129,
+            "inherited_construction_seconds": 502.17266253201524,
+            "base_load_seconds": 0.001675089995842427,
+            "total_seconds": 510.2820416210452
+          },
+          {
+            "id": 2,
+            "evaluation_seconds": 8.3000367921195,
+            "inherited_construction_seconds": 508.3586014659959,
+            "base_load_seconds": 0.0018890940118581057,
+            "total_seconds": 516.6605273521272
+          }
+        ],
+        "totals": {
+          "inherited_construction_seconds": 1521.6633842400042,
+          "base_load_seconds": 0.005469180003274232,
+          "evaluation_seconds": 24.44299041427439,
+          "total_seconds": 1546.111843834282
+        }
+      }
+    },
+    "COVERAGE": {
+      "queries": {
+        "reward": {
+          "pooled": {
+            "games": 24,
+            "terminal_games": 24,
+            "status_counts": {
+              "LOST": 24
+            },
+            "terminal_means": {
+              "score": 9169.666666666666,
+              "utility": 4.477376302083333,
+              "steps": 583.625,
+              "max_rank": 9.291666666666666
+            },
+            "selected_options": {
+              "SPACE_1": 10,
+              "SNAKE_4": 3,
+              "SPACE_4": 8,
+              "SNAKE_1": 1,
+              "H2": 2
+            },
+            "duration_budgets": {
+              "1": 11,
+              "4": 11,
+              "0": 2
+            },
+            "actual_fragment_lengths": {
+              "1": 11,
+              "4": 11,
+              "0": 2
+            },
+            "games_with_fragment": 22,
+            "completed_four_step_fragments": 11,
+            "fragment_actions": 55,
+            "seconds": 12.373287091089878
+          },
+          "lifecycles": [
+            {
+              "id": 0,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 8
+              },
+              "terminal_means": {
+                "score": 9696.5,
+                "utility": 4.734619140625,
+                "steps": 605.375,
+                "max_rank": 9.375
+              },
+              "selected_options": {
+                "SPACE_1": 4,
+                "SNAKE_4": 2,
+                "SPACE_4": 2
+              },
+              "duration_budgets": {
+                "1": 4,
+                "4": 4
+              },
+              "actual_fragment_lengths": {
+                "1": 4,
+                "4": 4
+              },
+              "games_with_fragment": 8,
+              "completed_four_step_fragments": 4,
+              "fragment_actions": 20,
+              "seconds": 4.065053867991082
+            },
+            {
+              "id": 1,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 8
+              },
+              "terminal_means": {
+                "score": 9500.0,
+                "utility": 4.638671875,
+                "steps": 602.0,
+                "max_rank": 9.375
+              },
+              "selected_options": {
+                "SPACE_1": 4,
+                "SPACE_4": 3,
+                "SNAKE_1": 1
+              },
+              "duration_budgets": {
+                "1": 5,
+                "4": 3
+              },
+              "actual_fragment_lengths": {
+                "1": 5,
+                "4": 3
+              },
+              "games_with_fragment": 8,
+              "completed_four_step_fragments": 3,
+              "fragment_actions": 17,
+              "seconds": 4.252225389063824
+            },
+            {
+              "id": 2,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 8
+              },
+              "terminal_means": {
+                "score": 8312.5,
+                "utility": 4.058837890625,
+                "steps": 543.5,
+                "max_rank": 9.125
+              },
+              "selected_options": {
+                "H2": 2,
+                "SPACE_1": 2,
+                "SPACE_4": 3,
+                "SNAKE_4": 1
+              },
+              "duration_budgets": {
+                "0": 2,
+                "1": 2,
+                "4": 4
+              },
+              "actual_fragment_lengths": {
+                "0": 2,
+                "1": 2,
+                "4": 4
+              },
+              "games_with_fragment": 6,
+              "completed_four_step_fragments": 4,
+              "fragment_actions": 18,
+              "seconds": 4.056007834034972
+            }
+          ]
+        },
+        "risk_goal": {
+          "pooled": {
+            "games": 24,
+            "terminal_games": 24,
+            "status_counts": {
+              "LOST": 24
+            },
+            "terminal_means": {
+              "score": 8302.5,
+              "utility": 0.053955078125,
+              "steps": 542.0833333333334,
+              "max_rank": 9.25
+            },
+            "selected_options": {
+              "H2": 8,
+              "SNAKE_1": 3,
+              "SNAKE_4": 3,
+              "SPACE_4": 9,
+              "SPACE_1": 1
+            },
+            "duration_budgets": {
+              "0": 8,
+              "1": 4,
+              "4": 12
+            },
+            "actual_fragment_lengths": {
+              "0": 8,
+              "1": 4,
+              "4": 12
+            },
+            "games_with_fragment": 16,
+            "completed_four_step_fragments": 12,
+            "fragment_actions": 52,
+            "seconds": 11.523180862015579
+          },
+          "lifecycles": [
+            {
+              "id": 0,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 8
+              },
+              "terminal_means": {
+                "score": 7741.0,
+                "utility": -0.22021484375,
+                "steps": 522.125,
+                "max_rank": 9.125
+              },
+              "selected_options": {
+                "H2": 5,
+                "SNAKE_1": 2,
+                "SNAKE_4": 1
+              },
+              "duration_budgets": {
+                "0": 5,
+                "1": 2,
+                "4": 1
+              },
+              "actual_fragment_lengths": {
+                "0": 5,
+                "1": 2,
+                "4": 1
+              },
+              "games_with_fragment": 3,
+              "completed_four_step_fragments": 1,
+              "fragment_actions": 6,
+              "seconds": 3.747487769986037
+            },
+            {
+              "id": 1,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 8
+              },
+              "terminal_means": {
+                "score": 8202.0,
+                "utility": 0.0048828125,
+                "steps": 541.25,
+                "max_rank": 9.25
+              },
+              "selected_options": {
+                "SPACE_4": 7,
+                "SNAKE_1": 1
+              },
+              "duration_budgets": {
+                "4": 7,
+                "1": 1
+              },
+              "actual_fragment_lengths": {
+                "4": 7,
+                "1": 1
+              },
+              "games_with_fragment": 8,
+              "completed_four_step_fragments": 7,
+              "fragment_actions": 29,
+              "seconds": 3.951449155982118
+            },
+            {
+              "id": 2,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 8
+              },
+              "terminal_means": {
+                "score": 8964.5,
+                "utility": 0.377197265625,
+                "steps": 562.875,
+                "max_rank": 9.375
+              },
+              "selected_options": {
+                "SNAKE_4": 2,
+                "SPACE_4": 2,
+                "H2": 3,
+                "SPACE_1": 1
+              },
+              "duration_budgets": {
+                "4": 4,
+                "0": 3,
+                "1": 1
+              },
+              "actual_fragment_lengths": {
+                "4": 4,
+                "0": 3,
+                "1": 1
+              },
+              "games_with_fragment": 5,
+              "completed_four_step_fragments": 4,
+              "fragment_actions": 17,
+              "seconds": 3.8242439360474236
+            }
+          ]
+        }
+      },
+      "paired_histories": {
+        "pairs": 48,
+        "identical_to_h2": 20
+      },
+      "cumulative_cost_attribution": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "evaluation_seconds": 8.107320629176684,
+            "inherited_construction_seconds": 511.1321202419931,
+            "base_load_seconds": 0.0019049959955736995,
+            "new_construction_seconds": 213.67732110701036,
+            "total_seconds": 732.9186669741757
+          },
+          {
+            "id": 1,
+            "evaluation_seconds": 8.504012905061245,
+            "inherited_construction_seconds": 502.17266253201524,
+            "base_load_seconds": 0.001675089995842427,
+            "new_construction_seconds": 210.57378864311613,
+            "total_seconds": 721.2521391701885
+          },
+          {
+            "id": 2,
+            "evaluation_seconds": 8.163665042025968,
+            "inherited_construction_seconds": 508.3586014659959,
+            "base_load_seconds": 0.0018890940118581057,
+            "new_construction_seconds": 216.33187206904404,
+            "total_seconds": 732.8560276710778
+          }
+        ],
+        "totals": {
+          "new_construction_seconds": 640.5829818191705,
+          "evaluation_seconds": 24.774998576263897,
+          "base_load_seconds": 0.005469180003274232,
+          "total_seconds": 2187.026833815442,
+          "inherited_construction_seconds": 1521.6633842400042
+        }
+      }
+    },
+    "REPEAT": {
+      "queries": {
+        "reward": {
+          "pooled": {
+            "games": 24,
+            "terminal_games": 24,
+            "status_counts": {
+              "LOST": 24
+            },
+            "terminal_means": {
+              "score": 9357.333333333334,
+              "utility": 4.569010416666667,
+              "steps": 590.7083333333334,
+              "max_rank": 9.375
+            },
+            "selected_options": {
+              "SPACE_4": 5,
+              "SPACE_1": 7,
+              "SNAKE_1": 7,
+              "SNAKE_4": 4,
+              "H2": 1
+            },
+            "duration_budgets": {
+              "4": 9,
+              "1": 14,
+              "0": 1
+            },
+            "actual_fragment_lengths": {
+              "4": 9,
+              "1": 14,
+              "0": 1
+            },
+            "games_with_fragment": 23,
+            "completed_four_step_fragments": 9,
+            "fragment_actions": 50,
+            "seconds": 12.341611818876117
+          },
+          "lifecycles": [
+            {
+              "id": 0,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 8
+              },
+              "terminal_means": {
+                "score": 10200.5,
+                "utility": 4.980712890625,
+                "steps": 625.375,
+                "max_rank": 9.625
+              },
+              "selected_options": {
+                "SPACE_4": 2,
+                "SPACE_1": 5,
+                "SNAKE_1": 1
+              },
+              "duration_budgets": {
+                "4": 2,
+                "1": 6
+              },
+              "actual_fragment_lengths": {
+                "4": 2,
+                "1": 6
+              },
+              "games_with_fragment": 8,
+              "completed_four_step_fragments": 2,
+              "fragment_actions": 14,
+              "seconds": 4.42386073799571
+            },
+            {
+              "id": 1,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 8
+              },
+              "terminal_means": {
+                "score": 7902.0,
+                "utility": 3.8583984375,
+                "steps": 521.625,
+                "max_rank": 9.125
+              },
+              "selected_options": {
+                "SNAKE_4": 4,
+                "SPACE_1": 1,
+                "SNAKE_1": 2,
+                "SPACE_4": 1
+              },
+              "duration_budgets": {
+                "4": 5,
+                "1": 3
+              },
+              "actual_fragment_lengths": {
+                "4": 5,
+                "1": 3
+              },
+              "games_with_fragment": 8,
+              "completed_four_step_fragments": 5,
+              "fragment_actions": 23,
+              "seconds": 3.6003567940206267
+            },
+            {
+              "id": 2,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 8
+              },
+              "terminal_means": {
+                "score": 9969.5,
+                "utility": 4.867919921875,
+                "steps": 625.125,
+                "max_rank": 9.375
+              },
+              "selected_options": {
+                "H2": 1,
+                "SPACE_4": 2,
+                "SNAKE_1": 4,
+                "SPACE_1": 1
+              },
+              "duration_budgets": {
+                "0": 1,
+                "4": 2,
+                "1": 5
+              },
+              "actual_fragment_lengths": {
+                "0": 1,
+                "4": 2,
+                "1": 5
+              },
+              "games_with_fragment": 7,
+              "completed_four_step_fragments": 2,
+              "fragment_actions": 13,
+              "seconds": 4.3173942868597806
+            }
+          ]
+        },
+        "risk_goal": {
+          "pooled": {
+            "games": 24,
+            "terminal_games": 24,
+            "status_counts": {
+              "LOST": 23,
+              "WON": 1
+            },
+            "terminal_means": {
+              "score": 9177.0,
+              "utility": 0.8142903645833334,
+              "steps": 579.0833333333334,
+              "max_rank": 9.291666666666666
+            },
+            "selected_options": {
+              "H2": 6,
+              "SNAKE_1": 12,
+              "SPACE_1": 1,
+              "SPACE_4": 5
+            },
+            "duration_budgets": {
+              "0": 6,
+              "1": 13,
+              "4": 5
+            },
+            "actual_fragment_lengths": {
+              "0": 6,
+              "1": 13,
+              "4": 5
+            },
+            "games_with_fragment": 18,
+            "completed_four_step_fragments": 5,
+            "fragment_actions": 33,
+            "seconds": 13.131547501136083
+          },
+          "lifecycles": [
+            {
+              "id": 0,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 8
+              },
+              "terminal_means": {
+                "score": 8573.5,
+                "utility": 0.186279296875,
+                "steps": 564.25,
+                "max_rank": 9.25
+              },
+              "selected_options": {
+                "H2": 5,
+                "SNAKE_1": 3
+              },
+              "duration_budgets": {
+                "0": 5,
+                "1": 3
+              },
+              "actual_fragment_lengths": {
+                "0": 5,
+                "1": 3
+              },
+              "games_with_fragment": 3,
+              "completed_four_step_fragments": 0,
+              "fragment_actions": 3,
+              "seconds": 4.3406565599143505
+            },
+            {
+              "id": 1,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 7,
+                "WON": 1
+              },
+              "terminal_means": {
+                "score": 10174.0,
+                "utility": 1.9677734375,
+                "steps": 611.75,
+                "max_rank": 9.5
+              },
+              "selected_options": {
+                "SNAKE_1": 7,
+                "SPACE_1": 1
+              },
+              "duration_budgets": {
+                "1": 8
+              },
+              "actual_fragment_lengths": {
+                "1": 8
+              },
+              "games_with_fragment": 8,
+              "completed_four_step_fragments": 0,
+              "fragment_actions": 8,
+              "seconds": 4.348488087183796
+            },
+            {
+              "id": 2,
+              "games": 8,
+              "terminal_games": 8,
+              "status_counts": {
+                "LOST": 8
+              },
+              "terminal_means": {
+                "score": 8783.5,
+                "utility": 0.288818359375,
+                "steps": 561.25,
+                "max_rank": 9.125
+              },
+              "selected_options": {
+                "SNAKE_1": 2,
+                "SPACE_4": 5,
+                "H2": 1
+              },
+              "duration_budgets": {
+                "1": 2,
+                "4": 5,
+                "0": 1
+              },
+              "actual_fragment_lengths": {
+                "1": 2,
+                "4": 5,
+                "0": 1
+              },
+              "games_with_fragment": 7,
+              "completed_four_step_fragments": 5,
+              "fragment_actions": 22,
+              "seconds": 4.442402854037937
+            }
+          ]
+        }
+      },
+      "paired_histories": {
+        "pairs": 48,
+        "identical_to_h2": 16
+      },
+      "cumulative_cost_attribution": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "evaluation_seconds": 9.066718806920107,
+            "inherited_construction_seconds": 511.1321202419931,
+            "base_load_seconds": 0.0019049959955736995,
+            "new_construction_seconds": 213.15001587505685,
+            "total_seconds": 733.3507599199656
+          },
+          {
+            "id": 1,
+            "evaluation_seconds": 8.245897270098794,
+            "inherited_construction_seconds": 502.17266253201524,
+            "base_load_seconds": 0.001675089995842427,
+            "new_construction_seconds": 215.0663627089234,
+            "total_seconds": 725.4865976010333
+          },
+          {
+            "id": 2,
+            "evaluation_seconds": 9.064347962208558,
+            "inherited_construction_seconds": 508.3586014659959,
+            "base_load_seconds": 0.0018890940118581057,
+            "new_construction_seconds": 214.6029987130314,
+            "total_seconds": 732.0278372352477
+          }
+        ],
+        "totals": {
+          "new_construction_seconds": 642.8193772970117,
+          "evaluation_seconds": 26.37696403922746,
+          "base_load_seconds": 0.005469180003274232,
+          "total_seconds": 2190.8651947562466,
+          "inherited_construction_seconds": 1521.6633842400042
+        }
+      }
+    }
+  },
+  "final_comparisons": {
+    "COVERAGE_minus_REPEAT": {
+      "reward": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": -504.0,
+            "mean_utility_delta": -0.24609375
+          },
+          {
+            "id": 1,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": 1598.0,
+            "mean_utility_delta": 0.7802734375
+          },
+          {
+            "id": 2,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": -1657.0,
+            "mean_utility_delta": -0.80908203125
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": -187.66666666666666,
+        "mean_utility_delta": -0.09163411458333333,
+        "positive_lifecycles": 1,
+        "negative_lifecycles": 2
+      },
+      "risk_goal": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": -832.5,
+            "mean_utility_delta": -0.406494140625
+          },
+          {
+            "id": 1,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": -1972.0,
+            "mean_utility_delta": -1.962890625
+          },
+          {
+            "id": 2,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": 181.0,
+            "mean_utility_delta": 0.08837890625
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": -874.5,
+        "mean_utility_delta": -0.7603352864583334,
+        "positive_lifecycles": 1,
+        "negative_lifecycles": 2
+      }
+    },
+    "COVERAGE_minus_FROZEN_V85": {
+      "reward": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": 140.0,
+            "mean_utility_delta": 0.068359375
+          },
+          {
+            "id": 1,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": 1347.5,
+            "mean_utility_delta": 0.657958984375
+          },
+          {
+            "id": 2,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": 1522.0,
+            "mean_utility_delta": 0.7431640625
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": 1003.1666666666666,
+        "mean_utility_delta": 0.4898274739583333,
+        "positive_lifecycles": 3,
+        "negative_lifecycles": 0
+      },
+      "risk_goal": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 1,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": -1239.5,
+            "mean_utility_delta": -0.605224609375
+          },
+          {
+            "id": 2,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": -1151.0,
+            "mean_utility_delta": -0.56201171875
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": -796.8333333333334,
+        "mean_utility_delta": -0.3890787760416667,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 2
+      }
+    },
+    "COVERAGE_minus_H2_ONLY": {
+      "reward": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": 1395.0,
+            "mean_utility_delta": 0.68115234375
+          },
+          {
+            "id": 1,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": 69.0,
+            "mean_utility_delta": 0.03369140625
+          },
+          {
+            "id": 2,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": -2569.5,
+            "mean_utility_delta": -1.254638671875
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": -368.5,
+        "mean_utility_delta": -0.179931640625,
+        "positive_lifecycles": 2,
+        "negative_lifecycles": 1
+      },
+      "risk_goal": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": -2078.0,
+            "mean_utility_delta": -1.0146484375
+          },
+          {
+            "id": 1,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": -2038.0,
+            "mean_utility_delta": -1.9951171875
+          },
+          {
+            "id": 2,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": -2290.5,
+            "mean_utility_delta": -1.118408203125
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": -2135.5,
+        "mean_utility_delta": -1.3760579427083333,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 3
+      }
+    },
+    "REPEAT_minus_FROZEN_V85": {
+      "reward": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": 644.0,
+            "mean_utility_delta": 0.314453125
+          },
+          {
+            "id": 1,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": -250.5,
+            "mean_utility_delta": -0.122314453125
+          },
+          {
+            "id": 2,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": 3179.0,
+            "mean_utility_delta": 1.55224609375
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": 1190.8333333333333,
+        "mean_utility_delta": 0.5814615885416666,
+        "positive_lifecycles": 2,
+        "negative_lifecycles": 1
+      },
+      "risk_goal": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": 832.5,
+            "mean_utility_delta": 0.406494140625
+          },
+          {
+            "id": 1,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": 732.5,
+            "mean_utility_delta": 1.357666015625
+          },
+          {
+            "id": 2,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": -1332.0,
+            "mean_utility_delta": -0.650390625
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": 77.66666666666667,
+        "mean_utility_delta": 0.3712565104166667,
+        "positive_lifecycles": 2,
+        "negative_lifecycles": 1
+      }
+    },
+    "REPEAT_minus_H2_ONLY": {
+      "reward": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": 1899.0,
+            "mean_utility_delta": 0.92724609375
+          },
+          {
+            "id": 1,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": -1529.0,
+            "mean_utility_delta": -0.74658203125
+          },
+          {
+            "id": 2,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": -912.5,
+            "mean_utility_delta": -0.445556640625
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": -180.83333333333334,
+        "mean_utility_delta": -0.08829752604166667,
+        "positive_lifecycles": 1,
+        "negative_lifecycles": 2
+      },
+      "risk_goal": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": -1245.5,
+            "mean_utility_delta": -0.608154296875
+          },
+          {
+            "id": 1,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": -66.0,
+            "mean_utility_delta": -0.0322265625
+          },
+          {
+            "id": 2,
+            "pairs": 8,
+            "estimable": true,
+            "mean_score_delta": -2471.5,
+            "mean_utility_delta": -1.206787109375
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": -1261.0,
+        "mean_utility_delta": -0.61572265625,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 3
+      }
+    }
+  },
+  "allocation": {
+    "queries": [
+      {
+        "id": 0,
+        "arm": "COVERAGE",
+        "query": "reward",
+        "actual_transitions": 120000,
+        "actual_budget_matched": true,
+        "budget": 120000,
+        "used_transitions": 120000,
+        "source_work": {
+          "environment_random_draws": 6828,
+          "initial_spawns": 14,
+          "ground_state_status_calls": 3407,
+          "ground_status_internal_swipe_calls": 13628,
+          "ground_swipe_calls": 17028,
+          "ground_explicit_swipe_calls": 3400,
+          "sampled_transitions": 3400
+        },
+        "branch_work": {
+          "ground_state_status_calls": 116846,
+          "ground_status_internal_swipe_calls": 467364,
+          "ground_swipe_calls": 583964,
+          "ground_explicit_swipe_calls": 116600,
+          "environment_random_draws": 233200,
+          "sampled_transitions": 116600
+        },
+        "planning_counts": {
+          "learned_terminal_checks": 240000,
+          "learned_swipe_calls": 960000,
+          "learned_line_rewrites": 3840000,
+          "controller_active_decisions": 120000,
+          "h2_active_actions": 119510,
+          "legal_swipes": 3285557,
+          "model_uniform_draws": 480000,
+          "model_spawn_samples": 835216,
+          "h2_cutoff_contracts": 835216,
+          "h2_contract_compiled_programs": 119510,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 835216,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 605087,
+          "h2_contract_effect_key_constructions": 2866123,
+          "h2_contract_effect_cache_lookups": 2866123,
+          "h2_contract_effect_cache_hits": 588380,
+          "h2_contract_effect_cache_entries": 2277743,
+          "h2_contract_effect_score_aggregations": 2277743,
+          "h2_contract_effect_output_line_references": 11464492,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 2866123,
+          "h2_contract_direct_observation_evaluations": 835216,
+          "h2_contract_prepare_calls": 835216,
+          "h2_contract_line_lookups": 13363456,
+          "h2_contract_line_evaluations": 6845050,
+          "h2_contract_line_summary_adjacent_tests": 20256081,
+          "h2_contract_line_cache_hits": 6518406,
+          "h2_contract_context_contract_evaluations": 835216,
+          "h2_contract_predicate_calls": 835216,
+          "h2_contract_candidate_action_changed_tests": 3340864,
+          "h2_contract_candidate_action_predicate_evaluations": 2277743,
+          "h2_contract_terminal_predicate_evaluations": 2277743,
+          "h2_contract_terminal_spawn_rank_classifications": 4555486,
+          "h2_contract_predicate_materializations": 835216,
+          "h2_contract_contract_cache_lookups": 835216,
+          "h2_contract_contract_fraction_accumulations": 4095654,
+          "h2_contract_terminal_probability_combinations": 4095654,
+          "h2_contract_contract_cache_hits": 230129,
+          "h2_contract_base_adjacent_tests": 652805,
+          "h2_contract_base_hole_neighbor_reads": 23372,
+          "h2_contract_cross_line_adjacent_tests": 383908,
+          "h2_contract_hole_neighbor_rank_reads": 48287,
+          "fragment_selections": 246,
+          "fragments_initiated": 196,
+          "dummy_model_uniform_draws": 1960,
+          "fragment_active_actions": 490
+        },
+        "outcomes": {
+          "LOST": 247,
+          "WON": 5,
+          "CUTOFF": 1
+        },
+        "source_games": 7,
+        "branch_trajectories": 246,
+        "completed_blocks": 6,
+        "incomplete_blocks": 1,
+        "training_roots_added": 6,
+        "seconds": 103.72514415899059,
+        "training_replica_counts": {
+          "0": 8,
+          "1": 8,
+          "2": 8,
+          "3": 8,
+          "5": 8,
+          "6": 8,
+          "7": 8,
+          "8": 8,
+          "10": 8,
+          "11": 8,
+          "100": 8,
+          "101": 8,
+          "102": 8,
+          "103": 8,
+          "105": 8,
+          "106": 8
+        }
+      },
+      {
+        "id": 0,
+        "arm": "COVERAGE",
+        "query": "risk_goal",
+        "actual_transitions": 120000,
+        "actual_budget_matched": true,
+        "budget": 120000,
+        "used_transitions": 120000,
+        "source_work": {
+          "environment_random_draws": 8148,
+          "initial_spawns": 12,
+          "ground_state_status_calls": 4068,
+          "ground_status_internal_swipe_calls": 16272,
+          "ground_swipe_calls": 20334,
+          "ground_explicit_swipe_calls": 4062,
+          "sampled_transitions": 4062
+        },
+        "branch_work": {
+          "ground_state_status_calls": 116146,
+          "ground_status_internal_swipe_calls": 464580,
+          "ground_swipe_calls": 580518,
+          "ground_explicit_swipe_calls": 115938,
+          "environment_random_draws": 231876,
+          "sampled_transitions": 115938
+        },
+        "planning_counts": {
+          "learned_terminal_checks": 240000,
+          "learned_swipe_calls": 960000,
+          "learned_line_rewrites": 3840000,
+          "controller_active_decisions": 120000,
+          "h2_active_actions": 119588,
+          "legal_swipes": 3262935,
+          "model_uniform_draws": 480000,
+          "model_spawn_samples": 832392,
+          "h2_cutoff_contracts": 832392,
+          "h2_contract_compiled_programs": 119588,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 832392,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 603541,
+          "h2_contract_effect_key_constructions": 2845279,
+          "h2_contract_effect_cache_lookups": 2845279,
+          "h2_contract_effect_cache_hits": 584849,
+          "h2_contract_effect_cache_entries": 2260430,
+          "h2_contract_effect_score_aggregations": 2260430,
+          "h2_contract_effect_output_line_references": 11381116,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 2845279,
+          "h2_contract_direct_observation_evaluations": 832392,
+          "h2_contract_prepare_calls": 832392,
+          "h2_contract_line_lookups": 13318272,
+          "h2_contract_line_evaluations": 6841341,
+          "h2_contract_line_summary_adjacent_tests": 20246631,
+          "h2_contract_line_cache_hits": 6476931,
+          "h2_contract_context_contract_evaluations": 832392,
+          "h2_contract_predicate_calls": 832392,
+          "h2_contract_candidate_action_changed_tests": 3329568,
+          "h2_contract_candidate_action_predicate_evaluations": 2260430,
+          "h2_contract_terminal_predicate_evaluations": 2260430,
+          "h2_contract_terminal_spawn_rank_classifications": 4520860,
+          "h2_contract_predicate_materializations": 832392,
+          "h2_contract_contract_cache_lookups": 832392,
+          "h2_contract_contract_fraction_accumulations": 4071054,
+          "h2_contract_terminal_probability_combinations": 4071054,
+          "h2_contract_contract_cache_hits": 228851,
+          "h2_contract_base_adjacent_tests": 747931,
+          "h2_contract_cross_line_adjacent_tests": 455534,
+          "h2_contract_hole_neighbor_rank_reads": 56807,
+          "h2_contract_base_hole_neighbor_reads": 26210,
+          "fragment_selections": 208,
+          "fragments_initiated": 166,
+          "dummy_model_uniform_draws": 1648,
+          "fragment_active_actions": 412
+        },
+        "outcomes": {
+          "LOST": 212,
+          "WON": 1,
+          "CUTOFF": 1
+        },
+        "source_games": 6,
+        "branch_trajectories": 208,
+        "completed_blocks": 5,
+        "incomplete_blocks": 1,
+        "training_roots_added": 5,
+        "seconds": 109.32327358500334,
+        "training_replica_counts": {
+          "0": 8,
+          "1": 8,
+          "2": 8,
+          "3": 8,
+          "5": 8,
+          "6": 8,
+          "7": 8,
+          "8": 8,
+          "10": 8,
+          "11": 8,
+          "100": 8,
+          "101": 8,
+          "102": 8,
+          "103": 8,
+          "105": 8
+        }
+      },
+      {
+        "id": 0,
+        "arm": "REPEAT",
+        "query": "reward",
+        "actual_transitions": 120000,
+        "actual_budget_matched": true,
+        "budget": 120000,
+        "used_transitions": 120000,
+        "source_work": {},
+        "branch_work": {
+          "ground_state_status_calls": 120249,
+          "ground_status_internal_swipe_calls": 480996,
+          "ground_swipe_calls": 600996,
+          "ground_explicit_swipe_calls": 120000,
+          "environment_random_draws": 240000,
+          "sampled_transitions": 120000
+        },
+        "planning_counts": {
+          "learned_terminal_checks": 240000,
+          "learned_swipe_calls": 960000,
+          "learned_line_rewrites": 3840000,
+          "controller_active_decisions": 120000,
+          "fragment_selections": 249,
+          "fragments_initiated": 199,
+          "h2_active_actions": 119504,
+          "legal_swipes": 3283702,
+          "model_uniform_draws": 480000,
+          "model_spawn_samples": 834578,
+          "h2_cutoff_contracts": 834578,
+          "h2_contract_compiled_programs": 119504,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 834578,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 604410,
+          "h2_contract_effect_key_constructions": 2864596,
+          "h2_contract_effect_cache_lookups": 2864596,
+          "h2_contract_effect_cache_hits": 587107,
+          "h2_contract_effect_cache_entries": 2277489,
+          "h2_contract_effect_score_aggregations": 2277489,
+          "h2_contract_effect_output_line_references": 11458384,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 2864596,
+          "h2_contract_direct_observation_evaluations": 834578,
+          "h2_contract_prepare_calls": 834578,
+          "h2_contract_line_lookups": 13353248,
+          "h2_contract_line_evaluations": 6845082,
+          "h2_contract_line_summary_adjacent_tests": 20261077,
+          "h2_contract_context_contract_evaluations": 834578,
+          "h2_contract_predicate_calls": 834578,
+          "h2_contract_candidate_action_changed_tests": 3338312,
+          "h2_contract_candidate_action_predicate_evaluations": 2277489,
+          "h2_contract_terminal_predicate_evaluations": 2277489,
+          "h2_contract_terminal_spawn_rank_classifications": 4554978,
+          "h2_contract_predicate_materializations": 834578,
+          "h2_contract_contract_cache_lookups": 834578,
+          "h2_contract_contract_fraction_accumulations": 4090436,
+          "h2_contract_terminal_probability_combinations": 4090436,
+          "h2_contract_line_cache_hits": 6508166,
+          "h2_contract_contract_cache_hits": 230168,
+          "h2_contract_base_adjacent_tests": 626773,
+          "h2_contract_cross_line_adjacent_tests": 365092,
+          "h2_contract_hole_neighbor_rank_reads": 45542,
+          "h2_contract_base_hole_neighbor_reads": 22276,
+          "dummy_model_uniform_draws": 1984,
+          "fragment_active_actions": 496
+        },
+        "outcomes": {
+          "LOST": 248,
+          "CUTOFF": 1
+        },
+        "source_games": 0,
+        "branch_trajectories": 249,
+        "completed_blocks": 6,
+        "incomplete_blocks": 1,
+        "training_roots_added": 0,
+        "seconds": 108.88807640597224,
+        "training_replica_counts": {
+          "0": 16,
+          "1": 16,
+          "2": 16,
+          "3": 16,
+          "5": 16,
+          "6": 16,
+          "7": 8,
+          "8": 8,
+          "10": 8,
+          "11": 8
+        }
+      },
+      {
+        "id": 0,
+        "arm": "REPEAT",
+        "query": "risk_goal",
+        "actual_transitions": 120000,
+        "actual_budget_matched": true,
+        "budget": 120000,
+        "used_transitions": 120000,
+        "source_work": {},
+        "branch_work": {
+          "ground_state_status_calls": 120225,
+          "ground_status_internal_swipe_calls": 480892,
+          "ground_swipe_calls": 600892,
+          "ground_explicit_swipe_calls": 120000,
+          "environment_random_draws": 240000,
+          "sampled_transitions": 120000
+        },
+        "planning_counts": {
+          "learned_terminal_checks": 240000,
+          "learned_swipe_calls": 960000,
+          "learned_line_rewrites": 3840000,
+          "controller_active_decisions": 120000,
+          "fragment_selections": 225,
+          "fragments_initiated": 180,
+          "h2_active_actions": 119550,
+          "legal_swipes": 3268489,
+          "model_uniform_draws": 480000,
+          "model_spawn_samples": 833068,
+          "h2_cutoff_contracts": 833068,
+          "h2_contract_compiled_programs": 119550,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 833068,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 605154,
+          "h2_contract_effect_key_constructions": 2850326,
+          "h2_contract_effect_cache_lookups": 2850326,
+          "h2_contract_effect_cache_hits": 580546,
+          "h2_contract_effect_cache_entries": 2269780,
+          "h2_contract_effect_score_aggregations": 2269780,
+          "h2_contract_effect_output_line_references": 11401304,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 2850326,
+          "h2_contract_direct_observation_evaluations": 833068,
+          "h2_contract_prepare_calls": 833068,
+          "h2_contract_line_lookups": 13329088,
+          "h2_contract_line_evaluations": 6849391,
+          "h2_contract_line_summary_adjacent_tests": 20271784,
+          "h2_contract_context_contract_evaluations": 833068,
+          "h2_contract_predicate_calls": 833068,
+          "h2_contract_candidate_action_changed_tests": 3332272,
+          "h2_contract_candidate_action_predicate_evaluations": 2269780,
+          "h2_contract_terminal_predicate_evaluations": 2269780,
+          "h2_contract_terminal_spawn_rank_classifications": 4539560,
+          "h2_contract_predicate_materializations": 833068,
+          "h2_contract_contract_cache_lookups": 833068,
+          "h2_contract_contract_fraction_accumulations": 4086182,
+          "h2_contract_terminal_probability_combinations": 4086182,
+          "h2_contract_line_cache_hits": 6479697,
+          "h2_contract_contract_cache_hits": 227914,
+          "h2_contract_base_adjacent_tests": 749895,
+          "h2_contract_cross_line_adjacent_tests": 449110,
+          "h2_contract_hole_neighbor_rank_reads": 55857,
+          "h2_contract_base_hole_neighbor_reads": 25920,
+          "dummy_model_uniform_draws": 1800,
+          "fragment_active_actions": 450
+        },
+        "outcomes": {
+          "LOST": 222,
+          "WON": 2,
+          "CUTOFF": 1
+        },
+        "source_games": 0,
+        "branch_trajectories": 225,
+        "completed_blocks": 5,
+        "incomplete_blocks": 1,
+        "training_roots_added": 0,
+        "seconds": 104.25482675200328,
+        "training_replica_counts": {
+          "0": 8,
+          "1": 16,
+          "2": 16,
+          "3": 16,
+          "5": 16,
+          "6": 16,
+          "7": 8,
+          "8": 8,
+          "10": 8,
+          "11": 8
+        }
+      },
+      {
+        "id": 1,
+        "arm": "COVERAGE",
+        "query": "reward",
+        "actual_transitions": 120000,
+        "actual_budget_matched": true,
+        "budget": 120000,
+        "used_transitions": 120000,
+        "source_work": {
+          "environment_random_draws": 7074,
+          "initial_spawns": 12,
+          "ground_state_status_calls": 3531,
+          "ground_status_internal_swipe_calls": 14124,
+          "ground_swipe_calls": 17649,
+          "ground_explicit_swipe_calls": 3525,
+          "sampled_transitions": 3525
+        },
+        "branch_work": {
+          "ground_state_status_calls": 116698,
+          "ground_status_internal_swipe_calls": 466784,
+          "ground_swipe_calls": 583259,
+          "ground_explicit_swipe_calls": 116475,
+          "environment_random_draws": 232950,
+          "sampled_transitions": 116475
+        },
+        "planning_counts": {
+          "learned_terminal_checks": 240000,
+          "learned_swipe_calls": 960000,
+          "learned_line_rewrites": 3840000,
+          "controller_active_decisions": 120000,
+          "h2_active_actions": 119558,
+          "legal_swipes": 3273828,
+          "model_uniform_draws": 480000,
+          "model_spawn_samples": 833430,
+          "h2_cutoff_contracts": 833430,
+          "h2_contract_compiled_programs": 119558,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 833430,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 605124,
+          "h2_contract_effect_key_constructions": 2855496,
+          "h2_contract_effect_cache_lookups": 2855496,
+          "h2_contract_effect_cache_hits": 583930,
+          "h2_contract_effect_cache_entries": 2271566,
+          "h2_contract_effect_score_aggregations": 2271566,
+          "h2_contract_effect_output_line_references": 11421984,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 2855496,
+          "h2_contract_direct_observation_evaluations": 833430,
+          "h2_contract_prepare_calls": 833430,
+          "h2_contract_line_lookups": 13334880,
+          "h2_contract_line_evaluations": 6852743,
+          "h2_contract_line_summary_adjacent_tests": 20284103,
+          "h2_contract_line_cache_hits": 6482137,
+          "h2_contract_context_contract_evaluations": 833430,
+          "h2_contract_predicate_calls": 833430,
+          "h2_contract_candidate_action_changed_tests": 3333720,
+          "h2_contract_candidate_action_predicate_evaluations": 2271566,
+          "h2_contract_terminal_predicate_evaluations": 2271566,
+          "h2_contract_terminal_spawn_rank_classifications": 4543132,
+          "h2_contract_predicate_materializations": 833430,
+          "h2_contract_contract_cache_lookups": 833430,
+          "h2_contract_contract_fraction_accumulations": 4090128,
+          "h2_contract_terminal_probability_combinations": 4090128,
+          "h2_contract_contract_cache_hits": 228306,
+          "h2_contract_base_adjacent_tests": 663925,
+          "h2_contract_cross_line_adjacent_tests": 398121,
+          "h2_contract_hole_neighbor_rank_reads": 49770,
+          "h2_contract_base_hole_neighbor_reads": 23958,
+          "fragment_selections": 223,
+          "fragments_initiated": 178,
+          "dummy_model_uniform_draws": 1768,
+          "fragment_active_actions": 442
+        },
+        "outcomes": {
+          "LOST": 226,
+          "WON": 2,
+          "CUTOFF": 1
+        },
+        "source_games": 6,
+        "branch_trajectories": 223,
+        "completed_blocks": 5,
+        "incomplete_blocks": 1,
+        "training_roots_added": 5,
+        "seconds": 107.1591200560215,
+        "training_replica_counts": {
+          "0": 8,
+          "1": 8,
+          "2": 8,
+          "3": 8,
+          "5": 8,
+          "6": 8,
+          "7": 8,
+          "8": 8,
+          "10": 8,
+          "11": 8,
+          "100": 8,
+          "101": 8,
+          "102": 8,
+          "103": 8,
+          "105": 8
+        }
+      },
+      {
+        "id": 1,
+        "arm": "COVERAGE",
+        "query": "risk_goal",
+        "actual_transitions": 120000,
+        "actual_budget_matched": true,
+        "budget": 120000,
+        "used_transitions": 120000,
+        "source_work": {
+          "environment_random_draws": 5912,
+          "initial_spawns": 12,
+          "ground_state_status_calls": 2950,
+          "ground_status_internal_swipe_calls": 11800,
+          "ground_swipe_calls": 14744,
+          "ground_explicit_swipe_calls": 2944,
+          "sampled_transitions": 2944
+        },
+        "branch_work": {
+          "ground_state_status_calls": 117274,
+          "ground_status_internal_swipe_calls": 469092,
+          "ground_swipe_calls": 586148,
+          "ground_explicit_swipe_calls": 117056,
+          "environment_random_draws": 234112,
+          "sampled_transitions": 117056
+        },
+        "planning_counts": {
+          "learned_terminal_checks": 240000,
+          "learned_swipe_calls": 960000,
+          "learned_line_rewrites": 3840000,
+          "controller_active_decisions": 120000,
+          "h2_active_actions": 119568,
+          "legal_swipes": 3282040,
+          "model_uniform_draws": 480000,
+          "model_spawn_samples": 834698,
+          "h2_cutoff_contracts": 834698,
+          "h2_contract_compiled_programs": 119568,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 834698,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 604758,
+          "h2_contract_effect_key_constructions": 2863083,
+          "h2_contract_effect_cache_lookups": 2863083,
+          "h2_contract_effect_cache_hits": 584653,
+          "h2_contract_effect_cache_entries": 2278430,
+          "h2_contract_effect_score_aggregations": 2278430,
+          "h2_contract_effect_output_line_references": 11452332,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 2863083,
+          "h2_contract_direct_observation_evaluations": 834698,
+          "h2_contract_prepare_calls": 834698,
+          "h2_contract_line_lookups": 13355168,
+          "h2_contract_line_evaluations": 6833437,
+          "h2_contract_line_summary_adjacent_tests": 20223424,
+          "h2_contract_line_cache_hits": 6521731,
+          "h2_contract_context_contract_evaluations": 834698,
+          "h2_contract_predicate_calls": 834698,
+          "h2_contract_candidate_action_changed_tests": 3338792,
+          "h2_contract_candidate_action_predicate_evaluations": 2278430,
+          "h2_contract_terminal_predicate_evaluations": 2278430,
+          "h2_contract_terminal_spawn_rank_classifications": 4556860,
+          "h2_contract_predicate_materializations": 834698,
+          "h2_contract_contract_cache_lookups": 834698,
+          "h2_contract_contract_fraction_accumulations": 4091788,
+          "h2_contract_terminal_probability_combinations": 4091788,
+          "h2_contract_contract_cache_hits": 229940,
+          "h2_contract_base_adjacent_tests": 684379,
+          "h2_contract_cross_line_adjacent_tests": 408750,
+          "h2_contract_base_hole_neighbor_reads": 23929,
+          "h2_contract_hole_neighbor_rank_reads": 51533,
+          "fragment_selections": 218,
+          "fragments_initiated": 174,
+          "dummy_model_uniform_draws": 1728,
+          "fragment_active_actions": 432
+        },
+        "outcomes": {
+          "LOST": 222,
+          "WON": 1,
+          "CUTOFF": 1
+        },
+        "source_games": 6,
+        "branch_trajectories": 218,
+        "completed_blocks": 5,
+        "incomplete_blocks": 1,
+        "training_roots_added": 5,
+        "seconds": 103.40559851599392,
+        "training_replica_counts": {
+          "0": 8,
+          "1": 8,
+          "2": 8,
+          "3": 8,
+          "5": 8,
+          "6": 8,
+          "7": 8,
+          "8": 8,
+          "10": 8,
+          "11": 8,
+          "100": 8,
+          "101": 8,
+          "102": 8,
+          "103": 8,
+          "105": 8
+        }
+      },
+      {
+        "id": 1,
+        "arm": "REPEAT",
+        "query": "reward",
+        "actual_transitions": 120000,
+        "actual_budget_matched": true,
+        "budget": 120000,
+        "used_transitions": 120000,
+        "source_work": {},
+        "branch_work": {
+          "ground_state_status_calls": 120249,
+          "ground_status_internal_swipe_calls": 480996,
+          "ground_swipe_calls": 600996,
+          "ground_explicit_swipe_calls": 120000,
+          "environment_random_draws": 240000,
+          "sampled_transitions": 120000
+        },
+        "planning_counts": {
+          "learned_terminal_checks": 240000,
+          "learned_swipe_calls": 960000,
+          "learned_line_rewrites": 3840000,
+          "controller_active_decisions": 120000,
+          "fragment_selections": 249,
+          "fragments_initiated": 199,
+          "h2_active_actions": 119504,
+          "legal_swipes": 3275765,
+          "model_uniform_draws": 480000,
+          "model_spawn_samples": 833386,
+          "h2_cutoff_contracts": 833386,
+          "h2_contract_compiled_programs": 119504,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 833386,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 606532,
+          "h2_contract_effect_key_constructions": 2857351,
+          "h2_contract_effect_cache_lookups": 2857351,
+          "h2_contract_effect_cache_hits": 581156,
+          "h2_contract_effect_cache_entries": 2276195,
+          "h2_contract_effect_score_aggregations": 2276195,
+          "h2_contract_effect_output_line_references": 11429404,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 2857351,
+          "h2_contract_direct_observation_evaluations": 833386,
+          "h2_contract_prepare_calls": 833386,
+          "h2_contract_line_lookups": 13334176,
+          "h2_contract_line_evaluations": 6856581,
+          "h2_contract_line_summary_adjacent_tests": 20291521,
+          "h2_contract_line_cache_hits": 6477595,
+          "h2_contract_context_contract_evaluations": 833386,
+          "h2_contract_predicate_calls": 833386,
+          "h2_contract_candidate_action_changed_tests": 3333544,
+          "h2_contract_candidate_action_predicate_evaluations": 2276195,
+          "h2_contract_terminal_predicate_evaluations": 2276195,
+          "h2_contract_terminal_spawn_rank_classifications": 4552390,
+          "h2_contract_predicate_materializations": 833386,
+          "h2_contract_contract_cache_lookups": 833386,
+          "h2_contract_contract_fraction_accumulations": 4103658,
+          "h2_contract_terminal_probability_combinations": 4103658,
+          "h2_contract_contract_cache_hits": 226854,
+          "h2_contract_base_adjacent_tests": 641560,
+          "h2_contract_base_hole_neighbor_reads": 22278,
+          "h2_contract_cross_line_adjacent_tests": 378214,
+          "h2_contract_hole_neighbor_rank_reads": 46932,
+          "dummy_model_uniform_draws": 1984,
+          "fragment_active_actions": 496
+        },
+        "outcomes": {
+          "LOST": 248,
+          "CUTOFF": 1
+        },
+        "source_games": 0,
+        "branch_trajectories": 249,
+        "completed_blocks": 6,
+        "incomplete_blocks": 1,
+        "training_roots_added": 0,
+        "seconds": 105.43914578197291,
+        "training_replica_counts": {
+          "0": 8,
+          "1": 16,
+          "2": 16,
+          "3": 16,
+          "5": 16,
+          "6": 16,
+          "7": 16,
+          "8": 8,
+          "10": 8,
+          "11": 8
+        }
+      },
+      {
+        "id": 1,
+        "arm": "REPEAT",
+        "query": "risk_goal",
+        "actual_transitions": 120000,
+        "actual_budget_matched": true,
+        "budget": 120000,
+        "used_transitions": 120000,
+        "source_work": {},
+        "branch_work": {
+          "ground_state_status_calls": 120240,
+          "ground_status_internal_swipe_calls": 480948,
+          "ground_swipe_calls": 600948,
+          "ground_explicit_swipe_calls": 120000,
+          "environment_random_draws": 240000,
+          "sampled_transitions": 120000
+        },
+        "planning_counts": {
+          "learned_terminal_checks": 240000,
+          "learned_swipe_calls": 960000,
+          "learned_line_rewrites": 3840000,
+          "controller_active_decisions": 120000,
+          "fragment_selections": 240,
+          "fragments_initiated": 192,
+          "h2_active_actions": 119520,
+          "legal_swipes": 3262801,
+          "model_uniform_draws": 480000,
+          "model_spawn_samples": 832168,
+          "h2_cutoff_contracts": 832168,
+          "h2_contract_compiled_programs": 119520,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 832168,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 605400,
+          "h2_contract_effect_key_constructions": 2845023,
+          "h2_contract_effect_cache_lookups": 2845023,
+          "h2_contract_effect_cache_hits": 578190,
+          "h2_contract_effect_cache_entries": 2266833,
+          "h2_contract_effect_score_aggregations": 2266833,
+          "h2_contract_effect_output_line_references": 11380092,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 2845023,
+          "h2_contract_direct_observation_evaluations": 832168,
+          "h2_contract_prepare_calls": 832168,
+          "h2_contract_line_lookups": 13314688,
+          "h2_contract_line_evaluations": 6836416,
+          "h2_contract_line_summary_adjacent_tests": 20233477,
+          "h2_contract_context_contract_evaluations": 832168,
+          "h2_contract_predicate_calls": 832168,
+          "h2_contract_candidate_action_changed_tests": 3328672,
+          "h2_contract_candidate_action_predicate_evaluations": 2266833,
+          "h2_contract_terminal_predicate_evaluations": 2266833,
+          "h2_contract_terminal_spawn_rank_classifications": 4533666,
+          "h2_contract_predicate_materializations": 832168,
+          "h2_contract_contract_cache_lookups": 832168,
+          "h2_contract_contract_fraction_accumulations": 4086878,
+          "h2_contract_terminal_probability_combinations": 4086878,
+          "h2_contract_line_cache_hits": 6478272,
+          "h2_contract_contract_cache_hits": 226768,
+          "h2_contract_base_adjacent_tests": 760640,
+          "h2_contract_cross_line_adjacent_tests": 452915,
+          "h2_contract_hole_neighbor_rank_reads": 56694,
+          "h2_contract_base_hole_neighbor_reads": 26663,
+          "dummy_model_uniform_draws": 1920,
+          "fragment_active_actions": 480
+        },
+        "outcomes": {
+          "LOST": 236,
+          "WON": 3,
+          "CUTOFF": 1
+        },
+        "source_games": 0,
+        "branch_trajectories": 240,
+        "completed_blocks": 5,
+        "incomplete_blocks": 1,
+        "training_roots_added": 0,
+        "seconds": 108.9024029209977,
+        "training_replica_counts": {
+          "0": 8,
+          "1": 8,
+          "2": 16,
+          "3": 16,
+          "5": 16,
+          "6": 16,
+          "7": 16,
+          "8": 8,
+          "10": 8,
+          "11": 8
+        }
+      },
+      {
+        "id": 2,
+        "arm": "COVERAGE",
+        "query": "reward",
+        "actual_transitions": 120000,
+        "actual_budget_matched": true,
+        "budget": 120000,
+        "used_transitions": 120000,
+        "source_work": {
+          "environment_random_draws": 6844,
+          "initial_spawns": 14,
+          "ground_state_status_calls": 3415,
+          "ground_status_internal_swipe_calls": 13660,
+          "ground_swipe_calls": 17068,
+          "ground_explicit_swipe_calls": 3408,
+          "sampled_transitions": 3408
+        },
+        "branch_work": {
+          "ground_state_status_calls": 116842,
+          "ground_status_internal_swipe_calls": 467364,
+          "ground_swipe_calls": 583956,
+          "ground_explicit_swipe_calls": 116592,
+          "environment_random_draws": 233184,
+          "sampled_transitions": 116592
+        },
+        "planning_counts": {
+          "learned_terminal_checks": 240000,
+          "learned_swipe_calls": 960000,
+          "learned_line_rewrites": 3840000,
+          "controller_active_decisions": 120000,
+          "h2_active_actions": 119500,
+          "legal_swipes": 3281133,
+          "model_uniform_draws": 480000,
+          "model_spawn_samples": 834098,
+          "h2_cutoff_contracts": 834098,
+          "h2_contract_compiled_programs": 119500,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 834098,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 604884,
+          "h2_contract_effect_key_constructions": 2862238,
+          "h2_contract_effect_cache_lookups": 2862238,
+          "h2_contract_effect_cache_hits": 584683,
+          "h2_contract_effect_cache_entries": 2277555,
+          "h2_contract_effect_score_aggregations": 2277555,
+          "h2_contract_effect_output_line_references": 11448952,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 2862238,
+          "h2_contract_direct_observation_evaluations": 834098,
+          "h2_contract_prepare_calls": 834098,
+          "h2_contract_line_lookups": 13345568,
+          "h2_contract_line_evaluations": 6840951,
+          "h2_contract_line_summary_adjacent_tests": 20245078,
+          "h2_contract_line_cache_hits": 6504617,
+          "h2_contract_context_contract_evaluations": 834098,
+          "h2_contract_predicate_calls": 834098,
+          "h2_contract_candidate_action_changed_tests": 3336392,
+          "h2_contract_candidate_action_predicate_evaluations": 2277555,
+          "h2_contract_terminal_predicate_evaluations": 2277555,
+          "h2_contract_terminal_spawn_rank_classifications": 4555110,
+          "h2_contract_predicate_materializations": 834098,
+          "h2_contract_contract_cache_lookups": 834098,
+          "h2_contract_contract_fraction_accumulations": 4094570,
+          "h2_contract_terminal_probability_combinations": 4094570,
+          "h2_contract_contract_cache_hits": 229214,
+          "h2_contract_base_adjacent_tests": 647801,
+          "h2_contract_cross_line_adjacent_tests": 381036,
+          "h2_contract_hole_neighbor_rank_reads": 48303,
+          "h2_contract_base_hole_neighbor_reads": 23438,
+          "fragment_selections": 250,
+          "fragments_initiated": 200,
+          "dummy_model_uniform_draws": 2000,
+          "fragment_active_actions": 500
+        },
+        "outcomes": {
+          "LOST": 255,
+          "WON": 1,
+          "CUTOFF": 1
+        },
+        "source_games": 7,
+        "branch_trajectories": 250,
+        "completed_blocks": 6,
+        "incomplete_blocks": 1,
+        "training_roots_added": 6,
+        "seconds": 105.65411250799662,
+        "training_replica_counts": {
+          "0": 8,
+          "1": 8,
+          "2": 8,
+          "3": 8,
+          "5": 8,
+          "6": 8,
+          "7": 8,
+          "8": 8,
+          "10": 8,
+          "11": 8,
+          "100": 8,
+          "101": 8,
+          "102": 8,
+          "103": 8,
+          "105": 8,
+          "106": 8
+        }
+      },
+      {
+        "id": 2,
+        "arm": "COVERAGE",
+        "query": "risk_goal",
+        "actual_transitions": 120000,
+        "actual_budget_matched": true,
+        "budget": 120000,
+        "used_transitions": 120000,
+        "source_work": {
+          "environment_random_draws": 6544,
+          "initial_spawns": 12,
+          "ground_state_status_calls": 3266,
+          "ground_status_internal_swipe_calls": 13064,
+          "ground_swipe_calls": 16324,
+          "ground_explicit_swipe_calls": 3260,
+          "sampled_transitions": 3260
+        },
+        "branch_work": {
+          "ground_state_status_calls": 116961,
+          "ground_status_internal_swipe_calls": 467844,
+          "ground_swipe_calls": 584584,
+          "ground_explicit_swipe_calls": 116740,
+          "environment_random_draws": 233480,
+          "sampled_transitions": 116740
+        },
+        "planning_counts": {
+          "learned_terminal_checks": 240000,
+          "learned_swipe_calls": 960000,
+          "learned_line_rewrites": 3840000,
+          "controller_active_decisions": 120000,
+          "h2_active_actions": 119560,
+          "legal_swipes": 3269209,
+          "model_uniform_draws": 480000,
+          "model_spawn_samples": 832536,
+          "h2_cutoff_contracts": 832536,
+          "h2_contract_compiled_programs": 119560,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 832536,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 604123,
+          "h2_contract_effect_key_constructions": 2851333,
+          "h2_contract_effect_cache_lookups": 2851333,
+          "h2_contract_effect_cache_hits": 582757,
+          "h2_contract_effect_cache_entries": 2268576,
+          "h2_contract_effect_score_aggregations": 2268576,
+          "h2_contract_effect_output_line_references": 11405332,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 2851333,
+          "h2_contract_direct_observation_evaluations": 832536,
+          "h2_contract_prepare_calls": 832536,
+          "h2_contract_line_lookups": 13320576,
+          "h2_contract_line_evaluations": 6813278,
+          "h2_contract_line_summary_adjacent_tests": 20162979,
+          "h2_contract_line_cache_hits": 6507298,
+          "h2_contract_context_contract_evaluations": 832536,
+          "h2_contract_predicate_calls": 832536,
+          "h2_contract_candidate_action_changed_tests": 3330144,
+          "h2_contract_candidate_action_predicate_evaluations": 2268576,
+          "h2_contract_terminal_predicate_evaluations": 2268576,
+          "h2_contract_terminal_spawn_rank_classifications": 4537152,
+          "h2_contract_predicate_materializations": 832536,
+          "h2_contract_contract_cache_lookups": 832536,
+          "h2_contract_contract_fraction_accumulations": 4083092,
+          "h2_contract_terminal_probability_combinations": 4083092,
+          "h2_contract_contract_cache_hits": 228413,
+          "h2_contract_base_adjacent_tests": 725806,
+          "h2_contract_cross_line_adjacent_tests": 434813,
+          "h2_contract_base_hole_neighbor_reads": 24693,
+          "h2_contract_hole_neighbor_rank_reads": 54355,
+          "fragment_selections": 221,
+          "fragments_initiated": 176,
+          "dummy_model_uniform_draws": 1760,
+          "fragment_active_actions": 440
+        },
+        "outcomes": {
+          "LOST": 226,
+          "CUTOFF": 1
+        },
+        "source_games": 6,
+        "branch_trajectories": 221,
+        "completed_blocks": 5,
+        "incomplete_blocks": 1,
+        "training_roots_added": 5,
+        "seconds": 110.00882978795562,
+        "training_replica_counts": {
+          "0": 8,
+          "1": 8,
+          "2": 8,
+          "3": 8,
+          "5": 8,
+          "6": 8,
+          "7": 8,
+          "8": 8,
+          "10": 8,
+          "11": 8,
+          "100": 8,
+          "101": 8,
+          "102": 8,
+          "103": 8,
+          "105": 8
+        }
+      },
+      {
+        "id": 2,
+        "arm": "REPEAT",
+        "query": "reward",
+        "actual_transitions": 120000,
+        "actual_budget_matched": true,
+        "budget": 120000,
+        "used_transitions": 120000,
+        "source_work": {},
+        "branch_work": {
+          "ground_state_status_calls": 120243,
+          "ground_status_internal_swipe_calls": 480960,
+          "ground_swipe_calls": 600960,
+          "ground_explicit_swipe_calls": 120000,
+          "environment_random_draws": 240000,
+          "sampled_transitions": 120000
+        },
+        "planning_counts": {
+          "learned_terminal_checks": 240000,
+          "learned_swipe_calls": 960000,
+          "learned_line_rewrites": 3840000,
+          "controller_active_decisions": 120000,
+          "fragment_selections": 243,
+          "fragments_initiated": 194,
+          "h2_active_actions": 119518,
+          "legal_swipes": 3299309,
+          "model_uniform_draws": 480000,
+          "model_spawn_samples": 836780,
+          "h2_cutoff_contracts": 836780,
+          "h2_contract_compiled_programs": 119518,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 836780,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 606200,
+          "h2_contract_effect_key_constructions": 2879241,
+          "h2_contract_effect_cache_lookups": 2879241,
+          "h2_contract_effect_cache_hits": 591918,
+          "h2_contract_effect_cache_entries": 2287323,
+          "h2_contract_effect_score_aggregations": 2287323,
+          "h2_contract_effect_output_line_references": 11516964,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 2879241,
+          "h2_contract_direct_observation_evaluations": 836780,
+          "h2_contract_prepare_calls": 836780,
+          "h2_contract_line_lookups": 13388480,
+          "h2_contract_line_evaluations": 6843769,
+          "h2_contract_line_summary_adjacent_tests": 20252650,
+          "h2_contract_line_cache_hits": 6544711,
+          "h2_contract_context_contract_evaluations": 836780,
+          "h2_contract_predicate_calls": 836780,
+          "h2_contract_candidate_action_changed_tests": 3347120,
+          "h2_contract_candidate_action_predicate_evaluations": 2287323,
+          "h2_contract_terminal_predicate_evaluations": 2287323,
+          "h2_contract_terminal_spawn_rank_classifications": 4574646,
+          "h2_contract_predicate_materializations": 836780,
+          "h2_contract_contract_cache_lookups": 836780,
+          "h2_contract_contract_fraction_accumulations": 4111864,
+          "h2_contract_terminal_probability_combinations": 4111864,
+          "h2_contract_contract_cache_hits": 230580,
+          "h2_contract_base_adjacent_tests": 602693,
+          "h2_contract_cross_line_adjacent_tests": 359943,
+          "h2_contract_hole_neighbor_rank_reads": 45710,
+          "h2_contract_base_hole_neighbor_reads": 22204,
+          "dummy_model_uniform_draws": 1928,
+          "fragment_active_actions": 482
+        },
+        "outcomes": {
+          "LOST": 239,
+          "WON": 3,
+          "CUTOFF": 1
+        },
+        "source_games": 0,
+        "branch_trajectories": 243,
+        "completed_blocks": 6,
+        "incomplete_blocks": 1,
+        "training_roots_added": 0,
+        "seconds": 108.59160320798401,
+        "training_replica_counts": {
+          "0": 8,
+          "1": 8,
+          "2": 16,
+          "3": 16,
+          "5": 16,
+          "6": 16,
+          "7": 16,
+          "8": 16,
+          "10": 8,
+          "11": 8
+        }
+      },
+      {
+        "id": 2,
+        "arm": "REPEAT",
+        "query": "risk_goal",
+        "actual_transitions": 120000,
+        "actual_budget_matched": true,
+        "budget": 120000,
+        "used_transitions": 120000,
+        "source_work": {},
+        "branch_work": {
+          "ground_state_status_calls": 120224,
+          "ground_status_internal_swipe_calls": 480888,
+          "ground_swipe_calls": 600888,
+          "ground_explicit_swipe_calls": 120000,
+          "environment_random_draws": 240000,
+          "sampled_transitions": 120000
+        },
+        "planning_counts": {
+          "learned_terminal_checks": 240000,
+          "learned_swipe_calls": 960000,
+          "learned_line_rewrites": 3840000,
+          "controller_active_decisions": 120000,
+          "fragment_selections": 224,
+          "fragments_initiated": 179,
+          "h2_active_actions": 119554,
+          "legal_swipes": 3283105,
+          "model_uniform_draws": 480000,
+          "model_spawn_samples": 834310,
+          "h2_cutoff_contracts": 834310,
+          "h2_contract_compiled_programs": 119554,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 834310,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 604083,
+          "h2_contract_effect_key_constructions": 2864373,
+          "h2_contract_effect_cache_lookups": 2864373,
+          "h2_contract_effect_cache_hits": 587180,
+          "h2_contract_effect_cache_entries": 2277193,
+          "h2_contract_effect_score_aggregations": 2277193,
+          "h2_contract_effect_output_line_references": 11457492,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 2864373,
+          "h2_contract_direct_observation_evaluations": 834310,
+          "h2_contract_prepare_calls": 834310,
+          "h2_contract_line_lookups": 13348960,
+          "h2_contract_line_evaluations": 6825332,
+          "h2_contract_line_summary_adjacent_tests": 20200481,
+          "h2_contract_context_contract_evaluations": 834310,
+          "h2_contract_predicate_calls": 834310,
+          "h2_contract_candidate_action_changed_tests": 3337240,
+          "h2_contract_candidate_action_predicate_evaluations": 2277193,
+          "h2_contract_terminal_predicate_evaluations": 2277193,
+          "h2_contract_terminal_spawn_rank_classifications": 4554386,
+          "h2_contract_predicate_materializations": 834310,
+          "h2_contract_contract_cache_lookups": 834310,
+          "h2_contract_contract_fraction_accumulations": 4090216,
+          "h2_contract_terminal_probability_combinations": 4090216,
+          "h2_contract_line_cache_hits": 6523628,
+          "h2_contract_contract_cache_hits": 230227,
+          "h2_contract_base_adjacent_tests": 647004,
+          "h2_contract_cross_line_adjacent_tests": 388236,
+          "h2_contract_hole_neighbor_rank_reads": 48318,
+          "h2_contract_base_hole_neighbor_reads": 22313,
+          "dummy_model_uniform_draws": 1784,
+          "fragment_active_actions": 446
+        },
+        "outcomes": {
+          "LOST": 221,
+          "WON": 2,
+          "CUTOFF": 1
+        },
+        "source_games": 0,
+        "branch_trajectories": 224,
+        "completed_blocks": 5,
+        "incomplete_blocks": 1,
+        "training_roots_added": 0,
+        "seconds": 106.00415562099079,
+        "training_replica_counts": {
+          "0": 8,
+          "1": 8,
+          "2": 8,
+          "3": 16,
+          "5": 16,
+          "6": 16,
+          "7": 16,
+          "8": 16,
+          "10": 8,
+          "11": 8
+        }
+      }
+    ],
+    "training": [
+      {
+        "id": 0,
+        "arm": "COVERAGE",
+        "dataset": {
+          "roots": 35,
+          "training_roots": 31,
+          "heldout_roots": 4,
+          "records": 140
+        },
+        "update": {
+          "checkpoint": 12,
+          "anchor_checkpoint": 12,
+          "input_records": 140,
+          "reference_records_excluded": 0,
+          "input_roots": 35,
+          "training_roots": 31,
+          "heldout_roots": 4,
+          "training_records": 124,
+          "heldout_records": 16,
+          "min_samples_leaf_unit": "roots",
+          "anchor_tree_fits": 0,
+          "queries": {
+            "reward": {
+              "training_roots": 16,
+              "heldout_roots": 2,
+              "training_records": 64,
+              "heldout_records": 8,
+              "nodes": 11,
+              "leaves": 6,
+              "training_target_mean": [
+                [
+                  0.1517791748046875,
+                  -0.0078125,
+                  0.0078125
+                ],
+                [
+                  0.0191650390625,
+                  0.0078125,
+                  -0.0078125
+                ],
+                [
+                  -0.033416748046875,
+                  -0.0078125,
+                  0.0078125
+                ],
+                [
+                  0.0020599365234375,
+                  0.0,
+                  0.0
+                ]
+              ],
+              "training_residual_mean": [
+                [
+                  0.11688232421875,
+                  -0.005859375,
+                  0.005859375
+                ],
+                [
+                  -0.0157318115234375,
+                  0.009765625,
+                  -0.009765625
+                ],
+                [
+                  -0.0683135986328125,
+                  -0.005859375,
+                  0.005859375
+                ],
+                [
+                  -0.0328369140625,
+                  0.001953125,
+                  -0.001953125
+                ]
+              ],
+              "heldout_residual_mse_components": [
+                [
+                  1.1190089024603367,
+                  0.0024500868055555556,
+                  0.0024500868055555556
+                ],
+                [
+                  0.44426707613799304,
+                  0.0024500868055555556,
+                  0.0024500868055555556
+                ],
+                [
+                  0.07703927531838417,
+                  0.0033007812500000003,
+                  0.0033007812500000003
+                ],
+                [
+                  0.7444353440238372,
+                  0.018769531250000002,
+                  0.018769531250000002
+                ]
+              ],
+              "heldout_mse_components": [
+                [
+                  0.34093424724414945,
+                  0.0009120008680555555,
+                  0.0009120008680555555
+                ],
+                [
+                  0.7955038608134621,
+                  0.0009120008680555555,
+                  0.0009120008680555555
+                ],
+                [
+                  0.42766920523718,
+                  0.0005908203125000001,
+                  0.0005908203125000001
+                ],
+                [
+                  1.726416382294976,
+                  0.028950195312500003,
+                  0.028950195312500003
+                ]
+              ]
+            },
+            "risk_goal": {
+              "training_roots": 15,
+              "heldout_roots": 2,
+              "training_records": 60,
+              "heldout_records": 8,
+              "nodes": 7,
+              "leaves": 4,
+              "training_target_mean": [
+                [
+                  0.006722005208333334,
+                  0.0,
+                  0.0
+                ],
+                [
+                  -0.2764811197916667,
+                  -0.008333333333333333,
+                  0.008333333333333333
+                ],
+                [
+                  -0.15603841145833333,
+                  0.016666666666666666,
+                  -0.016666666666666666
+                ],
+                [
+                  -0.27540690104166665,
+                  0.016666666666666666,
+                  -0.016666666666666666
+                ]
+              ],
+              "training_residual_mean": [
+                [
+                  0.18202311197916668,
+                  -0.00625,
+                  0.00625
+                ],
+                [
+                  -0.10118001302083333,
+                  -0.014583333333333334,
+                  0.014583333333333334
+                ],
+                [
+                  0.0192626953125,
+                  0.010416666666666666,
+                  -0.010416666666666666
+                ],
+                [
+                  -0.10010579427083334,
+                  0.010416666666666666,
+                  -0.010416666666666666
+                ]
+              ],
+              "heldout_residual_mse_components": [
+                [
+                  0.00964396633207798,
+                  7.971938775510203e-05,
+                  7.971938775510203e-05
+                ],
+                [
+                  0.3420694612194689,
+                  7.971938775510203e-05,
+                  7.971938775510203e-05
+                ],
+                [
+                  0.256007919088006,
+                  7.971938775510203e-05,
+                  7.971938775510203e-05
+                ],
+                [
+                  0.45321084060991296,
+                  7.971938775510203e-05,
+                  7.971938775510203e-05
+                ]
+              ],
+              "heldout_mse_components": [
+                [
+                  1.0664082635194063,
+                  0.0007598254145408165,
+                  0.0007598254145408165
+                ],
+                [
+                  1.1083567486505725,
+                  0.0007598254145408165,
+                  0.0007598254145408165
+                ],
+                [
+                  2.156861575320363,
+                  0.0015968789859693877,
+                  0.0015968789859693877
+                ],
+                [
+                  0.4445034758548955,
+                  0.0015968789859693877,
+                  0.0015968789859693877
+                ]
+              ]
+            }
+          },
+          "counts": {
+            "metadata_rows_read": 140,
+            "packed_roots": 35,
+            "training_roots_read": 31,
+            "board_feature_rows": 35,
+            "tree_fits": 2,
+            "fit_rows": 31,
+            "fit_roots": 31,
+            "fit_output_vectors": 124,
+            "centered_target_roots": 31,
+            "validation_roots_read": 4,
+            "tree_apply_rows": 8,
+            "tree_split_visits": 21,
+            "residual_tree_apply_rows": 4,
+            "residual_tree_split_visits": 11,
+            "residual_prediction_roots": 4,
+            "residual_predicted_output_vectors": 16,
+            "anchor_tree_apply_rows": 4,
+            "anchor_tree_split_visits": 10,
+            "anchor_prediction_roots": 4,
+            "anchor_predicted_output_vectors": 16
+          },
+          "seconds": 0.6240266119712032
+        },
+        "construction_seconds": 213.67732110701036
+      },
+      {
+        "id": 0,
+        "arm": "REPEAT",
+        "dataset": {
+          "roots": 24,
+          "training_roots": 20,
+          "heldout_roots": 4,
+          "records": 96
+        },
+        "update": {
+          "checkpoint": 12,
+          "anchor_checkpoint": 12,
+          "input_records": 96,
+          "reference_records_excluded": 0,
+          "input_roots": 24,
+          "training_roots": 20,
+          "heldout_roots": 4,
+          "training_records": 80,
+          "heldout_records": 16,
+          "min_samples_leaf_unit": "roots",
+          "anchor_tree_fits": 0,
+          "queries": {
+            "reward": {
+              "training_roots": 10,
+              "heldout_roots": 2,
+              "training_records": 40,
+              "heldout_records": 8,
+              "nodes": 7,
+              "leaves": 4,
+              "training_target_mean": [
+                [
+                  0.419921875,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.107763671875,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.29818115234375,
+                  -0.0125,
+                  0.0125
+                ],
+                [
+                  0.0927734375,
+                  0.0,
+                  0.0
+                ]
+              ],
+              "training_residual_mean": [
+                [
+                  0.1902618408203125,
+                  0.003125,
+                  -0.003125
+                ],
+                [
+                  -0.1218963623046875,
+                  0.003125,
+                  -0.003125
+                ],
+                [
+                  0.0685211181640625,
+                  -0.009375,
+                  0.009375
+                ],
+                [
+                  -0.1368865966796875,
+                  0.003125,
+                  -0.003125
+                ]
+              ],
+              "heldout_residual_mse_components": [
+                [
+                  0.7296844590455294,
+                  0.001953125,
+                  0.001953125
+                ],
+                [
+                  0.13892932422459126,
+                  0.001953125,
+                  0.001953125
+                ],
+                [
+                  0.3800462558865547,
+                  0.001953125,
+                  0.001953125
+                ],
+                [
+                  0.4027823358774185,
+                  0.017578125,
+                  0.017578125
+                ]
+              ],
+              "heldout_mse_components": [
+                [
+                  0.20058839255943894,
+                  0.0001220703125,
+                  0.0001220703125
+                ],
+                [
+                  0.0392461740411818,
+                  0.0001220703125,
+                  0.0001220703125
+                ],
+                [
+                  1.0952087775804102,
+                  0.0001220703125,
+                  0.0001220703125
+                ],
+                [
+                  1.2221721285022795,
+                  0.0274658203125,
+                  0.0274658203125
+                ]
+              ]
+            },
+            "risk_goal": {
+              "training_roots": 10,
+              "heldout_roots": 2,
+              "training_records": 40,
+              "heldout_records": 8,
+              "nodes": 7,
+              "leaves": 4,
+              "training_target_mean": [
+                [
+                  0.03111572265625,
+                  0.0,
+                  0.0
+                ],
+                [
+                  -0.02911376953125,
+                  -0.00625,
+                  0.00625
+                ],
+                [
+                  -0.01497802734375,
+                  0.0125,
+                  -0.0125
+                ],
+                [
+                  -0.0038330078125,
+                  0.01875,
+                  -0.01875
+                ]
+              ],
+              "training_residual_mean": [
+                [
+                  0.0353179931640625,
+                  -0.00625,
+                  0.00625
+                ],
+                [
+                  -0.0249114990234375,
+                  -0.0125,
+                  0.0125
+                ],
+                [
+                  -0.0107757568359375,
+                  0.00625,
+                  -0.00625
+                ],
+                [
+                  0.0003692626953125,
+                  0.0125,
+                  -0.0125
+                ]
+              ],
+              "heldout_residual_mse_components": [
+                [
+                  0.1876534614712,
+                  0.000244140625,
+                  0.000244140625
+                ],
+                [
+                  0.5193638447672129,
+                  0.002197265625,
+                  0.002197265625
+                ],
+                [
+                  0.7504334766417742,
+                  0.000244140625,
+                  0.000244140625
+                ],
+                [
+                  0.6994721759110689,
+                  0.000244140625,
+                  0.000244140625
+                ]
+              ],
+              "heldout_mse_components": [
+                [
+                  1.9344048518687487,
+                  0.0020751953125,
+                  0.0020751953125
+                ],
+                [
+                  0.21465113945305347,
+                  0.0010986328125,
+                  0.0010986328125
+                ],
+                [
+                  3.3337510023266077,
+                  0.0020751953125,
+                  0.0020751953125
+                ],
+                [
+                  0.3893138412386179,
+                  0.0020751953125,
+                  0.0020751953125
+                ]
+              ]
+            }
+          },
+          "counts": {
+            "metadata_rows_read": 96,
+            "packed_roots": 24,
+            "training_roots_read": 20,
+            "board_feature_rows": 24,
+            "tree_fits": 2,
+            "fit_rows": 20,
+            "fit_roots": 20,
+            "fit_output_vectors": 80,
+            "centered_target_roots": 20,
+            "validation_roots_read": 4,
+            "tree_apply_rows": 8,
+            "tree_split_visits": 20,
+            "residual_tree_apply_rows": 4,
+            "residual_tree_split_visits": 10,
+            "residual_prediction_roots": 4,
+            "residual_predicted_output_vectors": 16,
+            "anchor_tree_apply_rows": 4,
+            "anchor_tree_split_visits": 10,
+            "anchor_prediction_roots": 4,
+            "anchor_predicted_output_vectors": 16
+          },
+          "seconds": 0.0027589320088736713
+        },
+        "construction_seconds": 213.15001587505685
+      },
+      {
+        "id": 1,
+        "arm": "COVERAGE",
+        "dataset": {
+          "roots": 34,
+          "training_roots": 30,
+          "heldout_roots": 4,
+          "records": 136
+        },
+        "update": {
+          "checkpoint": 12,
+          "anchor_checkpoint": 12,
+          "input_records": 136,
+          "reference_records_excluded": 0,
+          "input_roots": 34,
+          "training_roots": 30,
+          "heldout_roots": 4,
+          "training_records": 120,
+          "heldout_records": 16,
+          "min_samples_leaf_unit": "roots",
+          "anchor_tree_fits": 0,
+          "queries": {
+            "reward": {
+              "training_roots": 15,
+              "heldout_roots": 2,
+              "training_records": 60,
+              "heldout_records": 8,
+              "nodes": 9,
+              "leaves": 5,
+              "training_target_mean": [
+                [
+                  0.17921549479166668,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.040234375,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.17713216145833333,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.16100260416666667,
+                  -0.016666666666666666,
+                  0.016666666666666666
+                ]
+              ],
+              "training_residual_mean": [
+                [
+                  0.0398193359375,
+                  0.004166666666666667,
+                  -0.004166666666666667
+                ],
+                [
+                  -0.09916178385416667,
+                  0.004166666666666667,
+                  -0.004166666666666667
+                ],
+                [
+                  0.037736002604166666,
+                  0.004166666666666667,
+                  -0.004166666666666667
+                ],
+                [
+                  0.0216064453125,
+                  -0.0125,
+                  0.0125
+                ]
+              ],
+              "heldout_residual_mse_components": [
+                [
+                  0.15469400493466126,
+                  7.971938775510203e-05,
+                  7.971938775510203e-05
+                ],
+                [
+                  0.024276568573348378,
+                  7.971938775510203e-05,
+                  7.971938775510203e-05
+                ],
+                [
+                  0.036534320334998927,
+                  7.971938775510203e-05,
+                  7.971938775510203e-05
+                ],
+                [
+                  0.13512063573817817,
+                  0.0007174744897959183,
+                  0.0007174744897959183
+                ]
+              ],
+              "heldout_mse_components": [
+                [
+                  0.2895722265974059,
+                  7.971938775510203e-05,
+                  7.971938775510203e-05
+                ],
+                [
+                  0.2783586706653609,
+                  7.971938775510203e-05,
+                  7.971938775510203e-05
+                ],
+                [
+                  0.3882191765487465,
+                  7.971938775510203e-05,
+                  7.971938775510203e-05
+                ],
+                [
+                  0.2062426448087979,
+                  0.0007174744897959183,
+                  0.0007174744897959183
+                ]
+              ]
+            },
+            "risk_goal": {
+              "training_roots": 15,
+              "heldout_roots": 2,
+              "training_records": 60,
+              "heldout_records": 8,
+              "nodes": 7,
+              "leaves": 4,
+              "training_target_mean": [
+                [
+                  0.09344075520833334,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.38790690104166664,
+                  -0.008333333333333333,
+                  0.008333333333333333
+                ],
+                [
+                  0.5316243489583333,
+                  -0.008333333333333333,
+                  0.008333333333333333
+                ],
+                [
+                  0.08995768229166666,
+                  -0.008333333333333333,
+                  0.008333333333333333
+                ]
+              ],
+              "training_residual_mean": [
+                [
+                  -0.18229166666666666,
+                  0.00625,
+                  -0.00625
+                ],
+                [
+                  0.11217447916666666,
+                  -0.0020833333333333333,
+                  0.0020833333333333333
+                ],
+                [
+                  0.25589192708333336,
+                  -0.0020833333333333333,
+                  0.0020833333333333333
+                ],
+                [
+                  -0.18577473958333332,
+                  -0.0020833333333333333,
+                  0.0020833333333333333
+                ]
+              ],
+              "heldout_residual_mse_components": [
+                [
+                  1.3662258639103835,
+                  0.00010850694444444444,
+                  0.00010850694444444444
+                ],
+                [
+                  0.07329890504479408,
+                  0.00010850694444444444,
+                  0.00010850694444444444
+                ],
+                [
+                  0.4778379984200001,
+                  0.00010850694444444444,
+                  0.00010850694444444444
+                ],
+                [
+                  0.34471458238032127,
+                  0.0009765625,
+                  0.0009765625
+                ]
+              ],
+              "heldout_mse_components": [
+                [
+                  0.44408228413926226,
+                  5.425347222222222e-05,
+                  5.425347222222222e-05
+                ],
+                [
+                  0.8830706485443645,
+                  5.425347222222222e-05,
+                  5.425347222222222e-05
+                ],
+                [
+                  2.0594366598460407,
+                  5.425347222222222e-05,
+                  5.425347222222222e-05
+                ],
+                [
+                  1.147815287941032,
+                  0.0013563368055555555,
+                  0.0013563368055555555
+                ]
+              ]
+            }
+          },
+          "counts": {
+            "metadata_rows_read": 136,
+            "packed_roots": 34,
+            "training_roots_read": 30,
+            "board_feature_rows": 34,
+            "tree_fits": 2,
+            "fit_rows": 30,
+            "fit_roots": 30,
+            "fit_output_vectors": 120,
+            "centered_target_roots": 30,
+            "validation_roots_read": 4,
+            "tree_apply_rows": 8,
+            "tree_split_visits": 19,
+            "residual_tree_apply_rows": 4,
+            "residual_tree_split_visits": 12,
+            "residual_prediction_roots": 4,
+            "residual_predicted_output_vectors": 16,
+            "anchor_tree_apply_rows": 4,
+            "anchor_tree_split_visits": 7,
+            "anchor_prediction_roots": 4,
+            "anchor_predicted_output_vectors": 16
+          },
+          "seconds": 0.0034561180509626865
+        },
+        "construction_seconds": 210.57378864311613
+      },
+      {
+        "id": 1,
+        "arm": "REPEAT",
+        "dataset": {
+          "roots": 24,
+          "training_roots": 20,
+          "heldout_roots": 4,
+          "records": 96
+        },
+        "update": {
+          "checkpoint": 12,
+          "anchor_checkpoint": 12,
+          "input_records": 96,
+          "reference_records_excluded": 0,
+          "input_roots": 24,
+          "training_roots": 20,
+          "heldout_roots": 4,
+          "training_records": 80,
+          "heldout_records": 16,
+          "min_samples_leaf_unit": "roots",
+          "anchor_tree_fits": 0,
+          "queries": {
+            "reward": {
+              "training_roots": 10,
+              "heldout_roots": 2,
+              "training_records": 40,
+              "heldout_records": 8,
+              "nodes": 7,
+              "leaves": 4,
+              "training_target_mean": [
+                [
+                  0.29195556640625,
+                  0.0,
+                  0.0
+                ],
+                [
+                  -0.11651611328125,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.3827880859375,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.146044921875,
+                  0.0,
+                  0.0
+                ]
+              ],
+              "training_residual_mean": [
+                [
+                  0.115887451171875,
+                  0.0,
+                  0.0
+                ],
+                [
+                  -0.292584228515625,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.206719970703125,
+                  0.0,
+                  0.0
+                ],
+                [
+                  -0.030023193359375,
+                  0.0,
+                  0.0
+                ]
+              ],
+              "heldout_residual_mse_components": [
+                [
+                  0.9198819671582896,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.5009866096370388,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.08392648983863182,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.019412519206525758,
+                  0.0,
+                  0.0
+                ]
+              ],
+              "heldout_mse_components": [
+                [
+                  0.3990491665932091,
+                  0.0,
+                  0.0
+                ],
+                [
+                  1.3205756216807965,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.45488333423014005,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.16146665237546487,
+                  0.0,
+                  0.0
+                ]
+              ]
+            },
+            "risk_goal": {
+              "training_roots": 10,
+              "heldout_roots": 2,
+              "training_records": 40,
+              "heldout_records": 8,
+              "nodes": 9,
+              "leaves": 5,
+              "training_target_mean": [
+                [
+                  0.20523681640625,
+                  0.00625,
+                  -0.00625
+                ],
+                [
+                  0.46947021484375,
+                  -0.0125,
+                  0.0125
+                ],
+                [
+                  0.28887939453125,
+                  0.00625,
+                  -0.00625
+                ],
+                [
+                  -0.0314208984375,
+                  0.0,
+                  0.0
+                ]
+              ],
+              "training_residual_mean": [
+                [
+                  -0.0278045654296875,
+                  0.00625,
+                  -0.00625
+                ],
+                [
+                  0.2364288330078125,
+                  -0.0125,
+                  0.0125
+                ],
+                [
+                  0.0558380126953125,
+                  0.00625,
+                  -0.00625
+                ],
+                [
+                  -0.2644622802734375,
+                  0.0,
+                  0.0
+                ]
+              ],
+              "heldout_residual_mse_components": [
+                [
+                  0.8093248195946217,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0054058171808719635,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.8336178213357925,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.14579452574253082,
+                  0.0,
+                  0.0
+                ]
+              ],
+              "heldout_mse_components": [
+                [
+                  0.19522187196546134,
+                  5.425347222222222e-05,
+                  5.425347222222222e-05
+                ],
+                [
+                  0.46357516530487275,
+                  5.425347222222222e-05,
+                  5.425347222222222e-05
+                ],
+                [
+                  2.7756637901895576,
+                  5.425347222222222e-05,
+                  5.425347222222222e-05
+                ],
+                [
+                  0.632009687109126,
+                  5.425347222222222e-05,
+                  5.425347222222222e-05
+                ]
+              ]
+            }
+          },
+          "counts": {
+            "metadata_rows_read": 96,
+            "packed_roots": 24,
+            "training_roots_read": 20,
+            "board_feature_rows": 24,
+            "tree_fits": 2,
+            "fit_rows": 20,
+            "fit_roots": 20,
+            "fit_output_vectors": 80,
+            "centered_target_roots": 20,
+            "validation_roots_read": 4,
+            "tree_apply_rows": 8,
+            "tree_split_visits": 17,
+            "residual_tree_apply_rows": 4,
+            "residual_tree_split_visits": 10,
+            "residual_prediction_roots": 4,
+            "residual_predicted_output_vectors": 16,
+            "anchor_tree_apply_rows": 4,
+            "anchor_tree_split_visits": 7,
+            "anchor_prediction_roots": 4,
+            "anchor_predicted_output_vectors": 16
+          },
+          "seconds": 0.7204588309978135
+        },
+        "construction_seconds": 215.0663627089234
+      },
+      {
+        "id": 2,
+        "arm": "COVERAGE",
+        "dataset": {
+          "roots": 35,
+          "training_roots": 31,
+          "heldout_roots": 4,
+          "records": 140
+        },
+        "update": {
+          "checkpoint": 12,
+          "anchor_checkpoint": 12,
+          "input_records": 140,
+          "reference_records_excluded": 0,
+          "input_roots": 35,
+          "training_roots": 31,
+          "heldout_roots": 4,
+          "training_records": 124,
+          "heldout_records": 16,
+          "min_samples_leaf_unit": "roots",
+          "anchor_tree_fits": 0,
+          "queries": {
+            "reward": {
+              "training_roots": 16,
+              "heldout_roots": 2,
+              "training_records": 64,
+              "heldout_records": 8,
+              "nodes": 7,
+              "leaves": 4,
+              "training_target_mean": [
+                [
+                  -0.1399078369140625,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.1717529296875,
+                  -0.0078125,
+                  0.0078125
+                ],
+                [
+                  -0.0037841796875,
+                  -0.0078125,
+                  0.0078125
+                ],
+                [
+                  0.0329132080078125,
+                  -0.015625,
+                  0.015625
+                ]
+              ],
+              "training_residual_mean": [
+                [
+                  -0.1551513671875,
+                  0.0078125,
+                  -0.0078125
+                ],
+                [
+                  0.1565093994140625,
+                  0.0,
+                  0.0
+                ],
+                [
+                  -0.0190277099609375,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.017669677734375,
+                  -0.0078125,
+                  0.0078125
+                ]
+              ],
+              "heldout_residual_mse_components": [
+                [
+                  0.24287476733326913,
+                  1.9531250000000004e-05,
+                  1.9531250000000004e-05
+                ],
+                [
+                  0.5081341202557087,
+                  1.9531250000000004e-05,
+                  1.9531250000000004e-05
+                ],
+                [
+                  0.7641049493849278,
+                  0.00017578125,
+                  0.00017578125
+                ],
+                [
+                  0.06872889772057533,
+                  1.9531250000000004e-05,
+                  1.9531250000000004e-05
+                ]
+              ],
+              "heldout_mse_components": [
+                [
+                  0.08842545142604245,
+                  0.010642361111111113,
+                  0.010642361111111113
+                ],
+                [
+                  0.40952778807116874,
+                  0.010642361111111113,
+                  0.010642361111111113
+                ],
+                [
+                  2.452977403907312,
+                  0.01105902777777778,
+                  0.01105902777777778
+                ],
+                [
+                  1.0877621995492115,
+                  0.010642361111111113,
+                  0.010642361111111113
+                ]
+              ]
+            },
+            "risk_goal": {
+              "training_roots": 15,
+              "heldout_roots": 2,
+              "training_records": 60,
+              "heldout_records": 8,
+              "nodes": 7,
+              "leaves": 4,
+              "training_target_mean": [
+                [
+                  0.12672526041666668,
+                  0.0,
+                  0.0
+                ],
+                [
+                  -0.20660807291666666,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.35849609375,
+                  0.0,
+                  0.0
+                ],
+                [
+                  -0.4481282552083333,
+                  -0.008333333333333333,
+                  0.008333333333333333
+                ]
+              ],
+              "training_residual_mean": [
+                [
+                  0.16910400390625,
+                  0.0020833333333333333,
+                  -0.0020833333333333333
+                ],
+                [
+                  -0.16422932942708332,
+                  0.0020833333333333333,
+                  -0.0020833333333333333
+                ],
+                [
+                  0.40087483723958334,
+                  0.0020833333333333333,
+                  -0.0020833333333333333
+                ],
+                [
+                  -0.40574951171875,
+                  -0.00625,
+                  0.00625
+                ]
+              ],
+              "heldout_residual_mse_components": [
+                [
+                  0.6388638153755002,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.056394814625382414,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.27688776470720766,
+                  0.0,
+                  0.0
+                ],
+                [
+                  2.426836989232235,
+                  0.0,
+                  0.0
+                ]
+              ],
+              "heldout_mse_components": [
+                [
+                  0.5741879307644233,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.08554467096096938,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.2277550015267398,
+                  0.0,
+                  0.0
+                ],
+                [
+                  2.9489478204730486,
+                  0.0,
+                  0.0
+                ]
+              ]
+            }
+          },
+          "counts": {
+            "metadata_rows_read": 140,
+            "packed_roots": 35,
+            "training_roots_read": 31,
+            "board_feature_rows": 35,
+            "tree_fits": 2,
+            "fit_rows": 31,
+            "fit_roots": 31,
+            "fit_output_vectors": 124,
+            "centered_target_roots": 31,
+            "validation_roots_read": 4,
+            "tree_apply_rows": 8,
+            "tree_split_visits": 17,
+            "residual_tree_apply_rows": 4,
+            "residual_tree_split_visits": 9,
+            "residual_prediction_roots": 4,
+            "residual_predicted_output_vectors": 16,
+            "anchor_tree_apply_rows": 4,
+            "anchor_tree_split_visits": 8,
+            "anchor_prediction_roots": 4,
+            "anchor_predicted_output_vectors": 16
+          },
+          "seconds": 0.6637303030001931
+        },
+        "construction_seconds": 216.33187206904404
+      },
+      {
+        "id": 2,
+        "arm": "REPEAT",
+        "dataset": {
+          "roots": 24,
+          "training_roots": 20,
+          "heldout_roots": 4,
+          "records": 96
+        },
+        "update": {
+          "checkpoint": 12,
+          "anchor_checkpoint": 12,
+          "input_records": 96,
+          "reference_records_excluded": 0,
+          "input_roots": 24,
+          "training_roots": 20,
+          "heldout_roots": 4,
+          "training_records": 80,
+          "heldout_records": 16,
+          "min_samples_leaf_unit": "roots",
+          "anchor_tree_fits": 0,
+          "queries": {
+            "reward": {
+              "training_roots": 10,
+              "heldout_roots": 2,
+              "training_records": 40,
+              "heldout_records": 8,
+              "nodes": 7,
+              "leaves": 4,
+              "training_target_mean": [
+                [
+                  -0.16280517578125,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.17843017578125,
+                  -0.0125,
+                  0.0125
+                ],
+                [
+                  0.1612548828125,
+                  0.0,
+                  0.0
+                ],
+                [
+                  -0.01395263671875,
+                  -0.00625,
+                  0.00625
+                ]
+              ],
+              "training_residual_mean": [
+                [
+                  -0.2035369873046875,
+                  0.0046875,
+                  -0.0046875
+                ],
+                [
+                  0.1376983642578125,
+                  -0.0078125,
+                  0.0078125
+                ],
+                [
+                  0.1205230712890625,
+                  0.0046875,
+                  -0.0046875
+                ],
+                [
+                  -0.0546844482421875,
+                  -0.0015625,
+                  0.0015625
+                ]
+              ],
+              "heldout_residual_mse_components": [
+                [
+                  0.4669718911172822,
+                  0.0006103515625,
+                  0.0006103515625
+                ],
+                [
+                  1.0393141527893022,
+                  0.0006103515625,
+                  0.0006103515625
+                ],
+                [
+                  0.9078683425905183,
+                  0.0006103515625,
+                  0.0006103515625
+                ],
+                [
+                  0.0025761156575754285,
+                  0.0006103515625,
+                  0.0006103515625
+                ]
+              ],
+              "heldout_mse_components": [
+                [
+                  0.036538916652918696,
+                  0.006578233506944444,
+                  0.006578233506944444
+                ],
+                [
+                  1.8813400842999628,
+                  0.01601833767361111,
+                  0.01601833767361111
+                ],
+                [
+                  2.292263930365961,
+                  0.006903754340277777,
+                  0.006903754340277777
+                ],
+                [
+                  0.6614376790950903,
+                  0.015692816840277776,
+                  0.015692816840277776
+                ]
+              ]
+            },
+            "risk_goal": {
+              "training_roots": 10,
+              "heldout_roots": 2,
+              "training_records": 40,
+              "heldout_records": 8,
+              "nodes": 9,
+              "leaves": 5,
+              "training_target_mean": [
+                [
+                  0.2024658203125,
+                  0.0,
+                  0.0
+                ],
+                [
+                  -0.234521484375,
+                  -0.00625,
+                  0.00625
+                ],
+                [
+                  0.29638671875,
+                  -0.00625,
+                  0.00625
+                ],
+                [
+                  -0.10081787109375,
+                  -0.0125,
+                  0.0125
+                ]
+              ],
+              "training_residual_mean": [
+                [
+                  0.1615875244140625,
+                  0.00625,
+                  -0.00625
+                ],
+                [
+                  -0.2753997802734375,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.2555084228515625,
+                  0.0,
+                  0.0
+                ],
+                [
+                  -0.1416961669921875,
+                  -0.00625,
+                  0.00625
+                ]
+              ],
+              "heldout_residual_mse_components": [
+                [
+                  0.00046183739323168993,
+                  0.000152587890625,
+                  0.000152587890625
+                ],
+                [
+                  0.06092017248738557,
+                  0.000396728515625,
+                  0.000396728515625
+                ],
+                [
+                  0.22611855354625732,
+                  0.000152587890625,
+                  0.000152587890625
+                ],
+                [
+                  0.04762661282438785,
+                  0.001129150390625,
+                  0.001129150390625
+                ]
+              ],
+              "heldout_mse_components": [
+                [
+                  0.11671739093597151,
+                  0.000152587890625,
+                  0.000152587890625
+                ],
+                [
+                  0.12280427345022976,
+                  0.000396728515625,
+                  0.000396728515625
+                ],
+                [
+                  0.4483549603286924,
+                  0.000152587890625,
+                  0.000152587890625
+                ],
+                [
+                  0.08470259132122417,
+                  0.001129150390625,
+                  0.001129150390625
+                ]
+              ]
+            }
+          },
+          "counts": {
+            "metadata_rows_read": 96,
+            "packed_roots": 24,
+            "training_roots_read": 20,
+            "board_feature_rows": 24,
+            "tree_fits": 2,
+            "fit_rows": 20,
+            "fit_roots": 20,
+            "fit_output_vectors": 80,
+            "centered_target_roots": 20,
+            "validation_roots_read": 4,
+            "tree_apply_rows": 8,
+            "tree_split_visits": 15,
+            "residual_tree_apply_rows": 4,
+            "residual_tree_split_visits": 7,
+            "residual_prediction_roots": 4,
+            "residual_predicted_output_vectors": 16,
+            "anchor_tree_apply_rows": 4,
+            "anchor_tree_split_visits": 8,
+            "anchor_prediction_roots": 4,
+            "anchor_predicted_output_vectors": 16
+          },
+          "seconds": 0.002851831028237939
+        },
+        "construction_seconds": 214.6029987130314
+      }
+    ]
+  },
+  "validation": {
+    "lifecycles": [
+      {
+        "id": 0,
+        "source_work": {
+          "environment_random_draws": 8852,
+          "initial_spawns": 16,
+          "ground_state_status_calls": 4418,
+          "ground_status_internal_swipe_calls": 17672,
+          "ground_swipe_calls": 22082,
+          "ground_explicit_swipe_calls": 4410,
+          "sampled_transitions": 4410
+        },
+        "branch_work": {
+          "ground_state_status_calls": 338239,
+          "ground_status_internal_swipe_calls": 1352936,
+          "ground_swipe_calls": 1690535,
+          "ground_explicit_swipe_calls": 337599,
+          "environment_random_draws": 675198,
+          "sampled_transitions": 337599
+        },
+        "planning_counts": {
+          "learned_terminal_checks": 684018,
+          "learned_swipe_calls": 2736072,
+          "learned_line_rewrites": 10944288,
+          "controller_active_decisions": 342009,
+          "h2_active_actions": 340729,
+          "legal_swipes": 9348390,
+          "model_uniform_draws": 1368036,
+          "model_spawn_samples": 2378270,
+          "h2_cutoff_contracts": 2378270,
+          "h2_contract_compiled_programs": 340729,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 2378270,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 1725720,
+          "h2_contract_effect_key_constructions": 8154641,
+          "h2_contract_effect_cache_lookups": 8154641,
+          "h2_contract_effect_cache_hits": 1665646,
+          "h2_contract_effect_cache_entries": 6488995,
+          "h2_contract_effect_score_aggregations": 6488995,
+          "h2_contract_effect_output_line_references": 32618564,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 8154641,
+          "h2_contract_direct_observation_evaluations": 2378270,
+          "h2_contract_prepare_calls": 2378270,
+          "h2_contract_line_lookups": 38052320,
+          "h2_contract_line_evaluations": 19497095,
+          "h2_contract_line_summary_adjacent_tests": 57700457,
+          "h2_contract_line_cache_hits": 18555225,
+          "h2_contract_context_contract_evaluations": 2378270,
+          "h2_contract_predicate_calls": 2378270,
+          "h2_contract_candidate_action_changed_tests": 9513080,
+          "h2_contract_candidate_action_predicate_evaluations": 6488995,
+          "h2_contract_terminal_predicate_evaluations": 6488995,
+          "h2_contract_terminal_spawn_rank_classifications": 12977990,
+          "h2_contract_predicate_materializations": 2378270,
+          "h2_contract_contract_cache_lookups": 2378270,
+          "h2_contract_contract_fraction_accumulations": 11673576,
+          "h2_contract_terminal_probability_combinations": 11673576,
+          "h2_contract_contract_cache_hits": 652550,
+          "h2_contract_base_adjacent_tests": 1982641,
+          "h2_contract_cross_line_adjacent_tests": 1190697,
+          "h2_contract_base_hole_neighbor_reads": 70361,
+          "h2_contract_hole_neighbor_rank_reads": 149499,
+          "fragment_selections": 640,
+          "fragments_initiated": 512,
+          "dummy_model_uniform_draws": 5120,
+          "fragment_active_actions": 1280
+        },
+        "outcomes": {
+          "LOST": 643,
+          "WON": 5
+        },
+        "source_games": 8,
+        "roots": 8,
+        "complete_roots": 8,
+        "incomplete_roots": 0,
+        "branch_trajectories": 640,
+        "seconds": 306.18428178399336
+      },
+      {
+        "id": 1,
+        "source_work": {
+          "environment_random_draws": 9602,
+          "initial_spawns": 16,
+          "ground_state_status_calls": 4793,
+          "ground_status_internal_swipe_calls": 19172,
+          "ground_swipe_calls": 23957,
+          "ground_explicit_swipe_calls": 4785,
+          "sampled_transitions": 4785
+        },
+        "branch_work": {
+          "ground_state_status_calls": 329946,
+          "ground_status_internal_swipe_calls": 1319756,
+          "ground_swipe_calls": 1649062,
+          "ground_explicit_swipe_calls": 329306,
+          "environment_random_draws": 658612,
+          "sampled_transitions": 329306
+        },
+        "planning_counts": {
+          "learned_terminal_checks": 668182,
+          "learned_swipe_calls": 2672728,
+          "learned_line_rewrites": 10690912,
+          "controller_active_decisions": 334091,
+          "h2_active_actions": 332811,
+          "legal_swipes": 9123654,
+          "model_uniform_draws": 1336364,
+          "model_spawn_samples": 2321022,
+          "h2_cutoff_contracts": 2321022,
+          "h2_contract_compiled_programs": 332811,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 2321022,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 1680643,
+          "h2_contract_effect_key_constructions": 7958666,
+          "h2_contract_effect_cache_lookups": 7958666,
+          "h2_contract_effect_cache_hits": 1636530,
+          "h2_contract_effect_cache_entries": 6322136,
+          "h2_contract_effect_score_aggregations": 6322136,
+          "h2_contract_effect_output_line_references": 31834664,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 7958666,
+          "h2_contract_direct_observation_evaluations": 2321022,
+          "h2_contract_prepare_calls": 2321022,
+          "h2_contract_line_lookups": 37136352,
+          "h2_contract_line_evaluations": 18983823,
+          "h2_contract_line_summary_adjacent_tests": 56178622,
+          "h2_contract_line_cache_hits": 18152529,
+          "h2_contract_context_contract_evaluations": 2321022,
+          "h2_contract_predicate_calls": 2321022,
+          "h2_contract_candidate_action_changed_tests": 9284088,
+          "h2_contract_candidate_action_predicate_evaluations": 6322136,
+          "h2_contract_terminal_predicate_evaluations": 6322136,
+          "h2_contract_terminal_spawn_rank_classifications": 12644272,
+          "h2_contract_predicate_materializations": 2321022,
+          "h2_contract_contract_cache_lookups": 2321022,
+          "h2_contract_contract_fraction_accumulations": 11369298,
+          "h2_contract_terminal_probability_combinations": 11369298,
+          "h2_contract_contract_cache_hits": 640379,
+          "h2_contract_base_adjacent_tests": 1932473,
+          "h2_contract_cross_line_adjacent_tests": 1142091,
+          "h2_contract_base_hole_neighbor_reads": 67212,
+          "h2_contract_hole_neighbor_rank_reads": 143346,
+          "fragment_selections": 640,
+          "fragments_initiated": 512,
+          "dummy_model_uniform_draws": 5120,
+          "fragment_active_actions": 1280
+        },
+        "outcomes": {
+          "LOST": 641,
+          "WON": 7
+        },
+        "source_games": 8,
+        "roots": 8,
+        "complete_roots": 8,
+        "incomplete_roots": 0,
+        "branch_trajectories": 640,
+        "seconds": 296.33885913097765
+      },
+      {
+        "id": 2,
+        "source_work": {
+          "environment_random_draws": 9128,
+          "initial_spawns": 16,
+          "ground_state_status_calls": 4556,
+          "ground_status_internal_swipe_calls": 18224,
+          "ground_swipe_calls": 22772,
+          "ground_explicit_swipe_calls": 4548,
+          "sampled_transitions": 4548
+        },
+        "branch_work": {
+          "ground_state_status_calls": 328068,
+          "ground_status_internal_swipe_calls": 1312264,
+          "ground_swipe_calls": 1639692,
+          "ground_explicit_swipe_calls": 327428,
+          "environment_random_draws": 654856,
+          "sampled_transitions": 327428
+        },
+        "planning_counts": {
+          "learned_terminal_checks": 663952,
+          "learned_swipe_calls": 2655808,
+          "learned_line_rewrites": 10623232,
+          "controller_active_decisions": 331976,
+          "h2_active_actions": 330696,
+          "legal_swipes": 9085843,
+          "model_uniform_draws": 1327904,
+          "model_spawn_samples": 2309940,
+          "h2_cutoff_contracts": 2309940,
+          "h2_contract_compiled_programs": 330696,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 2309940,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 1672966,
+          "h2_contract_effect_key_constructions": 7926218,
+          "h2_contract_effect_cache_lookups": 7926218,
+          "h2_contract_effect_cache_hits": 1625181,
+          "h2_contract_effect_cache_entries": 6301037,
+          "h2_contract_effect_score_aggregations": 6301037,
+          "h2_contract_effect_output_line_references": 31704872,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 7926218,
+          "h2_contract_direct_observation_evaluations": 2309940,
+          "h2_contract_prepare_calls": 2309940,
+          "h2_contract_line_lookups": 36959040,
+          "h2_contract_line_evaluations": 18859187,
+          "h2_contract_line_summary_adjacent_tests": 55808386,
+          "h2_contract_line_cache_hits": 18099853,
+          "h2_contract_context_contract_evaluations": 2309940,
+          "h2_contract_predicate_calls": 2309940,
+          "h2_contract_candidate_action_changed_tests": 9239760,
+          "h2_contract_candidate_action_predicate_evaluations": 6301037,
+          "h2_contract_terminal_predicate_evaluations": 6301037,
+          "h2_contract_terminal_spawn_rank_classifications": 12602074,
+          "h2_contract_predicate_materializations": 2309940,
+          "h2_contract_contract_cache_lookups": 2309940,
+          "h2_contract_contract_fraction_accumulations": 11323442,
+          "h2_contract_terminal_probability_combinations": 11323442,
+          "h2_contract_contract_cache_hits": 636974,
+          "h2_contract_base_adjacent_tests": 1883024,
+          "h2_contract_cross_line_adjacent_tests": 1117073,
+          "h2_contract_hole_neighbor_rank_reads": 139967,
+          "h2_contract_base_hole_neighbor_reads": 65564,
+          "fragment_selections": 640,
+          "fragments_initiated": 512,
+          "dummy_model_uniform_draws": 5120,
+          "fragment_active_actions": 1280
+        },
+        "outcomes": {
+          "LOST": 646,
+          "WON": 2
+        },
+        "source_games": 8,
+        "roots": 8,
+        "complete_roots": 8,
+        "incomplete_roots": 0,
+        "branch_trajectories": 640,
+        "seconds": 300.39890613104217
+      }
+    ],
+    "source_work": {
+      "environment_random_draws": 27582,
+      "initial_spawns": 48,
+      "ground_state_status_calls": 13767,
+      "ground_status_internal_swipe_calls": 55068,
+      "ground_swipe_calls": 68811,
+      "ground_explicit_swipe_calls": 13743,
+      "sampled_transitions": 13743
+    },
+    "branch_work": {
+      "ground_state_status_calls": 996253,
+      "ground_status_internal_swipe_calls": 3984956,
+      "ground_swipe_calls": 4979289,
+      "ground_explicit_swipe_calls": 994333,
+      "environment_random_draws": 1988666,
+      "sampled_transitions": 994333
+    },
+    "counts": {
+      "source_games": 24,
+      "roots": 24,
+      "complete_roots": 24,
+      "incomplete_roots": 0,
+      "branch_trajectories": 1920
+    }
+  },
+  "inherited": {
+    "lifecycles": [
+      {
+        "id": 0,
+        "source_work": {
+          "environment_random_draws": 25048,
+          "initial_spawns": 48,
+          "ground_state_status_calls": 12500,
+          "ground_status_internal_swipe_calls": 50000,
+          "ground_swipe_calls": 62476,
+          "ground_explicit_swipe_calls": 12476,
+          "sampled_transitions": 12476
+        },
+        "branch_work": {
+          "ground_state_status_calls": 500083,
+          "ground_status_internal_swipe_calls": 2000296,
+          "ground_swipe_calls": 2499419,
+          "ground_explicit_swipe_calls": 499123,
+          "environment_random_draws": 998246,
+          "sampled_transitions": 499123
+        },
+        "joint_fit_counts": {
+          "metadata_rows_read": 144,
+          "packed_roots": 36,
+          "training_roots_read": 30,
+          "board_feature_rows": 36,
+          "tree_fits": 4,
+          "fit_rows": 30,
+          "fit_roots": 30,
+          "fit_output_vectors": 120,
+          "validation_roots_read": 6,
+          "tree_apply_rows": 6,
+          "tree_split_visits": 12
+        },
+        "residual_fit_counts": {
+          "metadata_rows_read": 144,
+          "packed_roots": 36,
+          "training_roots_read": 30,
+          "board_feature_rows": 36,
+          "tree_fits": 4,
+          "fit_rows": 30,
+          "fit_roots": 30,
+          "fit_output_vectors": 120,
+          "centered_target_roots": 30,
+          "validation_roots_read": 6,
+          "tree_apply_rows": 12,
+          "tree_split_visits": 24,
+          "residual_tree_apply_rows": 6,
+          "residual_tree_split_visits": 12,
+          "residual_prediction_roots": 6,
+          "residual_predicted_output_vectors": 24,
+          "anchor_tree_apply_rows": 6,
+          "anchor_tree_split_visits": 12,
+          "anchor_prediction_roots": 6,
+          "anchor_predicted_output_vectors": 24
+        },
+        "construction_seconds": 511.1321202419931
+      },
+      {
+        "id": 1,
+        "source_work": {
+          "environment_random_draws": 31268,
+          "initial_spawns": 48,
+          "ground_state_status_calls": 15610,
+          "ground_status_internal_swipe_calls": 62440,
+          "ground_swipe_calls": 78026,
+          "ground_explicit_swipe_calls": 15586,
+          "sampled_transitions": 15586
+        },
+        "branch_work": {
+          "ground_state_status_calls": 486792,
+          "ground_status_internal_swipe_calls": 1947160,
+          "ground_swipe_calls": 2432992,
+          "ground_explicit_swipe_calls": 485832,
+          "environment_random_draws": 971664,
+          "sampled_transitions": 485832
+        },
+        "joint_fit_counts": {
+          "metadata_rows_read": 144,
+          "packed_roots": 36,
+          "training_roots_read": 30,
+          "board_feature_rows": 36,
+          "tree_fits": 4,
+          "fit_rows": 30,
+          "fit_roots": 30,
+          "fit_output_vectors": 120,
+          "validation_roots_read": 6,
+          "tree_apply_rows": 6,
+          "tree_split_visits": 9
+        },
+        "residual_fit_counts": {
+          "metadata_rows_read": 144,
+          "packed_roots": 36,
+          "training_roots_read": 30,
+          "board_feature_rows": 36,
+          "tree_fits": 4,
+          "fit_rows": 30,
+          "fit_roots": 30,
+          "fit_output_vectors": 120,
+          "centered_target_roots": 30,
+          "validation_roots_read": 6,
+          "tree_apply_rows": 12,
+          "tree_split_visits": 21,
+          "residual_tree_apply_rows": 6,
+          "residual_tree_split_visits": 12,
+          "residual_prediction_roots": 6,
+          "residual_predicted_output_vectors": 24,
+          "anchor_tree_apply_rows": 6,
+          "anchor_tree_split_visits": 9,
+          "anchor_prediction_roots": 6,
+          "anchor_predicted_output_vectors": 24
+        },
+        "construction_seconds": 502.17266253201524
+      },
+      {
+        "id": 2,
+        "source_work": {
+          "environment_random_draws": 33302,
+          "initial_spawns": 48,
+          "ground_state_status_calls": 16627,
+          "ground_status_internal_swipe_calls": 66508,
+          "ground_swipe_calls": 83111,
+          "ground_explicit_swipe_calls": 16603,
+          "sampled_transitions": 16603
+        },
+        "branch_work": {
+          "ground_state_status_calls": 490648,
+          "ground_status_internal_swipe_calls": 1962572,
+          "ground_swipe_calls": 2452260,
+          "ground_explicit_swipe_calls": 489688,
+          "environment_random_draws": 979376,
+          "sampled_transitions": 489688
+        },
+        "joint_fit_counts": {
+          "metadata_rows_read": 144,
+          "packed_roots": 36,
+          "training_roots_read": 30,
+          "board_feature_rows": 36,
+          "tree_fits": 4,
+          "fit_rows": 30,
+          "fit_roots": 30,
+          "fit_output_vectors": 120,
+          "validation_roots_read": 6,
+          "tree_apply_rows": 6,
+          "tree_split_visits": 10
+        },
+        "residual_fit_counts": {
+          "metadata_rows_read": 144,
+          "packed_roots": 36,
+          "training_roots_read": 30,
+          "board_feature_rows": 36,
+          "tree_fits": 4,
+          "fit_rows": 30,
+          "fit_roots": 30,
+          "fit_output_vectors": 120,
+          "centered_target_roots": 30,
+          "validation_roots_read": 6,
+          "tree_apply_rows": 12,
+          "tree_split_visits": 20,
+          "residual_tree_apply_rows": 6,
+          "residual_tree_split_visits": 10,
+          "residual_prediction_roots": 6,
+          "residual_predicted_output_vectors": 24,
+          "anchor_tree_apply_rows": 6,
+          "anchor_tree_split_visits": 10,
+          "anchor_prediction_roots": 6,
+          "anchor_predicted_output_vectors": 24
+        },
+        "construction_seconds": 508.3586014659959
+      }
+    ],
+    "source_work": {
+      "environment_random_draws": 89618,
+      "initial_spawns": 144,
+      "ground_state_status_calls": 44737,
+      "ground_status_internal_swipe_calls": 178948,
+      "ground_swipe_calls": 223613,
+      "ground_explicit_swipe_calls": 44665,
+      "sampled_transitions": 44665
+    },
+    "branch_work": {
+      "ground_state_status_calls": 1477523,
+      "ground_status_internal_swipe_calls": 5910028,
+      "ground_swipe_calls": 7384671,
+      "ground_explicit_swipe_calls": 1474643,
+      "environment_random_draws": 2949286,
+      "sampled_transitions": 1474643
+    },
+    "joint_fit_counts": {
+      "metadata_rows_read": 432,
+      "packed_roots": 108,
+      "training_roots_read": 90,
+      "board_feature_rows": 108,
+      "tree_fits": 12,
+      "fit_rows": 90,
+      "fit_roots": 90,
+      "fit_output_vectors": 360,
+      "validation_roots_read": 18,
+      "tree_apply_rows": 18,
+      "tree_split_visits": 31
+    },
+    "residual_fit_counts": {
+      "metadata_rows_read": 432,
+      "packed_roots": 108,
+      "training_roots_read": 90,
+      "board_feature_rows": 108,
+      "tree_fits": 12,
+      "fit_rows": 90,
+      "fit_roots": 90,
+      "fit_output_vectors": 360,
+      "centered_target_roots": 90,
+      "validation_roots_read": 18,
+      "tree_apply_rows": 36,
+      "tree_split_visits": 65,
+      "residual_tree_apply_rows": 18,
+      "residual_tree_split_visits": 34,
+      "residual_prediction_roots": 18,
+      "residual_predicted_output_vectors": 72,
+      "anchor_tree_apply_rows": 18,
+      "anchor_tree_split_visits": 31,
+      "anchor_prediction_roots": 18,
+      "anchor_predicted_output_vectors": 72
+    }
+  },
+  "query_responses": [
+    {
+      "id": 0,
+      "method": "H2_ONLY",
+      "pairs": 8,
+      "identical_trajectory_pairs": 3
+    },
+    {
+      "id": 0,
+      "method": "FROZEN_V85",
+      "pairs": 8,
+      "identical_trajectory_pairs": 1
+    },
+    {
+      "id": 0,
+      "method": "COVERAGE",
+      "pairs": 8,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 0,
+      "method": "REPEAT",
+      "pairs": 8,
+      "identical_trajectory_pairs": 1
+    },
+    {
+      "id": 1,
+      "method": "H2_ONLY",
+      "pairs": 8,
+      "identical_trajectory_pairs": 1
+    },
+    {
+      "id": 1,
+      "method": "FROZEN_V85",
+      "pairs": 8,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 1,
+      "method": "COVERAGE",
+      "pairs": 8,
+      "identical_trajectory_pairs": 2
+    },
+    {
+      "id": 1,
+      "method": "REPEAT",
+      "pairs": 8,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 2,
+      "method": "H2_ONLY",
+      "pairs": 8,
+      "identical_trajectory_pairs": 3
+    },
+    {
+      "id": 2,
+      "method": "FROZEN_V85",
+      "pairs": 8,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 2,
+      "method": "COVERAGE",
+      "pairs": 8,
+      "identical_trajectory_pairs": 1
+    },
+    {
+      "id": 2,
+      "method": "REPEAT",
+      "pairs": 8,
+      "identical_trajectory_pairs": 0
+    }
+  ],
+  "pairwise_histories": [
+    {
+      "id": 0,
+      "method": "H2_ONLY",
+      "pairs": 16,
+      "identical_to_h2": 16
+    },
+    {
+      "id": 0,
+      "method": "FROZEN_V85",
+      "pairs": 16,
+      "identical_to_h2": 9
+    },
+    {
+      "id": 0,
+      "method": "COVERAGE",
+      "pairs": 16,
+      "identical_to_h2": 9
+    },
+    {
+      "id": 0,
+      "method": "REPEAT",
+      "pairs": 16,
+      "identical_to_h2": 9
+    },
+    {
+      "id": 1,
+      "method": "H2_ONLY",
+      "pairs": 16,
+      "identical_to_h2": 16
+    },
+    {
+      "id": 1,
+      "method": "FROZEN_V85",
+      "pairs": 16,
+      "identical_to_h2": 3
+    },
+    {
+      "id": 1,
+      "method": "COVERAGE",
+      "pairs": 16,
+      "identical_to_h2": 3
+    },
+    {
+      "id": 1,
+      "method": "REPEAT",
+      "pairs": 16,
+      "identical_to_h2": 3
+    },
+    {
+      "id": 2,
+      "method": "H2_ONLY",
+      "pairs": 16,
+      "identical_to_h2": 16
+    },
+    {
+      "id": 2,
+      "method": "FROZEN_V85",
+      "pairs": 16,
+      "identical_to_h2": 6
+    },
+    {
+      "id": 2,
+      "method": "COVERAGE",
+      "pairs": 16,
+      "identical_to_h2": 8
+    },
+    {
+      "id": 2,
+      "method": "REPEAT",
+      "pairs": 16,
+      "identical_to_h2": 4
+    }
+  ],
+  "actual_executed_work": {
+    "acquisition": {
+      "COVERAGE": {
+        "source_work": {
+          "environment_random_draws": 41350,
+          "initial_spawns": 76,
+          "ground_state_status_calls": 20637,
+          "ground_status_internal_swipe_calls": 82548,
+          "ground_swipe_calls": 103147,
+          "ground_explicit_swipe_calls": 20599,
+          "sampled_transitions": 20599
+        },
+        "branch_work": {
+          "ground_state_status_calls": 700767,
+          "ground_status_internal_swipe_calls": 2803028,
+          "ground_swipe_calls": 3502429,
+          "ground_explicit_swipe_calls": 699401,
+          "environment_random_draws": 1398802,
+          "sampled_transitions": 699401
+        },
+        "counts": {
+          "source_games": 38,
+          "branch_trajectories": 1366,
+          "completed_blocks": 32,
+          "incomplete_blocks": 6,
+          "training_roots_added": 32
+        },
+        "fit_counts": {
+          "metadata_rows_read": 416,
+          "packed_roots": 104,
+          "training_roots_read": 92,
+          "board_feature_rows": 104,
+          "tree_fits": 6,
+          "fit_rows": 92,
+          "fit_roots": 92,
+          "fit_output_vectors": 368,
+          "centered_target_roots": 92,
+          "validation_roots_read": 12,
+          "tree_apply_rows": 24,
+          "tree_split_visits": 57,
+          "residual_tree_apply_rows": 12,
+          "residual_tree_split_visits": 32,
+          "residual_prediction_roots": 12,
+          "residual_predicted_output_vectors": 48,
+          "anchor_tree_apply_rows": 12,
+          "anchor_tree_split_visits": 25,
+          "anchor_prediction_roots": 12,
+          "anchor_predicted_output_vectors": 48
+        }
+      },
+      "REPEAT": {
+        "source_work": {},
+        "branch_work": {
+          "ground_state_status_calls": 721430,
+          "ground_status_internal_swipe_calls": 2885680,
+          "ground_swipe_calls": 3605680,
+          "ground_explicit_swipe_calls": 720000,
+          "environment_random_draws": 1440000,
+          "sampled_transitions": 720000
+        },
+        "counts": {
+          "source_games": 0,
+          "branch_trajectories": 1430,
+          "completed_blocks": 33,
+          "incomplete_blocks": 6,
+          "training_roots_added": 0
+        },
+        "fit_counts": {
+          "metadata_rows_read": 288,
+          "packed_roots": 72,
+          "training_roots_read": 60,
+          "board_feature_rows": 72,
+          "tree_fits": 6,
+          "fit_rows": 60,
+          "fit_roots": 60,
+          "fit_output_vectors": 240,
+          "centered_target_roots": 60,
+          "validation_roots_read": 12,
+          "tree_apply_rows": 24,
+          "tree_split_visits": 52,
+          "residual_tree_apply_rows": 12,
+          "residual_tree_split_visits": 27,
+          "residual_prediction_roots": 12,
+          "residual_predicted_output_vectors": 48,
+          "anchor_tree_apply_rows": 12,
+          "anchor_tree_split_visits": 25,
+          "anchor_prediction_roots": 12,
+          "anchor_predicted_output_vectors": 48
+        }
+      }
+    },
+    "validation": {
+      "source_work": {
+        "environment_random_draws": 27582,
+        "initial_spawns": 48,
+        "ground_state_status_calls": 13767,
+        "ground_status_internal_swipe_calls": 55068,
+        "ground_swipe_calls": 68811,
+        "ground_explicit_swipe_calls": 13743,
+        "sampled_transitions": 13743
+      },
+      "branch_work": {
+        "ground_state_status_calls": 996253,
+        "ground_status_internal_swipe_calls": 3984956,
+        "ground_swipe_calls": 4979289,
+        "ground_explicit_swipe_calls": 994333,
+        "environment_random_draws": 1988666,
+        "sampled_transitions": 994333
+      },
+      "counts": {
+        "source_games": 24,
+        "roots": 24,
+        "complete_roots": 24,
+        "incomplete_roots": 0,
+        "branch_trajectories": 1920
+      }
+    },
+    "evaluation": {
+      "H2_ONLY": {
+        "ground": {
+          "environment_random_draws": 60240,
+          "initial_spawns": 96,
+          "ground_state_status_calls": 30072,
+          "ground_status_internal_swipe_calls": 120284,
+          "ground_swipe_calls": 150308,
+          "ground_explicit_swipe_calls": 30024,
+          "sampled_transitions": 30024
+        },
+        "planning": {
+          "learned_terminal_checks": 60048,
+          "learned_swipe_calls": 240192,
+          "learned_line_rewrites": 960768,
+          "controller_active_decisions": 30024,
+          "h2_active_actions": 30024,
+          "legal_swipes": 827749,
+          "model_uniform_draws": 120096,
+          "model_spawn_samples": 210152,
+          "h2_cutoff_contracts": 210152,
+          "h2_contract_compiled_programs": 30024,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 210152,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 151026,
+          "h2_contract_effect_key_constructions": 722671,
+          "h2_contract_effect_cache_lookups": 722671,
+          "h2_contract_effect_cache_hits": 151763,
+          "h2_contract_effect_cache_entries": 570908,
+          "h2_contract_effect_score_aggregations": 570908,
+          "h2_contract_effect_output_line_references": 2890684,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 722671,
+          "h2_contract_direct_observation_evaluations": 210152,
+          "h2_contract_prepare_calls": 210152,
+          "h2_contract_line_lookups": 3362432,
+          "h2_contract_line_evaluations": 1669302,
+          "h2_contract_line_summary_adjacent_tests": 4939028,
+          "h2_contract_line_cache_hits": 1693130,
+          "h2_contract_context_contract_evaluations": 210152,
+          "h2_contract_predicate_calls": 210152,
+          "h2_contract_candidate_action_changed_tests": 840608,
+          "h2_contract_candidate_action_predicate_evaluations": 570908,
+          "h2_contract_terminal_predicate_evaluations": 570908,
+          "h2_contract_terminal_spawn_rank_classifications": 1141816,
+          "h2_contract_predicate_materializations": 210152,
+          "h2_contract_contract_cache_lookups": 210152,
+          "h2_contract_contract_fraction_accumulations": 1023408,
+          "h2_contract_terminal_probability_combinations": 1023408,
+          "h2_contract_contract_cache_hits": 59126,
+          "h2_contract_base_adjacent_tests": 182004,
+          "h2_contract_cross_line_adjacent_tests": 111142,
+          "h2_contract_hole_neighbor_rank_reads": 13834,
+          "h2_contract_base_hole_neighbor_reads": 6171
+        },
+        "outcomes": {
+          "LOST": 47,
+          "WON": 1
+        }
+      },
+      "FROZEN_V85": {
+        "ground": {
+          "environment_random_draws": 53442,
+          "initial_spawns": 96,
+          "ground_state_status_calls": 26673,
+          "ground_status_internal_swipe_calls": 106692,
+          "ground_swipe_calls": 133317,
+          "ground_explicit_swipe_calls": 26625,
+          "sampled_transitions": 26625
+        },
+        "planning": {
+          "learned_terminal_checks": 53250,
+          "learned_swipe_calls": 213000,
+          "learned_line_rewrites": 852000,
+          "controller_active_decisions": 26625,
+          "h2_active_actions": 26521,
+          "legal_swipes": 733409,
+          "model_uniform_draws": 106500,
+          "model_spawn_samples": 185786,
+          "h2_cutoff_contracts": 185786,
+          "h2_contract_compiled_programs": 26521,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 185786,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 133385,
+          "h2_contract_effect_key_constructions": 640133,
+          "h2_contract_effect_cache_lookups": 640133,
+          "h2_contract_effect_cache_hits": 134049,
+          "h2_contract_effect_cache_entries": 506084,
+          "h2_contract_effect_score_aggregations": 506084,
+          "h2_contract_effect_output_line_references": 2560532,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 640133,
+          "h2_contract_direct_observation_evaluations": 185786,
+          "h2_contract_prepare_calls": 185786,
+          "h2_contract_line_lookups": 2972576,
+          "h2_contract_line_evaluations": 1470748,
+          "h2_contract_line_summary_adjacent_tests": 4352063,
+          "h2_contract_line_cache_hits": 1501828,
+          "h2_contract_context_contract_evaluations": 185786,
+          "h2_contract_predicate_calls": 185786,
+          "h2_contract_candidate_action_changed_tests": 743144,
+          "h2_contract_candidate_action_predicate_evaluations": 506084,
+          "h2_contract_terminal_predicate_evaluations": 506084,
+          "h2_contract_terminal_spawn_rank_classifications": 1012168,
+          "h2_contract_predicate_materializations": 185786,
+          "h2_contract_contract_cache_lookups": 185786,
+          "h2_contract_contract_fraction_accumulations": 905400,
+          "h2_contract_terminal_probability_combinations": 905400,
+          "h2_contract_contract_cache_hits": 52401,
+          "selector_decisions": 48,
+          "board_feature_rows": 48,
+          "tree_apply_rows": 96,
+          "tree_split_visits": 226,
+          "anchor_tree_apply_rows": 48,
+          "anchor_tree_split_visits": 121,
+          "anchor_prediction_roots": 48,
+          "anchor_predicted_output_vectors": 192,
+          "residual_tree_apply_rows": 48,
+          "residual_tree_split_visits": 105,
+          "residual_prediction_roots": 48,
+          "residual_predicted_output_vectors": 192,
+          "reconstructed_output_vectors": 192,
+          "fragment_prediction_rows": 192,
+          "fragment_selections": 48,
+          "fragments_initiated": 38,
+          "dummy_model_uniform_draws": 416,
+          "fragment_active_actions": 104,
+          "h2_contract_base_adjacent_tests": 147176,
+          "h2_contract_cross_line_adjacent_tests": 89307,
+          "h2_contract_base_hole_neighbor_reads": 5098,
+          "h2_contract_hole_neighbor_rank_reads": 11453
+        },
+        "outcomes": {
+          "LOST": 48
+        }
+      },
+      "COVERAGE": {
+        "ground": {
+          "environment_random_draws": 54226,
+          "initial_spawns": 96,
+          "ground_state_status_calls": 27065,
+          "ground_status_internal_swipe_calls": 108260,
+          "ground_swipe_calls": 135277,
+          "ground_explicit_swipe_calls": 27017,
+          "sampled_transitions": 27017
+        },
+        "planning": {
+          "learned_terminal_checks": 54034,
+          "learned_swipe_calls": 216136,
+          "learned_line_rewrites": 864544,
+          "controller_active_decisions": 27017,
+          "h2_active_actions": 26910,
+          "legal_swipes": 746034,
+          "model_uniform_draws": 108068,
+          "model_spawn_samples": 188704,
+          "h2_cutoff_contracts": 188704,
+          "h2_contract_compiled_programs": 26910,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 188704,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 135712,
+          "h2_contract_effect_key_constructions": 651281,
+          "h2_contract_effect_cache_lookups": 651281,
+          "h2_contract_effect_cache_hits": 136218,
+          "h2_contract_effect_cache_entries": 515063,
+          "h2_contract_effect_score_aggregations": 515063,
+          "h2_contract_effect_output_line_references": 2605124,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 651281,
+          "h2_contract_direct_observation_evaluations": 188704,
+          "h2_contract_prepare_calls": 188704,
+          "h2_contract_line_lookups": 3019264,
+          "h2_contract_line_evaluations": 1494634,
+          "h2_contract_line_summary_adjacent_tests": 4422041,
+          "h2_contract_line_cache_hits": 1524630,
+          "h2_contract_context_contract_evaluations": 188704,
+          "h2_contract_predicate_calls": 188704,
+          "h2_contract_candidate_action_changed_tests": 754816,
+          "h2_contract_candidate_action_predicate_evaluations": 515063,
+          "h2_contract_terminal_predicate_evaluations": 515063,
+          "h2_contract_terminal_spawn_rank_classifications": 1030126,
+          "h2_contract_predicate_materializations": 188704,
+          "h2_contract_contract_cache_lookups": 188704,
+          "h2_contract_contract_fraction_accumulations": 922434,
+          "h2_contract_terminal_probability_combinations": 922434,
+          "h2_contract_contract_cache_hits": 52992,
+          "selector_decisions": 48,
+          "board_feature_rows": 48,
+          "tree_apply_rows": 96,
+          "tree_split_visits": 247,
+          "anchor_tree_apply_rows": 48,
+          "anchor_tree_split_visits": 121,
+          "anchor_prediction_roots": 48,
+          "anchor_predicted_output_vectors": 192,
+          "residual_tree_apply_rows": 48,
+          "residual_tree_split_visits": 126,
+          "residual_prediction_roots": 48,
+          "residual_predicted_output_vectors": 192,
+          "reconstructed_output_vectors": 192,
+          "fragment_prediction_rows": 192,
+          "fragment_selections": 48,
+          "fragments_initiated": 38,
+          "dummy_model_uniform_draws": 428,
+          "fragment_active_actions": 107,
+          "h2_contract_base_adjacent_tests": 146857,
+          "h2_contract_cross_line_adjacent_tests": 89258,
+          "h2_contract_hole_neighbor_rank_reads": 11261,
+          "h2_contract_base_hole_neighbor_reads": 5133
+        },
+        "outcomes": {
+          "LOST": 48
+        }
+      },
+      "REPEAT": {
+        "ground": {
+          "environment_random_draws": 56342,
+          "initial_spawns": 96,
+          "ground_state_status_calls": 28123,
+          "ground_status_internal_swipe_calls": 112488,
+          "ground_swipe_calls": 140563,
+          "ground_explicit_swipe_calls": 28075,
+          "sampled_transitions": 28075
+        },
+        "planning": {
+          "learned_terminal_checks": 56150,
+          "learned_swipe_calls": 224600,
+          "learned_line_rewrites": 898400,
+          "controller_active_decisions": 28075,
+          "h2_active_actions": 27992,
+          "legal_swipes": 771536,
+          "model_uniform_draws": 112300,
+          "model_spawn_samples": 195766,
+          "h2_cutoff_contracts": 195766,
+          "h2_contract_compiled_programs": 27992,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 195766,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 140850,
+          "h2_contract_effect_key_constructions": 673349,
+          "h2_contract_effect_cache_lookups": 673349,
+          "h2_contract_effect_cache_hits": 141076,
+          "h2_contract_effect_cache_entries": 532273,
+          "h2_contract_effect_score_aggregations": 532273,
+          "h2_contract_effect_output_line_references": 2693396,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 673349,
+          "h2_contract_direct_observation_evaluations": 195766,
+          "h2_contract_prepare_calls": 195766,
+          "h2_contract_line_lookups": 3132256,
+          "h2_contract_line_evaluations": 1552884,
+          "h2_contract_line_summary_adjacent_tests": 4594342,
+          "h2_contract_line_cache_hits": 1579372,
+          "h2_contract_context_contract_evaluations": 195766,
+          "h2_contract_predicate_calls": 195766,
+          "h2_contract_candidate_action_changed_tests": 783064,
+          "h2_contract_candidate_action_predicate_evaluations": 532273,
+          "h2_contract_terminal_predicate_evaluations": 532273,
+          "h2_contract_terminal_spawn_rank_classifications": 1064546,
+          "h2_contract_predicate_materializations": 195766,
+          "h2_contract_contract_cache_lookups": 195766,
+          "h2_contract_contract_fraction_accumulations": 954718,
+          "h2_contract_terminal_probability_combinations": 954718,
+          "h2_contract_contract_cache_hits": 54916,
+          "selector_decisions": 48,
+          "board_feature_rows": 48,
+          "tree_apply_rows": 96,
+          "tree_split_visits": 234,
+          "anchor_tree_apply_rows": 48,
+          "anchor_tree_split_visits": 121,
+          "anchor_prediction_roots": 48,
+          "anchor_predicted_output_vectors": 192,
+          "residual_tree_apply_rows": 48,
+          "residual_tree_split_visits": 113,
+          "residual_prediction_roots": 48,
+          "residual_predicted_output_vectors": 192,
+          "reconstructed_output_vectors": 192,
+          "fragment_prediction_rows": 192,
+          "fragment_selections": 48,
+          "fragments_initiated": 41,
+          "dummy_model_uniform_draws": 332,
+          "fragment_active_actions": 83,
+          "h2_contract_base_adjacent_tests": 167301,
+          "h2_contract_cross_line_adjacent_tests": 101856,
+          "h2_contract_base_hole_neighbor_reads": 5883,
+          "h2_contract_hole_neighbor_rank_reads": 12882
+        },
+        "outcomes": {
+          "LOST": 47,
+          "WON": 1
+        }
+      }
+    },
+    "new_acquisition_transitions": 1440000,
+    "new_validation_transitions": 1008076,
+    "new_evaluation_transitions": 111741,
+    "newly_sampled_transitions": 2559817,
+    "actual_wall_seconds": 767.2013005070039,
+    "workers": 3
+  },
+  "evidence_scope": "Acquisition budgets count actual source and branch transitions, including unfinished blocks. Validation and evaluation are independent additional work; inherited acquisition and fits are separate. Effects use the same terminal cohort across four methods, paired within lifecycle and averaged equally across lifecycles. Cutoffs retain costs but are not terminal failures. Complete execution does not certify scientific benefit; method cost attributions are not additive actual wall time."
+}

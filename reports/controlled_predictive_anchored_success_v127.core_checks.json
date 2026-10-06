@@ -1,0 +1,66 @@
+{
+  "attempts": [
+    {
+      "tests": 9,
+      "failures": 0,
+      "core_work": {
+        "replay_games": 4,
+        "replay_swipe_calls": 6,
+        "replay_line_table_lookups": 24,
+        "replay_recorded_spawns": 4,
+        "training_games": 12,
+        "training_observed_afterstates": 22,
+        "success_observation_updates": 12,
+        "unique_feature_updates": 200,
+        "count_array_writes": 400,
+        "feature_address_occurrences": 384,
+        "training_analytic_goals": 8,
+        "success_predictions": 30,
+        "terminal_goal_bypasses": 5,
+        "probability_feature_occurrences": 800,
+        "count_array_reads": 1600,
+        "censored_games": 1,
+        "censored_afterstates": 2,
+        "source_choose_calls": 24,
+        "source_learned_terminal_checks": 84,
+        "source_learned_swipe_calls": 80,
+        "source_line_table_lookups": 320,
+        "source_legal_swipes": 60,
+        "source_value_predictions": 50,
+        "source_table_lookups": 1600,
+        "choose_calls": 24,
+        "exact_anchor_bypasses": 16,
+        "source_terminal_goal_bypasses": 14,
+        "constant_probability_predictions": 3,
+        "checkpoint_saves": 1,
+        "checkpoint_scanned_entries": 16384,
+        "checkpoint_saved_addresses": 25,
+        "checkpoint_saved_count_entries": 50
+      },
+      "source_work": {
+        "choose_calls": 33,
+        "learned_terminal_checks": 114,
+        "learned_swipe_calls": 108,
+        "line_table_lookups": 432,
+        "legal_swipes": 81,
+        "value_predictions": 67,
+        "table_lookups": 2144,
+        "terminal_goal_bypasses": 20
+      },
+      "setup_counts": {
+        "cpp_compilations": 2,
+        "allocated_count_entries": 360448,
+        "allocated_count_bytes": 2883584,
+        "cpp_library_cache_hits": 20,
+        "lookup_line_rewrites": 256,
+        "allocated_weight_parameters": 180224,
+        "allocated_weight_bytes": 1441792,
+        "lookup_table_cache_hits": 10
+      },
+      "newly_sampled_environment_transitions": 0,
+      "fitted_afterstates": 12,
+      "unique_feature_updates": 200,
+      "scope": "Synthetic boards and retained-record fixtures only. Core source-prefixed counters overlap source_work."
+    }
+  ]
+}

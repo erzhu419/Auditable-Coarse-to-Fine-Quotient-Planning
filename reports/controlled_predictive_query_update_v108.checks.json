@@ -1,0 +1,21 @@
+{
+  "attempts": [
+    {
+      "failed_tests": 0,
+      "development_work": {
+        "neural_model_fits": 9,
+        "optimizer_steps": 57,
+        "diagnostic_candidate_predictions": 315,
+        "diagnostic_hidden_activations": 2520,
+        "direct_objective_evaluations": 11,
+        "direct_candidate_predictions": 5,
+        "direct_hidden_activations": 80
+      },
+      "production_neural_model_fits": 0,
+      "production_optimizer_steps": 0,
+      "environment_transitions": 0,
+      "model_transitions": 0,
+      "scope": "Short-step synthetic fits and analytic objectives; synthetic half lineage was not fitted here."
+    }
+  ]
+}

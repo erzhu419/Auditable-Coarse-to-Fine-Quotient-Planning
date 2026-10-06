@@ -1,0 +1,22 @@
+{
+  "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_nested_selection_v112.py",
+  "attempts": 1,
+  "returncode": 0,
+  "passed": 5,
+  "pytest_seconds": 0.32,
+  "scope": "Synthetic cached-log fixtures only. No production analysis, fits, neural scores or sampling.",
+  "detected_failures": [
+    "wrong source selection and outer contrast means",
+    "omitting source reference validation from learning cost or multiplying physical acquisition by folds",
+    "missing inner half/full candidate silently accepted",
+    "outer-reference or validation-history contamination of source-only selection",
+    "derived outer event differs from chosen retained baseline"
+  ],
+  "development_work": {
+    "new_environment_transitions": 0,
+    "new_synthetic_transitions": 0,
+    "neural_model_fits": 0,
+    "optimizer_steps": 0,
+    "neural_candidate_predictions": 0
+  }
+}

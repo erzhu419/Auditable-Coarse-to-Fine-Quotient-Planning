@@ -1,0 +1,22 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "development_work": {
+        "mock_source_games": 54,
+        "mock_fit_calls": 6,
+        "mock_control_games": 49,
+        "mock_payload_reads": 18,
+        "mock_prediction_records": 70,
+        "mock_predictive_games": 6,
+        "mock_planner_calls": 1,
+        "fresh_environment_seeds_checked": 312,
+        "historical_environment_seeds_checked": 436
+      },
+      "newly_sampled_environment_transitions": 0,
+      "new_synthetic_transitions": 0,
+      "neural_model_fits": 0,
+      "scope": "mock collectors, model payloads, planning, and historical seed arithmetic"
+    }
+  ]
+}

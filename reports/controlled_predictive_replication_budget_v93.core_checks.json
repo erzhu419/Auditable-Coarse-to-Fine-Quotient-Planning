@@ -1,0 +1,41 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_replication_budget_v93.py",
+      "session_failures": 0,
+      "scope": "Mock allocation and weighted means plus seven real terminal transitions; no campaign calls.",
+      "main_campaign_calls": 0,
+      "tree_fits": 0,
+      "ground_ground_state_status_calls": 14,
+      "ground_ground_status_internal_swipe_calls": 28,
+      "ground_ground_swipe_calls": 35,
+      "ground_ground_explicit_swipe_calls": 7,
+      "ground_environment_random_draws": 14,
+      "ground_sampled_transitions": 7,
+      "planning_learned_terminal_checks": 14,
+      "planning_learned_swipe_calls": 56,
+      "planning_learned_line_rewrites": 224,
+      "planning_controller_active_decisions": 7,
+      "planning_fragment_selections": 7,
+      "planning_fragments_initiated": 5,
+      "planning_h2_active_actions": 2,
+      "planning_legal_swipes": 28,
+      "planning_model_uniform_draws": 28,
+      "planning_h2_contract_compiled_programs": 2,
+      "planning_h2_contract_full_board_materializations": 0,
+      "planning_h2_contract_factorized_contexts": 0,
+      "planning_h2_contract_candidate_predicate_evaluations": 0,
+      "planning_h2_contract_contract_materializations": 0,
+      "planning_h2_contract_effect_key_constructions": 0,
+      "planning_h2_contract_effect_cache_lookups": 0,
+      "planning_h2_contract_effect_cache_hits": 0,
+      "planning_h2_contract_effect_cache_entries": 0,
+      "planning_h2_contract_effect_score_aggregations": 0,
+      "planning_h2_contract_effect_output_line_references": 0,
+      "planning_h2_contract_effect_vacancy_keys": 0,
+      "planning_h2_contract_effect_exact_output_keys": 0,
+      "planning_dummy_model_uniform_draws": 20,
+      "planning_fragment_active_actions": 5
+    }
+  ]
+}

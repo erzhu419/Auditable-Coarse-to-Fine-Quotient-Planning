@@ -15,10 +15,3615 @@ records the coverage mode/support hash/state count in `build_id`, and forbids RA
 certificate reuse outside that closure. This is an auditable scoped-build contract, not
 a claim of unrestricted reuse across arbitrary initial distributions.
 
-## Current representation research (2026-09-13)
+Research source, frozen protocols, reports and small execution/audit records are
+published through V327. Large new JSON results retain their complete content in
+the [compressed report snapshot](reports/publication/v327_snapshot/README.md),
+which includes instructions to restore their original paths. Raw trajectories,
+NPZ heads, native builds and local environments remain outside this source package.
 
-Read the [current progress, remaining bottlenecks and next route](reports/PROJECT_PROGRESS_2026_09_13.md)
-for the consolidated V76 status and the published evidence scope.
+## Current multi-episode learning research (2026-10-06)
+
+[V327 paired terminal reward/WIN intervention](reports/JOINT_TERMINAL_V327_RESULTS.md)
+fails decisively: sole final JOINT_RETURN-minus-own-FIRST is -6.662609,
+95% CI [-6.989917, -6.351002]; all sixteen lives decline and both tasks
+lose retained ability. JOINT-minus-WIN_ONLY is -5.416848 with a wholly
+negative nominal interval. Complete WIN tables are bit-exact between arms;
+only JOINT also learns the same suffix reward. Held-out reward MSE and WIN
+Brier improve while whole-game utility declines. Fixed-FIRST prediction
+improvement has not supplied a policy-improvement mechanism.
+FIRST-minus-SOURCE remains positive (+0.965274). Reused V326 FIRST/targets,
+two actual FIT and two validation members, 16 passes at alpha .0025,
+zero new training raw; all 12,288 new evaluation games terminate naturally.
+Forty finite cases and independent verification PASS. Full new CPU is
+403.10 seconds, or 6,128.48 with actual SOURCE/V326 once; audit CPU 20.22
+is separate. The frozen route is STOP_FIXED_FIRST_TERMINAL_REGRESSION.
+This stage closes without another quota/replay/alpha variant. Previous
+action-advantage, four-parameter direct strategy and closed-loop value
+updates also failed their respective tests. General strategic learning and
+equal-budget efficiency remain unestablished. A future structural-learning
+proposal must address a concrete decision defect before new experiments;
+development version count is not learner capability growth.
+
+[V326 terminal-grounded WIN learning intervention](reports/TERMINAL_WIN_V326_RESULTS.md)
+fails its sole whole-game primary: TERMINAL_WIN-minus-own-FIRST is
+-0.716429, 95% CI [-0.998638, -0.417674]; thirteen of sixteen new target
+learning histories decline. The same-root TERMINAL-minus-BOOTSTRAP contrast
+is -0.506544, nominal CI wholly negative. A retention fails, B remains
+unresolved; win rate and normalized score both decline. FIRST-minus-SOURCE
+remains positive (+1.081489), so the first adaptation is retained.
+Both WIN learners share 1,024 query roots/four start members per task/round,
+16 fixed-order passes and alpha .0025; complete FIRST reward stays unchanged.
+All 262,144 suffixes and 12,288 evaluation games terminate naturally.
+New training raw is 114,848,929, including 106,177,627 additional suffix tiles;
+terminal and bootstrap economic training raw are 126,183,273 and 20,005,646.
+Thirty-six finite cases pass; independent verification PASS checks all new
+physical traces, labels, actual heads, effects and costs. Full new CPU is
+4,023.55 seconds, or 5,725.39 with SOURCE once; audit CPU 1,384.79 is separate.
+Prospective phase seed ranges were widened to avoid actual cross-role reuse
+found in V324; its frozen results remain and its interval limitation is
+recorded. The retained-suffix joint reward/WIN intervention is completed
+in V327 above and yields further supported utility loss; its frozen route
+stops fixed-FIRST terminal regression. General strategic learning and
+equal-total-raw efficiency remain unestablished.
+
+[V325 fixed-snapshot WIN terminal diagnosis](reports/WIN_TERMINAL_V325_RESULTS.md)
+supports a small prediction improvement: sole FINAL_QUERY_WIN-minus-FIRST
+Brier change on QUERY roots is -0.00085428, 95% CI
+[-0.00092637, -0.00078072], negative in all sixteen lives. Brier improves
+about 0.35%; V324's added whole-game utility remains unconfirmed.
+Conditional teacher WIN bias on QUERY members is -0.084638 in A and
++0.083722 in B, nominal intervals wholly negative/positive; the pooled
+bias nearly cancels. Most root probability bias remains after WIN updates.
+All 32,768 new suffixes terminate naturally and pay 13,453,015 new tiles;
+no fits, head files or whole-game evaluations are added. Sixty-five finite
+cases pass; independent verification PASS checks every new physical trace,
+actual probabilities/logits and unchanged reward tables, effects and costs.
+Full new CPU is 442.75 seconds, or 3,160.89 with SOURCE/V324 once; audit
+CPU 205.85 seconds is separate. This is a fixed-FIRST-policy diagnostic
+on existing training roots. Its terminal-grounded learning intervention
+is completed in V326 above and yields a supported utility loss; the
+equal-total-raw efficiency comparison remains unestablished.
+
+[V324 fresh target WIN-learning histories](reports/WIN_LEARNING_V324_RESULTS.md)
+do not confirm added learning gain: sole QUERY_WIN-minus-FIRST primary
++0.108914, 95% CI [-0.116499, +0.325697]. A/B retention and matched-budget
+QUERY_WIN-minus-FACTUAL_WIN (+0.047632, CI [-0.270030, +0.377136]) remain
+unresolved. FIRST-minus-SOURCE is +0.778752, nominal CI wholly positive.
+All sixteen FIRST histories and post batches are newly collected; reward
+stays exact across both WIN-only learners and rounds. About 99% of teacher
+labels still bootstrap the frozen FIRST probability. All 12,288 new games
+terminate naturally; new training raw is 16,797,830 and evaluation raw
+10,073,878. Sixty-seven finite cases pass; independent verification PASS
+checks new facts, every target/path, actual head chains, effects and costs.
+Full new CPU is 1,016.31 seconds, or 2,718.15 with successful V312 SOURCE
+once; audit CPU 253.21 seconds is separate. These are new target learning
+histories under four fixed sources. Its terminal prediction diagnosis is
+completed in V325 above; its added learning utility remains unresolved.
+Cross-role seed reuse in V324 limits the independence interpretation of
+its intervals; details are retained in its report.
+
+[V323 frozen WIN-only new-stream validation](reports/WIN_CONFIRMATION_V323_RESULTS.md)
+supports its sole WIN_ONLY-minus-FIRST primary: +0.276123, 95% CI
+[+0.015834, +0.539142]. A retention passes; B remains unresolved
+(-0.044676, CI [-0.399903, +0.280746]), so retained execution gain is false.
+All 6,144 new games terminate naturally and pay 5,030,852 evaluation tiles,
+with no new fitting, training acquisition, parameter files or reused games.
+Sixty-two finite cases pass; independent verification PASS checks actual
+restored parameters, all game summaries, paired effects and costs.
+Full new CPU is 175.93 seconds, or 4,442.42 with successful inherited
+SOURCE/V317/V319/V321/V322 once; audit CPU 9.28 seconds is separate.
+This validates new execution streams on the existing learned cohort.
+Its fresh target-learning comparison is completed in V324 above; V323's
+B retention remains unresolved.
+
+[V322 saved reward/WIN component crossover](reports/COMPONENT_HEADS_V322_RESULTS.md)
+locates policy degradation in the current query reward update. Its sole
+REWARD_ONLY-minus-BOTH primary is -0.696301, 95% CI [-1.090645, -0.305826].
+Reward updates reduce utility with either WIN head: REWARD_ONLY minus FIRST
+is -2.411015 and BOTH minus WIN_ONLY -2.239206, nominal intervals wholly
+negative and both contrasts negative in all sixteen lives. WIN_ONLY minus
+FIRST is +0.524492, nominal CI [+0.074172, +0.994993], a development candidate;
+A retention remains unresolved. All 2,048 new games terminate and pay
+1,620,910 evaluation tiles; 2,048 control games are reused, with zero fitting
+or new training tiles. Forty-eight finite cases pass. Independent verification
+PASS checks complete saved hybrid tables, exact component separation and
+all natural-game summaries, paired effects and costs. Full new CPU is
+93.52 seconds, or 4,266.49 with inherited successful SOURCE/V317/V319/V321;
+audit CPU 21.93 seconds and V320 diagnosis are separate.
+Its frozen-candidate new execution-stream validation is completed in V323
+above; these component results are not independent learning confirmation.
+
+[V321 paired reward-target intervention](reports/REWARD_TARGETS_V321_RESULTS.md)
+does not establish query repair: its sole NSTEP_QUERY-minus-OLD_QUERY primary
+is +0.134449, 95% CI [-0.139427, +0.417099]. NSTEP_QUERY minus own FIRST
+is -1.714714, nominal CI [-2.188809, -1.239140], with loss in both A and B.
+All 128 old-label versions exactly reproduce V319 before new acquisition;
+WIN labels and corresponding risk parameters stay exact across reward targets.
+The fixed four-action returns still bootstrap 98.84% of members, so this
+does not establish removal of the diagnosed reward bias. All 6,144 fresh
+natural evaluation games terminate; 24,978,516 new target tiles are paid.
+Fifty-four distinct finite cases pass and independent verification PASS
+checks every new target physics/RNG/reward tail and 3,308 FIRST H2 probes.
+Full new CPU is 1,160.00 seconds, or 4,172.97 with inherited SOURCE/V317/V319;
+audit CPU 599.47 seconds and the earlier V320 diagnostic are separate.
+Its saved-head component mechanism diagnostic is completed in V322 above.
+
+[V320 fixed-root teacher terminal calibration](reports/TEACHER_CALIBRATION_V320_RESULTS.md)
+finds a more pessimistic combined QUERY-minus-FACTUAL teacher error:
+-0.433145, 95% CI [-0.528076, -0.330458], with fifteen negative lives
+and all four parent means negative. The nominal reward component is
+-0.833492; the WIN component +0.050043 partly offsets it. QUERY reward
+targets underestimate actual prescribed-DIRECT-then-FIRST-H2 returns by
+1.262176 on average. This establishes target calibration differences,
+without establishing learning gains or the cause of V319 behavior loss.
+All 32,768 continuations end naturally and pay 13,606,558 new tiles;
+saved initial spawns are reused. Forty-one new finite cases pass.
+Independent verification PASS checks all new physics/RNG/returns and
+3,442 frozen FIRST H2 probes. Execution and audit exit 0 with empty stderr.
+Full new CPU is 425.58 seconds, or 3,438.55 with successful inherited
+SOURCE/V317/V319 once; audit CPU is 170.35 seconds separately.
+Its paired reward-target intervention is completed in V321 above.
+
+[V319 matched query-state supervision](reports/QUERY_SUPERVISION_V319_RESULTS.md)
+supports loss on its sole own-FIRST primary: -1.533998, 95% CI
+[-1.950912, -1.112646]. QUERY minus same-budget FACTUAL is -1.622478,
+CI [-2.031787, -1.220476], negative in all sixteen lives and four parent
+means. A and B own-FIRST contrasts both support loss; FACTUAL's further
+growth remains unresolved. Both arms use 4,194,304 fresh tiles and
+1,048,576 rootgroups, with the same frozen FIRST teacher and paired RNG.
+All 6,144 new evaluations end naturally. Forty-two distinct new finite
+checks ultimately pass; independent verification PASS checks every new
+spawn/target, all census paths/draws and 128 private head versions.
+Execution and audit exit 0 with empty stderr. Full measured experiment
+CPU is 445.88 seconds, or 3,012.97 with successful SOURCE/V317 once;
+audit CPU is 184.10 seconds separately. This uniform query-supervision
+recipe closes. Its fixed-root terminal calibration is completed in V320 above.
+
+[V318 frozen A target/propagation interventions](reports/RETENTION_MECHANISM_V318_RESULTS.md)
+exactly reproduces every V317 GREEDY v2 head and native target before the
+counterfactuals. All four prespecified Bonferroni 98.75% mechanism intervals
+cross zero: freezing FIRST bootstrap (-0.278866), exact-FIT localization
+(-0.248638), their interaction (+0.208817), and first-round localization
+(-0.173534). All secondary own-FIRST intervals also cross zero. The new
+2,048 paired-seed games end naturally, with no new training acquisition.
+Localized H2 leaf queries use the updated head only about 0.34% of the time;
+this is exact-board coverage, not tuple-feature coverage or proof that
+generalization is harmful. New CPU is 173.99 seconds; 32 distinct new finite
+checks ultimately pass. Independent verification PASS checks 32 exact support
+sets, 16 new heads, 384 literal H2 views and all new target/action rows.
+Execution and audit exit 0 with empty stderr; audit CPU is 56.01 seconds.
+The target-freeze/local-fallback route closes without a supported repair.
+The direct query-state supervision trial is completed in V319 above.
+
+[V317 sampled joint greedy backup](reports/GREEDY_TARGETS_V317_RESULTS.md)
+supports its sole own-FIRST primary: +0.633261, 95% CI [0.086755, 1.195742],
+with all four parent means positive. B own-FIRST growth is +1.024849,
+CI [0.247683, 1.835102]; A preservation remains unresolved at +0.241673,
+CI [-0.517769, 1.039594]. GREEDY minus recorded-action SARSA is +0.275824,
+CI [-0.214608, 0.811544], so an operator advantage is not established.
+Net SOURCE gain is +1.501001, including first adaptation. Retained growth
+and the operator-mechanism endpoint remain unconfirmed. Both arms process
+3,313,217 shared states and 97,000,522 actual writes; extra greedy search
+is paid. All 6,144 evaluations terminate naturally. The 29 new finite
+checks ultimately pass. Successful target CPU is 865.25 seconds, or
+2,567.09 with SOURCE once; a failed serialization attempt is preserved
+with 2,102,096 additional raw and unmeasured CPU. Independent audit PASS
+replays 82,305 new records, reconstructs 160 heads and checks both arms'
+complete saved targets, including every greedy action. Audit CPU is 153.90
+seconds, separately recorded. Execution and audit exit 0 with empty stderr.
+The frozen A mechanism interventions are completed in V318 above.
+
+[V316 fresh target-training confirmation](reports/LOCAL_TARGETS_V316_RESULTS.md)
+reproduces the unchanged full TD method's advantage over MC: +0.731802,
+95% CI [0.352879, 1.124543]. The sole own-FIRST primary remains unresolved:
++0.072336, CI [-0.189859, 0.383456]. B own-FIRST growth is supported at
++0.353905, CI [0.029206, 0.678600]; A preservation remains unresolved.
+Net SOURCE gain is +1.403883, including the +1.331547 first-adaptation gain.
+MC own-FIRST loss is supported. These sixteen fresh training lives use
+8,409,055 new raw and 6,144 natural-terminal evaluations; the arms' states
+and writes match exactly. All 19 new finite checks pass. Independent audit
+PASS replays 82,304 new records, reconstructs 160 heads and checks every saved
+native TD target. New CPU is 816.23 seconds, or 2,518.07 with SOURCE once.
+Retained growth remains unconfirmed under the four reused SOURCE parents.
+This fixed-behavior recipe is now closed after its new training confirmation.
+The sampled greedy joint-backup comparison is completed in V317 above.
+
+[V315 frozen reward/WIN target decomposition](reports/COMPONENT_TARGETS_V315_RESULTS.md)
+identifies positive reward-recurrence contributions under either fixed WIN table:
++0.747181, Bonferroni 99% CI [0.323909, 1.119718], and +0.844563,
+CI [0.368731, 1.321903]. All four parent means are positive for both effects.
+WIN contributions and interaction remain unresolved in the five-effect family.
+Fresh-evaluation secondary TD_TD minus FIRST is +0.417721, 95% CI
+[0.090163, 0.757989], but A preservation remains unresolved; no combination
+establishes both-task preservation. All 5,120 new games terminate naturally,
+with no extra training or mixed-table weight copies. The 36 distinct finite
+checks pass; independent audit PASS reconstructs 96 heads and verifies 160
+native initial-state action probes, endpoint pairing, signed effects and costs.
+New CPU is 185.42 seconds, or 2,752.16 seconds carrying SOURCE/V314 once.
+This is new evaluation of the same frozen V314 training instances, not a new
+training confirmation; it does not revise the V314 own-FIRST primary.
+The fresh-training confirmation is completed in V316 above.
+
+[V314 fixed-policy local targets versus complete MC](reports/LOCAL_TARGETS_V314_RESULTS.md)
+supports the target intervention: TD_LOCAL minus MC_LOCAL is +0.712212,
+CI [0.321978, 1.115246], with all four parent means positive and 14/16 positive
+lifecycles. The own-FIRST primary remains unresolved: +0.274527,
+CI [-0.069239, 0.592469]; A/B preservation is also unresolved. Net SOURCE gain
+is +0.988779, CI [0.562536, 1.424599], including first-adaptation value.
+The relative advantage concentrates in B, where MC has supported own-FIRST loss.
+All sixteen new lives share each fresh factual batch from the frozen FIRST_LOCAL
+collector; states and actual writes match exactly at 3,314,014 and 97,815,922
+per arm. TD alone uses actual recorded successors and its frozen batch-start
+reward/WIN snapshot, with all native targets retained. The new acquisition is
+8,409,732 raw, with 6,144 natural-terminal H2 evaluations. All 48 distinct new
+finite checks pass; the independent 82,305-record audit PASS reconstructs 160
+heads and checks every native TD target, including unused winning rows. New target CPU
+is 864.90 seconds, or 2,566.74 seconds including reused SOURCE economically once.
+This is conditional development under four V312 sources, fixed boundaries and
+shared dynamics; continued own-first growth and structural learning remain open.
+The frozen component decomposition is completed in V315 above.
+
+[V313 actual-policy collection and periodic consolidation](reports/CLOSED_LOOP_V313_RESULTS.md)
+rejects the frozen own-first growth endpoint: final CLOSED_LOCAL minus its own
+FIRST_LOCAL is -0.625786, CI [-0.924988, -0.300769], with all four parent means
+negative and 13/16 adverse lifecycles. The first shared LOCAL/FIXED cohort already
+loses B capability; final B loss is -1.538433, while A preservation is unresolved.
+Feedback versus the fixed first collector and net SOURCE gain are both unresolved.
+LOCAL exceeds the more severely degraded LINEAR, which does not establish growth.
+Four same-head H2-minus-DIRECT contrasts are strongly positive; DIRECT already
+uses learned long-term value. All actual actor-change premises hold. The 16 new
+lifecycles use 14,700,915 new training raw and 13,312 natural-terminal evaluations;
+three updating arms each process 3,281,841 additional states, with differing writes.
+All 73 distinct new finite cases pass, and the independent 107,043-record audit
+PASS reconstructs 256 actual heads and checks 2,560 action probes. New target CPU
+is 1,463.97 seconds; SOURCE plus target economic CPU is 3,165.81 seconds, with no
+physical SOURCE retraining or double-added contained costs. Evidence is conditional
+on four V312 sources and shared dynamics under supplied subsequent boundaries.
+V314 above compares complete-game MC and local consequence-recursion targets under
+the same facts, fixed continuation policy and supervised-state quota. Continued growth
+and structural strategic learning remain unestablished; additional rounds are not
+used to chase a positive interval.
+
+[V312 fresh SOURCE value-training confirmation](reports/FRESH_CONFIRMATION_V312_RESULTS.md)
+supports the frozen LOCAL-over-LINEAR_WIN primary: +1.270267, CI
+[1.087410, 1.447666], and net SOURCE gain +0.864663, CI [0.632183, 1.094708].
+Four new zero-initialized value parents each train on 4,096 fresh games;
+their actual source acquisition is 11,285,275 raw. All four parent means
+are positive for the primary and net gain. Final A/B gains are separately
+supported, and all seven raw retention contrasts reproduce exactly at zero.
+MC and LINEAR_WIN both lose to SOURCE; LINEAR_WIN versus MC is unresolved.
+The 64 new five-stage sequences retain 128 banks with routes 0/1/0/1/0;
+one additional detector game costs 573 raw and resolves reuse. All 73,728
+new evaluations end naturally. All 51 new finite cases pass; independent
+SOURCE and target audits both PASS, checking 16,384 source games and
+263,375 target records. New source plus target CPU is 4,631.74 seconds,
+without double adding contained setup, fit or save work. The target uses
+16,997,255 new training raw; each arm's economic training input including
+source and inherited dynamics is 28,331,599 raw. Intervals remain conditional
+on four new value parents under shared identified deterministic dynamics;
+historical dynamics CPU is unknown. V313 above completes closed-loop natural-game
+collection by each updated policy and periodic consolidation, testing gains
+over its own first adaptation, retention and a DIRECT/H2 planning control;
+it finds supported own-first loss despite valid actual policy feedback.
+Same-context continued improvement and general strategic learning remain open.
+
+[V311 active two-table contribution control](reports/LINEAR_CONTRIBUTION_V311_RESULTS.md)
+supports LOCAL over LINEAR_WIN: +1.026154, CI [0.801412, 1.253604], with
+identical two-table storage, factual supervision and parameter writes. Net
+SOURCE gain is +0.987542, CI [0.731918, 1.231938]; A and B individually
+benefit in this cohort, and all seven raw retention contrasts reproduce at zero.
+All 59 new finite cases and the independent 263,420-record audit pass;
+73,728 new checkpoint games end naturally. The 64 new sequences retain 128
+banks; 19 confirmation games cost 8,802 raw, including one unresolved B2 cap
+that reuses without a prototype commit. LINEAR and LOCAL each process
+13,300,774 states and write 390,074,254 parameters; LOCAL evaluation CPU is
+12.7% higher. Real-arithmetic LINEAR/MC equivalence does not imply identical
+numerical trajectories; their recorded final difference is +0.171480.
+This establishes the joint sigmoid-link/update contribution under the four
+original sources, supplied boundaries and historical probes. V312 above
+confirms the frozen four-arm comparison under four newly trained risk_goal
+SOURCE value parents and measures source CPU. Deterministic learned dynamics
+remain shared; general strategic learning and same-context improvement are open.
+
+[V310 selected banks own their planning beliefs](reports/BANK_BELIEF_V310_RESULTS.md)
+supports the controlled final average LOCAL advantage over same-context MC:
++1.033409, CI [0.757074, 1.307830], and net SOURCE gain +0.771455,
+CI [0.513819, 1.030265]. All seven raw retention contrasts reproduce at zero;
+B alone remains unresolved: +0.247062, CI [-0.102080, 0.591136]. Execution
+uses each actually selected bank's immutable first-FIT belief for all three
+arms, removing task-name probability lookup. All 64 new five-stage sequences
+route 0/1/0/1/0 with 128 banks; four confirmation games cost 2,969 raw.
+New training costs 16,998,431 raw and 55,296 checkpoint games end naturally.
+All 51 new finite cases and the independent 263,388-record audit pass.
+LOCAL still uses twice MC's capacity and writes, with about 35% more evaluation
+CPU. V311 above implements the two active reward/linear-WIN table control;
+newly trained SOURCE parents remain the next confirmation. Supplied
+stage boundaries, four fixed parents and readonly historical probes still
+limit this evidence; same-context improvement and general strategic learning
+remain unestablished.
+
+[V309 confirmed context creation and repeated reuse](reports/CONFIRMED_CONTEXT_V309_RESULTS.md)
+supports the frozen controlled five-stage retained-gain endpoint: final LOCAL
+versus identically contextual MC +1.190736, CI [0.944169, 1.446879], and versus
+SOURCE +0.568004, CI [0.315067, 0.824242]. All seven strict retention contrasts
+reproduce exactly at zero across 64 new A/B/A/B/A sequences. Final A benefits;
+B alone remains unresolved: -0.055604, CI [-0.410031, 0.297758]. All 146 new
+finite cases and the independent 263,392-record audit pass, with 17,004,790
+new training raw and 55,296 natural-terminal checkpoint games. Two ambiguous
+returns use six paid confirmation games (4,815 raw); one resolves reuse and
+one reaches the cap, reusing without committing its prototype. All actual
+routes are 0/1/0/1/0 with 128 banks, and no repeated fit. New sequence compute
+is closed; LOCAL still has twice MC's capacity and writes. Planning beliefs
+remain indexed by measurement task, so this is a controlled checkpoint result,
+conditional on four frozen sources. V310 above implements each selected bank's
+own stored planning belief and supports controlled average net gain and retention;
+contribution controls and newly trained SOURCE confirmation remain next.
+Same-context continued improvement,
+general strategic learning and historical total CPU remain unestablished.
+
+[V308 fresh first-context adaptation and parameter reuse](reports/FIRST_ADAPT_V308_RESULTS.md)
+supports the frozen primary LOCAL versus identically contextual MC: +1.355414,
+CI [1.139532, 1.575205], and final equal-weight A/B net gain over SOURCE:
++1.017131, CI [0.815111, 1.210337]. Final A and B individually benefit.
+All 60 new finite cases and the independent 266,895-record physical/data/endpoint
+audit pass; 17,173,154 new training raw and 30,720 new natural-terminal
+checkpoint games are retained. Strict complete retention remains HOLD:
+A after B and B after A2 reproduce exactly, but final A versus A1 is
++0.004377, CI [-0.030819, 0.043951]. Actual A2 detection creates a third bank
+in 2/64 sequences; old A parameters survive, but switching to the new bank
+improves one return and harms the other. All 130 actual acquisitions and their
+tails are paid. New sequence compute is closed; source-parent generalization,
+historical total CPU and equal-capacity contribution remain open. LOCAL uses
+twice MC's capacity and fit writes. V309 above implements confirmed creation
+with paid observations and tests new longer sequences under a frozen rule;
+it establishes controlled retention while B's individual net gain is unresolved.
+Same-context continued improvement
+and general strategic learning remain unestablished.
+
+[V307 budget-matched old/new experience replay](reports/EXPERIENCE_REPLAY_V307_RESULTS.md)
+fails the frozen replay endpoint: MIXED_REPLAY versus NEW_ONLY -0.484641,
+CI [-0.806737, -0.157462], with all four parent means negative. Replay also
+loses A1 capability: -0.401468, CI [-0.743454, -0.058890]. Frozen A1 still
+exceeds SOURCE by +1.323419, CI [0.948786, 1.713071]; NEW_ONLY's incremental
+gain over A1 remains unresolved. All 60 new finite cases and the independent
+source-score/selection/target audit pass, with 8,192 new natural-terminal
+evaluation games and zero new training acquisition. Both updating arms process
+exactly 6,641,342 supervised states; replay changes complete-game/address
+commits and costs, and no heldout or cutoff facts enter fits. This frozen
+50/50 replay branch stops. V308 above completes fresh observed-context first
+adaptation and later parameter reuse for new A/B/A sequences, with SOURCE
+and a conventional MC baseline sharing the same context organization; it
+establishes net gains while leaving actual-return retention unresolved.
+Same-context continuous improvement and general continual strategy learning
+remain unresolved; historical total CPU remains unclosed.
+
+[V306 current-policy data for repeated A adaptation](reports/POLICY_DATA_V306_RESULTS.md)
+does not establish the frozen actor intervention: CURRENT_DATA versus
+SOURCE_DATA +0.276347, CI [-0.031848, 0.578623]. Relative to frozen A1,
+CURRENT_DATA +0.311343, CI [-0.027504, 0.642393], leaves retention unresolved;
+the new SOURCE_DATA cohort also does not reproduce the old A2 loss.
+Frozen A1 itself exceeds SOURCE by +1.205367, CI [0.871271, 1.540228].
+Both updating arms start from identical A1 reward/risk parameters and acquire
+131,072 new raw per life with paired continuous streams and fixed beliefs.
+All 56 new finite cases and the independent 65,664-record audit pass;
+16,777,216 physical training raw and 8,192 new natural-terminal evaluation
+games are retained. Each updating arm pays 8,388,608 additional raw without
+an established incremental gain over A1. Actor choice changes coverage and
+factual targets together; retained A1 histories and four parents remain fixed.
+V307 above completes the matched-supervision replay control and rejects that
+frozen intervention. Historical total CPU is unclosed.
+
+[V305 observed-context persistent reward/risk parameters](reports/CONTEXT_CONTINUAL_V305_RESULTS.md)
+passes the frozen structural repair endpoint: final equal-weight A/B utility
+versus SHARED_LOCAL +0.279710, CI [0.086740, 0.469176], and versus SOURCE
++0.689903, CI [0.463018, 0.920355]. Both final tasks benefit: A +1.005117,
+B +0.374689. Observed FIT-prefix statistics select two persistent contexts
+without task labels; unchanged A after B and B after A2 reproduce exactly.
+All 50 new finite cases and the independent audit pass, with 10,240 natural
+new evaluation games and no new training acquisition. Full retention still
+fails: continuing A training reduces A by 0.396635, CI [-0.693646, -0.097343].
+Parameter capacity doubles, and the result remains a retained-cohort batch
+diagnosis. V306 above tests matched new SOURCE and learned-policy cohorts
+from identical A1 parameters; the actor intervention remains unsupported,
+and policy/target mismatch remains a hypothesis.
+
+[V304 same-B parameter-history control](reports/HISTORY_CONTROL_V304_RESULTS.md)
+isolates the V303 B-stage failure: LOCAL from original SOURCE exceeds the
+same method inheriting A1 by +1.546751, CI [1.235445, 1.849899], on identical
+B facts, targets, order and evaluation seeds. Fresh LOCAL also exceeds SOURCE
+by +0.374689, CI [0.060634, 0.684168], with 630 versus 529 wins; inherited
+LOCAL remains below SOURCE. MC suffers the same history penalty but still
+fails from a fresh initialization. All inherited numerical controls reproduce
+V303 exactly; 45 new finite cases and the independent audit pass. No new
+training acquisition was made; 8,192 new evaluation games terminate naturally.
+This is a retained-cohort diagnosis, not independent confirmation or equal
+total-history budgeting. V305 above implements the observed-context repair;
+continuous learning and historical total compute remain unresolved.
+
+[V303 retained-parameter A/B/A sequence](reports/CONTINUAL_V303_RESULTS.md)
+passes final equal-weight A/B utility versus SOURCE: +0.410193, CI
+[0.133242, 0.678271], on 64 fresh sequences and 30,720 natural-terminal
+checkpoint games. All 46 new finite cases and the final independent audit
+pass. Continuous adaptation and preservation remain unresolved:
+B fitting reduces A by 2.141278 and B itself is below SOURCE; returning to A
+improves both tasks, but final A remains below its first-stage level and final
+B has no established gain. Fixed task beliefs/seeds and identical SOURCE
+replays isolate the critic changes. The interrupted execution was recovered
+under the original freeze, reusing 148 complete acquisition stages and
+exactly reproducing 448 retained arm receipts. Historical total CPU was not
+fully retained and is not claimed closed. V304 above subsequently isolates
+the parameter-history effect on exactly the same B facts and controls.
+
+[V302 independent B confirmation of frozen LOCAL_RISK](reports/LOCAL_RISK_V302_RESULTS.md)
+passes its prespecified primary endpoint on 64 fresh target training histories:
+LOCAL minus SOURCE utility +0.387252, CI [0.011185, 0.762719], with 649 versus
+554 wins in 2,048 paired games per arm. All 6,144 evaluation games terminate
+naturally; 43 new finite cases and the once-read independent canonical audit
+pass. The interval is conditional on four original SOURCE parents and its
+lower bound is close to zero. Old B data and V301 evaluations do not enter the
+new fits or intervals. MC is worse than SOURCE; LOCAL pays twice MC's parameter
+writes. This confirms a modest independent target-cohort benefit, with
+continual adaptation, retention and contribution/cost comparisons still open.
+The next stage freezes an A-to-B-to-A sequence with retained parameters and
+separate A/B evaluations instead of further tuning this B cohort.
+
+[V301 split reward and bounded terminal risk](reports/SPLIT_RISK_V301_RESULTS.md)
+implements two distinct representations with exactly SOURCE-matching initial
+values on all retained B histories. GLOBAL_RISK fails the primary comparison:
+utility -0.700419 versus SOURCE, CI [-1.026942, -0.370467]. The prespecified
+LOCAL_RISK control has a promising secondary gain of +0.389858, CI
+[0.075359, 0.706092], positive in all four source groups, with 633 wins versus
+SOURCE's 543 in 2,048 games. Both new methods share identical reward fits;
+similar heldout risk calibration and worse scalar utility errors do not
+substitute for complete-game outcomes. All 8,192 games terminate naturally;
+66 finite cases and the independent audit pass. LOCAL pays twice MC's
+parameter writes, so shared observations are not equal compute. The next
+step freezes the current LOCAL method for primary confirmation on a new B
+training cohort at the same acquisition budget; this secondary retained-data
+signal does not promote V301's failed primary or establish continual transfer.
+
+[V300 retained-B control-target comparison](reports/B_CONTROL_V300_RESULTS.md)
+changes only MC targets to game-start H2 expected-control targets on the same
+64 retained B histories, original SOURCE copies and normalized single-table
+updates. New complete-game control utility exceeds MC by +1.491047, CI
+[1.119523, 1.882097], but exceeds SOURCE by only +0.103975, CI
+[-0.214316, 0.413317]; the primary gain remains unsupported. MC again
+degrades versus SOURCE by -1.387072. All 6,144 new games terminate naturally;
+40 finite cases and the independent audit pass. Both learners process the
+same 6,670,464 samples and 106,964,712 writes, while control target fitting
+uses 75.34 CPU seconds versus MC's 19.91. This retained-training development
+comparison ends the current target branch under its frozen stop rule. The
+proposed separate reward and bounded nonlinear terminal-risk intervention is
+completed in V301, with both local and additional global board feature controls.
+
+[V299 retained-B update and H2 diagnosis](reports/B_MECHANISM_V299_RESULTS.md)
+exactly reproduces V298 fit counts/examples and complete SOURCE/MEAN heldout
+scores. None of the 10,401 local game updates increases its own squared loss; complete
+FIT MSE decreases 2.821557, while complete heldout MSE has no improvement and
+MAE worsens. Won-game heldout MSE improves 14.711256 and lost-game MSE worsens
+4.774808 as both outcome strata's predictions rise about 0.9. Signed donor
+prediction/loss changes and fixed-second-action H2 decompositions close exactly.
+The 30.957% root recommendation drift has no counterfactual Q labels and does
+not establish a cause of game loss. No new world samples or evaluation games;
+35 finite cases and the independent audit pass. Its proposed target-only
+control intervention is completed in V300 with SOURCE as the primary comparator.
+
+[V298 independent stable-B learning](reports/STABLE_B_V298_RESULTS.md) uses
+the frozen V291 whole-game learner on 64 fresh B-only histories, initialized
+from original SOURCE without intervening A-stage updates. MEAN versus SOURCE
+utility is -1.221845, CI [-1.586042, -0.855672], with 13 improved and 51 adverse
+histories; normalized sequential learning also degrades significantly.
+All 6,144 independent evaluation games terminate naturally. New acquisition
+costs 8,418,915 raw including warmup, and evaluation costs 3,723,305 raw;
+39 focused/regression cases and the independent 131,269-row audit pass.
+Stable-B learning remains unsupported. The next core step diagnoses MC targets,
+shared features and H2 action rankings on the retained B data before returning
+to continual transfer and retention. V291's stable-A result remains intact.
+
+[V297 direct stateful strategy search](reports/DIRECT_STRATEGY_V297_RESULTS.md)
+optimizes BUILD/rescue action preferences using complete-game returns while
+keeping SOURCE values frozen. Independent stable-A gain is -0.126400, CI
+[-0.799927, 0.630618], with four improved, two unchanged and ten adverse
+histories. The optimizer contrast against random search also crosses zero.
+Fourteen histories choose nonzero programs, changing 64,910 science actions;
+the execution framework works, but whole-game benefit remains unsupported.
+All 3,336 physical training games and 1,408 science games terminate naturally,
+at 3,142,559 and 1,354,306 raw observations respectively; the independent
+958-row audit passes. This frozen grammar stops. The next core control tests
+the confirmed V291 learner directly in stable B, without intervening A updates,
+before attributing failures to continuous transfer or adding a strategy library.
+
+[V296 independent long-continuation action validation](reports/LONG_HORIZON_ADVANTAGE_V296_RESULTS.md)
+freezes all 144 V294 natural anchors and the old SOURCE, Bellman and sampled
+choices before new acquisition. The old sampled advantage of +0.577684 becomes
+-0.081829, CI [-0.248832, 0.086533], on fresh paired continuations; six histories
+improve and ten worsen. Bellman differs from SOURCE by +0.002753 with an interval
+crossing zero. All 7,552 physical continuations terminate naturally, at a new
+cost of 3,373,840 raw tile observations; old discovery and source/input costs
+are retained. All 24 focused cases and the independent compact audit pass.
+This fixed-SOURCE continuation target branch stops. The next core direction
+directly optimizes executable policies using whole-game returns, with V292's
+already-tested on-policy MC value regression retained as a control. Whole-game
+gain, correction and retention must precede a persistent strategy or skill library.
+Whole-algorithm net gain remains unconfirmed.
+
+[V295 observed-module Bellman experts](reports/ROUTED_BELLMAN_V295_RESULTS.md)
+isolates residual writes using the original observed LIBRARY routes, retaining
+the same targets, samples and whole-game normalization. Independent cycle gain
+against frozen SOURCE is -0.028006, CI [-0.391001, 0.335315], so the complete
+learning algorithm still has no confirmed net gain. Returning-A performance
+improves relative to smooth sharing by +0.548389, CI [0.037209, 1.045821],
+but B correction is uncertain and the earlier positive V294 correction does
+not persist in the fresh science streams of the unchanged smooth control.
+All 16 histories reactivate the original observed A module; known-A capability
+is unchanged in 14 histories after B, while final capability remains uncertain.
+All 8,704 physical science games terminate naturally; 31 focused cases and
+the 11,976-row independent audit pass. New science costs 7,579,163 raw tiles;
+expert allocation, copies and inherited source costs are retained. The next
+core experiment tests independent long-continuation action improvement before
+adding further storage mechanisms or adopting another value target.
+
+[V294 conditional Bellman residuals](reports/CONDITIONAL_BELLMAN_V294_RESULTS.md)
+compares MC/control targets and board-only/observed-p values on identical retained
+SOURCE carrier games, with no new training acquisition. The conditional Bellman
+head improves on its own saved A parameters in B by +0.776047, CI
+[0.234970, 1.311102], under identical current B belief and paired games.
+Its independent cycle gain against frozen SOURCE is -0.130005, CI
+[-0.586510, 0.318783]; net gain remains unsupported. Fixed-A capability falls
+by 0.849388 at the end, with a negative interval. All 14,848 science games and
+16,096 SOURCE continuation references finish naturally; 43 focused tests and
+the independent compact audit pass. New evaluation/reference acquisition costs
+19,929,882 raw tile observations and is accounted separately from the reused training data.
+The next core comparison isolates residual writes by existing observed LIBRARY
+modules while keeping the Bellman target fixed, testing useful B correction,
+actual A reactivation and net control gain together.
+
+[V293 shared-shadow deployment](reports/SHADOW_DEPLOYMENT_V293_RESULTS.md)
+uses one frozen-source acquisition stream and one persistent episode-mean
+candidate for three deployment rules on 16 fresh A→B→A′ histories. Validation
+is charged inside each arm's raw budget. Validated deployment accepts only
+one of 48 candidates; its independent cycle gain is +0.028714 versus frozen
+H2, CI [0, 0.086143], so the frozen positive-lower-bound criterion fails.
+Unconditional deployment gains in A but loses in B; its current B head is
+worse than its saved A head under identical B belief and games, and fixed-A
+capability remains lower at the end. Stable acquisition and conservative
+submission have not established continuous learning or B correction.
+All 9,216 science games and 2,304 paid validation games terminate naturally;
+33 focused test cases and the independent canonical audit pass.
+The next core step studies source-anchored Bellman control residuals and
+observed-law-conditioned values on the same factual carrier data, separating
+target construction from conditional representation before new confirmation.
+
+[V292 continuous natural episode learning](reports/NATURAL_EPISODE_V292_RESULTS.md)
+tests the frozen learning methods on 16 new A→B→A′ lifecycles with five
+matched-observation controls. Episode-mean H2 learning has a small initial-A
+gain, but its whole-cycle utility falls by 6.510362 versus frozen H2 values,
+CI [-6.740301, -6.292126], with all 16 histories worse. Under identical B
+belief and paired B games, the updated B head loses 7.380081 against the
+saved A head; fixed-A capability also collapses and does not recover after
+returning to A. All 13,312 evaluations terminate naturally, 53 focused tests
+and independent canonical audit pass. Source H2 planning remains beneficial.
+This identifies harmful cross-regime value updates and failed retention;
+context storage alone cannot repair the observed B learning damage. The next
+core step separates stable reference acquisition, shadow fitting and
+validated policy deployment, with an unconditional periodic-deployment
+control and all validation costs charged. V291's offline A gain remains valid;
+continuous strategic learning remains unconfirmed.
+
+[V291 independent training-history confirmation](reports/INDEPENDENT_EPISODE_V291_RESULTS.md)
+freezes V290 methods on 64 fresh histories under the same four source parents.
+Episode-mean learning improves new complete H2-game utility by 1.211015 over
+frozen values, CI [0.888291, 1.529658], with 55 improvements and nine adverse
+histories. All 6,144 evaluations terminate naturally. Full heldout MSE falls
+from 42.279736 to 30.879864. Normalized sequential learning also gains;
+the episode-mean versus sequential utility interval crosses zero, so the
+pilot's extra aggregation benefit does not replicate. Both learners process
+6,658,122 identical samples; economic training costs are 19,719,069 raw per
+arm, with physical fresh acquisition shared once and old target data excluded.
+Thirty-two focused tests and independent canonical audit pass.
+This confirms offline learning gains against static frozen H2 values,
+conditional on old sources. The next core stage tests continuous A→B→A′
+learning, correction and retention with natural-execution and same-budget
+learning controls. General strategic and structural learning remain open.
+
+[V290 episode consolidation](reports/EPISODE_CONSOLIDATION_V290_RESULTS.md)
+keeps the original factual dataset and compares frozen, ordinary MC,
+address-normalized sequential MC and game-start-residual episode means.
+Both normalized methods improve full heldout MSE on all 16 lifecycles;
+episode-mean MSE falls from 45.213894 to 29.486606. Fresh complete-game utility
+improves by 0.687813 over frozen values, but CI [-0.283584, 1.673882] crosses
+zero and six lifecycles worsen. Episode means outperform the similarly
+normalized sequential control by 0.617668 in the predefined secondary
+utility contrast; their prediction MSE is almost identical and slightly
+worse. Actual parameter writes fall by 57.49%, while fitting CPU exceeds
+ordinary MC. All 1,024 games terminate naturally; 30 focused tests and
+independent audit pass. The next stage freezes these methods and tests new
+independent training histories plus new paired complete-game evaluations.
+Net learning and natural long-episode transfer remain unconfirmed.
+
+[V289 cumulative MC replay](reports/CUMULATIVE_CRITIC_V289_RESULTS.md)
+preserves all 1,655,968 V287 updates and exactly reproduces its complete heldout
+scores. A fixed, label-independent 1,756-anchor panel worsens after the first
+complete training game in all 16 lifecycles. Final anchor MSE increases by
+103.683593, CI [62.605741, 147.911720]; complete heldout MSE also worsens.
+A descriptive decomposition places 95.4% of the anchor increase at the first
+time position. Fixed-board H2 recommendations change on 33/64 boards, but old
+continuation reference utility does not establish a change. All 28 focused
+tests and independent audit pass, with zero new environment observations.
+The next core intervention consolidates each complete game's shared-address
+evidence, retaining a similarly normalized sequential control to separate
+normalization from frozen-residual aggregation. Full heldout prediction and
+fresh complete-game utility must improve before calling learning repaired.
+
+[V288 isolated n-tuple update diagnostic](reports/NTUPLE_INTERFERENCE_V288_RESULTS.md)
+reuses V285's two independent suffix batches on 128 fixed A boards. All 470
+trainable afterstates and 6,934 directed pairs are included, retaining repeated
+feature addresses and zero-overlap pairs. The primary cross-board mean-label
+MSE difference is -0.187544, CI [-0.246865, -0.132421], with 16/16 lifecycles
+improving. Single-label updates also improve on average; their empirical
+fluctuation penalty does not cancel that benefit. Some individual pairs worsen
+and remain retained. No new environment observations or actual weight updates
+occur; 22 focused tests and independent receipt audit pass. This local result
+does not establish a learning or control gain and does not explain V287's
+accumulated fitting failure. The next core diagnostic replays V287's original
+MC update sequence on a fixed heldout panel, tracking prediction errors and H2
+recommendation changes before choosing a learning modification.
+
+[V287 fixed-behavior critic comparison](reports/RETAINED_CRITIC_V287_RESULTS.md)
+fits factual TD and episodic-return critics on the same retained natural A
+prefix, holding out complete later games. Each trainable critic updates the
+same 1,655,968 afterstates; all arms inherit 13,391,491 acquisition observations,
+and no new training observations are collected. MC reduces fresh static-H2
+utility by 6.618736 relative to frozen values, with a negative paired interval
+and 16/16 adverse lifecycles. Its heldout MSE and MAE also worsen despite a
+smaller aggregate signed bias. TD does not establish a utility gain. All 768
+evaluations terminate naturally and independent audit passes. The next core
+diagnostic reuses V285's independent suffix batches to separate noisy-target
+updates from shared-feature interference, before choosing a new representation
+or consolidation method. These results do not yet identify the dominant cause.
+
+[V286 matched-budget natural value learning](reports/NATURAL_ONLINE_VALUE_V286_RESULTS.md)
+compares frozen, ordinary TD and persistent context TD across 16 new natural
+lifecycles. All arms receive the same 17,585,795 economic training observations,
+including source and shared warmup costs. Ordinary and persistent TD reduce
+independent complete-game utility by 1.328972 and 0.999840 relative to frozen
+values; both paired intervals exclude zero. Persistent versus ordinary TD does
+not establish an overall or restoration-stage gain. Deterioration already occurs
+in A, before the spawn-law change. Same-head H2 planning still improves all 16
+lifecycles. Independent receipt audit passes; all 2,560 evaluation games reach
+natural terminal states, and adverse lifecycles are retained. The next core
+step fits shadow TD and complete-return critics on
+fixed retained A histories, then tests fresh complete-game decision utility.
+The three paper evidence gaps remain open; U005 remains FAIL and U006 unstarted.
+
+[V285 independent continuation validation](reports/NATURAL_CONTINUATION_VALUE_V285_RESULTS.md)
+evaluates every legal first action on 384 fixed natural boards with separate
+discovery and validation batches. The 90,752 complete continuations consume
+50,341,737 environment transitions. Discovery-selected actions do not establish
+a validation gain in either the uniform or competition cohort; all adverse
+lifecycles are retained. Absolute tail underprediction also includes a mismatch
+between the source greedy TD policy and the H2 continuation policy. The next
+core experiment compares frozen, ordinary online TD and persistent context TD
+with the same learned spawn memory, H2 authority and total observation budget.
+The three paper evidence gaps remain open; U005 remains FAIL and U006 unstarted.
+
+[V283–V284 model-to-decision diagnostic](reports/NATURAL_MODEL_DECISION_V283_V284_RESULTS.md)
+restores every decision on 16 retained library lifecycles using the same observed
+prefix for all spawn memories. Library estimates improve H2 reference ranking
+on all 16 lifecycles; shifted-phase action disagreement falls from 9.015% to
+0.842%. Yet 384 complete known-law reference games do not establish a gain over
+the library, and the restoration-phase reference is worse. Better model estimates
+and internal ranking are insufficient evidence of full-game learning gains.
+The next core step is independent continuation evaluation of competing actions
+to guide target-feedback value learning, retaining ordinary TD and frozen-value
+controls. The old value table's causal responsibility remains unproved.
+
+[V280–V282 three-stage paper evidence](reports/PAPER_EVIDENCE_STAGES_V280_V282_RESULTS.md)
+tests the unchanged relevance controller on 128 fresh source/target lifecycles,
+natural model revision on 16 new memory lifecycles, and contributions on retained
+execution prefixes. Both route net-gain comparisons support improvement, including
+sampled returns; natural library revision does not establish an extra full-game
+gain. Same-leaf H2 planning improves all 16 lifecycles. Library spawn estimates
+are markedly more accurate than pooled updates in the shifted regime, but that
+accuracy has not translated into demonstrated strategic utility. Parameter updates
+contribute; passive structure revision remains unsupported. Full costs are retained,
+and total source-plus-online observation budgets remain unequal. The next main
+question is the interface between model estimates, action ranking and long-term
+value. The original U005 scientific Gate remains FAIL; U006 is unstarted.
+
+[V279 evidence-weighted prefix diagnostic](reports/EVIDENCE_WEIGHTED_PREFIX_V279_RESULTS.md)
+replays all 64 V278 sources on passive and relevance-controller histories.
+Evidence-weighted candidate predictions slightly lower recommendation regret,
+but each history cohort has seven source improvements and five degradations.
+Only one of the known adverse history's five later wrong RETRY choices is
+fixed, with two new B-stage errors. These fixed-history results do not justify
+promoting model averaging or claiming an online gain. The next core question
+is the expected effect of acquiring feedback on later learning and decisions.
+
+[V278 query-relevant coverage](reports/QUERY_RELEVANT_COVERAGE_V278_RESULTS.md)
+tests a decision-relevance controller on 64 fresh paired lifecycles. Mean
+executed-route regret is 0.729659 versus the unchanged quota controller's
+2.277302; the primary paired interval [-3.522542, -0.138984] excludes zero,
+with four improved, 60 equal and none worse. Relative to natural execution,
+the interval [-8.473422, 0.020366] still crosses zero and one history worsens.
+The extra cost filter changes no outcomes. The adverse case improves immediate
+probe decisions but delays factor revision and causes later wrong choices.
+The next bottleneck is acquisition's expected effect on future learning and
+decisions; its worst-case support envelope does not establish that benefit.
+
+[V277 independent-source confirmation](reports/ONLINE_FACTOR_CONFIRMATION_V277_RESULTS.md)
+keeps V276 unchanged on 32 fresh source/target lifecycles with disjoint source
+RNG sets. Mean executed regret falls from 7.250056 to 1.915053, but the primary
+paired interval [-14.371478, 0.916275] crosses zero: two improved, 29 equal,
+one worse. Confirmation fails. The adverse history pays for 53 coverage
+attempts to obtain 16 retry outcomes, including costly detours where the
+recommended SHORT is already optimal. The next mechanism must consider
+decision relevance and operator reachability before buying coverage.
+
+[V276 online factor repair](reports/ONLINE_FACTOR_REPAIR_V276_RESULTS.md)
+tests bounded source-gap coverage and episode-start factor revision in a 2×2
+design, preserving the 288-opportunity lifecycle. Mean actual regret including
+coverage costs falls from 27.35720 to 3.29365; the paired result is one improved
+known source history and three equal histories. Reselection alone remains
+self-locked; coverage plus reselection unlocks SHORT. The independent-source
+follow-up is reported in V277 above; natural full-game transfer remains open.
+
+[V275 execution-only online lifecycle](reports/ONLINE_SUPPORT_CONTINUAL_V275_RESULTS.md)
+keeps one learner across four target contexts for 12 episodes × 8 actual
+START opportunities in each A→B→A_prime phase. Only reached operators produce
+feedback. The factor arms (frozen, continual support expansion, and legacy
+coercion) are identical in this cohort. A retained-data decomposition attributes
+98.94% of B regret to one source partition error combined with zero SHORT
+execution; DELAYED affects only one small-margin query cell. V276 tests bounded
+coverage and online factor revision. This remains a finite route diagnostic.
+
+[V274 continual successor support](reports/CROSSED_FACTOR_SUPPORT_CONTINUAL_V274_RESULTS.md)
+adds a predeclared `DELAYED` outcome to B while keeping `RECOVERY_RETRY`
+available. The expanding arm discovers the new category from fit prefixes and
+returns to 12/12 after A_prime; the static arm abstains when the old support is
+contradicted. This is the first support-expansion diagnostic, not a Gate rerun.
+
+[V273 continual action-support structure](reports/CROSSED_FACTOR_STRUCTURE_CONTINUAL_V273_RESULTS.md)
+keeps the V270 law and query bank fixed while B removes the RETRY branch from
+the available action set. Aware arms remain legal and CONTINUAL_FACTOR_AWARE
+reaches 12/12 at B prefix 0; the legacy unmasked control produces 3.75 invalid
+actions per seed. This tests structural applicability and masking, not new
+successor-category learning; the original Gate remains FAIL.
+
+[V272 continual query shift](reports/CROSSED_FACTOR_QUERY_CONTINUAL_V272_RESULTS.md)
+keeps the V271 dynamics and factor learner fixed while changing only the B
+phase risk preference. The frozen factor model changes its risk action without
+new target rows and restores the A action in A_prime; continual updating starts
+at 11.25/12 B queries and ends at 12/12 after restoration. This separates
+query adaptation from relearning dynamics; the original Gate remains FAIL.
+
+[V271 continual crossed-factor flow](reports/CROSSED_FACTOR_CONTINUAL_V271_RESULTS.md)
+keeps V270's source factor selector fixed and tests each unseen target through
+`A→B→A_prime`, where only the retry law changes in B and then returns to A.
+CONTINUAL_FACTOR lowers B regret from 2.75175 to 0.501125 relative to the
+frozen source by prefix 48, then reaches zero regret by prefix 32 after the law
+is restored. This is synthetic amortized transfer evidence; source and target
+costs remain separate, and the original Gate remains FAIL.
+
+[V270 crossed observable-factor transfer](reports/CROSSED_FACTOR_TRANSFER_V270_RESULTS.md)
+introduces a synthetic crossed task flow with an L-shaped source and four
+unseen target combinations. The learned operator-factor selector reaches
+11/12 queries before target data and 12/12 after four target rows per operator;
+RESET/FULL_CONTEXT start at 6/12 and 10.5/12. GLOBAL pooling is worse. The
+learner paid a fixed 720 source-fit rows per seed, so this is transfer evidence
+after source amortization, not a total-cost claim.
+
+[V269 factorized residual](reports/PERSISTENT_CONSEQUENCE_LIBRARY_V269_RESULTS.md)
+keeps V266 module assignment fixed and adds a predeclared one-context baseline
+to the current local fit. `FACTORIZED_MODULE` matches RESET at 11.5/12 and
+regret 0.105; `GLOBAL_SHRINK` falls to 10.75/12 and regret 0.54425. Module
+history supplies no measurable gain, while unconditioned global sharing causes
+wrong transfer. Baseline-weight tuning on these streams is closed; a future
+factorization needs a longer-lived observable context variable.
+
+[V268 paired two-step consequence](reports/PERSISTENT_CONSEQUENCE_LIBRARY_V268_RESULTS.md)
+keeps the V266 module assignment fixed and replaces marginal detour/retry
+estimation with fixed-index joint outcome fragments. The composed arm drops to
+10.25/12 versus 11.5/12 for the marginal control and raises exact regret from
+0.105 to 0.475. The joint estimator also changes the prior and effective
+evidence, so this is a negative frozen estimator diagnostic. The route is
+closed; any factorization follow-up must predeclare its shared and varying
+context factors.
+
+[V267 held-out query transfer](reports/PERSISTENT_CONSEQUENCE_LIBRARY_V267_RESULTS.md)
+keeps three utility weights out of the reuse rule and scores them separately.
+The held-out bank lies in the same exact action regions as the primary queries,
+so `PRIMARY_AGREEMENT` and `ALL_QUERY_AGREEMENT` make identical assignments:
+11.5/12 primary policies and 10.75/12 held-out policies, with held-out exact
+regret 0.357 versus RESET 0.31. Set-action metrics agree with these counts.
+This is a finite negative diagnostic, not evidence of a new generalization
+gain; the next substantive route is a genuinely new action region or longer
+composable outcomes.
+
+[V266 query-action agreement](reports/PERSISTENT_CONSEQUENCE_LIBRARY_V266_RESULTS.md)
+replaces Brier applicability thresholds with direct agreement on all three
+queries. It prevents harmful module transfer but matches RESET at 11.5/12 and
+exact regret 0.105, with no cost gain. The current assignment-rule route is
+closed; further progress requires richer held-out queries or longer composable
+consequences.
+
+[V265 fair-prefix applicability diagnostic](reports/PERSISTENT_CONSEQUENCE_LIBRARY_V265_RESULTS.md)
+corrects the V263/V264 arm accounting. The guarded persistent library matches
+RESET at 11.5/12 query policies and exact regret 0.105, while the legacy
+splitter reaches 11.0/12 and GLOBAL 9.5/12. Abstention prevents bad transfer
+but has not produced a gain; applicability remains the main bottleneck.
+
+[V264 fresh-stream replication](reports/PERSISTENT_CONSEQUENCE_LIBRARY_V264_RESULTS.md)
+exposed an arm-accounting flaw inherited by V263: GLOBAL used 64 observations
+while RESET used 48, and LIBRARY committed its validation suffix before scoring.
+Those tables are retained but are not fair evidence. V265 corrects the shared
+prefix before testing applicability uncertainty.
+
+[V263 persistent consequence library](reports/PERSISTENT_CONSEQUENCE_LIBRARY_V263_RESULTS.md)
+is the first small implementation of the revised multi-episode direction. A
+held-out predictive split creates a reusable consequence module, preserves all
+12 query policies across a fixed `A0→B→A_prime→C` lifecycle, and beats both
+per-phase reset (11/12) and one-module pooling (10/12) on this finite diagnostic.
+The run is exploratory only; module applicability, generalization and the
+original scientific Gate remain unresolved.
+
+[V262 targeted operator-row acquisition](reports/TARGETED_ROWS_V262_RESULTS.md)
+is independently valid but scientifically negative. Under one unified native
+joint row-confidence proof, direct unresolved-row reuse, full declared-unit
+sampling, and continuous reuse all produce 144/216 query-certified, 128/216
+joint-complete, and 192/216 execution-certified targets, with 8 goal-impossible
+targets. DIRECT saves only 26/27/30 samples per life against FULL and changes
+no readiness outcome; it costs the same as CONTINUOUS. Science exits 0 with
+stderr 0, the independent audit is valid over 648 targets and 5,400 previews,
+and 36 focused tests pass. The scientific Gate remains FAIL and U006 remains
+unstarted. The targeted-row route is closed; the next method must change the
+representation or query-state construction substantially.
+
+[V261 native partial-path point learning](reports/PARTIAL_PATH_POINT_V261_RESULTS.md)
+fails its frozen stage (7/8) and is not adopted. Joint completion is 200/216,
+late-B queries 32/36 and return 72/72, but the matched required-row control has
+identical completion and fees (44,703). New point learning changes 80 terminal
+vector sets and 8 valid candidates, yet changes no acquisition stop or execution.
+Both required-row arms beat complete reuse by 3 joint targets and 266 observations;
+those gains do not establish an effect of the new estimator. The remaining 8
+query-only targets lack RETURN/RETRY comparison power; another 8 execution-only
+targets cannot yet prove true goal impossibility. Next freeze a sole row-CS query
+proof, then isolate paid acquisition of unresolved operator rows against full
+units using that proof. Direct R resets are supported and fully charged; their
+observations do not become D/R units. Fifty-eight tests pass after one retained
+fixture repair; once-only science/audit exit0/stderr0, independent audit valid
+over 648 targets, 4,692 previews and 652 intermediate plans. Known interfaces and
+H2 remain; original scientific Gate FAIL, U006 unstarted.
+
+[V260 required-row acquisition](reports/REQUIRED_ROW_UNITS_V260_RESULTS.md)
+fails its frozen stage5/8 and is not adopted. Required joint completion176/216
+loses8 versus complete continuous reuse184/216; late-B25/36 misses27/36 and
+control28/36. All arms spend34,201 shared observations. Lower full fees come
+from fewer executions, with0 acquisition saving. Partial units supply more
+comparison evidence while query point estimates stay frozen at full history;
+a retained candidate has true regret.43 and is correctly refused a certificate.
+Next isolate native policy-path point learning from predeclared partial units,
+keeping acquisition, thresholds/caps and execution fixed. Thirty-eight tests
+pass first attempt; once-only science/audit exit0/stderr0, independent audit
+valid over648 targets/5,184 previews/658 intermediate decisions/5,274 partial units.
+Known interfaces and H2 remain; original scientific Gate FAIL, U006 unstarted.
+
+[V259 continuous compatible row confidence](reports/CONTINUOUS_ROW_CS_V259_RESULTS.md)
+fails one frozen condition (7/8): late-B queries21/36 miss27/36. Same-paid-prefix
+continuous D evidence adds8 valid impossibility decisions; joint completion
+162→170/216 versus separate reuse, with0 paired losses. Rebuilding gives160/216.
+Full observations48,237 versus48,251/48,246 save only14/9; query readiness stays
+178/216 versus separate reuse. Shared costs remain34,216: all B phases exhaust
+budget, and life1 A leaves B only32 draws. Next acquire rows required by each
+unresolved query comparison as well as execution declarations, with fixed
+thresholds/point choices/caps; isolate any cross-phase budget policy later.
+Thirty tests pass first attempt; once-only science/audit exit0/stderr0, independent
+audit valid over648 targets/5,256 previews/656 intermediate decisions.
+Known interfaces and H2 remain; original scientific Gate FAIL, U006 unstarted.
+
+[V258 full goal-feasibility lifecycle](reports/GOAL_FEASIBILITY_V258_RESULTS.md)
+fails two frozen conditions: late-B queries23/36 miss27/36, and reuse observations
+48,248 exceed rebuilding48,241. Joint completion improves160→176/216 with16
+paired gains/no losses, but the new dual search adds0 impossibility certificates.
+A query qualification consumes22,528 of34,200 shared observations; all B phases
+then exhaust budget. All16 execution-unresolved regions still admit risk-feasible
+goal>2 kernels, independently checked over208 original constraints. Next predeclare
+continuous row evidence for legally identical A/B parameters, then acquire units
+according to unresolved query/feasibility declarations.
+Twenty-two tests pass after a retained fixture repair; once-only science/audit
+exit0/stderr0, independent audit valid over432 targets/3,456 full previews/439
+intermediate plans. V256 stays passed and immutable; V257 stays negative.
+Original scientific Gate FAIL; U006 unstarted.
+
+[V257 same-evidence impossibility bounds](reports/COUPLED_IMPOSSIBILITY_V257_RESULTS.md)
+fails its primary method condition:0/16 new certificates, despite valid execution
+and independent audit. All949 paid snapshots/432 terminal targets are retained;
+160 nonprimary bounds tighten, no false claims or new observations occur.
+Eight primary targets are blocked by the frozen old risk-dual parameter; for the
+other eight, exact independently verified feasible kernels remain inside all104
+original CS constraints with risk1/20 and goal>2. Certificate tightening alone
+cannot resolve that group. Next combine a complete-region risk dual with shared
+acquisition directed at goal feasibility, then test a fresh full lifecycle.
+Seventeen focused tests pass; science/audit run once, exit0/stderr0. V256 stays
+passed and immutable; original scientific Gate FAIL, U006 unstarted.
+
+[V256 complete direct-trajectory lifecycle](reports/TRAJECTORY_LIFECYCLE_V256_RESULTS.md)
+passes its frozen A/B/A stage and independent audit with actual execution.
+Against strong history-retaining rebuilding, reuse raises joint completion
+173→189/216 with16 paired gains and no losses; late-B queries28→31/36,
+return queries72/72 in both arms. Full paid observations47,227→46,898,
+a329 (0.70%) saving; model CPU rises15.76%. All27 remaining reuse fallbacks
+are in B:16 execution-only and11 query-only. Independently matched posthoc
+truth finds the16 execution-only goals infeasible under the original risk
+limit, but their acquired upper bounds still exceed2. Next test coupled
+risk-constrained impossibility certificates on these paid snapshots, then
+changed-R-dependent query evidence. Twenty producer/nine audit tests pass;
+science/audit run once, exit0/stderr0,432 targets and2,940 auxiliary decisions
+retained. Known-type/change/equality interfaces and H2 policies remain;
+the original scientific Gate remains FAIL and U006 remains unstarted.
+
+[V255 joint-unresolved type acquisition](reports/JOINT_UNRESOLVED_TRAJECTORY_V255_RESULTS.md)
+passes its frozen qualification: combined terminal projections72/72 versus
+fresh fixed-RR56/72, sixteen paired gains and no losses or false certificates.
+Full paid observations, including source, fall48,112→30,208 (37.21%);
+all three treatment lives stop early. Nineteen focused tests and independent
+audit pass once; 360 public projections and 2,460 intermediate decisions are
+checked. Science/audit exit0, stderr0. Next integrate the frozen direct/filter
+mechanism into fresh full A/B/A against strong history-retaining rebuilding,
+including execution risk and every fee. This remains a stationary known-type
+qualification; projections are not independent episodes. V251 remains10/11;
+the original scientific Gate remains FAIL and U006 remains unstarted.
+
+[V254 direct executable-trajectory evidence](reports/EXECUTABLE_TRAJECTORY_V254_RESULTS.md)
+passes its frozen qualification on the same 48,384 fresh observations:
+goal certificates 50→59/72, risk 48→56/72, zero paired losses or false
+certificates; combined readiness remains 48/72. Certificate CPU falls
+73.31→10.81 s. Independent audit is valid for 180 decision pairs; 22 initial
+tests and one repair regression pass. A cost-string normalization error caused
+the first audit failure, retained before repair and successful re-audit;
+science runs once. Next compare fixed round-robin with current joint-unresolved
+type sampling, then qualify complete A/B/A integration. This is stationary
+known-type evidence, with no interaction-saving claim. V251 remains 10/11;
+the original scientific Gate remains FAIL and U006 remains unstarted.
+
+[V253 compatible paid return evidence](reports/PAID_RETURN_VIEWS_V253_RESULTS.md)
+completes 144 frozen endpoint pairs and 144 new TWO_WAY plans; independent
+audit valid, zero failures and 16 focused tests pass once. Both acquisition
+arms retain query/combined readiness 48/72 and execution certificates 72/72.
+All point choices and 24 SHORT-to-RETRY blockers per arm remain unchanged;
+UNIFORM loses two risk-query certificates. Reuse adds zero observations,
+but provides no readiness or cost benefit. Stop quota/TWO_WAY refinement.
+Next test directly observed executable-continuation consequences and action
+value differences against row inference under a frozen full primitive budget.
+This is a new, untested exploratory mechanism. V251 remains 10/11; the original
+scientific Gate remains FAIL and U006 remains unstarted. Producer/audit exit 0;
+producer retains seven SLSQP clipping warnings, audit stderr 0.
+
+[V252 retained information-axis diagnosis](reports/INFORMATION_AXES_V252_RESULTS.md)
+completes 48 endpoints and 144 candidate states; independent audit valid,
+zero failures and 20 focused tests pass once. QUERY_SHARED retains 19 distinct
+full-region bad endpoints, giving a same-evidence, original-region certificate
+ceiling of 53/72, below the required 54. Actual V251 returns remain 48/72 and
+its stage remains 10/11. Six endpoints remain bad at empirical R; all fixed
+S/D-centered candidates are rejected, without proving the full bad space empty.
+Next compare existing ONE_WAY and TWO_WAY evidence on all return targets at
+their own chronological snapshots, using compatible paid native B observations.
+No new samples or query certificates; producer/audit exit 0, stderr 0.
+The original scientific Gate remains FAIL; U006 remains unstarted.
+
+[V251 query-driven shared acquisition](reports/QUERY_SHARED_ACQUISITION_V251_RESULTS.md)
+completes 648 targets and 4,680 auxiliary queries; independent audit valid,
+zero failures and 17 focused tests pass. The stage passes10/11: focused arms
+reach late-B34/36 versus uniform33/36 and save272 observations (0.56%),
+but all arms retain return48/72. Model CPU rises81.63%. No A phase stops
+early or releases budget; both QUERY arms have identical216-target histories.
+All24 SHORT-to-RETRY return blockers remain despite concentrated S/D evidence.
+Next end quota tuning and isolate R information versus complete joint-region
+uncertainty at these frozen endpoints before choosing acquisition/model changes.
+Producer/audit exit0; original Gate unchanged. This is exploratory evidence on seen layouts.
+
+[V250 acquisition schedule reachability](reports/ACQUISITION_SCHEDULE_SEARCH_V250_RESULTS.md)
+completes eight plans and 1,728 decisions, with independent audit valid,
+zero failures and 16 tests passing once. Two plans reach late-B27/36,
+but all eight retain return48/72; none is a budget-quality witness.
+Those late-B plans charge48,384, 592 above V249. All 192 failed return
+queries have zero true terminal regret; certification remains unresolved.
+Next allocate shared evidence to unresolved current/future type queries and
+stop at certification, rather than increasing uniform quotas. Producer/audit
+exit0; original Gate unchanged. This is exploratory evidence on seen layouts.
+
+[V249 fixed shared-probe timing](reports/SHARED_PROBE_TIMING_V249_RESULTS.md)
+completes 648 fresh lifecycle decisions and fails 2/11 frozen conditions,
+with independent audit valid, zero failures and 17 tests passing once.
+BEFORE/DEFERRED tie all 72 paired returns: 48/72 queries and 47,792 full charged
+observations. REBUILD charges 48,256; the net 464 saving does not identify an
+early-probe timing benefit. All 24 failed returns retain SHORT-to-RETRY blockers.
+Next diagnose information requirements under the complete budget before learning
+allocation across queries and episodes. Complete artifacts were retained, but the
+producer tool reported exit143; that status remains recorded. Original Gate unchanged.
+
+[V248 retained endpoint region diagnosis](reports/ENDPOINT_REGIONS_V248_RESULTS.md)
+completes 48 endpoints and 96 candidate states, with independent audit valid,
+zero failures and 17 targeted tests passing. Complete regions contain bad kernels
+at 23/24 ONE_WAY and 24/24 JOINT_PREDICTION endpoints; with RETRY at its empirical
+center, 21/24 and 24/24 remain bad. Original-decision, same-region certificate
+ceilings are 49/72 and 48/72, below 54. Next test earlier shared S/D acquisition
+against equal-quota delayed acquisition and strong REBUILD over complete lifecycles.
+No new observations were acquired; the original Gate is unchanged.
+
+[V247 joint predicted query acquisition](reports/JOINT_PREDICTION_RETURN_V247_RESULTS.md)
+completes 144 fresh return targets and fails the frozen conditions (4/5),
+with independent audit valid and 24 focused tests passing. Both arms certify
+and jointly complete the same 48/72 targets and charge 46,672 observations.
+All 557 new choices select RETRY; 472 even predict a larger joint deficit.
+Matched histograms expose loose fixed-tangent predictions. The failed one-batch
+proxy is retained without adoption. Next distinguish true region obstructions,
+then test shared mechanism acquisition before return within a complete matched
+lifecycle budget. The original Gate is unchanged.
+
+[V246 common-inheritance return isolation](reports/COMMON_INHERITANCE_RETURN_V246_RESULTS.md)
+completes 144 fresh return targets and fails the frozen stage conditions (4/5),
+with independent audit valid and 18 focused tests passing. Both arms certify
+and jointly complete the same 48/72 targets and charge 46,672 observations;
+every paired outcome and cost ties. All 24 SHORT-versus-RETRY query blockers
+remain despite 557 active choices. The failed single-candidate KL rule is not
+adopted. Next target the joint evidence needs of all unresolved goal/risk
+comparisons, then qualify acquisition before another complete lifecycle.
+The original Gate is unchanged.
+
+[V245 query-directed acquisition](reports/QUERY_ALLOCATION_LIFECYCLE_V245_RESULTS.md)
+completes 648 fresh targets and fails the frozen stage conditions (6/11 pass),
+with independent audit valid and 22 focused tests passing. The single-goal
+bad-kernel KL rule leaves return quality at 48/72, reduces late-B quality
+from ONE_WAY's 28/36 to 25/36, and increases charged observations by 944.
+All three losses follow changed A evidence inherited into B; the new branch
+never activates in B. The failed rule is retained without adoption. Next fix
+common inheritance to isolate return acquisition, then address the joint
+evidence needs of current and later queries. The original Gate is unchanged.
+
+[V244 complete-region return-query diagnosis](reports/GOAL_JOINT_REGION_V244_RESULTS.md)
+finds strict bad kernels in all eight query regions and all original execution
+events for 19 of 24 ONE_WAY return unknowns. At the fixed terminal prefixes,
+proof improvements within these regions can reach at most 53/72 return
+certificates, below the frozen 54/72 requirement. Eighteen focused tests and
+independent audit pass; no observations or certificates are added. Next change
+query acquisition allocation on a fresh matched lifecycle, with certificates,
+budgets, stopping and the strong rebuilding control fixed. V243 and the original
+Gate remain unchanged.
+
+[V243 bidirectional evidence consolidation](reports/BIDIRECTIONAL_LIFECYCLE_V243_RESULTS.md)
+completes 648 targets across three matched arms. TWO_WAY imports 5,488 paid
+native B observations on returning to A, but both reuse arms certify 48/72
+return queries and complete 145/216 targets jointly. TWO_WAY costs 42,112
+observations versus ONE_WAY's 41,952 and REBUILD's 48,240; the frozen stage
+fails 2 of 11 conditions. Twenty focused tests and full independent audit
+pass with zero binary endpoint tolerance. All 24 return failures remain
+query-only and include the goal SHORT-versus-RETRY comparison. Next test
+whether candidate bad kernels survive all compatible paid constraints
+before choosing between better evidence use and query-directed acquisition.
+The original Gate is unchanged.
+
+[V242 matched online reuse versus rebuilding](reports/REUSE_REBUILD_LIFECYCLE_V242_RESULTS.md)
+completes 432 targets on three fresh lifecycles. Reuse saves 752 observations
+(1.57%) and completes 130/216 targets jointly versus 125/216, but late-B
+26/36 and A-return 48/72 miss the frozen quality requirements. Independent
+audit retains `valid=false`: 18 binary endpoint checks expose slight inward
+rounding in the shared scalar solver. The solver is repaired without changing
+the Jeffreys model; 12 targeted tests and five independent exact fixtures pass.
+The cohort remains unchanged. All A-return acquisition is query-blocked;
+10,400 paid observations from unchanged B rows are excluded from A evidence.
+Next isolate bidirectional evidence consolidation using the repaired solver,
+with fixed certificates, acquisition, budgets and strong rebuilding control.
+
+[V241 complete convex query qualification](reports/CONVEX_QUERY_QUALIFICATION_V241_RESULTS.md)
+integrates all nine audited V240 comparisons into the full 24-case qualification.
+Positive controls improve from 11/12 to 12/12; four of twelve old failures
+remain certified, with zero false certificates. The frozen stage condition
+is met. Twelve new integration tests and independent audit of all 144
+comparisons pass, without new observations or optimization. Eight failures
+remain uncertified. Next compare reuse against strong rebuilding on a fresh
+matched lifecycle with the same online evidence, acquisition and stopping rules.
+
+[V240 convex query-null diagnosis](reports/CONVEX_QUERY_NULL_V240_RESULTS.md)
+distinguishes the nine remaining cases without acquiring observations.
+Eight failures admit exact bad kernels in their fixed necessary-projection
+regions; numerical precision and retry partitions cannot repair those regions.
+The remaining positive comparison has a continuous global certificate:
+its log-evidence lower bound is 13.822 versus the threshold 6.867.
+Twelve focused tests and independent audit pass; old qualification is unchanged.
+Next integrate the continuous proof into full qualification and redesign
+lifecycle acquisition for the eight genuine region obstructions.
+
+[V239 same-endpoint joint qualification](reports/LIFE_END_JOINT_EVIDENCE_V239_RESULTS.md)
+uses the unchanged V235 engine and V238 paid endpoint tapes. Retaining source
+evidence restores all nine regressed positive controls, reaching 11/12, while
+the same four old failures remain certified. The stage condition still fails.
+Six new tests and independent audit of 144 comparisons pass, with no new
+observations or replay. Next test feasible bad kernels versus loose global
+bounds for the nine uncertified cases before changing acquisition or proceeding
+to matched rebuilding and lifecycle amortization.
+
+[V238 life-end predictive qualification](reports/LIFE_END_QUERY_EVIDENCE_V238_RESULTS.md)
+evaluates the original 24 policies using already-paid complete-life evidence.
+Old failures improve from 0/12 to 4/12, but positive controls fall from the
+early joint method's 11/12 to 2/12; the stage condition fails. Two controls
+have 384 paid source samples per row and no validation samples, making the
+conditional evidence identically one and discarding all source constraints.
+Sixteen tests and independent audit of 144 comparisons pass, with no new
+samples or Gate changes. Next use the existing V235 joint engine on these
+same endpoints to isolate retaining source evidence, then test matched
+rebuilding and lifecycle amortization after qualification.
+
+[V237 acquisition-budget feasibility](reports/ACQUISITION_BUDGET_V237_RESULTS.md)
+derives necessary fresh-suffix costs from the three fixed GAP risk witnesses.
+Reaching 75% exclusion probability for each requires at least 3261.94 expected
+new observations, exceeding the matched GAP/BALANCED headroom of 2896;
+two lives have power upper bounds of 8.67% and 35.71% within their margins.
+This closes append-only repair with other lifecycle costs held fixed.
+No matched REBUILD cost exists in this cohort. Twelve tests and independent
+audit pass, with no new samples or Gate changes. Next qualify whole-life-end
+knowledge using already-paid later evidence, with explicit certification timing,
+then establish matched rebuilding and test lifecycle amortization.
+
+[V236 source-trained predictive evidence](reports/SOURCE_PREDICTIVE_EVIDENCE_V236_RESULTS.md)
+uses frozen row-specific source training and validation-only likelihoods.
+All six primary V235 risk witnesses remain admitted; the three old shared
+rectangle witnesses are excluded. Four primary witnesses cannot be excluded
+by any normalized mixture of the same validation likelihood, regardless of
+source prior. The frozen continuation condition fails, so full qualification
+is skipped and V236 is not adopted. Thirteen tests and independent exact audit
+pass, with no new observations or Gate changes. Next test acquisition-budget
+feasibility and whether additional evidence can preserve the reuse advantage.
+
+[V235 necessary-row joint evidence](reports/JOINT_QUERY_EVIDENCE_V235_RESULTS.md)
+excludes all 15 fixed old witnesses but certifies 0/12 old failures and
+11/12 positive controls on the same 24 snapshots; it is not adopted.
+All six primary SHORT/RETURN risk blockers admit new exact bad-ranking
+witnesses, even with M <= L. Their observed likelihood separation is smaller
+than the neutral mixture penalty, so numerical precision cannot repair these
+six regions. The shared positive blocker remains unknown. Thirty tests and
+three independent audits pass, with no new observations. Next establish
+source-conditioned predictive evidence and its source/validation boundary,
+then qualify it once with all acquisition costs retained.
+
+[V234 shared-prefix qualification](reports/SHARED_PREFIX_SCORE_V234_RESULTS.md)
+uses complete detour/retry rows and exact conditional-gap rectangles on the
+same 24 snapshots. It restores four positive controls, retaining 11/12;
+old failures improve to 2/12, with the extra repair due solely to the smaller
+joint event budget's direct threshold. The frozen adoption condition remains
+unmet. Three exact terminal-rectangle witnesses remain, including a positive
+gap of 0.051480328; six original SHORT/RETURN risk blockers persist.
+Fifteen tests and independent audit of 144 comparisons pass, with no new
+observations. Next establish necessary-row joint query evidence and its
+chronological validity, checking substantive differences from V232 first.
+
+[V233 paired query-score qualification](reports/PAIRED_QUERY_SCORE_V233_RESULTS.md)
+reconstructs actual paid observation order and tests only necessary operator
+rows on the same 24 snapshots. It certifies 1/12 old failures but retains only
+7/12 positive controls; it is not adopted. All five positive regressions involve
+RETURN versus RETRY: four have about 80% zero paired scores, while another
+also leaves 1360 retry observations unused. Seven old failures still have
+SHORT versus RETURN risk blockers. Nineteen focused tests and independent
+replay of 144 comparisons pass, with no new observations. Next qualify
+shared-prefix conditional continuation differences with a newly frozen joint
+confidence budget; the original scientific Gates remain unchanged.
+
+[V232 global query likelihood qualification](reports/KERNEL_QUERY_PROFILE_V232_RESULTS.md)
+implements outward dual bounds and complete RETRY probability partitions on
+24 frozen V231 snapshots. Old failures remain 0/12 certified; positive controls
+retain 11/12. Twelve new same-kernel counterexamples satisfy all 50 applicable
+product-CS prefix constraints, including the positive regression. Seventeen
+focused tests and both independent audits pass, with no new observations.
+The confidence family still admits wrong rankings; V229/V231 are unchanged.
+Next qualify direct paired action-score confidence using only necessary
+operator rows and the original paid observation order.
+
+[V231 oracle acquisition lifecycle](reports/ORACLE_GAP_LIFECYCLE_V231_RESULTS.md)
+completes three fresh A→B→A′ lifecycles with known types and immediate
+per-batch pooling. GAP costs 45488 observations versus BALANCED's 48384,
+while late-B query certification improves from 23/36 to 26/36. A′ remains
+48/72 for both: all 24 normal-type targets exhaust their cap. Eleven selected
+terminal regions admit verified regret >.05 counterexamples for every pure
+query policy. Thirteen tests and independent replay of 432 histories and
+47 countermodels pass. A fixed joint-kernel candidate preserves 12 retained
+true kernels and excludes all 11 saved countermodels for selected policies;
+this produces no new query certificates. V229 remains rejected. Next implement
+globally bounded query-null likelihood tests on retained evidence before
+another paid lifecycle.
+
+[V230 action-gap qualification](reports/ACTION_GAP_V230_RESULTS.md)
+implements joint categorical confidence and candidate-specific multibatch
+acquisition. Six fixed failure continuations improve from 0/6 to 1/6, saving
+32 observations while model time rises 2.78 times. Four oracle joint regions
+each admit a verified regret >.05 counterexample for every pure query policy;
+16 witnesses include unchanged A constraints for B. All three independent
+audits and 15 focused tests pass. V229 remains rejected. Next test budget-matched
+gap-directed acquisition with known types before another lifecycle run.
+
+[V229 fresh paid scoped lifecycle](reports/SCOPED_LIFECYCLE_V229_RESULTS.md)
+completes 12 A→B→A′ lifecycles and 2592 target histories, with 4/6 frozen
+conditions passing. Repair saves 30608 observations against cumulative rebuilding
+and 6368 against parameter adaptation; both paired cost intervals are positive,
+and the model processing ratio is 1.016. Late B jointly resolves/certifies
+69/144 targets and A′ 113/288, below the required 108 and 216. A/A′ paths match
+exactly across arms and A′ execution certifies 284/288; the remaining bottleneck
+is query certification and acquisition, with low actual regret but broad bounds.
+Six retained counterfactuals do not certify all queries merely by pooling the
+current member. Next derive action-comparison confidence and candidate-aware
+multi-batch acquisition before another frozen paid experiment.
+
+[V228 scoped mechanism repair](reports/SCOPED_REPAIR_V228_RESULTS.md)
+implements the A→B→A′ contract, 18 hidden operator/permutation hypotheses,
+separate A/B confidence banks, exact query regret bounds and an optimistic
+infeasibility certificate. REBUILD_CS has the same paid B source interface
+and cumulative statistics as REPAIR_CS, isolating old-contract reuse.
+Twenty tests and 648 deterministic integration records pass, including 1944
+query bounds; no environment observations were drawn. Exact task qualification
+finds 96/288 B goals infeasible under the unchanged risk .05 and utility 2
+requirements. These are classified separately from uncertified learning and
+execution success. This validates the new framework, with no performance Gate.
+Next freeze source budgets, fresh streams and lifecycle cost/quality conditions,
+then compare repair, cumulative rebuilding and ordinary parameter adaptation.
+
+[V227 execution/model interface repair](reports/RETAINED_MODEL_V227_RESULTS.md)
+passes 4/4 interface checks on all 1152 retained V226 histories, with no new
+environment samples. Execution, acquisition, commits, certification and fees
+remain identical. Keeping compatible source knowledge reduces LOW_UNION late
+query regret from 0.14031 to 0.01017, but also lowers LOW_FIXED to 0.00667;
+the query improvement is a shared interface repair. Four tests and independent
+audit 86/86 pass. V226 remains scientifically rejected at 3/6; its 15488-sample
+deficit against FULL_FIXED and 111/144 late certificates are unchanged.
+Next complete the coverage proof and confidence budget for the bounded
+[V228 A→B→A′ repair design](specs/SCOPED_REPAIR_V228_DRAFT.md), then freeze its
+local-repair, full-rebuild and ordinary-parameter controls.
+
+[V226 limited initial source evidence](reports/LIMITED_SOURCE_V226_RESULTS.md)
+passes 3/6 Gates. LOW_UNION saves 34464 target samples against LOW_FIXED
+and 35280 against ordinary classified predictive updates, but still costs
+15488 more total samples than FULL_FIXED and certifies 111/144 late targets
+versus 144. Quality, applicability and full-reference recovery fail.
+Retained diagnostics locate a core interface problem: 20 late fallbacks
+discard still-compatible source models, raising their query regret sum
+from 0.272 to 19.01167 while certification remains failed. Accumulation
+does narrow bounds and resolve assignments; execution fallback must be
+separated from model knowledge retention before bounded mechanism repair.
+Six tests and independent replay 77/77 pass; all risk checks pass. Preserve
+this negative result and close the frozen recovery method without budget
+or Gate retuning. General strategic learning remains unresolved.
+
+[V225 matched mixture confidence sequences](reports/MIXTURE_CONFIDENCE_V225_RESULTS.md)
+passes 4/5 Gates: STRONG_REFERENCE passes, LEARNING_EFFECT fails.
+UNION_CS uses 22416 target samples versus unchanged original SET's 37264
+and certifies 144/144 late targets versus 140. The paired sample-saving
+and utility CIs are positive. FIXED_CS already saves 14624 of the net
+14848 samples; accumulation adds only 224, below the frozen 64/life
+learning requirement. All risk and coverage checks pass, as do six tests
+and independent replay 123/123. Freeze this statistical method and next
+test whether accumulation recovers limited initial source knowledge,
+against ordinary parameter learning and the fully supplied CS reference,
+counting all source and target costs. General strategic learning remains
+unresolved; unknown mechanism changes need a new certificate scope.
+
+[V224 unchanged strong SET reference](reports/STRONG_REFERENCE_V224_RESULTS.md)
+passes 4/5 Gates; STRONG_REFERENCE fails. ORIGINAL retains the complete
+old SET and its source bounds. UNION uses 37664 target samples versus
+ORIGINAL's 36832, with both certifying 137/144 late targets. Learning saves
+1808 samples against the calibration-matched FIXED library, but its 2640
+extra samples relative to ORIGINAL leave a net 832-sample deficit. The
+paired strong-reference cost CI is unfavorable. All risk, coverage and
+assignment checks pass; four tests and independent replay 122/122 pass.
+Next test time-uniform mixture confidence sequences, matching the initial
+source region of fixed and cumulative controls to separate statistical
+improvement from learning. General strategic learning remains unresolved.
+
+[V223 fresh cumulative-confidence and paid-detour factorial](reports/DETOUR_SUPPLY_V223_RESULTS.md)
+passes all 5 Gates. UNION_DETOUR uses 40496 target samples and certifies 140/144
+late targets, versus FIXED_DETOUR's 66640 and 89. Without compulsory detour,
+UNION_SET uses 35248 versus FIXED_SET's 63744 and certifies 143 versus 90;
+the paired sample-saving CI is positive in both supply layers. The pilot
+interaction is negative and compulsory detour costs another 5248 samples
+relative to UNION_SET. All history risks and library coverage/assignment
+checks pass. Eight tests and independent replay 122/122 pass. The four-arm
+joint confidence budget is more conservative than V221, so these results
+do not establish superiority over historical strong SET. Next preserve
+the original source bounds and pair the full original SET, a calibration-
+matched fixed library, and the cumulative model on fresh observations.
+General strategic learning remains unresolved.
+
+[V222 cumulative confidence with uncertain assignments](reports/ASSIGNMENT_UNION_V222_RESULTS.md)
+is ready for a fresh test, with limited retained-trajectory gains. All 288
+FROZEN targets enter the confidence model, including failures and ambiguous
+assignments. The 4/8-target exact unions and DP outer envelopes have identical
+endpoints in all 24 comparisons. After 24 targets, SHORT/RECOVERY widths shrink
+3.10%/4.37%; DETOUR has zero target observations and no shrinkage. Of 275 fixed
+next-target sampling prefixes, only two gain certification, belonging to one
+target; none of the 36 targets certifies earlier. Next test source-only versus
+cumulative confidence crossed with SET versus one paid DETOUR batch within
+the same total target budget, separating learning from data supply. Four tests
+and independent audit 364/364 pass. No new environment samples were drawn;
+new sampling efficiency and general strategic learning remain unresolved.
+
+[V221 chronological target-evidence persistence](reports/PERSISTENT_EVIDENCE_V221_RESULTS.md) passes 5/6 Gates.
+PERSIST correctly commits 217 targets and 31376 samples, but uses
+38272 target samples versus FROZEN SET's 35296 (+8.4%). Both certify
+139/144 late targets. Full-query regret improves significantly, while the
+paired cost CI is unfavorable. Of 217 commits, 198 leave all certificate
+bounds unchanged; the remaining 19 change only SHORT endpoints. Three
+retained local factorial snapshots show accumulated predictive counts
+raising the query proxy past the unchanged stop threshold without changing
+actions or the certificate lower bound. Processing is faster (3.63 versus
+8.36 seconds), but the sampling goal fails. Both arms have zero observations
+after first unique identification. Next address cumulative confidence with
+uncertain target assignments, retaining all observations and feasible
+assignment branches; first validate exact short-prefix unions and safe
+outer envelopes. Four tests, first independent replay 121/121 and source
+retention 28/28 pass. Historical failures remain preserved and general
+strategic learning is unresolved.
+
+[V220 observation-branch integration](reports/BRANCH_ACQUISITION_V220_RESULTS.md) passes 5/7 Gates.
+Under identical fixed sources, pilot, real planning and fresh paired target
+prefixes, BRANCH saves 18016 target samples versus MEAN (44976 versus
+62992) and certifies 134/144 late targets versus 103. The isolated branch
+prediction effect is supported, but SET remains cheaper (36160 target
+samples), certifies 139 and has significantly higher utility. BRANCH
+requires 364463 hypothetical plans and 306.75 seconds of target processing
+versus SET's 8.93 seconds. Six additional late failures retain two candidates
+and spend 18–20 final batches on a flat certificate lower bound; one reverse
+success gives the net five-certificate deficit. Stop single-step acquisition
+tuning and next test chronological persistence of certified unique-candidate
+target evidence, with association uncertainty and cumulative confidence
+frozen first. SET has 26208 such paid observations left unused. Four tests,
+first independent replay 108/108 and source retention 28/28 pass; historical
+failures remain preserved and general strategic learning is unresolved.
+
+[V219 fixed-source acquisition isolation](reports/FIXED_SOURCE_ACQUISITION_V219_RESULTS.md) passes only RISK (1/6).
+MEAN and SET use identical retained FULL source counts, pay the same
+41472 historical source samples, and share fresh paired target prefixes.
+MEAN needs 64048 target samples versus SET's 38240, certifies only
+101/144 late targets versus 141, and loses 0.41797 utility with a fully
+negative paired CI. Overall target acquisition is therefore a bottleneck
+even under the fixed FULL library. Retained examples show MEAN exhausting
+384 samples while SET certifies after 32 RECOVERY samples; 63 RECOVERY
+batches eliminate candidates despite no predicted gain. Next keep source,
+pilot and stopping fixed and test candidate-conditioned observation
+branches before adding target consolidation. Two tests pass; independent
+replay passes 108/108 after a zero-sample counter read repair, with the
+failed audit and both code versions retained. Earlier frozen failures
+remain preserved; general strategic learning is unresolved.
+
+[V218 joint source/member acquisition](reports/JOINT_ACQUISITION_V218_RESULTS.md) passes RISK and APPLICABILITY (2/6).
+JOINT certifies 112/144 late targets versus MEMBER's 78 and correctly
+reuses the library 108 times, but uses 114240 samples versus MEMBER's
+112672, LOCAL's 96608 and FULL's 77584. All sources reach their 1152
+caps: source costs match FULL, while target costs remain 36656 higher.
+Late query regret is 0.00760 and true utility 2.41925; quality fails
+because LOCAL certifies 116 and the utility difference CI extends below
+-0.05. Retained diagnostics show uneven source operator allocation and
+25600 samples from singleton-candidate targets left outside persistent
+knowledge. Next hold FULL's source evidence fixed and compare MEAN with
+the original SET target acquisition, then separately test observation
+branches or target consolidation. Independent replay 62/62 and source retention 27/27
+pass; earlier frozen failures remain preserved. This experiment assumes
+paid resets of retained opaque sources; general strategic learning remains
+unresolved.
+
+[V217 query and certificate deficit acquisition](reports/DEFICIT_ACQUISITION_V217_RESULTS.md) passes only RISK (1/6).
+Late full-query regret improves to 0.00645 versus IDENTITY's 0.40672 and
+FULL's 0.02317, but only 87/144 late targets certify, versus LOCAL's 125.
+DEFICIT uses 98192 samples, IDENTITY 102736, LOCAL 95056 and FULL 68128.
+Source savings of 29248 versus FULL are outweighed by 59312 extra target
+samples. Query-first acquisition can leave too little budget for the
+certificate, while a frozen weak source library repeatedly charges each
+target for the same deficit. Next test joint source/target acquisition,
+explicitly permitting paid resets of retained opaque source environments
+within the existing source caps, and compare against static FULL.
+Independent replay 60/60 and source retention 27/27 pass; earlier frozen
+failures remain preserved and general strategic learning is unresolved.
+
+[V216 source certification stopping](reports/SOURCE_STOPPING_V216_RESULTS.md) passes only RISK (1/5).
+EARLY saves 29632 source samples but adds 62624 target samples, using
+106608 total versus FULL's 73616 and LOCAL's 94272. Late certification
+falls to 41/144, utility to 0.85137, and query regret rises to 0.56728.
+ORACLE uses the identical early-source library and certifies all 144 late
+tasks without target samples. All EARLY target observations were spent
+on identity discrimination; 99 budget-exhausted targets already met the
+query proxy but still lacked a certificate. The next intervention should
+acquire evidence for query/certificate deficits while retaining identity
+ambiguity, rather than continue max-min point-TV identity sampling.
+Independent replay 60/60 and source retention 25/25 pass; the early-stop
+hypothesis is rejected and previous frozen failures remain preserved.
+
+[V215 query-directed source calibration](reports/QUERY_CALIBRATION_V215_RESULTS.md) passes COST,
+QUALITY, RISK and APPLICABILITY but fails CALIBRATION_EFFECT. Both the
+new allocation and the unchanged SET baseline use 60816 samples versus
+LOCAL's 95152 (36.1% fewer), with savings CI [2425.33,3288]. All 144 late
+targets certify, with no wrong transfers or risk violations. However,
+all 36 terminal source count tables and all 288 target histories are
+identical between the two methods: continuing to pay the full source
+budget restored 384 samples per operator in this stream. The new
+allocation has zero measured incremental effect. Next treat 1152 as a
+source cap and stop at certification, comparing total source plus target
+cost against a paired full-budget control. Independent replay 57/57 and
+source retention 23/23 pass; earlier frozen failures remain preserved.
+
+[V214 query-sufficient ambiguous mechanism sets](reports/QUERY_SUFFICIENT_V214_RESULTS.md) passes QUALITY,
+RISK, APPLICABILITY and STOP_EFFECT; COST fails. With unchanged paid
+calibration and certificates on fresh paired streams, SET stops when
+all retained candidate point models support the selected full queries.
+It uses 81072 samples versus STRICT's 104576 and LOCAL's 95776. Savings
+over strict identity have lifecycle CI [1028,2894.67], with query
+noninferiority; savings over LOCAL have CI [-124,2457.33]. Late transfer
+certifies 122/144 tasks, including 52 ambiguous sets containing the true
+identity; no wrong transfers or risk violations occur. Four weak-source
+lifecycles erase robust total-cost evidence. Next separate chronological
+library-maintenance effects from query-directed calibration needs using
+retained paths before freezing another experiment. Independent replay
+56/56 and source retention 21/21 pass; finite complete-library scope holds.
+
+[V213 unknown finite-library mechanism identity](reports/LATENT_MECHANISMS_V213_RESULTS.md) passes QUALITY,
+RISK and IDENTITY but fails COST. Opaque tasks reveal no weather/group
+label; a declared stable three-kernel family is learned from three paid
+calibration tasks. LATENT correctly identifies and certifies 125/144 late
+tasks, with no wrong identifications or risk violations, mean true utility
+2.92685 and full-query regret 0.041. Total samples 96016 versus LOCAL's
+96528 give mean lifecycle savings 42.67, CI [-488,586.67]. Paid calibration
+and identity discrimination offset target reuse savings; privileged ORACLE
+requires 51312 samples. Retained-prefix exploratory replay suggests query-
+sufficient ambiguous candidates could save 16736 samples, but this does
+not change the frozen FAIL. Next freeze that stopping rule and validate
+on fresh streams, keeping calibration unchanged. Independent replay and
+source retention 19/19 pass; scope remains complete finite-library reuse.
+
+[V212 contract-aware direct-count baseline](reports/CONTRACT_BASELINE_V212_RESULTS.md) retains all five old
+gates in both orders but rejects the added incremental-advantage hypothesis.
+DIRECT shares weather-conditioned real counts under the same supplied
+contract, with no condition selection or maintenance. It needs 12640
+samples in either order, versus REVISED's 14944 and 19200, and certifies
+all 48 late tasks without new samples. Late pre-query regret is zero for
+both methods; old-query retention and true risk hold. Extra maintenance
+raises some constrained-plan utilities but does not satisfy the frozen
+cost-and-query advantage criteria. Independent replay passes 57/57 per
+order and source retention 38/38. The established positive result is
+contract-authorized evidence reuse; the next learning question is mechanism
+identity/applicability discovery when the correct grouping is not supplied.
+
+[V211 fresh-stream and task-order replication](reports/ORDER_REPLICATION_V211_RESULTS.md) passes all five
+frozen gates in both the original-order replication and a predeclared
+interleaved order, with the V210 algorithm unchanged. Shared maintenance
+uses 12352 versus 41760 member samples (70.4% fewer) and 15424 versus
+43088 (64.2% fewer), respectively. Both certify all 48 late tasks, select
+SHORT/DETOUR weather in 12/12 lifecycles, and preserve old-query quality
+and true risk limits. Independent replay passes 57/57 per order; source
+retention 36/36. A shared control without maintenance uses fewer samples
+and also preserves old-query quality in this batch, but selects DETOUR
+weather in only 8/12 and 7/12 lifecycles. The next decisive comparison is
+a contract-aware baseline that directly stores weather-conditioned counts,
+testing learning/maintenance value beyond certificate reuse itself.
+
+[V210 contract-consistent strategic maintenance](reports/STRATEGIC_MAINTENANCE_V210_RESULTS.md) passes all five
+frozen gates. Shared certificates plus paid condition maintenance require
+15440 samples versus 42736 for the same learner/maintenance with member
+certificates (63.9% fewer); mean lifecycle savings 2274.67 have paired
+95% CI [1940,2560]. All 48 late tasks certify; 46 require no new samples.
+SHORT and DETOUR weather selection reach 12/12, old-query regret does
+not increase, and all valid-contract risk limits hold. A shared-certificate
+control without maintenance uses 13264 samples but learns DETOUR weather
+in only 5/12 lifecycles and doubles old risk-query regret. Independent
+replay passes 57/57 and source retention 18/18. The next stage is frozen
+replication with fresh sampling and unseen task order. This supports the
+explicit cost-invariant task family, not general invariance discovery or
+the original game's unrestricted strategic learning.
+
+[V209 contracted risk-evidence reuse](reports/CONTRACTED_RISK_REUSE_V209_RESULTS.md) passes COST, QUALITY and REUSE (3/5),
+but LEARNING and old-query retention fail. With an explicit cost-invariant
+kernel contract, shared certificates require 11216 samples versus 41648
+for the same learner with member certificates; all 48 late tasks certify
+without new samples, and valid-contract risk limits hold. Mean lifecycle
+savings are 2536, paired 95% CI [2434.67,2633.33]. Old risk-query regret
+increases and DETOUR weather selection is only 5/12. The next bottleneck
+is strategic knowledge maintenance after task certification stops acquisition.
+A frozen counterfactual violating the contract invalidates all 24 shared
+wet/low initial certificates. Independent replay passes 57/57 after a
+counterfactual-only evaluator correction; acquisition and training ran once.
+The scientific decision remains NOT_SUPPORTED; general invariance discovery
+and the original H2/U005/U006 boundaries are unchanged.
+
+[V208 task-sufficient constrained acquisition](reports/CONSTRAINED_ACQUISITION_V208_RESULTS.md)
+passes QUALITY, LEARNING and RISK_RETENTION; COST fails.
+REVISED certifies 45/48 late tasks with mean true goal utility 2.34947,
+equal to LOCAL, while late pre-acquisition own-query regret is zero.
+Final SHORT/DETOUR weather selection is 12/12 and 11/12; all histories
+satisfy true risk limits and old-query regret improves.
+Total samples are 39840 versus LOCAL's 39984. Mean lifecycle savings
+12 have paired 95% CI [-1.3333,28], below the unchanged cost gate.
+All 48 late acquisition histories match LOCAL exactly. The remaining
+bottleneck is cross-task risk-evidence reuse under an explicit mechanism
+contract; further allocation tuning is paused. Four tests, independent
+56/56 and source 15/15 pass; main/audit once 19.53/10.02s, stderr 0.
+The overall scientific decision remains NOT_SUPPORTED.
+
+[V207 member probes and continuation acquisition](reports/CONTINUATION_ACQUISITION_V207_RESULTS.md)
+passes LEARNING and RISK_RETENTION, but fails COST and QUALITY.
+Direct member pilots and reachable continuation-threshold queries acquire
+21088 retry observations for REVISED, eliminating the unobserved-retry path.
+Its late pre-acquisition own-query mean regret is zero; final SHORT/DETOUR
+weather selection is 11/12 and 10/12. Yet it certifies only 25/48 late tasks,
+with true goal utility 1.965. Total samples are 45488 versus LOCAL's 45664;
+mean lifecycle savings 14.6667 have 95% CI [-50.6667,84].
+Retry consumes 46.36% of REVISED's budget: point-query disagreement resolution
+competes with the member evidence needed by the hard-constrained plan.
+That constrained acquisition test is completed in V208 above; quality
+recovers, while member evidence cost remains equal to strong LOCAL.
+Four tests, independent 56/56 and source 15/15 pass; main/audit once
+40.00/11.49s, stderr 0. The scientific decision remains NOT_SUPPORTED.
+
+[V206 paid online lifecycle](reports/ONLINE_LIFECYCLE_V206_RESULTS.md)
+passes RISK_RETENTION only; COST, QUALITY and LEARNING fail.
+Starting empty with every early task paid, REVISED uses 38496 samples versus
+persistent LOCAL's 38480, and certifies 39/48 late tasks versus 40/48.
+Mean lifecycle savings are -1.3333, paired 95% CI [-184,149.3333].
+All histories satisfy true risk limits; old-query regret grows by only 0.00315.
+Acquisition exposes two missing evidence paths: existing shared counts suppress
+new-context probes, and maximum occupancy never samples RECOVERY_RETRY.
+All three arms obtain zero retry observations. That acquisition revision is
+now tested in V207 above; evidence coverage improves but constrained task
+quality and cumulative benefit fail. Four tests, independent 56/56 and source
+14/14 pass. One sampled run/audit take 16.37/7.25s, stderr 0; an import-path
+startup failure before sampling is retained. No passing tests were rerun.
+
+[V205 learned mechanism conditions](reports/CONDITIONED_MECHANISMS_V205_RESULTS.md)
+passes TASK, CONDITION, TRANSFER and RISK_RETENTION; ACQUISITION fails.
+All 12 lifecycles revise SHORT and DETOUR to weather conditions; GUIDED
+chooses the critical operator in 48/48 targets and its zero-target own-query
+policies have zero mean regret. It certifies 46/48 with 10528 target samples,
+versus strong pilot-enabled COLD's 45/48 and 11280. Sample savings average
+15.6667, paired 95% CI [14,17.6667], below the frozen minimum 16.
+All target histories have zero risk violations; old GUIDED regret is unchanged.
+Source learning still costs 36864 samples, so cumulative net benefit is unproved.
+That paid online acquisition test is completed in V206 above. The acquisition
+rule's untested-mechanism and continuation-evidence gaps are now exposed.
+Eight tests, independent 93/93 and source 13/13 pass; main/audit once
+9.50/3.31s, stderr 0. The overall scientific decision remains NOT_SUPPORTED.
+
+[V204 target risk evidence acquisition](reports/TARGET_RISK_ACQUISITION_V204_RESULTS.md)
+passes RISK and ALLOCATION, but fails RESTORATION and KNOWLEDGE.
+GUIDED certifies 35/48 targets with 14944 new samples; the graph/cost cold
+control certifies 36/48 with 14720 and higher true utility, 2.29425 versus 2.24398.
+All target histories have zero risk violations. Against uniform, GUIDED saves
+72.67 samples per target, paired 95% CI [52.33,94.67]; against strong cold,
+the saving is −4.67, CI [−14,0]. Historical 64512 samples remain paid.
+That mechanism-condition test is now completed in V205 above. Preserve
+V204's failure and pause forecast and budget tuning on its four targets.
+Eight tests, independent
+93/93, source 11/11 and inputs 4/4 pass; main/audit once 52.32/7.75s, stderr 0.
+
+[V203 fixed-evidence whole-policy risk planning](reports/ROBUST_ROUTE_PLANNING_V203_RESULTS.md)
+passes both frozen risk/usefulness conditions with zero new samples or fits.
+Complete-context uncertainty envelopes reduce true risk violations70/144→0/144
+and maximum failure7.42%→3.02%. Observed-context utility retains72.00% of
+the true constrained optimum, equal to the same-envelope independent learner.
+Unobserved combinations require95% WAIT and retain only5.15% of optimal utility;
+the absence of member risk evidence is the remaining bottleneck. Selected-leaf
+pooling retains high utility and also has zero violations in this batch, but
+its whole-context probability coverage is only75%, so it cannot certify members.
+That acquisition test is now completed in V204 above, including a strong
+graph/cost cold control and paid source costs; knowledge contribution fails.
+Eight tests, independent57/57, source9/9 and inputs3/3 pass; main/audit
+once0.61/0.49s, stderr0. This is retained-evidence reanalysis within the known
+route grammar; general strategy and effective safe unobserved reuse remain open.
+
+[V202 fixed-learner conditional revision and reuse](reports/CONTINUAL_ROUTE_KERNELS_V202_RESULTS.md)
+passes all four frozen learning conditions in twelve independent chronological
+lifecycles. SHORT and RETRY change from global sharing to weather conditioning
+in12/12; final unacquired combinations gain0.16511 utility over frozen
+knowledge, paired95% CI[0.12497,0.23594]. Final mean kernel TV is0.01760
+and own-policy oracle regret0.00940. Manually correct weather grouping has
+zero regret; old-context regret worsens0.00583 within the frozen limit.
+Hard-risk planning remains unresolved:70/144 final plug-in plans exceed5%
+actual failure risk, maximum7.42%; even the correct-grouping reference
+violates64/144. That fixed-evidence uncertainty and condition-bias-aware
+constraint-planning test is now completed in V203 above. The graph,
+costs and candidate fields are supplied;64512 controlled generative samples
+do not establish autonomous strategy or sample efficiency. Eight tests,
+independent69/69 and source9/9 pass; main/audit once22.31/4.68s, stderr0.
+
+[V201 structured route task](reports/STRUCTURED_ROUTE_TASK_V201_RESULTS.md)
+passes all five frozen task-qualification conditions across twelve declared
+contexts: eight change the goal/risk root action; four share DETOUR and then
+choose different recovery actions on their actual continuation. Success needs
+at least three steps. Full H4 beats receding H2 on this task by at least3.28
+for goal and2.97 for risk. All hard-risk optimal mixtures satisfy F=0.05 and
+improve goal utility over the best feasible pure policy by at least0.04333.
+That fixed learner's chronological acquisition and reuse test is now completed
+in V202 above, with oracle reserved for evaluation. V201 itself is task
+qualification, with zero fits or sampled interactions; learning and old2048
+H2 superiority remain open. Eight focused tests exit successfully;
+independent52/52 and execution-time source8/8 pass. Main/audit once0.145/0.112s,
+stderr0. The report records overwritten audit-test stdout and the subsequent
+wrapper-only log-name repair; no successful check was rerun.
+
+[V200 learned deep-state transfer](reports/DEEP_CONTROLLED_TRANSFER_V200_RESULTS.md)
+completes one frozen SOURCE-only predicate/successor-model fit and own-policy
+H3/H4 transfer study. Excluding H1, H4 deep cells/rows reduce4741/16214→96/299
+against the union D4 baseline. LEARNED beats COARSE by0.4390 and repeated H1
+by0.1722 at H4, but trails native H2 by0.8242; mean absolute success-probability
+error is0.3455. No learned-policy fallback occurs. TASK also fails: only3
+reward-preference changes and no goal-to-risk change. DEEP_REUSE and ADDED_DEPTH
+pass; QUALITY and TASK fail, so advance=false. This does not close general
+strategic learning, and the model is not adopted. Pause whole-board partition
+tuning; establish a decision-discriminating task before testing local controlled
+mechanism reuse or resuming a full lifecycle. Main/audit once163.71/108.26s,
+stderr0; twelve focused tests, independent74/74 and frozen source12/12 pass.
+Exact-support acquisition/evaluation costs are paid; no sample-efficiency or
+total-cost benefit is established. Old H2/U005 FAIL/U006 unstarted stay.
+
+[Main-line review and route change](reports/STRATEGIC_DIRECTION_REVIEW_2026-10-01.md)
+ends repeated H3 root-ranking changes as the primary research direction and
+suspends V198's proposed shared antisymmetric tree. The same frozen PROGRAM
+beats TERMINAL in12/12 exposed replica groups across three cohorts, but beats
+the same-input neighbor in only3/12; local continuation information is useful,
+while further tree changes do not establish general strategic learning.
+
+[V199 H4 reference feasibility](specs/REFERENCE_FEASIBILITY_V199.md)
+now compiles one shared model for two retained kernels and14 existing queries,
+plans through its own abstract successors, and replays its own policy on every
+FULL ACTIVE state. Exact width0 reduces ACTIVE cells1479→508 and action
+rows4400→1487 with zero utility regret and R/F/S prediction errors. Width1/64
+reduces them to375/1063 with maximum regret0.008203 and component errors
+0.009489/0.005/0; three coarser widths fail the frozen0.01 limits.
+Layer decomposition limits this result: exact H1/H2/H3/H4 cell counts are
+296/178/32/2 versus1256/189/32/2 ground cells;98.87% of eliminated states
+come from H1, and H3/H4 are unchanged. V199 does not establish deep strategic
+compression. Oracle construction, finite lookup mappings and successor TV
+up to0.45 do not establish learnable transfer; there is no WON terminal.
+The bounded learned-condition transfer test has now completed in V200 above.
+Its deep compression improves on this layer limitation, but task qualification
+and own-policy quality fail. A full learning lifecycle remains deferred.
+Main/audit once13.29/12.22s, stderr0; independent21/21,
+source7/7 and inputs5/5 pass. Eight focused tests pass after one fixture
+assertion repair; its first failure is retained. H2 and old negative Gates stay.
+
+[V198 actual-utility partition induction](reports/UTILITY_PROGRAM_PARTITION_V198_RESULTS.md)
+changes split selection to actual SOURCE R-F+S action utility while retaining
+continuation inputs and frozen controls. SOURCE heldout utility falls0.012420;
+fresh TARGET UTILITY minus PROGRAM is -0.009715, nonpositive in all four
+replicas, with48 versus45 regret roots. The neighbor-relative +0.004980 is
+positive in2/4 replicas. The new learner is not adopted. Training scoring
+matches actual decoding to2.22e-16; depth6 adds splits but worsens SOURCE CV,
+so a strict greedy plateau is not established. Next test shared action-pair
+regions with opposite leaf vectors for both directions during induction, keeping R/F/S and
+SOURCE holdouts. Nineteen tests pass first attempt; audit232/232, source98/98,
+inputs16/16 pass. Main/audit once77.09/45.29s, stderr0;17 training and17 audit
+trees,96 exact labels,4696 TARGET virtual swipes. General strategy remains
+open; H2 stays, U005 FAIL/U006 unstarted.
+
+[V197 frozen continuation-model replication](reports/FROZEN_PROGRAM_REPLICATION_V197_RESULTS.md)
+reuses every V196 model and library on one independent TARGET96 cohort, with
+zero fits, SOURCE operations or configuration selection. PROGRAM minus TERMINAL
+is +0.121169 and TREE32 +0.100512, both positive in all four replicas; these
+benefits now repeat in all eight replicas across two cohorts. PROGRAM still
+trails same-input PROGRAM_NEIGHBOR by0.035439, negative in all four replicas,
+with43 versus36 regret roots. LINEAR +0.024430 is positive in only2/4 replicas;
+NONLINEAR +0.006625 in1/4 and OLD_SHARED +0.024547 in2/4. Stable superiority
+over the stronger baselines remains unestablished. The neighbor deficit is
+reward/risk: delta R/F/S=(-0.014400,+0.021039,0). The largest loss picks an action
+with failure probability1 versus0; its two directions share leaf15 and cancel
+despite available validity/score distinctions. Next change SOURCE partition
+induction to actual complete-vector action utility after projection, retaining
+the representation and all R/F/S outputs. This one replication is closed.
+Ten tests pass first attempt; audit225/225, source95/95, inputs14/14 pass.
+Main/audit once54.68/17.02s, stderr0;96 new exact labels,4672 virtual swipes.
+H2 stays, U005 FAIL/U006 unstarted; general strategic learning remains open.
+
+[V196 relational continuation programs](reports/RELATIONAL_PROGRAMS_V196_RESULTS.md)
+preserves both merge parents and shares twenty short continuation words.
+SOURCE143/36 selects PROGRAM depth4/min4, TERMINAL depth2/min4 and neighbor k8.
+Fresh TARGET96 PROGRAM minus TERMINAL is +0.169057, TREE32 +0.177590,
+LINEAR +0.036687, NONLINEAR +0.070715 and OLD_SHARED +0.053673, each positive
+in all four replicas. Same-input PROGRAM_NEIGHBOR is still better by0.019882:
+45 regret roots versus PROGRAM59. Against LINEAR, success increases0.026563
+and failure risk increases0.011000;24 new errors versus12 resolved errors
+limit the claim. The continuation representation has local utility progress;
+the applicability partition and general strategy remain unresolved.
+The largest neighbor-relative loss already has four goal/dependency witnesses
+for the preferred action; both pair directions still merge into score-only
+leaf29 and cancel. This retained error loses a distinction present in the input.
+Neither new decoder is adopted. Next do one fresh-start replication with all
+models frozen and zero fits, before changing SOURCE applicability learning.
+29 tests pass first attempt; audit233/233, source95/95, inputs12/12 pass.
+Main/audit once72.34/36.35s, stderr0. Three libraries,34trees/7neighbor
+configurations,6500/5004 SOURCE/TARGET virtual swipes,96 exact labels,
+zero physical samples or parameter solves. H2 stays, U005 FAIL/U006 unstarted.
+
+[V195 learned pair regions](reports/PAIR_REGIONS_V195_RESULTS.md)
+uses complete positioned afterstates and SOURCE-learned three-output regions,
+with a same-input RAW32 neighbor control. SOURCE143/36 selects depth4/min8
+roots and RAW k32. Fresh TARGET96 TREE32 minus RAW32 is -0.091455, minus
+CONDITIONAL -0.104066, LINEAR -0.150243, NONLINEAR -0.115059 and OLD_SHARED
+-0.155623; every replica is negative against the last three. TREE32 has
+63 regret roots and misses nine of eleven nonzero success differences.
+The largest loss has both directions in leaf15, cancelling the complete
+tail estimate. That leaf already contains 92 positive and 92 negative
+success labels: coordinate applicability merges opposite consequences.
+Neither new model is adopted. Next induce shared relational condition
+programs preserving tile identity, merge dependencies and goal continuation.
+Twenty-one tests pass after one faulty assertion is corrected; its first
+failure is retained. Audit 228/228, source 91/91, inputs 10/10 pass;
+main/audit once 74.90/30.60s, stderr0. Three libraries, seventeen trees,
+seven RAW configurations, 96 exact kernels/plans/labels, zero parameter
+solves. General strategy remains unresolved; H2 stays, U005 FAIL/U006 unstarted.
+
+[V194 conditional action-pair transfer](reports/CONDITIONAL_PAIRS_V194_RESULTS.md)
+selects nonnegative local complete R/F/S pair mixtures only on SOURCE143/36
+groups. Goal-relative rank-stratified CONDITIONAL selects k=8, temperature=1;
+the same-method PAIR98 control selects k=32, temperature=1. Fresh TARGET96
+CONDITIONAL minus PAIR98 is +0.033460, positive in all four replicas, with
+41 versus 61 regret roots. It remains below LINEAR by 0.026208, V192 NONLINEAR
+by 0.016787 and OLD_SHARED by 0.029507. Against LINEAR, 23 resolved errors
+and ten new errors still yield negative utility: losses total 4.759245 versus
+gains 2.243318. The model is not adopted. Two high-loss replays show raw pair
+estimates already reversed before projection; the largest loss misses a true
+success difference of one with zero projection residual. Next learn transfer
+applicability that distinguishes goal-reaching continuation structure.
+Twenty tests, 229/229 audit, 89/89 source and 9/9 input comparisons pass;
+main/audit once, 44.68/27.29 s, stderr 0. Six libraries, 38 prototype
+configurations, zero parameter solves, 96 new exact kernels/plans/labels.
+Designed moment features and finite H3 do not establish general strategy.
+Keep H2; U005 FAIL, U006 unstarted.
+
+[V193 retained kernel-transfer diagnosis](reports/KERNEL_TRANSFER_V193_RESULTS.md)
+replays the fixed V192 model and all 96 targets. SOURCE coverage is calibrated
+on 1,518 ordered action pairs, excluding the query's entire SOURCE group.
+Forty-six of 50 errors and 17 of 18 new errors are within the SOURCE joint
+Q95 distance; 28 of those 46 errors have opposite true tail-utility direction
+to their nearest same-board SOURCE pair. Zero exact pair-label aliases appear.
+The largest loss has true action gap +2.281642 but prediction -0.349365:
+its nearest SOURCE tail gap is positive, while the global center combination
+reverses the direction. Coverage expansion alone is not the supported priority.
+Next learn conditional transfer of complete same-board action-pair consequences,
+using goal-relative merge/blocker conditions and nonnegative local combinations.
+Sixteen synthetic tests, 29/29 audit, 35/35 source and 8/8 input comparisons
+pass; main/audit once, 7.48/8.24 s, stderr 0. No new fits, solves, features,
+labels, kernels or SOURCE model evaluations. Q95 describes geometry; signed
+contributions do not establish causality. General strategy remains unresolved.
+Keep H2; U005 FAIL, U006 unstarted.
+
+[V192 nonlinear relation learning](reports/NONLINEAR_RELATIONS_V192_RESULTS.md)
+keeps the 98 inputs and SOURCE143/36 groups fixed, selecting an RBF model
+(gamma=1, lambda=0.001) only by SOURCE-group validation. SOURCE regret roots
+fall from 72 to 53 and mean regret from 0.109982 to 0.036994. Fresh H3 TARGET96
+utility is lower than LINEAR by 0.024991, RELATION by 0.019763 and OLD_SHARED
+by 0.013751; each contrast has two positive and two negative replicas.
+NONLINEAR has 50 regret roots versus LINEAR's 42 and RELATION's 40.
+The model is not adopted. Next fix this model and diagnose action-pair SOURCE
+coverage and the R/F/S kernel contributions using retained roots and labels.
+Eighteen synthetic tests and corrected 220/220 audit, 88/88 source and 8/8
+input comparisons pass. Main runs once (47.21 s); the first audit's metadata
+import crash remains retained (1.40 s, stderr 1616 bytes). Its two-field
+correction passes a complete audit (28.79 s, stderr 0); no training or labels
+are rerun. There are 31 fitted predictors, seven eigen decompositions and
+96 kernels/plans; independent audit pays one incomplete plus 31 corrected
+direct solves, without eigen/SVD repetition. General strategy remains
+unresolved. Keep H2; U005 FAIL, U006 unstarted.
+
+[V191 linear relation capacity](reports/RELATION_CAPACITY_V191_RESULTS.md)
+certifies that no shared first_reward+beta·phi98 can reproduce all SOURCE143
+rankings: exact margin upper bound is approximately -0.000451274; JOINT239
+is also infeasible, bound -0.062751736. TARGET96 alone has a strict witness
+with verified gap 0.693209, passing exact and actual float action replay.
+The retained SOURCE-trained model has 72/143 regret roots, mean regret 0.109982.
+Next change the consequence function class to shared nonlinear relation
+combinations, with SOURCE-group selection and fresh frozen evaluation.
+Seventeen tests, 576/576 audit, 83/83 source and 8/8 input comparisons pass;
+main/audit once, stderr 0. There are 48 LPs and 47 symbolic balances,
+no new fits, labels or kernels; audit repeats no solves. The negative result
+does not make all 72 errors unavoidable, and nonlinear capacity remains open.
+General strategy remains unresolved. Keep H2; U005 FAIL, U006 unstarted.
+
+[V190 shared merge/blocker relations](reports/MERGE_RELATIONS_V190_RESULTS.md)
+uses 98 fixed rank/order/packing columns and SOURCE143/36 selection, lambda=0.1.
+All 20 known within-root alias losses disappear in development. On 96 new H3
+boards, RELATION-minus-LINEAR is -0.013157 and minus-OLD_SHARED -0.015815,
+both negative in all four replicas; regret roots are 37 versus 27 and 24.
+The new learner is not adopted. Next test linear ranking capacity using retained
+SOURCE/TARGET labels to separate function-class limits from fitting errors.
+Twenty initial tests and one metadata regression pass. Initial audit 220/222
+and its failure remain retained; two V184/V185 observer-metadata errors are
+resolved by a bounded binding supplement, corrected 222/222. Main/audit run
+once; 85/85 original source and 10/10 input comparisons pass, stderr 0.
+There are 13 predictors and 96 kernels/plans, no physical samples/native updates.
+General strategy remains unresolved. Keep H2; U005 FAIL, U006 unstarted.
+
+[V189 six-feature information conflicts](reports/FEATURE_CONFLICTS_V189_RESULTS.md)
+diagnoses the retained V188 TARGET96 without new fits or labels. Twenty of
+LINEAR's 44 regret roots have unavoidable within-root alias loss, accounting
+for 37.66% of its regret. An exact five-root balanced certificate gives a
+common margin upper bound -17/160: arbitrary shared g(six_features) cannot
+attain all representative-optimal rankings. Next retain tile ranks, ordered
+merge relations and blockers through a shared relation representation, train
+on SOURCE and test a fresh cohort. Twelve tests, 27/27 audit, 39/39 source
+and 5/5 input comparisons pass; main/audit once, stderr 0. One LP and one
+exact balance, no new samples or kernels. General strategic learning remains
+unresolved. Keep H2; U005 FAIL, U006 unstarted.
+
+[V188 shared mechanism interactions](reports/MECHANISM_INTERACTIONS_V188_RESULTS.md)
+compares six-feature LINEAR with 26 fixed quadratic features on SOURCE143.
+SOURCE-only selection chooses lambda=0 and 0.01 respectively. On 96 unopened
+H3 boards, INTERACT-minus-LINEAR is -0.005479, negative in three of four
+replicas; both have 44 regret roots. INTERACT beats RIDGE by +0.051837 in
+all four replicas, but LINEAR is stronger; the interactions are not adopted.
+Next diagnose retained LINEAR errors to distinguish representation information
+loss from prediction error before choosing another learner. Fifteen tests,
+216/216 audit, 81/81 source and 6/6 input comparisons pass; main/audit once,
+stderr 0. There are 26 predictors and 96 exact kernels/plans, no physical
+random samples or native updates. General strategic learning remains
+unresolved. Keep H2; U005 FAIL, U006 unstarted.
+
+[V187 position-shared rank relations](reports/POSITION_SHARED_V187_RESULTS.md)
+shrinks the vocabulary from 2,777 to 285 tokens on fixed SOURCE143.
+SOURCE-group selection chooses lambda=0.1; validation utility is 1.216261
+versus RIDGE's 1.232649. On 96 unopened H3 boards, POOL-minus-RIDGE is
+-0.014757 and POOL-minus-OLD_SHARED -0.003643; the representation is not adopted.
+All 14,200 target token occurrences are known. A posthoc check finds no equal
+feature action pairs; it does not support an alias impossibility claim.
+Next test low-dimensional interactions of shared vacancy/merge/goal features.
+Fifteen tests, 216/216 audit, 80/80 source and 6/6 input comparisons pass;
+main/audit run once, stderr 0. There are 13 predictors and 96 exact kernels/plans,
+with no physical random samples or native updates. General strategic learning
+remains unresolved. Keep H2; U005 FAIL, U006 unstarted.
+
+[V186 optimal-action ranking](reports/ACTION_RANKING_V186_RESULTS.md)
+fixes SOURCE143, representation and lambda=0.1, then tests a one-sided ranking
+loss on 96 unopened H3 boards. RANK-minus-RIDGE is -0.007137;
+RANK-minus-OLD_SHARED is -0.058952, negative in three of four replicas.
+RANK failure is 2.197% versus OLD_SHARED's 0.442%; regret roots are 44 versus 40.
+RANK beats ONE by +0.140931 in all four replicas, but is not adopted.
+The optimizer and independent dual converge. Fifteen tests, 218/218 audit,
+79/79 source and 6/6 input comparisons pass; main/audit run once, stderr 0.
+One new predictor and 96 exact kernels/plans; no physical random samples or
+native updates. Next test position-shared rank/adjacency relations through
+held-out SOURCE groups. General strategic learning remains unresolved.
+Keep H2; U005 FAIL, U006 unstarted.
+
+[V185 SOURCE coverage](reports/SOURCE_COVERAGE_V185_RESULTS.md) expands SOURCE
+from 47 to 143 roots and tests another 96 unopened H3 boards. Selection again
+chooses lambda=0.1. RIDGE improves by +0.019789 versus its old model, but two
+replicas improve and two worsen; one root supplies 78.9% of positive gains.
+LAYOUT and SHARED decline by -0.030059 and -0.013105. Unknown target tokens
+fall from 12.45% to 1.62%; OLD_SHARED remains the strongest learned comparator.
+Next fix SOURCE/representation and test optimal-action ranking directly;
+scalar utility least squares would be equivalent to the current ridge projection.
+Thirteen tests, 408/408 independent checks, 76/76 source and 5/5 input comparisons
+pass; main/audit run once, stderr 0. There are 192 new exact kernels/plans and
+15 predictors. Two pre-run syntax collection failures are retained and fixed.
+General strategic learning remains unresolved. Keep H2; U005 FAIL, U006 unstarted.
+
+[V184 fresh H3 confirmation](reports/FRESH_H3_CONFIRMATION_V184_RESULTS.md)
+freezes V183 lambda=0.1 and all controls on 96 new boards, four replicas of 24.
+RIDGE-minus-ONE is +0.116525, but RIDGE-minus-LAYOUT is -0.016168 and
+RIDGE-minus-SHARED is -0.052338; every replica has these signs.
+Regularization's old-target advantage is not confirmed. SHARED remains the
+strongest learned comparator, closing 64.6% of oracle headroom versus RIDGE's
+44.6%; positive-regret roots are 32 versus 49. Next expand independent SOURCE
+consequence coverage with the representation fixed and use another unopened
+evaluation cohort. Coverage insufficiency remains a hypothesis. Fourteen tests,
+211/211 independent checks, 71/71 source and 5/5 input comparisons pass;
+main/audit run once, stderr 0. There are 96 new exact kernels/plans and no new
+predictors or physical samples. General strategic learning remains unresolved.
+Keep H2; U005 FAIL, U006 unstarted.
+
+[V183 SOURCE-selected regularization](reports/SOURCE_REGULARIZATION_V183_RESULTS.md)
+selects lambda=0.1 by actual held-out SOURCE-group utility with fixed V182
+rank/layout features. Held-out utility rises from 1.001213 at zero penalty
+to 1.035727; six groups improve and one worsens. TARGET utility is +0.039675
+versus LAYOUT, +0.004044 versus SHARED and +0.020874 versus ONE, closing 28.1%
+of oracle headroom. Success returns to ONE's level. About 99.5% of gain versus
+LAYOUT comes from one repaired root; nine target regret roots remain.
+Next freeze model/strength/baselines and confirm on a predeclared new H3 board
+cohort with complete exact outcomes. Thirteen pure tests, 20/20 independent
+checks, 72/72 source and 6/6 input comparisons pass; main/audit run once,
+stderr 0. Three main SVDs, 13 coefficient filters and 13 independent audit
+coefficient solves; one numerical test tolerance fix and both attempts retained.
+No new features, physical samples or native updates. Fresh confirmation and
+general strategic learning remain outstanding. Keep H2; U005 FAIL, U006 unstarted.
+
+[V182 rank/layout consequences](reports/RANK_LAYOUT_CONSEQUENCES_V182_RESULTS.md)
+fits all 47 SOURCE action rankings with rank/layout complete-vector contrasts,
+but TARGET utility is -0.018801 versus ONE and -0.035632 versus SHARED.
+There are nine target positive-regret roots, four newly wrong versus SHARED
+and one resolved. SOURCE pair loss is 1.61e-28; design rank122 spans all
+169-47 independent within-root contrasts. The richer representation permits
+interpolation; its transfer benefit is absent. SOURCE vocabulary has 2058 tokens;
+441/3640 target tokens are unseen, with at least one in every target root.
+Next keep the representation fixed and select regularization by held-out
+SOURCE design-group action utility before freezing the full-SOURCE model.
+Fifteen pure tests, 24/24 independent checks, 69/69 source and 8/8 input
+comparisons pass; main/audit run once, stderr 0. One new predictor and one
+independent SVD, no new physical samples or native updates. This reused H3
+diagnostic does not promote LAYOUT. Keep H2; U005 FAIL, U006 unstarted.
+
+[V181 arbitrary shared feature capacity](reports/SHARED_FEATURE_CAPACITY_V181_RESULTS.md)
+proves that the fixed six-feature score loses cross-board decision information.
+Even unrestricted nonlinear tuple values have certified margin upper bounds
+-0.085938 on SOURCE and -0.123047 jointly. TARGET reaches only zero margin;
+two reverse preferences force ties that choose wrong DOWN under the frozen rule.
+A two-root SOURCE contradiction cannot be repaired by changing function shape
+or fitting loss. SOURCE covers 26/34 TARGET tuples and every tuple in 16/24 roots.
+Next retain tile ranks and local layout in a shared full-consequence model,
+fit only SOURCE, and compare with unchanged TARGET labels and controls.
+Fourteen pure tests, 54/54 independent checks, 37/37 source and 4/4 input
+comparisons pass; main/audit run once, stderr 0. Three main LPs, no audit LP,
+new fitted predictor, physical samples or native updates. This reused H3 capacity
+diagnostic preserves V179's mean gain and success decline. Keep H2;
+U005 FAIL, U006 unstarted.
+
+[V180 shared ranking capacity](reports/RANKING_CAPACITY_V180_RESULTS.md)
+proves that the fixed six-feature shared linear class cannot reproduce
+all correct rankings, even at zero margin. Certified margin upper bounds
+are -0.369141 on SOURCE, -0.123535 on TARGET and -0.410807 jointly.
+Two SOURCE roots require the vacancy coefficient to be both <=-0.25
+and >=0.488281. All 56 absorbing-goal labels are correct. These certificates
+do not exclude arbitrary nonlinear functions of the same feature tuples.
+Next test that broader capacity before choosing nonlinear learning or
+adding state information. Seventeen pure tests, 62/62 independent checks,
+35/35 source and 6/6 input comparisons pass; main/audit run once, stderr 0.
+Three main LPs, no audit LP, no new predictor, physical samples or native updates.
+V179 positive mean utility remains valid; this does not quantify the best
+attainable mean utility or solve general strategic learning. Keep H2;
+U005 FAIL, U006 unstarted.
+
+[V179 shared action-conditioned consequences](reports/SHARED_CONSEQUENCES_V179_RESULTS.md)
+replaces root partitions with one six-feature full-vector model on fixed exact H3 labels.
+SHARED-minus-ONE is +0.090490 on SOURCE and +0.016831 on TARGET,
+closing 52.4% and 22.7% of oracle headroom. TARGET has 11 improved,
+3 worsened and 10 equal-value roots, zero fallback and six remaining
+positive-regret roots. Utility increases while success probability decreases
+by 0.019792. A per-root feature-restricted oracle preserves 98.5% of target
+headroom; this does not establish shared linear attainability. Sixteen pure
+tests, 23/23 independent checks, 66/66 source and 7/7 input comparisons
+pass; main/audit run once, stderr 0. No new physical samples or native updates.
+Next distinguish shared ranking capacity from the SOURCE fitting objective.
+These are reused finite-H3 diagnostics. Keep H2; U005 FAIL, U006 unstarted.
+
+[V178 action-afterstate structure](reports/AFTERSTATE_STRUCTURE_V178_RESULTS.md)
+keeps V177 labels, objective, support and RAW/ONE baselines fixed.
+STRUCTURE-minus-ONE is -0.002740 on SOURCE and -0.153002 on TARGET;
+TARGET STRUCTURE-minus-RAW is -0.120194, with oracle headroom
++0.074259 and zero fallback. Only 12/264 candidates are comparable,
+all vacancy predicates; every merge/goal predicate fails the unchanged
+fit-child support requirement. The effective tree therefore does not
+use those structural distinctions. Thirteen pure checks, 26/26
+independent checks, 65/65 frozen-source and 7/7 input comparisons
+pass; main/audit run once, stderr 0. No new physical samples or
+native updates. Next replace per-leaf action constants with a shared
+action-conditioned complete-consequence model using fixed aggregate
+afterstate features. This remains a reused finite-H3 diagnostic.
+Keep H2; U005 FAIL, U006 unstarted.
+
+[V177 exact H3 learning diagnostic](reports/EXACT_H3_LEARNING_V177_RESULTS.md)
+removes Monte Carlo label noise with the same utility partition learner.
+The original source roster has 47 H3 roots plus one H2 root; the H2
+root is excluded and retained. SOURCE TREE-minus-ONE is +0.047262;
+TARGET is -0.032809 despite oracle-minus-ONE headroom +0.074259,
+with zero TREE/ONE fallback. One cell-rank split does not transfer
+action-dependent continuation risk. Twenty distinct pure checks,
+128/128 independent checks, 60/60 frozen-source and 53/53 input
+comparisons pass; main/audit run once, stderr 0. No new physical
+samples or native updates. Next freeze action-conditioned afterstate
+structure predicates while keeping exact labels, the utility objective
+and support constraints fixed. These reused finite-H3 diagnostics
+do not establish long-episode or continual strategic learning.
+Keep H2; U005 FAIL, U006 unstarted.
+
+[V176 probability-weighted first-spawn sampling](reports/SPAWN_STRATIFICATION_V176_RESULTS.md)
+completes the fixed-policy acquisition probe at matched branch counts.
+STRAT/IID utility variance is 2.77729; paired variance difference
++0.0189668 has conditional 95% CI [-0.0345057, +0.0724394].
+The predeclared reduction condition is not met. The variance times
+transition-cost ratio is 2.77197, descriptive only. No additional
+blocks or strategy promotion follow. All 14,080 branches terminate,
+acquiring 7,318,450 transitions. Twenty-five pure tests, 131/131
+independent checks and 103/103 frozen-source byte comparisons pass;
+main/audit each run once, stderr 0. New fits, updates and source games
+are zero. Next use exact H3 complete-vector labels with the same
+partition learner, calibrating oracle headroom before judging learning.
+Keep H2; U005 FAIL, U006 unstarted.
+
+
+[V175 frozen-board suffix replication](reports/FIXED_BOARD_REPLICATION_V175_RESULTS.md)
+keeps V174 TREE/ONE policies and all 640 boards fixed, then acquires
+16 new paired suffixes per changed root. TRAIN utility falls from
++0.14047 on the original labels to -0.04287; NEW-minus-OLD is -0.18334,
+SOURCE CI [-0.28658, -0.08010] and fixed-board suffix CI
+[-0.23206, -0.13462]. FRESH utility is -0.02747; neither cohort
+establishes positive TREE benefit. FRESH-minus-TRAIN is +0.01540 with
+both intervals crossing zero. Prioritize noisy-label fitting/selection;
+an additional board-generalization penalty is unresolved.
+All 9,440 branches terminate, acquiring 4,632,756 transitions.
+Thirty-three distinct pure tests, 275/275 independent checks and
+101/101 resumed-source byte comparisons pass. A recording interruption
+is retained; its four complete branches are reused exactly without
+resampling, and the extra teacher loads remain charged. No new fits,
+weight updates or source games. Next test actual spawn-support sampling
+at matched budgets before further partition growth, then require an
+independent learned-policy utility comparison.
+Keep H2; U005 FAIL, U006 unstarted.
+
+
+[V174 SOURCE-heldout utility partitions](reports/UTILITY_PARTITION_V174_RESULTS.md)
+implements actual heldout action utility as the split-generation objective,
+with full outcome vectors and fresh confirmation/validation. Eight utility
+splits and 32 SSE splits freeze before confirmation; neither generator
+retains a split. Both final models equal ONE_LATE. Utility-confirmed minus
+H2 is +0.0122 [-0.0945, +0.1189]; progression is FAIL (0/2).
+Removing utility splits improves fresh utility by +0.1016 [+0.0074, +0.1958].
+The complete trees have positive retrospective training effects in all
+histories; those gains do not establish independent usefulness.
+All 7,432 physical games terminate, acquiring 3,744,714 transitions.
+Twenty-four pure tests, 537/537 independent checks and 98/98 frozen-source
+comparisons pass; main/audit each run once, both stderr 0.
+Next freeze boards/policies and replicate paired suffixes to distinguish
+label sensitivity from failure to generalize state distinctions.
+Keep H2; U005 FAIL, U006 unstarted.
+
+
+[V173 independently confirmed partitions](reports/CONFIRMED_PARTITION_V173_RESULTS.md)
+freezes DISCOVERY proposals, selects splits on new CONFIRM data and tests
+frozen models on a third, fresh VALID cohort. Of 32 candidates, 26 meet
+coverage/support rules and none confirm positive utility; every final
+tree collapses to one leaf. CONFIRMED-minus-UNPRUNED utility is +0.0800
+[-0.0424, +0.2024]; CONFIRMED-minus-H2 is -0.0420 [-0.1963, +0.1123].
+Both progression conditions fail. Lower fresh pair prediction error
+does not establish strategic learning. All 7,476 games terminate,
+acquiring 3,749,455 transitions. Forty focused tests, 544/544 independent
+checks and 95/95 frozen-source comparisons pass; main/audit each run once,
+both stderr 0. A retained training counterexample shows lower vector SSE
+can reduce policy utility. V174 above completes SOURCE-heldout utility
+candidate generation; no split establishes independent benefit.
+Keep H2; U005 FAIL, U006 unstarted.
+
+
+[V172 learned consequence partitions](reports/CONSEQUENCE_PARTITION_V172_RESULTS.md)
+implements the V171 follow-up learner using full-vector paired forced-action
+labels and deterministic first rewards kept as numeric parameters. Each
+history grows from three to nine learned leaves; all 256 fresh VALID boards
+are unseen. PART_LATE-minus-COARSE_LATE utility is +0.0699
+[-0.0664, +0.2062]; PART_LATE-minus-H2 is +0.0318 [-0.1654, +0.2290].
+Both progression conditions fail. Late models use their own choices at
+all roots, differing from H2 at 181/256. The same-root unpartitioned
+control has lower fresh full-vector pair MSE; a posthoc clustered
+difference is +0.2179 [+0.0812, +0.3546] for partition minus control.
+This points toward noise-fitting during greedy split selection.
+All 7,500 physical games terminate, acquiring 3,809,338 transitions.
+Original replay/statistical checks pass; 12 original audit comparisons
+fail because the solver violates its zero-sum coordinate convention.
+A separate 20/20 equivalence audit confirms all 1,280 frozen actions and
+observable contrasts unchanged; the original failed audit stays retained.
+The active solver is repaired with a retained numerical regression test.
+Thirty-eight distinct focused tests pass; sampling occurs only in the main
+run. V173 above completes independent split confirmation and fresh testing;
+no proposed split establishes positive utility.
+Keep H2; U005 FAIL, U006 unstarted.
+
+
+[V171 causal quotient planning](reports/CAUSAL_QUOTIENT_V171_RESULTS.md)
+implements action-to-successor models and teacher-specific continuation vectors,
+with same-data depth 1/3 planning and separate same-history/transfer arms.
+All 3,460 physical games terminate, acquiring 1,767,734 transitions.
+SAME_D3-minus-SAME_D1 utility is -0.0477 [-0.1412, +0.0458];
+SAME_D3-minus-H2 is -9.1761 [-9.5993, -8.7528]. Both progression
+conditions fail. Each of the four model arms wins 0/128 games, versus
+H2's 70/128; SAME_D3 uses model actions in 92.05% of decisions.
+Thirty-two focused tests, 481/481 independent checks and 90/90 frozen-source
+comparisons pass; main/audit run once, both stderr 0. Tests add 16 transitions
+separately. High model coverage does not preserve control: depth changes
+only 0.737% of co-supported VALID actions, and only 0.1794% of fitted
+transitions are forced first actions. A retained same-key/action reward
+counterexample confirms non-exact abstraction; the contribution of each
+failure mechanism remains unquantified. The learned paired-consequence
+partition experiment is completed in V172 above; a useful fresh action
+improvement remains unestablished.
+Keep H2; U005 FAIL, U006 unstarted.
+
+[V170 persistent strategies and whole-episode learning](reports/PERSISTENT_STRATEGY_V170_RESULTS.md)
+completes two generations, final program selection and 128 fresh whole-game
+pairs from ordinary initial states. COND-minus-LATCHED utility is +3.5035
+[+2.9387, +4.0684], establishing feedback-refresh benefit in these selected
+programs. COND-minus-H2 is -0.9476 [-1.4576, -0.4376]; failure probability
+rises by 14.84 percentage points [5.91, 23.78], so progression fails and no
+program is adopted. Persistent execution works throughout complete games,
+but COND delegates 94.21% of decisions to H2; all three nontrivial programs
+have negative heldout EVAL gains. All 5,872 games terminate, acquiring
+3,787,356 transitions; focused replay tests add 24 retained transitions.
+Forty-six focused tests, 649/649 independent checks and 89/89 frozen-source
+comparisons pass; main/audit run once, both stderr 0. Teacher setup, fallback,
+generation, selection and inherited costs remain accounted for. Intervals
+condition on four existing teachers and frozen learned programs. V171 above
+completes the first consequence-bearing strategic state model and bounded
+model-planning experiment, separating same-history learning from transfer.
+Its fixed coarse representation fails; general strategic learning remains
+unresolved.
+Keep H2; U005 FAIL, U006 unstarted.
+
+[V169 joint condition/action generation](reports/JOINT_FEEDBACK_GENERATION_V169_RESULTS.md)
+completes two generations, final same-candidate twin selection and fresh EVAL.
+Three final programs differ from their source parents; feedback chooses a
+different suffix from the twin in 144/512 EVAL branches, with both predicates
+observed in ten roots. COND-minus-TWIN utility is +0.0053 [-0.1308, +0.1414];
+COND-minus-H2 is -0.1537 [-0.3765, +0.0691]. Neither progression condition
+passes, so no program is adopted. All 32 source games and 12,192 branches
+terminate, acquiring 5,897,762 transitions. Forty-four final focused tests,
+838/838 independent checks and 90/90 source comparisons pass; main/audit
+run once, both stderr 0. Both-query teacher setup/load and inherited costs
+remain accounted for. Intervals condition on fixed fresh roots and four
+existing histories. The preregistered route closes fixed four-step,
+single-probe search and moves to persistent state-conditioned control
+programs trained and evaluated over complete episodes. V170 completes this
+experiment above; general strategic learning remains unresolved.
+Keep H2; U005 FAIL, U006 unstarted.
+
+[V168 consequence-guided generation](reports/CONSEQUENCE_GENERATION_V168_RESULTS.md)
+completes two mutation generations and fresh EVAL after all programs freeze.
+Terminal feedback changes the final words in all four heldout folds, but
+CONS-minus-FREQ utility is +0.0247 [-0.2213, +0.2706] and CONS-minus-H2
+is -0.1116 [-0.3473, +0.1241]; benefit is not established and no program
+is adopted. All 32 source games and 12,672 branches terminate, acquiring
+6,080,526 transitions. Both routes have 5,888 branches each with identical
+step caps; realized sample counts differ. Twenty-eight final focused tests,
+786/786 independent checks and 88/88 source comparisons pass; main/audit
+run once, both stderr 0. Both-query teacher setup/load and inherited costs
+remain accounted for. Intervals condition on four existing histories and
+new fixed roots. The nominated joint condition/action generation is
+completed in V169 above; benefit remains unestablished.
+Keep H2; U005 FAIL, U006 unstarted.
+
+[V167 fixed-program confirmation](reports/FIXED_PROGRAM_V167_RESULTS.md)
+rejects the exploratory S0/B candidate on fresh continuations. Across all
+32 existing risk1 EVAL roots and 16 paired suffixes/root, B-minus-H2 utility
+is -0.2019 [-0.3821, -0.0217]; failure probability rises by 5.47 percentage
+points. Every history has a negative utility point estimate. All 1,024
+branches terminate, acquiring 501,002 transitions; no new source games,
+rule fits or weight updates. Twenty-four focused tests, 104/104 independent
+checks and 90/90 source comparisons pass; main/audit run once, both stderr 0.
+Both-query teacher setup/load and all inherited costs remain accounted for.
+The intervals condition on these fixed roots and histories. The nominated
+consequence-guided generation experiment is completed in V168 above;
+benefit remains unestablished. Keep H2; U005 FAIL, U006 unstarted.
+
+[V166 same-program ranking decomposition](reports/PROGRAM_RANKING_V166_RESULTS.md)
+completes one retrospective routing pass with no new samples or rule fits.
+Three semantic strata cover 192 triplets and 512 unique physical records;
+shared risk1 H2 rows are accounted for without pooled independence claims.
+For risk8, 10/64 A/B pairs have discordant terminal outcomes; risk mean
+variance is about 38.4 times reward mean variance, with covariance retained.
+All three pooled A/B ranking intervals cross zero. A distinct exploratory
+signal is risk1 S0 fixed-B minus H2: +0.6342 [+0.1835, +1.0849], with both
+reward and risk contributions positive. This is not adoption evidence.
+Twenty-five focused tests, 181/181 independent checks and 30/30 source
+comparisons pass; main/audit run once, both stderr 0. V167 above completes
+the nominated fresh confirmation and rejects S0/B; candidate generation is
+next. Keep H2; U005 FAIL, U006 unstarted.
+
+[V165 retained-intervention headroom](reports/PROGRAM_HEADROOM_V165_RESULTS.md)
+completes the fixed semantic match and independent suffix split without
+new environment samples. All 32 roots and 128 A/B/H2 triplets are covered.
+ROOT-minus-refitted-bit is +0.1066 [-0.5536, +0.7667] for risk1 and
++0.6088 [-0.6086, +1.8261] for risk8. ROOT-minus-H2 also crosses zero.
+For risk8, ROOT-minus-original-GLOBAL is +1.6530 [+0.5465, +2.7595],
+mostly from one history; refitting the fixed rule on the same target data
+reduces this gap to +0.0425 [-0.0376, +0.1226], with a negative reversed-split
+point estimate. This points toward consequence estimation and transfer
+heterogeneity; insufficient merge-bit information is not established.
+Twenty-seven focused tests, 318/318 independent checks and 29/29 source
+comparisons pass; main/audit run once, both stderr 0. Paid V164 and earlier
+costs remain. V166 above completes the nominated same-program ranking
+decomposition. Keep H2; U005 FAIL, U006 unstarted.
+
+[V164 support-aware consequence revision](reports/SUPPORTED_PROGRAM_V164_RESULTS.md)
+is complete and is not adopted. Terminal paired A/B vectors now revise
+observed program branches; unseen conditions retain their source assignment
+with null terminal estimates. Seven of eight learned maps change.
+LEARNED-minus-MODAL is +0.0392 [-0.1366, +0.2150] for risk1 and
+-0.2730 [-0.9609, +0.4148] for risk8; LEARNED-minus-H2 is
+-0.0862 [-0.2729, +0.1005] and +0.0191 [-0.8442, +0.8824].
+Same-candidate mapping and conditional-versus-global contrasts also
+cross zero. Five maps are constant and three conditional. All selected
+predicates have TRAIN terminal support; actual EVAL source-prior use is
+zero, so missing support does not explain this run's lack of demonstrated
+benefit. The bounded learning implementation works; strategic utility
+remains open. All 64 source games and 8,064 physical branches terminate,
+acquiring 4,122,785 transitions. Eighteen focused tests, 77/77 independent
+checks and 87/87 source comparisons pass; main/audit run once in
+734.33/245.29s, both stderr 0. Eight symbolic tables are fitted with no
+neural weight updates; all test and inherited work remains.
+The proposed retained-intervention diagnosis is completed in V165 above.
+Keep H2; U005 FAIL, U006 unstarted.
+
+[V163 consequence learning](reports/CONSEQUENCE_PROGRAM_V163_RESULTS.md)
+implemented full-vector terminal branch fitting, but its frozen support
+requirement stopped EVAL: heldout3/risk1/P0 had true40/false0/none8.
+Retain incomplete_training/HOLD and its 996,655 new transitions.
+Twenty-seven focused tests, 72/72 checks and 86/86 source comparisons pass;
+main/audit run once in 111.99/134.10s, both stderr 0.
+V164 is a separately frozen fresh-data experiment; V163 remains stopped.
+
+[V162 generated state-feedback programs](reports/FEEDBACK_PROGRAM_V162_RESULTS.md)
+is complete and is not adopted. An observed post-spawn merge predicate
+selects a source-derived three-action suffix after the shared first action.
+FEEDBACK-minus-matched-FIXED is -0.0130 [-0.1410, +0.1150] for risk1 and
++0.2568 [-0.1876, +0.7012] for risk8; FEEDBACK-minus-H2 is
+-0.1126 [-0.3247, +0.0995] and -0.6188 [-1.4118, +0.1742].
+Feedback changes 157/512 and 111/512 branch suffixes; five of 32 roots
+per query exhibit both predicates across suffix samples.
+Both queries nevertheless select the same two alternating-axis templates.
+TRAIN gains are positive in seven of eight selected cells, while EVAL
+gains versus H2 are negative in six of eight. Conditional action frequency
+plus global terminal screening has not established strategic utility.
+All 64 source games and 4,992 branches terminate, acquiring 2,586,113
+transitions. Twenty-one final focused tests, 73/73 independent checks and
+84/84 frozen source comparisons pass; main/audit run once in
+247.81/161.15s, both stderr 0. All development attempts and 392 test
+transitions remain separately retained with inherited costs.
+Intervals condition on fixed roots, four histories and training choices.
+Next learn program-internal branches from paired TRAIN counterfactual
+terminal consequences, with the same bounded grammar, a matched fixed
+twin, H2 and equal-budget frequency-generation control. Separate local
+conditioning from global selection before learning an external caller.
+Keep H2; U005 FAIL, U006 unstarted.
+
+[V161 experience-generated programs](reports/PROGRAM_CONSOLIDATION_V161_RESULTS.md)
+is complete; heldout utility improvement is not established. Four-action
+words are generated from fresh TRAIN trajectories in the other three
+histories, normalized by D4, terminal-screened and frozen before fresh EVAL.
+BEST-minus-H2 is -0.1375 [-0.3558, +0.0807] for risk1 and
+-0.0011 [-0.8361, +0.8339] for risk8. Six of eight selections differ from
+the frequency control, but BEST-minus-FREQ also crosses zero in both queries.
+The programs execute 3.11/2.80 prefix steps on average; their intervention
+is substantive. All 64 source games and 4,992 screening/evaluation branches
+terminate, acquiring 2,554,756 transitions. Twenty final focused tests,
+69/69 independent checks and 82/82 frozen source comparisons pass;
+main/audit run once in 222.40/151.34s, both stderr 0. All development
+attempts and their 115 test transitions are retained separately.
+Conditional intervals do not establish population-history transfer or
+general strategic learning. Next test a bounded feedback program generated
+from TRAIN action/merge fragments, with one branch and the same four-step
+cap, against its fixed-word source and H2. Missing feedback is a hypothesis
+to test; caller learning remains deferred. Keep H2; U005 FAIL, U006 unstarted.
+
+[V160 bounded mobility restoration](reports/MODULE_MOBILITY_V160_RESULTS.md)
+is complete and is not adopted. On all 64 frozen roots and 32 fresh paired
+suffixes, MOBILITY-minus-own-H2 terminal utility is -0.6994
+[-0.8933, -0.5054] for risk1 and -2.6119 [-3.3245, -1.8994] for risk8.
+Both sources and all four histories lose. Failure rises by 10.74/12.30
+percentage points; restoration completes in only 20.02%/11.13% of branches.
+The same own-H2 continuation isolates the bounded prefix intervention.
+These intervals condition on the fixed roots and four histories; the three
+tight-board roots cannot support a complete history-stratified comparison.
+All 6,144 branches terminate, with 2,958,948 new environment transitions
+and no fitting. Nineteen focused tests, 37/37 independent checks and 84/84
+frozen source comparisons pass; main/audit run once in 429.70/177.49s,
+both stderr 0. Test acquisition (72 transitions) and inherited costs remain.
+Next freeze an experience-to-program consolidation algorithm: generate
+bounded executable multi-step candidates from TRAIN fragments, screen their
+query/continuation-conditioned terminal consequences on TRAIN, then evaluate
+frozen candidates on new roots and histories before learning a caller.
+Keep H2; U005 FAIL, U006 unstarted.
+
+[V159 fixed spawn control variate](reports/MODULE_CONTROL_VARIATE_V159_RESULTS.md)
+is complete and is not adopted. The first-eight-spawn, beta-one correction
+with a frozen DIRECT critic does not reduce EVAL paired-label variance:
+CV/RAW variance ratios are 1.00555/1.00093 for risk1/risk8.
+All n32 decisions are identical to RAW, so primary control benefit is zero.
+Retain the favorable risk8 n16 gain +0.0894 [0.0159, 0.1629], caused by
+one changed decision in history 2; do not select n16 after evaluation.
+The implementation preserves the terminal objective and uses RAW EVAL
+utilities for scoring. Conditional zero mean does not guarantee useful
+variance reduction. These inspected-path results are exploratory.
+All 8,192 retained branches and 65,536 spawn events are processed with
+846,104 DIRECT critic calls; zero new environment samples or updates.
+Thirteen focused tests, 33/33 independent checks and 90 frozen source
+comparisons pass; main/audit run once in 47.66/49.14s, both stderr 0.
+Next change the module candidate itself: test a bounded mobility-restoration
+module with an observable completion condition, followed by the same
+own-H2 continuation as its controls. Establish reproducible module effects
+before learning a call rule; a hand-specified candidate is not general
+strategic learning. Keep H2; U005 FAIL, U006 unstarted.
+
+[V158 fresh-suffix label precision](reports/MODULE_PRECISION_V158_RESULTS.md)
+is complete. Raising the training suffix budget from 8 to 32 has not
+established reliable root-local selection benefit. The fixed n32 candidate
+gains +0.0244 [-0.0438, +0.0926] versus OLD for risk1 and
+-0.1774 [-0.5007, +0.1458] for risk8. Its paired n32-minus-n8 gains
+are +0.0287 [-0.0380, +0.0954] and +0.1401 [-0.1824, +0.4626].
+For risk8, n32 loses -0.3793 [-0.7163, -0.0423] against rejecting
+the initial module call, with negative means in all four histories.
+All continuations use the same frozen OLD gate. Intervals condition on
+the realized training decisions, roots and histories; they do not establish
+general strategic learning. Keep all 8/16/32 results; do not choose n16
+after observing its less negative risk8 mean or increase the sample cap.
+All 8,192 branches terminate. New acquisition is 4,026,405 transitions:
+2,013,613 TRAIN and 2,012,792 shared EVAL; inherited costs remain referenced.
+Fourteen focused tests, 43/43 independent checks and 84 source comparisons
+pass; main/audit run once in 361.92/245.83s, both stderr 0.
+V159 above completes that fixed control-variate test; it does not reduce
+EVAL label variance or change the n32 decisions. Move to a different
+module candidate instead of further label repairs on the same fixed
+eight-step substitution. Keep H2; U005 FAIL, U006 unstarted.
+
+[V157 fixed suffix split-half selection](reports/MODULE_SPLIT_HALF_V157_RESULTS.md)
+is complete. Selecting GATE calls with one half of retained suffixes does
+not recover utility on the opposite half: gain versus OLD is
+-0.0873/-0.4548 for risk1/risk8, versus apparent same-half gains
++0.1970/+0.9310. Both swap directions are negative; strict-positive
+decision agreement is 50.0%/34.375%. Gains versus always rejecting are
+-0.0219/-0.5072 and versus always accepting -0.0324/-0.4773.
+Risk8 is negative in all four histories. These failures already occur
+within roots without a learned representation; cross-root transfer alone
+cannot explain them. The finite split does not establish that all labels
+or modules are unlearnable. Retain the favorable secondary risk8/H2-target,
+H2-source gain +0.4150 versus OLD, still -0.2240 versus always rejecting.
+All 64 roots, 1,024 paired suffixes and 256 selection rows are retained.
+Sixteen focused tests, 21/21 independent checks and eight frozen source
+comparisons pass; main/audit run once in 38.78/37.36s, both stderr 0.
+No new environment samples, planner calls or model fits; preserve the
+2,017,530-transition acquisition cost, counted physically once.
+V158 above completes that bounded fresh-suffix precision experiment.
+The fixed n32 candidate does not establish stable benefit; do not
+automatically increase sampling or select the best observed budget.
+Keep H2; general strategic learning remains open, U005 FAIL, U006 unstarted.
+
+[V156 fixed policy-semantic residual features](reports/MODULE_SEMANTICS_V156_RESULTS.md)
+is complete. The fixed 12-dimensional representation worsens heldout
+own-target MSE in all four query/target cells versus LOCAL and OLD.
+LOCAL to SEMANTIC MSE is 0.6125 to 0.8621 / 0.5223 to 0.8027 for risk1,
+and 7.9947 to 9.1977 / 5.4632 to 7.7506 for risk8 (H2/GATE targets).
+There is no consistent local decision gain. Risk8/H2 retains a gain
+of +0.0995 versus OLD, below LOCAL's +0.1277; a favorable OLD-source
+subset does not offset worse H2-source performance. Do not adopt SEMANTIC.
+The 512 LOCAL predictions reproduce V155 within component tolerance,
+with identical gates. All 128 fits and 24,576 updates are complete.
+Feature preparation costs 128 H2 queries, 6,036 enumerated model outcomes
+and 21,284 leaf predictions; zero new environment samples.
+Fifteen focused tests, 38/38 independent checks and 87 source comparisons
+pass; main/audit run once in 4.26/2.67s, both stderr 0.
+V157 above completes that fixed split-half test. Even within-root
+empirical selection fails to reproduce gains on the opposite half;
+test label precision before further representation or coverage changes.
+Keep H2; general strategic learning remains open, U005 FAIL, U006 unstarted.
+
+[V155 episode-grouped holdout of repairs](reports/MODULE_HOLDOUT_V155_RESULTS.md)
+is complete. Each fold holds out both policy roots sharing a source seed,
+fits on the other six, and freezes before prediction. Own-target heldout
+MSE rises in three of four query/repair cells despite low training MSE.
+REPAIR_GATE local gains are -0.0410/-0.0165 for risk1/risk8.
+Retain REPAIR_H2's favorable risk8 signal: local gain +0.1277 and common
+GATE-target MSE 5.3261 to 5.0717. Its gain is concentrated on H2-source
+roots (+0.2384); OLD-source gain is +0.0169, with own-target MSE worsening
+in all four histories. These are descriptive fixed-OLD continuation
+comparisons; overlapping folds do not support naive independent intervals.
+V156 above completes the matched policy-semantic residual comparison;
+the fixed semantic representation does not improve overall transfer.
+There are 64 fits, 12,288 updates and 576 predictions, zero new environment
+or native planner calls, and no raw branch rereading. Ten focused tests,
+24/24 independent checks and 80 frozen source comparisons pass.
+Main/audit run once in 1.47/2.04s, both stderr 0. Keep H2;
+general strategic learning remains open, U005 FAIL, U006 unstarted.
+
+[V154 fixed-reference advantage repair](reports/MODULE_REPAIR_V154_RESULTS.md)
+is complete. Both repairs use all 64 retained roots, identical OLD
+initialization and 4,096 new updates. In fresh full games, REPAIR_H2-OLD
+is +0.3645/-2.8435 for risk1/risk8; REPAIR_GATE-OLD is +0.3574/-2.7632.
+All conditional seed intervals include zero. Both repairs have negative
+mean differences against H2 and ALT; neither is adopted. Risk8 training
+MSE falls from 7.5535/5.3261 to 0.2635/0.1775, without established control
+benefit. Changing the continuation target alone has not solved the
+fit-to-control gap. V155 above completes the grouped heldout test:
+prediction transfer is weak and local gains are not consistent across
+targets, queries and source strata.
+All 512 physical games terminate, yielding 640 logical results and 499,608
+new evaluation transitions. Each repair view charges the retained
+2,017,530-transition training pool; physical acquisition is counted once.
+Fourteen focused tests pass, independent audit 53/53, and 83 frozen
+source files match. Main/audit run once in 74.72/55.53s, both stderr 0.
+Keep H2; general strategic learning remains open, U005 FAIL, U006 unstarted.
+
+[V153 paired module/continuation diagnosis](reports/MODULE_DIAGNOSIS_V153_RESULTS.md)
+is complete. All 64 frozen roots receive 16 fresh suffixes and four branches.
+On the preselected accepted risk8 roots from H2, original-target advantage
+is overestimated by +2.8465 [1.4410,4.2520]; MSE excess over zero is
++8.4286 [2.5503,14.3070]. Estimation problems already exist under the
+original H2 continuation. Retain the favorable local result: on gate-visited
+risk1 roots, the frozen call rule gains +0.1650 [0.0252,0.3049] versus
+rejecting the current module and continuing the same gate, positive in all
+four histories and four suffix blocks. This is not full-game superiority.
+The direct continuation shift on gate-visited risk8 roots is +1.2360
+[-0.2844,2.7563]; continuation mismatch is not established as the cause.
+Keep H2. V154 above completes the matched repair comparison using all
+64 roots and a fixed reference gate; neither repair establishes a fresh
+full-game benefit despite substantially lower training error.
+All 4,096 branches terminate, using 2,017,530 environment transitions and
+no fitting. Twenty-nine finite tests pass, independent audit 43/43, and
+81 frozen source files match. Main/audit run once in 176.32/122.52s,
+both stderr 0; finite tests separately consume 93 environment transitions.
+Intervals are pointwise and conditional on the frozen roots/histories.
+General strategic learning remains open; U005 FAIL, U006 unstarted.
+
+[V152 common-seed replication of frozen modules](reports/MODULE_REPLICATION_V152_RESULTS.md)
+is complete. All 80 V151 models and all five checkpoints are frozen; each
+history uses 16 new seeds shared across checkpoints, queries and methods.
+Final LEARN8-H2 is +0.1179/+0.9990 for risk1/risk8, with conditional seed
+95% intervals [-0.7787,1.0145]/[-1.9118,3.9098]. Risk8 is positive in 2/4
+histories; LEARN8-ALT is +0.7635 [-2.6904,4.2175]. The earlier large final
+risk8 signal is not yet robustly replicated. Its same-seed LEARN8-H2 curve
+is [0,+2.5276,+1.8296,-0.3575,+0.9990]; all adjacent-update intervals
+include zero. Keep H2; there is no established stable improvement with
+experience. V153 above completes the four-continuation diagnosis: it finds
+original-target overestimation in an accepted risk8 subset and preserves
+positive local gate decisions on gate-visited risk1 roots. V154 above
+compares both repair targets without establishing full-game benefit.
+All 1,152 physical games terminate, yielding 2,560 logical references and
+1,129,190 new environment transitions; no new training or updates.
+Seventeen finite tests pass, independent audit 41/41, 77 frozen files match.
+Main/audit run once in 103.03/251.32s, both stderr 0. Intervals condition on
+four fixed training histories; general strategic learning remains open.
+U005 FAIL, U006 unstarted.
+
+[V151 conditional executable policy modules](reports/POLICY_MODULES_V151_RESULTS.md)
+is complete. Two frozen H2 policies supply one/eight-step interventions.
+Root-conditioned three-component models retain weights and experience across
+four batches, using identical complete triplets and the same shared pool budget.
+At the final checkpoint LEARN8-H2 is-0.7800/+5.8969 for risk1/risk8,
+positive in1/4 and3/4 histories. LEARN8-LEARN1 is-1.6826/+7.6953;
+LEARN8-ALT (always switch) is-0.3196/+4.5614, with risk8 positive in all
+four histories against both controls. Final risk8 wins are12/16 versus H2
+7/16 and ALT8/16. This is a positive signal for conditional modules in risk8.
+The full LEARN8-H2 curves are[0,+.7891,+.6838,+.7701,-.7800] and
+[0,-3.5842,+.9326,-.1992,+5.8969]. Keep H2; broad benefit and stable
+improvement with experience remain unestablished. V152 above completes the
+larger common-seed replication: final risk8 gains shrink and remain uncertain.
+Of1,197 complete triplets sharing the first action,739 diverge later within
+the eight-step module and507 have different terminal components. These
+consequences require more than a first-action afterstate difference. All640
+fresh diagnostic roots are unseen in training.
+Training uses2,097,152 actual transitions;640 complete evaluation games use
+625,313. All1,352 complete triplets train both models;32 budget-censored
+triplets retain their costs and train neither. The warm fits make40,960 updates.
+Twenty-four finite tests ultimately pass, independent audit67/67, and75
+frozen sources match. Main/audit run once in145.70/266.28s, both stderr0.
+General strategic learning remains unresolved; U005 FAIL, U006 unstarted.
+
+[V150 training-only cross-fitted tail shrinkage](reports/CROSSFIT_SHRINKAGE_V150_RESULTS.md)
+is complete. Four fixed24/8 suffix folds learn one clipped coefficient per
+history/query, scaling TRAIN32 tail weights while preserving immediate reward.
+Freeze768 predictions before independent evaluation. CF changes24 actions
+versus TRAIN32;22 come from history1 falling back to ZERO, with only two
+other changes. CF still differs from ZERO on70 roots.
+Combined MSE falls from0.3637/4.3804 to0.2467/2.3353 for risk1/risk8,
+improving over TRAIN32 in all four histories and all four fixed suffix blocks.
+ZERO MSE is0.2682/2.3910. CF versus ZERO action value is-0.0196/+0.0429,
+positive in only1/4 and2/4 histories; CF versus H2 is-0.0226/+0.0778.
+Keep H2: improved prediction error does not establish stable learned decisions.
+V151 above completes conditional one/eight-step modules and new-game
+evaluation: final risk8 improves, while risk1 degrades and earlier checkpoints
+fluctuate. V152 above completes the frozen common-seed replication; stable
+improvement remains unestablished.
+General strategic learning remains unresolved.
+The32 fold fits attempt32,768 updates,22,144 effective, with no new training
+interaction. All11,072 fresh branches terminate, using5,905,121 transitions.
+Twenty-two finite tests pass plus one affected-test rerun; real-label preflight
+passes6/6, independent audit59/59, and79 frozen sources match. Main/audit run
+once in287.97/341.65s, both stderr0. U005 FAIL; U006 unstarted.
+
+[V149 nested training-label precision](reports/LABEL_PRECISION_V149_RESULTS.md)
+is complete. TRAIN8 and TRAIN32 use nested V148 suffix means at the same256
+roots, with identical zero-initialized UPDATED features, optimizer and32 passes.
+Freeze all32 models and1,024 predictions before independent V149 evaluation.
+Combined OLD/NEW MSE falls from0.8423/12.8590 to0.3725/5.5608 for risk1/risk8,
+improving in all four histories and all four fixed eight-suffix blocks. Yet
+ZERO is better at0.2090/2.9477; TRAIN32 loses to ZERO in every history.
+TRAIN32 gate gains over ZERO are only+0.0026/+0.0060, positive in2/4 histories
+for both queries. Keep H2. Better target precision does not yet establish
+reliable learned decisions or full-game gains.
+V150 above completes training-only cross-fitted tail shrinkage. It improves
+independent MSE but not stable action gains, so the next intervention moves
+to executable multi-step policy modules and fresh-state/full-game evaluation.
+Two new learners attempt16,384 updates,11,072 effective, with no new training
+interaction. Retained nested budget views are1,474,491/5,897,324 transitions;
+full V148 acquisition remains charged. All11,072 fresh evaluation branches
+terminate, using5,905,778 transitions. Seventeen finite tests pass, retained-label
+preflight6/6, independent audit52/52, and78 frozen files match.
+One main/audit run takes252.69/288.40s, both stderr0. General strategic learning
+remains unresolved; U005 FAIL, U006 unstarted.
+
+[V148 independent training-label remeasurement](reports/INDEPENDENT_LABELS_V148_RESULTS.md)
+is complete. Keep all256 TRAIN roots and freeze768 ZERO/UPDATED/SHARED
+predictions; independently remeasure all173 action disagreements with32 new
+paired suffixes, retaining83 same-action roots as exact zeros. No model updates.
+On NEW roots, UPDATED MSE gain over ZERO changes from+1.2135/+12.7789 to
+-1.0244/-10.5709 for risk1/risk8; SHARED changes from+1.1457/+12.4966 to
+-0.7530/-9.3696. Both models lose in all four histories and all four fixed
+8-suffix blocks. OLD aggregate gains also reverse. Fixed-gate gains over H2
+fall close to zero, although some gains over ZERO remain positive.
+Keep H2: failure on the identical training roots rules out a transfer-only
+explanation. V149 above completes the nested TRAIN8/TRAIN32 comparison:
+more precise targets improve independent MSE but remain worse than ZERO,
+and action gains remain inconsistent. Next address unreliable fitting with
+fixed data and representation. General strategic learning remains open.
+All11,072 branches terminate, using5,897,324 environment transitions.
+Fourteen finite tests pass; independent audit39/39;76 frozen files match.
+Main/audit run once in280.61/285.10s, both stderr0; audit replay adds23,608,716
+swipes. A parallel lightweight summary reads5,536 retained pairs in1.20s.
+U005 FAIL, U006 unstarted.
+
+[V147 shared local advantage representation](reports/SHARED_LOCAL_ADVANTAGE_V147_RESULTS.md)
+is complete. One boundary-aware unary/adjacent-pair representation replaces
+six-cell addresses while retaining the labels,32-pass LMS schedule and gate.
+H2/ZERO/UPDATED/SHARED each run64 fresh games, with44/37/16/16 wins.
+SHARED minus H2 is -3.1909/-8.7394 for risk1/risk8, negative in all four
+histories. SHARED minus ZERO is -2.1555/-5.6899; minus UPDATED is
+-0.8217/+0.2420, with the risk8 positive mean coming from only one history.
+Do not adopt SHARED; keep H2.
+NEW held-out feature coverage rises from16.09%/14.06% to87.03%/88.37%,
+and training-span projection from1.78%/1.47% to37.52%/37.71%. Yet utility
+MSE worsens from1.0889/20.5714 to1.2926/24.6250. One training disagreement
+collapses to zero; no NEW held-out disagreement does. Better sharing alone
+does not establish useful consequence transfer.
+V148 above completes independent TRAIN-label remeasurement: even at identical
+roots the fitted MSE gains reverse. Next isolate label averaging with fixed
+TRAIN8/TRAIN32 learners before further representation changes.
+All256 games terminate, using239,979 new environment transitions and no new
+training labels. SHARED attempts8,192 updates,5,504 effective. Twenty-three
+finite tests ultimately pass; independent analysis passes58/58 and all78
+frozen source files match. One main run takes63.96s and one analysis81.41s,
+both with empty stderr. General strategic learning remains unresolved;
+U005 FAIL, U006 unstarted.
+
+[V146 retained-label and feature-transfer diagnosis](reports/TRANSFER_DIAGNOSIS_V146_RESULTS.md)
+is complete with no new environment samples, model samples, fitting or games.
+On128 NEW held-out disagreement roots, fixed half-suffix advantage signs
+oppose on50.00%/46.88% for risk1/risk8; across all35 overlapping balanced
+partitions the rates are49.06%/40.00%. UPDATED observed utility MSE is
+1.08887/20.57136, mean-label noise variance is0.86363/13.93249, and the
+untrimmed difference is0.22524/6.63887. Training-feature support is also weak:
+covered squared norm16.09%/14.06%, training-span projection1.78%/1.47%.
+These measures identify coexisting label instability and limited support;
+they do not establish a unique cause or an error-attribution percentage.
+V147 above completes the fixed shared-feature comparison, including a ZERO
+control. Geometric support improves but prediction and control do not; the
+next test independently remeasures supervision at fixed training roots.
+Twenty-four finite tests ultimately pass, with the initial fixture correction
+retained. Source reproduction passes5/5 and independent verification33/33;
+all10 frozen source files match. One diagnosis takes1.42s and one verification
+1.31s, with empty stderr. Only8.05MB of retained compressed records are read.
+General strategic learning remains unresolved; keep H2, U005 FAIL, U006 unstarted.
+
+[V145 visited-state experience expansion](reports/COVERAGE_EXPANSION_V145_RESULTS.md)
+is complete. Four predetermined disagreement roots per V144 LEARNED game
+provide4,096 paired H2-continuation branches. Effective training pairs rise
+from45 to173. Keep the same features, alpha and32 passes; compare the old
+PRIOR model with zero-initialized REPLAY (old+old) and UPDATED (old+new),
+matching8,192 update attempts for the two new learners.
+On256 fresh games, UPDATED minus H2 is -1.1444/-3.0843 for risk1/risk8;
+minus PRIOR is -0.4205/-1.5847 and minus REPLAY is -0.3969/-2.9351.
+H2/PRIOR/REPLAY/UPDATED win31/25/27/22 of64 games each. Keep H2.
+New-root training utility MSE falls from1.2084/12.9732 to0.002439/0.018622,
+while new holdout MSE changes only from1.0751/20.6736 to1.0889/20.5714.
+The added experience does not establish strategic generalization.
+V146 above completes the retained-suffix diagnosis: unstable labels and weak
+training-feature support coexist. A controlled shared-feature replacement is
+next; no additional suffix collection is needed for that comparison.
+All branches and games terminate; acquisition uses2,190,351 transitions and
+control236,947, totaling2,427,298. Thirty-three finite checks ultimately pass;
+one finite assertion correction is retained. Independent analysis passes85/85.
+One main run takes146.85s and one analysis205.53s, both with empty stderr.
+All74 frozen source files match. The initial failed V144 analysis work is
+included in inherited accounting. General strategic learning remains
+unresolved; U005 FAIL, U006 unstarted.
+
+[V144 paired consequence advantage learning](reports/PAIRED_ADVANTAGE_V144_RESULTS.md)
+is complete. Eight fixed three-component learners train on128 retained roots;
+128 roots from separate original games remain diagnostic validation. On192
+new games, LEARNED minus H2 is -1.3225/+1.4309 for risk1/risk8, but LEARNED
+minus the same untrained ZERO gate is -0.0850/-0.1205. The risk8 gain already
+exists without learned weights. Do not adopt the learner; keep H2.
+H1 selection rises from about6.5% to16.4%/17.1% without a mean learning gain.
+Only45 training roots have different candidates, or2–10 per fitted model.
+Validation utility MSE changes from0.28155 to0.26873 and3.40010 to3.47854;
+small training error does not establish strategic generalization.
+V145 above completes this fixed-learning-settings experience expansion;
+its added data does not establish a gain against prior or matched replay.
+All192 games terminate; new control uses181,496 environment transitions and
+no new training interaction. One main run takes36.91s. Thirty-three finite
+tests pass before execution; one additional test covers a corrected analyzer
+counter-prefix collision. The original failed analysis is retained, and
+repaired analysis passes62/62 checks without retraining or replaying games.
+Analysis attempts take57.58s and58.81s; all stderr files are empty.
+General strategic learning remains unresolved; U005 FAIL, U006 unstarted.
+
+[V143 paired counterfactual outcomes](reports/COUNTERFACTUAL_OUTCOMES_V143_RESULTS.md)
+is complete. Force each distinct selected first action, then use a common
+frozen H2 continuation. Across256 fixed roots and eight shared suffixes,
+LEARNED64 minus H2 yields -0.05229/-0.52267 utility for risk1/risk8,
+negative in all four histories. H1_CONT minus H2 is -0.03010/-0.23999,
+negative in three histories for each query; H1_CONT minus LEARNED64 is
++0.02219/+0.28268, positive in three. Keep H2.
+These are realized conditional outcomes, extending the earlier proxy
+diagnosis: improved continuation selection repairs only part of the loss.
+The policy-bound difference learner is tested in V144 above, with original
+games separated for training/validation and new games for control. It does
+not establish a mean improvement over its untrained gate. The acquired
+training outcomes no longer serve as unseen test evidence.
+All3,616 physical branches terminate, producing2,048 paired experience
+records. New environment transitions total1,875,576 and H2 enumerates
+73,597,468 outcomes; no fitting occurs. Full compressed suffixes occupy
+about3.7 MB. Thirty-four finite tests and33 independent checks pass;
+one run takes95.12s and one analysis99.86s, both with empty stderr.
+One-action interventions do not establish full-method or optimal values.
+General strategic learning remains unresolved; U005 FAIL, U006 unstarted.
+
+[V142 query-specific H1 continuation](reports/H1_CONTINUATION_V142_RESULTS.md)
+is complete. Replacing shallow-tree priorities improves mean utility over
+LEARNED64 by +0.5977/+3.0828 for risk1/risk8, with two/three positive
+histories. It still loses to H2 by -3.2332/-6.3907 in all four histories,
+and differs from SHALLOW by -1.3603/+1.8011. Keep H2.
+On 1,973 identical roots, centered action-value MAE falls to0.1052/0.1364
+from0.1855/0.2597 for deep programs, but remains above shallow0.0498/0.0531.
+Action disagreement is41.23%/43.50%; stronger continuation choices alone
+do not resolve the loss. Actual work is159–161 swipes and139–141 leaf
+predictions per decision, approaching H2's181/156.
+The paired alternative-action outcome experiment is completed in V143 above:
+realized terminal returns support repairing candidate choices, with H2 kept
+as the reference continuation and the main closed-loop control.
+Sixty-four new games (12 wins,52 losses) plus192 retained games all terminate.
+No new training;52,221 real transitions,2,039,549 control model samples and
+83,402 diagnostic samples. Twenty-seven finite tests and42 independent
+checks pass; one main run takes9.95s and one analysis12.34s, stderr both0.
+Historical timings are not a concurrent speed benchmark. General strategic
+learning remains unresolved; U005 remains FAIL and U006 unstarted.
+
+[V141 shallow-sampling decomposition](reports/SHALLOW_SAMPLING_V141_RESULTS.md)
+is complete. Holding the initial samples fixed and removing deeper program
+continuation improves utility, but still loses to full H2. SHALLOW minus H2
+is -1.8729/-8.1919 for risk1/risk8 (all four histories negative); LEARNED64
+minus SHALLOW is -1.9580/-1.2817 (four/three histories negative).
+On 1,973 identical retained H2 roots, shallow action disagreement is
+18.60%/21.20%, versus47.81%/47.02% for deep programs. Centered value
+deviations and H2-proxy regret also worsen under deep continuation in every
+history. Both root sampling and deeper continuation need attention; keep H2.
+The query-specific H1 continuation comparison is completed in V142 above:
+it improves part of the deep-program loss but does not replace H2.
+Sixty-four new games (14 wins,50 losses) pair with128 retained games, all
+terminal. No training samples are added. New real transitions total53,238;
+model samples are536,816 for control and104,269 for diagnostics.
+Twenty-four finite tests and49 independent checks pass; one main run takes
+14.12s and one formal analysis13.90s, both with empty stderr.
+H2 values are a frozen proxy; no general strategic-learning success or
+causal percentage attribution is claimed. U005 remains FAIL; U006 unstarted.
+
+[V140 conditional policy-program planning](reports/PROGRAM_PLANNING_V140_RESULTS.md)
+is complete. Final learned programs exceed same-structure random priorities
+by +2.4685/+2.0871 utility (risk1/risk8), with four/two positive histories.
+They nevertheless lose to H2 by -3.8309/-9.4736, negative in all four
+histories for both queries. Final wins are learned7/64, H234/64,
+random1/64 and direct0/64. The1/8/64-episode curve is not steadily improving.
+Keep H2. Actual swipes fall to about75 per decision versus181, but runtime
+rises to159–174 microseconds versus100–101; there is no total-time benefit.
+The shallow comparison is completed in V141 above: first-layer sampling
+loses to H2, and deeper continuation further degrades returns and root rankings.
+All512 games terminate (52 wins,460 losses); new training samples are zero.
+Evaluation uses317,023 real transitions,9,080,172 sampled model transitions
+and2,749,506 enumerated outcomes. Forty-four finite tests are covered and
+41 independent checks pass; the retained runner-test setup error was repaired.
+One main run takes31.93s and one analysis23.62s, both with empty stderr.
+This establishes a scoped learned-ordering contribution, not a replacement
+for H2 or general strategic learning. U005 remains FAIL; U006 unstarted.
+
+[V139 factored conditional fragments](reports/FACTORED_FRAGMENTS_V139_RESULTS.md)
+is complete. Sharing guarded line effects and dynamic spawn patches raises
+held-out coverage to 1,742/2,031 after one episode (85.77% pooled;85.51%
+game/history mean) and 2,031/2,031 after eight and64 episodes. Every whole
+numeric binding is unseen; the matched whole-path library hits only one
+window at64 episodes, and the concrete cache has no hits. All exits,
+rewards and5,805 H2 continuation probes match exactly. Each history needs
+34 local programs by episode8, with no subsequent growth: four libraries
+occupy24,925 bytes versus7,547,395 for8,023 whole-path programs.
+The composition applicability stage is complete. V140 above tests learned
+conditional programs in real decisions: learned priorities help relative
+to random ones, but remain substantially weaker than H2. V139 itself keeps
+H2 control fixed and does not establish strategic learning or policy improvement.
+Twenty-five finite tests and39 independent checks pass; one main run takes
+9.15s and one analysis4.05s, both with empty stderr. No new training samples;
+64 evaluation games terminate, using63,944 real transitions and3,097,972
+enumerated outcomes. U005 remains FAIL; U006 unstarted.
+
+[V138 guarded cross-action fragments](reports/GUARDED_FRAGMENTS_V138_RESULTS.md)
+is complete. The two-action, two-spawn conditional programs return executable
+exit states and rewards, but held-out reuse remains weak: snapshots after
+1/8 episodes have no hits; the64-episode library hits4/2,014 windows, including
+3/2,013 unseen numeric bindings (0.149% pooled;0.148% game/history mean).
+All four exits and H2 continuation action values match exactly. The final
+library has8,023 programs versus8,029 concrete entries, yet occupies4.2 times
+as many serialized bytes. Of2,010 misses,1,990 have no matching joint
+action/spawn-cell/occupancy bucket and only20 fail guards.
+The factored comparison is completed in V139 above: local programs and
+dynamic spawn patches remove this coverage bottleneck on the held-out cohort.
+Twenty-six targeted tests and33 independent checks pass. Training uses
+retained data only;64 new H2 games all terminate, with63,432 new real
+transitions and2,787,654 enumerated model outcomes. One run takes10.21s and
+one analysis7.72s, both with empty stderr. No policy-improvement claim is made.
+U005 remains FAIL; U006 unstarted.
+
+[V137 matched terminal supervision](reports/TERMINAL_SUPERVISION_V137_RESULTS.md)
+is complete. Terminal supervision reduces held-out teacher reward MSE
+by 78–91% relative to one-step TD, and recomposed old-query MSE also falls
+in all four groups. Control nevertheless worsens: TERMINAL minus TD utility
+is -2.4811/-2.8447 for SINGLE and -1.5880/-2.0997 for CAPACITY (risk1/risk8).
+Wins are TEACHER 137/256, TD 99/256 and TERMINAL 51/256.
+The leaf replacement is not adopted. V138 above implements conditional
+cross-action programs with executable exits; their whole-path applicability
+remains too narrow and motivates factoring local dependencies.
+Both arms replay the same 8,582 complete episodes, each with 8,378,626
+updates; 83,795,608 TD source numbers match exactly. New training samples
+are zero. All 768 physical evaluation games terminate, with 700,839 new
+real evaluation transitions and 40,637,360 enumerated model outcomes.
+Twenty-nine targeted tests and 39 independent checks pass. One run takes
+393.77s and one analysis 148.44s, both with empty stderr.
+U005 remains FAIL; U006 unstarted.
+
+[V136 joint Bellman consequences](reports/BELLMAN_CONSEQUENCES_V136_RESULTS.md)
+is complete. All twelve LEARNED-minus-fixed-TEACHER mean utility differences
+are negative. Old-query differences are -.3933/-1.7047 for SINGLE and
+-.7471/-3.7743 for CAPACITY (risk1/risk8). Eleven of twelve comparisons with
+INITIAL are also negative. On held-out teacher trajectories, reward MSE
+worsens in all four groups and success Brier remains close to its .25 prior.
+The joint learner is not adopted; frozen H2 remains the control baseline.
+The matched terminal-supervision comparison is completed in V137 above:
+teacher reward prediction improves, while control deteriorates further.
+All 1,536 physical evaluation games terminate (724 wins, 812 losses);
+2,304 logical records include declared aliases. New work totals 9,851,539
+real transitions and 450,809,058 enumerated model outcomes, with zero
+stochastic model samples. Thirty-two targeted tests and 37 independent
+checks pass. One main run takes 803.27s and one analysis 135.09s, both with
+empty stderr. U005 remains FAIL; U006 unstarted.
+
+[V135 planning on frozen learned values](reports/FROZEN_LEAF_PLANNING_V135_RESULTS.md)
+is complete. H2 minus DIRECT utility is +4.1134/+10.0569 for SINGLE and
++3.0278/+8.9300 for CAPACITY (risk1/risk8), with all four histories improving
+in all four comparisons. Wins increase from 30/256 to 154/256. This isolates
+a positive planning contribution on the same frozen values. Per-decision
+leaf predictions increase 43.9–44.3 times; native batching and Python overhead
+make wall-time ratios unsuitable as claims of fewer model operations.
+The fixed-teacher joint consequence experiment is completed in V136 above;
+its estimates and old-query control do not improve. All 512 games terminate; new work is
+464,788 real transitions and 11,353,154 enumerated model outcomes, with no
+training or stochastic model sampling. Twenty-five targeted tests and 18
+independent checks pass. One run takes 39.38s and one analysis 5.03s, both with
+empty stderr. U005 remains FAIL; U006 unstarted.
+
+[V134 context-conditioned n-tuple TD](reports/CONTEXTUAL_NTUPLE_V134_RESULTS.md)
+is complete. Final GLOBAL minus SINGLE utility is -.1874/+1.6174 for
+risk1/risk8, while GLOBAL minus the equal-allocated-parameter local CAPACITY
+control is -.3689/-.3618. Global conditioning has no demonstrated specific
+advantage and is not adopted. CAPACITY exceeds PARENT by +1.0370/+2.2089
+(4/4 histories for both), but exceeds SINGLE in only 2/4 and 3/4 histories.
+The fixed-leaf DIRECT/H2 comparison is completed in V135 above, with
+consistent benefits and substantially more model operations per decision.
+Training uses 12,582,912 transitions; 1,280 physical evaluation games all
+terminate. Total new transitions are 13,635,650, with zero model samples.
+Twenty-six targeted tests and 30 independent checks pass; one main run takes
+1457.66s and one analysis 66.64s, both with empty stderr. U005 remains FAIL;
+U006 unstarted.
+
+[V133 fixed multistep query TD](reports/MULTISTEP_QUERY_TD_V133_RESULTS.md)
+is complete. Final 32-step minus original one-step utility is -4.2017 for
+risk1 and -7.2263 for risk8, negative in all four histories for both queries.
+The 32-step method also loses to PARENT in every history; its final 128 games
+have no wins. It is not adopted. SINGLE exceeds PARENT by +.6308/+1.3174
+(3/4 histories each), while risk8 still declines from its middle checkpoint.
+The context-conditioned representation and local capacity comparison is
+completed in V134 above; its next step isolates planning on frozen values.
+Training uses 8,388,608 transitions; 896 physical evaluation games all terminate.
+Total new transitions are 8,981,006, with zero model-generated samples.
+Thirty tests and 29 independent checks pass; one main run takes 683.52s
+and one analysis 45.59s, both with empty stderr. U005 remains FAIL; U006 unstarted.
+
+[V132 retained-update attribution](reports/TD_ATTRIBUTION_V132_RESULTS.md)
+is complete. Replaying 1,572,864 retained transitions reproduces all four final
+risk8 checkpoints exactly, with zero new samples. Half of the 64 first action
+divergences are symmetric feature ties. All 64 fixed supplementary feature
+probes exhibit strict ranking reversals: mean gap changes from -.026214
+to +.025681. Signed contributions are -.000199 from direct loss updates,
+-.034573 from winning boundaries and +.086667 from bootstrap updates.
+Contributions from other boards sharing features total +.072897, versus
+-.021002 from updates to the probe afterstates themselves. Category directions
+vary across histories, so this does not identify one universal cause of decline.
+The fixed multistep terminal-anchored comparison is completed in V133 above;
+the next hypothesis concerns global conditions on the local representation.
+Twenty targeted tests and 30 independent checks pass; one replay takes 7.51s
+and one analysis 4.01s, both with empty stderr. U005 remains FAIL; U006 unstarted.
+
+[V131 target-query online TD](reports/ONLINE_QUERY_TD_V131_RESULTS.md)
+is complete. Under equal new-transition budgets, final PRIOR minus PARENT
+utility is +.4083 for risk1 (4/4 histories improve) and -.8269 for risk8
+(1/4 improves). PRIOR exceeds SCRATCH in all four histories for both queries.
+Risk8 improves at 131,072 transitions but declines in every history by the
+preselected final 524,288 checkpoint; wins fall from 14/64 to 6/64.
+This is partial evidence of incremental learning, with high-risk adaptation
+still unresolved. Update attribution and the fixed multistep target comparison
+are completed in V132 and V133 above.
+Training uses exactly 8,388,608 transitions, with 16 final active prefixes;
+1,024 physical full evaluation games all terminate. Total new transitions
+are 9,041,731, with zero model-generated samples. Zero-training PRIOR exactly
+matches PARENT at 106,340 decisions and 382,577 legal action values.
+Twenty-two tests and 28 independent checks pass; one main run takes 472.01s,
+one analysis 19.53s, both with empty stderr. U005 remains FAIL; U006 unstarted.
+
+[V130 paired n-tuple action-gap learning](reports/PAIRED_NTUPLE_V130_RESULTS.md)
+is complete. Spatial priors help relative to scratch, but the learned residual
+still degrades its parent: full-game utility differences are -2.1226/-3.8839
+for risk1/risk8, negative in all four source histories. Training gap errors
+fall sharply; held-out errors do not improve. Replacing the subsequent policy
+adds -0.9115/-2.8453 utility relative to changing only the first action.
+The residual is not adopted. Target-query n-tuple TD with matched new
+transition budgets is completed in V131 above.
+All 512 root slots are retained (336 training, 114 held out, 62 missing).
+New work is 6,605,490 actual transitions across 128 acquisition games,
+13,984 continuations and 384 full evaluation games, all terminal.
+Twenty tests and 22 independent checks pass; one main run takes 288.38s,
+one analysis 5.09s, both with empty stderr. U005 remains FAIL; U006 unstarted.
+
+[V129 source-only policy calibration](reports/POLICY_CALIBRATION_V129_RESULTS.md)
+is complete. Eight offsets fitted only to retained V126 training reduce
+fresh-panel mean cross-policy gap errors from 2.8132/2.7815 to
+.0183/-.0134 for risk1/risk8 (Monte Carlo SE .1509/.4674); every source
+history reduces its mean bias. Source proposals stay unchanged.
+Full control does not improve consistently: CAL minus UNCAL utility is
++.3259 (2/4 positive histories) and -1.1907 (1/4) with learned success;
+constant-success controls give -1.0114 and -.2270 (both 0/4 positive).
+Calibrated learned control still trails both frozen sources in all four
+histories for both queries. It is not adopted as the default controller.
+Source-initialized action-gap learning with matched parent continuations
+and one frozen policy improvement is completed in V130 above.
+Reused 6,635,452 training transitions; new work is 678,009 actual transitions
+across 16 root-acquisition games, 880 forced continuations and 320 control
+games, all terminal. Eighteen unique tests and 29 independent checks pass.
+One main run takes 41.90s, one analysis 4.35s, both with empty stderr.
+U005 remains FAIL; U006 unstarted.
+
+[V128 paired forced-action diagnosis](reports/FORCED_ACTIONS_V128_RESULTS.md)
+is complete: all 64 retained first disagreements reproduce exactly and map
+to 62 unique boards, with 4,000 terminal physical continuations. Cross-policy
+value comparison has a systematic offset: predicted risk_goal-minus-reward
+advantages are 3.1070/3.4135 for risk1/risk8, versus measured .1422/.5340
+(Monte Carlo SE .1103/.4041); every history overstates this advantage.
+Within-policy first-action effects remain unresolved: -.1122/-.4052 with
+SE .1206/.4389. Most first disagreements occur early; 14/64 are D4-related
+numerical near-ties, retained without filtering. These forced source-policy
+continuations do not explain the full adaptive-control decline.
+Source-only return calibration and independent GPI evaluation are completed
+in V129 above; V128 evaluation returns stayed out of fitting.
+New work: 3,227,111 actual transitions, no training or model-generated samples.
+Nineteen tests and 24 independent checks pass. One main run takes 190.33s,
+one analysis 2.83s, both with empty stderr. U005 remains FAIL; U006 unstarted.
+
+[V127 anchored success differences](reports/ANCHORED_SUCCESS_V127_RESULTS.md)
+is complete. All 256 own-query verification games exactly reproduce the
+frozen source histories. Final source-path Brier error beats the training
+constant in all eight history/policy cells, with bounded probabilities.
+Transfer still fails: learned GPI minus matched constant GPI is -4.0424
+utility for risk1 and -5.3124 for risk8, negative in every history.
+All 512 GPI games exactly match the corresponding risk_goal single readout.
+The paired forced-action diagnosis on fixed retained boards is completed
+in V128 above, separating action-gap uncertainty from cross-policy value bias.
+Reused 6,635,452 training transitions; no fresh training samples.
+New work: 1,600 terminal outer games and 1,190,724 transitions.
+Twenty-two targeted tests and 31 independent checks pass; one main run
+takes 156.58s, one analysis 7.38s, both with empty stderr.
+U005 remains FAIL; U006 unstarted.
+
+[V126 fixed-policy consequences for unseen queries](reports/POLICY_CONSEQUENCES_V126_RESULTS.md)
+is complete. The reusable three-component interface works, but the current
+unconstrained Monte Carlo fit fails the policy test: GPI loses to both frozen
+source policies in all four histories for both unseen queries. Final GPI
+utility is .1625 for risk1 and -7.5787 for risk8; all 768 learned-readout
+evaluation games across checkpoints end in loss.
+Failure prediction is worse than the training-prefix constant in all eight
+history/policy cells, and all six policy/component mean MSEs are worse than
+constant on held-out source paths. The failure already occurs before GPI's
+distribution shift. The scalar-value anchor with bounded event counts and
+exact own-query action recovery is evaluated in V127 above.
+New work: 6,635,452 training and 184,603 outer transitions; 832 physical
+outer games, all terminal. Twenty-one targeted tests and 30 independent
+checks pass. One main run takes 458.15s; one analysis takes 8.28s, both with
+empty stderr. U005 remains FAIL; U006 unstarted.
+
+[V125 confirmed contexts with value learning](reports/CONFIRMED_VALUE_V125_RESULTS.md)
+is complete on fresh training and evaluation streams. All eight learners keep
+two contexts, preserve the source bank through B and recover it on return.
+BANK and the matched delayed single-table control DELAY are identical in B.
+On return, BANK minus DELAY is -467.625 reward points (1/4 histories improve)
+and +.1934 risk-goal utility (2/4). Context protection works; consistent policy
+benefits are not established. The MD's query-reusable, policy-conditioned
+consequence branch with fixed source policies is evaluated in V126 above.
+New work: 25,165,824 training and 536,748 outer transitions; 832 terminal outer
+games. Twenty-three targeted tests and 36 independent checks pass.
+One main run completes in 1,551.66s with empty stderr; analysis-only path
+correction does not change the experiment. U005 remains FAIL; U006 unstarted.
+
+[V124 confirmed context identification](reports/CONFIRMED_CONTEXT_V124_RESULTS.md)
+completes the retained-trace routing milestone. All eight streams keep exactly
+two modules, preserve source statistics through B, and switch once into B and
+once back to source. Total switches fall270->16 and creations51->8; return
+source-ID action coverage is99.9756% in every stream, with no further wrong
+routing after128 observations. This is identity recovery on existing traces,
+not measured value-policy improvement. Three of eight return prediction losses
+increase slightly; both changes require128 observations.
+Fresh-stream value learning with explicit TD handling before confirmation
+is completed in V125 above. Seventeen targeted tests pass;
+8388608 retained training ranks and2048 warmup ranks reused, no new samples,
+TD updates or weight loads. One main replay completes in6.38s, stderr empty.
+U005 remains FAIL; U006 unstarted.
+
+[V123 persistent context routing](reports/PERSISTENT_CONTEXT_V123_RESULTS.md)
+is complete on all eight retained V122 training streams, with exact baseline
+action/event/final-state reproduction. Adding the fixed log64 reactivation
+penalty reduces switches from28,812 to270 and preserves source statistics
+through B in7/8 streams. It does not resolve identity: creations rise21->51,
+final module counts rise3–4->4–11, and one previously recovered return stream
+drops from99.98% to9.33% source-bank use. A rare block can create a duplicate
+whose switching penalty then keeps it active; nearly equal probability
+estimates do not establish recovery of the old value bank.
+The separated detection/matching test is completed in V124 above. No new samples, TD updates or weight
+loads;8,388,608 training ranks and2,048 warmup ranks reused. Thirteen targeted
+tests pass; one main replay completes in8.29s with empty stderr.
+U005 remains FAIL; U006 unstarted.
+
+[V122 observed-context value banks](reports/CONTEXT_BANK_V122_RESULTS.md)
+is complete. Final bank-minus-CONT means are negative in all four phase/query
+comparisons: B reward -1,473.4 points and win-sensitive utility -.4855;
+return reward -262.5 points and utility -2.0742. The V121 mean return decline
+also does not repeat on this fresh outer cohort: CONT at return0 exceeds
+frozen A by937.6 points (3/4 histories) and1.5447 utility (4/4).
+Post-run replay finds identity drift: three of eight source-context estimates
+move to about .40 during B, and their old value banks serve fewer than .16%
+of returning decisions. B produces2,065–4,692 reactivations per history/query.
+Do not replace continued TD with this bank rule. The retained-observation persistence test is completed in V123 above.
+New work:8,388,608 training and535,999 outer transitions;832 terminal outer
+games,16 retained training cutoffs. Twenty-one targeted tests and35 independent
+checks pass. Peak value-bank memory is226.76MB;107 snapshots use1.63GB.
+U005 remains FAIL; U006 unstarted.
+
+[V121 unannounced parameter change and return](reports/NTUPLE_REGIME_V121_RESULTS.md)
+is complete with the V120 learner fixed and exact new transition budgets.
+Continued learning beats reset learning in all four histories for both queries
+in both phases. Against frozen A knowledge, B reward improves by 2,758.4 points
+in 4/4 histories, while B win-sensitive utility improves by .8150 in only 2/4.
+At return, pre-update means decline by 527.5 points and .8049 utility; subsequent
+learning improves them, but final-vs-frozen effects remain negative in 2/4
+histories for each query. Experience is useful; stable old-task retention is
+unresolved in that cohort. The context-bank test and fresh evaluation are
+completed in V122 above.
+New work: 16,777,216 training and 437,976 outer transitions, no model-generated
+samples; 832 terminal outer games, 32 retained training cutoffs. All 16 targeted
+tests and 26 independent checks pass. U005 remains FAIL; U006 unstarted.
+
+[V120 persistent spatial n-tuple TD learning](reports/NTUPLE_LEARNING_V120_RESULTS.md)
+is complete. Across four fresh training histories and two separately trained
+objectives, the fixed learner improves with experience: reward scores rise
+2,942.1 -> 5,804.4 -> 9,764.4 -> 14,482.0 at 0/256/1024/4096 games;
+win-sensitive utility rises -2.5634 -> -.9790 -> .2177 -> 3.6589.
+Final-vs-256 and final-vs-H2 effects are positive in all four histories for
+both objectives. Final mean utility also exceeds MC4, but each objective has
+two negative history effects and reward-query wins are 2/32 versus MC4's 8/32.
+Training costs 22,124,667 actual transitions and 22,123,403 TD updates; it uses
+no generated rollout samples. All 32,768 training and 384 outer games terminate;
+17 targeted tests and 17 independent checks pass. This supports parameter
+accumulation on the fixed task, not autonomous structure learning or sample
+efficiency. The A/B/A-return test is completed in V121 above.
+U005 remains FAIL; U006 unstarted.
+
+
+[V119 direct model consequences at the frozen planning boundary](reports/ROLLOUT_CONSEQUENCES_V119_RESULTS.md)
+is complete. With the same fixed policies, horizon and planner, MC4/MC16 beat
+both the selected tree and H2 on both query means in all four A-return lives.
+Reward-query scores: H2 10,769, TREE 5,488, MC4 15,524.5, MC16 16,988;
+risk-query utilities: .9409, -2.1274, 6.2368, 6.1765. Wins across both queries
+are 0/16, 0/16, 6/16 and 8/16 respectively. This locates a useful intervention
+at the consequence-estimation boundary; it does not isolate approximation,
+coverage or estimation noise. The MD's spatial n-tuple/TD learning baseline
+is now implemented and evaluated in V120 above; the selector remains frozen. All 64 games terminate, 14 checks
+and 13 targeted tests pass. New work: 42,021 actual transitions, 519,881,042
+model spawns, no fitting/router updates. This is expensive online simulation,
+not established knowledge compression or continual-learning success.
+U005 remains FAIL; U006 unstarted.
+
+[V118 source planning-utility consolidation](reports/UTILITY_CONSOLIDATION_V118_RESULTS.md)
+is complete on the frozen V117 candidate histories. Fresh utility validation
+selects five split updates, two shared updates and one KEEP. All four B/A-return
+query means improve over the old MSE selector; A-return risk gains +1.5742,
+positive in all four lives. However, all 24 life/phase/query utility differences
+against H2 remain negative. A-return updating loses -0.4661 reward utility against
+retaining the B-end consequences, while gaining +0.6787 risk utility.
+The extra 51,639 validation transitions exceed the 48,637 inherited source
+transitions. The fixed-interface consequence comparison is complete in V119
+above; the selector remains frozen and the learning representation is next. All 520 new games lose;
+16 tests and 17 completeness checks pass. New work: 144,468 real transitions,
+897,820 model spawns and zero fits. U005 remains FAIL; U006 unstarted.
+
+[V117 fixed consequence consolidation](reports/CONSOLIDATION_V117_RESULTS.md)
+is complete. Separate mechanism banks outperform shared trees in all four B/
+A-return query means; A-return risk utility gains +1.6970 with all four lives
+positive. However, source-MSE consolidation selects no split candidate: two
+shared updates and six KEEP decisions. Its A-return risk utility loses -2.0696
+to SPLIT, negative in every life. All learned controllers still trail H2 in
+all six phase/query means. The fixed-candidate utility-validation experiment is
+complete in V118 above; its selection gains incur additional sampling costs.
+All 480 games terminate LOST; 18 tests and 22 completeness checks pass. New work:
+130,312 real transitions, 449,230 model spawns and 96 tree fits. U005 remains FAIL;
+U006 unstarted.
+
+[V116 mechanism-conditioned joint consequence learning](reports/CONTEXT_CONSEQUENCES_V116_RESULTS.md)
+is complete. On fresh A-return games, CONTEXT reward MSE exceeds MIXED in all
+four lifecycles. Both learned controllers fall below H2 in all six phase/query
+means. Context offers a limited retention signal, while one returning lifecycle
+ends with the wrong parameter module (p4=.29434 versus .1). All 432 games lose,
+so the success component has no positive evidence. The fixed shared-versus-separated
+consolidation comparison is complete in V117 above. V116 is not retuned.
+All 21 targeted tests and 18 completeness checks pass. New work totals 116,657
+real transitions, 351,858 model spawns and 72 tree fits. U005 remains FAIL;
+U006 remains unstarted.
+
+[V115 parameter memory across unannounced A/B/A-return regimes](reports/REGIME_MEMORY_V115_RESULTS.md)
+is complete. Four fixed learners infer spawn probabilities from visible transitions;
+all four library lifecycles retain two modules and reactivate their original module.
+On A-return, LIBRARY reaches the declared parameter-error criterion in 115–159
+new observations, versus 222–264 for RECENT, with lower initial log loss in all
+four lifecycles. On novel B, however, log loss is worse than RECENT in all four.
+Full-game advantages reverse across checkpoints: final A-return reward/risk
+utility falls below every control. Parameter adaptation is now a usable component;
+stable strategic improvement remains unresolved.
+The frozen-router consequence experiment is complete in V116 above; its new
+lifecycle exposes an additional wrong-module return. Further selector replication
+on histories19–22 remains deferred. This does not declare stage1 successful.
+All 72 training games and 560 evaluation games terminate; 23 targeted tests and
+20 terminal checks pass. New work is 16,806 training and 272,657 evaluation
+transitions plus 1,913,698 model spawn samples. U005 remains FAIL; U006 unstarted.
+
+[V114 direct validation of deployment models](reports/DIRECT_VALIDATION_V114_RESULTS.md)
+is complete. Replacing two-source validation proxies with the actual three-source
+models changes 12 of 16 choices. H16 reward improves over the old selector, HALF
+and FULL by +0.04737/+0.03440/+0.02011, all positive in A/B. H4 reward loses
+-0.02348 versus the old selector in both blocks; risk gains over HALF remain
+small and reverse across A/B. Deployment-model mismatch explains part of the
+selection problem, while stable accumulation remains unresolved.
+Further selector replication on histories19–22 is deferred. V115 advances
+the separate parameter-adaptation lifecycle; the V114 improvement remains a
+retrospective mechanism result on already observed V113 targets.
+New work is 768 source model-root scores, 16 choices and 512 cached target
+decisions; no fitting or sampling. All 13 targeted tests and 19 terminal checks
+pass. U005 remains FAIL and U006 remains unstarted.
+
+[V113 frozen update choices on fresh common targets](reports/FRESH_TARGETS_V113_RESULTS.md)
+is complete. Three of eight pooled SELECTED-minus-HALF/FULL effects remain
+positive on 64 fresh roots and 10,240 new terminal references. H4 reward gains
++0.02329/+0.01439, both positive in A/B. H16 reward loses -0.01297/-0.02726;
+its previous advantage does not replicate. H4/H16 risk both lose to HALF
+(-0.01923/-0.01479), negative in A/B, while H16 risk still improves over FULL.
+The full four-source-bundle by four-target-history evaluation uses unchanged
+models and choices saved before new references. No fitting or reselection.
+The direct deployment-model validation comparison is complete in V114 above;
+it improves H16 reward but worsens H4 reward, and still requires fresh confirmation.
+New work totals 5,302,737 true environment transitions (36,904 source games and
+5,265,833 reference suffixes), 40,960 model-prefix transitions and 1,024 neural
+model-root scores. All 15 terminal checks and 20 targeted tests pass. Stable
+accumulated gains remain unresolved; U005 remains FAIL and U006 unstarted.
+
+[V112 nested source-history update selection](reports/NESTED_SELECTION_V112_RESULTS.md)
+is complete. All four width/query combinations improve pooled utility over
+both always-HALF and always-FULL. H16 reward improves by +0.01884/+0.02921,
+positive in both aggregate A/B blocks; its gain over HALF comes only from
+life11, while retaining HALF avoids life13's large loss but misses positive
+updates in lives12/14. Risk gains over HALF still reverse across A/B.
+Source/target update directions agree in 3/4 histories for both H4 queries
+and 2/4 for both H16 queries. Stable accumulated gains remain unresolved.
+The frozen-model fresh-target replication is complete in V113 above;
+its eight pooled comparisons retain only three positive effects.
+Twenty-four new fits, 24,000 steps and 768 inner model-root scores produce
+128 derived outer decisions with no new outer neural score or sampling.
+Each selector still consumes 1,536,000 source training transitions plus
+3,896,279–3,934,746 inherited source-validation transitions, even if it selects
+HALF. This is a positive signal on reused evidence, not sampling-efficiency
+superiority or independent confirmation. All 26 terminal checks pass;
+U005 remains FAIL and U006 remains unstarted.
+
+[V111 equal-step half-data continuation](reports/HALF_CONTINUATION_V111_RESULTS.md)
+is complete. H16 reward gains +0.03272 from adding the second batch relative
+to the matched-step half-data control (A/B +0.01299/+0.05245), while continuing
+on unchanged half data loses -0.04309 versus the original half model
+(A/B -0.03200/-0.05418). Their sum reproduces V110's -0.01037: added data
+partly offsets deterioration from extra optimization, without beating the
+original half model. H4/H16 risk data effects are -0.06853/-0.01147 with
+opposite A/B signs. H16 training ranking error remains zero while internal
+holdout error is 34.82–63.98%; stable accumulation is still unresolved.
+The fixed source-history validation rule and its learning costs are
+evaluated in V112 above, with outer target references excluded from selection.
+Eight new fits, 8,000 steps and 128 new decisions reuse 64 roots and 10,240
+references with zero new sampling; 16 models and 256 decisions are inherited.
+All 22 terminal checks pass. U005 remains FAIL; U006 remains unstarted.
+
+[V110 pooled-history leave-one-history-out evaluation](reports/POOLED_HISTORY_V110_RESULTS.md)
+is complete. Each fold trains on three histories and evaluates only the excluded
+fourth. Full-minus-half utility changes are +0.00642/-0.06628 for H4 reward/risk
+and -0.01037/-0.00560 for H16. Three of the four pooled effects are negative;
+H4 risk and H16 reward remain negative in aggregate A/B reference blocks.
+H16 pooled half still improves over H2 in both query means and both A/B blocks,
+but further data and updating have not produced stable accumulated gains.
+H16 full training ranking error is near zero while source internal-holdout error
+remains 42.55–55.43% on its original four-replica labels.
+The matched-step half-data continuation control is complete in V111 above;
+its H16 reward result separates harmful extra optimization from a positive
+second-batch effect relative to that continuation.
+Sixteen fits, 16,000 steps and 256 held-out model-root decisions are new;
+64 roots and 10,240 references are reused with zero new sampling. Each fold's
+source acquisition is 768,000/1,536,000 half/full transitions; overlapping folds
+reuse the same 2,048,000 unique original transitions. U005 remains FAIL;
+U006 remains unstarted.
+
+[V109 frozen-hidden/output-head updates](reports/FROZEN_HEAD_V109_RESULTS.md)
+is complete. H4 reward improves over full-parameter continuation and its own
+half-budget model by +0.02401/+0.03637; H16 risk improves by +0.02060/+0.05152.
+All four aggregate comparisons stay positive in A/B. The other query still
+fails to improve reliably over half: H4 risk is -0.01828 and H16 reward -0.00666.
+Both widths improve risk over H2 in every history's A/B block. Head gradients
+are approximately 3e-17–1.2e-16, but training ranking error remains 17–28% under
+the fixed representation and loss. Restricting updates gives partial benefits;
+stable improvement of both queries remains unresolved.
+The pooled-history half/full comparison is complete in V110 above, with
+all three source histories' acquisition costs retained.
+Eight new fits and 8,000 steps produce 512 new model-root decisions; no new
+sampling. Total networks retain 492/1,968 parameters, with only 4/16 trainable.
+The original 48 models, 3,072 decisions and 10,240 references are inherited.
+U005 remains FAIL; U006 remains unstarted.
+
+[V108 query-gradient ablation](reports/QUERY_UPDATE_V108_RESULTS.md)
+is complete. All four own-query comparisons of reward-only/risk-only updates
+against joint continuation reverse direction across A/B reference blocks.
+H4 risk-only updating improves reward over joint and half by +0.04178/+0.05414,
+both positive in A/B. H16 risk-only updating improves risk over half by
++0.03561 but lowers reward by -0.02863, with both directions agreeing across
+A/B. Single-query H16 training ranking error is zero while active-query
+heldout error remains approximately 31–63%; query isolation has not resolved
+the generalization bottleneck. The fixed-hidden/output-head comparison is complete in V109 above, with
+total network capacity unchanged.
+Sixteen new fits, 16,000 steps and 1,024 new model-root decisions reuse the
+187 candidate records, 64 roots and 10,240 references. New sampling is zero;
+32 models and 2,048 prior decisions remain unchanged. U005 remains FAIL;
+U006 remains unstarted.
+
+[V107 fixed-statistics parameter continuation](reports/INCREMENTAL_RANKING_V107_RESULTS.md)
+is complete. Compared with fixed-statistics refitting from the original
+initialization, continuation improves H4/H16 reward utility by +0.01026/+0.05139
+but lowers risk-goal utility by -0.05028/-0.03620; all four directions agree
+across A/B reference blocks. Relative to their own half-budget models, reward
+gains are only +0.01236/+0.00191, with mixed training-history effects and
+unstable risk effects. H16 continuation still beats H2 on both pooled query
+utilities, but its heldout weighted ranking error remains 34.55–61.77% despite
+zero training error. Reliable gains from added experience remain unresolved.
+The matched joint/reward-only/risk-only update comparison is complete in
+V108 above.
+Sixteen new fits and 16,000 new optimizer steps reuse 187 candidate records;
+1,024 new model-root decisions use the original 64 roots and 10,240 references.
+New sampling is zero. Both arms reset Adam moments; continuation retains an
+additional 1,000 inherited parameter steps. U005 remains FAIL; U006 unstarted.
+
+[V106 crossed common-root evaluation](reports/CROSSED_RANKING_V106_RESULTS.md)
+is complete. All 16 frozen V105 models were evaluated on the same 64 retained
+roots; 256 original model-root decisions reproduce every score and choice exactly.
+The H4 reward advantage over H2 falls from the original diagonal +0.07068 to
++0.00396 across the full model-by-root matrix, with opposite A/B signs.
+H4/H16 full-minus-half reward effects are -0.01343/-0.02620, each negative in
+both A/B blocks. Risk effects versus H2 remain positive at +0.06483/+0.09363;
+pooled model-history row means are positive in three/four of four histories,
+although some rows reverse across A/B. Evaluation-root variation matters,
+and reliable improvement from additional training remains unresolved.
+The matched fixed-statistics and parameter-continuation comparison is
+complete in V107 above.
+New sampling and fitting are zero; 1,024 model-root decisions and 5,120 candidate
+scores reuse the original 10,240 references as one inherited evidence bank.
+U005 remains FAIL; U006 remains unstarted.
+
+[V105 fresh-history replication](reports/FRESH_RANKING_V105_RESULTS.md)
+is complete on four new learning histories, with all 64 natural query roots
+receiving 32 paired terminal references per option. The frozen R4/H4/uniform-shrink
+recipe retains a reward gain over H2: +0.07068 reference utility, positive in
+both pooled A/B blocks and three of four histories. Its +0.01409 advantage over
+the wide model changes sign across A/B; full versus own half is -0.01539.
+Risk reference utility versus H2 averages +0.06903, but only one of four
+histories is positive. This partially replicates the reward signal and does
+not establish stable capacity or continued-learning gains. The common-root
+crossed evaluation is complete in V106 above.
+All 384 natural games and 10,240 references terminate; 2,048,000 new training
+transitions and 5,444,903 new evaluation/reference transitions, plus 324,480
+candidate-model prefix transitions and 16 new fits. U005 remains FAIL;
+U006 remains unstarted.
+
+[V104 complete natural-root references](reports/NATURAL_REFERENCE_V104_RESULTS.md)
+is complete. All 32 V103 natural query roots now have 32 paired suffixes per
+candidate, reusing eight roots and sampling only the remaining 24. The full
+capacity comparisons give eight positive and four negative reference effects.
+R4/H4/UNIFORM_SHRINK reward improves over the wide model, its own half-budget
+version and H2 by 0.21423/0.22402/0.14580 reference utility; all three remain
+positive in A/B, both histories and the newly completed cohort. This complete
+recipe is a candidate for new-training-history replication, not an adopted
+replacement. R4/H4/REPLICA reward loses on the same reference comparisons.
+Risk full-versus-half reference means improve in all six narrow models,
+correcting the previous single-suffix interpretation; all six full models
+still remain below H2 on reference risk utility in this original cohort.
+The frozen-recipe fresh-history replication is complete in V105 above. All 3840 new trajectories terminate; 1,982,187 new
+real reference transitions, with controller computations retained separately.
+No new training, natural games, candidate-prefix sampling, fits or scoring.
+U005 remains FAIL; U006 remains unstarted.
+
+[V103 fixed nonlinear capacity](reports/CAPACITY_RANKING_V103_RESULTS.md)
+is complete. Four hidden units versus frozen sixteen-unit models, with matched
+per-parameter L2, gives 9/12 positive full-budget natural comparisons and
+10/12 positive independent selected-utility differences (one tie, one loss).
+Eight of ten positive reference differences reverse across A/B blocks.
+R4 MEAN_SIGN risk has positive reference differences in both histories and
+blocks; R4 REPLICA reward loses on references despite strong natural gains.
+Training error remains 0–1.81%, and five of six narrow models lose natural
+risk utility after the full-budget update. No overall replacement is adopted.
+A zero-sampling matched-root decomposition confirms some suffix disagreements
+persist on identical roots. The complete reference extension is finished in
+V104 above; preserve these V103 observations.
+All 832 games and 1280 references terminate; 1,096,064 new real evaluation
+transitions, 512,000 model transitions and 24 narrow fits, plus 24 retained
+wide models. U005 remains FAIL; U006 remains unstarted.
+
+[V102 replica-disagreement ranking](reports/REPLICA_RANKING_V102_RESULTS.md)
+is complete. Exact MEAN_SIGN reproduction holds at all eight checkpoints.
+Full REPLICA improves natural R8 reward/risk over MEAN_SIGN by 86.75 points/
+0.33374 utility, but independent selected utility falls by 0.09236/0.20885.
+R4 has a local independent risk gain of 0.13966, confined to one history;
+natural reward/risk falls by 1196.25 points/0.05627. R8 REPLICA and uniform
+shrinkage select identically at every reference root. No overall replacement
+is adopted. Training ordering error is 0.11%–0.72%, heldout 42.81%–60.94%.
+The matched four-unit comparison is completed in V103 above; preserve these
+V102 findings.
+All 448 games
+and 1280 references terminate; 937,532 new real evaluation transitions,
+266,240 model transitions and 24 fits, with zero new training acquisition.
+U005 remains FAIL; U006 remains unstarted.
+
+[V101 fixed-heldout order replication](reports/HELDOUT_ORDER_REPLICATION_V101_RESULTS.md)
+is complete. On 17 fixed heldout roots, two independent 16-replica reference
+blocks disagree on 76 of 170 distinct candidate pairs; 84 agree and 10 contain
+a tie. In R4, old labels also agree on 41 of those agreeing pairs, yet MSE and
+ranking models reverse 20 and 21 of them. Finite-reference instability and
+additional model ordering errors coexist. Ranking improves pooled ordering
+error in three of four groups, but R4 risk worsens from 45.21% to 66.19% and
+selected-reference gains remain inconsistent. No replacement is adopted.
+The matched three-objective experiment is completed in V102 above; these
+V101 references remain excluded from training.
+All 2720 references terminate; 1,397,687 new real reference transitions and 250
+candidate predictions, zero fits or model-prefix sampling. U005 remains FAIL;
+U006 remains unstarted.
+
+[V100 direct candidate ranking](reports/QUERY_RANKING_V100_RESULTS.md)
+is complete. With matched inputs, capacity and optimizer schedule, ranking improves
+all eight allocation/age/query natural mean comparisons against utility MSE, but
+independent selected reward falls in all four configurations and ordering error
+rises in seven of eight comparisons. Both full ranking models remain below H2:
+reward by 1868.5/1359.75 points and risk utility by 1.61108/0.32361 for R8/R4.
+Keep the R8 risk signal; no replacement is adopted. Training ordering error is
+zero while heldout full-rank errors remain 20.7%–47.2%. The fixed-heldout replication is completed in V101 above; preserve these
+V100 findings. All 320 natural games and 640
+references terminate; 505,727 new real evaluation transitions, 274,560 model
+transitions and 16 neural fits are retained, with zero new training acquisition.
+U005 remains FAIL; U006 remains unstarted.
+
+[V99 persistent terminal supervision](reports/TERMINAL_ANCHOR_V99_RESULTS.md)
+is complete. Fixed half-return/half-Bellman targets make full-model choices
+agree with prefix-only in 31/128 cases, versus 89/128 for original FQE. All four
+full configurations lose risk-goal utility to FQE in both histories. R4 boundary
+reward gains 1731.75 points over FQE and 1112 over MC, but loses 156.75 to
+prefix-only; independent results are mixed. No general replacement is adopted.
+The matched direct-ranking experiment is completed in V100 above; preserve
+these V99 findings. All 832 natural games and 640 references terminate;
+830,253 new real evaluation transitions, 512,000 candidate-prefix transitions,
+4,128 new fits and zero new training acquisition are retained. U005 stays FAIL;
+U006 remains unstarted.
+
+[V98 fixed-budget root coverage](reports/ROOT_COVERAGE_V98_RESULTS.md)
+is complete on two fresh histories. Four versus eight replicas increases
+training roots from 40 to 76 at the same actual interaction budget, with 4.26%
+fewer training rows. Full-budget reward gains are 411.0 points for paired FQE
+and 463.25 for boundary FQE; both histories improve against their corresponding
+eight-replica models. Independent selected-reference reward utility is unchanged
+for paired FQE and falls 0.17694 for boundary FQE. Risk and continued-update gains
+remain inconsistent. Keep the reward signal; reliable learned action ranking
+remains unresolved. On eight retained validation roots, 30 of 32 full-model
+choices agree with four-step prefix-only choices. The proposed persistent
+terminal-supervision comparison is completed in V99 above. All 288 natural
+games and 640 references terminate;
+2,547,770 new real transitions, 4,128 main fits and 163,840
+candidate-prefix model transitions are retained. U005 remains FAIL; U006 unstarted.
+
+[V97 query-boundary learning](reports/QUERY_BOUNDARY_LEARNING_V97_RESULTS.md)
+raises boundary training mass to 50% while preserving each trajectory pair's
+original total mass. Boundary FQE gains 438.2 reward points over original FQE at
+checkpoint 12 and 493.8 at frozen6; descriptive two-SE bands are above zero,
+with 5/6 and 6/6 histories improving. Keep this reward signal as a candidate.
+Risk gains remain unresolved, updating to checkpoint 12 does not establish a
+gain over frozen6, and independent reward selection does not improve. Boundary
+MC worsens reward performance and is not adopted. Its proposed fixed-budget
+root-coverage comparison is completed in V98 above; preserve these V97 findings.
+All 1728 natural games and 1920 references terminate; 3096 new fits, zero new
+training acquisition, 2,029,057 real evaluation transitions and 983,040 model
+transitions are retained. U005 remains FAIL and U006 remains unstarted.
+
+[V96 paired Bellman advantage](reports/PAIRED_BELLMAN_ADVANTAGE_V96_RESULTS.md)
+fits matched paired MC and 128-round Bellman models on retained V93 data and
+keeps the four-step, 32-replica deployment interface. Current PAIR_FQE loses
+200.0 reward points / 0.1835 risk utility to PAIR_MC; both descriptive two-SE
+bands span zero. Heldout tail MSE falls 1.76%/3.42%, but independent candidate
+MSE changes by -3.42%/+3.83%, and selected-reference risk utility falls from
++0.3540 to -0.0868. V96 does not support adopting its PAIR_FQE replacement.
+The boundary reweighting experiment motivated by its 2.619% training share is
+completed in V97 above; preserve V96's negative result.
+All 1728 natural games and 1920 references terminate; 3096 new fits, zero new
+training acquisition, 2,013,499 new evaluation transitions and 983,040 model
+transitions are retained. U005 remains FAIL and U006 remains unstarted.
+
+[V95 direct shared-value evaluation](reports/DIRECT_SHARED_VALUE_V95_RESULTS.md)
+freezes V94 knowledge and replaces the fitted head with 32 paired four-step model
+prefixes plus shared value. FQE DIRECT gains 121.5 reward points / 0.4247 risk
+utility over its head, but both descriptive two-SE bands span zero. Frozen-6 FQE
+DIRECT gains 654.0 reward points / 0.3770 risk utility over its head, with both
+bands above zero; this local benefit does not establish improvement from further
+learning. Independent candidate MSE rises about 2.8% in both queries at checkpoint
+12, and selected-reference utility
+falls from +0.2281/+0.6695 to -0.0422/+0.0595. This does not support bypassing the
+head as a sufficient solution. Keep the risk signal and the negative reference
+result; the completed paired Bellman experiment is reported in V96 above.
+V95 used no new fits or training sampling; 1728 natural games and 1920 references all terminate. New work totals
+1,987,690 environment transitions and 491,520 model transitions; direct selection
+costs 412.59 aggregate seconds (current FQE about 0.535 seconds per trigger).
+
+[V94 shared Bellman value](reports/SHARED_BELLMAN_VALUE_V94_RESULTS.md)
+reuses the six V93 histories for matched MC-tail and fixed 128-round, MC-initialized
+16-step H2 value learning. On 24 fresh terminal-reference roots, value MSE falls
+15.43%/8.69% and candidate-head MSE falls 30.99%/3.97% (reward/risk). Natural
+performance remains unresolved: final FQE versus matched MC_TAIL is -51.8 reward
+points / +0.0194 risk utility; versus H2, -13.6 / +0.1406. All four descriptive
+two-SE bands span zero. Updating FQE adds 533 reward points versus its frozen
+head, including 309 from cancelling old interventions; risk utility falls 0.0221.
+Retain the predictive improvement as a mainline candidate. The direct-evaluation
+experiment and its unresolved decision benefit are reported in V95 above. All 3072 natural games and 1920
+reference trajectories terminate; new work is 2,738,701 transitions and 9336 fits,
+with zero new training acquisition. This establishes measured prediction progress,
+not stable policy improvement or a sample-efficiency claim.
+
+[V93 independent-history replication](reports/INDEPENDENT_HISTORY_REPLICATION_V93_RESULTS.md)
+refits frozen V91/V92 algorithms on six fresh histories and compares prefix
+acquisition with exactly equal extra terminal-sampling budgets. Final CORRECTED
+loses 186 reward points and 0.066 risk utility to base MC, and 245/0.064 to H2.
+Against budgeted MC it gains 294 reward points but loses 0.121 risk utility;
+both descriptive two-SE bands span zero. Its small reward update combines
+harmful new interventions with changed choices and cancellation gains. OOF
+conditional variance rises 1.27%/5.13%, so stable behavioral gains and the intended
+noise reduction have not replicated. All 2688 natural games finish (2671 LOST,
+17 WON); new work totals 4,936,032 transitions and 264 fits, with all budget
+truncations charged. Retain the current paired-tail correction as a negative
+result/control. The following shared-value experiment is completed in V94 above.
+
+[V92 paired continuation correction](reports/PAIRED_CORRECTION_FRAGMENTS_V92_RESULTS.md)
+learns candidate-versus-H2 tails and corrects independent short-prefix predictions
+with terminal residuals. On common fresh games its final reward/risk scores exceed
+MC by 45/378, H2 by 447/609 and its own frozen checkpoint-6 model by 664/444.
+Reward improves over the frozen model in all three histories, including positive
+new interventions. Against V91 it gains 969 reward points but loses 722 risk
+points, so the improvement is partial. Conditional estimator variance increases
+1.83%/0.55%, and independent-reference MSE does not improve over MC. All 2496
+full trajectories finish (2484 LOST, twelve WON); 26880 four-action prefixes end
+at their planned ACTIVE boundary. New work is 1,442,895 transitions and 72 fits.
+V93 above completes that independent-history and equal-extra-budget comparison.
+The positive behavioral signals do not establish stable replicated gains, and
+conditional estimator variance remains higher than MC.
+
+[V91 shared H2 continuation learning](reports/SHARED_CONTINUATION_FRAGMENTS_V91_RESULTS.md)
+combines four-action outcomes with query-conditioned tail predictions, using
+whole-episode cross-fitting and the same history and selector as full-return MC.
+On fresh reference roots, reconstruction variance falls 89%/94%; reward prediction
+MSE improves, while risk bias remains positive. At checkpoint 12 it loses 391/561
+reward/risk points to MC and 882/484 to H2. Its own risk update gains 439 points
+over the frozen checkpoint-6 model, driven by newly enabled interventions, while
+reward loses 516. Full-return-minus-prediction residual variance increases 7%/9%,
+so the current tail model does not establish useful control-variate savings.
+All 1728 new trajectories finish (1720 LOST, eight WON), using 939,478 new
+transitions and 60 fits. V92 above completes paired correction with fixed
+replica counts and shared acquisition: final behavior improves against MC/H2,
+while terminal-residual variance still does not decrease.
+
+[V90 fixed-cohort paired replay](reports/LEAF_REPLAY_FRAGMENTS_V90_RESULTS.md)
+samples 64 fresh SNAKE_4/H2 pairs at every one of seven enabled V89 target
+boards and five distinct same-leaf training boards. Target advantage is +40
+points (two-SE band [-482, +562]), matched training advantage +65, and their
+difference -25; all three remain unresolved. The old -2552-point loss does
+not repeat. Life 0's predicted +2351-point advantage also fails to reproduce
+on its original training boards (fresh mean -228). These results do not
+establish a uniform within-leaf transfer failure or a stable new benefit.
+All 1536 trajectories finish (1532 LOST, four WON), using 763,305 new
+transitions and zero fits. V91 above implements that shared-continuation
+comparison: lower conditional prediction variance does not yield a stable
+behavioral improvement, and full-return residual variance increases.
+
+[V89 matched-budget evidence resampling](reports/EVIDENCE_RESAMPLING_FRAGMENTS_V89_RESULTS.md)
+starts both allocations from the same original V83 roots and spends exactly
+720,000 training transitions each. Balanced/evidence-directed acquisition adds
+two/three positive labels; the three unique candidates retain positive means
+on fixed independent eight-replica confirmation, but all remain unresolved.
+On 672 fresh games, evidence-directed SUPPORTED loses 351 reward points to
+balanced allocation; seven newly enabled interventions lose 2552 points each
+on average against H2. Both supported risk policies reproduce H2. POINT shows
+a mixed risk improvement against balanced allocation while losing reward,
+and remains slightly below BASE POINT on risk. New sampling totals 3,047,328
+transitions including separate confirmation/evaluation; 18 trees are fitted.
+Natural outcomes are 668 LOST and four WON. V90 above completes the proposed
+fixed-cohort replay: the old loss does not repeat, but neither target nor matched
+training roots establish a stable positive mean. The next method change addresses
+long-term consequence estimation.
+
+[V88 paired evidence learning](reports/EVIDENCE_LEARNING_FRAGMENTS_V88_RESULTS.md)
+reconstructs individual paired replicas and learns positive, negative and
+unresolved candidate labels. Of 608 training candidate labels, 562 (92.4%) are
+unresolved; eleven of twelve fitted trees can only return H2 under the frozen
+support rule. All 672 fresh games finish LOST. COVERAGE's evidence selector
+intervenes in only six reward games and loses 456 points to H2 overall; its
+newly enabled intervention loses 4016 points, and three changed candidates lose
+2475 points on average against H2. REPEAT and COVERAGE risk exactly reproduce H2.
+The matched POINT control has mixed results; evidence selection's risk gains
+come entirely from cancelling interventions. New work is 393,318 evaluation
+transitions and twelve classification fits, with no repeated training acquisition.
+V89 above completes that matched-budget resampling test. Three unique new positive
+labels retain positive independent means but remain unresolved; evidence-directed
+SUPPORTED decisions lose reward through newly enabled interventions.
+
+[V87 mean-only intervention update](reports/MEAN_UPDATE_FRAGMENTS_V87_RESULTS.md)
+reuses both V86 datasets and freezes candidate rankings while learning a new
+common R/F/S mean. All 240 fresh games finish LOST. Updating means changes
+reward/risk scores by -17/-578 for COVERAGE and -55/+332 for REPEAT relative
+to their old models on the same new streams. REPEAT's sole positive aggregate
+update comes entirely from cancelling one intervention and returning to H2;
+COVERAGE's six newly enabled risk interventions cause its full risk decline.
+Lower mean prediction error has not produced better intervention decisions.
+New work is 140,482 evaluation transitions and twelve mean-tree fits, with no
+repeated acquisition. V88 above completes the proposed evidence-learning test:
+most candidate labels remain unresolved, supported interventions do not deliver
+new gains, and the risk improvements arise entirely from returning to H2.
+
+[V86 coverage-versus-repeat allocation](reports/BUDGET_ALLOCATION_FRAGMENTS_V86_RESULTS.md)
+spends exactly 720,000 new training transitions per allocation. COVERAGE expands
+60 training roots to 92; REPEAT raises 33 existing roots from eight to sixteen
+paired replicas. On 192 fresh games, scores are 9170/8303 for COVERAGE and
+9357/9177 for REPEAT, versus H2's 9538/10438 for reward/risk queries. Both updates
+remain below H2. On 24 independent validation roots, strict candidate ordering
+is 70/142 for either update versus 71/142 for frozen V85. Independent eight-replica
+halves choose the same best option at only 9/24 roots; reward selection benefit
+disappears across halves, while risk retains positive selection information.
+New work totals 2,559,817 interactions, including separately counted validation
+and evaluation. V87 above updates only the frozen mean and separates newly
+enabled intervention effects from H2 recovery. It finds no new aggregate
+strategy gain from the mean update.
+
+[V85 centered candidate differences](reports/CENTERED_CANDIDATE_FRAGMENTS_V85_RESULTS.md)
+keeps each V84 checkpoint's mean R/F/S prediction fixed and separately learns
+within-root candidate differences. In 576 new paired games, final CENTERED
+scores are 8711/9740 for reward/risk, versus this run's JOINT 7897/9177 and
+H2 8435/8627. Reward improves over JOINT in all three lifecycles; risk is mixed.
+CENTERED still trails its one-step restriction and first frozen snapshot.
+Heldout candidate ordering improves from 16/34 to 20/34 for reward but falls
+from 22/34 to 19/34 for risk. New work is 330,971 evaluation transitions and
+12 residual fits; acquisition and original anchor fitting are reused.
+V86 above executes that matched-budget comparison: repeated estimates lower
+prediction error more, but neither allocation improves independent-root ranking
+or beats H2. Multi-step and continued-learning benefits remain unestablished.
+
+[V84 joint candidate outputs](reports/JOINT_CANDIDATE_FRAGMENTS_V84_RESULTS.md)
+reuses all V83 labels and predicts four separate R/F/S vectors from each state.
+The final joint policy executes 16 four-step fragments in 48 games, resolving
+the previous forced duration ties. Scores are 8172/9708 for reward/risk queries,
+versus H2's 9487/9337, and both fall relative to the first joint snapshot.
+All 576 new evaluations fail. Retained heldout candidate ordering matches
+38/68 strict pairs; one-versus-four-step ordering matches only 10/24 pairs.
+New interactions are 339,165 evaluation steps, with no repeated acquisition.
+V85 above holds this mean fixed and fits within-root candidate differences.
+It finds a reward improvement over JOINT on new paired games, while reliable
+risk ordering, multi-step advantage and continued learning remain unresolved.
+
+[V83 terminating policy fragments](reports/TERMINATING_FRAGMENTS_V83_RESULTS.md)
+implements one observable initiation, a committed one/four-step SPACE or SNAKE
+fragment, and a permanent return to H2. Final reward/risk scores are 6909/8954,
+versus H2's 7552/8366; both checkpoints, ONE_STEP and FROZEN_6 give the same
+scores. All 120 evaluation games fail. No four-step option is selected: none
+of the 12 trees uses duration, and 11 ignore primitive identity too. Identical
+one/four-step predictions let the fixed tie order always prefer one step.
+Nine of 12 final FRAGMENT games exactly match H2 histories. The run spends
+1,581,774 new transitions. V84 above reuses these samples to fit candidate-specific
+joint outputs and test new paired games. Duration ties are resolved, but reliable
+ranking and strategic improvement remain unresolved.
+
+[V82 fixed-policy causal continuations](reports/PAIRED_POLICY_EFFECTS_V82_RESULTS.md)
+repeats all 24 V81 heldout roots with 16 fresh paired streams and three fixed
+interventions. Changing only the first action changes reward/risk scores by
+-580/+158; continuing with P1 adds -4538/-4793. This continuation effect is
+negative at all 24 roots, including all eight with an unchanged first action.
+All 1152 continuations finish, using 268,868 new transitions. First-action
+estimates remain unstable: nine of 16 overridden roots have a negative fresh
+mean. V83 above implements executable policy fragments with explicit termination
+and matching continuation outcomes; candidate and duration discrimination remains
+a learning bottleneck. Neither experiment establishes a strategic improvement.
+
+[V81 on-policy action advantages](reports/ON_POLICY_ACTION_ADVANTAGES_V81_RESULTS.md)
+implements two rounds of paired terminal action differences and policy-driven
+recollection. Final scores are 1453/2073 for reward/risk queries versus
+10453/12617 for H2; all three lifecycles remain worse on both queries.
+The first update scores only 735/2781. Its repeated action advantages reverse
+reward sign in 46.6% of cases, while it overrides 70.7%/48.1% of H2 decisions.
+Three successful branches occur under the initial H2 policy; none occur under
+P1 in round two. All 120 evaluation games fail. The run uses 539,671 new
+transitions and does not establish a strategic-learning improvement. V82 above
+executes the fixed-root parent, first-action-only and fully revised continuation
+comparison, locating the larger loss in subsequent policy replacements.
+
+[V80 matched target-horizon learning](reports/TARGET_HORIZON_LEARNING_V80_RESULTS.md)
+trains short-window and terminal consequence models on the same 15,920 rows,
+with identical features, fitting recipe and depth-two planning. In 180 fresh
+natural-game evaluations, final reward scores are 4081 for SHORT and 3786 for
+TERMINAL, versus 9639 for H2. TERMINAL falls from its own frozen score of 6295
+in all three lifecycles. Every training continuation and evaluation game fails;
+terminal F=1/S=0 and both queries yield identical terminal-model trajectories.
+Longer labels alone do not solve learning deterioration. V81 above executes
+paired action-advantage learning under H2 followed by its learned successor.
+V80 is not adopted as a continual-learning improvement.
+
+[V79 paired terminal continuations](reports/PAIRED_TERMINAL_CONTINUATIONS_V79_RESULTS.md)
+extends all 712 V78 acceptance trajectories with fixed models, roots and random
+prefixes. All reach LOST; 132,332 new transitions extend 22,533 inherited ones.
+At the final checkpoint, new-root reward deltas change from -11/-30/-19.75 at
+32 steps to +425/-970/+793.75 at termination. Two of three reverse, establishing
+horizon sensitivity within the same cohort. The unchanged acceptance rule
+would accept 3/6 candidates on terminal outcomes, but V78 remains unmodified.
+The second lifecycle still disagrees with natural games, leaving root/sample
+distribution effects unresolved. V80 above tests terminal policy consequences
+against matched 30-step targets on new natural-game seeds.
+
+[V78 decision-driven knowledge acceptance](reports/DECISION_DRIVEN_KNOWLEDGE_V78_RESULTS.md)
+adds paired action branches at training disagreements and compares whole-model
+acceptance by prediction loss versus observed 32-step deployment utility.
+The common candidate is accepted in 4/6 MSE updates and 0/6 decision updates.
+Across 120 fresh full games, every outcome is LOST. Final reward-query scores
+are 4078 for MSE, 2566 for decision/frozen, 7819 for statistics-only, and 8593
+for H2. All three final candidates slightly hurt local 32-step reward but improve
+full-game reward over frozen knowledge. Local acceptance therefore misses
+longer-game gains on this cohort. V79 above tests paired terminal continuations
+from the same retained prefixes. No V78 promotion.
+
+[V77 persistent consequence learning](reports/MULTI_EPISODE_LEARNING_V77_RESULTS.md)
+starts the new main research direction: one learner accumulates natural-game
+experience, updates policy-conditioned reward/failure/success knowledge, and
+uses it for query-conditioned planning. Three lifecycles complete 225 training
+and 180 evaluation games; six of 18 proposed partition revisions are accepted.
+At 75 training episodes, statistics-only learning scores 7443 on reward queries,
+versus 3139 with partition revision and 7861 for short H2 planning. On risk/goal
+queries, revision scores 4835 versus statistics-only's 2634, but H2 scores 7951.
+Every game ends LOST, and the training stream contains no success labels.
+The learning lifecycle is implemented; stable strategic improvement remains
+unresolved. V78 above tests decision-driven experience acquisition and knowledge
+acceptance. V74 SHARED remains the verified construction baseline.
+
+The [V76 progress snapshot](reports/PROJECT_PROGRESS_2026_09_13.md)
+records the preceding route and its published evidence scope.
 
 [V76 query-conditioned decision learning](reports/CORE_DECISION_LEARNING_V76_RESULTS.md)
 trains once on 1,500 old H2 observations and tests 48 fresh boards with six seen

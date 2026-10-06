@@ -1,0 +1,10 @@
+command: python3 -m pytest -q tests/test_verify_linear_contribution_v311.py
+.................................                                        [100%]
+33 passed in 0.30s
+exit_code: 0
+
+Final native representation-field alignment: linear_win_table_lookups
+command: python3 -m pytest -q tests/test_verify_linear_contribution_v311.py
+.................................                                        [100%]
+33 passed in 0.29s
+exit_code: 0

@@ -1,0 +1,13 @@
+{"event": "phase_complete", "life": 0, "phase": "A", "training_records": 2352, "router_p4": 0.09197396963123644}
+{"event": "phase_complete", "life": 2, "phase": "A", "training_records": 2418, "router_p4": 0.09244406922752216}
+{"event": "phase_complete", "life": 1, "phase": "A", "training_records": 2372, "router_p4": 0.09392624728850325}
+{"event": "phase_complete", "life": 3, "phase": "A", "training_records": 2284, "router_p4": 0.10107095046854082}
+{"event": "phase_complete", "life": 0, "phase": "B", "training_records": 3982, "router_p4": 0.29381771829190567}
+{"event": "phase_complete", "life": 2, "phase": "B", "training_records": 4220, "router_p4": 0.30936947554507954}
+{"event": "phase_complete", "life": 1, "phase": "B", "training_records": 3982, "router_p4": 0.31873727087576376}
+{"event": "phase_complete", "life": 3, "phase": "B", "training_records": 3936, "router_p4": 0.301465901848311}
+{"event": "phase_complete", "life": 0, "phase": "A_RETURN", "training_records": 6196, "router_p4": 0.0947403910991234}
+{"event": "phase_complete", "life": 1, "phase": "A_RETURN", "training_records": 6292, "router_p4": 0.09653092006033183}
+{"event": "phase_complete", "life": 3, "phase": "A_RETURN", "training_records": 6436, "router_p4": 0.2943429581614614}
+{"event": "phase_complete", "life": 2, "phase": "A_RETURN", "training_records": 6556, "router_p4": 0.09768885084528141}
+{"status": "complete", "lifecycles": 4, "seconds": 22.42147950299841}

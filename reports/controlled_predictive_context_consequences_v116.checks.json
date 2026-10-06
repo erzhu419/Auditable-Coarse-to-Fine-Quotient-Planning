@@ -1,0 +1,30 @@
+{
+  "attempts": [
+    {
+      "failed_tests": 0,
+      "development_work": {
+        "metadata_rows_read": 768,
+        "training_rows_read": 768,
+        "feature_rows": 786,
+        "constant_context_feature_rows": 393,
+        "tree_fits": 12,
+        "fit_rows": 768,
+        "consequence_model_fits": 4,
+        "context_feature_rows": 393,
+        "predict_many_calls": 6,
+        "prediction_boards": 10,
+        "policy_prediction_rows": 38,
+        "tree_apply_rows": 38,
+        "tree_split_visits": 38,
+        "predict_records_calls": 2,
+        "record_prediction_rows": 8
+      },
+      "environment_transitions": 0,
+      "model_transitions": 0,
+      "production_tree_fits": 0,
+      "neural_model_fits": 0,
+      "optimizer_steps": 0,
+      "scope": "Synthetic fixed-policy joint-target trees and inference only; no natural source or evaluation games."
+    }
+  ]
+}

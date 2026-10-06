@@ -1,0 +1,11 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "model_updates": 0,
+      "scope": "synthetic calibration, candidate, paired-panel and accounting fixtures"
+    }
+  ]
+}

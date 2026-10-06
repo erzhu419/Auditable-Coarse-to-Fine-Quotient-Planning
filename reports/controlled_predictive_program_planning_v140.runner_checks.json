@@ -1,0 +1,90 @@
+{
+  "attempts": [
+    {
+      "tests": 8,
+      "failures": 4,
+      "seconds": 0.11082359700230882,
+      "fit_work": [],
+      "environment_samples": 0,
+      "environment_random_draws": 0,
+      "native_model_calls": 0,
+      "model_updates": 0,
+      "scope": "Mocked source pairing, fixed prefix fitting, random seeds, action context and all-history freeze order.",
+      "passed": 4,
+      "setup_errors": 4,
+      "failure_reason": "The reports/v140_runtime_tmp parent did not exist; pytest could not create runner_pytest. Four tmp_path tests never entered their bodies."
+    },
+    {
+      "tests": 4,
+      "failures": 0,
+      "seconds": 0.026140760019188747,
+      "fit_work": [
+        {
+          "fit_calls": 1,
+          "training_examples": 1,
+          "feature_calls": 1,
+          "feature_input_cells": 16,
+          "feature_neighbor_pairs": 24,
+          "feature_predicate_values": 14,
+          "training_label_encodings": 1,
+          "active_nodes": 4,
+          "node_sample_visits": 1,
+          "node_histogram_updates": 1,
+          "action_rankings": 4,
+          "ranked_action_entries": 16,
+          "active_leaves": 4,
+          "stored_tree_nodes": 28,
+          "stored_node_integers": 140
+        },
+        {
+          "fit_calls": 1,
+          "training_examples": 8,
+          "feature_calls": 8,
+          "feature_input_cells": 128,
+          "feature_neighbor_pairs": 192,
+          "feature_predicate_values": 112,
+          "training_label_encodings": 8,
+          "active_nodes": 4,
+          "node_sample_visits": 8,
+          "node_histogram_updates": 8,
+          "action_rankings": 4,
+          "ranked_action_entries": 16,
+          "active_leaves": 4,
+          "stored_tree_nodes": 28,
+          "stored_node_integers": 140
+        },
+        {
+          "fit_calls": 1,
+          "training_examples": 64,
+          "feature_calls": 64,
+          "feature_input_cells": 1024,
+          "feature_neighbor_pairs": 1536,
+          "feature_predicate_values": 896,
+          "training_label_encodings": 64,
+          "active_nodes": 4,
+          "node_sample_visits": 64,
+          "node_histogram_updates": 64,
+          "action_rankings": 4,
+          "ranked_action_entries": 16,
+          "active_leaves": 4,
+          "stored_tree_nodes": 28,
+          "stored_node_integers": 140
+        }
+      ],
+      "environment_samples": 0,
+      "environment_random_draws": 0,
+      "native_model_calls": 0,
+      "model_updates": 0,
+      "scope": "Mocked source pairing, fixed prefix fitting, random seeds, action context and all-history freeze order.",
+      "passed": 4,
+      "setup_errors": 0,
+      "selection": "only_fixed_prefixes or replay_rejects or frozen_evaluation or all_four_histories",
+      "recovery": "Created only the required reports/v140_runtime_tmp parent and reran the four previously unexecuted tests."
+    }
+  ],
+  "coverage": {
+    "unique_tests": 8,
+    "unique_tests_passed": 8,
+    "unresolved_failures": 0
+  }
+}

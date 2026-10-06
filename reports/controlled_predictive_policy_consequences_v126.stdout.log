@@ -1,0 +1,65 @@
+{"event": "training_block", "life": 3, "policy": "reward", "episodes": 256, "updates": 204946, "seconds": 46.57960230190656}
+{"event": "training_block", "life": 0, "policy": "reward", "episodes": 256, "updates": 205232, "seconds": 46.78085618604382}
+{"event": "training_block", "life": 2, "policy": "reward", "episodes": 256, "updates": 206257, "seconds": 46.86707348111668}
+{"event": "training_block", "life": 1, "policy": "reward", "episodes": 256, "updates": 211032, "seconds": 47.333936566879856}
+{"event": "training_block", "life": 1, "policy": "risk_goal", "episodes": 256, "updates": 206330, "seconds": 38.46784266598115}
+{"event": "training_block", "life": 2, "policy": "risk_goal", "episodes": 256, "updates": 207831, "seconds": 40.02685009389825}
+{"event": "training_block", "life": 3, "policy": "risk_goal", "episodes": 256, "updates": 212189, "seconds": 40.521897168975556}
+{"event": "training_block", "life": 0, "policy": "risk_goal", "episodes": 256, "updates": 211979, "seconds": 40.845288194934255}
+{"event": "outer_query_complete", "life": 1, "query": "reward", "age": 256}
+{"event": "outer_query_complete", "life": 2, "query": "reward", "age": 256}
+{"event": "outer_query_complete", "life": 3, "query": "reward", "age": 256}
+{"event": "outer_query_complete", "life": 1, "query": "risk_goal", "age": 256}
+{"event": "outer_query_complete", "life": 0, "query": "reward", "age": 256}
+{"event": "outer_query_complete", "life": 2, "query": "risk_goal", "age": 256}
+{"event": "outer_query_complete", "life": 3, "query": "risk_goal", "age": 256}
+{"event": "outer_query_complete", "life": 0, "query": "risk_goal", "age": 256}
+{"event": "outer_query_complete", "life": 1, "query": "risk1", "age": 256}
+{"event": "outer_query_complete", "life": 2, "query": "risk1", "age": 256}
+{"event": "outer_query_complete", "life": 3, "query": "risk1", "age": 256}
+{"event": "outer_query_complete", "life": 2, "query": "risk8", "age": 256}
+{"event": "outer_query_complete", "life": 1, "query": "risk8", "age": 256}
+{"event": "outer_query_complete", "life": 3, "query": "risk8", "age": 256}
+{"event": "outer_query_complete", "life": 0, "query": "risk1", "age": 256}
+{"event": "outer_query_complete", "life": 0, "query": "risk8", "age": 256}
+{"event": "training_block", "life": 2, "policy": "reward", "episodes": 512, "updates": 410837, "seconds": 59.19940660573775}
+{"event": "training_block", "life": 0, "policy": "reward", "episodes": 512, "updates": 401368, "seconds": 57.53559086305904}
+{"event": "training_block", "life": 1, "policy": "reward", "episodes": 512, "updates": 414218, "seconds": 59.62280820592423}
+{"event": "training_block", "life": 3, "policy": "reward", "episodes": 512, "updates": 416336, "seconds": 60.613970852893544}
+{"event": "training_block", "life": 2, "policy": "reward", "episodes": 768, "updates": 611234, "seconds": 43.97190846092417}
+{"event": "training_block", "life": 3, "policy": "reward", "episodes": 768, "updates": 624880, "seconds": 43.75218198886432}
+{"event": "training_block", "life": 0, "policy": "reward", "episodes": 768, "updates": 606709, "seconds": 44.962938822834985}
+{"event": "training_block", "life": 1, "policy": "reward", "episodes": 768, "updates": 626524, "seconds": 45.579916954942746}
+{"event": "training_block", "life": 2, "policy": "reward", "episodes": 1024, "updates": 806026, "seconds": 50.36423662104062}
+{"event": "training_block", "life": 0, "policy": "reward", "episodes": 1024, "updates": 809906, "seconds": 61.028004548861645}
+{"event": "training_block", "life": 3, "policy": "reward", "episodes": 1024, "updates": 830177, "seconds": 61.13118628805387}
+{"event": "training_block", "life": 1, "policy": "reward", "episodes": 1024, "updates": 836328, "seconds": 62.694297762951464}
+{"event": "training_block", "life": 2, "policy": "risk_goal", "episodes": 512, "updates": 412723, "seconds": 78.42997954280872}
+{"event": "training_block", "life": 0, "policy": "risk_goal", "episodes": 512, "updates": 418705, "seconds": 73.4113695861015}
+{"event": "training_block", "life": 3, "policy": "risk_goal", "episodes": 512, "updates": 422009, "seconds": 74.30974113295088}
+{"event": "training_block", "life": 1, "policy": "risk_goal", "episodes": 512, "updates": 414522, "seconds": 71.90472395492543}
+{"event": "training_block", "life": 2, "policy": "risk_goal", "episodes": 768, "updates": 628537, "seconds": 42.44057415710995}
+{"event": "training_block", "life": 0, "policy": "risk_goal", "episodes": 768, "updates": 622408, "seconds": 39.60574352191179}
+{"event": "training_block", "life": 1, "policy": "risk_goal", "episodes": 768, "updates": 621780, "seconds": 39.74694637408538}
+{"event": "training_block", "life": 3, "policy": "risk_goal", "episodes": 768, "updates": 633103, "seconds": 41.22421732597286}
+{"event": "training_block", "life": 0, "policy": "risk_goal", "episodes": 1024, "updates": 835613, "seconds": 63.29204407092766}
+{"event": "training_block", "life": 2, "policy": "risk_goal", "episodes": 1024, "updates": 849341, "seconds": 66.27719388615515}
+{"event": "training_block", "life": 1, "policy": "risk_goal", "episodes": 1024, "updates": 828556, "seconds": 62.44838330692437}
+{"event": "training_block", "life": 3, "policy": "risk_goal", "episodes": 1024, "updates": 838723, "seconds": 62.47125282586785}
+{"event": "outer_query_complete", "life": 0, "query": "reward", "age": 1024}
+{"event": "outer_query_complete", "life": 2, "query": "reward", "age": 1024}
+{"event": "outer_query_complete", "life": 0, "query": "risk_goal", "age": 1024}
+{"event": "outer_query_complete", "life": 2, "query": "risk_goal", "age": 1024}
+{"event": "outer_query_complete", "life": 3, "query": "reward", "age": 1024}
+{"event": "outer_query_complete", "life": 1, "query": "reward", "age": 1024}
+{"event": "outer_query_complete", "life": 3, "query": "risk_goal", "age": 1024}
+{"event": "outer_query_complete", "life": 0, "query": "risk1", "age": 1024}
+{"event": "outer_query_complete", "life": 1, "query": "risk_goal", "age": 1024}
+{"event": "outer_query_complete", "life": 2, "query": "risk1", "age": 1024}
+{"event": "outer_query_complete", "life": 0, "query": "risk8", "age": 1024}
+{"event": "outer_query_complete", "life": 2, "query": "risk8", "age": 1024}
+{"event": "outer_query_complete", "life": 3, "query": "risk1", "age": 1024}
+{"event": "outer_query_complete", "life": 1, "query": "risk1", "age": 1024}
+{"event": "outer_query_complete", "life": 3, "query": "risk8", "age": 1024}
+{"event": "outer_query_complete", "life": 1, "query": "risk8", "age": 1024}
+{"status": "complete", "seconds": 457.98240145799355}

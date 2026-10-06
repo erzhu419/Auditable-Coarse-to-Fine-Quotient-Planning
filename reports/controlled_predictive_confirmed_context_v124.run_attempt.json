@@ -1,0 +1,11 @@
+{
+  "command": [
+    ".venv-lmta-v42/bin/python",
+    "scripts/run_controlled_predictive_confirmed_context_v124.py"
+  ],
+  "started_utc": "2026-09-19T16:08:51.569053+00:00",
+  "status": "completed",
+  "exit_code": 0,
+  "seconds": 6.473521004998474,
+  "stderr_bytes": 0
+}

@@ -1,0 +1,59 @@
+{
+  "schema": "acfqp.win_confirmation_freeze.v323",
+  "source_summary": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/component_heads_v322/summary.json",
+  "protocol": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/specs/WIN_CONFIRMATION_V323.md",
+  "lifecycles": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "parents": 4,
+  "workers": 4,
+  "tasks": [
+    "A",
+    "B"
+  ],
+  "arms": [
+    "SOURCE",
+    "FIRST_LOCAL",
+    "WIN_ONLY"
+  ],
+  "candidate": "ACTUAL_V322_WIN_ONLY_V1_FIRST_REWARD_PLUS_SAVED_QUERY_WIN",
+  "candidate_selection": "V322_NOMINAL_SECONDARY_DEVELOPMENT_SIGNAL_BEFORE_NEW_STREAMS",
+  "restore": "ACTUAL_FIRST_V0_THEN_WIN_ONLY_V1_ABSOLUTE_SPARSE_WRITES_NO_NEW_VERSIONS",
+  "planning_belief": "ACTUAL_IMMUTABLE_V322_FIRST_BANK_BELIEF",
+  "true_probabilities": {
+    "A": 0.1,
+    "B": 0.5
+  },
+  "evaluation_games_per_cell": 64,
+  "max_steps": 8192,
+  "seed_evaluation": 323900000000,
+  "fresh_evaluation_streams": true,
+  "paired_stream_reuse": false,
+  "expected_new_evaluation_games": 6144,
+  "maximum_new_evaluation_raw_tiles": 50343936,
+  "new_training_raw_tiles": 0,
+  "new_fit_updates": 0,
+  "new_head_files": 0,
+  "primary": "WIN_ONLY_minus_FIRST_LOCAL_FINAL_AB",
+  "bootstrap_draws": 20000,
+  "bootstrap_seed": 32300001,
+  "retention": "BOTH_TASK_WIN_ONLY_MINUS_FIRST_CI_LOWER_NONNEGATIVE",
+  "stop_rule": "ANY_NATURAL_GAME_CUTOFF_GLOBAL_HOLD_NO_REPLACEMENTS_QUOTA_EXTENSION_OR_CANDIDATE_CHANGE",
+  "independent_learning_histories": false,
+  "evidence_scope": "FRESH_EXECUTION_VALIDATION_CONDITIONAL_ON_EXISTING_LEARNT_COHORT"
+}

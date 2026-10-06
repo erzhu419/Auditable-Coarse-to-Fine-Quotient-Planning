@@ -1,0 +1,12 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_bellman_data_v94.py",
+      "session_failures": 0,
+      "scope": "Synthetic branch records and V91 cohort compatibility; no simulation or model fitting.",
+      "ground_calls": 0,
+      "main_campaign_calls": 0,
+      "tree_fits": 0
+    }
+  ]
+}

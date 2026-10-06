@@ -1,0 +1,23 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "development_work": {
+        "mock_policy_calls": 9,
+        "mock_episode_calls": 3,
+        "observations_received": 55,
+        "beta_updates": 54,
+        "predict_calls": 55,
+        "routing_blocks": 0,
+        "candidate_predictive_scores": 0,
+        "module_creations": 0,
+        "module_reactivations": 0,
+        "handwritten_observed_steps": 55
+      },
+      "newly_sampled_environment_transitions": 0,
+      "new_synthetic_transitions": 0,
+      "neural_model_fits": 0,
+      "scope": "handwritten observed trajectories and mocked environment/policy calls"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "schema": "acfqp.episode_consolidation_freeze.v290",
+  "protocol": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/specs/EPISODE_CONSOLIDATION_V290.md",
+  "source_summary": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/retained_critic_v287/summary.json",
+  "lifecycles": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "parents": 4,
+  "arms": [
+    "FROZEN",
+    "EPISODIC_MC",
+    "NORMALIZED_SEQUENTIAL_MC",
+    "EPISODE_MEAN_MC"
+  ],
+  "phase": "A",
+  "fit_fraction": 0.8,
+  "alpha": 0.0025,
+  "query": {
+    "reward_weight": 1.0,
+    "failure_penalty": 4.0,
+    "goal_bonus": 4.0
+  },
+  "evaluation_games": 16,
+  "seed_evaluation": 290500000000,
+  "max_steps": 8192,
+  "bootstrap_draws": 20000,
+  "bootstrap_seed": 29000001,
+  "primary": "EPISODE_MEAN_MC_minus_FROZEN_COMPLETE_GAME_UTILITY",
+  "primary_prediction": "EPISODE_MEAN_MC_minus_FROZEN_COMPLETE_HELDOUT_MSE",
+  "address_counts": "ALL_NONWINNING_FEATURE_OCCURRENCES_IN_ONE_COMPLETE_GAME",
+  "evaluation": "STATIC_SAME_FIT_PREFIX_BELIEF_WITHOUT_VALUE_OR_MEMORY_UPDATES",
+  "finite_test_passes": {
+    "native": 7,
+    "analysis": 10,
+    "driver": 3
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "attempts": [
+    {
+      "failed_tests": 0,
+      "development_work": {
+        "model_payloads_loaded": 33,
+        "model_root_scores": 2048,
+        "neural_candidate_predictions": 10240,
+        "neural_hidden_activations": 102400,
+        "derived_decisions": 1024,
+        "cached_decision_lookups": 1024,
+        "new_environment_transitions": 0,
+        "new_synthetic_transitions": 0,
+        "neural_model_fits": 0,
+        "optimizer_steps": 0,
+        "model_prefix_trajectories": 0,
+        "scoring_calls": 2,
+        "rejected_payload_loads": 1
+      },
+      "production_neural_model_fits": 0,
+      "production_optimizer_steps": 0,
+      "environment_transitions": 0,
+      "model_transitions": 0,
+      "scope": "Synthetic serialized models and target features; no production payloads, training or environment sampling."
+    }
+  ]
+}

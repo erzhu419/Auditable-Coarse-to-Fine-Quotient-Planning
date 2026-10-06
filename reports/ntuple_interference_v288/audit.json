@@ -1,0 +1,442 @@
+{
+  "status": "PASS",
+  "independent_valid": true,
+  "lifecycles": 16,
+  "fixed_source_parents": 4,
+  "root_boards": 128,
+  "query_afterstates": 470,
+  "directed_pairs": 6934,
+  "new_environment_observations": 0,
+  "new_actual_value_updates": 0,
+  "retained_A_rollouts": 30080,
+  "retained_A_environment_transitions": 18422198,
+  "primary": {
+    "mean_label_delta_mse": {
+      "mean": -0.1875443220023366,
+      "ci95": [
+        -0.24686543049467835,
+        -0.13242057060459125
+      ],
+      "improved_equal_worse": [
+        16,
+        0,
+        0
+      ],
+      "adverse_lifecycles": []
+    },
+    "single_label_mean_delta_mse": {
+      "mean": -0.18581110734090642,
+      "ci95": [
+        -0.2443970261309387,
+        -0.13129823163497295
+      ],
+      "improved_equal_worse": [
+        16,
+        0,
+        0
+      ],
+      "adverse_lifecycles": []
+    },
+    "empirical_noise_penalty": {
+      "mean": 0.0017332146614301794,
+      "ci95": [
+        0.0010393486426755088,
+        0.002518384672342347
+      ],
+      "improved_equal_worse": [
+        0,
+        0,
+        16
+      ],
+      "adverse_lifecycles": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ]
+    }
+  },
+  "groups": {
+    "uniform": {
+      "SELF": {
+        "mean_label_delta_mse": {
+          "mean": -7.820136957449955,
+          "ci95": [
+            -8.463491958088277,
+            -7.190442876004363
+          ],
+          "improved_equal_worse": [
+            16,
+            0,
+            0
+          ],
+          "adverse_lifecycles": []
+        },
+        "single_label_mean_delta_mse": {
+          "mean": -6.878431155256379,
+          "ci95": [
+            -7.459322719467082,
+            -6.306347572227731
+          ],
+          "improved_equal_worse": [
+            16,
+            0,
+            0
+          ],
+          "adverse_lifecycles": []
+        },
+        "empirical_noise_penalty": {
+          "mean": 0.9417058021935754,
+          "ci95": [
+            0.8201960858370115,
+            1.0786556653656034
+          ],
+          "improved_equal_worse": [
+            0,
+            0,
+            16
+          ],
+          "adverse_lifecycles": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ]
+        }
+      },
+      "SAME_BOARD_OTHER_ACTION": {
+        "mean_label_delta_mse": {
+          "mean": -5.178448865009096,
+          "ci95": [
+            -5.82804121575293,
+            -4.559771271367515
+          ],
+          "improved_equal_worse": [
+            16,
+            0,
+            0
+          ],
+          "adverse_lifecycles": []
+        },
+        "single_label_mean_delta_mse": {
+          "mean": -4.552105885983031,
+          "ci95": [
+            -5.13055904958348,
+            -4.002434708654431
+          ],
+          "improved_equal_worse": [
+            16,
+            0,
+            0
+          ],
+          "adverse_lifecycles": []
+        },
+        "empirical_noise_penalty": {
+          "mean": 0.6263429790260654,
+          "ci95": [
+            0.5114354621573721,
+            0.7622589833343828
+          ],
+          "improved_equal_worse": [
+            0,
+            0,
+            16
+          ],
+          "adverse_lifecycles": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ]
+        }
+      },
+      "OTHER_BOARD": {
+        "mean_label_delta_mse": {
+          "mean": -0.1875443220023366,
+          "ci95": [
+            -0.24686543049467835,
+            -0.13242057060459125
+          ],
+          "improved_equal_worse": [
+            16,
+            0,
+            0
+          ],
+          "adverse_lifecycles": []
+        },
+        "single_label_mean_delta_mse": {
+          "mean": -0.18581110734090642,
+          "ci95": [
+            -0.2443970261309387,
+            -0.13129823163497295
+          ],
+          "improved_equal_worse": [
+            16,
+            0,
+            0
+          ],
+          "adverse_lifecycles": []
+        },
+        "empirical_noise_penalty": {
+          "mean": 0.0017332146614301794,
+          "ci95": [
+            0.0010393486426755088,
+            0.002518384672342347
+          ],
+          "improved_equal_worse": [
+            0,
+            0,
+            16
+          ],
+          "adverse_lifecycles": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ]
+        }
+      }
+    },
+    "competition": {
+      "SELF": {
+        "mean_label_delta_mse": {
+          "mean": -7.436915980475551,
+          "ci95": [
+            -8.013302765008925,
+            -6.895943570640069
+          ],
+          "improved_equal_worse": [
+            16,
+            0,
+            0
+          ],
+          "adverse_lifecycles": []
+        },
+        "single_label_mean_delta_mse": {
+          "mean": -6.7283526095394555,
+          "ci95": [
+            -7.234491717023128,
+            -6.271434585293212
+          ],
+          "improved_equal_worse": [
+            16,
+            0,
+            0
+          ],
+          "adverse_lifecycles": []
+        },
+        "empirical_noise_penalty": {
+          "mean": 0.7085633709360958,
+          "ci95": [
+            0.5984083640639966,
+            0.8192000009137802
+          ],
+          "improved_equal_worse": [
+            0,
+            0,
+            16
+          ],
+          "adverse_lifecycles": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ]
+        }
+      },
+      "SAME_BOARD_OTHER_ACTION": {
+        "mean_label_delta_mse": {
+          "mean": -4.568462923114767,
+          "ci95": [
+            -5.082321452395881,
+            -4.064105727469773
+          ],
+          "improved_equal_worse": [
+            16,
+            0,
+            0
+          ],
+          "adverse_lifecycles": []
+        },
+        "single_label_mean_delta_mse": {
+          "mean": -4.1308753178443975,
+          "ci95": [
+            -4.590048437971854,
+            -3.6914405514368234
+          ],
+          "improved_equal_worse": [
+            16,
+            0,
+            0
+          ],
+          "adverse_lifecycles": []
+        },
+        "empirical_noise_penalty": {
+          "mean": 0.43758760527036966,
+          "ci95": [
+            0.3476376791092813,
+            0.5274428062056006
+          ],
+          "improved_equal_worse": [
+            0,
+            0,
+            16
+          ],
+          "adverse_lifecycles": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ]
+        }
+      },
+      "OTHER_BOARD": {
+        "mean_label_delta_mse": {
+          "mean": -0.19835196499549068,
+          "ci95": [
+            -0.23809496534245547,
+            -0.15889392234215516
+          ],
+          "improved_equal_worse": [
+            16,
+            0,
+            0
+          ],
+          "adverse_lifecycles": []
+        },
+        "single_label_mean_delta_mse": {
+          "mean": -0.19659254280860547,
+          "ci95": [
+            -0.23600720919667276,
+            -0.1574948629250529
+          ],
+          "improved_equal_worse": [
+            16,
+            0,
+            0
+          ],
+          "adverse_lifecycles": []
+        },
+        "empirical_noise_penalty": {
+          "mean": 0.0017594221868852031,
+          "ci95": [
+            0.001260623102203019,
+            0.0022518897438904687
+          ],
+          "improved_equal_worse": [
+            0,
+            0,
+            16
+          ],
+          "adverse_lifecycles": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ]
+        }
+      }
+    }
+  },
+  "actual_diagnostic_costs": {
+    "processing_counts": {
+      "deterministic_swipe_reconstructions": 470,
+      "direct_leaf_predictions": 470,
+      "feature_occurrences_encoded": 15040,
+      "kernel_matrices": 32,
+      "feature_pair_inner_products": 6934,
+      "isolated_update_pair_diagnostics": 6934
+    },
+    "coordinator_cpu_seconds": 17.513483932,
+    "compiler_cpu_seconds": 1.0120369999999999,
+    "wall_seconds": 18.16641955600062,
+    "query_trace_bytes": 147108
+  },
+  "method": "Literal standard swipe/features; retained batches; multiplicity kernels; all isolated-update moments; board/action/life weights; signed diagnostics; historical and actual cost ledgers.",
+  "limitations": "Frozen checkpoint predictions not reexecuted. Existing 20000-draw bootstrap not regenerated; signed inputs, fixed-parent grouping and interval bounds checked. No new environment, old world/terminal replay or actual weight updates. One isolated update on this cohort does not identify accumulated learning or policy-shift effects in V287.",
+  "errors": []
+}

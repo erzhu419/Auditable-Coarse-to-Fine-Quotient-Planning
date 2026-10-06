@@ -1,0 +1,88 @@
+{
+  "status": "PASS",
+  "retained_sources": 128,
+  "arms": [
+    "FULL_CONTEXT_LOCAL",
+    "FROZEN_FACTOR",
+    "FIXED_FACTOR_UPDATE",
+    "PASSIVE_REVISED",
+    "RELEVANT_REVISED"
+  ],
+  "start_opportunities": 184320,
+  "reached_online_events": 130231,
+  "physical_source_observations": 122880,
+  "primary_contrast": {
+    "mean_regret_delta": "-4336589/1280000",
+    "ci95": [
+      -6.781113144531249,
+      -0.786801972656251
+    ],
+    "improved_equal_worse": [
+      7,
+      117,
+      4
+    ]
+  },
+  "co_primary_contrast": {
+    "mean_regret_delta": "-13484583/160000",
+    "ci95": [
+      -92.90146357421871,
+      -75.57155820312498
+    ],
+    "improved_equal_worse": [
+      128,
+      0,
+      0
+    ]
+  },
+  "passive_comparison_adverse_sources": [
+    {
+      "source_seed": 28041300,
+      "target_seed": 28091300,
+      "regret_delta": "11951/2500"
+    },
+    {
+      "source_seed": 28045400,
+      "target_seed": 28095400,
+      "regret_delta": "18601/5000"
+    },
+    {
+      "source_seed": 28045500,
+      "target_seed": 28095500,
+      "regret_delta": "4997/5000"
+    },
+    {
+      "source_seed": 28048700,
+      "target_seed": 28098700,
+      "regret_delta": "6099/10000"
+    }
+  ],
+  "actual_return_contrasts": {
+    "RELEVANT_REVISED_minus_PASSIVE_REVISED": {
+      "mean_utility_delta": "969/256",
+      "ci95": [
+        0.9628515625,
+        7.387509765625
+      ],
+      "improved_equal_worse": [
+        9,
+        118,
+        1
+      ]
+    },
+    "RELEVANT_REVISED_minus_FULL_CONTEXT_LOCAL": {
+      "mean_utility_delta": "219749/2560",
+      "ci95": [
+        76.487099609375,
+        95.26921875000001
+      ],
+      "improved_equal_worse": [
+        126,
+        0,
+        2
+      ]
+    }
+  },
+  "method": "Recomputed every retained route event consequence, expected law regret, phase/lifecycle ledger, paired endpoint and both registered intervals; no environment sampling.",
+  "scope": "Both exact-law regret co-primary criteria supported on the registered cohort; no equal lifetime raw-observation budget claim. LOCAL mean observations194.5859375 vs RELEVANT1165.5859375 including source960. CPU reports scoped operations only."
+}

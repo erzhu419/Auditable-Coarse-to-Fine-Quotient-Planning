@@ -1,0 +1,18 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "model_updates": 0,
+      "scope": "synthetic signed attribution, strict/rounded gaps, aliases and missing-slot fixtures"
+    },
+    {
+      "failures": 0,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "model_updates": 0,
+      "scope": "synthetic signed attribution, strict/rounded gaps, aliases and missing-slot fixtures"
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "status": "PASS",
+  "independent_valid": true,
+  "selected_states": 384,
+  "legal_action_queries": 1418,
+  "continuation_rollouts": 90752,
+  "independent_replica_streams": 24576,
+  "terminal_counts": {
+    "LOST": 50832,
+    "WON": 39920
+  },
+  "complete_signed_group_contrasts": {
+    "uniform": {
+      "winner_minus_proxy": {
+        "mean": 0.03775850931803386,
+        "ci95": [
+          -0.0713103691736857,
+          0.14864482084910063
+        ],
+        "improved_equal_worse": [
+          7,
+          0,
+          9
+        ],
+        "adverse_lifecycles": [
+          0,
+          4,
+          5,
+          7,
+          10,
+          11,
+          12,
+          14,
+          15
+        ]
+      },
+      "short_minus_proxy": {
+        "mean": -0.030836105346679688,
+        "ci95": [
+          -0.09781568845113119,
+          0.0339586019515991
+        ],
+        "improved_equal_worse": [
+          7,
+          0,
+          9
+        ],
+        "adverse_lifecycles": [
+          0,
+          1,
+          4,
+          5,
+          7,
+          9,
+          10,
+          11,
+          13
+        ]
+      },
+      "retained_minus_proxy": {
+        "mean": 0.03153578440348307,
+        "ci95": [
+          -0.007966899871826173,
+          0.06854857603708903
+        ],
+        "improved_equal_worse": [
+          9,
+          2,
+          5
+        ],
+        "adverse_lifecycles": [
+          9,
+          10,
+          11,
+          12,
+          14
+        ]
+      }
+    },
+    "competition": {
+      "winner_minus_proxy": {
+        "mean": -0.06458123524983723,
+        "ci95": [
+          -0.1997845411300659,
+          0.07996938228607126
+        ],
+        "improved_equal_worse": [
+          7,
+          0,
+          9
+        ],
+        "adverse_lifecycles": [
+          0,
+          1,
+          6,
+          7,
+          10,
+          11,
+          12,
+          14,
+          15
+        ]
+      },
+      "short_minus_proxy": {
+        "mean": -0.15712579091389975,
+        "ci95": [
+          -0.40692598025004073,
+          0.1078318754831949
+        ],
+        "improved_equal_worse": [
+          5,
+          0,
+          11
+        ],
+        "adverse_lifecycles": [
+          0,
+          1,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          15
+        ]
+      },
+      "retained_minus_proxy": {
+        "mean": -0.022267977396647133,
+        "ci95": [
+          -0.05218103726704915,
+          0.00801499684651693
+        ],
+        "improved_equal_worse": [
+          4,
+          6,
+          6
+        ],
+        "adverse_lifecycles": [
+          0,
+          2,
+          5,
+          6,
+          7,
+          14
+        ]
+      }
+    }
+  },
+  "new_training_observations": 0,
+  "new_value_updates": 0,
+  "sampled_transitions": 50341737,
+  "retained_trace_bytes": 2499432,
+  "bootstrap_audit": "All signed lifecycle/phase deltas, fixed-parent means, registered scope and interval bounds checked; existing 20000-draw CI calculation was not rerun.",
+  "scope": "Fixed true-p H2 continuation at separately reported uniform and competition states; discovery winner frozen before independent validation. Not optimal Q or new learned-policy performance.",
+  "method": "Compact score/status/seed/inventory/counter and independent statistics audit. No model, environment or planning execution.",
+  "errors": []
+}

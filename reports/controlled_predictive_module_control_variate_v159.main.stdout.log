@@ -1,0 +1,9 @@
+{'event': 'corrected_lifecycle', 'split': 'TRAIN', 'life': 2, 'rows': 1024}
+{'event': 'corrected_lifecycle', 'split': 'TRAIN', 'life': 0, 'rows': 1024}
+{'event': 'corrected_lifecycle', 'split': 'TRAIN', 'life': 1, 'rows': 1024}
+{'event': 'corrected_lifecycle', 'split': 'TRAIN', 'life': 3, 'rows': 1024}
+{'event': 'corrected_lifecycle', 'split': 'EVAL', 'life': 2, 'rows': 1024}
+{'event': 'corrected_lifecycle', 'split': 'EVAL', 'life': 0, 'rows': 1024}
+{'event': 'corrected_lifecycle', 'split': 'EVAL', 'life': 1, 'rows': 1024}
+{'event': 'corrected_lifecycle', 'split': 'EVAL', 'life': 3, 'rows': 1024}
+{'status': 'complete', 'seconds': 47.43822146000457}

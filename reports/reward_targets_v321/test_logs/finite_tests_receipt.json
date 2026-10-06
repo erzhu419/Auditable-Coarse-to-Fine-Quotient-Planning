@@ -1,0 +1,27 @@
+{
+  "native": {
+    "passed": 8,
+    "seconds": 9.75,
+    "source": "delegated actual pytest result"
+  },
+  "analysis": {
+    "passed": 26,
+    "seconds": 0.49,
+    "source": "delegated actual pytest result"
+  },
+  "driver": {
+    "passed": 3,
+    "seconds": 11.32,
+    "stdout": "driver_tests.log"
+  },
+  "audit": {
+    "passed": 15,
+    "seconds": 7.09,
+    "source": "delegated actual pytest result; changed RNG integration case passed after integration"
+  },
+  "independent_rng": {
+    "passed": 2,
+    "source": "delegated bit-exact 64-seed and chunk-order pytest result"
+  },
+  "distinct_passed_cases": 54
+}

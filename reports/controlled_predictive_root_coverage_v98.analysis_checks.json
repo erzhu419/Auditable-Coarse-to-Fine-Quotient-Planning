@@ -1,0 +1,31 @@
+{
+  "schema": "acfqp.root_coverage_analysis_checks.v98",
+  "status": "passed",
+  "unique_tests": 6,
+  "test_executions": 6,
+  "failed_tests": 0,
+  "attempts": [
+    {
+      "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_root_coverage_v98.py",
+      "passed": 6,
+      "failed": 0,
+      "pytest_seconds": 0.29,
+      "process_seconds": 0.580688994,
+      "exit_code": 0
+    }
+  ],
+  "actual_work": {
+    "tree_fits": 0,
+    "sampled_environment_transitions": 0,
+    "synthetic_model_transitions": 0,
+    "real_analysis_runs": 0
+  },
+  "coverage": [
+    "Physical source/branch budgets, discarded partial-root costs and duplicate progress view",
+    "Two-history effects without two-SE efficacy interval",
+    "Incomplete roots cannot create labels",
+    "Episode cutoff differs from budget age and interrupted items are not resumed",
+    "Independent reference cutoff retains all training/evaluation costs",
+    "Independent prediction errors and paired natural seeds"
+  ]
+}

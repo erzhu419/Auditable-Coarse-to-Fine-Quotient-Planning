@@ -1,0 +1,14 @@
+{
+  "attempts": [
+    {
+      "tests": 2,
+      "passed": 2,
+      "failures": 0,
+      "seconds": 0.2,
+      "ground_transitions": 0,
+      "tree_fits": 0,
+      "main_campaign_calls": 0,
+      "scope": "Mock fresh source namespace, incremental data and budget reuse, both frozen heads and real acquisition-cost calculation; paired natural and prefix seed streams."
+    }
+  ]
+}

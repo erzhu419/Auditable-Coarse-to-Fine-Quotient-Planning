@@ -1,0 +1,45 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_mean_fragments_v87.py",
+      "session_failures": 0,
+      "scope": "Synthetic mean-tree fits and saved-selector interpretation; no RNG or environment calls.",
+      "ground_calls": 0,
+      "main_campaign_calls": 0,
+      "metadata_rows_read": 40,
+      "packed_roots": 10,
+      "training_roots_read": 8,
+      "board_feature_rows": 47,
+      "tree_fits": 2,
+      "mean_tree_fits": 2,
+      "fit_rows": 8,
+      "fit_roots": 8,
+      "fit_output_vectors": 8,
+      "validation_roots_read": 2,
+      "tree_apply_rows": 60,
+      "selector_decisions": 21,
+      "anchor_tree_apply_rows": 21,
+      "anchor_prediction_roots": 21,
+      "anchor_predicted_output_vectors": 84,
+      "residual_tree_apply_rows": 21,
+      "residual_prediction_roots": 21,
+      "residual_predicted_output_vectors": 84,
+      "reconstructed_output_vectors": 84,
+      "fragment_prediction_rows": 84,
+      "mean_selector_decisions": 16,
+      "source_prediction_roots": 16,
+      "mean_tree_apply_rows": 16,
+      "mean_prediction_roots": 16,
+      "mean_predicted_output_vectors": 16,
+      "command": [
+        ".venv-lmta-v42/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_controlled_predictive_mean_fragments_v87.py"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 1.5938582189846784
+    }
+  ]
+}

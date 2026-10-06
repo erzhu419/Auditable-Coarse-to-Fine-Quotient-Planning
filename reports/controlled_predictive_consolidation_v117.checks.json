@@ -1,0 +1,33 @@
+{
+  "attempts": [
+    {
+      "failed_tests": 0,
+      "development_work": {
+        "metadata_rows_read": 1472,
+        "training_rows_read": 1472,
+        "tree_fits": 17,
+        "constant_leaf_models": 768,
+        "fit_rows": 1472,
+        "feature_rows": 716,
+        "bank_fits": 5,
+        "predict_many_calls": 3,
+        "prediction_boards": 3,
+        "policy_prediction_rows": 16,
+        "tree_apply_rows": 16,
+        "predict_records_calls": 6,
+        "prediction_record_requests": 12,
+        "record_route_lookups": 12,
+        "unavailable_record_rows": 2,
+        "predicted_record_rows": 10,
+        "tree_split_visits": 6,
+        "unavailable_planning_boards": 1
+      },
+      "environment_transitions": 0,
+      "model_transitions": 0,
+      "production_tree_fits": 0,
+      "neural_model_fits": 0,
+      "optimizer_steps": 0,
+      "scope": "Synthetic source labels, fixed-budget trees and bank inference; no validation use or natural games."
+    }
+  ]
+}

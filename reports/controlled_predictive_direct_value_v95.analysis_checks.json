@@ -1,0 +1,17 @@
+{
+  "schema": "acfqp.direct_value_analysis_checks.v95",
+  "independent_tests": 8,
+  "executed_test_cases": 8,
+  "failures": 0,
+  "environment_transitions": 0,
+  "tree_fits": 0,
+  "main_analysis_executions": 0,
+  "runs": [
+    {
+      "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_direct_value_v95.py",
+      "passed": 8,
+      "reported_seconds": 0.22,
+      "scope": "Actual runner schema; primary contrasts; deployed prediction reference; separate model and ground work; no-trigger/cutoff handling; RNG and inherited-checkpoint accounting"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "valid": true,
+  "complete": true,
+  "records": 15,
+  "exact_joint_membership_checks": 15,
+  "admitted": 0,
+  "excluded": 15,
+  "groups": {
+    "V232_countermodel": {
+      "witnesses": 12,
+      "admitted": 0,
+      "excluded": 12,
+      "by_kind": {
+        "failure": {
+          "witnesses": 11,
+          "admitted": 0,
+          "excluded": 11
+        },
+        "positive": {
+          "witnesses": 1,
+          "admitted": 0,
+          "excluded": 1
+        }
+      }
+    },
+    "V234_rectangle": {
+      "witnesses": 3,
+      "admitted": 0,
+      "excluded": 3,
+      "by_kind": {
+        "failure": {
+          "witnesses": 2,
+          "admitted": 0,
+          "excluded": 2
+        },
+        "positive": {
+          "witnesses": 1,
+          "admitted": 0,
+          "excluded": 1
+        }
+      }
+    }
+  },
+  "original_terminal_rectangle_witness_checks": 3,
+  "exact_prior_mask_and_count_matches": 0,
+  "prior_comparisons": 65,
+  "main_risk_blockers": 6,
+  "main_risk_retained_witnesses": 5,
+  "main_risk_admitted": 0,
+  "full_qualification_allowed": true,
+  "new_observations": 0,
+  "new_paid_samples": 0,
+  "query_certificates_obtained": false,
+  "checks": {
+    "previous_accepted_evidence_valid": 1,
+    "fixed_fifteen_relevant_witnesses": 1,
+    "fixed_shared_event_budget": 1,
+    "fixed_diagnostic_stage_and_claim_scope": 1,
+    "original_snapshot_policy_fees_unchanged": 15,
+    "canonical_needed_projection_full_paid_counts": 15,
+    "exact_retained_bad_gap": 15,
+    "literal_prior_mask_counts_and_prior_comparison": 15,
+    "exact_joint_ratio_decision": 15,
+    "compact_outward_log_intervals": 15,
+    "witness_only_interpretation": 15,
+    "original_terminal_rectangle_witness_valid": 3,
+    "exact_diagnostic_summary": 1,
+    "fixed_main_bottleneck_continuation_rule": 1,
+    "primary_roster_and_eligibility_summary": 1
+  },
+  "failures": [],
+  "seconds": 1.61989226800506
+}

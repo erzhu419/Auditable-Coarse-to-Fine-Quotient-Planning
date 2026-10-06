@@ -1,0 +1,21 @@
+{"event": "audited_checkpoint", "life": 0, "checkpoint": 0, "replayed_swipes": 253600}
+{"event": "audited_checkpoint", "life": 0, "checkpoint": 1, "replayed_swipes": 1043808}
+{"event": "audited_checkpoint", "life": 0, "checkpoint": 2, "replayed_swipes": 1835708}
+{"event": "audited_checkpoint", "life": 0, "checkpoint": 3, "replayed_swipes": 2617144}
+{"event": "audited_checkpoint", "life": 0, "checkpoint": 4, "replayed_swipes": 3419404}
+{"event": "audited_checkpoint", "life": 1, "checkpoint": 0, "replayed_swipes": 3683452}
+{"event": "audited_checkpoint", "life": 1, "checkpoint": 1, "replayed_swipes": 4462020}
+{"event": "audited_checkpoint", "life": 1, "checkpoint": 2, "replayed_swipes": 5254592}
+{"event": "audited_checkpoint", "life": 1, "checkpoint": 3, "replayed_swipes": 6042016}
+{"event": "audited_checkpoint", "life": 1, "checkpoint": 4, "replayed_swipes": 6817040}
+{"event": "audited_checkpoint", "life": 2, "checkpoint": 0, "replayed_swipes": 7069872}
+{"event": "audited_checkpoint", "life": 2, "checkpoint": 1, "replayed_swipes": 7865712}
+{"event": "audited_checkpoint", "life": 2, "checkpoint": 2, "replayed_swipes": 8653324}
+{"event": "audited_checkpoint", "life": 2, "checkpoint": 3, "replayed_swipes": 9437332}
+{"event": "audited_checkpoint", "life": 2, "checkpoint": 4, "replayed_swipes": 10225704}
+{"event": "audited_checkpoint", "life": 3, "checkpoint": 0, "replayed_swipes": 10489720}
+{"event": "audited_checkpoint", "life": 3, "checkpoint": 1, "replayed_swipes": 11277088}
+{"event": "audited_checkpoint", "life": 3, "checkpoint": 2, "replayed_swipes": 12073320}
+{"event": "audited_checkpoint", "life": 3, "checkpoint": 3, "replayed_swipes": 12862424}
+{"event": "audited_checkpoint", "life": 3, "checkpoint": 4, "replayed_swipes": 13652012}
+{"complete": true, "primary_complete": true, "checks": 67, "failed": [], "seconds": 264.1573283319958}

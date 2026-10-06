@@ -1,0 +1,54 @@
+..FF....                                                                 [100%]
+=================================== FAILURES ===================================
+__ test_game_snapshot_targets_and_original_multiplicity_normalization[False] ___
+
+offset = False
+
+    @pytest.mark.parametrize('offset', [False, True])
+    def test_game_snapshot_targets_and_original_multiplicity_normalization(offset):
+        actual, reference = make_leaf(offset), make_leaf(offset)
+        data = dataset()
+        result = fit_control(actual, data, .43, BUILD)
+        examples, mass = literal_mean(reference, data, .43)
+        np.testing.assert_array_equal(actual.weights, reference.weights)
+        assert result['first_sample'] == examples[0]
+        assert result['last_sample'] == examples[-1]
+        assert all(item == pytest.approx(1., abs=1e-15) for item in mass)
+        assert result['trained_afterstates'] == actual.updates == 6
+        assert result['learning_counts']['table_update_occurrences'] == 192
+        assert result['consolidation_counts']['feature_occurrences'] == 192
+        assert result['consolidation_counts']['game_parameter_commits'] == 3
+        assert result['consolidation_counts'].get('sample_parameter_commits', 0) == 0
+        assert result['target_counts']['skipped_winning_afterstates'] == 1
+>       assert result['planning_counts']['leaf_terminal_loss_states'] >= 1
+E       KeyError: 'leaf_terminal_loss_states'
+
+tests/test_native_b_control_v300.py:137: KeyError
+___ test_game_snapshot_targets_and_original_multiplicity_normalization[True] ___
+
+offset = True
+
+    @pytest.mark.parametrize('offset', [False, True])
+    def test_game_snapshot_targets_and_original_multiplicity_normalization(offset):
+        actual, reference = make_leaf(offset), make_leaf(offset)
+        data = dataset()
+        result = fit_control(actual, data, .43, BUILD)
+        examples, mass = literal_mean(reference, data, .43)
+        np.testing.assert_array_equal(actual.weights, reference.weights)
+        assert result['first_sample'] == examples[0]
+        assert result['last_sample'] == examples[-1]
+        assert all(item == pytest.approx(1., abs=1e-15) for item in mass)
+        assert result['trained_afterstates'] == actual.updates == 6
+        assert result['learning_counts']['table_update_occurrences'] == 192
+        assert result['consolidation_counts']['feature_occurrences'] == 192
+        assert result['consolidation_counts']['game_parameter_commits'] == 3
+        assert result['consolidation_counts'].get('sample_parameter_commits', 0) == 0
+        assert result['target_counts']['skipped_winning_afterstates'] == 1
+>       assert result['planning_counts']['leaf_terminal_loss_states'] >= 1
+E       KeyError: 'leaf_terminal_loss_states'
+
+tests/test_native_b_control_v300.py:137: KeyError
+=========================== short test summary info ============================
+FAILED tests/test_native_b_control_v300.py::test_game_snapshot_targets_and_original_multiplicity_normalization[False]
+FAILED tests/test_native_b_control_v300.py::test_game_snapshot_targets_and_original_multiplicity_normalization[True]
+2 failed, 6 passed in 3.35s

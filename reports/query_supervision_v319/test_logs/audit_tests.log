@@ -1,0 +1,24 @@
+command: ["python3", "-m", "pytest", "-q", "tests/test_verify_query_supervision_v319.py"]
+PYTHONPATH=src
+............F                                                            [100%]
+=================================== FAILURES ===================================
+_____ test_exact_v319_configuration_matches_new_driver_without_running_it ______
+
+    def test_exact_v319_configuration_matches_new_driver_without_running_it():
+        from acfqp.science.query_supervision_run_v319 import configuration
+        source = Path(__file__).resolve().parents[1]/'reports/greedy_targets_v317/summary.json'
+>       assert audit.expected_configuration(source) == configuration(source)
+E       AssertionError: assert {'alpha': 0.0...': 20000, ...} == {'alpha': 0.0...': 20000, ...}
+E         
+E         Omitting 37 identical items, use -vv to show
+E         Differing items:
+E         {'arms': ['FACTUAL_LOCAL', 'QUERY_LOCAL']} != {'arms': ('FACTUAL_LOCAL', 'QUERY_LOCAL')}
+E         {'tasks': ['A', 'B']} != {'tasks': ('A', 'B')}
+E         Use -v to get more diff
+
+tests/test_verify_query_supervision_v319.py:155: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_verify_query_supervision_v319.py::test_exact_v319_configuration_matches_new_driver_without_running_it
+1 failed, 12 passed in 0.39s
+
+exit_code: 1

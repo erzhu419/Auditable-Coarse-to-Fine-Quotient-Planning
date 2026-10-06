@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "tests": 1,
+  "failures": 0,
+  "errors": 0,
+  "unique_analyzer_tests_now": 10,
+  "command": ".venv-lmta-v42/bin/python -m unittest tests.test_analyze_controlled_predictive_paired_advantage_v144.PairedAdvantageAuditTests.test_candidate_counter_excludes_outer_disagreements -v"
+}

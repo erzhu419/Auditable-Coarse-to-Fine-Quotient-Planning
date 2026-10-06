@@ -1,0 +1,262 @@
+{
+  "schema": "acfqp.consequence_partition.v172.equivalence",
+  "observed_equivalence": true,
+  "original_zero_sum_contract_failed": true,
+  "original_analysis_overwritten": false,
+  "audit_reference": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v172_runtime_tmp/audit.attempt_1.analysis.json",
+  "retained_audit_passed_checks": 661,
+  "retained_audit_total_checks": 673,
+  "combined_semantic_passed_checks": 673,
+  "combined_semantic_total_checks": 673,
+  "checks": [
+    {
+      "name": "retained_audit_counts_and_narrow_failure_scope",
+      "passed": true
+    },
+    {
+      "name": "retained_complete_training_and_validation",
+      "passed": true
+    },
+    {
+      "name": "compact_labels_complete_without_raw_replay",
+      "passed": true
+    },
+    {
+      "name": "0:PART_EARLY:independent_pair_fit_and_best_splits",
+      "passed": true
+    },
+    {
+      "name": "1:PART_EARLY:independent_pair_fit_and_best_splits",
+      "passed": true
+    },
+    {
+      "name": "2:PART_EARLY:independent_pair_fit_and_best_splits",
+      "passed": true
+    },
+    {
+      "name": "3:PART_EARLY:independent_pair_fit_and_best_splits",
+      "passed": true
+    },
+    {
+      "name": "0:PART_LATE:independent_pair_fit_and_best_splits",
+      "passed": true
+    },
+    {
+      "name": "0:COARSE_LATE:independent_pair_fit_and_best_splits",
+      "passed": true
+    },
+    {
+      "name": "0:ONE_LATE:independent_pair_fit_and_best_splits",
+      "passed": true
+    },
+    {
+      "name": "1:PART_LATE:independent_pair_fit_and_best_splits",
+      "passed": true
+    },
+    {
+      "name": "1:COARSE_LATE:independent_pair_fit_and_best_splits",
+      "passed": true
+    },
+    {
+      "name": "1:ONE_LATE:independent_pair_fit_and_best_splits",
+      "passed": true
+    },
+    {
+      "name": "2:PART_LATE:independent_pair_fit_and_best_splits",
+      "passed": true
+    },
+    {
+      "name": "2:COARSE_LATE:independent_pair_fit_and_best_splits",
+      "passed": true
+    },
+    {
+      "name": "2:ONE_LATE:independent_pair_fit_and_best_splits",
+      "passed": true
+    },
+    {
+      "name": "3:PART_LATE:independent_pair_fit_and_best_splits",
+      "passed": true
+    },
+    {
+      "name": "3:COARSE_LATE:independent_pair_fit_and_best_splits",
+      "passed": true
+    },
+    {
+      "name": "3:ONE_LATE:independent_pair_fit_and_best_splits",
+      "passed": true
+    },
+    {
+      "name": "frozen_validation_choices",
+      "passed": true
+    }
+  ],
+  "passed_checks": 20,
+  "total_checks": 20,
+  "models": [
+    {
+      "life": 0,
+      "mode": "PART_EARLY",
+      "model_ref": "models/life_0/PART_EARLY.json",
+      "maximum_component_gauge_offset": 0.035196013645238625,
+      "original_coordinate_match": false,
+      "observable_equivalence": true,
+      "first_remaining_discrepancy": null
+    },
+    {
+      "life": 1,
+      "mode": "PART_EARLY",
+      "model_ref": "models/life_1/PART_EARLY.json",
+      "maximum_component_gauge_offset": 0.06830702625446028,
+      "original_coordinate_match": false,
+      "observable_equivalence": true,
+      "first_remaining_discrepancy": null
+    },
+    {
+      "life": 2,
+      "mode": "PART_EARLY",
+      "model_ref": "models/life_2/PART_EARLY.json",
+      "maximum_component_gauge_offset": 5.811323644522304e-17,
+      "original_coordinate_match": true,
+      "observable_equivalence": true,
+      "first_remaining_discrepancy": null
+    },
+    {
+      "life": 3,
+      "mode": "PART_EARLY",
+      "model_ref": "models/life_3/PART_EARLY.json",
+      "maximum_component_gauge_offset": 2.8742199592590723e-16,
+      "original_coordinate_match": true,
+      "observable_equivalence": true,
+      "first_remaining_discrepancy": null
+    },
+    {
+      "life": 0,
+      "mode": "PART_LATE",
+      "model_ref": "models/life_0/PART_LATE.json",
+      "maximum_component_gauge_offset": 9.71445146547012e-17,
+      "original_coordinate_match": true,
+      "observable_equivalence": true,
+      "first_remaining_discrepancy": null
+    },
+    {
+      "life": 0,
+      "mode": "COARSE_LATE",
+      "model_ref": "models/life_0/COARSE_LATE.json",
+      "maximum_component_gauge_offset": 1.9081958235744878e-16,
+      "original_coordinate_match": true,
+      "observable_equivalence": true,
+      "first_remaining_discrepancy": null
+    },
+    {
+      "life": 0,
+      "mode": "ONE_LATE",
+      "model_ref": "models/life_0/ONE_LATE.json",
+      "maximum_component_gauge_offset": 0.040482928736769994,
+      "original_coordinate_match": false,
+      "observable_equivalence": true,
+      "first_remaining_discrepancy": null
+    },
+    {
+      "life": 1,
+      "mode": "PART_LATE",
+      "model_ref": "models/life_1/PART_LATE.json",
+      "maximum_component_gauge_offset": 2.7755575615628914e-16,
+      "original_coordinate_match": true,
+      "observable_equivalence": true,
+      "first_remaining_discrepancy": null
+    },
+    {
+      "life": 1,
+      "mode": "COARSE_LATE",
+      "model_ref": "models/life_1/COARSE_LATE.json",
+      "maximum_component_gauge_offset": 0.021455260245194,
+      "original_coordinate_match": false,
+      "observable_equivalence": true,
+      "first_remaining_discrepancy": null
+    },
+    {
+      "life": 1,
+      "mode": "ONE_LATE",
+      "model_ref": "models/life_1/ONE_LATE.json",
+      "maximum_component_gauge_offset": 0.05491951996306769,
+      "original_coordinate_match": false,
+      "observable_equivalence": true,
+      "first_remaining_discrepancy": null
+    },
+    {
+      "life": 2,
+      "mode": "PART_LATE",
+      "model_ref": "models/life_2/PART_LATE.json",
+      "maximum_component_gauge_offset": 0.034992578300336086,
+      "original_coordinate_match": false,
+      "observable_equivalence": true,
+      "first_remaining_discrepancy": null
+    },
+    {
+      "life": 2,
+      "mode": "COARSE_LATE",
+      "model_ref": "models/life_2/COARSE_LATE.json",
+      "maximum_component_gauge_offset": 0.13438479749347929,
+      "original_coordinate_match": false,
+      "observable_equivalence": true,
+      "first_remaining_discrepancy": null
+    },
+    {
+      "life": 2,
+      "mode": "ONE_LATE",
+      "model_ref": "models/life_2/ONE_LATE.json",
+      "maximum_component_gauge_offset": 0.12989895701476256,
+      "original_coordinate_match": false,
+      "observable_equivalence": true,
+      "first_remaining_discrepancy": null
+    },
+    {
+      "life": 3,
+      "mode": "PART_LATE",
+      "model_ref": "models/life_3/PART_LATE.json",
+      "maximum_component_gauge_offset": 0.0270694141825306,
+      "original_coordinate_match": false,
+      "observable_equivalence": true,
+      "first_remaining_discrepancy": null
+    },
+    {
+      "life": 3,
+      "mode": "COARSE_LATE",
+      "model_ref": "models/life_3/COARSE_LATE.json",
+      "maximum_component_gauge_offset": 0.0007398276438755954,
+      "original_coordinate_match": false,
+      "observable_equivalence": true,
+      "first_remaining_discrepancy": null
+    },
+    {
+      "life": 3,
+      "mode": "ONE_LATE",
+      "model_ref": "models/life_3/ONE_LATE.json",
+      "maximum_component_gauge_offset": 0.2242326559258898,
+      "original_coordinate_match": false,
+      "observable_equivalence": true,
+      "first_remaining_discrepancy": null
+    }
+  ],
+  "maximum_component_gauge_offset": 0.2242326559258898,
+  "first_discrepancy": {
+    "model_ref": "models/life_0/PART_EARLY.json",
+    "path": "payload.leaves[1].coefficients.DOWN[0]",
+    "actual": 0.09838265915305121,
+    "expected": 0.06318664550781244
+  },
+  "frozen_choices": 1280,
+  "chosen_action_disagreements": 0,
+  "first_remaining_choice_discrepancy": null,
+  "costs": {
+    "new_environment_samples": 3809338,
+    "added_environment_samples": 0,
+    "added_environment_random_draws": 0,
+    "added_physical_trace_replays": 0,
+    "rewritten_models": 0,
+    "rewritten_choices": 0,
+    "independent_models_rebuilt": 16
+  },
+  "scope": "retained physical checks plus original-tolerance observable contrasts; frozen zero-sum coordinate defect remains recorded",
+  "seconds": 9.452704644001642
+}

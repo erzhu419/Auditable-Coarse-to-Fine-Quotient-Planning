@@ -1,0 +1,91 @@
+{
+  "valid": true,
+  "complete": true,
+  "records": 24,
+  "total_comparisons": 144,
+  "routed_comparisons": 9,
+  "reused_comparisons": 135,
+  "groups": {
+    "failure": {
+      "targets": 12,
+      "old_query_ready": 0,
+      "v235_query_ready": 0,
+      "v238_query_ready": 4,
+      "v239_query_ready": 4,
+      "query_ready": 4,
+      "queries": {
+        "reward": 12,
+        "goal": 6,
+        "risk": 4
+      },
+      "blockers_by_family": {
+        "S_D_FULL_R": 6,
+        "S_D_FULL": 6,
+        "S_D_DEL": 3,
+        "D_REC_R": 2
+      },
+      "arms": {
+        "ORACLE_BALANCED": {
+          "targets": 6,
+          "query_ready": 2
+        },
+        "ORACLE_GAP": {
+          "targets": 6,
+          "query_ready": 2
+        }
+      }
+    },
+    "positive": {
+      "targets": 12,
+      "old_query_ready": 12,
+      "v235_query_ready": 11,
+      "v238_query_ready": 2,
+      "v239_query_ready": 11,
+      "query_ready": 12,
+      "queries": {
+        "reward": 12,
+        "goal": 12,
+        "risk": 12
+      },
+      "blockers_by_family": {},
+      "arms": {
+        "ORACLE_BALANCED": {
+          "targets": 6,
+          "query_ready": 6
+        },
+        "ORACLE_GAP": {
+          "targets": 6,
+          "query_ready": 6
+        }
+      }
+    }
+  },
+  "stage_condition_met": true,
+  "false_certificates": 0,
+  "settled_v239_and_v240_audits_reused": true,
+  "new_observations": 0,
+  "new_paid_samples": 0,
+  "optimizer_calls": 0,
+  "checks": {
+    "both_settled_input_audits_valid": 1,
+    "settled_inputs_are_referenced_without_new_tape_or_cost_acquisition": 1,
+    "fixed_roster_and_order": 1,
+    "fixed_evidence_budget_and_truth_after_certificate_freeze": 1,
+    "exact_nine_frozen_diagnostic_routes": 1,
+    "all_original_metadata_policies_and_ready_references": 24,
+    "original_policy_and_complete_alternative_order": 48,
+    "unreplaced_comparison_is_exact_validated_v239_certificate": 135,
+    "complete_alternative_and": 48,
+    "complete_three_query_and": 24,
+    "exact_provenance_and_old_work_is_not_new_work": 24,
+    "replacement_matches_original_identity_case_costs_and_counts": 9,
+    "replacement_uses_exact_validated_proof_and_exclusion_only_decision": 9,
+    "all_and_only_nine_replacements_and_135_reused_proofs": 1,
+    "complete_frozen_truth_score_roster": 1,
+    "saved_original_policy_regrets_scored_after_freeze": 24,
+    "stage_condition_and_group_totals": 1,
+    "same_life_cost_reference_and_no_new_optimizer_or_acquisition": 1
+  },
+  "failures": [],
+  "seconds": 0.03523328699520789
+}

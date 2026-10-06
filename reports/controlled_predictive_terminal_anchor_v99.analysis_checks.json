@@ -1,0 +1,32 @@
+{
+  "schema": "acfqp.terminal_anchor_analysis_checks.v99",
+  "status": "passed",
+  "unique_tests": 6,
+  "test_executions": 6,
+  "failed_tests": 0,
+  "attempts": [
+    {
+      "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_terminal_anchor_v99.py",
+      "passed": 6,
+      "failed": 0,
+      "pytest_seconds": 0.38,
+      "process_seconds": 0.708852393,
+      "exit_code": 0
+    }
+  ],
+  "actual_work": {
+    "tree_fits": 0,
+    "sampled_environment_transitions": 0,
+    "synthetic_model_transitions": 0,
+    "real_analysis_runs": 0
+  },
+  "coverage": [
+    "MC plus anchored fits counted once despite duplicate classification counters",
+    "Inherited acquisition and top allocation progress are not new sampling",
+    "Exactly36 prespecified contrasts and actual decision contribution beyond prefix",
+    "Fixed0.5 anchor and original FQE provenance",
+    "Prefix-only zeros are not learned pair predictions",
+    "Reference cutoff retains all costs",
+    "Independent MC/anchor/prefix prediction and selection evaluation"
+  ]
+}

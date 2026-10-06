@@ -1,0 +1,117 @@
+{
+  "valid": true,
+  "complete": true,
+  "records": 24,
+  "comparisons": 144,
+  "independently_checked_leaves": 2438,
+  "unique_profile_calls": 138,
+  "statuses": {
+    "certified": 126,
+    "unknown": 18
+  },
+  "witness_kinds": {
+    "global_likelihood_dual": 144
+  },
+  "groups": {
+    "failure": {
+      "targets": 12,
+      "old_query_ready": 0,
+      "v235_query_ready": 0,
+      "v238_query_ready": 4,
+      "query_ready": 4,
+      "queries": {
+        "reward": 12,
+        "goal": 6,
+        "risk": 4
+      },
+      "blockers_by_family": {
+        "S_D_FULL_R": 6,
+        "S_D_FULL": 6,
+        "S_D_DEL": 3,
+        "D_REC_R": 2
+      },
+      "arms": {
+        "ORACLE_BALANCED": {
+          "targets": 6,
+          "query_ready": 2
+        },
+        "ORACLE_GAP": {
+          "targets": 6,
+          "query_ready": 2
+        }
+      }
+    },
+    "positive": {
+      "targets": 12,
+      "old_query_ready": 12,
+      "v235_query_ready": 11,
+      "v238_query_ready": 2,
+      "query_ready": 11,
+      "queries": {
+        "reward": 12,
+        "goal": 12,
+        "risk": 11
+      },
+      "blockers_by_family": {
+        "D_REC_R": 1
+      },
+      "arms": {
+        "ORACLE_BALANCED": {
+          "targets": 6,
+          "query_ready": 6
+        },
+        "ORACLE_GAP": {
+          "targets": 6,
+          "query_ready": 5
+        }
+      }
+    }
+  },
+  "stage_condition_met": false,
+  "false_certificates": 0,
+  "settled_endpoint_audit_reused": true,
+  "new_observations": 0,
+  "new_paid_samples": 0,
+  "checks": {
+    "settled_endpoint_provenance_and_costs": 1,
+    "unchanged_settled_endpoint_tape_copy": 1,
+    "frozen_same_endpoint_and_all_paid_engine": 1,
+    "fixed_twenty_four_policy_case_roster": 1,
+    "same_original_case_full_life_fees_and_endpoint": 24,
+    "analytic_reward_wait_is_unchanged": 24,
+    "original_policy_and_complete_alternative_roster": 48,
+    "canonical_full_paid_sufficient_counts": 144,
+    "original_fixed_comparison_and_event": 144,
+    "global_gap_preserving_zero_count_embedding": 144,
+    "outward_true_projected_mixture_numerator": 144,
+    "outward_fixed_event_threshold": 144,
+    "fixed_partition_covers_entire_retry_simplex": 144,
+    "exact_query_retry_interaction_slope": 144,
+    "partition_probability_domain": 2438,
+    "relaxed_gap_row_roster": 2438,
+    "partition_endpoint": 2438,
+    "exact_endpoint_gap": 14628,
+    "endpoint_relaxes_complete_retry_cell": 14628,
+    "exact_maximum_relaxed_gap": 2438,
+    "supported_likelihood_leaf": 1858,
+    "legal_null_multiplier": 1858,
+    "optimization_row_roster": 1858,
+    "empty_likelihood_row_simplex": 767,
+    "outward_row_likelihood_upper": 3716,
+    "legal_row_likelihood_dual": 2949,
+    "retry_interval_mle_probability": 1858,
+    "outward_retry_interval_likelihood_upper": 1858,
+    "outward_complete_null_likelihood_upper": 1858,
+    "global_likelihood_upper_covers_every_cell": 144,
+    "outward_projected_global_likelihood_ratio": 144,
+    "strict_global_bad_null_certificate": 144,
+    "exact_empty_relaxed_null": 580,
+    "complete_query_comparison_and": 48,
+    "three_queries_and_and_exact_cache_accounting": 24,
+    "truth_scoring_uses_unchanged_original_policies": 24,
+    "same_settled_life_cost_reference": 1,
+    "exact_summary_and_fixed_stage_condition": 1
+  },
+  "failures": [],
+  "seconds": 3.2153801480017137
+}

@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "scripts/run_controlled_predictive_frozen_head_v109.py",
+    "--output",
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_frozen_head_v109"
+  ],
+  "status": "complete",
+  "started_unix": 1789349785.6184423,
+  "returncode": 0,
+  "seconds": 3.8868219389696606,
+  "stderr_bytes": 0
+}

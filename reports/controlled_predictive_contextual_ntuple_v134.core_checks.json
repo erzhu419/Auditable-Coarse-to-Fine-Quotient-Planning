@@ -1,0 +1,70 @@
+{
+  "attempts": [
+    {
+      "tests": 13,
+      "failures": 0,
+      "model_work": {
+        "inner_choose_calls": 106,
+        "inner_learned_terminal_checks": 286,
+        "inner_learned_swipe_calls": 352,
+        "inner_line_table_lookups": 1408,
+        "inner_legal_swipes": 180,
+        "inner_value_predictions": 156,
+        "inner_table_lookups": 4992,
+        "inner_context_cell_reads": 3744,
+        "inner_context_bank_selections": 2574,
+        "inner_bank_0_prediction_occurrences": 3732,
+        "inner_context_bank_offset_additions": 4992,
+        "choose_calls": 106,
+        "inner_bank_1_prediction_occurrences": 748,
+        "inner_terminal_goal_bypasses": 58,
+        "inner_bank_0_update_occurrences": 436,
+        "inner_bank_0_unique_updates": 200,
+        "inner_update_feature_squared_norm": 1864,
+        "inner_td_updates": 16,
+        "inner_table_updates": 264,
+        "inner_table_update_occurrences": 512,
+        "td_updates": 16,
+        "inner_bank_1_update_occurrences": 76,
+        "inner_bank_1_unique_updates": 64,
+        "inner_checkpoint_saves": 2,
+        "inner_checkpoint_scanned_parameters": 65536,
+        "inner_checkpoint_saved_parameters": 59583,
+        "checkpoint_saves": 2,
+        "checkpoint_loads": 2,
+        "inner_checkpoint_loads": 2,
+        "inner_checkpoint_loaded_parameters": 59583
+      },
+      "source_work": {
+        "choose_calls": 80,
+        "learned_terminal_checks": 192,
+        "learned_swipe_calls": 256,
+        "line_table_lookups": 1024,
+        "legal_swipes": 112,
+        "value_predictions": 80,
+        "table_lookups": 2560,
+        "terminal_goal_bypasses": 48
+      },
+      "setup_counts": {
+        "cpp_compilations": 2,
+        "lookup_table_cache_hits": 29,
+        "allocated_weight_parameters": 770048,
+        "allocated_weight_bytes": 6160384,
+        "source_parameters_copied": 491520,
+        "source_weight_bytes_copied": 3932160,
+        "cpp_library_cache_hits": 28,
+        "lookup_line_rewrites": 256
+      },
+      "scripted_environment_work": {
+        "scripted_spawn_calls": 20,
+        "initial_spawns": 8,
+        "scripted_status_calls": 16,
+        "ground_explicit_swipe_calls": 12,
+        "ground_swipe_calls": 12,
+        "sampled_transitions": 12
+      },
+      "newly_sampled_environment_transitions": 0,
+      "scope": "Static synthetic features and three-transition scripted spawn streams; no natural-game samples."
+    }
+  ]
+}

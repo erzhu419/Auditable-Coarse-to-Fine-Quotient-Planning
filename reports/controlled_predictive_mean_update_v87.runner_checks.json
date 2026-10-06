@@ -1,0 +1,27 @@
+{
+  "attempts": [
+    {
+      "session_failures": 0,
+      "ground_work": {
+        "environment_random_draws": 2040,
+        "initial_spawns": 20,
+        "ground_state_status_calls": 1010,
+        "ground_status_internal_swipe_calls": 4040,
+        "ground_swipe_calls": 5040,
+        "ground_explicit_swipe_calls": 1000,
+        "sampled_transitions": 1000
+      },
+      "new_tree_fits": 0,
+      "main_campaign_calls": 0
+    }
+  ],
+  "test_command": [
+    ".venv-lmta-v42/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/test_controlled_predictive_mean_update_runner_v87.py"
+  ],
+  "test_exit_code": 0,
+  "test_seconds": 1.3581307160202414
+}

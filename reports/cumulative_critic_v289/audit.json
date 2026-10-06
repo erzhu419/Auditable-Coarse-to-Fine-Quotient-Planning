@@ -1,0 +1,275 @@
+{
+  "status": "PASS",
+  "independent_valid": true,
+  "lifecycles": 16,
+  "fixed_source_parents": 4,
+  "fixed_anchors": 1756,
+  "chronological_game_snapshots": 1736,
+  "h2_board_readouts": 320,
+  "full_heldout_scored_games": 878,
+  "replay_value_updates": 1655968,
+  "new_environment_observations": 0,
+  "new_evaluation_games": 0,
+  "primary_final_anchor_mse_delta": {
+    "mean": 103.68359268770354,
+    "ci95": [
+      62.60574145508572,
+      147.91171981921278
+    ],
+    "lifecycle_values": {
+      "0": 9.23345203521891,
+      "1": 15.540061423630085,
+      "2": 55.544952199039344,
+      "3": 143.00361668342504,
+      "4": 66.10068722369462,
+      "5": 273.0104843435536,
+      "6": 12.170468875482605,
+      "7": 12.944203424416344,
+      "8": 241.05180568984264,
+      "9": 149.49646215048753,
+      "10": 245.22892571104052,
+      "11": 138.34350695632003,
+      "12": 170.40727505427702,
+      "13": 91.93504806625714,
+      "14": 15.816358391315994,
+      "15": 19.110174775255146
+    },
+    "negative_equal_positive": [
+      0,
+      0,
+      16
+    ],
+    "parent_means": {
+      "0": 121.6983050007583,
+      "1": 132.4955139959821,
+      "2": 82.19017629421961,
+      "3": 78.35037545985413
+    },
+    "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS",
+    "improved_equal_worse": [
+      0,
+      0,
+      16
+    ],
+    "adverse_lifecycles": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "quality_direction": "negative_is_better"
+  },
+  "final_h2_diagnostics": {
+    "validation_utility_delta": {
+      "mean": 0.08309459686279297,
+      "ci95": [
+        -0.12170422077178955,
+        0.2814545154571528
+      ],
+      "lifecycle_values": {
+        "0": 0.0,
+        "1": 0.3925018310546875,
+        "2": 0.081573486328125,
+        "3": 0.307708740234375,
+        "4": 0.0822601318359375,
+        "5": -0.46417236328125,
+        "6": 1.01556396484375,
+        "7": -0.1613006591796875,
+        "8": 0.6374359130859375,
+        "9": -0.273223876953125,
+        "10": -0.2086639404296875,
+        "11": 0.289306640625,
+        "12": 0.5243377685546875,
+        "13": -0.441864013671875,
+        "14": 0.535430908203125,
+        "15": -0.9873809814453125
+      },
+      "negative_equal_positive": [
+        6,
+        1,
+        9
+      ],
+      "parent_means": {
+        "0": 0.3110084533691406,
+        "1": -0.19668960571289062,
+        "2": 0.3559761047363281,
+        "3": -0.13791656494140625
+      },
+      "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS",
+      "improved_equal_worse": [
+        9,
+        1,
+        6
+      ],
+      "adverse_lifecycles": [
+        5,
+        7,
+        9,
+        10,
+        13,
+        15
+      ],
+      "quality_direction": "positive_is_better"
+    },
+    "action_disagreement": {
+      "mean": 0.515625,
+      "ci95": [
+        0.40625,
+        0.625
+      ],
+      "lifecycle_values": {
+        "0": 0.0,
+        "1": 0.5,
+        "2": 0.5,
+        "3": 0.25,
+        "4": 0.5,
+        "5": 0.5,
+        "6": 0.75,
+        "7": 0.25,
+        "8": 0.75,
+        "9": 0.5,
+        "10": 0.5,
+        "11": 1.0,
+        "12": 0.5,
+        "13": 0.5,
+        "14": 0.5,
+        "15": 0.75
+      },
+      "negative_equal_positive": [
+        0,
+        1,
+        15
+      ],
+      "parent_means": {
+        "0": 0.4375,
+        "1": 0.5,
+        "2": 0.5625,
+        "3": 0.5625
+      },
+      "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS"
+    }
+  },
+  "first_above_baseline_games": {
+    "0": 1,
+    "1": 1,
+    "2": 1,
+    "3": 1,
+    "4": 1,
+    "5": 1,
+    "6": 1,
+    "7": 1,
+    "8": 1,
+    "9": 1,
+    "10": 1,
+    "11": 1,
+    "12": 1,
+    "13": 1,
+    "14": 1,
+    "15": 1
+  },
+  "final_above_baseline_run_start_games": {
+    "0": 33,
+    "1": 95,
+    "2": 95,
+    "3": 103,
+    "4": 105,
+    "5": 1,
+    "6": 104,
+    "7": 106,
+    "8": 82,
+    "9": 91,
+    "10": 98,
+    "11": 98,
+    "12": 94,
+    "13": 1,
+    "14": 107,
+    "15": 97
+  },
+  "actual_processing_costs": {
+    "fit_counts": {
+      "td_updates": 1655968,
+      "value_predictions": 1655968,
+      "table_lookups": 52990976,
+      "table_updates": 51948355,
+      "table_update_occurrences": 52990976
+    },
+    "fit_target_counts": {
+      "goal_checks": 1656824,
+      "suffix_games": 1720,
+      "suffix_target_assignments": 1656824,
+      "suffix_reward_additions": 1656824,
+      "raw_target_subtractions": 1655968,
+      "skipped_winning_afterstates": 856
+    },
+    "anchor_prediction_counts": {
+      "snapshots": 1736,
+      "value_predictions": 190556,
+      "table_lookups": 6097792,
+      "prediction_shift_additions": 381112
+    },
+    "anchor_label_counts": {
+      "suffix_games": 439,
+      "suffix_target_assignments": 429321,
+      "suffix_reward_additions": 429321,
+      "selected_anchors": 1756
+    },
+    "h2_planning_counts": {
+      "learned_swipe_calls": 77760,
+      "line_table_lookups": 311040,
+      "legal_swipes": 70325,
+      "learned_terminal_checks": 89765,
+      "value_predictions": 69155,
+      "table_lookups": 2212960,
+      "root_swipe_calls": 1280,
+      "root_legal_actions": 1170,
+      "leaf_choose_calls": 19120,
+      "second_ply_swipe_calls": 76480,
+      "generated_spawn_outcomes": 19120,
+      "spawn_rank1_outcomes": 9560,
+      "spawn_rank2_outcomes": 9560,
+      "expanded_postspawn_states": 19120,
+      "full_leaf_action_comparisons": 69155,
+      "short_leaf_action_comparisons": 69155,
+      "rank_mean_products": 38240,
+      "rank_mean_sums": 38240,
+      "component_calls": 320,
+      "compose_calls": 320,
+      "compose_probability_products": 19120,
+      "compose_probability_sums": 19120,
+      "leaf_terminal_loss_states": 5
+    },
+    "full_heldout_prediction_counts": {
+      "value_predictions": 858176,
+      "table_lookups": 27461632
+    },
+    "full_heldout_target_counts": {
+      "goal_checks": 858642,
+      "suffix_games": 878,
+      "suffix_target_assignments": 858642,
+      "suffix_reward_additions": 858642,
+      "prediction_shift_additions": 1716352,
+      "skipped_winning_afterstates": 466
+    },
+    "private_head_weight_bytes_created": 907039232,
+    "worker_cpu_seconds": 86.205522984,
+    "compiler_cpu_seconds": 9.372208999999998,
+    "coordinator_cpu_seconds": 4.569990351,
+    "wall_seconds": 30.016323318996,
+    "prediction_trace_bytes": 1446316
+  },
+  "method": "Canonical factual score suffixes, fixed time anchors and chronology, all compact prediction errors, original whole heldout/fit receipts, fixed H2 argmax/reference directions, equal-game/life signed endpoints and costs.",
+  "limitations": "No source checkpoint reload, board/weight replay, planning recomputation or new observations. Existing 20000-draw bootstrap not regenerated; inputs, source grouping and interval bounds checked. H2 reference uses the old ORACLE continuation and is not new-policy return.",
+  "errors": []
+}

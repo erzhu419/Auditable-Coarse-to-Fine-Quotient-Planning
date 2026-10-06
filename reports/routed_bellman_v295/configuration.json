@@ -1,0 +1,72 @@
+{
+  "schema": "acfqp.routed_bellman_freeze.v295",
+  "protocol": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/specs/ROUTED_BELLMAN_V295.md",
+  "source_summary": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/shadow_deployment_v293/summary.json",
+  "lifecycles": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "parents": 4,
+  "arms": [
+    "FROZEN",
+    "SMOOTH_BELLMAN",
+    "ROUTED_BELLMAN"
+  ],
+  "phases": [
+    [
+      "A",
+      0.1
+    ],
+    [
+      "B",
+      0.5
+    ],
+    [
+      "A_prime",
+      0.1
+    ]
+  ],
+  "alpha": 0.0025,
+  "fit_fraction": 0.8,
+  "query": {
+    "reward_weight": 1.0,
+    "failure_penalty": 4.0,
+    "goal_bonus": 4.0
+  },
+  "max_steps": 8192,
+  "evaluation_games": 32,
+  "seed_evaluation": 295900010000,
+  "bootstrap_seed": 29500001,
+  "bootstrap_draws": 20000,
+  "primary": "ROUTED_BELLMAN_minus_FROZEN_THREE_PHASE_COMPLETE_GAME_UTILITY",
+  "target": "EXPECTED_MAX_CONTROL_GAME_START_FROZEN_OBSERVED_PROBABILITY",
+  "representation": "SOURCE_PLUS_UNIT_NORMALIZED_TWO_BANK_RESIDUAL_PER_OBSERVED_LIBRARY_MODULE",
+  "denominator": "WHOLE_GAME_ORIGINAL_ADDRESS_OCCURRENCES_ACROSS_ALL_MODULES",
+  "expert_birth": "COPY_PREVIOUS_EXPERT_AT_OBSERVED_CREATION_BEFORE_CURRENT_GAME_COMMIT",
+  "correction_reference": "A_LIBRARY_FOLLOWS_SAME_B_OBSERVED_BIRTHS_WITHOUT_B_VALUE_UPDATES",
+  "split": "V294_PURE_PHASE_COMPLETE_GAMES_CHRONOLOGICAL_80_20_LABEL_HOLDOUT",
+  "scientific_games": 8704,
+  "logical_scientific_game_references": 10752,
+  "new_training_raw_tiles": 0,
+  "new_ranking_rollouts": 0,
+  "finite_test_passes": {
+    "native_routed": 4,
+    "observed_route_data": 4,
+    "independent_analysis": 11,
+    "full_pipeline": 2
+  }
+}

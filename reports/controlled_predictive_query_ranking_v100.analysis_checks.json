@@ -1,0 +1,23 @@
+{
+  "schema": "acfqp.query_ranking_analysis_checks.v100",
+  "status": "passed",
+  "unique_tests": 6,
+  "test_executions": 6,
+  "failed_tests": 0,
+  "attempts": [
+    {
+      "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_query_ranking_v100.py",
+      "exit_code": 0,
+      "pytest_summary": "6 passed in 0.30s",
+      "process_wall_seconds": 0.605537809
+    }
+  ],
+  "actual_work": {
+    "environment_transitions": 0,
+    "model_simulated_transitions": 0,
+    "neural_model_fits": 0,
+    "tree_fits": 0,
+    "optimizer_steps": 0
+  },
+  "scope": "Synthetic analysis fixtures only: objective contrasts and paired histories, ordering/ties and uncalibrated score semantics, independent reference cutoff accounting, whole-root normalization and budget-age metadata, inherited/shared-prefix/optimizer cost de-duplication."
+}

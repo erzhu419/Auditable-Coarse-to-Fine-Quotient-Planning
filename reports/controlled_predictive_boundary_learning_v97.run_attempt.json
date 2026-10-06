@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/scripts/run_controlled_predictive_boundary_learning_v97.py",
+    "--output",
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_boundary_learning_v97"
+  ],
+  "started_utc": "2026-09-13T15:18:36.045885+00:00",
+  "status": "complete",
+  "main_attempt": 1,
+  "exit_code": 0,
+  "seconds": 1044.2029157330398,
+  "stderr_bytes": 0,
+  "finished_utc": "2026-09-13T15:35:45.731052+00:00"
+}

@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "scripts/run_controlled_predictive_pooled_history_v110.py",
+    "--output",
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_pooled_history_v110"
+  ],
+  "status": "complete",
+  "started_unix": 1789807037.4705675,
+  "returncode": 0,
+  "seconds": 9.701195287998416,
+  "stderr_bytes": 0
+}

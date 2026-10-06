@@ -1,0 +1,5 @@
+Command: env PYTHONPATH=src .venv-lmta-v42/bin/python -m pytest -q tests/test_first_adapt_data_v308.py
+Captured from the successful acquisition test execution after correcting a missing empty updates field in the branch-only test fixture.
+Exit code: 0
+....                                                                     [100%]
+4 passed in 0.79s

@@ -1,0 +1,52 @@
+{
+  "status": "PASS",
+  "tests": 9,
+  "failures": 0,
+  "errors": 0,
+  "command": ".venv-lmta-v42/bin/python -m unittest tests.test_analyze_controlled_predictive_paired_advantage_v144 -v",
+  "checks": [
+    "signed multiplicities and normalized update",
+    "same-action zero features",
+    "changed frozen weights",
+    "first reward subtraction and paired seed",
+    "censored target rejection",
+    "full-game missing/cutoff suppression",
+    "equal game weights",
+    "gate sign and terminal bypass",
+    "replayed stream and cost mutation"
+  ],
+  "source_schema_probe": "frozen settings and inherited parent/leaf/loader interfaces match",
+  "imports_old_test_fixtures": false,
+  "new_training_environment_samples": 0,
+  "attempts": [
+    {
+      "sequence": 1,
+      "stage": "helper tests before runner integration",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "status": "PASS",
+      "test_report_seconds": 0.015
+    },
+    {
+      "sequence": 2,
+      "stage": "runner schema integration",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "status": "PASS",
+      "test_report_seconds": 0.011
+    },
+    {
+      "sequence": 3,
+      "stage": "final suite including control replay mutation",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "status": "PASS",
+      "test_report_seconds": 0.022
+    }
+  ],
+  "unique_tests": 9,
+  "attempt_note": "Earlier passing finite runs are retained; no finite test failures occurred. No executable source changed after final pass."
+}

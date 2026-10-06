@@ -1,0 +1,14 @@
+{
+  "attempts": [
+    {
+      "tests": 6,
+      "failures": 0,
+      "seconds": 0.04806249600369483,
+      "environment_samples": 0,
+      "environment_random_draws": 0,
+      "native_model_calls": 0,
+      "model_updates": 0,
+      "scope": "Mocked matched windows, prequential lookup, inherited baseline references and frozen composition probes"
+    }
+  ]
+}

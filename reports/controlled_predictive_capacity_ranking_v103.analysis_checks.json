@@ -1,0 +1,14 @@
+{
+  "schema": "acfqp.capacity_ranking_analysis_checks.v103",
+  "status": "passed",
+  "test_file": "tests/test_analyze_controlled_predictive_capacity_ranking_v103.py",
+  "tests": 6,
+  "attempts": 1,
+  "seconds": 0.54,
+  "counts": {
+    "new_environment_transitions": 0,
+    "new_model_transitions": 0,
+    "new_model_fits": 0
+  },
+  "scope": "Synthetic fixtures only: new narrow fits versus copied wide fits, fixed per-parameter penalty, matched root diagnostics, actual hidden activation work, forty contrasts, ordinal A/B references, and censored costs. No fitting or sampling."
+}

@@ -1,0 +1,15 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "work": {
+        "objective_evaluations": 21,
+        "neural_model_fits": 6,
+        "optimizer_steps": 208
+      },
+      "new_environment_transitions": 0,
+      "new_synthetic_transitions": 0,
+      "scope": "Synthetic gradients and small neural fits."
+    }
+  ]
+}

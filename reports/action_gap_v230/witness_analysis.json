@@ -1,0 +1,29 @@
+{
+  "valid": true,
+  "attempted": 16,
+  "found": 16,
+  "cases": 4,
+  "checks": {
+    "oracle_diagnostic_scope": 16,
+    "simplex_kernel": 16,
+    "independent_inherited_A_counts": 16,
+    "all_joint_constraints_satisfied": 176,
+    "exact_conflicting_regret": 16,
+    "all_pure_policy_inference": 4,
+    "no_new_witness_observations": 1,
+    "attempt_count": 1,
+    "found_count": 1
+  },
+  "expected": {
+    "oracle_diagnostic_scope": 16,
+    "simplex_kernel": 16,
+    "independent_inherited_A_counts": 16,
+    "all_joint_constraints_satisfied": 176,
+    "exact_conflicting_regret": 16,
+    "all_pure_policy_inference": 4,
+    "no_new_witness_observations": 1,
+    "attempt_count": 1,
+    "found_count": 1
+  },
+  "new_observations": 0
+}

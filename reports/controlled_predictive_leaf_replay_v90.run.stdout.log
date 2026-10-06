@@ -1,0 +1,13 @@
+{"phase": "root_complete", "root_id": "life_0_target_8990001_reward", "kind": "target", "life": 0, "complete_pairs": 64, "requested_replicas": 64, "transitions": 61218}
+{"phase": "root_complete", "root_id": "life_0_training_1_reward", "kind": "training", "life": 0, "complete_pairs": 64, "requested_replicas": 64, "transitions": 62468}
+{"phase": "root_complete", "root_id": "life_0_target_8990003_reward", "kind": "target", "life": 0, "complete_pairs": 64, "requested_replicas": 64, "transitions": 62936}
+{"phase": "root_complete", "root_id": "life_0_training_6_reward", "kind": "training", "life": 0, "complete_pairs": 64, "requested_replicas": 64, "transitions": 60245}
+{"phase": "root_complete", "root_id": "life_0_target_8990008_reward", "kind": "target", "life": 0, "complete_pairs": 64, "requested_replicas": 64, "transitions": 63013}
+{"phase": "root_complete", "root_id": "life_0_target_8990005_reward", "kind": "target", "life": 0, "complete_pairs": 64, "requested_replicas": 64, "transitions": 65738}
+{"phase": "root_complete", "root_id": "life_2_target_8990201_reward", "kind": "target", "life": 2, "complete_pairs": 64, "requested_replicas": 64, "transitions": 66921}
+{"phase": "root_complete", "root_id": "life_2_target_8990204_reward", "kind": "target", "life": 2, "complete_pairs": 64, "requested_replicas": 64, "transitions": 61256}
+{"phase": "root_complete", "root_id": "life_2_training_0_reward", "kind": "training", "life": 2, "complete_pairs": 64, "requested_replicas": 64, "transitions": 65913}
+{"phase": "root_complete", "root_id": "life_2_training_3_reward", "kind": "training", "life": 2, "complete_pairs": 64, "requested_replicas": 64, "transitions": 60524}
+{"phase": "root_complete", "root_id": "life_2_training_8_reward", "kind": "training", "life": 2, "complete_pairs": 64, "requested_replicas": 64, "transitions": 65260}
+{"phase": "root_complete", "root_id": "life_2_target_8990214_reward", "kind": "target", "life": 2, "complete_pairs": 64, "requested_replicas": 64, "transitions": 67813}
+{"phase": "complete", "roots": 12, "seconds": 221.56361438898603}

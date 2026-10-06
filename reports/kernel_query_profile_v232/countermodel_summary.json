@@ -1,0 +1,19 @@
+{
+  "cases": 13,
+  "found": 12,
+  "groups": {
+    "failure": {
+      "cases": 12,
+      "found": 11
+    },
+    "positive": {
+      "cases": 1,
+      "found": 1
+    }
+  },
+  "exact_prefix_checks": 50,
+  "elapsed_seconds": 2.221970031008823,
+  "new_observations": 0,
+  "new_paid_samples": 0,
+  "scientific_gate_changed": false
+}

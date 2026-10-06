@@ -1,0 +1,114 @@
+{
+  "status": "PASS",
+  "independent_valid": true,
+  "lifecycles": 16,
+  "fixed_source_parents": 4,
+  "fresh_source_audit_status": "PASS",
+  "fresh_source_provenance_checked": true,
+  "canonical_rows": 82305,
+  "physical_initial_acquisitions": 32,
+  "physical_post_acquisitions": 64,
+  "literal_actor_action_probes": 1024,
+  "reconstructed_head_versions": 160,
+  "immutable_bank_beliefs_valid": true,
+  "fixed_first_collector_valid": true,
+  "every_native_td_target_checked": true,
+  "saved_td_fit_rows": 3315819,
+  "trained_td_targets": 3314014,
+  "identical_factual_states_and_writes_valid": true,
+  "new_evaluation_games": 6144,
+  "new_training_raw_tiles": 8409732,
+  "new_target_cpu_seconds": 864.903343098,
+  "economic_source_and_target_cpu_seconds": 2566.7412971549998,
+  "primary_utility": {
+    "mean": 0.27452659606933594,
+    "ci95": [
+      -0.06923885345458984,
+      0.5924690723419186
+    ],
+    "lifecycle_deltas": {
+      "0": -0.21185302734375,
+      "1": 1.3912353515625,
+      "2": 1.53857421875,
+      "3": -0.248565673828125,
+      "4": 0.191131591796875,
+      "5": 1.959259033203125,
+      "6": 0.007171630859375,
+      "7": 0.058380126953125,
+      "8": -0.353515625,
+      "9": -0.968719482421875,
+      "10": 1.433441162109375,
+      "11": -0.60858154296875,
+      "12": -0.556793212890625,
+      "13": -0.07305908203125,
+      "14": 1.11553955078125,
+      "15": -0.281219482421875
+    },
+    "improved_equal_worse": [
+      8,
+      0,
+      8
+    ],
+    "adverse_lifecycles": [
+      0,
+      3,
+      8,
+      9,
+      11,
+      12,
+      13,
+      15
+    ],
+    "parent_mean_deltas": {
+      "0": -0.232757568359375,
+      "1": 0.577178955078125,
+      "2": 1.023681640625,
+      "3": -0.26999664306640625
+    },
+    "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS"
+  },
+  "primary_self_improvement_supported": false,
+  "primary_self_improvement_status": "UNRESOLVED",
+  "target_intervention_supported": true,
+  "target_intervention_status": "SUPPORTED_GAIN",
+  "final_net_gain_supported": true,
+  "final_net_gain_status": "SUPPORTED_GAIN",
+  "mc_self_improvement_supported": false,
+  "mc_self_improvement_status": "UNRESOLVED",
+  "final_task_improvement_supported": {
+    "A": false,
+    "B": false
+  },
+  "final_task_improvement_status": {
+    "A": "UNRESOLVED",
+    "B": "UNRESOLVED"
+  },
+  "task_retention_status": {
+    "A": "UNRESOLVED",
+    "B": "UNRESOLVED"
+  },
+  "task_retention_supported": false,
+  "retained_improvement_supported": false,
+  "target_mechanism_supported": false,
+  "checkpoint_status": {
+    "ROUND1_A": {
+      "MC_LOCAL": "UNRESOLVED",
+      "TD_LOCAL": "UNRESOLVED"
+    },
+    "ROUND1_B": {
+      "MC_LOCAL": "UNRESOLVED",
+      "TD_LOCAL": "UNRESOLVED"
+    },
+    "ROUND2_A": {
+      "MC_LOCAL": "UNRESOLVED",
+      "TD_LOCAL": "UNRESOLVED"
+    },
+    "ROUND2_B": {
+      "MC_LOCAL": "SUPPORTED_LOSS",
+      "TD_LOCAL": "UNRESOLVED"
+    }
+  },
+  "method": "One independent replay of every new initial and fixed-FIRST continuous raw tape with literal seeded cell/rank physics and complete natural labels. Actual sparse v0/v1/v2 lineage reconstruction, all declared first/last candidate H2 action probes, every native saved TD reward/WIN/kind target from its own frozen batch-start head and actual recorded successor, same factual address normalization and writes, paired own-FIRST/target-intervention/net-SOURCE/task-retention endpoints and complete actual cost closure.",
+  "limitations": "Conditional development evidence under four already audited V312 SOURCE parents and inherited deterministic dynamics. Supplied task/round boundaries address observed initial banks. All raw physics and saved TD targets are checked; actor choices are recomputed at the predeclared first/last probes. Complete fits, evaluation actions and bootstrap draws are not rerun. One-step factual targets do not establish the counterfactual H2 optimal operator. Prior SOURCE audit is read without replay; historical dynamics CPU remains unknown.",
+  "errors": []
+}

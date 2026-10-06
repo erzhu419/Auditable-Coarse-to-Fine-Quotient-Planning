@@ -1,0 +1,24 @@
+{
+  "attempts": [
+    {
+      "failed_tests": 0,
+      "mock_calls": {
+        "mock_source_games": 54,
+        "mock_causal_extractions": 54,
+        "mock_model_fits": 6,
+        "mock_prediction_batches": 3,
+        "mock_control_games": 180,
+        "mock_prediction_games": 6,
+        "mock_record_prediction_calls": 36,
+        "mock_planner_calls": 144
+      },
+      "environment_transitions": 0,
+      "model_transitions": 0,
+      "tree_fits": 0,
+      "neural_model_fits": 0,
+      "optimizer_steps": 0,
+      "policy_prediction_rows": 0,
+      "scope": "Runner calls use mocked games, causal extraction, fitting and planning; namespaces are derived without sampling."
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "command": [
+    ".venv-lmta-v42/bin/python",
+    "scripts/analyze_controlled_predictive_replica_ranking_v102.py",
+    "reports/controlled_predictive_replica_ranking_v102"
+  ],
+  "status": "complete",
+  "started_unix": 1789323594.5219243,
+  "returncode": 0,
+  "seconds": 0.31296948599629104,
+  "stderr_bytes": 0
+}

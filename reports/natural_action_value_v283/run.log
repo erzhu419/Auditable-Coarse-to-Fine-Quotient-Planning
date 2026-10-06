@@ -1,0 +1,17 @@
+{"event": "replayed_lifecycle", "lifecycle": 0, "restored_decisions": 20702}
+{"event": "replayed_lifecycle", "lifecycle": 1, "restored_decisions": 20359}
+{"event": "replayed_lifecycle", "lifecycle": 2, "restored_decisions": 21390}
+{"event": "replayed_lifecycle", "lifecycle": 3, "restored_decisions": 19163}
+{"event": "replayed_lifecycle", "lifecycle": 4, "restored_decisions": 21586}
+{"event": "replayed_lifecycle", "lifecycle": 5, "restored_decisions": 20390}
+{"event": "replayed_lifecycle", "lifecycle": 6, "restored_decisions": 20653}
+{"event": "replayed_lifecycle", "lifecycle": 7, "restored_decisions": 21733}
+{"event": "replayed_lifecycle", "lifecycle": 8, "restored_decisions": 21092}
+{"event": "replayed_lifecycle", "lifecycle": 9, "restored_decisions": 20708}
+{"event": "replayed_lifecycle", "lifecycle": 10, "restored_decisions": 20402}
+{"event": "replayed_lifecycle", "lifecycle": 11, "restored_decisions": 19795}
+{"event": "replayed_lifecycle", "lifecycle": 12, "restored_decisions": 19157}
+{"event": "replayed_lifecycle", "lifecycle": 13, "restored_decisions": 19562}
+{"event": "replayed_lifecycle", "lifecycle": 14, "restored_decisions": 19920}
+{"event": "replayed_lifecycle", "lifecycle": 15, "restored_decisions": 21030}
+{"status": "DIAGNOSTIC_COMPLETE", "accounting": {"new_source_observations": 0, "new_target_observations": 0, "new_value_updates": 0, "read_games": 1552, "read_retained_transitions": 1266497, "shadow_warmup_observations": 14543, "replayed_games": 384, "restored_decisions": 327642, "changed_action_rows": 156479, "component_counts": {"learned_swipe_calls": 59715424, "line_table_lookups": 238861696, "legal_swipes": 52729497, "learned_terminal_checks": 67658353, "value_predictions": 51532203, "table_lookups": 1649030496, "root_swipe_calls": 1310568, "root_legal_actions": 1181726, "leaf_choose_calls": 14601214, "second_ply_swipe_calls": 58404856, "generated_spawn_outcomes": 14601214, "spawn_rank1_outcomes": 7300607, "spawn_rank2_outcomes": 7300607, "expanded_postspawn_states": 14601214, "full_leaf_action_comparisons": 51547771, "short_leaf_action_comparisons": 51547771, "rank_mean_products": 29202428, "rank_mean_sums": 29202428, "component_calls": 327642, "compose_calls": 2621136, "compose_probability_products": 116809712, "compose_probability_sums": 116809712, "leaf_terminal_loss_states": 4169, "terminal_goal_bypasses": 16482, "root_goal_actions": 914}, "direct_counts": {"choose_calls": 327642, "learned_swipe_calls": 1310568, "line_table_lookups": 5242272, "legal_swipes": 1181726, "learned_terminal_checks": 1509368, "value_predictions": 1180812, "table_lookups": 37785984, "root_swipe_calls": 1310568, "root_legal_actions": 1181726, "root_goal_actions": 914, "terminal_goal_bypasses": 914}, "shadow_memory_counts": {"FROZEN": {"observations_received": 342185, "beta_updates": 4096, "predict_calls": 327642}, "POOLED": {"observations_received": 342185, "beta_updates": 342185, "predict_calls": 327642}, "LIBRARY": {"observations_received": 342185, "beta_updates": 341760, "predict_calls": 327642, "routing_blocks": 5276, "candidate_predictive_scores": 14839, "module_creations": 23, "module_reactivations": 211}}, "cpu_seconds": 120.658460851, "wall_seconds": 121.85438609500125, "timing_scope": "Input reads, replay, scoring, compressed rows and bootstrap; final summary serialization excluded"}, "summary": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/natural_action_value_v283/summary.json"}

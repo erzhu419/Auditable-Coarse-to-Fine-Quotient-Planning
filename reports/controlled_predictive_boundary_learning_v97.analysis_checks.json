@@ -1,0 +1,34 @@
+{
+  "schema": "acfqp.boundary_learning_analysis_checks.v97",
+  "status": "passed",
+  "unique_tests": 8,
+  "test_executions": 8,
+  "failed_tests": 0,
+  "attempts": [
+    {
+      "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_boundary_learning_v97.py",
+      "passed": 8,
+      "failed": 0,
+      "pytest_seconds": 0.25,
+      "process_seconds": 0.585473367,
+      "exit_code": 0
+    }
+  ],
+  "actual_work": {
+    "tree_fits": 0,
+    "sampled_environment_transitions": 0,
+    "synthetic_model_transitions": 0,
+    "real_analysis_runs": 0
+  },
+  "coverage": [
+    "12 contrasts and equal-history standard error",
+    "Cancelled intervention gains separated from new interventions",
+    "Eight paired DIRECT methods and all fitting/diagnostic costs counted once",
+    "Original deployed predictions and independent references",
+    "Cutoffs retain all costs without replacement",
+    "Whole-episode exclusion and fitting counts",
+    "Signed and absolute mass diagnostic does not become an acceptance gate",
+    "Per-pair mass error and singleton-adjusted boundary-share formula",
+    "Uniform heldout scoring shared by all four models and boundary/tail strata"
+  ]
+}

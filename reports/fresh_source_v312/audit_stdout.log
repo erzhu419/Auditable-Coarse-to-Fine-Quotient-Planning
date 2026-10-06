@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "independent_valid": true,
+  "source_parents": 4,
+  "source_games": 16384,
+  "source_training_raw_tiles": 11285275,
+  "source_updates": {
+    "0": 2796444,
+    "1": 2797691,
+    "2": 2838017,
+    "3": 2819634
+  },
+  "outcomes": {
+    "LOST": 15663,
+    "WON": 721
+  },
+  "fresh_source_compute": {
+    "worker_cpu_seconds": 1700.76468718,
+    "compiler_cpu_seconds": 0.962251,
+    "coordinator_cpu_seconds": 0.11101587700000026,
+    "wall_seconds": 464.0052670360019,
+    "includes_source_setup_training_checkpoint_save": true,
+    "scope": "Worker job entry through setup, training, trace/progress IO and final checkpoint save; compiler child CPU separately; coordinator run entry through completed aggregation. Historical inherited dynamics CPU is unavailable and excluded. Setup and save CPU are contained in worker CPU, not added again.",
+    "full_source_cpu_seconds": 1701.837954057
+  },
+  "zero_initialized_source_parameters": 28344976,
+  "method": "One independent compact-tape replay of all new SOURCE physics, seeded raw tile draws, decision-before-previous-update timing, actual TD targets and terminal/cutoff exclusions; candidate prediction work, exact repeated-address writes, final sparse checkpoints and measured full SOURCE costs.",
+  "limitations": "Value parameters and action selection are not retrained or recomputed. The identified deterministic dynamics teacher is inherited, so this establishes new value-parent histories rather than a wholly new dynamics pipeline.",
+  "errors": []
+}

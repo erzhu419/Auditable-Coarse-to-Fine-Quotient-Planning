@@ -1,0 +1,11 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "model_updates": 0,
+      "scope": "synthetic paired labels, held-out coverage and accounting fixtures"
+    }
+  ]
+}

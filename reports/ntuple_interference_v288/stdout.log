@@ -1,0 +1,5 @@
+{"event": "interference_parent_complete", "parent": 0, "retained_A_rollouts": 7616}
+{"event": "interference_parent_complete", "parent": 1, "retained_A_rollouts": 7360}
+{"event": "interference_parent_complete", "parent": 2, "retained_A_rollouts": 7552}
+{"event": "interference_parent_complete", "parent": 3, "retained_A_rollouts": 7552}
+{"event": "interference_complete", "status": "DIAGNOSTIC_COMPLETE", "primary": {"group": "uniform", "category": "OTHER_BOARD", "metric": "mean_label_delta_mse"}, "new_environment_observations": 0}

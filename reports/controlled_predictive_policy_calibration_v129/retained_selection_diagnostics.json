@@ -1,0 +1,179 @@
+{
+  "scope": "Post hoc descriptive statistics only; uses retained V129 evaluation outcomes, no fitting or new samples. Root-level MC estimates use eight paired suffix draws; rank signs are noisy and not independent significance evidence.",
+  "new_environment_samples": 0,
+  "new_model_samples": 0,
+  "gap_dispersion": {
+    "risk1": {
+      "root_actions": 55,
+      "roots": 30,
+      "cal_error_root_action_min_median_max": [
+        -2.893666188790272,
+        -0.12049397293679442,
+        3.3172255051645436
+      ],
+      "cal_error_root_mean_min_median_max": [
+        -2.376052096423542,
+        -0.18909039290336524,
+        3.3172255051645436
+      ],
+      "cal_error_root_action_rms": 1.274378038445046,
+      "uncal_error_root_action_rms": 2.9127438361948568,
+      "uncal_sign_agreement": 35,
+      "cal_sign_agreement": 32
+    },
+    "risk8": {
+      "root_actions": 55,
+      "roots": 30,
+      "cal_error_root_action_min_median_max": [
+        -9.383033974947082,
+        0.015829167834028324,
+        5.534051984225048
+      ],
+      "cal_error_root_mean_min_median_max": [
+        -6.914094078492585,
+        0.18746700589913945,
+        5.534051984225048
+      ],
+      "cal_error_root_action_rms": 3.0304895890599948,
+      "uncal_error_root_action_rms": 3.7493405812209666,
+      "uncal_sign_agreement": 33,
+      "cal_sign_agreement": 31
+    }
+  },
+  "panel_choices": {
+    "risk1/LEARNED": {
+      "unique_roots": 30,
+      "policy_changed": 7,
+      "action_changed": 3,
+      "cal_reward_choices": 7,
+      "uncal_reward_choices": 0
+    },
+    "risk1/CONSTANT": {
+      "unique_roots": 30,
+      "policy_changed": 7,
+      "action_changed": 0,
+      "cal_reward_choices": 7,
+      "uncal_reward_choices": 0
+    },
+    "risk8/LEARNED": {
+      "unique_roots": 30,
+      "policy_changed": 7,
+      "action_changed": 3,
+      "cal_reward_choices": 7,
+      "uncal_reward_choices": 0
+    },
+    "risk8/CONSTANT": {
+      "unique_roots": 30,
+      "policy_changed": 7,
+      "action_changed": 0,
+      "cal_reward_choices": 7,
+      "uncal_reward_choices": 0
+    }
+  },
+  "control_choices": {
+    "risk1/UNCAL_LEARNED": {
+      "games": 32,
+      "steps": 17251,
+      "reward_steps": 0,
+      "policy_switches": 0,
+      "games_with_policy_switch": 0,
+      "disagreeing_candidate_steps": 4319,
+      "switches_per_game_min_median_max": [
+        0,
+        0.0,
+        0
+      ]
+    },
+    "risk1/CAL_LEARNED": {
+      "games": 32,
+      "steps": 18206,
+      "reward_steps": 3543,
+      "policy_switches": 1026,
+      "games_with_policy_switch": 25,
+      "disagreeing_candidate_steps": 4603,
+      "switches_per_game_min_median_max": [
+        0,
+        13.0,
+        146
+      ]
+    },
+    "risk1/UNCAL_CONSTANT": {
+      "games": 32,
+      "steps": 26477,
+      "reward_steps": 2,
+      "policy_switches": 2,
+      "games_with_policy_switch": 2,
+      "disagreeing_candidate_steps": 3545,
+      "switches_per_game_min_median_max": [
+        0,
+        0.0,
+        1
+      ]
+    },
+    "risk1/CAL_CONSTANT": {
+      "games": 32,
+      "steps": 23835,
+      "reward_steps": 5447,
+      "policy_switches": 148,
+      "games_with_policy_switch": 20,
+      "disagreeing_candidate_steps": 3217,
+      "switches_per_game_min_median_max": [
+        0,
+        2.0,
+        19
+      ]
+    },
+    "risk8/UNCAL_LEARNED": {
+      "games": 32,
+      "steps": 16156,
+      "reward_steps": 1,
+      "policy_switches": 1,
+      "games_with_policy_switch": 1,
+      "disagreeing_candidate_steps": 6831,
+      "switches_per_game_min_median_max": [
+        0,
+        0.0,
+        1
+      ]
+    },
+    "risk8/CAL_LEARNED": {
+      "games": 32,
+      "steps": 14156,
+      "reward_steps": 2297,
+      "policy_switches": 814,
+      "games_with_policy_switch": 32,
+      "disagreeing_candidate_steps": 6160,
+      "switches_per_game_min_median_max": [
+        1,
+        19.0,
+        97
+      ]
+    },
+    "risk8/UNCAL_CONSTANT": {
+      "games": 32,
+      "steps": 26177,
+      "reward_steps": 0,
+      "policy_switches": 0,
+      "games_with_policy_switch": 0,
+      "disagreeing_candidate_steps": 3611,
+      "switches_per_game_min_median_max": [
+        0,
+        0.0,
+        0
+      ]
+    },
+    "risk8/CAL_CONSTANT": {
+      "games": 32,
+      "steps": 25261,
+      "reward_steps": 6185,
+      "policy_switches": 36,
+      "games_with_policy_switch": 8,
+      "disagreeing_candidate_steps": 3436,
+      "switches_per_game_min_median_max": [
+        0,
+        0.0,
+        9
+      ]
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "development_work": {
+        "selector_calls": 6,
+        "synthetic_validation_records": 26,
+        "provided_prediction_vectors": 70,
+        "score_candidate_calls": 1
+      },
+      "newly_sampled_environment_transitions": 0,
+      "new_synthetic_transitions": 0,
+      "neural_model_fits": 0,
+      "scope": "synthetic validation vectors; pure list arithmetic only"
+    }
+  ]
+}

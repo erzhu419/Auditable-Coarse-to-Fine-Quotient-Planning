@@ -1,0 +1,11 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "fits": 0,
+      "scope": "mocked trajectories, synthetic TD updates, lifecycle aliases and seed arithmetic"
+    }
+  ]
+}

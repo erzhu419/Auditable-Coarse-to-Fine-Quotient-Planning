@@ -1,0 +1,17 @@
+{"event": "memory_lifecycle_complete", "lifecycle": 0, "parent": 0, "utilities": {"DIRECT": 66.8984375, "FROZEN_H2": 173.08984375, "POOLED_H2": 192.470703125, "LIBRARY_H2": 201.591796875}}
+{"event": "memory_lifecycle_complete", "lifecycle": 1, "parent": 1, "utilities": {"DIRECT": 42.64453125, "FROZEN_H2": 169.62109375, "POOLED_H2": 157.45703125, "LIBRARY_H2": 161.32421875}}
+{"event": "memory_lifecycle_complete", "lifecycle": 2, "parent": 2, "utilities": {"DIRECT": 23.6328125, "FROZEN_H2": 194.365234375, "POOLED_H2": 155.224609375, "LIBRARY_H2": 231.056640625}}
+{"event": "memory_lifecycle_complete", "lifecycle": 3, "parent": 3, "utilities": {"DIRECT": 42.599609375, "FROZEN_H2": 193.91015625, "POOLED_H2": 209.0234375, "LIBRARY_H2": 168.197265625}}
+{"event": "memory_lifecycle_complete", "lifecycle": 4, "parent": 0, "utilities": {"DIRECT": 52.794921875, "FROZEN_H2": 219.919921875, "POOLED_H2": 163.2265625, "LIBRARY_H2": 233.28515625}}
+{"event": "memory_lifecycle_complete", "lifecycle": 5, "parent": 1, "utilities": {"DIRECT": 67.60546875, "FROZEN_H2": 126.775390625, "POOLED_H2": 136.703125, "LIBRARY_H2": 220.728515625}}
+{"event": "memory_lifecycle_complete", "lifecycle": 6, "parent": 2, "utilities": {"DIRECT": 80.31640625, "FROZEN_H2": 160.369140625, "POOLED_H2": 181.310546875, "LIBRARY_H2": 171.62109375}}
+{"event": "memory_lifecycle_complete", "lifecycle": 7, "parent": 3, "utilities": {"DIRECT": 88.4375, "FROZEN_H2": 214.814453125, "POOLED_H2": 244.017578125, "LIBRARY_H2": 224.8828125}}
+{"event": "memory_lifecycle_complete", "lifecycle": 8, "parent": 0, "utilities": {"DIRECT": 37.974609375, "FROZEN_H2": 147.6875, "POOLED_H2": 191.970703125, "LIBRARY_H2": 198.775390625}}
+{"event": "memory_lifecycle_complete", "lifecycle": 9, "parent": 1, "utilities": {"DIRECT": 43.955078125, "FROZEN_H2": 184.6328125, "POOLED_H2": 184.81640625, "LIBRARY_H2": 193.12109375}}
+{"event": "memory_lifecycle_complete", "lifecycle": 10, "parent": 2, "utilities": {"DIRECT": 58.017578125, "FROZEN_H2": 238.619140625, "POOLED_H2": 211.38671875, "LIBRARY_H2": 171.521484375}}
+{"event": "memory_lifecycle_complete", "lifecycle": 11, "parent": 3, "utilities": {"DIRECT": 44.775390625, "FROZEN_H2": 179.798828125, "POOLED_H2": 253.0859375, "LIBRARY_H2": 163.6328125}}
+{"event": "memory_lifecycle_complete", "lifecycle": 12, "parent": 0, "utilities": {"DIRECT": 42.900390625, "FROZEN_H2": 179.546875, "POOLED_H2": 189.544921875, "LIBRARY_H2": 157.416015625}}
+{"event": "memory_lifecycle_complete", "lifecycle": 13, "parent": 1, "utilities": {"DIRECT": 50.400390625, "FROZEN_H2": 181.171875, "POOLED_H2": 149.0078125, "LIBRARY_H2": 172.189453125}}
+{"event": "memory_lifecycle_complete", "lifecycle": 14, "parent": 2, "utilities": {"DIRECT": 82.154296875, "FROZEN_H2": 201.01953125, "POOLED_H2": 248.373046875, "LIBRARY_H2": 187.54296875}}
+{"event": "memory_lifecycle_complete", "lifecycle": 15, "parent": 3, "utilities": {"DIRECT": 57.3984375, "FROZEN_H2": 207.513671875, "POOLED_H2": 165.474609375, "LIBRARY_H2": 207.669921875}}
+{"status": "DEVELOPMENT_COMPLETE", "primary": "NOT_SUPPORTED_CONDITIONAL_ON_PARENTS", "trace_bytes": 44967999, "summary_bytes": 4762227}

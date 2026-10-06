@@ -1,0 +1,20 @@
+{
+  "attempts": [
+    {
+      "failed_tests": 0,
+      "development_work": {
+        "neural_model_fits": 9,
+        "optimizer_steps": 57,
+        "update_fits": 7,
+        "update_steps": 45,
+        "oracle_fits": 2,
+        "oracle_steps": 12
+      },
+      "production_neural_model_fits": 0,
+      "production_optimizer_steps": 0,
+      "environment_transitions": 0,
+      "model_transitions": 0,
+      "scope": "Short-step synthetic fits; half payloads have synthetic lineage metadata and are not newly fitted."
+    }
+  ]
+}

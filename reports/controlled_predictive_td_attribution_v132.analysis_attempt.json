@@ -1,0 +1,19 @@
+{
+  "attempts": [
+    {
+      "command": [
+        "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+        "scripts/analyze_controlled_predictive_td_attribution_v132.py",
+        "--input",
+        "reports/controlled_predictive_td_attribution_v132"
+      ],
+      "status": "complete",
+      "environment_samples": 0,
+      "model_samples": 0,
+      "weight_replays": 0,
+      "returncode": 0,
+      "seconds": 4.263195847001043,
+      "stderr_bytes": 0
+    }
+  ]
+}

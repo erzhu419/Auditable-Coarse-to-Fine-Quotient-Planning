@@ -1,0 +1,13 @@
+{
+  "stage": "analysis",
+  "status": "complete",
+  "command": [
+    "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "scripts/analyze_controlled_predictive_module_repair_v154.py",
+    "--directory",
+    "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_module_repair_v154"
+  ],
+  "returncode": 0,
+  "seconds": 55.531377711005916,
+  "stderr_bytes": 0
+}

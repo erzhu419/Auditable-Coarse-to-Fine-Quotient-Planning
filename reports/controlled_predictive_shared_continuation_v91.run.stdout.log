@@ -1,0 +1,205 @@
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 0, "scores": {"H2_ONLY": 6516, "MC": 6516, "DECOMPOSED": 7092}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 0, "scores": {"H2_ONLY": 14412, "MC": 14488, "DECOMPOSED": 6900}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 0, "scores": {"H2_ONLY": 15496, "MC": 15496, "DECOMPOSED": 7092}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 0, "scores": {"H2_ONLY": 6576, "MC": 7292, "DECOMPOSED": 6712}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 0, "scores": {"H2_ONLY": 15496, "MC": 7140, "DECOMPOSED": 7140}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 1, "scores": {"H2_ONLY": 14852, "MC": 14852, "DECOMPOSED": 6880}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 0, "scores": {"H2_ONLY": 16208, "MC": 16208, "DECOMPOSED": 16208}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 1, "scores": {"H2_ONLY": 14112, "MC": 12184, "DECOMPOSED": 12184}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 1, "scores": {"H2_ONLY": 11344, "MC": 5840, "DECOMPOSED": 7184}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 1, "scores": {"H2_ONLY": 14816, "MC": 7540, "DECOMPOSED": 14816}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 1, "scores": {"H2_ONLY": 12256, "MC": 6868, "DECOMPOSED": 8076}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 2, "scores": {"H2_ONLY": 7892, "MC": 7892, "DECOMPOSED": 2484}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 1, "scores": {"H2_ONLY": 12232, "MC": 12232, "DECOMPOSED": 12232}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 2, "scores": {"H2_ONLY": 12148, "MC": 7096, "DECOMPOSED": 7096}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 2, "scores": {"H2_ONLY": 8024, "MC": 14408, "DECOMPOSED": 14408}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 2, "scores": {"H2_ONLY": 7224, "MC": 12232, "DECOMPOSED": 15276}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 2, "scores": {"H2_ONLY": 12148, "MC": 6880, "DECOMPOSED": 6880}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 3, "scores": {"H2_ONLY": 7292, "MC": 7292, "DECOMPOSED": 7292}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 2, "scores": {"H2_ONLY": 7264, "MC": 7264, "DECOMPOSED": 7264}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 3, "scores": {"H2_ONLY": 7876, "MC": 6744, "DECOMPOSED": 6744}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 3, "scores": {"H2_ONLY": 12152, "MC": 14252, "DECOMPOSED": 14252}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 3, "scores": {"H2_ONLY": 12136, "MC": 5364, "DECOMPOSED": 14380}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 4, "scores": {"H2_ONLY": 12000, "MC": 12000, "DECOMPOSED": 7016}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 3, "scores": {"H2_ONLY": 12168, "MC": 7320, "DECOMPOSED": 20256}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 3, "scores": {"H2_ONLY": 12136, "MC": 12136, "DECOMPOSED": 12136}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 4, "scores": {"H2_ONLY": 12000, "MC": 7016, "DECOMPOSED": 10160}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 4, "scores": {"H2_ONLY": 7884, "MC": 7884, "DECOMPOSED": 7100}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 4, "scores": {"H2_ONLY": 7232, "MC": 7232, "DECOMPOSED": 12248}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 5, "scores": {"H2_ONLY": 6576, "MC": 6576, "DECOMPOSED": 3476}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 4, "scores": {"H2_ONLY": 12252, "MC": 12160, "DECOMPOSED": 12160}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 4, "scores": {"H2_ONLY": 7232, "MC": 7232, "DECOMPOSED": 7228}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 5, "scores": {"H2_ONLY": 7260, "MC": 3496, "DECOMPOSED": 15532}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 5, "scores": {"H2_ONLY": 8036, "MC": 8036, "DECOMPOSED": 8064}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 6, "scores": {"H2_ONLY": 8864, "MC": 8864, "DECOMPOSED": 6248}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 5, "scores": {"H2_ONLY": 15884, "MC": 5500, "DECOMPOSED": 14408}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 5, "scores": {"H2_ONLY": 7132, "MC": 12176, "DECOMPOSED": 7616}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 6, "scores": {"H2_ONLY": 8864, "MC": 7088, "DECOMPOSED": 3456}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 5, "scores": {"H2_ONLY": 7144, "MC": 7388, "DECOMPOSED": 7144}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 6, "scores": {"H2_ONLY": 7108, "MC": 7108, "DECOMPOSED": 7108}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 6, "scores": {"H2_ONLY": 7168, "MC": 14532, "DECOMPOSED": 7200}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 7, "scores": {"H2_ONLY": 15504, "MC": 15504, "DECOMPOSED": 7188}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 6, "scores": {"H2_ONLY": 12380, "MC": 12172, "DECOMPOSED": 12172}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 6, "scores": {"H2_ONLY": 7168, "MC": 7168, "DECOMPOSED": 7168}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 7, "scores": {"H2_ONLY": 15536, "MC": 6944, "DECOMPOSED": 16256}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 7, "scores": {"H2_ONLY": 7004, "MC": 7004, "DECOMPOSED": 6656}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 7, "scores": {"H2_ONLY": 14036, "MC": 3268, "DECOMPOSED": 3168}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 8, "scores": {"H2_ONLY": 7016, "MC": 7016, "DECOMPOSED": 3156}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 7, "scores": {"H2_ONLY": 7036, "MC": 7144, "DECOMPOSED": 7144}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 8, "scores": {"H2_ONLY": 7016, "MC": 7016, "DECOMPOSED": 3156}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 7, "scores": {"H2_ONLY": 14076, "MC": 14076, "DECOMPOSED": 14076}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 9, "scores": {"H2_ONLY": 6308, "MC": 6308, "DECOMPOSED": 6308}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 8, "scores": {"H2_ONLY": 5680, "MC": 15392, "DECOMPOSED": 15392}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 8, "scores": {"H2_ONLY": 7048, "MC": 5860, "DECOMPOSED": 16044}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 9, "scores": {"H2_ONLY": 6308, "MC": 14408, "DECOMPOSED": 6308}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 8, "scores": {"H2_ONLY": 5684, "MC": 7224, "DECOMPOSED": 15460}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 8, "scores": {"H2_ONLY": 7048, "MC": 5860, "DECOMPOSED": 7048}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 10, "scores": {"H2_ONLY": 7492, "MC": 7492, "DECOMPOSED": 5412}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 9, "scores": {"H2_ONLY": 7176, "MC": 7176, "DECOMPOSED": 7176}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 9, "scores": {"H2_ONLY": 11476, "MC": 7032, "DECOMPOSED": 7032}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 9, "scores": {"H2_ONLY": 1500, "MC": 7016, "DECOMPOSED": 1500}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 10, "scores": {"H2_ONLY": 11928, "MC": 5412, "DECOMPOSED": 6508}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 10, "scores": {"H2_ONLY": 12208, "MC": 7104, "DECOMPOSED": 7104}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 9, "scores": {"H2_ONLY": 12192, "MC": 12192, "DECOMPOSED": 12192}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 11, "scores": {"H2_ONLY": 7156, "MC": 7156, "DECOMPOSED": 12484}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 10, "scores": {"H2_ONLY": 7324, "MC": 7100, "DECOMPOSED": 7100}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 10, "scores": {"H2_ONLY": 12220, "MC": 12220, "DECOMPOSED": 12360}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 11, "scores": {"H2_ONLY": 7156, "MC": 12496, "DECOMPOSED": 5692}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 10, "scores": {"H2_ONLY": 7356, "MC": 7356, "DECOMPOSED": 7356}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 12, "scores": {"H2_ONLY": 7788, "MC": 7788, "DECOMPOSED": 3116}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 11, "scores": {"H2_ONLY": 7172, "MC": 7172, "DECOMPOSED": 7172}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 12, "scores": {"H2_ONLY": 12668, "MC": 7328, "DECOMPOSED": 3116}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 11, "scores": {"H2_ONLY": 14004, "MC": 7212, "DECOMPOSED": 12556}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 11, "scores": {"H2_ONLY": 7172, "MC": 13140, "DECOMPOSED": 13140}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 13, "scores": {"H2_ONLY": 7148, "MC": 7148, "DECOMPOSED": 7148}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 12, "scores": {"H2_ONLY": 7104, "MC": 7104, "DECOMPOSED": 7180}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 11, "scores": {"H2_ONLY": 14040, "MC": 14040, "DECOMPOSED": 14040}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 13, "scores": {"H2_ONLY": 12456, "MC": 12456, "DECOMPOSED": 11900}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 12, "scores": {"H2_ONLY": 2844, "MC": 7328, "DECOMPOSED": 7328}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 12, "scores": {"H2_ONLY": 7104, "MC": 12028, "DECOMPOSED": 12028}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 14, "scores": {"H2_ONLY": 7068, "MC": 7068, "DECOMPOSED": 7068}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 13, "scores": {"H2_ONLY": 5356, "MC": 5356, "DECOMPOSED": 7056}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 13, "scores": {"H2_ONLY": 5356, "MC": 5616, "DECOMPOSED": 5616}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 12, "scores": {"H2_ONLY": 14616, "MC": 14616, "DECOMPOSED": 14616}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 14, "scores": {"H2_ONLY": 15096, "MC": 7300, "DECOMPOSED": 7300}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 14, "scores": {"H2_ONLY": 7204, "MC": 7140, "DECOMPOSED": 7140}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "reward", "replica": 15, "scores": {"H2_ONLY": 6476, "MC": 6476, "DECOMPOSED": 12252}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 13, "scores": {"H2_ONLY": 15620, "MC": 15620, "DECOMPOSED": 7920}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 14, "scores": {"H2_ONLY": 12088, "MC": 14328, "DECOMPOSED": 7140}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "reward", "replica": 15, "scores": {"H2_ONLY": 3048, "MC": 7100, "DECOMPOSED": 7100}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 6, "query": "risk_goal", "replica": 15, "scores": {"H2_ONLY": 6976, "MC": 15924, "DECOMPOSED": 15924}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 13, "scores": {"H2_ONLY": 15620, "MC": 15620, "DECOMPOSED": 15620}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 6, "query": "risk_goal", "replica": 15, "scores": {"H2_ONLY": 7216, "MC": 6876, "DECOMPOSED": 6876}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 14, "scores": {"H2_ONLY": 12524, "MC": 15400, "DECOMPOSED": 7324}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 14, "scores": {"H2_ONLY": 12548, "MC": 12548, "DECOMPOSED": 12548}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 0, "scores": {"H2_ONLY": 6756, "MC": 12212, "DECOMPOSED": 6756, "MC_FROZEN_6": 6368, "DECOMPOSED_FROZEN_6": 12212}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "reward", "replica": 15, "scores": {"H2_ONLY": 7540, "MC": 15784, "DECOMPOSED": 7116}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 0, "scores": {"H2_ONLY": 7404, "MC": 11772, "DECOMPOSED": 3180, "MC_FROZEN_6": 11772, "DECOMPOSED_FROZEN_6": 11772}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 6, "query": "risk_goal", "replica": 15, "scores": {"H2_ONLY": 7508, "MC": 7508, "DECOMPOSED": 7508}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 0, "scores": {"H2_ONLY": 6756, "MC": 15428, "DECOMPOSED": 7400, "MC_FROZEN_6": 7400, "DECOMPOSED_FROZEN_6": 15428}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 0, "scores": {"H2_ONLY": 7408, "MC": 12280, "DECOMPOSED": 3180, "MC_FROZEN_6": 12280, "DECOMPOSED_FROZEN_6": 12280}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 1, "scores": {"H2_ONLY": 12284, "MC": 3344, "DECOMPOSED": 12284, "MC_FROZEN_6": 12284, "DECOMPOSED_FROZEN_6": 3344}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 1, "scores": {"H2_ONLY": 15208, "MC": 6368, "DECOMPOSED": 12132, "MC_FROZEN_6": 15208, "DECOMPOSED_FROZEN_6": 3084}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 1, "scores": {"H2_ONLY": 12284, "MC": 12284, "DECOMPOSED": 7192, "MC_FROZEN_6": 7192, "DECOMPOSED_FROZEN_6": 7192}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 0, "scores": {"H2_ONLY": 11544, "MC": 12368, "DECOMPOSED": 7152, "MC_FROZEN_6": 7224, "DECOMPOSED_FROZEN_6": 7152}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 1, "scores": {"H2_ONLY": 14416, "MC": 7272, "DECOMPOSED": 12144, "MC_FROZEN_6": 12144, "DECOMPOSED_FROZEN_6": 12144}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 2, "scores": {"H2_ONLY": 11752, "MC": 8408, "DECOMPOSED": 11752, "MC_FROZEN_6": 8408, "DECOMPOSED_FROZEN_6": 14628}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 0, "scores": {"H2_ONLY": 11548, "MC": 11548, "DECOMPOSED": 12368, "MC_FROZEN_6": 11548, "DECOMPOSED_FROZEN_6": 11548}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 2, "scores": {"H2_ONLY": 13740, "MC": 13740, "DECOMPOSED": 14752, "MC_FROZEN_6": 13740, "DECOMPOSED_FROZEN_6": 13740}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 1, "scores": {"H2_ONLY": 12064, "MC": 12064, "DECOMPOSED": 12156, "MC_FROZEN_6": 7180, "DECOMPOSED_FROZEN_6": 12156}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 2, "scores": {"H2_ONLY": 12212, "MC": 15720, "DECOMPOSED": 15720, "MC_FROZEN_6": 12212, "DECOMPOSED_FROZEN_6": 12060}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 3, "scores": {"H2_ONLY": 7840, "MC": 7840, "DECOMPOSED": 7192, "MC_FROZEN_6": 7840, "DECOMPOSED_FROZEN_6": 7088}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 1, "scores": {"H2_ONLY": 10732, "MC": 10732, "DECOMPOSED": 10732, "MC_FROZEN_6": 10732, "DECOMPOSED_FROZEN_6": 10732}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 2, "scores": {"H2_ONLY": 13740, "MC": 15308, "DECOMPOSED": 15308, "MC_FROZEN_6": 15308, "DECOMPOSED_FROZEN_6": 5552}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 3, "scores": {"H2_ONLY": 5564, "MC": 4932, "DECOMPOSED": 4932, "MC_FROZEN_6": 5564, "DECOMPOSED_FROZEN_6": 4932}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 2, "scores": {"H2_ONLY": 7040, "MC": 12380, "DECOMPOSED": 6660, "MC_FROZEN_6": 6660, "DECOMPOSED_FROZEN_6": 5292}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 3, "scores": {"H2_ONLY": 7840, "MC": 5404, "DECOMPOSED": 12260, "MC_FROZEN_6": 12260, "DECOMPOSED_FROZEN_6": 12260}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 3, "scores": {"H2_ONLY": 5564, "MC": 5900, "DECOMPOSED": 5260, "MC_FROZEN_6": 5260, "DECOMPOSED_FROZEN_6": 5260}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 2, "scores": {"H2_ONLY": 7040, "MC": 7040, "DECOMPOSED": 5292, "MC_FROZEN_6": 7040, "DECOMPOSED_FROZEN_6": 7040}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 4, "scores": {"H2_ONLY": 3436, "MC": 3436, "DECOMPOSED": 3436, "MC_FROZEN_6": 7340, "DECOMPOSED_FROZEN_6": 7048}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 3, "scores": {"H2_ONLY": 7092, "MC": 7092, "DECOMPOSED": 7092, "MC_FROZEN_6": 5480, "DECOMPOSED_FROZEN_6": 5480}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 4, "scores": {"H2_ONLY": 12080, "MC": 16824, "DECOMPOSED": 4888, "MC_FROZEN_6": 12080, "DECOMPOSED_FROZEN_6": 12080}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 4, "scores": {"H2_ONLY": 3452, "MC": 7564, "DECOMPOSED": 3452, "MC_FROZEN_6": 15148, "DECOMPOSED_FROZEN_6": 7564}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 5, "scores": {"H2_ONLY": 3512, "MC": 7204, "DECOMPOSED": 7204, "MC_FROZEN_6": 3512, "DECOMPOSED_FROZEN_6": 7060}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 3, "scores": {"H2_ONLY": 7104, "MC": 7104, "DECOMPOSED": 7104, "MC_FROZEN_6": 12896, "DECOMPOSED_FROZEN_6": 7104}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 4, "scores": {"H2_ONLY": 12080, "MC": 12080, "DECOMPOSED": 4892, "MC_FROZEN_6": 4892, "DECOMPOSED_FROZEN_6": 4892}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 4, "scores": {"H2_ONLY": 3056, "MC": 6404, "DECOMPOSED": 7180, "MC_FROZEN_6": 7180, "DECOMPOSED_FROZEN_6": 6436}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 5, "scores": {"H2_ONLY": 3484, "MC": 10716, "DECOMPOSED": 10716, "MC_FROZEN_6": 10716, "DECOMPOSED_FROZEN_6": 14424}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 5, "scores": {"H2_ONLY": 6744, "MC": 7484, "DECOMPOSED": 12104, "MC_FROZEN_6": 12104, "DECOMPOSED_FROZEN_6": 12104}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 4, "scores": {"H2_ONLY": 3056, "MC": 3056, "DECOMPOSED": 10964, "MC_FROZEN_6": 3056, "DECOMPOSED_FROZEN_6": 3056}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 5, "scores": {"H2_ONLY": 6788, "MC": 7604, "DECOMPOSED": 6712, "MC_FROZEN_6": 6712, "DECOMPOSED_FROZEN_6": 12104}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 6, "scores": {"H2_ONLY": 14904, "MC": 14700, "DECOMPOSED": 14904, "MC_FROZEN_6": 14904, "DECOMPOSED_FROZEN_6": 7100}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 5, "scores": {"H2_ONLY": 6952, "MC": 14468, "DECOMPOSED": 14468, "MC_FROZEN_6": 6816, "DECOMPOSED_FROZEN_6": 14468}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 6, "scores": {"H2_ONLY": 5856, "MC": 5856, "DECOMPOSED": 11072, "MC_FROZEN_6": 11072, "DECOMPOSED_FROZEN_6": 11072}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 5, "scores": {"H2_ONLY": 6952, "MC": 6952, "DECOMPOSED": 14468, "MC_FROZEN_6": 6952, "DECOMPOSED_FROZEN_6": 6952}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 6, "scores": {"H2_ONLY": 15688, "MC": 7116, "DECOMPOSED": 15688, "MC_FROZEN_6": 3096, "DECOMPOSED_FROZEN_6": 13920}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 6, "scores": {"H2_ONLY": 6820, "MC": 6820, "DECOMPOSED": 12352, "MC_FROZEN_6": 12352, "DECOMPOSED_FROZEN_6": 12192}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 6, "scores": {"H2_ONLY": 5436, "MC": 3288, "DECOMPOSED": 5436, "MC_FROZEN_6": 7132, "DECOMPOSED_FROZEN_6": 7132}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 7, "scores": {"H2_ONLY": 12300, "MC": 7180, "DECOMPOSED": 3332, "MC_FROZEN_6": 3332, "DECOMPOSED_FROZEN_6": 7180}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 7, "scores": {"H2_ONLY": 12192, "MC": 16156, "DECOMPOSED": 6240, "MC_FROZEN_6": 6240, "DECOMPOSED_FROZEN_6": 6240}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 6, "scores": {"H2_ONLY": 7692, "MC": 7892, "DECOMPOSED": 7692, "MC_FROZEN_6": 7692, "DECOMPOSED_FROZEN_6": 7692}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 7, "scores": {"H2_ONLY": 13728, "MC": 13728, "DECOMPOSED": 7452, "MC_FROZEN_6": 7452, "DECOMPOSED_FROZEN_6": 7180}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 7, "scores": {"H2_ONLY": 3496, "MC": 3200, "DECOMPOSED": 7800, "MC_FROZEN_6": 7292, "DECOMPOSED_FROZEN_6": 7800}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 8, "scores": {"H2_ONLY": 5468, "MC": 7084, "DECOMPOSED": 5468, "MC_FROZEN_6": 5468, "DECOMPOSED_FROZEN_6": 7084}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 7, "scores": {"H2_ONLY": 3600, "MC": 3600, "DECOMPOSED": 3200, "MC_FROZEN_6": 3600, "DECOMPOSED_FROZEN_6": 3600}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 7, "scores": {"H2_ONLY": 12192, "MC": 16808, "DECOMPOSED": 16808, "MC_FROZEN_6": 16808, "DECOMPOSED_FROZEN_6": 7076}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 8, "scores": {"H2_ONLY": 7640, "MC": 3288, "DECOMPOSED": 3288, "MC_FROZEN_6": 3288, "DECOMPOSED_FROZEN_6": 3288}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 8, "scores": {"H2_ONLY": 7088, "MC": 7396, "DECOMPOSED": 5676, "MC_FROZEN_6": 7396, "DECOMPOSED_FROZEN_6": 5676}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 9, "scores": {"H2_ONLY": 5336, "MC": 12388, "DECOMPOSED": 5336, "MC_FROZEN_6": 5336, "DECOMPOSED_FROZEN_6": 7296}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 8, "scores": {"H2_ONLY": 14756, "MC": 7504, "DECOMPOSED": 12340, "MC_FROZEN_6": 14756, "DECOMPOSED_FROZEN_6": 12340}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 9, "scores": {"H2_ONLY": 5336, "MC": 7296, "DECOMPOSED": 7296, "MC_FROZEN_6": 5336, "DECOMPOSED_FROZEN_6": 14124}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 8, "scores": {"H2_ONLY": 15984, "MC": 15984, "DECOMPOSED": 12528, "MC_FROZEN_6": 15984, "DECOMPOSED_FROZEN_6": 7092}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 8, "scores": {"H2_ONLY": 14796, "MC": 6500, "DECOMPOSED": 6500, "MC_FROZEN_6": 6500, "DECOMPOSED_FROZEN_6": 6500}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 9, "scores": {"H2_ONLY": 13664, "MC": 3420, "DECOMPOSED": 3420, "MC_FROZEN_6": 3420, "DECOMPOSED_FROZEN_6": 3420}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 10, "scores": {"H2_ONLY": 7112, "MC": 5868, "DECOMPOSED": 5868, "MC_FROZEN_6": 7112, "DECOMPOSED_FROZEN_6": 14188}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 9, "scores": {"H2_ONLY": 6572, "MC": 6572, "DECOMPOSED": 6304, "MC_FROZEN_6": 7092, "DECOMPOSED_FROZEN_6": 6572}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 10, "scores": {"H2_ONLY": 7112, "MC": 5908, "DECOMPOSED": 5908, "MC_FROZEN_6": 5908, "DECOMPOSED_FROZEN_6": 5908}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 9, "scores": {"H2_ONLY": 6572, "MC": 6572, "DECOMPOSED": 6348, "MC_FROZEN_6": 6348, "DECOMPOSED_FROZEN_6": 6348}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 9, "scores": {"H2_ONLY": 13664, "MC": 13664, "DECOMPOSED": 3420, "MC_FROZEN_6": 13664, "DECOMPOSED_FROZEN_6": 13664}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 11, "scores": {"H2_ONLY": 7008, "MC": 7008, "DECOMPOSED": 7008, "MC_FROZEN_6": 7008, "DECOMPOSED_FROZEN_6": 7008}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 10, "scores": {"H2_ONLY": 12600, "MC": 7384, "DECOMPOSED": 6764, "MC_FROZEN_6": 12600, "DECOMPOSED_FROZEN_6": 7384}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 10, "scores": {"H2_ONLY": 14908, "MC": 7396, "DECOMPOSED": 12160, "MC_FROZEN_6": 14908, "DECOMPOSED_FROZEN_6": 12160}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 11, "scores": {"H2_ONLY": 12100, "MC": 12100, "DECOMPOSED": 7204, "MC_FROZEN_6": 7204, "DECOMPOSED_FROZEN_6": 12100}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 10, "scores": {"H2_ONLY": 12916, "MC": 12904, "DECOMPOSED": 12904, "MC_FROZEN_6": 6764, "DECOMPOSED_FROZEN_6": 6764}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 12, "scores": {"H2_ONLY": 10720, "MC": 10720, "DECOMPOSED": 10720, "MC_FROZEN_6": 10720, "DECOMPOSED_FROZEN_6": 3640}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 10, "scores": {"H2_ONLY": 15244, "MC": 15244, "DECOMPOSED": 12160, "MC_FROZEN_6": 15244, "DECOMPOSED_FROZEN_6": 15244}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 11, "scores": {"H2_ONLY": 14420, "MC": 7344, "DECOMPOSED": 7132, "MC_FROZEN_6": 14420, "DECOMPOSED_FROZEN_6": 7132}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 12, "scores": {"H2_ONLY": 10860, "MC": 11808, "DECOMPOSED": 5712, "MC_FROZEN_6": 3640, "DECOMPOSED_FROZEN_6": 5712}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 11, "scores": {"H2_ONLY": 13904, "MC": 7212, "DECOMPOSED": 7064, "MC_FROZEN_6": 7064, "DECOMPOSED_FROZEN_6": 3180}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 11, "scores": {"H2_ONLY": 12308, "MC": 3552, "DECOMPOSED": 12108, "MC_FROZEN_6": 12108, "DECOMPOSED_FROZEN_6": 12108}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 13, "scores": {"H2_ONLY": 7212, "MC": 3236, "DECOMPOSED": 3236, "MC_FROZEN_6": 7212, "DECOMPOSED_FROZEN_6": 7084}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 12, "scores": {"H2_ONLY": 7236, "MC": 3080, "DECOMPOSED": 7056, "MC_FROZEN_6": 7056, "DECOMPOSED_FROZEN_6": 7056}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 11, "scores": {"H2_ONLY": 13976, "MC": 13976, "DECOMPOSED": 13808, "MC_FROZEN_6": 13976, "DECOMPOSED_FROZEN_6": 13976}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 13, "scores": {"H2_ONLY": 16096, "MC": 7456, "DECOMPOSED": 7904, "MC_FROZEN_6": 7904, "DECOMPOSED_FROZEN_6": 7904}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 12, "scores": {"H2_ONLY": 7236, "MC": 7236, "DECOMPOSED": 10632, "MC_FROZEN_6": 10632, "DECOMPOSED_FROZEN_6": 7056}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 12, "scores": {"H2_ONLY": 6940, "MC": 6308, "DECOMPOSED": 7056, "MC_FROZEN_6": 12172, "DECOMPOSED_FROZEN_6": 12172}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 14, "scores": {"H2_ONLY": 7436, "MC": 7436, "DECOMPOSED": 7436, "MC_FROZEN_6": 7436, "DECOMPOSED_FROZEN_6": 15384}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 13, "scores": {"H2_ONLY": 7172, "MC": 7192, "DECOMPOSED": 7468, "MC_FROZEN_6": 7172, "DECOMPOSED_FROZEN_6": 7192}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 12, "scores": {"H2_ONLY": 6940, "MC": 6940, "DECOMPOSED": 15300, "MC_FROZEN_6": 6940, "DECOMPOSED_FROZEN_6": 6940}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 14, "scores": {"H2_ONLY": 5620, "MC": 12248, "DECOMPOSED": 15740, "MC_FROZEN_6": 12248, "DECOMPOSED_FROZEN_6": 15740}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 13, "scores": {"H2_ONLY": 16060, "MC": 16060, "DECOMPOSED": 7468, "MC_FROZEN_6": 7468, "DECOMPOSED_FROZEN_6": 7468}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 13, "scores": {"H2_ONLY": 7248, "MC": 7248, "DECOMPOSED": 6584, "MC_FROZEN_6": 12028, "DECOMPOSED_FROZEN_6": 6584}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "reward", "replica": 15, "scores": {"H2_ONLY": 7436, "MC": 7336, "DECOMPOSED": 7336, "MC_FROZEN_6": 7336, "DECOMPOSED_FROZEN_6": 7436}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 13, "scores": {"H2_ONLY": 7524, "MC": 7524, "DECOMPOSED": 6584, "MC_FROZEN_6": 7208, "DECOMPOSED_FROZEN_6": 7524}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 14, "scores": {"H2_ONLY": 6868, "MC": 13740, "DECOMPOSED": 6868, "MC_FROZEN_6": 6868, "DECOMPOSED_FROZEN_6": 6868}}
+{"phase": "paired_games", "lifecycle": 2, "checkpoint": 12, "query": "risk_goal", "replica": 15, "scores": {"H2_ONLY": 7436, "MC": 7392, "DECOMPOSED": 7436, "MC_FROZEN_6": 7436, "DECOMPOSED_FROZEN_6": 7392}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 14, "scores": {"H2_ONLY": 7200, "MC": 7200, "DECOMPOSED": 12332, "MC_FROZEN_6": 7200, "DECOMPOSED_FROZEN_6": 12332}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 14, "scores": {"H2_ONLY": 6884, "MC": 14576, "DECOMPOSED": 14452, "MC_FROZEN_6": 14576, "DECOMPOSED_FROZEN_6": 6884}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 14, "scores": {"H2_ONLY": 13720, "MC": 13720, "DECOMPOSED": 11684, "MC_FROZEN_6": 13720, "DECOMPOSED_FROZEN_6": 7548}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "reward", "replica": 15, "scores": {"H2_ONLY": 15808, "MC": 15808, "DECOMPOSED": 3204, "MC_FROZEN_6": 15808, "DECOMPOSED_FROZEN_6": 6896}}
+{"phase": "paired_games", "lifecycle": 1, "checkpoint": 12, "query": "risk_goal", "replica": 15, "scores": {"H2_ONLY": 15808, "MC": 15808, "DECOMPOSED": 3204, "MC_FROZEN_6": 3204, "DECOMPOSED_FROZEN_6": 3204}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "reward", "replica": 15, "scores": {"H2_ONLY": 3100, "MC": 7280, "DECOMPOSED": 15196, "MC_FROZEN_6": 11848, "DECOMPOSED_FROZEN_6": 15196}}
+{"phase": "paired_games", "lifecycle": 0, "checkpoint": 12, "query": "risk_goal", "replica": 15, "scores": {"H2_ONLY": 11604, "MC": 11604, "DECOMPOSED": 14456, "MC_FROZEN_6": 11604, "DECOMPOSED_FROZEN_6": 11604}}
+{"phase": "reference_root", "lifecycle": 2, "query": "reward", "episode": 0, "censored": false, "transitions": 41165}
+{"phase": "reference_root", "lifecycle": 1, "query": "reward", "episode": 0, "censored": false, "transitions": 34527}
+{"phase": "reference_root", "lifecycle": 0, "query": "reward", "episode": 0, "censored": false, "transitions": 42152}
+{"phase": "reference_root", "lifecycle": 1, "query": "risk_goal", "episode": 0, "censored": false, "transitions": 34531}
+{"phase": "reference_root", "lifecycle": 2, "query": "risk_goal", "episode": 0, "censored": false, "transitions": 39756}
+{"phase": "reference_root", "lifecycle": 0, "query": "risk_goal", "episode": 0, "censored": false, "transitions": 45438}
+{"phase": "reference_root", "lifecycle": 1, "query": "reward", "episode": 1, "censored": false, "transitions": 41093}
+{"phase": "reference_root", "lifecycle": 2, "query": "reward", "episode": 1, "censored": false, "transitions": 39285}
+{"phase": "reference_root", "lifecycle": 0, "query": "reward", "episode": 1, "censored": false, "transitions": 40006}
+{"phase": "reference_root", "lifecycle": 1, "query": "risk_goal", "episode": 1, "censored": false, "transitions": 47316}
+{"phase": "reference_root", "lifecycle": 2, "query": "risk_goal", "episode": 1, "censored": false, "transitions": 44796}
+{"phase": "reference_root", "lifecycle": 0, "query": "risk_goal", "episode": 1, "censored": false, "transitions": 43631}
+{"phase": "complete", "seconds": 302.20270672498737}

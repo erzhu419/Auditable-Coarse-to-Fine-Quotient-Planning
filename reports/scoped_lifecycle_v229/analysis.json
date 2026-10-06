@@ -1,0 +1,649 @@
+{
+  "valid": true,
+  "complete": true,
+  "checks": [
+    {
+      "name": "complete_frozen_code_specification_and_audit_manifest",
+      "passed": true
+    },
+    {
+      "name": "retained_code_and_protocol_snapshots_match_run_sources",
+      "passed": true
+    },
+    {
+      "name": "fixed_public_cases_without_hidden_types_or_changes",
+      "passed": true
+    },
+    {
+      "name": "fresh_paid_A_B_sources_complete",
+      "passed": true
+    },
+    {
+      "name": "fresh_paid_A_B_sources_seeds",
+      "passed": true
+    },
+    {
+      "name": "fresh_paid_A_B_sources_increments",
+      "passed": true
+    },
+    {
+      "name": "fresh_paid_A_B_sources_budgets",
+      "passed": true
+    },
+    {
+      "name": "fresh_paid_A_B_sources_context",
+      "passed": true
+    },
+    {
+      "name": "source_evidence_reconstructed_from_actual_observations",
+      "passed": true
+    },
+    {
+      "name": "life_0_complete_unique_chronological_targets",
+      "passed": true
+    },
+    {
+      "name": "life_0_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_0_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_0_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_0_independent_seeds",
+      "passed": true
+    },
+    {
+      "name": "life_0_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_0_independent_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_0_independent_fees",
+      "passed": true
+    },
+    {
+      "name": "life_0_independent_isolation",
+      "passed": true
+    },
+    {
+      "name": "life_0_independent_all_ended_members",
+      "passed": true
+    },
+    {
+      "name": "life_1_complete_unique_chronological_targets",
+      "passed": true
+    },
+    {
+      "name": "life_1_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_1_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_1_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_1_independent_seeds",
+      "passed": true
+    },
+    {
+      "name": "life_1_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_1_independent_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_1_independent_fees",
+      "passed": true
+    },
+    {
+      "name": "life_1_independent_isolation",
+      "passed": true
+    },
+    {
+      "name": "life_1_independent_all_ended_members",
+      "passed": true
+    },
+    {
+      "name": "life_2_complete_unique_chronological_targets",
+      "passed": true
+    },
+    {
+      "name": "life_2_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_2_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_2_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_2_independent_seeds",
+      "passed": true
+    },
+    {
+      "name": "life_2_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_2_independent_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_2_independent_fees",
+      "passed": true
+    },
+    {
+      "name": "life_2_independent_isolation",
+      "passed": true
+    },
+    {
+      "name": "life_2_independent_all_ended_members",
+      "passed": true
+    },
+    {
+      "name": "life_3_complete_unique_chronological_targets",
+      "passed": true
+    },
+    {
+      "name": "life_3_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_3_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_3_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_3_independent_seeds",
+      "passed": true
+    },
+    {
+      "name": "life_3_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_3_independent_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_3_independent_fees",
+      "passed": true
+    },
+    {
+      "name": "life_3_independent_isolation",
+      "passed": true
+    },
+    {
+      "name": "life_3_independent_all_ended_members",
+      "passed": true
+    },
+    {
+      "name": "life_4_complete_unique_chronological_targets",
+      "passed": true
+    },
+    {
+      "name": "life_4_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_4_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_4_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_4_independent_seeds",
+      "passed": true
+    },
+    {
+      "name": "life_4_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_4_independent_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_4_independent_fees",
+      "passed": true
+    },
+    {
+      "name": "life_4_independent_isolation",
+      "passed": true
+    },
+    {
+      "name": "life_4_independent_all_ended_members",
+      "passed": true
+    },
+    {
+      "name": "life_5_complete_unique_chronological_targets",
+      "passed": true
+    },
+    {
+      "name": "life_5_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_5_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_5_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_5_independent_seeds",
+      "passed": true
+    },
+    {
+      "name": "life_5_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_5_independent_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_5_independent_fees",
+      "passed": true
+    },
+    {
+      "name": "life_5_independent_isolation",
+      "passed": true
+    },
+    {
+      "name": "life_5_independent_all_ended_members",
+      "passed": true
+    },
+    {
+      "name": "life_6_complete_unique_chronological_targets",
+      "passed": true
+    },
+    {
+      "name": "life_6_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_6_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_6_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_6_independent_seeds",
+      "passed": true
+    },
+    {
+      "name": "life_6_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_6_independent_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_6_independent_fees",
+      "passed": true
+    },
+    {
+      "name": "life_6_independent_isolation",
+      "passed": true
+    },
+    {
+      "name": "life_6_independent_all_ended_members",
+      "passed": true
+    },
+    {
+      "name": "life_7_complete_unique_chronological_targets",
+      "passed": true
+    },
+    {
+      "name": "life_7_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_7_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_7_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_7_independent_seeds",
+      "passed": true
+    },
+    {
+      "name": "life_7_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_7_independent_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_7_independent_fees",
+      "passed": true
+    },
+    {
+      "name": "life_7_independent_isolation",
+      "passed": true
+    },
+    {
+      "name": "life_7_independent_all_ended_members",
+      "passed": true
+    },
+    {
+      "name": "life_8_complete_unique_chronological_targets",
+      "passed": true
+    },
+    {
+      "name": "life_8_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_8_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_8_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_8_independent_seeds",
+      "passed": true
+    },
+    {
+      "name": "life_8_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_8_independent_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_8_independent_fees",
+      "passed": true
+    },
+    {
+      "name": "life_8_independent_isolation",
+      "passed": true
+    },
+    {
+      "name": "life_8_independent_all_ended_members",
+      "passed": true
+    },
+    {
+      "name": "life_9_complete_unique_chronological_targets",
+      "passed": true
+    },
+    {
+      "name": "life_9_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_9_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_9_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_9_independent_seeds",
+      "passed": true
+    },
+    {
+      "name": "life_9_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_9_independent_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_9_independent_fees",
+      "passed": true
+    },
+    {
+      "name": "life_9_independent_isolation",
+      "passed": true
+    },
+    {
+      "name": "life_9_independent_all_ended_members",
+      "passed": true
+    },
+    {
+      "name": "life_10_complete_unique_chronological_targets",
+      "passed": true
+    },
+    {
+      "name": "life_10_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_10_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_10_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_10_independent_seeds",
+      "passed": true
+    },
+    {
+      "name": "life_10_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_10_independent_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_10_independent_fees",
+      "passed": true
+    },
+    {
+      "name": "life_10_independent_isolation",
+      "passed": true
+    },
+    {
+      "name": "life_10_independent_all_ended_members",
+      "passed": true
+    },
+    {
+      "name": "life_11_complete_unique_chronological_targets",
+      "passed": true
+    },
+    {
+      "name": "life_11_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_11_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_11_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_11_independent_seeds",
+      "passed": true
+    },
+    {
+      "name": "life_11_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_11_independent_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_11_independent_fees",
+      "passed": true
+    },
+    {
+      "name": "life_11_independent_isolation",
+      "passed": true
+    },
+    {
+      "name": "life_11_independent_all_ended_members",
+      "passed": true
+    },
+    {
+      "name": "common_A_and_return_learner_paths",
+      "passed": true
+    },
+    {
+      "name": "delayed_actual_risk_query_goal_scope_and_commit_results",
+      "passed": true
+    },
+    {
+      "name": "rotated_method_order_with_separate_arm_lifecycle_caches",
+      "passed": true
+    },
+    {
+      "name": "independent_paired_lifecycle_statistics_and_frozen_six_conditions",
+      "passed": true
+    },
+    {
+      "name": "full_paid_A_and_B_source_fee_in_every_arm",
+      "passed": true
+    },
+    {
+      "name": "shared_physical_source_generation_55296_samples",
+      "passed": true
+    },
+    {
+      "name": "REPAIR_CS_actual_target_draws_resets_and_observation_processing",
+      "passed": true
+    },
+    {
+      "name": "REPAIR_CS_complete_paid_sample_totals",
+      "passed": true
+    },
+    {
+      "name": "REBUILD_CS_actual_target_draws_resets_and_observation_processing",
+      "passed": true
+    },
+    {
+      "name": "REBUILD_CS_complete_paid_sample_totals",
+      "passed": true
+    },
+    {
+      "name": "PARAM_actual_target_draws_resets_and_observation_processing",
+      "passed": true
+    },
+    {
+      "name": "PARAM_complete_paid_sample_totals",
+      "passed": true
+    },
+    {
+      "name": "fixed_whole_lifecycle_bootstrap_consumption",
+      "passed": true
+    },
+    {
+      "name": "all_learner_decisions_frozen_before_oracle_evaluation",
+      "passed": true
+    },
+    {
+      "name": "complete_nonnegative_model_source_and_target_timing_ledgers",
+      "passed": true
+    }
+  ],
+  "costs": {
+    "independent_scoped_initializations": 48,
+    "independent_scoped_boxes": 1226272,
+    "optimizer_pure_checks": 1034864,
+    "mixture_components": 6359643,
+    "optimizer_pair_checks": 1552296,
+    "independent_query_certificate_kernel_vertices": 1608412,
+    "verification_certificate_cache_misses": 70956,
+    "independent_goal_upper_kernel_vertices": 1547620,
+    "verification_goal_cache_misses": 68356,
+    "independent_scoped_planning_calls": 190360,
+    "verification_certificate_cache_hits": 388900,
+    "verification_goal_cache_hits": 391500,
+    "independent_scoped_acquisition_forecasts": 140826,
+    "independent_scoped_outer_iterations": 7347,
+    "independent_scoped_retained_targets": 7200,
+    "independent_scoped_calibrated_initializations": 432,
+    "independent_scoped_point_committed_targets": 284,
+    "independent_scoped_point_committed_samples": 77472,
+    "independent_scoped_parameter_compatibility_targets": 5184
+  },
+  "source_replay_costs": {
+    "controlled_samples": 55296,
+    "controlled_resets": 55296,
+    "environment_random_draws": 55296,
+    "sampling_threshold_accumulations": 77231,
+    "sampling_threshold_comparisons": 77231
+  },
+  "target_replay_costs": {
+    "REPAIR_CS": {
+      "controlled_samples": 238032,
+      "controlled_resets": 238032,
+      "environment_random_draws": 238032,
+      "sampling_threshold_accumulations": 346569,
+      "sampling_threshold_comparisons": 346569
+    },
+    "REBUILD_CS": {
+      "controlled_samples": 268640,
+      "controlled_resets": 268640,
+      "environment_random_draws": 268640,
+      "sampling_threshold_accumulations": 385279,
+      "sampling_threshold_comparisons": 385279
+    },
+    "PARAM": {
+      "controlled_samples": 244400,
+      "controlled_resets": 244400,
+      "environment_random_draws": 244400,
+      "sampling_threshold_accumulations": 358353,
+      "sampling_threshold_comparisons": 358353
+    }
+  },
+  "oracle_costs": {
+    "independent_scoped_initializations": 48,
+    "independent_scoped_boxes": 226510,
+    "mixture_components": 293373,
+    "independent_scoped_outer_iterations": 7347,
+    "independent_scoped_retained_targets": 7200,
+    "independent_scoped_calibrated_initializations": 432,
+    "independent_scoped_parameter_compatibility_targets": 5184,
+    "independent_scoped_point_committed_targets": 284,
+    "independent_scoped_point_committed_samples": 77472
+  },
+  "true_candidate_box_coverage": {
+    "points": 49534,
+    "covered": 49534
+  },
+  "seconds": 1302.4716338340077
+}

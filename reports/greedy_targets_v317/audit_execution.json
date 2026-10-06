@@ -1,0 +1,25 @@
+{
+  "schema": "acfqp.greedy_targets_audit_execution.v317",
+  "status": "AUDIT_COMPLETE",
+  "command": [
+    "python3",
+    "scripts/verify_greedy_targets_v317.py",
+    "--output",
+    "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/greedy_targets_v317"
+  ],
+  "cwd": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration",
+  "started_utc": "2026-10-06T04:07:39.373832+00:00",
+  "finished_utc": "2026-10-06T04:10:10.186435+00:00",
+  "exit_code": 0,
+  "cpu_seconds": 153.90230100000002,
+  "wall_seconds": 163.97473347600317,
+  "stdout": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/greedy_targets_v317/audit_stdout.log",
+  "stderr": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/greedy_targets_v317/audit_stderr.log",
+  "stdout_bytes": 4457,
+  "stderr_bytes": 0,
+  "audit_exists": true,
+  "source_audit": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/fresh_source_v312/audit.json",
+  "source_audit_status": "PASS",
+  "source_audit_independent_valid": true,
+  "audit_status": "PASS"
+}

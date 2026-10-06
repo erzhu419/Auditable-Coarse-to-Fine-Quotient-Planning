@@ -1,0 +1,11 @@
+{"event": "shadow_parent_receipts_checked", "parent": 0}
+{"event": "shadow_parent_receipts_checked", "parent": 1}
+{"event": "shadow_parent_receipts_checked", "parent": 2}
+{"event": "shadow_parent_receipts_checked", "parent": 3}
+{
+  "status": "FAIL",
+  "independent_valid": false,
+  "errors": [
+    "actual deployed cutoff/unfinished tail"
+  ]
+}

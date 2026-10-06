@@ -1,0 +1,7 @@
+{
+  "exit_code": 0,
+  "wall_seconds": 62.83507200202439,
+  "stderr_bytes": 0,
+  "completed_evaluation_games": 180,
+  "command": "scripts/run_controlled_predictive_lifelong_v77.py --output reports/controlled_predictive_lifelong_v77"
+}

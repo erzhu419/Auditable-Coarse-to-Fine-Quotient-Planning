@@ -1,0 +1,80 @@
+{
+  "schema": "acfqp.conditional_bellman_freeze.v294",
+  "protocol": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/specs/CONDITIONAL_BELLMAN_V294.md",
+  "source_summary": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/shadow_deployment_v293/summary.json",
+  "lifecycles": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "parents": 4,
+  "arms": [
+    "FROZEN",
+    "MC_BOARD",
+    "MC_CONDITIONED",
+    "BELLMAN_BOARD",
+    "BELLMAN_CONDITIONED"
+  ],
+  "phases": [
+    [
+      "A",
+      0.1
+    ],
+    [
+      "B",
+      0.5
+    ],
+    [
+      "A_prime",
+      0.1
+    ]
+  ],
+  "alpha": 0.0025,
+  "fit_fraction": 0.8,
+  "query": {
+    "reward_weight": 1.0,
+    "failure_penalty": 4.0,
+    "goal_bonus": 4.0
+  },
+  "max_steps": 8192,
+  "evaluation_games": 32,
+  "ranking_replicas": 32,
+  "anchor_quartiles": [
+    0.25,
+    0.5,
+    0.75
+  ],
+  "seed_evaluation": 294900010000,
+  "seed_ranking": 294600010000,
+  "bootstrap_seed": 29400001,
+  "bootstrap_draws": 20000,
+  "primary": "BELLMAN_CONDITIONED_minus_FROZEN_THREE_PHASE_COMPLETE_GAME_UTILITY",
+  "bellman": "EXPECTED_MAX_CONTROL_GAME_START_FROZEN_OBSERVED_PROBABILITY",
+  "representation": "SOURCE_PLUS_ZERO_RESIDUAL_UNIT_NORMALIZED_BARYCENTRIC_PROBABILITY_BASIS",
+  "split": "PURE_PHASE_COMPLETE_GAMES_CHRONOLOGICAL_80_20_LABEL_HOLDOUT",
+  "mixed_games": "EXCLUDED_WITH_ALL_ACQUISITION_COSTS_RETAINED",
+  "conditional_A_reference": "COPY_RESIDUAL_BANKS_THEN_READ_BOTH_OLD_AND_NEW_AT_CURRENT_B_PROBABILITY",
+  "scientific_games": 14848,
+  "logical_scientific_game_references": 17920,
+  "new_training_raw_tiles": 0,
+  "finite_test_passes": {
+    "native_residual": 10,
+    "retained_data": 4,
+    "independent_analysis": 12,
+    "full_pipeline": 3,
+    "separate_generating_law": 3
+  }
+}

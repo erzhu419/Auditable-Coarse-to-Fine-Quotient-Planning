@@ -1,0 +1,18 @@
+{
+  "attempts": [
+    {
+      "failures": 1,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "td_updates": 0,
+      "scope": "synthetic causal routing, budgets, sparse metadata and alias/source mutations"
+    },
+    {
+      "failures": 0,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "td_updates": 0,
+      "scope": "synthetic causal routing, budgets, sparse metadata and alias/source mutations"
+    }
+  ]
+}

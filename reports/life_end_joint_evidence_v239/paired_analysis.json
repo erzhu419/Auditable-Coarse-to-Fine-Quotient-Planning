@@ -1,0 +1,697 @@
+{
+  "post_certificate_description_only": true,
+  "paired": [
+    {
+      "life": 0,
+      "index": 42,
+      "arm": "ORACLE_BALANCED",
+      "kind": "positive",
+      "v235_query_ready": true,
+      "v238_query_ready": false,
+      "query_ready": true
+    },
+    {
+      "life": 0,
+      "index": 42,
+      "arm": "ORACLE_GAP",
+      "kind": "positive",
+      "v235_query_ready": true,
+      "v238_query_ready": false,
+      "query_ready": true
+    },
+    {
+      "life": 0,
+      "index": 54,
+      "arm": "ORACLE_BALANCED",
+      "kind": "positive",
+      "v235_query_ready": true,
+      "v238_query_ready": false,
+      "query_ready": true
+    },
+    {
+      "life": 0,
+      "index": 54,
+      "arm": "ORACLE_GAP",
+      "kind": "positive",
+      "v235_query_ready": true,
+      "v238_query_ready": false,
+      "query_ready": true
+    },
+    {
+      "life": 0,
+      "index": 58,
+      "arm": "ORACLE_BALANCED",
+      "kind": "failure",
+      "v235_query_ready": false,
+      "v238_query_ready": false,
+      "query_ready": false
+    },
+    {
+      "life": 0,
+      "index": 58,
+      "arm": "ORACLE_GAP",
+      "kind": "failure",
+      "v235_query_ready": false,
+      "v238_query_ready": false,
+      "query_ready": false
+    },
+    {
+      "life": 1,
+      "index": 42,
+      "arm": "ORACLE_BALANCED",
+      "kind": "positive",
+      "v235_query_ready": true,
+      "v238_query_ready": true,
+      "query_ready": true
+    },
+    {
+      "life": 1,
+      "index": 42,
+      "arm": "ORACLE_GAP",
+      "kind": "positive",
+      "v235_query_ready": true,
+      "v238_query_ready": true,
+      "query_ready": true
+    },
+    {
+      "life": 1,
+      "index": 44,
+      "arm": "ORACLE_BALANCED",
+      "kind": "failure",
+      "v235_query_ready": false,
+      "v238_query_ready": true,
+      "query_ready": true
+    },
+    {
+      "life": 1,
+      "index": 44,
+      "arm": "ORACLE_GAP",
+      "kind": "failure",
+      "v235_query_ready": false,
+      "v238_query_ready": true,
+      "query_ready": true
+    },
+    {
+      "life": 1,
+      "index": 54,
+      "arm": "ORACLE_BALANCED",
+      "kind": "positive",
+      "v235_query_ready": true,
+      "v238_query_ready": false,
+      "query_ready": true
+    },
+    {
+      "life": 1,
+      "index": 54,
+      "arm": "ORACLE_GAP",
+      "kind": "positive",
+      "v235_query_ready": true,
+      "v238_query_ready": false,
+      "query_ready": true
+    },
+    {
+      "life": 1,
+      "index": 56,
+      "arm": "ORACLE_BALANCED",
+      "kind": "failure",
+      "v235_query_ready": false,
+      "v238_query_ready": false,
+      "query_ready": false
+    },
+    {
+      "life": 1,
+      "index": 56,
+      "arm": "ORACLE_GAP",
+      "kind": "failure",
+      "v235_query_ready": false,
+      "v238_query_ready": false,
+      "query_ready": false
+    },
+    {
+      "life": 2,
+      "index": 42,
+      "arm": "ORACLE_BALANCED",
+      "kind": "failure",
+      "v235_query_ready": false,
+      "v238_query_ready": true,
+      "query_ready": true
+    },
+    {
+      "life": 2,
+      "index": 42,
+      "arm": "ORACLE_GAP",
+      "kind": "failure",
+      "v235_query_ready": false,
+      "v238_query_ready": true,
+      "query_ready": true
+    },
+    {
+      "life": 2,
+      "index": 44,
+      "arm": "ORACLE_BALANCED",
+      "kind": "failure",
+      "v235_query_ready": false,
+      "v238_query_ready": false,
+      "query_ready": false
+    },
+    {
+      "life": 2,
+      "index": 44,
+      "arm": "ORACLE_GAP",
+      "kind": "positive",
+      "v235_query_ready": false,
+      "v238_query_ready": false,
+      "query_ready": false
+    },
+    {
+      "life": 2,
+      "index": 45,
+      "arm": "ORACLE_BALANCED",
+      "kind": "positive",
+      "v235_query_ready": true,
+      "v238_query_ready": false,
+      "query_ready": true
+    },
+    {
+      "life": 2,
+      "index": 47,
+      "arm": "ORACLE_GAP",
+      "kind": "failure",
+      "v235_query_ready": false,
+      "v238_query_ready": false,
+      "query_ready": false
+    },
+    {
+      "life": 2,
+      "index": 54,
+      "arm": "ORACLE_BALANCED",
+      "kind": "positive",
+      "v235_query_ready": true,
+      "v238_query_ready": false,
+      "query_ready": true
+    },
+    {
+      "life": 2,
+      "index": 54,
+      "arm": "ORACLE_GAP",
+      "kind": "positive",
+      "v235_query_ready": true,
+      "v238_query_ready": false,
+      "query_ready": true
+    },
+    {
+      "life": 2,
+      "index": 55,
+      "arm": "ORACLE_BALANCED",
+      "kind": "failure",
+      "v235_query_ready": false,
+      "v238_query_ready": false,
+      "query_ready": false
+    },
+    {
+      "life": 2,
+      "index": 55,
+      "arm": "ORACLE_GAP",
+      "kind": "failure",
+      "v235_query_ready": false,
+      "v238_query_ready": false,
+      "query_ready": false
+    }
+  ],
+  "positive_restored_vs_v238": 9,
+  "positive_lost_vs_v238": 0,
+  "failure_gained_vs_v238": 0,
+  "failure_lost_vs_v238": 0,
+  "uncertified_cases": 9,
+  "unknown_comparisons": [
+    {
+      "life": 0,
+      "index": 58,
+      "arm": "ORACLE_BALANCED",
+      "kind": "failure",
+      "query": "goal",
+      "chosen": "SHORT",
+      "other": "DETOUR_RETRY",
+      "family": "S_D_FULL_R",
+      "projected_counts": {
+        "S": {
+          "DELIVERY": 2195,
+          "LOST": 237
+        },
+        "D_FULL": {
+          "DELIVERY": 2060,
+          "RECOVERY": 343,
+          "LOST": 29
+        },
+        "R": {
+          "DELIVERY": 571,
+          "LOST": 1861
+        }
+      },
+      "witness_kind": "global_likelihood_dual",
+      "log_e_lower": -1.9768165678798133,
+      "log_threshold_upper": 6.866933284461882,
+      "bad_null_gap": null
+    },
+    {
+      "life": 0,
+      "index": 58,
+      "arm": "ORACLE_BALANCED",
+      "kind": "failure",
+      "query": "risk",
+      "chosen": "DETOUR_RETURN",
+      "other": "SHORT",
+      "family": "S_D_FULL",
+      "projected_counts": {
+        "S": {
+          "DELIVERY": 2195,
+          "LOST": 237
+        },
+        "D_FULL": {
+          "DELIVERY": 2060,
+          "RECOVERY": 343,
+          "LOST": 29
+        }
+      },
+      "witness_kind": "global_likelihood_dual",
+      "log_e_lower": -4.3742676092059485,
+      "log_threshold_upper": 6.866933284461882,
+      "bad_null_gap": null
+    },
+    {
+      "life": 0,
+      "index": 58,
+      "arm": "ORACLE_GAP",
+      "kind": "failure",
+      "query": "goal",
+      "chosen": "SHORT",
+      "other": "DETOUR_RETRY",
+      "family": "S_D_FULL_R",
+      "projected_counts": {
+        "S": {
+          "DELIVERY": 2967,
+          "LOST": 345
+        },
+        "D_FULL": {
+          "DELIVERY": 3017,
+          "RECOVERY": 500,
+          "LOST": 35
+        },
+        "R": {
+          "DELIVERY": 110,
+          "LOST": 322
+        }
+      },
+      "witness_kind": "global_likelihood_dual",
+      "log_e_lower": -6.007392943674512,
+      "log_threshold_upper": 6.866933284461882,
+      "bad_null_gap": null
+    },
+    {
+      "life": 0,
+      "index": 58,
+      "arm": "ORACLE_GAP",
+      "kind": "failure",
+      "query": "risk",
+      "chosen": "DETOUR_RETURN",
+      "other": "SHORT",
+      "family": "S_D_FULL",
+      "projected_counts": {
+        "S": {
+          "DELIVERY": 2967,
+          "LOST": 345
+        },
+        "D_FULL": {
+          "DELIVERY": 3017,
+          "RECOVERY": 500,
+          "LOST": 35
+        }
+      },
+      "witness_kind": "global_likelihood_dual",
+      "log_e_lower": 5.900937937249791,
+      "log_threshold_upper": 6.866933284461882,
+      "bad_null_gap": null
+    },
+    {
+      "life": 1,
+      "index": 56,
+      "arm": "ORACLE_BALANCED",
+      "kind": "failure",
+      "query": "goal",
+      "chosen": "SHORT",
+      "other": "DETOUR_RETURN",
+      "family": "S_D_DEL",
+      "projected_counts": {
+        "S": {
+          "DELIVERY": 2188,
+          "LOST": 244
+        },
+        "D_DEL": {
+          "DELIVERY": 2083,
+          "OTHER": 349
+        }
+      },
+      "witness_kind": "global_likelihood_dual",
+      "log_e_lower": 2.387508991352189,
+      "log_threshold_upper": 6.866933284461882,
+      "bad_null_gap": null
+    },
+    {
+      "life": 1,
+      "index": 56,
+      "arm": "ORACLE_BALANCED",
+      "kind": "failure",
+      "query": "goal",
+      "chosen": "SHORT",
+      "other": "DETOUR_RETRY",
+      "family": "S_D_FULL_R",
+      "projected_counts": {
+        "S": {
+          "DELIVERY": 2188,
+          "LOST": 244
+        },
+        "D_FULL": {
+          "DELIVERY": 2083,
+          "RECOVERY": 317,
+          "LOST": 32
+        },
+        "R": {
+          "DELIVERY": 605,
+          "LOST": 1827
+        }
+      },
+      "witness_kind": "global_likelihood_dual",
+      "log_e_lower": -8.90656057381685,
+      "log_threshold_upper": 6.866933284461882,
+      "bad_null_gap": null
+    },
+    {
+      "life": 1,
+      "index": 56,
+      "arm": "ORACLE_BALANCED",
+      "kind": "failure",
+      "query": "risk",
+      "chosen": "DETOUR_RETURN",
+      "other": "SHORT",
+      "family": "S_D_FULL",
+      "projected_counts": {
+        "S": {
+          "DELIVERY": 2188,
+          "LOST": 244
+        },
+        "D_FULL": {
+          "DELIVERY": 2083,
+          "RECOVERY": 317,
+          "LOST": 32
+        }
+      },
+      "witness_kind": "global_likelihood_dual",
+      "log_e_lower": -0.07651601389441831,
+      "log_threshold_upper": 6.866933284461882,
+      "bad_null_gap": null
+    },
+    {
+      "life": 1,
+      "index": 56,
+      "arm": "ORACLE_GAP",
+      "kind": "failure",
+      "query": "goal",
+      "chosen": "SHORT",
+      "other": "DETOUR_RETURN",
+      "family": "S_D_DEL",
+      "projected_counts": {
+        "S": {
+          "DELIVERY": 2974,
+          "LOST": 338
+        },
+        "D_DEL": {
+          "DELIVERY": 3055,
+          "OTHER": 513
+        }
+      },
+      "witness_kind": "global_likelihood_dual",
+      "log_e_lower": 5.308399225128561,
+      "log_threshold_upper": 6.866933284461882,
+      "bad_null_gap": null
+    },
+    {
+      "life": 1,
+      "index": 56,
+      "arm": "ORACLE_GAP",
+      "kind": "failure",
+      "query": "goal",
+      "chosen": "SHORT",
+      "other": "DETOUR_RETRY",
+      "family": "S_D_FULL_R",
+      "projected_counts": {
+        "S": {
+          "DELIVERY": 2974,
+          "LOST": 338
+        },
+        "D_FULL": {
+          "DELIVERY": 3055,
+          "RECOVERY": 466,
+          "LOST": 47
+        },
+        "R": {
+          "DELIVERY": 108,
+          "LOST": 308
+        }
+      },
+      "witness_kind": "global_likelihood_dual",
+      "log_e_lower": -8.001324370191275,
+      "log_threshold_upper": 6.866933284461882,
+      "bad_null_gap": null
+    },
+    {
+      "life": 1,
+      "index": 56,
+      "arm": "ORACLE_GAP",
+      "kind": "failure",
+      "query": "risk",
+      "chosen": "DETOUR_RETURN",
+      "other": "SHORT",
+      "family": "S_D_FULL",
+      "projected_counts": {
+        "S": {
+          "DELIVERY": 2974,
+          "LOST": 338
+        },
+        "D_FULL": {
+          "DELIVERY": 3055,
+          "RECOVERY": 466,
+          "LOST": 47
+        }
+      },
+      "witness_kind": "global_likelihood_dual",
+      "log_e_lower": 5.571193798288533,
+      "log_threshold_upper": 6.866933284461882,
+      "bad_null_gap": null
+    },
+    {
+      "life": 2,
+      "index": 44,
+      "arm": "ORACLE_BALANCED",
+      "kind": "failure",
+      "query": "risk",
+      "chosen": "DETOUR_RETURN",
+      "other": "DETOUR_RETRY",
+      "family": "D_REC_R",
+      "projected_counts": {
+        "D_REC": {
+          "RECOVERY": 310,
+          "OTHER": 1322
+        },
+        "R": {
+          "DELIVERY": 683,
+          "LOST": 469
+        }
+      },
+      "witness_kind": "global_likelihood_dual",
+      "log_e_lower": -5.166921268229205,
+      "log_threshold_upper": 6.866933284461882,
+      "bad_null_gap": null
+    },
+    {
+      "life": 2,
+      "index": 44,
+      "arm": "ORACLE_GAP",
+      "kind": "positive",
+      "query": "risk",
+      "chosen": "DETOUR_RETURN",
+      "other": "DETOUR_RETRY",
+      "family": "D_REC_R",
+      "projected_counts": {
+        "D_REC": {
+          "RECOVERY": 117,
+          "OTHER": 539
+        },
+        "R": {
+          "DELIVERY": 1389,
+          "LOST": 979
+        }
+      },
+      "witness_kind": "global_likelihood_dual",
+      "log_e_lower": -0.21228550048609832,
+      "log_threshold_upper": 6.866933284461882,
+      "bad_null_gap": null
+    },
+    {
+      "life": 2,
+      "index": 47,
+      "arm": "ORACLE_GAP",
+      "kind": "failure",
+      "query": "risk",
+      "chosen": "DETOUR_RETURN",
+      "other": "DETOUR_RETRY",
+      "family": "D_REC_R",
+      "projected_counts": {
+        "D_REC": {
+          "RECOVERY": 117,
+          "OTHER": 539
+        },
+        "R": {
+          "DELIVERY": 1389,
+          "LOST": 979
+        }
+      },
+      "witness_kind": "global_likelihood_dual",
+      "log_e_lower": -0.21228550048609832,
+      "log_threshold_upper": 6.866933284461882,
+      "bad_null_gap": null
+    },
+    {
+      "life": 2,
+      "index": 55,
+      "arm": "ORACLE_BALANCED",
+      "kind": "failure",
+      "query": "goal",
+      "chosen": "SHORT",
+      "other": "DETOUR_RETURN",
+      "family": "S_D_DEL",
+      "projected_counts": {
+        "S": {
+          "DELIVERY": 2172,
+          "LOST": 260
+        },
+        "D_DEL": {
+          "DELIVERY": 2059,
+          "OTHER": 373
+        }
+      },
+      "witness_kind": "global_likelihood_dual",
+      "log_e_lower": 3.4010915779224975,
+      "log_threshold_upper": 6.866933284461882,
+      "bad_null_gap": null
+    },
+    {
+      "life": 2,
+      "index": 55,
+      "arm": "ORACLE_BALANCED",
+      "kind": "failure",
+      "query": "goal",
+      "chosen": "SHORT",
+      "other": "DETOUR_RETRY",
+      "family": "S_D_FULL_R",
+      "projected_counts": {
+        "S": {
+          "DELIVERY": 2172,
+          "LOST": 260
+        },
+        "D_FULL": {
+          "DELIVERY": 2059,
+          "RECOVERY": 345,
+          "LOST": 28
+        },
+        "R": {
+          "DELIVERY": 619,
+          "LOST": 1813
+        }
+      },
+      "witness_kind": "global_likelihood_dual",
+      "log_e_lower": -6.925667123296287,
+      "log_threshold_upper": 6.866933284461882,
+      "bad_null_gap": null
+    },
+    {
+      "life": 2,
+      "index": 55,
+      "arm": "ORACLE_BALANCED",
+      "kind": "failure",
+      "query": "risk",
+      "chosen": "DETOUR_RETURN",
+      "other": "SHORT",
+      "family": "S_D_FULL",
+      "projected_counts": {
+        "S": {
+          "DELIVERY": 2172,
+          "LOST": 260
+        },
+        "D_FULL": {
+          "DELIVERY": 2059,
+          "RECOVERY": 345,
+          "LOST": 28
+        }
+      },
+      "witness_kind": "global_likelihood_dual",
+      "log_e_lower": 1.1619273023685404,
+      "log_threshold_upper": 6.866933284461882,
+      "bad_null_gap": null
+    },
+    {
+      "life": 2,
+      "index": 55,
+      "arm": "ORACLE_GAP",
+      "kind": "failure",
+      "query": "goal",
+      "chosen": "SHORT",
+      "other": "DETOUR_RETRY",
+      "family": "S_D_FULL_R",
+      "projected_counts": {
+        "S": {
+          "DELIVERY": 2942,
+          "LOST": 338
+        },
+        "D_FULL": {
+          "DELIVERY": 3033,
+          "RECOVERY": 511,
+          "LOST": 40
+        },
+        "R": {
+          "DELIVERY": 98,
+          "LOST": 334
+        }
+      },
+      "witness_kind": "global_likelihood_dual",
+      "log_e_lower": 0.723408467906047,
+      "log_threshold_upper": 6.866933284461882,
+      "bad_null_gap": null
+    },
+    {
+      "life": 2,
+      "index": 55,
+      "arm": "ORACLE_GAP",
+      "kind": "failure",
+      "query": "risk",
+      "chosen": "DETOUR_RETURN",
+      "other": "SHORT",
+      "family": "S_D_FULL",
+      "projected_counts": {
+        "S": {
+          "DELIVERY": 2942,
+          "LOST": 338
+        },
+        "D_FULL": {
+          "DELIVERY": 3033,
+          "RECOVERY": 511,
+          "LOST": 40
+        }
+      },
+      "witness_kind": "global_likelihood_dual",
+      "log_e_lower": 2.4745594626936924,
+      "log_threshold_upper": 6.866933284461882,
+      "bad_null_gap": null
+    }
+  ],
+  "boundary": "A non-certifying global upper bound alone does not prove a feasible bad kernel remains; no new witness search or partition tuning occurred."
+}

@@ -1,0 +1,89 @@
+{
+  "schema": "acfqp.joint_terminal_freeze.v327",
+  "source_summary": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/terminal_win_v326/summary.json",
+  "protocol": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/specs/JOINT_TERMINAL_V327.md",
+  "lifecycles": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "parents": 4,
+  "workers": 4,
+  "tasks": [
+    "A",
+    "B"
+  ],
+  "arms": [
+    "SOURCE",
+    "FIRST_LOCAL",
+    "WIN_ONLY",
+    "JOINT_RETURN"
+  ],
+  "updating_arms": [
+    "WIN_ONLY",
+    "JOINT_RETURN"
+  ],
+  "rounds": [
+    1,
+    2
+  ],
+  "groups": 1024,
+  "retained_members": 4,
+  "fit_members": [
+    0,
+    1
+  ],
+  "validation_members": [
+    2,
+    3
+  ],
+  "fit_replicates": 2,
+  "epochs": 16,
+  "alpha": 0.0025,
+  "rootgroup_updates_per_arm_task_round": 16384,
+  "initial": "ACTUAL_V326_FIRST_V0_RESTORE_NO_OLD_UPDATED_HEADS",
+  "targets": "PAIRED_SAME_V326_FULL_SUFFIX_REWARD_RETURN_AND_WIN",
+  "target_policy": "SAVED_DIRECT_THEN_IMMUTABLE_FIRST_H2_TRUE_WORLD",
+  "reward_contract": "WIN_ONLY_COMPLETE_FIRST_REWARD_FROZEN_JOINT_RETURN_REWARD_LEARNED",
+  "win_contract": "COMPLETE_WIN_TABLES_BIT_EXACT_EQUAL_BOTH_ARMS_AFTER_EVERY_STAGE",
+  "update": "SIXTEEN_FIXED_ORDER_PASSES_TWO_REAL_MEMBERS_NO_DUPLICATION",
+  "validation": "MEMBERS_TWO_THREE_UNUSED_BY_THESE_RETRAINED_MODELS_SAME_OBSERVED_ROOTS",
+  "prediction": "ACTUAL_NATIVE_COMPONENTS_FIRST_BEFORE_AFTER_UNIQUE_SNAPSHOTS",
+  "planning_belief": "ACTUAL_IMMUTABLE_V326_FIRST_BANK_BELIEF",
+  "true_probabilities": {
+    "A": 0.1,
+    "B": 0.5
+  },
+  "new_training_raw_tiles": 0,
+  "new_source_fits": 0,
+  "new_FIRST_fits": 0,
+  "expected_fit_member_uses_per_arm": 131072,
+  "expected_rootgroup_updates_per_arm": 1048576,
+  "max_steps": 8192,
+  "evaluation_games_per_cell": 64,
+  "seed_evaluation": 3279000000000,
+  "expected_new_evaluation_games": 12288,
+  "reused_evaluation_games": 0,
+  "bootstrap_draws": 20000,
+  "bootstrap_seed": 32700001,
+  "primary": "JOINT_RETURN_minus_FIRST_LOCAL_FINAL_AB",
+  "target_combination_contribution": "JOINT_RETURN_minus_WIN_ONLY_FINAL_AB",
+  "retention": "FINAL_JOINT_MINUS_OWN_FIRST_PER_TASK_CI_LOWER_NONNEGATIVE",
+  "route_if_retained_gain": "ADVANCE_TO_NEW_COHORT_CONFIRMATION",
+  "route_otherwise": "STOP_FIXED_FIRST_TERMINAL_REGRESSION",
+  "stop_rule": "ANY_NATURAL_GAME_OR_RETAINED_SUFFIX_CUTOFF_GLOBAL_HOLD_NO_TUNING_OR_REPLACEMENT",
+  "evidence_scope": "RETRAINED_V326_COHORT_MECHANISM_INTERVENTION_NEW_NATURAL_GAMES_NOT_NEW_LEARNING_CONFIRMATION"
+}

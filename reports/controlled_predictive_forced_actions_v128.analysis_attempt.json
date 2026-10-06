@@ -1,0 +1,13 @@
+{
+  "command": [
+    ".venv-lmta-v42/bin/python",
+    "scripts/analyze_controlled_predictive_forced_actions_v128.py",
+    "--run-dir",
+    "reports/controlled_predictive_forced_actions_v128"
+  ],
+  "started_utc": "2026-09-20T00:34:57.940268+00:00",
+  "status": "completed",
+  "exit_code": 0,
+  "seconds": 2.8315253220062004,
+  "stderr_bytes": 0
+}

@@ -1,0 +1,78 @@
+{
+  "status": "PASS",
+  "independent_valid": true,
+  "lifecycles": 16,
+  "fixed_source_parents": 4,
+  "canonical_rows": 144,
+  "anchors": 144,
+  "discovery_physical_rollouts": 16096,
+  "discovery_raw_tiles": 7064751,
+  "validation_physical_rollouts": 7552,
+  "paired_replica_seedstreams": 4608,
+  "logical_candidate_references": 13824,
+  "validation_unique_action_inventory": {
+    "1": 58,
+    "2": 80,
+    "3": 6
+  },
+  "new_environment_raw_tiles": 3373840,
+  "new_environment_random_draws": 6747680,
+  "new_training_environment_raw_tiles": 0,
+  "new_value_updates": 0,
+  "validation_cutoffs": 0,
+  "observed_anchor_signal_supported": false,
+  "primary": {
+    "mean": -0.08182949490017362,
+    "ci95": [
+      -0.24883201387193468,
+      0.08653305901421414
+    ],
+    "lifecycle_deltas": {
+      "0": 0.05123562282986112,
+      "1": 0.6194525824652778,
+      "2": -0.03375922309027778,
+      "3": -0.6594577365451388,
+      "4": -0.5025838216145834,
+      "5": -0.46917724609375,
+      "6": 0.608608669704861,
+      "7": -0.2869873046875,
+      "8": -0.0706448025173611,
+      "9": -0.23244222005208334,
+      "10": 0.18626573350694445,
+      "11": -0.20550537109375,
+      "12": -0.13587782118055555,
+      "13": 0.23505316840277776,
+      "14": -0.5388319227430556,
+      "15": 0.12537977430555555
+    },
+    "improved_equal_worse": [
+      6,
+      0,
+      10
+    ],
+    "adverse_lifecycles": [
+      2,
+      3,
+      4,
+      5,
+      7,
+      8,
+      9,
+      11,
+      12,
+      14
+    ],
+    "parent_mean_deltas": {
+      "0": -0.16446770562065974,
+      "1": 0.03822157118055555,
+      "2": 0.05557081434461803,
+      "3": -0.2566426595052083
+    },
+    "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS"
+  },
+  "canonical_trace_bytes": 876207,
+  "selection_json_bytes": 4378811,
+  "summary_json_bytes": 24153013,
+  "errors": [],
+  "limitations": "Independent old-data choice, canonical continuation terminal/total-utility, signed-input and cost audit. No old carrier/world or weight replay, new training, value fitting, or 20000-draw bootstrap regeneration. Observed-p SOURCE-H2 continuation is fixed after the forced first action. Positive anchor evidence does not establish learnability, repeated-policy net gain, optimal Q, or the cause of old Bellman failures. Four source parents are fixed."
+}

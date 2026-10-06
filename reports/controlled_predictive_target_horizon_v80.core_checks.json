@@ -1,0 +1,19 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_target_horizon_v80.py",
+      "session_failures": 0,
+      "scope": "Synthetic retained trajectories and paired multi-output fits only.",
+      "ground_calls": 0,
+      "main_campaign_calls": 0,
+      "metadata_rows_read": 1152,
+      "training_rows_read": 768,
+      "feature_rows": 960,
+      "tree_fits": 6,
+      "fit_rows": 768,
+      "validation_rows_read": 192,
+      "tree_apply_rows": 192,
+      "tree_split_visits": 192
+    }
+  ]
+}

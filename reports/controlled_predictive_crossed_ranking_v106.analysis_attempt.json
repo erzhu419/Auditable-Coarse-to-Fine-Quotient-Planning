@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "scripts/analyze_controlled_predictive_crossed_ranking_v106.py",
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_crossed_ranking_v106"
+  ],
+  "status": "complete",
+  "started_unix": 1789346658.1200027,
+  "returncode": 0,
+  "seconds": 0.28353550197789446,
+  "stderr_bytes": 0
+}

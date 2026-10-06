@@ -1,0 +1,82 @@
+.FFF..                                                                   [100%]
+=================================== FAILURES ===================================
+_ test_exact_leaf_support_selects_both_components_and_matches_literal_h2_first_max[empty] _
+
+coverage = 'empty'
+
+    @pytest.mark.parametrize('coverage', ['empty', 'all', 'partial'])
+    def test_exact_leaf_support_selects_both_components_and_matches_literal_h2_first_max(coverage):
+        base, updated = heads()
+>       _, _, _, predictions = literal_h2(base, updated, BOARD, .375, set())
+
+tests/test_native_localized_value_v318.py:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_native_localized_value_v318.py:69: in literal_h2
+    leaf_after, gained, legal = ground.swipe_board_v1(spawned, ground.Swipe2048Action(inner_action))
+src/acfqp/domains/standard_2048.py:155: in swipe_board_v1
+    validate_board_v1(board)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+board = [1, 0, 0, 0, 0, 0, ...]
+
+    def validate_board_v1(board: tuple[int, ...]) -> tuple[int, ...]:
+        if type(board) is not tuple or len(board) != CELL_COUNT:
+>           raise Swipe2048InvariantViolation("a standard board has exactly sixteen cells")
+E           acfqp.domains.standard_2048.Swipe2048InvariantViolation: a standard board has exactly sixteen cells
+
+src/acfqp/domains/standard_2048.py:114: Swipe2048InvariantViolation
+_ test_exact_leaf_support_selects_both_components_and_matches_literal_h2_first_max[all] _
+
+coverage = 'all'
+
+    @pytest.mark.parametrize('coverage', ['empty', 'all', 'partial'])
+    def test_exact_leaf_support_selects_both_components_and_matches_literal_h2_first_max(coverage):
+        base, updated = heads()
+>       _, _, _, predictions = literal_h2(base, updated, BOARD, .375, set())
+
+tests/test_native_localized_value_v318.py:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_native_localized_value_v318.py:69: in literal_h2
+    leaf_after, gained, legal = ground.swipe_board_v1(spawned, ground.Swipe2048Action(inner_action))
+src/acfqp/domains/standard_2048.py:155: in swipe_board_v1
+    validate_board_v1(board)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+board = [1, 0, 0, 0, 0, 0, ...]
+
+    def validate_board_v1(board: tuple[int, ...]) -> tuple[int, ...]:
+        if type(board) is not tuple or len(board) != CELL_COUNT:
+>           raise Swipe2048InvariantViolation("a standard board has exactly sixteen cells")
+E           acfqp.domains.standard_2048.Swipe2048InvariantViolation: a standard board has exactly sixteen cells
+
+src/acfqp/domains/standard_2048.py:114: Swipe2048InvariantViolation
+_ test_exact_leaf_support_selects_both_components_and_matches_literal_h2_first_max[partial] _
+
+coverage = 'partial'
+
+    @pytest.mark.parametrize('coverage', ['empty', 'all', 'partial'])
+    def test_exact_leaf_support_selects_both_components_and_matches_literal_h2_first_max(coverage):
+        base, updated = heads()
+>       _, _, _, predictions = literal_h2(base, updated, BOARD, .375, set())
+
+tests/test_native_localized_value_v318.py:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_native_localized_value_v318.py:69: in literal_h2
+    leaf_after, gained, legal = ground.swipe_board_v1(spawned, ground.Swipe2048Action(inner_action))
+src/acfqp/domains/standard_2048.py:155: in swipe_board_v1
+    validate_board_v1(board)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+board = [1, 0, 0, 0, 0, 0, ...]
+
+    def validate_board_v1(board: tuple[int, ...]) -> tuple[int, ...]:
+        if type(board) is not tuple or len(board) != CELL_COUNT:
+>           raise Swipe2048InvariantViolation("a standard board has exactly sixteen cells")
+E           acfqp.domains.standard_2048.Swipe2048InvariantViolation: a standard board has exactly sixteen cells
+
+src/acfqp/domains/standard_2048.py:114: Swipe2048InvariantViolation
+=========================== short test summary info ============================
+FAILED tests/test_native_localized_value_v318.py::test_exact_leaf_support_selects_both_components_and_matches_literal_h2_first_max[empty]
+FAILED tests/test_native_localized_value_v318.py::test_exact_leaf_support_selects_both_components_and_matches_literal_h2_first_max[all]
+FAILED tests/test_native_localized_value_v318.py::test_exact_leaf_support_selects_both_components_and_matches_literal_h2_first_max[partial]
+3 failed, 3 passed in 4.66s

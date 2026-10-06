@@ -1,0 +1,36 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_replication_learning_v93.py",
+      "session_failures": 0,
+      "scope": "Synthetic integrated V91/V92 learning; no fresh campaign data or environment calls.",
+      "sampled_transitions": 0,
+      "main_campaign_calls": 0,
+      "paired_metadata_rows_read": 576,
+      "paired_training_rows_read": 256,
+      "board_feature_rows": 1228,
+      "paired_feature_rows": 416,
+      "tree_fits": 20,
+      "paired_continuation_tree_fits": 6,
+      "fit_rows": 800,
+      "fit_output_vectors": 896,
+      "mirrored_training_rows": 512,
+      "paired_continuation_predictions": 160,
+      "tree_apply_rows": 428,
+      "tree_split_visits": 320,
+      "estimated_roots": 10,
+      "metadata_rows_read": 160,
+      "packed_roots": 40,
+      "training_roots_read": 32,
+      "fit_roots": 32,
+      "validation_roots_read": 8,
+      "tail_metadata_rows_read": 576,
+      "tail_training_rows_read": 256,
+      "continuation_tree_fits": 6,
+      "continuation_predictions": 100,
+      "decomposed_roots": 10,
+      "decomposed_candidate_labels": 40,
+      "decomposed_pair_vectors": 80
+    }
+  ]
+}

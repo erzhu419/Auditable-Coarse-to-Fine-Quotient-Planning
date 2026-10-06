@@ -1,0 +1,13 @@
+{
+  "attempts": [
+    {
+      "tests": 3,
+      "passed": 3,
+      "seconds": 0.23,
+      "scope": "Fixed knowledge ages; independent paired candidate streams; original deployed validation predictions and cutoff costs",
+      "tree_fits": 0,
+      "sampled_transitions": 0,
+      "synthetic_transitions": 0
+    }
+  ]
+}

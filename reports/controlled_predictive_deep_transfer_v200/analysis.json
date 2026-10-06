@@ -1,0 +1,466 @@
+{
+  "schema": "acfqp.deep_transfer.v200.analysis",
+  "complete": true,
+  "valid": true,
+  "checks": [
+    {
+      "name": "complete_main",
+      "passed": true
+    },
+    {
+      "name": "fixed_roster",
+      "passed": true
+    },
+    {
+      "name": "no_inherited_teacher_inputs",
+      "passed": true
+    },
+    {
+      "name": "frozen_phase_order",
+      "passed": true
+    },
+    {
+      "name": "no_target_queries_before_freeze",
+      "passed": true
+    },
+    {
+      "name": "no_random_samples_teacher_loads_native_updates",
+      "passed": true
+    },
+    {
+      "name": "source_native_states",
+      "passed": true
+    },
+    {
+      "name": "source_native_rows",
+      "passed": true
+    },
+    {
+      "name": "source_controlled_rows_only",
+      "passed": true
+    },
+    {
+      "name": "source_mask_closure",
+      "passed": true
+    },
+    {
+      "name": "source_acquisition_provenance",
+      "passed": true
+    },
+    {
+      "name": "source_acquisition_counts",
+      "passed": true
+    },
+    {
+      "name": "source_model:COARSE",
+      "passed": true
+    },
+    {
+      "name": "learning_counts:COARSE",
+      "passed": true
+    },
+    {
+      "name": "model_counts:COARSE",
+      "passed": true
+    },
+    {
+      "name": "abstract_plans:COARSE",
+      "passed": true
+    },
+    {
+      "name": "abstract_planning_counts:COARSE",
+      "passed": true
+    },
+    {
+      "name": "source_model:LEARNED",
+      "passed": true
+    },
+    {
+      "name": "learning_counts:LEARNED",
+      "passed": true
+    },
+    {
+      "name": "model_counts:LEARNED",
+      "passed": true
+    },
+    {
+      "name": "abstract_plans:LEARNED",
+      "passed": true
+    },
+    {
+      "name": "abstract_planning_counts:LEARNED",
+      "passed": true
+    },
+    {
+      "name": "target_fixed_order",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_00",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_00",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_01",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_01",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_02",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_02",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_03",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_03",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_04",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_04",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_05",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_05",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_06",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_06",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_07",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_07",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_08",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_08",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_09",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_09",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_10",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_10",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_11",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_11",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_12",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_12",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_13",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_13",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_14",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_14",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_15",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_15",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_16",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_16",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_17",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_17",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_18",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_18",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_19",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_19",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_20",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_20",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_21",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_21",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_22",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_22",
+      "passed": true
+    },
+    {
+      "name": "target_native_policy:v200_target_23",
+      "passed": true
+    },
+    {
+      "name": "target_native_work:v200_target_23",
+      "passed": true
+    },
+    {
+      "name": "native_deep_union",
+      "passed": true
+    },
+    {
+      "name": "independent_four_conditions",
+      "passed": true
+    },
+    {
+      "name": "target_acquisition_totals",
+      "passed": true
+    }
+  ],
+  "independently_reconstructed_targets": 24,
+  "conditions": {
+    "TASK": false,
+    "DEEP_REUSE": true,
+    "QUALITY": false,
+    "ADDED_DEPTH": true
+  },
+  "advance": false,
+  "costs": {
+    "retained_files_read": 11,
+    "retained_bytes_read": 2028729,
+    "native_board_classifications": 579593,
+    "native_swipe_calls": 1391808,
+    "native_spawn_outcomes": 1061812,
+    "native_support_rows": 151327,
+    "source_native_row_checks": 2450,
+    "source_native_outcome_checks": 16730,
+    "fit_calls": 2,
+    "source_controlled_state_reads": 1346,
+    "source_rows_read": 4900,
+    "source_outcomes_read": 33460,
+    "source_reward_products": 33460,
+    "feature_calls": 18688,
+    "feature_tile_reads": 299008,
+    "feature_equality_checks": 448512,
+    "feature_scalar_reductions": 598016,
+    "fit_tree_layers": 8,
+    "label_components": 457640,
+    "encoding_calls": 267680,
+    "label_probability_pushes": 133840,
+    "label_action_rows": 19600,
+    "label_zero_components": 41140,
+    "compiler_member_rows": 19600,
+    "compiler_reward_accumulations": 19600,
+    "compiler_probability_pushes": 133840,
+    "compiler_rows": 518,
+    "compiler_outcomes": 2518,
+    "fit_final_leaves": 184,
+    "h1_fit_tree_layers": 2,
+    "h1_label_components": 21536,
+    "h1_encoding_calls": 66920,
+    "h1_label_probability_pushes": 33460,
+    "h1_label_action_rows": 4900,
+    "h1_label_zero_components": 1936,
+    "h1_compiler_member_rows": 4900,
+    "h1_compiler_reward_accumulations": 4900,
+    "h1_compiler_probability_pushes": 33460,
+    "h1_compiler_rows": 126,
+    "h1_compiler_outcomes": 190,
+    "h1_fit_final_leaves": 46,
+    "h1_fit_states": 1346,
+    "h1_start_leaves": 28,
+    "encoding_mask_comparisons": 834588,
+    "h2_fit_tree_layers": 2,
+    "h2_label_components": 145368,
+    "h2_encoding_calls": 66920,
+    "h2_encoding_mask_comparisons": 278196,
+    "h2_label_probability_pushes": 33460,
+    "h2_label_action_rows": 4900,
+    "h2_label_zero_components": 13068,
+    "h2_compiler_member_rows": 4900,
+    "h2_compiler_reward_accumulations": 4900,
+    "h2_compiler_probability_pushes": 33460,
+    "h2_compiler_rows": 131,
+    "h2_compiler_outcomes": 779,
+    "h2_fit_final_leaves": 46,
+    "h2_fit_states": 1346,
+    "h2_start_leaves": 28,
+    "h3_fit_tree_layers": 2,
+    "h3_label_components": 145368,
+    "h3_encoding_calls": 66920,
+    "h3_encoding_mask_comparisons": 278196,
+    "h3_label_probability_pushes": 33460,
+    "h3_label_action_rows": 4900,
+    "h3_label_zero_components": 13068,
+    "h3_compiler_member_rows": 4900,
+    "h3_compiler_reward_accumulations": 4900,
+    "h3_compiler_probability_pushes": 33460,
+    "h3_compiler_rows": 130,
+    "h3_compiler_outcomes": 776,
+    "h3_fit_final_leaves": 46,
+    "h3_fit_states": 1346,
+    "h3_start_leaves": 28,
+    "h4_fit_tree_layers": 2,
+    "h4_label_components": 145368,
+    "h4_encoding_calls": 66920,
+    "h4_encoding_mask_comparisons": 278196,
+    "h4_label_probability_pushes": 33460,
+    "h4_label_action_rows": 4900,
+    "h4_label_zero_components": 13068,
+    "h4_compiler_member_rows": 4900,
+    "h4_compiler_reward_accumulations": 4900,
+    "h4_compiler_probability_pushes": 33460,
+    "h4_compiler_rows": 131,
+    "h4_compiler_outcomes": 773,
+    "h4_fit_final_leaves": 46,
+    "h4_fit_states": 1346,
+    "h4_start_leaves": 28,
+    "abstract_dp_calls": 6,
+    "abstract_dp_cells": 570,
+    "abstract_dp_action_rows": 1554,
+    "abstract_dp_outcomes": 7554,
+    "fit_leaf_evaluations": 200,
+    "fit_total_component_updates": 1286480,
+    "fit_feature_sorts": 6426,
+    "fit_feature_values": 476994,
+    "fit_prefix_component_updates": 53300352,
+    "fit_split_candidates": 8564,
+    "fit_sse_components": 969792,
+    "fit_leaf_candidate_comparisons": 1620,
+    "fit_splits": 72,
+    "h1_fit_leaf_evaluations": 50,
+    "h1_fit_total_component_updates": 43616,
+    "h1_fit_feature_sorts": 1512,
+    "h1_fit_feature_values": 114492,
+    "h1_fit_prefix_component_updates": 1807680,
+    "h1_fit_split_candidates": 2058,
+    "h1_fit_sse_components": 32928,
+    "h1_fit_leaf_candidate_comparisons": 405,
+    "h1_fit_splits": 18,
+    "encoding_predicates": 249276,
+    "h2_encoding_predicates": 76500,
+    "h2_fit_leaf_evaluations": 50,
+    "h2_fit_total_component_updates": 411264,
+    "h2_fit_feature_sorts": 1596,
+    "h2_fit_feature_values": 119952,
+    "h2_fit_prefix_component_updates": 17043264,
+    "h2_fit_split_candidates": 2198,
+    "h2_fit_sse_components": 316512,
+    "h2_fit_leaf_candidate_comparisons": 405,
+    "h2_fit_splits": 18,
+    "h3_encoding_predicates": 85544,
+    "h3_fit_leaf_evaluations": 50,
+    "h3_fit_total_component_updates": 414288,
+    "h3_fit_feature_sorts": 1638,
+    "h3_fit_feature_values": 120834,
+    "h3_fit_prefix_component_updates": 17164224,
+    "h3_fit_split_candidates": 2141,
+    "h3_fit_sse_components": 308304,
+    "h3_fit_leaf_candidate_comparisons": 405,
+    "h3_fit_splits": 18,
+    "h4_encoding_predicates": 87232,
+    "h4_fit_leaf_evaluations": 50,
+    "h4_fit_total_component_updates": 417312,
+    "h4_fit_feature_sorts": 1680,
+    "h4_fit_feature_values": 121716,
+    "h4_fit_prefix_component_updates": 17285184,
+    "h4_fit_split_candidates": 2167,
+    "h4_fit_sse_components": 312048,
+    "h4_fit_leaf_candidate_comparisons": 405,
+    "h4_fit_splits": 18,
+    "oracle_states": 1930524,
+    "oracle_action_rows": 499878,
+    "oracle_outcomes": 3493452,
+    "policy_replay_states": 127903,
+    "policy_replay_action_rows": 25543,
+    "policy_replay_outcomes": 197948,
+    "native_benchmark_board_transforms": 37928,
+    "native_benchmark_action_transports": 141992,
+    "native_benchmark_graph_row_visits": 17749,
+    "step_diagnostic_outcomes": 844
+  },
+  "seconds": 107.8546803270001
+}

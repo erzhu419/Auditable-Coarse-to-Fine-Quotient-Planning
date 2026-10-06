@@ -1,0 +1,40 @@
+{
+  "valid": true,
+  "complete": true,
+  "records": 3,
+  "independent_starting_wealth_checks": 3,
+  "independent_oracle_world_checks": 3,
+  "exact_matched_headroom": 2896,
+  "budget_insufficient_lives": [
+    1,
+    2
+  ],
+  "necessary_expected_samples_lower_sum": "447127711219415913667830960322904445381862765109800712557050538987082904348298240884503146844359518689809664794648844043248989941398631391077020186752737903248467326730614074376467998427368037917825350456452562736786599336682935675917405163427/137074091234170366700383029708991503782331651994954415722983472719246221320282403750761721063940029986427728352010857590744194582558795481128446695621433372325698111134939272142751978657943739786321761482340778705810868575765163616425982720",
+  "total_budget_insufficient": true,
+  "oracle_diagnostic_only": true,
+  "new_observations": 0,
+  "new_paid_samples": 0,
+  "scope": "fixed_suffix_with_other_original_costs_preserved",
+  "checks": {
+    "fixed_inputs_previously_audited": 1,
+    "three_fixed_gap_lives": 1,
+    "frozen_inputs_precede_oracle_truth": 1,
+    "fixed_probability_cost_and_claim_scope": 1,
+    "unchanged_original_snapshot_and_bad_witness": 3,
+    "matched_life_total_fees_source_included": 3,
+    "independent_oracle_world_and_necessary_rows": 3,
+    "independent_sequential_starting_wealth_and_alpha": 3,
+    "independent_directional_row_kl_bounds": 3,
+    "optimistic_maximum_row_information_and_paid_cap": 3,
+    "conservative_expected_sample_and_batch_cap_lower_bound": 3,
+    "strict_necessary_budget_decision": 3,
+    "certified_power_upper_and_dyadic_resolution": 3,
+    "unit_probability_trivial_upper": 1,
+    "row_scope_and_fixed_suffix_interpretation": 3,
+    "outward_power_boundary_kl_witness": 2,
+    "distinct_life_sum_and_each_case_planning_requirement": 1,
+    "summary_scientific_and_cost_scope": 1
+  },
+  "failures": [],
+  "seconds": 2.660981236025691
+}

@@ -1,0 +1,20 @@
+{
+  "attempts": [
+    {
+      "failed_tests": 0,
+      "new_environment_transitions": 0,
+      "new_model_transitions": 0,
+      "new_neural_model_fits": 0,
+      "new_candidate_predictions": 0,
+      "scope": "Mock acquisition/fits/games; actual cumulative binding, cohort and dispatch logic."
+    },
+    {
+      "failed_tests": 0,
+      "new_environment_transitions": 0,
+      "new_model_transitions": 0,
+      "new_neural_model_fits": 0,
+      "new_candidate_predictions": 0,
+      "scope": "Mock acquisition/fits/games; actual cumulative binding, cohort and dispatch logic."
+    }
+  ]
+}

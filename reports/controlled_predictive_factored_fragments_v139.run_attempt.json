@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "scripts/run_controlled_predictive_factored_fragments_v139.py"
+  ],
+  "status": "complete",
+  "started": 1790059551.4386785,
+  "exit_code": 0,
+  "seconds": 9.350165367126465,
+  "stderr_bytes": 0
+}

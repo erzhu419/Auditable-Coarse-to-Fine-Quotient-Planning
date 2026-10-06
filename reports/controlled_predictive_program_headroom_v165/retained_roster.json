@@ -1,0 +1,3887 @@
+{
+  "schema": "acfqp.program_headroom.v165.roster",
+  "expected_cell_count": 8,
+  "expected_root_count": 32,
+  "root_count": 32,
+  "cells": [
+    {
+      "target_life": 0,
+      "query": "risk1",
+      "selected_candidate_id": "P0",
+      "source_semantics": {
+        "first_action": "DOWN",
+        "probe_action": "RIGHT",
+        "true_suffix": [
+          "RIGHT",
+          "DOWN",
+          "RIGHT"
+        ],
+        "false_suffix": [
+          "DOWN",
+          "RIGHT",
+          "DOWN"
+        ]
+      },
+      "learned_mapping": {
+        "true": "B",
+        "false": "A"
+      },
+      "global_mapping": {
+        "true": "B",
+        "false": "B"
+      },
+      "donor": {
+        "heldout_life": 1,
+        "candidate_id": "P0",
+        "candidate_position": 0
+      },
+      "roots": [
+        {
+          "root_id": "TRAIN_SOURCE:0:risk1:0:0",
+          "phase": "TRAIN_SOURCE",
+          "life": 0,
+          "query": "risk1",
+          "replica": 0,
+          "slot": 0,
+          "source_id": "TRAIN_SOURCE:0:risk1:0",
+          "source_seed": 16410000000,
+          "source_step": 270,
+          "source_steps": 1080,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:0:fold1:0:H2",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:0",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16421000000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:0:fold1:0:P0_A",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:0",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "P0_A",
+              "seed": 16421000000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:0:fold1:0:P0_B",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:0",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "P0_B",
+              "seed": 16421000000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:0:fold1:1:H2",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:0",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16421000001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:0:fold1:1:P0_A",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:0",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "P0_A",
+              "seed": 16421000001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:0:fold1:1:P0_B",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:0",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "P0_B",
+              "seed": 16421000001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:0:fold1:2:H2",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:0",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16421000002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:0:fold1:2:P0_A",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:0",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "P0_A",
+              "seed": 16421000002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:0:fold1:2:P0_B",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:0",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "P0_B",
+              "seed": 16421000002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:0:fold1:3:H2",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:0",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16421000003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:0:fold1:3:P0_A",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:0",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "P0_A",
+              "seed": 16421000003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:0:fold1:3:P0_B",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:0",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "P0_B",
+              "seed": 16421000003
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:0:risk1:0:1",
+          "phase": "TRAIN_SOURCE",
+          "life": 0,
+          "query": "risk1",
+          "replica": 0,
+          "slot": 1,
+          "source_id": "TRAIN_SOURCE:0:risk1:0",
+          "source_seed": 16410000000,
+          "source_step": 810,
+          "source_steps": 1080,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:1:fold1:0:H2",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:1",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16421000100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:1:fold1:0:P0_A",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:1",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "P0_A",
+              "seed": 16421000100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:1:fold1:0:P0_B",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:1",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "P0_B",
+              "seed": 16421000100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:1:fold1:1:H2",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:1",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16421000101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:1:fold1:1:P0_A",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:1",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "P0_A",
+              "seed": 16421000101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:1:fold1:1:P0_B",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:1",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "P0_B",
+              "seed": 16421000101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:1:fold1:2:H2",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:1",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16421000102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:1:fold1:2:P0_A",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:1",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "P0_A",
+              "seed": 16421000102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:1:fold1:2:P0_B",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:1",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "P0_B",
+              "seed": 16421000102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:1:fold1:3:H2",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:1",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16421000103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:1:fold1:3:P0_A",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:1",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "P0_A",
+              "seed": 16421000103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:0:1:fold1:3:P0_B",
+              "root_id": "TRAIN_SOURCE:0:risk1:0:1",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "P0_B",
+              "seed": 16421000103
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:0:risk1:1:0",
+          "phase": "TRAIN_SOURCE",
+          "life": 0,
+          "query": "risk1",
+          "replica": 1,
+          "slot": 0,
+          "source_id": "TRAIN_SOURCE:0:risk1:1",
+          "source_seed": 16410000001,
+          "source_step": 249,
+          "source_steps": 999,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:0:fold1:0:H2",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:0",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16421001000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:0:fold1:0:P0_A",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:0",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "P0_A",
+              "seed": 16421001000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:0:fold1:0:P0_B",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:0",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "P0_B",
+              "seed": 16421001000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:0:fold1:1:H2",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:0",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16421001001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:0:fold1:1:P0_A",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:0",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "P0_A",
+              "seed": 16421001001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:0:fold1:1:P0_B",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:0",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "P0_B",
+              "seed": 16421001001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:0:fold1:2:H2",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:0",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16421001002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:0:fold1:2:P0_A",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:0",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "P0_A",
+              "seed": 16421001002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:0:fold1:2:P0_B",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:0",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "P0_B",
+              "seed": 16421001002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:0:fold1:3:H2",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:0",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16421001003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:0:fold1:3:P0_A",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:0",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "P0_A",
+              "seed": 16421001003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:0:fold1:3:P0_B",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:0",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "P0_B",
+              "seed": 16421001003
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:0:risk1:1:1",
+          "phase": "TRAIN_SOURCE",
+          "life": 0,
+          "query": "risk1",
+          "replica": 1,
+          "slot": 1,
+          "source_id": "TRAIN_SOURCE:0:risk1:1",
+          "source_seed": 16410000001,
+          "source_step": 749,
+          "source_steps": 999,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:1:fold1:0:H2",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:1",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16421001100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:1:fold1:0:P0_A",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:1",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "P0_A",
+              "seed": 16421001100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:1:fold1:0:P0_B",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:1",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "P0_B",
+              "seed": 16421001100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:1:fold1:1:H2",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:1",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16421001101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:1:fold1:1:P0_A",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:1",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "P0_A",
+              "seed": 16421001101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:1:fold1:1:P0_B",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:1",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "P0_B",
+              "seed": 16421001101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:1:fold1:2:H2",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:1",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16421001102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:1:fold1:2:P0_A",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:1",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "P0_A",
+              "seed": 16421001102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:1:fold1:2:P0_B",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:1",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "P0_B",
+              "seed": 16421001102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:1:fold1:3:H2",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:1",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16421001103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:1:fold1:3:P0_A",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:1",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "P0_A",
+              "seed": 16421001103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk1:1:1:fold1:3:P0_B",
+              "root_id": "TRAIN_SOURCE:0:risk1:1:1",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "P0_B",
+              "seed": 16421001103
+            }
+          ],
+          "issues": [],
+          "complete": true
+        }
+      ],
+      "issues": [],
+      "complete": true
+    },
+    {
+      "target_life": 0,
+      "query": "risk8",
+      "selected_candidate_id": "P1",
+      "source_semantics": {
+        "first_action": "RIGHT",
+        "probe_action": "DOWN",
+        "true_suffix": [
+          "DOWN",
+          "RIGHT",
+          "DOWN"
+        ],
+        "false_suffix": [
+          "RIGHT",
+          "DOWN",
+          "RIGHT"
+        ]
+      },
+      "learned_mapping": {
+        "true": "A",
+        "false": "A"
+      },
+      "global_mapping": {
+        "true": "A",
+        "false": "A"
+      },
+      "donor": {
+        "heldout_life": 1,
+        "candidate_id": "P1",
+        "candidate_position": 1
+      },
+      "roots": [
+        {
+          "root_id": "TRAIN_SOURCE:0:risk8:0:0",
+          "phase": "TRAIN_SOURCE",
+          "life": 0,
+          "query": "risk8",
+          "replica": 0,
+          "slot": 0,
+          "source_id": "TRAIN_SOURCE:0:risk8:0",
+          "source_seed": 16410100000,
+          "source_step": 230,
+          "source_steps": 921,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:0:fold1:0:H2",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:0",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16421010000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:0:fold1:0:P1_A",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:0",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16421010000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:0:fold1:0:P1_B",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:0",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16421010000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:0:fold1:1:H2",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:0",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16421010001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:0:fold1:1:P1_A",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:0",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16421010001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:0:fold1:1:P1_B",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:0",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16421010001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:0:fold1:2:H2",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:0",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16421010002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:0:fold1:2:P1_A",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:0",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16421010002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:0:fold1:2:P1_B",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:0",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16421010002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:0:fold1:3:H2",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:0",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16421010003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:0:fold1:3:P1_A",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:0",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16421010003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:0:fold1:3:P1_B",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:0",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16421010003
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:0:risk8:0:1",
+          "phase": "TRAIN_SOURCE",
+          "life": 0,
+          "query": "risk8",
+          "replica": 0,
+          "slot": 1,
+          "source_id": "TRAIN_SOURCE:0:risk8:0",
+          "source_seed": 16410100000,
+          "source_step": 690,
+          "source_steps": 921,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:1:fold1:0:H2",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:1",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16421010100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:1:fold1:0:P1_A",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:1",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16421010100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:1:fold1:0:P1_B",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:1",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16421010100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:1:fold1:1:H2",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:1",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16421010101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:1:fold1:1:P1_A",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:1",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16421010101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:1:fold1:1:P1_B",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:1",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16421010101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:1:fold1:2:H2",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:1",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16421010102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:1:fold1:2:P1_A",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:1",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16421010102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:1:fold1:2:P1_B",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:1",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16421010102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:1:fold1:3:H2",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:1",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16421010103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:1:fold1:3:P1_A",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:1",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16421010103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:0:1:fold1:3:P1_B",
+              "root_id": "TRAIN_SOURCE:0:risk8:0:1",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16421010103
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:0:risk8:1:0",
+          "phase": "TRAIN_SOURCE",
+          "life": 0,
+          "query": "risk8",
+          "replica": 1,
+          "slot": 0,
+          "source_id": "TRAIN_SOURCE:0:risk8:1",
+          "source_seed": 16410100001,
+          "source_step": 234,
+          "source_steps": 936,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:0:fold1:0:H2",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:0",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16421011000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:0:fold1:0:P1_A",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:0",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16421011000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:0:fold1:0:P1_B",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:0",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16421011000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:0:fold1:1:H2",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:0",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16421011001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:0:fold1:1:P1_A",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:0",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16421011001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:0:fold1:1:P1_B",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:0",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16421011001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:0:fold1:2:H2",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:0",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16421011002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:0:fold1:2:P1_A",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:0",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16421011002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:0:fold1:2:P1_B",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:0",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16421011002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:0:fold1:3:H2",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:0",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16421011003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:0:fold1:3:P1_A",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:0",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16421011003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:0:fold1:3:P1_B",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:0",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16421011003
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:0:risk8:1:1",
+          "phase": "TRAIN_SOURCE",
+          "life": 0,
+          "query": "risk8",
+          "replica": 1,
+          "slot": 1,
+          "source_id": "TRAIN_SOURCE:0:risk8:1",
+          "source_seed": 16410100001,
+          "source_step": 702,
+          "source_steps": 936,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:1:fold1:0:H2",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:1",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16421011100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:1:fold1:0:P1_A",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:1",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16421011100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:1:fold1:0:P1_B",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:1",
+              "heldout_life": 1,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16421011100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:1:fold1:1:H2",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:1",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16421011101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:1:fold1:1:P1_A",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:1",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16421011101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:1:fold1:1:P1_B",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:1",
+              "heldout_life": 1,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16421011101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:1:fold1:2:H2",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:1",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16421011102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:1:fold1:2:P1_A",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:1",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16421011102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:1:fold1:2:P1_B",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:1",
+              "heldout_life": 1,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16421011102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:1:fold1:3:H2",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:1",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16421011103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:1:fold1:3:P1_A",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:1",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16421011103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:0:risk8:1:1:fold1:3:P1_B",
+              "root_id": "TRAIN_SOURCE:0:risk8:1:1",
+              "heldout_life": 1,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16421011103
+            }
+          ],
+          "issues": [],
+          "complete": true
+        }
+      ],
+      "issues": [],
+      "complete": true
+    },
+    {
+      "target_life": 1,
+      "query": "risk1",
+      "selected_candidate_id": "P1",
+      "source_semantics": {
+        "first_action": "RIGHT",
+        "probe_action": "DOWN",
+        "true_suffix": [
+          "DOWN",
+          "RIGHT",
+          "DOWN"
+        ],
+        "false_suffix": [
+          "RIGHT",
+          "DOWN",
+          "RIGHT"
+        ]
+      },
+      "learned_mapping": {
+        "true": "A",
+        "false": "B"
+      },
+      "global_mapping": {
+        "true": "B",
+        "false": "B"
+      },
+      "donor": {
+        "heldout_life": 0,
+        "candidate_id": "P1",
+        "candidate_position": 1
+      },
+      "roots": [
+        {
+          "root_id": "TRAIN_SOURCE:1:risk1:0:0",
+          "phase": "TRAIN_SOURCE",
+          "life": 1,
+          "query": "risk1",
+          "replica": 0,
+          "slot": 0,
+          "source_id": "TRAIN_SOURCE:1:risk1:0",
+          "source_seed": 16411000000,
+          "source_step": 258,
+          "source_steps": 1034,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:0:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420100000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:0:fold0:0:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16420100000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:0:fold0:0:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16420100000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:0:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420100001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:0:fold0:1:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16420100001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:0:fold0:1:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16420100001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:0:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420100002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:0:fold0:2:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16420100002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:0:fold0:2:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16420100002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:0:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420100003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:0:fold0:3:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16420100003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:0:fold0:3:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16420100003
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:1:risk1:0:1",
+          "phase": "TRAIN_SOURCE",
+          "life": 1,
+          "query": "risk1",
+          "replica": 0,
+          "slot": 1,
+          "source_id": "TRAIN_SOURCE:1:risk1:0",
+          "source_seed": 16411000000,
+          "source_step": 775,
+          "source_steps": 1034,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:1:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420100100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:1:fold0:0:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16420100100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:1:fold0:0:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16420100100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:1:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420100101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:1:fold0:1:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16420100101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:1:fold0:1:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16420100101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:1:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420100102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:1:fold0:2:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16420100102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:1:fold0:2:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16420100102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:1:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420100103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:1:fold0:3:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16420100103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:0:1:fold0:3:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16420100103
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:1:risk1:1:0",
+          "phase": "TRAIN_SOURCE",
+          "life": 1,
+          "query": "risk1",
+          "replica": 1,
+          "slot": 0,
+          "source_id": "TRAIN_SOURCE:1:risk1:1",
+          "source_seed": 16411000001,
+          "source_step": 269,
+          "source_steps": 1078,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:0:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420101000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:0:fold0:0:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16420101000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:0:fold0:0:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16420101000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:0:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420101001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:0:fold0:1:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16420101001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:0:fold0:1:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16420101001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:0:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420101002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:0:fold0:2:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16420101002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:0:fold0:2:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16420101002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:0:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420101003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:0:fold0:3:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16420101003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:0:fold0:3:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16420101003
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:1:risk1:1:1",
+          "phase": "TRAIN_SOURCE",
+          "life": 1,
+          "query": "risk1",
+          "replica": 1,
+          "slot": 1,
+          "source_id": "TRAIN_SOURCE:1:risk1:1",
+          "source_seed": 16411000001,
+          "source_step": 808,
+          "source_steps": 1078,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:1:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420101100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:1:fold0:0:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16420101100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:1:fold0:0:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16420101100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:1:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420101101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:1:fold0:1:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16420101101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:1:fold0:1:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16420101101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:1:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420101102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:1:fold0:2:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16420101102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:1:fold0:2:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16420101102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:1:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420101103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:1:fold0:3:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16420101103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk1:1:1:fold0:3:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16420101103
+            }
+          ],
+          "issues": [],
+          "complete": true
+        }
+      ],
+      "issues": [],
+      "complete": true
+    },
+    {
+      "target_life": 1,
+      "query": "risk8",
+      "selected_candidate_id": "P1",
+      "source_semantics": {
+        "first_action": "RIGHT",
+        "probe_action": "DOWN",
+        "true_suffix": [
+          "DOWN",
+          "RIGHT",
+          "DOWN"
+        ],
+        "false_suffix": [
+          "RIGHT",
+          "DOWN",
+          "RIGHT"
+        ]
+      },
+      "learned_mapping": {
+        "true": "B",
+        "false": "B"
+      },
+      "global_mapping": {
+        "true": "B",
+        "false": "B"
+      },
+      "donor": {
+        "heldout_life": 0,
+        "candidate_id": "P1",
+        "candidate_position": 1
+      },
+      "roots": [
+        {
+          "root_id": "TRAIN_SOURCE:1:risk8:0:0",
+          "phase": "TRAIN_SOURCE",
+          "life": 1,
+          "query": "risk8",
+          "replica": 0,
+          "slot": 0,
+          "source_id": "TRAIN_SOURCE:1:risk8:0",
+          "source_seed": 16411100000,
+          "source_step": 233,
+          "source_steps": 932,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:0:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420110000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:0:fold0:0:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16420110000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:0:fold0:0:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16420110000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:0:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420110001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:0:fold0:1:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16420110001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:0:fold0:1:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16420110001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:0:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420110002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:0:fold0:2:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16420110002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:0:fold0:2:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16420110002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:0:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420110003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:0:fold0:3:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16420110003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:0:fold0:3:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16420110003
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:1:risk8:0:1",
+          "phase": "TRAIN_SOURCE",
+          "life": 1,
+          "query": "risk8",
+          "replica": 0,
+          "slot": 1,
+          "source_id": "TRAIN_SOURCE:1:risk8:0",
+          "source_seed": 16411100000,
+          "source_step": 699,
+          "source_steps": 932,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:1:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420110100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:1:fold0:0:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16420110100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:1:fold0:0:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16420110100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:1:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420110101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:1:fold0:1:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16420110101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:1:fold0:1:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16420110101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:1:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420110102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:1:fold0:2:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16420110102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:1:fold0:2:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16420110102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:1:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420110103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:1:fold0:3:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16420110103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:0:1:fold0:3:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16420110103
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:1:risk8:1:0",
+          "phase": "TRAIN_SOURCE",
+          "life": 1,
+          "query": "risk8",
+          "replica": 1,
+          "slot": 0,
+          "source_id": "TRAIN_SOURCE:1:risk8:1",
+          "source_seed": 16411100001,
+          "source_step": 209,
+          "source_steps": 836,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:0:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420111000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:0:fold0:0:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16420111000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:0:fold0:0:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16420111000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:0:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420111001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:0:fold0:1:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16420111001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:0:fold0:1:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16420111001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:0:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420111002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:0:fold0:2:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16420111002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:0:fold0:2:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16420111002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:0:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420111003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:0:fold0:3:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16420111003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:0:fold0:3:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16420111003
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:1:risk8:1:1",
+          "phase": "TRAIN_SOURCE",
+          "life": 1,
+          "query": "risk8",
+          "replica": 1,
+          "slot": 1,
+          "source_id": "TRAIN_SOURCE:1:risk8:1",
+          "source_seed": 16411100001,
+          "source_step": 627,
+          "source_steps": 836,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:1:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420111100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:1:fold0:0:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16420111100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:1:fold0:0:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16420111100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:1:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420111101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:1:fold0:1:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16420111101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:1:fold0:1:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16420111101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:1:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420111102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:1:fold0:2:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16420111102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:1:fold0:2:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16420111102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:1:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420111103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:1:fold0:3:P1_A",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16420111103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:1:risk8:1:1:fold0:3:P1_B",
+              "root_id": "TRAIN_SOURCE:1:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16420111103
+            }
+          ],
+          "issues": [],
+          "complete": true
+        }
+      ],
+      "issues": [],
+      "complete": true
+    },
+    {
+      "target_life": 2,
+      "query": "risk1",
+      "selected_candidate_id": "P0",
+      "source_semantics": {
+        "first_action": "DOWN",
+        "probe_action": "RIGHT",
+        "true_suffix": [
+          "RIGHT",
+          "DOWN",
+          "RIGHT"
+        ],
+        "false_suffix": [
+          "DOWN",
+          "RIGHT",
+          "DOWN"
+        ]
+      },
+      "learned_mapping": {
+        "true": "B",
+        "false": "B"
+      },
+      "global_mapping": {
+        "true": "B",
+        "false": "B"
+      },
+      "donor": {
+        "heldout_life": 0,
+        "candidate_id": "P0",
+        "candidate_position": 0
+      },
+      "roots": [
+        {
+          "root_id": "TRAIN_SOURCE:2:risk1:0:0",
+          "phase": "TRAIN_SOURCE",
+          "life": 2,
+          "query": "risk1",
+          "replica": 0,
+          "slot": 0,
+          "source_id": "TRAIN_SOURCE:2:risk1:0",
+          "source_seed": 16412000000,
+          "source_step": 243,
+          "source_steps": 973,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:0:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420200000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:0:fold0:0:P0_A",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P0_A",
+              "seed": 16420200000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:0:fold0:0:P0_B",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P0_B",
+              "seed": 16420200000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:0:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420200001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:0:fold0:1:P0_A",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P0_A",
+              "seed": 16420200001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:0:fold0:1:P0_B",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P0_B",
+              "seed": 16420200001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:0:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420200002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:0:fold0:2:P0_A",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P0_A",
+              "seed": 16420200002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:0:fold0:2:P0_B",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P0_B",
+              "seed": 16420200002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:0:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420200003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:0:fold0:3:P0_A",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P0_A",
+              "seed": 16420200003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:0:fold0:3:P0_B",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P0_B",
+              "seed": 16420200003
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:2:risk1:0:1",
+          "phase": "TRAIN_SOURCE",
+          "life": 2,
+          "query": "risk1",
+          "replica": 0,
+          "slot": 1,
+          "source_id": "TRAIN_SOURCE:2:risk1:0",
+          "source_seed": 16412000000,
+          "source_step": 729,
+          "source_steps": 973,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:1:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420200100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:1:fold0:0:P0_A",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P0_A",
+              "seed": 16420200100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:1:fold0:0:P0_B",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P0_B",
+              "seed": 16420200100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:1:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420200101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:1:fold0:1:P0_A",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P0_A",
+              "seed": 16420200101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:1:fold0:1:P0_B",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P0_B",
+              "seed": 16420200101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:1:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420200102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:1:fold0:2:P0_A",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P0_A",
+              "seed": 16420200102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:1:fold0:2:P0_B",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P0_B",
+              "seed": 16420200102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:1:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420200103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:1:fold0:3:P0_A",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P0_A",
+              "seed": 16420200103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:0:1:fold0:3:P0_B",
+              "root_id": "TRAIN_SOURCE:2:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P0_B",
+              "seed": 16420200103
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:2:risk1:1:0",
+          "phase": "TRAIN_SOURCE",
+          "life": 2,
+          "query": "risk1",
+          "replica": 1,
+          "slot": 0,
+          "source_id": "TRAIN_SOURCE:2:risk1:1",
+          "source_seed": 16412000001,
+          "source_step": 240,
+          "source_steps": 960,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:0:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420201000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:0:fold0:0:P0_A",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P0_A",
+              "seed": 16420201000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:0:fold0:0:P0_B",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P0_B",
+              "seed": 16420201000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:0:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420201001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:0:fold0:1:P0_A",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P0_A",
+              "seed": 16420201001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:0:fold0:1:P0_B",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P0_B",
+              "seed": 16420201001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:0:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420201002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:0:fold0:2:P0_A",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P0_A",
+              "seed": 16420201002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:0:fold0:2:P0_B",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P0_B",
+              "seed": 16420201002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:0:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420201003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:0:fold0:3:P0_A",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P0_A",
+              "seed": 16420201003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:0:fold0:3:P0_B",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P0_B",
+              "seed": 16420201003
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:2:risk1:1:1",
+          "phase": "TRAIN_SOURCE",
+          "life": 2,
+          "query": "risk1",
+          "replica": 1,
+          "slot": 1,
+          "source_id": "TRAIN_SOURCE:2:risk1:1",
+          "source_seed": 16412000001,
+          "source_step": 720,
+          "source_steps": 960,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:1:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420201100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:1:fold0:0:P0_A",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P0_A",
+              "seed": 16420201100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:1:fold0:0:P0_B",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P0_B",
+              "seed": 16420201100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:1:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420201101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:1:fold0:1:P0_A",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P0_A",
+              "seed": 16420201101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:1:fold0:1:P0_B",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P0_B",
+              "seed": 16420201101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:1:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420201102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:1:fold0:2:P0_A",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P0_A",
+              "seed": 16420201102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:1:fold0:2:P0_B",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P0_B",
+              "seed": 16420201102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:1:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420201103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:1:fold0:3:P0_A",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P0_A",
+              "seed": 16420201103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk1:1:1:fold0:3:P0_B",
+              "root_id": "TRAIN_SOURCE:2:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P0_B",
+              "seed": 16420201103
+            }
+          ],
+          "issues": [],
+          "complete": true
+        }
+      ],
+      "issues": [],
+      "complete": true
+    },
+    {
+      "target_life": 2,
+      "query": "risk8",
+      "selected_candidate_id": "P1",
+      "source_semantics": {
+        "first_action": "RIGHT",
+        "probe_action": "DOWN",
+        "true_suffix": [
+          "DOWN",
+          "RIGHT",
+          "DOWN"
+        ],
+        "false_suffix": [
+          "RIGHT",
+          "DOWN",
+          "RIGHT"
+        ]
+      },
+      "learned_mapping": {
+        "true": "B",
+        "false": "B"
+      },
+      "global_mapping": {
+        "true": "B",
+        "false": "B"
+      },
+      "donor": {
+        "heldout_life": 0,
+        "candidate_id": "P1",
+        "candidate_position": 1
+      },
+      "roots": [
+        {
+          "root_id": "TRAIN_SOURCE:2:risk8:0:0",
+          "phase": "TRAIN_SOURCE",
+          "life": 2,
+          "query": "risk8",
+          "replica": 0,
+          "slot": 0,
+          "source_id": "TRAIN_SOURCE:2:risk8:0",
+          "source_seed": 16412100000,
+          "source_step": 255,
+          "source_steps": 1021,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:0:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420210000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:0:fold0:0:P1_A",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16420210000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:0:fold0:0:P1_B",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16420210000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:0:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420210001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:0:fold0:1:P1_A",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16420210001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:0:fold0:1:P1_B",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16420210001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:0:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420210002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:0:fold0:2:P1_A",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16420210002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:0:fold0:2:P1_B",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16420210002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:0:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420210003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:0:fold0:3:P1_A",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16420210003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:0:fold0:3:P1_B",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16420210003
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:2:risk8:0:1",
+          "phase": "TRAIN_SOURCE",
+          "life": 2,
+          "query": "risk8",
+          "replica": 0,
+          "slot": 1,
+          "source_id": "TRAIN_SOURCE:2:risk8:0",
+          "source_seed": 16412100000,
+          "source_step": 765,
+          "source_steps": 1021,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:1:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420210100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:1:fold0:0:P1_A",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16420210100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:1:fold0:0:P1_B",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16420210100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:1:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420210101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:1:fold0:1:P1_A",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16420210101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:1:fold0:1:P1_B",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16420210101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:1:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420210102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:1:fold0:2:P1_A",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16420210102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:1:fold0:2:P1_B",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16420210102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:1:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420210103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:1:fold0:3:P1_A",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16420210103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:0:1:fold0:3:P1_B",
+              "root_id": "TRAIN_SOURCE:2:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16420210103
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:2:risk8:1:0",
+          "phase": "TRAIN_SOURCE",
+          "life": 2,
+          "query": "risk8",
+          "replica": 1,
+          "slot": 0,
+          "source_id": "TRAIN_SOURCE:2:risk8:1",
+          "source_seed": 16412100001,
+          "source_step": 238,
+          "source_steps": 953,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:0:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420211000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:0:fold0:0:P1_A",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16420211000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:0:fold0:0:P1_B",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16420211000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:0:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420211001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:0:fold0:1:P1_A",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16420211001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:0:fold0:1:P1_B",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16420211001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:0:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420211002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:0:fold0:2:P1_A",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16420211002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:0:fold0:2:P1_B",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16420211002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:0:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420211003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:0:fold0:3:P1_A",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16420211003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:0:fold0:3:P1_B",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16420211003
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:2:risk8:1:1",
+          "phase": "TRAIN_SOURCE",
+          "life": 2,
+          "query": "risk8",
+          "replica": 1,
+          "slot": 1,
+          "source_id": "TRAIN_SOURCE:2:risk8:1",
+          "source_seed": 16412100001,
+          "source_step": 714,
+          "source_steps": 953,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:1:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420211100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:1:fold0:0:P1_A",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16420211100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:1:fold0:0:P1_B",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16420211100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:1:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420211101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:1:fold0:1:P1_A",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16420211101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:1:fold0:1:P1_B",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16420211101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:1:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420211102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:1:fold0:2:P1_A",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16420211102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:1:fold0:2:P1_B",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16420211102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:1:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420211103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:1:fold0:3:P1_A",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16420211103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:2:risk8:1:1:fold0:3:P1_B",
+              "root_id": "TRAIN_SOURCE:2:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16420211103
+            }
+          ],
+          "issues": [],
+          "complete": true
+        }
+      ],
+      "issues": [],
+      "complete": true
+    },
+    {
+      "target_life": 3,
+      "query": "risk1",
+      "selected_candidate_id": "P1",
+      "source_semantics": {
+        "first_action": "RIGHT",
+        "probe_action": "DOWN",
+        "true_suffix": [
+          "DOWN",
+          "RIGHT",
+          "DOWN"
+        ],
+        "false_suffix": [
+          "RIGHT",
+          "DOWN",
+          "RIGHT"
+        ]
+      },
+      "learned_mapping": {
+        "true": "A",
+        "false": "A"
+      },
+      "global_mapping": {
+        "true": "A",
+        "false": "A"
+      },
+      "donor": {
+        "heldout_life": 0,
+        "candidate_id": "P1",
+        "candidate_position": 1
+      },
+      "roots": [
+        {
+          "root_id": "TRAIN_SOURCE:3:risk1:0:0",
+          "phase": "TRAIN_SOURCE",
+          "life": 3,
+          "query": "risk1",
+          "replica": 0,
+          "slot": 0,
+          "source_id": "TRAIN_SOURCE:3:risk1:0",
+          "source_seed": 16413000000,
+          "source_step": 235,
+          "source_steps": 942,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:0:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420300000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:0:fold0:0:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16420300000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:0:fold0:0:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16420300000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:0:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420300001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:0:fold0:1:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16420300001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:0:fold0:1:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16420300001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:0:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420300002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:0:fold0:2:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16420300002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:0:fold0:2:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16420300002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:0:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420300003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:0:fold0:3:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16420300003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:0:fold0:3:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16420300003
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:3:risk1:0:1",
+          "phase": "TRAIN_SOURCE",
+          "life": 3,
+          "query": "risk1",
+          "replica": 0,
+          "slot": 1,
+          "source_id": "TRAIN_SOURCE:3:risk1:0",
+          "source_seed": 16413000000,
+          "source_step": 706,
+          "source_steps": 942,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:1:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420300100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:1:fold0:0:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16420300100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:1:fold0:0:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16420300100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:1:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420300101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:1:fold0:1:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16420300101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:1:fold0:1:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16420300101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:1:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420300102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:1:fold0:2:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16420300102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:1:fold0:2:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16420300102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:1:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420300103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:1:fold0:3:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16420300103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:0:1:fold0:3:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk1:0:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16420300103
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:3:risk1:1:0",
+          "phase": "TRAIN_SOURCE",
+          "life": 3,
+          "query": "risk1",
+          "replica": 1,
+          "slot": 0,
+          "source_id": "TRAIN_SOURCE:3:risk1:1",
+          "source_seed": 16413000001,
+          "source_step": 238,
+          "source_steps": 952,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:0:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420301000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:0:fold0:0:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16420301000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:0:fold0:0:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16420301000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:0:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420301001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:0:fold0:1:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16420301001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:0:fold0:1:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16420301001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:0:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420301002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:0:fold0:2:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16420301002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:0:fold0:2:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16420301002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:0:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420301003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:0:fold0:3:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16420301003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:0:fold0:3:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16420301003
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:3:risk1:1:1",
+          "phase": "TRAIN_SOURCE",
+          "life": 3,
+          "query": "risk1",
+          "replica": 1,
+          "slot": 1,
+          "source_id": "TRAIN_SOURCE:3:risk1:1",
+          "source_seed": 16413000001,
+          "source_step": 714,
+          "source_steps": 952,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:1:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420301100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:1:fold0:0:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16420301100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:1:fold0:0:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16420301100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:1:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420301101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:1:fold0:1:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16420301101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:1:fold0:1:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16420301101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:1:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420301102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:1:fold0:2:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16420301102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:1:fold0:2:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16420301102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:1:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420301103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:1:fold0:3:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16420301103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk1:1:1:fold0:3:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk1:1:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16420301103
+            }
+          ],
+          "issues": [],
+          "complete": true
+        }
+      ],
+      "issues": [],
+      "complete": true
+    },
+    {
+      "target_life": 3,
+      "query": "risk8",
+      "selected_candidate_id": "P1",
+      "source_semantics": {
+        "first_action": "RIGHT",
+        "probe_action": "DOWN",
+        "true_suffix": [
+          "DOWN",
+          "RIGHT",
+          "DOWN"
+        ],
+        "false_suffix": [
+          "RIGHT",
+          "DOWN",
+          "RIGHT"
+        ]
+      },
+      "learned_mapping": {
+        "true": "B",
+        "false": "A"
+      },
+      "global_mapping": {
+        "true": "B",
+        "false": "B"
+      },
+      "donor": {
+        "heldout_life": 0,
+        "candidate_id": "P1",
+        "candidate_position": 1
+      },
+      "roots": [
+        {
+          "root_id": "TRAIN_SOURCE:3:risk8:0:0",
+          "phase": "TRAIN_SOURCE",
+          "life": 3,
+          "query": "risk8",
+          "replica": 0,
+          "slot": 0,
+          "source_id": "TRAIN_SOURCE:3:risk8:0",
+          "source_seed": 16413100000,
+          "source_step": 238,
+          "source_steps": 952,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:0:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420310000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:0:fold0:0:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16420310000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:0:fold0:0:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16420310000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:0:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420310001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:0:fold0:1:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16420310001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:0:fold0:1:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16420310001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:0:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420310002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:0:fold0:2:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16420310002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:0:fold0:2:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16420310002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:0:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420310003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:0:fold0:3:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16420310003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:0:fold0:3:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16420310003
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:3:risk8:0:1",
+          "phase": "TRAIN_SOURCE",
+          "life": 3,
+          "query": "risk8",
+          "replica": 0,
+          "slot": 1,
+          "source_id": "TRAIN_SOURCE:3:risk8:0",
+          "source_seed": 16413100000,
+          "source_step": 714,
+          "source_steps": 952,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:1:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420310100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:1:fold0:0:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16420310100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:1:fold0:0:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16420310100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:1:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420310101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:1:fold0:1:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16420310101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:1:fold0:1:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16420310101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:1:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420310102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:1:fold0:2:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16420310102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:1:fold0:2:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16420310102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:1:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420310103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:1:fold0:3:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16420310103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:0:1:fold0:3:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk8:0:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16420310103
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:3:risk8:1:0",
+          "phase": "TRAIN_SOURCE",
+          "life": 3,
+          "query": "risk8",
+          "replica": 1,
+          "slot": 0,
+          "source_id": "TRAIN_SOURCE:3:risk8:1",
+          "source_seed": 16413100001,
+          "source_step": 260,
+          "source_steps": 1041,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:0:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420311000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:0:fold0:0:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16420311000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:0:fold0:0:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16420311000
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:0:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420311001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:0:fold0:1:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16420311001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:0:fold0:1:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16420311001
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:0:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420311002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:0:fold0:2:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16420311002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:0:fold0:2:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16420311002
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:0:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420311003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:0:fold0:3:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16420311003
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:0:fold0:3:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:0",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16420311003
+            }
+          ],
+          "issues": [],
+          "complete": true
+        },
+        {
+          "root_id": "TRAIN_SOURCE:3:risk8:1:1",
+          "phase": "TRAIN_SOURCE",
+          "life": 3,
+          "query": "risk8",
+          "replica": 1,
+          "slot": 1,
+          "source_id": "TRAIN_SOURCE:3:risk8:1",
+          "source_seed": 16413100001,
+          "source_step": 780,
+          "source_steps": 1041,
+          "branches": [
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:1:fold0:0:H2",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "H2",
+              "seed": 16420311100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:1:fold0:0:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_A",
+              "seed": 16420311100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:1:fold0:0:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 0,
+              "mode": "P1_B",
+              "seed": 16420311100
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:1:fold0:1:H2",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "H2",
+              "seed": 16420311101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:1:fold0:1:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_A",
+              "seed": 16420311101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:1:fold0:1:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 1,
+              "mode": "P1_B",
+              "seed": 16420311101
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:1:fold0:2:H2",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "H2",
+              "seed": 16420311102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:1:fold0:2:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_A",
+              "seed": 16420311102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:1:fold0:2:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 2,
+              "mode": "P1_B",
+              "seed": 16420311102
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:1:fold0:3:H2",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "H2",
+              "seed": 16420311103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:1:fold0:3:P1_A",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_A",
+              "seed": 16420311103
+            },
+            {
+              "branch_id": "TRAIN_SOURCE:3:risk8:1:1:fold0:3:P1_B",
+              "root_id": "TRAIN_SOURCE:3:risk8:1:1",
+              "heldout_life": 0,
+              "suffix": 3,
+              "mode": "P1_B",
+              "seed": 16420311103
+            }
+          ],
+          "issues": [],
+          "complete": true
+        }
+      ],
+      "issues": [],
+      "complete": true
+    }
+  ],
+  "complete": true,
+  "logical_work": {
+    "metadata_branches_indexed": 1920,
+    "metadata_roots_examined": 32,
+    "semantic_candidates_examined": 14,
+    "metadata_branch_lookups": 384
+  }
+}

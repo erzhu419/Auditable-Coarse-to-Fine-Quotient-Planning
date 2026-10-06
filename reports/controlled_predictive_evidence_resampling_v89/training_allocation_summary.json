@@ -1,0 +1,353 @@
+{
+  "scope": "Training allocations only; no confirmation or natural evaluation outcomes read.",
+  "arms": {
+    "balanced": {
+      "used_transitions": 720000,
+      "completed_blocks": 31,
+      "incomplete_blocks": 6,
+      "complete_cost": 642652,
+      "incomplete_cost": 77348,
+      "updated_roots": 31,
+      "incomplete_fraction": 0.10742777777777777,
+      "replica_distribution": {
+        "16": 31,
+        "8": 29
+      },
+      "labels": {
+        "unresolved": 226,
+        "positive": 9,
+        "negative": 5
+      },
+      "label_transitions": {
+        "unresolved->unresolved": 216,
+        "unresolved->positive": 2,
+        "positive->unresolved": 6,
+        "negative->negative": 3,
+        "unresolved->negative": 2,
+        "positive->positive": 7,
+        "negative->unresolved": 4
+      },
+      "new_positive": [
+        {
+          "life": 0,
+          "query": "reward",
+          "episode": 0,
+          "option": "SNAKE_1",
+          "n": 16,
+          "mean": 1.6904296875,
+          "se": 0.603347705578553,
+          "lower": 0.483734276342894
+        },
+        {
+          "life": 0,
+          "query": "reward",
+          "episode": 1,
+          "option": "SNAKE_4",
+          "n": 16,
+          "mean": 1.4710693359375,
+          "se": 0.6512578145117832,
+          "lower": 0.16855370691393357
+        }
+      ],
+      "queries": {
+        "reward": {
+          "used_transitions": 360000,
+          "completed_blocks": 16,
+          "incomplete_blocks": 3,
+          "replica_distribution": {
+            "16": 16,
+            "8": 14
+          },
+          "labels": {
+            "unresolved": 111,
+            "positive": 6,
+            "negative": 3
+          }
+        },
+        "risk_goal": {
+          "used_transitions": 360000,
+          "completed_blocks": 15,
+          "incomplete_blocks": 3,
+          "replica_distribution": {
+            "8": 15,
+            "16": 15
+          },
+          "labels": {
+            "unresolved": 115,
+            "negative": 2,
+            "positive": 3
+          }
+        }
+      }
+    },
+    "evidence": {
+      "used_transitions": 720000,
+      "completed_blocks": 33,
+      "incomplete_blocks": 6,
+      "complete_cost": 665523,
+      "incomplete_cost": 54477,
+      "updated_roots": 28,
+      "incomplete_fraction": 0.0756625,
+      "replica_distribution": {
+        "16": 24,
+        "8": 32,
+        "24": 3,
+        "32": 1
+      },
+      "labels": {
+        "unresolved": 224,
+        "positive": 8,
+        "negative": 8
+      },
+      "label_transitions": {
+        "unresolved->unresolved": 216,
+        "unresolved->positive": 3,
+        "positive->unresolved": 8,
+        "positive->positive": 5,
+        "negative->negative": 7,
+        "unresolved->negative": 1
+      },
+      "new_positive": [
+        {
+          "life": 0,
+          "query": "reward",
+          "episode": 0,
+          "option": "SNAKE_1",
+          "n": 16,
+          "mean": 1.6904296875,
+          "se": 0.603347705578553,
+          "lower": 0.483734276342894
+        },
+        {
+          "life": 0,
+          "query": "reward",
+          "episode": 1,
+          "option": "SNAKE_4",
+          "n": 16,
+          "mean": 1.4710693359375,
+          "se": 0.6512578145117832,
+          "lower": 0.16855370691393357
+        },
+        {
+          "life": 2,
+          "query": "risk_goal",
+          "episode": 2,
+          "option": "SNAKE_4",
+          "n": 16,
+          "mean": 2.014892578125,
+          "se": 1.0068228640911607,
+          "lower": 0.0012468499426785407
+        }
+      ],
+      "queries": {
+        "reward": {
+          "used_transitions": 360000,
+          "completed_blocks": 18,
+          "incomplete_blocks": 3,
+          "replica_distribution": {
+            "16": 18,
+            "8": 12
+          },
+          "labels": {
+            "unresolved": 109,
+            "positive": 5,
+            "negative": 6
+          }
+        },
+        "risk_goal": {
+          "used_transitions": 360000,
+          "completed_blocks": 15,
+          "incomplete_blocks": 3,
+          "replica_distribution": {
+            "8": 20,
+            "24": 3,
+            "16": 6,
+            "32": 1
+          },
+          "labels": {
+            "unresolved": 115,
+            "negative": 2,
+            "positive": 3
+          }
+        }
+      }
+    }
+  },
+  "lifecycles": [
+    {
+      "life": 0,
+      "arm": "balanced",
+      "used_transitions": 240000,
+      "completed_blocks": 11,
+      "incomplete_blocks": 2,
+      "complete_cost": 225075,
+      "incomplete_cost": 14925,
+      "updated_roots": 11,
+      "replica_distribution": {
+        "16": 11,
+        "8": 9
+      },
+      "labels": {
+        "unresolved": 75,
+        "positive": 2,
+        "negative": 3
+      },
+      "new_positive": [
+        {
+          "life": 0,
+          "query": "reward",
+          "episode": 0,
+          "option": "SNAKE_1",
+          "n": 16,
+          "mean": 1.6904296875,
+          "se": 0.603347705578553,
+          "lower": 0.483734276342894
+        },
+        {
+          "life": 0,
+          "query": "reward",
+          "episode": 1,
+          "option": "SNAKE_4",
+          "n": 16,
+          "mean": 1.4710693359375,
+          "se": 0.6512578145117832,
+          "lower": 0.16855370691393357
+        }
+      ]
+    },
+    {
+      "life": 1,
+      "arm": "balanced",
+      "used_transitions": 240000,
+      "completed_blocks": 10,
+      "incomplete_blocks": 2,
+      "complete_cost": 208593,
+      "incomplete_cost": 31407,
+      "updated_roots": 10,
+      "replica_distribution": {
+        "8": 10,
+        "16": 10
+      },
+      "labels": {
+        "unresolved": 77,
+        "positive": 3
+      },
+      "new_positive": []
+    },
+    {
+      "life": 2,
+      "arm": "balanced",
+      "used_transitions": 240000,
+      "completed_blocks": 10,
+      "incomplete_blocks": 2,
+      "complete_cost": 208984,
+      "incomplete_cost": 31016,
+      "updated_roots": 10,
+      "replica_distribution": {
+        "8": 10,
+        "16": 10
+      },
+      "labels": {
+        "unresolved": 74,
+        "positive": 4,
+        "negative": 2
+      },
+      "new_positive": []
+    },
+    {
+      "life": 0,
+      "arm": "evidence",
+      "used_transitions": 240000,
+      "completed_blocks": 11,
+      "incomplete_blocks": 2,
+      "complete_cost": 225922,
+      "incomplete_cost": 14078,
+      "updated_roots": 9,
+      "replica_distribution": {
+        "16": 7,
+        "8": 11,
+        "24": 2
+      },
+      "labels": {
+        "unresolved": 75,
+        "positive": 3,
+        "negative": 2
+      },
+      "new_positive": [
+        {
+          "life": 0,
+          "query": "reward",
+          "episode": 0,
+          "option": "SNAKE_1",
+          "n": 16,
+          "mean": 1.6904296875,
+          "se": 0.603347705578553,
+          "lower": 0.483734276342894
+        },
+        {
+          "life": 0,
+          "query": "reward",
+          "episode": 1,
+          "option": "SNAKE_4",
+          "n": 16,
+          "mean": 1.4710693359375,
+          "se": 0.6512578145117832,
+          "lower": 0.16855370691393357
+        }
+      ]
+    },
+    {
+      "life": 1,
+      "arm": "evidence",
+      "used_transitions": 240000,
+      "completed_blocks": 11,
+      "incomplete_blocks": 2,
+      "complete_cost": 218887,
+      "incomplete_cost": 21113,
+      "updated_roots": 10,
+      "replica_distribution": {
+        "16": 9,
+        "8": 10,
+        "24": 1
+      },
+      "labels": {
+        "unresolved": 78,
+        "negative": 1,
+        "positive": 1
+      },
+      "new_positive": []
+    },
+    {
+      "life": 2,
+      "arm": "evidence",
+      "used_transitions": 240000,
+      "completed_blocks": 11,
+      "incomplete_blocks": 2,
+      "complete_cost": 220714,
+      "incomplete_cost": 19286,
+      "updated_roots": 9,
+      "replica_distribution": {
+        "8": 11,
+        "16": 8,
+        "32": 1
+      },
+      "labels": {
+        "unresolved": 71,
+        "positive": 4,
+        "negative": 5
+      },
+      "new_positive": [
+        {
+          "life": 2,
+          "query": "risk_goal",
+          "episode": 2,
+          "option": "SNAKE_4",
+          "n": 16,
+          "mean": 2.014892578125,
+          "se": 1.0068228640911607,
+          "lower": 0.0012468499426785407
+        }
+      ]
+    }
+  ]
+}

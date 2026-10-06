@@ -1,0 +1,243 @@
+{
+  "interpretation": "Posthoc development review: same frozen PROGRAM, three different exposed cohorts; paired contrasts within cohorts, one SOURCE fit, no lifecycle or new confirmation claim.",
+  "cohorts": [
+    {
+      "version": "V196",
+      "roots": 96,
+      "comparisons": {
+        "PROGRAM_NEIGHBOR": {
+          "utility": -0.019881600556550198,
+          "replicas": [
+            0.023435988588686337,
+            -0.04877737652813946,
+            -0.00297355143229166,
+            -0.05121146285445601
+          ],
+          "positive_replicas": 1
+        },
+        "TERMINAL": {
+          "utility": 0.16905655557137944,
+          "replicas": [
+            0.07081681993272569,
+            0.18229560343424478,
+            0.16255427720811633,
+            0.2605595217104311
+          ],
+          "positive_replicas": 4
+        },
+        "TREE32": {
+          "utility": 0.1775900842172128,
+          "replicas": [
+            0.07098771837022567,
+            0.18466295369466143,
+            0.17939319864908854,
+            0.2753164661548756
+          ],
+          "positive_replicas": 4
+        },
+        "LINEAR": {
+          "utility": 0.03668711033573855,
+          "replicas": [
+            0.012433525481047453,
+            0.10265535956488712,
+            0.009597069634331616,
+            0.022062486662688067
+          ],
+          "positive_replicas": 4
+        },
+        "NONLINEAR": {
+          "utility": 0.07071475977014612,
+          "replicas": [
+            0.005449263509114589,
+            0.22934348347981767,
+            0.010948632134331601,
+            0.03711765995732059
+          ],
+          "positive_replicas": 4
+        },
+        "OLD_SHARED": {
+          "utility": 0.05367308129204643,
+          "replicas": [
+            0.012070841019241893,
+            0.17096192785192418,
+            0.009597069634331616,
+            0.022062486662688067
+          ],
+          "positive_replicas": 4
+        }
+      }
+    },
+    {
+      "version": "V197",
+      "roots": 96,
+      "comparisons": {
+        "PROGRAM_NEIGHBOR": {
+          "utility": -0.03543859925446687,
+          "replicas": [
+            -0.00730387369791667,
+            -0.006649387161820025,
+            -0.06988998074001736,
+            -0.057911155418113425
+          ],
+          "positive_replicas": 0
+        },
+        "TERMINAL": {
+          "utility": 0.12116903816505713,
+          "replicas": [
+            0.34083701171874997,
+            0.017931689453124997,
+            0.04634462483723959,
+            0.07956282665111399
+          ],
+          "positive_replicas": 4
+        },
+        "TREE32": {
+          "utility": 0.1005116318879304,
+          "replicas": [
+            0.25951381474247687,
+            0.05251827799479166,
+            0.009800638834635422,
+            0.0802137959798177
+          ],
+          "positive_replicas": 4
+        },
+        "LINEAR": {
+          "utility": 0.024429608832465293,
+          "replicas": [
+            0.18892866617838544,
+            0.00988484157986111,
+            -0.05244770304361979,
+            -0.04864736938476564
+          ],
+          "positive_replicas": 2
+        },
+        "NONLINEAR": {
+          "utility": 0.0066254792390046365,
+          "replicas": [
+            0.2007040658456308,
+            -0.059386763283058454,
+            -0.06907271999782987,
+            -0.04574266560872397
+          ],
+          "positive_replicas": 1
+        },
+        "OLD_SHARED": {
+          "utility": 0.024547304958767373,
+          "replicas": [
+            0.1893270222981771,
+            0.009957269965277786,
+            -0.05244770304361979,
+            -0.04864736938476564
+          ],
+          "positive_replicas": 2
+        }
+      }
+    },
+    {
+      "version": "V198",
+      "roots": 96,
+      "comparisons": {
+        "PROGRAM_NEIGHBOR": {
+          "utility": 0.014695259998462823,
+          "replicas": [
+            0.02189338740596065,
+            -0.0053211330837673486,
+            0.0897343241373698,
+            -0.0475255384657118
+          ],
+          "positive_replicas": 2
+        },
+        "TERMINAL": {
+          "utility": 0.15355753640472572,
+          "replicas": [
+            0.198919192843967,
+            0.12739047774057538,
+            0.1649164711281105,
+            0.12300400390624999
+          ],
+          "positive_replicas": 4
+        },
+        "TREE32": {
+          "utility": 0.161238274581344,
+          "replicas": [
+            0.20149257066514756,
+            0.15878173828125,
+            0.1694737627947772,
+            0.1152050265842014
+          ],
+          "positive_replicas": 4
+        },
+        "LINEAR": {
+          "utility": 0.06008490295410155,
+          "replicas": [
+            -0.014279102466724536,
+            0.04807489126699943,
+            0.16299828084309895,
+            0.04354554217303241
+          ],
+          "positive_replicas": 3
+        },
+        "NONLINEAR": {
+          "utility": 0.02253379618326823,
+          "replicas": [
+            -0.026524606210214133,
+            0.03906128720883971,
+            0.07217698499891494,
+            0.005421518735532413
+          ],
+          "positive_replicas": 3
+        },
+        "OLD_SHARED": {
+          "utility": 0.07495084601508246,
+          "replicas": [
+            -0.016840815791377316,
+            0.05374214115849248,
+            0.21939422268337672,
+            0.043507836009837965
+          ],
+          "positive_replicas": 3
+        }
+      }
+    }
+  ],
+  "descriptive_pooled": {
+    "PROGRAM_NEIGHBOR": {
+      "descriptive_mean": -0.01354164660418475,
+      "positive_replicas": 3,
+      "replicas": 12
+    },
+    "TERMINAL": {
+      "descriptive_mean": 0.1479277100470541,
+      "positive_replicas": 12,
+      "replicas": 12
+    },
+    "TREE32": {
+      "descriptive_mean": 0.1464466635621624,
+      "positive_replicas": 12,
+      "replicas": 12
+    },
+    "LINEAR": {
+      "descriptive_mean": 0.04040054070743513,
+      "positive_replicas": 9,
+      "replicas": 12
+    },
+    "NONLINEAR": {
+      "descriptive_mean": 0.03329134506413966,
+      "positive_replicas": 8,
+      "replicas": 12
+    },
+    "OLD_SHARED": {
+      "descriptive_mean": 0.05105707742196542,
+      "positive_replicas": 9,
+      "replicas": 12
+    }
+  },
+  "costs": {
+    "summary_reads": 3,
+    "summary_bytes_read": 4669193,
+    "retained_root_records_inspected": 288,
+    "new_models": 0,
+    "new_labels": 0,
+    "new_source_games": 0
+  }
+}

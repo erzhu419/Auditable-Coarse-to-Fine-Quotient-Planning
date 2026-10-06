@@ -1,0 +1,74 @@
+{
+  "schema": "acfqp.direct_strategy_freeze.v297",
+  "protocol": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/specs/DIRECT_STRATEGY_V297.md",
+  "source_summary": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/conditional_bellman_v294/summary.json",
+  "lifecycles": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "parents": 4,
+  "arms": [
+    "SOURCE",
+    "CEM",
+    "RANDOM_SEARCH"
+  ],
+  "rounds": 4,
+  "candidates": 8,
+  "replicas": 4,
+  "science_games": 32,
+  "theta_bounds": [
+    -1.0,
+    1.0
+  ],
+  "initial_mean": [
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "initial_sigma": [
+    0.25,
+    0.25,
+    0.25,
+    0.25
+  ],
+  "elite_count": 2,
+  "sigma_bounds": [
+    0.025,
+    0.5
+  ],
+  "smoothing": 0.5,
+  "model_probability": "SOURCE_LEARNED_SPAWN_DISTRIBUTION",
+  "environment_p_four": 0.1,
+  "query": {
+    "reward_weight": 1.0,
+    "failure_penalty": 4.0,
+    "goal_bonus": 4.0
+  },
+  "max_steps": 8192,
+  "training_seed_base": 297200010000,
+  "proposal_seed_base": 297300010000,
+  "science_seed_base": 297900010000,
+  "bootstrap_seed": 29700001,
+  "bootstrap_draws": 20000,
+  "primary": "CEM_minus_SOURCE",
+  "finite_test_passes": {
+    "native_strategy": 5,
+    "direct_search": 6,
+    "independent_analysis": 11
+  }
+}

@@ -1,0 +1,193 @@
+{"event": "context_stage_complete", "lifecycle": 0, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 8.7249755859375}}
+{"event": "context_stage_complete", "lifecycle": 1, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 8.917724609375}}
+{"event": "context_stage_complete", "lifecycle": 2, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.77069091796875}}
+{"event": "context_stage_complete", "lifecycle": 3, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 9.390380859375}}
+{"event": "context_stage_complete", "lifecycle": 0, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 8.7249755859375, "B": 6.126708984375}}
+{"event": "context_stage_complete", "lifecycle": 1, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 8.917724609375, "B": 6.4315185546875}}
+{"event": "context_stage_complete", "lifecycle": 2, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.77069091796875, "B": 6.0186767578125}}
+{"event": "context_stage_complete", "lifecycle": 3, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 9.390380859375, "B": 6.21337890625}}
+{"event": "context_stage_complete", "lifecycle": 1, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.001220703125, "B": 6.4315185546875}}
+{"event": "context_stage_complete", "lifecycle": 0, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.01690673828125, "B": 6.126708984375}}
+{"event": "context_stage_complete", "lifecycle": 3, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 10.7227783203125, "B": 6.21337890625}}
+{"event": "context_stage_complete", "lifecycle": 2, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 10.6168212890625, "B": 6.0186767578125}}
+{"event": "context_stage_complete", "lifecycle": 5, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.55712890625}}
+{"event": "context_stage_complete", "lifecycle": 4, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.49407958984375}}
+{"event": "context_stage_complete", "lifecycle": 7, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 11.46612548828125}}
+{"event": "context_stage_complete", "lifecycle": 6, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.264892578125}}
+{"event": "context_stage_complete", "lifecycle": 5, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.55712890625, "B": 7.1171875}}
+{"event": "context_stage_complete", "lifecycle": 4, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.49407958984375, "B": 5.38690185546875}}
+{"event": "context_stage_complete", "lifecycle": 7, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 11.46612548828125, "B": 6.56591796875}}
+{"event": "context_stage_complete", "lifecycle": 6, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.264892578125, "B": 6.14923095703125}}
+{"event": "context_stage_complete", "lifecycle": 5, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 11.58892822265625, "B": 7.1171875}}
+{"event": "context_stage_complete", "lifecycle": 4, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 7.880859375, "B": 5.38690185546875}}
+{"event": "context_stage_complete", "lifecycle": 7, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 8.69793701171875, "B": 6.56591796875}}
+{"event": "context_stage_complete", "lifecycle": 6, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 10.71258544921875, "B": 6.14923095703125}}
+{"event": "context_stage_complete", "lifecycle": 9, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.99493408203125}}
+{"event": "context_stage_complete", "lifecycle": 8, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 9.5238037109375}}
+{"event": "context_stage_complete", "lifecycle": 11, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 9.3197021484375}}
+{"event": "context_stage_complete", "lifecycle": 10, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.92156982421875}}
+{"event": "context_stage_complete", "lifecycle": 8, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 9.5238037109375, "B": 6.6005859375}}
+{"event": "context_stage_complete", "lifecycle": 9, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.99493408203125, "B": 3.47442626953125}}
+{"event": "context_stage_complete", "lifecycle": 11, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 9.3197021484375, "B": 5.29022216796875}}
+{"event": "context_stage_complete", "lifecycle": 10, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.92156982421875, "B": 4.75921630859375}}
+{"event": "context_stage_complete", "lifecycle": 8, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.6591796875, "B": 6.6005859375}}
+{"event": "context_stage_complete", "lifecycle": 9, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 10.37823486328125, "B": 3.47442626953125}}
+{"event": "context_stage_complete", "lifecycle": 11, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.98822021484375, "B": 5.29022216796875}}
+{"event": "context_stage_complete", "lifecycle": 10, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.37322998046875, "B": 4.75921630859375}}
+{"event": "context_stage_complete", "lifecycle": 12, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 12.0595703125}}
+{"event": "context_stage_complete", "lifecycle": 13, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.7110595703125}}
+{"event": "context_stage_complete", "lifecycle": 15, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.5462646484375}}
+{"event": "context_stage_complete", "lifecycle": 14, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 9.44366455078125}}
+{"event": "context_stage_complete", "lifecycle": 13, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.7110595703125, "B": 4.9383544921875}}
+{"event": "context_stage_complete", "lifecycle": 12, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 12.0595703125, "B": 5.0738525390625}}
+{"event": "context_stage_complete", "lifecycle": 15, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.5462646484375, "B": 6.45404052734375}}
+{"event": "context_stage_complete", "lifecycle": 14, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 9.44366455078125, "B": 5.779052734375}}
+{"event": "context_stage_complete", "lifecycle": 13, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.81341552734375, "B": 4.9383544921875}}
+{"event": "context_stage_complete", "lifecycle": 12, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.872314453125, "B": 5.0738525390625}}
+{"event": "context_stage_complete", "lifecycle": 14, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 10.48175048828125, "B": 5.779052734375}}
+{"event": "context_stage_complete", "lifecycle": 15, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 11.47772216796875, "B": 6.45404052734375}}
+{"event": "context_stage_complete", "lifecycle": 17, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 9.1318359375}}
+{"event": "context_stage_complete", "lifecycle": 16, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.0789794921875}}
+{"event": "context_stage_complete", "lifecycle": 18, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 9.33642578125}}
+{"event": "context_stage_complete", "lifecycle": 19, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 9.3751220703125}}
+{"event": "context_stage_complete", "lifecycle": 17, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 9.1318359375, "B": 6.929931640625}}
+{"event": "context_stage_complete", "lifecycle": 16, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.0789794921875, "B": 5.335205078125}}
+{"event": "context_stage_complete", "lifecycle": 18, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 9.33642578125, "B": 6.691162109375}}
+{"event": "context_stage_complete", "lifecycle": 19, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 9.3751220703125, "B": 5.483154296875}}
+{"event": "context_stage_complete", "lifecycle": 16, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.07049560546875, "B": 5.335205078125}}
+{"event": "context_stage_complete", "lifecycle": 17, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.821533203125, "B": 6.929931640625}}
+{"event": "context_stage_complete", "lifecycle": 18, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.36865234375, "B": 6.691162109375}}
+{"event": "context_stage_complete", "lifecycle": 19, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 10.08770751953125, "B": 5.483154296875}}
+{"event": "context_stage_complete", "lifecycle": 20, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.53253173828125}}
+{"event": "context_stage_complete", "lifecycle": 21, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 11.78302001953125}}
+{"event": "context_stage_complete", "lifecycle": 22, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.79449462890625}}
+{"event": "context_stage_complete", "lifecycle": 23, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.968017578125}}
+{"event": "context_stage_complete", "lifecycle": 20, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.53253173828125, "B": 5.47283935546875}}
+{"event": "context_stage_complete", "lifecycle": 21, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 11.78302001953125, "B": 5.89947509765625}}
+{"event": "context_stage_complete", "lifecycle": 22, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.79449462890625, "B": 5.28857421875}}
+{"event": "context_stage_complete", "lifecycle": 23, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.968017578125, "B": 5.40814208984375}}
+{"event": "context_stage_complete", "lifecycle": 20, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 8.60284423828125, "B": 5.47283935546875}}
+{"event": "context_stage_complete", "lifecycle": 21, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 10.7919921875, "B": 5.89947509765625}}
+{"event": "context_stage_complete", "lifecycle": 22, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.6524658203125, "B": 5.28857421875}}
+{"event": "context_stage_complete", "lifecycle": 23, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 11.2958984375, "B": 5.40814208984375}}
+{"event": "context_stage_complete", "lifecycle": 24, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 8.669189453125}}
+{"event": "context_stage_complete", "lifecycle": 25, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.7332763671875}}
+{"event": "context_stage_complete", "lifecycle": 26, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.10345458984375}}
+{"event": "context_stage_complete", "lifecycle": 27, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 9.79608154296875}}
+{"event": "context_stage_complete", "lifecycle": 24, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 8.669189453125, "B": 5.8099365234375}}
+{"event": "context_stage_complete", "lifecycle": 25, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.7332763671875, "B": 5.97210693359375}}
+{"event": "context_stage_complete", "lifecycle": 26, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.10345458984375, "B": 5.61328125}}
+{"event": "context_stage_complete", "lifecycle": 27, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 9.79608154296875, "B": 4.27569580078125}}
+{"event": "context_stage_complete", "lifecycle": 24, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.91424560546875, "B": 5.8099365234375}}
+{"event": "context_stage_complete", "lifecycle": 25, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 10.21380615234375, "B": 5.97210693359375}}
+{"event": "context_stage_complete", "lifecycle": 26, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 11.918701171875, "B": 5.61328125}}
+{"event": "context_stage_complete", "lifecycle": 27, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.23126220703125, "B": 4.27569580078125}}
+{"event": "context_stage_complete", "lifecycle": 28, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 11.8450927734375}}
+{"event": "context_stage_complete", "lifecycle": 30, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.31756591796875}}
+{"event": "context_stage_complete", "lifecycle": 29, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 12.53082275390625}}
+{"event": "context_stage_complete", "lifecycle": 31, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 9.920654296875}}
+{"event": "context_stage_complete", "lifecycle": 28, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 11.8450927734375, "B": 4.66632080078125}}
+{"event": "context_stage_complete", "lifecycle": 30, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.31756591796875, "B": 4.95849609375}}
+{"event": "context_stage_complete", "lifecycle": 29, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 12.53082275390625, "B": 5.64068603515625}}
+{"event": "context_stage_complete", "lifecycle": 31, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 9.920654296875, "B": 5.96484375}}
+{"event": "context_stage_complete", "lifecycle": 28, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.837158203125, "B": 4.66632080078125}}
+{"event": "context_stage_complete", "lifecycle": 31, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.13897705078125, "B": 5.96484375}}
+{"event": "context_stage_complete", "lifecycle": 30, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 11.31640625, "B": 4.95849609375}}
+{"event": "context_stage_complete", "lifecycle": 29, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 11.32769775390625, "B": 5.64068603515625}}
+{"event": "context_stage_complete", "lifecycle": 32, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 9.746337890625}}
+{"event": "context_stage_complete", "lifecycle": 35, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.68017578125}}
+{"event": "context_stage_complete", "lifecycle": 34, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 11.12811279296875}}
+{"event": "context_stage_complete", "lifecycle": 33, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 9.09869384765625}}
+{"event": "context_stage_complete", "lifecycle": 32, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 9.746337890625, "B": 5.31524658203125}}
+{"event": "context_stage_complete", "lifecycle": 35, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.68017578125, "B": 6.1890869140625}}
+{"event": "context_stage_complete", "lifecycle": 34, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 11.12811279296875, "B": 6.08966064453125}}
+{"event": "context_stage_complete", "lifecycle": 33, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 9.09869384765625, "B": 5.79681396484375}}
+{"event": "context_stage_complete", "lifecycle": 32, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.3441162109375, "B": 5.31524658203125}}
+{"event": "context_stage_complete", "lifecycle": 34, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 10.455810546875, "B": 6.08966064453125}}
+{"event": "context_stage_complete", "lifecycle": 35, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.4140625, "B": 6.1890869140625}}
+{"event": "context_stage_complete", "lifecycle": 33, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.49493408203125, "B": 5.79681396484375}}
+{"event": "context_stage_complete", "lifecycle": 36, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 9.74237060546875}}
+{"event": "context_stage_complete", "lifecycle": 39, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 9.42095947265625}}
+{"event": "context_stage_complete", "lifecycle": 38, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 11.89599609375}}
+{"event": "context_stage_complete", "lifecycle": 37, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.32476806640625}}
+{"event": "context_stage_complete", "lifecycle": 36, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 9.74237060546875, "B": 7.3714599609375}}
+{"event": "context_stage_complete", "lifecycle": 39, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 9.42095947265625, "B": 5.62530517578125}}
+{"event": "context_stage_complete", "lifecycle": 38, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 11.89599609375, "B": 4.3548583984375}}
+{"event": "context_stage_complete", "lifecycle": 37, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.32476806640625, "B": 3.80975341796875}}
+{"event": "context_stage_complete", "lifecycle": 36, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.32403564453125, "B": 7.3714599609375}}
+{"event": "context_stage_complete", "lifecycle": 39, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 11.78643798828125, "B": 5.62530517578125}}
+{"event": "context_stage_complete", "lifecycle": 38, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 10.16925048828125, "B": 4.3548583984375}}
+{"event": "context_stage_complete", "lifecycle": 37, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 10.59033203125, "B": 3.80975341796875}}
+{"event": "context_stage_complete", "lifecycle": 40, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 11.78961181640625}}
+{"event": "context_stage_complete", "lifecycle": 43, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.5003662109375}}
+{"event": "context_stage_complete", "lifecycle": 42, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 9.7904052734375}}
+{"event": "context_stage_complete", "lifecycle": 41, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.5511474609375}}
+{"event": "context_stage_complete", "lifecycle": 40, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 11.78961181640625, "B": 4.544677734375}}
+{"event": "context_stage_complete", "lifecycle": 42, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 9.7904052734375, "B": 4.70770263671875}}
+{"event": "context_stage_complete", "lifecycle": 43, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.5003662109375, "B": 5.330078125}}
+{"event": "context_stage_complete", "lifecycle": 41, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.5511474609375, "B": 4.40338134765625}}
+{"event": "context_stage_complete", "lifecycle": 40, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 8.53155517578125, "B": 4.544677734375}}
+{"event": "context_stage_complete", "lifecycle": 42, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 10.50067138671875, "B": 4.70770263671875}}
+{"event": "context_stage_complete", "lifecycle": 43, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.85699462890625, "B": 5.330078125}}
+{"event": "context_stage_complete", "lifecycle": 41, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 10.68988037109375, "B": 4.40338134765625}}
+{"event": "context_stage_complete", "lifecycle": 44, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 9.59375}}
+{"event": "context_stage_complete", "lifecycle": 46, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 11.2998046875}}
+{"event": "context_stage_complete", "lifecycle": 47, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 11.78460693359375}}
+{"event": "context_stage_complete", "lifecycle": 45, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 12.4652099609375}}
+{"event": "context_stage_complete", "lifecycle": 44, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 9.59375, "B": 5.19091796875}}
+{"event": "context_stage_complete", "lifecycle": 46, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 11.2998046875, "B": 4.78790283203125}}
+{"event": "context_stage_complete", "lifecycle": 47, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 11.78460693359375, "B": 5.76068115234375}}
+{"event": "context_stage_complete", "lifecycle": 45, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 12.4652099609375, "B": 5.4195556640625}}
+{"event": "context_stage_complete", "lifecycle": 44, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.61474609375, "B": 5.19091796875}}
+{"event": "context_stage_complete", "lifecycle": 46, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 11.57269287109375, "B": 4.78790283203125}}
+{"event": "context_stage_complete", "lifecycle": 47, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 8.53643798828125, "B": 5.76068115234375}}
+{"event": "context_stage_complete", "lifecycle": 45, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 11.3726806640625, "B": 5.4195556640625}}
+{"event": "context_stage_complete", "lifecycle": 48, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 9.970458984375}}
+{"event": "context_stage_complete", "lifecycle": 50, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.8798828125}}
+{"event": "context_stage_complete", "lifecycle": 51, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 8.56072998046875}}
+{"event": "context_stage_complete", "lifecycle": 49, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.279052734375}}
+{"event": "context_stage_complete", "lifecycle": 48, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 9.970458984375, "B": 4.0286865234375}}
+{"event": "context_stage_complete", "lifecycle": 50, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.8798828125, "B": 5.1375732421875}}
+{"event": "context_stage_complete", "lifecycle": 51, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 8.56072998046875, "B": 6.07489013671875}}
+{"event": "context_stage_complete", "lifecycle": 49, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.279052734375, "B": 5.201904296875}}
+{"event": "context_stage_complete", "lifecycle": 48, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.08587646484375, "B": 4.0286865234375}}
+{"event": "context_stage_complete", "lifecycle": 50, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.931640625, "B": 5.1375732421875}}
+{"event": "context_stage_complete", "lifecycle": 51, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 10.12371826171875, "B": 6.07489013671875}}
+{"event": "context_stage_complete", "lifecycle": 49, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 10.44256591796875, "B": 5.201904296875}}
+{"event": "context_stage_complete", "lifecycle": 52, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.73516845703125}}
+{"event": "context_stage_complete", "lifecycle": 54, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.40594482421875}}
+{"event": "context_stage_complete", "lifecycle": 55, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 11.84515380859375}}
+{"event": "context_stage_complete", "lifecycle": 53, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 11.55804443359375}}
+{"event": "context_stage_complete", "lifecycle": 52, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.73516845703125, "B": 5.90447998046875}}
+{"event": "context_stage_complete", "lifecycle": 54, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.40594482421875, "B": 5.1873779296875}}
+{"event": "context_stage_complete", "lifecycle": 55, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 11.84515380859375, "B": 6.61810302734375}}
+{"event": "context_stage_complete", "lifecycle": 53, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 11.55804443359375, "B": 7.758544921875}}
+{"event": "context_stage_complete", "lifecycle": 52, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 10.1058349609375, "B": 5.90447998046875}}
+{"event": "context_stage_complete", "lifecycle": 54, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.1654052734375, "B": 5.1873779296875}}
+{"event": "context_stage_complete", "lifecycle": 55, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 10.151123046875, "B": 6.61810302734375}}
+{"event": "context_stage_complete", "lifecycle": 53, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 10.56097412109375, "B": 7.758544921875}}
+{"event": "context_stage_complete", "lifecycle": 56, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 11.3936767578125}}
+{"event": "context_stage_complete", "lifecycle": 58, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 8.90155029296875}}
+{"event": "context_stage_complete", "lifecycle": 59, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 9.33660888671875}}
+{"event": "context_stage_complete", "lifecycle": 57, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 10.8961181640625}}
+{"event": "context_stage_complete", "lifecycle": 56, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 11.3936767578125, "B": 6.423828125}}
+{"event": "context_stage_complete", "lifecycle": 58, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 8.90155029296875, "B": 5.44305419921875}}
+{"event": "context_stage_complete", "lifecycle": 59, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 9.33660888671875, "B": 6.70208740234375}}
+{"event": "context_stage_complete", "lifecycle": 57, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 10.8961181640625, "B": 6.31103515625}}
+{"event": "context_stage_complete", "lifecycle": 56, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 8.90704345703125, "B": 6.423828125}}
+{"event": "context_stage_complete", "lifecycle": 58, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 11.0697021484375, "B": 5.44305419921875}}
+{"event": "context_stage_complete", "lifecycle": 57, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.4698486328125, "B": 6.31103515625}}
+{"event": "context_stage_complete", "lifecycle": 59, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 10.00616455078125, "B": 6.70208740234375}}
+{"event": "context_stage_complete", "lifecycle": 60, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 9.9876708984375}}
+{"event": "context_stage_complete", "lifecycle": 62, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 9.610107421875}}
+{"event": "context_stage_complete", "lifecycle": 61, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 9.22723388671875}}
+{"event": "context_stage_complete", "lifecycle": 63, "stage": "A1", "context": 0, "created": true, "contexts": 1, "utilities": {"A": 11.13226318359375}}
+{"event": "context_stage_complete", "lifecycle": 60, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 9.9876708984375, "B": 4.05731201171875}}
+{"event": "context_stage_complete", "lifecycle": 62, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 9.610107421875, "B": 6.881591796875}}
+{"event": "context_stage_complete", "lifecycle": 61, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 9.22723388671875, "B": 6.22198486328125}}
+{"event": "context_stage_complete", "lifecycle": 63, "stage": "B", "context": 1, "created": true, "contexts": 2, "utilities": {"A": 11.13226318359375, "B": 6.101806640625}}
+{"event": "context_stage_complete", "lifecycle": 60, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 8.1474609375, "B": 4.05731201171875}}
+{"event": "context_stage_complete", "lifecycle": 62, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.74176025390625, "B": 6.881591796875}}
+{"event": "context_stage_complete", "lifecycle": 61, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 10.9930419921875, "B": 6.22198486328125}}
+{"event": "context_stage_complete", "lifecycle": 63, "stage": "A2", "context": 0, "created": false, "contexts": 2, "utilities": {"A": 9.1417236328125, "B": 6.101806640625}}
+{"event": "context_continual_complete", "primary_repair_supported": true, "primary": {"mean": 0.2797098159790039, "ci95": [0.0867395281791687, 0.46917603015899634], "lifecycle_deltas": {"0": 0.345550537109375, "1": 1.35467529296875, "2": 0.164276123046875, "3": 0.308868408203125, "4": -0.32843017578125, "5": 1.879180908203125, "6": 0.663421630859375, "7": 0.49749755859375, "8": 0.763824462890625, "9": 0.35772705078125, "10": -0.422027587890625, "11": -0.650787353515625, "12": 0.69891357421875, "13": -0.876007080078125, "14": -0.056610107421875, "15": -1.0467529296875, "16": 0.515106201171875, "17": 0.5643310546875, "18": 2.185455322265625, "19": 0.87139892578125, "20": -0.348876953125, "21": -0.276153564453125, "22": 0.5484619140625, "23": 0.705078125, "24": -0.199249267578125, "25": 0.096649169921875, "26": 0.84808349609375, "27": -1.0689697265625, "28": 1.028900146484375, "29": 1.17987060546875, "30": 0.796356201171875, "31": 0.61444091796875, "32": -0.32354736328125, "33": 0.768585205078125, "34": 1.220428466796875, "35": 1.304779052734375, "36": 0.54791259765625, "37": 0.5078125, "38": -1.445526123046875, "39": 0.722442626953125, "40": -0.714569091796875, "41": 0.794219970703125, "42": -0.92657470703125, "43": -0.587127685546875, "44": -1.120819091796875, "45": 0.927001953125, "46": 0.0670166015625, "47": -0.103729248046875, "48": -1.027130126953125, "49": 0.02044677734375, "50": -0.2564697265625, "51": 0.973724365234375, "52": 0.83038330078125, "53": 1.4510498046875, "54": -0.348297119140625, "55": 0.5966796875, "56": 0.117218017578125, "57": 0.927703857421875, "58": 0.49652099609375, "59": 1.37091064453125, "60": -2.091796875, "61": 1.567657470703125, "62": 0.066925048828125, "63": -0.1466064453125}, "improved_equal_worse": [42, 0, 22], "adverse_lifecycles": [4, 10, 11, 13, 14, 15, 20, 21, 24, 27, 32, 38, 40, 42, 43, 44, 47, 48, 50, 54, 60, 63], "parent_mean_deltas": {"0": -0.08166313171386719, "1": 0.7027969360351562, "2": 0.22509002685546875, "3": 0.2726154327392578}, "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS_AND_RETAINED_V303_HISTORIES"}}

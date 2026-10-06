@@ -1,0 +1,22 @@
+{
+  "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_pooled_history_v110.py",
+  "attempts": 1,
+  "returncode": 0,
+  "passed": 5,
+  "pytest_seconds": 0.26,
+  "scope": "Synthetic retained-log fixtures; no production fit or analysis invoked.",
+  "detected_failures": [
+    "incorrect excluded-history means",
+    "multiplying shared acquisition or bank reads by folds",
+    "excluded history in training or scoring",
+    "second-batch statistics or carried optimizer moments",
+    "missing decision or censored reference silently dropped"
+  ],
+  "development_work": {
+    "new_environment_transitions": 0,
+    "new_synthetic_transitions": 0,
+    "neural_model_fits": 0,
+    "optimizer_steps": 0,
+    "neural_candidate_predictions": 0
+  }
+}

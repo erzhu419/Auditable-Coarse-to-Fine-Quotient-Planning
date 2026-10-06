@@ -1,0 +1,637 @@
+{
+  "valid": true,
+  "records": 180,
+  "checkpoint_pairs": 108,
+  "terminal_pairs": 72,
+  "physical_observations": 48384,
+  "independently_checked_profiles": 648,
+  "independently_checked_global_leaves": 7200,
+  "independently_checked_complete_rounds": 22284,
+  "independently_checked_direct_comparisons": 648,
+  "checks": {
+    "frozen_fresh_conditional_round_scope_seeds_costs_and_all_public_decisions": 1,
+    "captured_all_frozen_source_spec_new_core_producer_and_independent_tests": 1,
+    "captured_frozen_source_bytes_equal_current_audited_bytes": 74,
+    "fresh_actual_conditional_primitive_seed_phase_offset_and_fee": 48384,
+    "actual_complete_round_trace_conditional_R_and_primitive_refs": 22284,
+    "exact_checkpoint_charge_matches_actual_native_row_observations": 9,
+    "all_fresh_primitives_and_complete_rounds_retained_once": 3,
+    "private_ROW_profile_ids_complete_once": 3,
+    "canonical_full_paid_sufficient_counts": 504,
+    "original_fixed_comparison_and_event": 504,
+    "global_gap_preserving_zero_count_embedding": 504,
+    "outward_true_projected_mixture_numerator": 504,
+    "outward_fixed_event_threshold": 504,
+    "fixed_partition_covers_entire_retry_simplex": 504,
+    "exact_query_retry_interaction_slope": 504,
+    "partition_probability_domain": 7200,
+    "relaxed_gap_row_roster": 7200,
+    "partition_endpoint": 7200,
+    "exact_endpoint_gap": 43200,
+    "endpoint_relaxes_complete_retry_cell": 43200,
+    "exact_maximum_relaxed_gap": 7200,
+    "supported_likelihood_leaf": 6318,
+    "legal_null_multiplier": 6318,
+    "optimization_row_roster": 6318,
+    "empty_likelihood_row_simplex": 1602,
+    "outward_row_likelihood_upper": 12636,
+    "legal_row_likelihood_dual": 11034,
+    "retry_interval_mle_probability": 6318,
+    "outward_retry_interval_likelihood_upper": 6318,
+    "outward_complete_null_likelihood_upper": 6318,
+    "global_likelihood_upper_covers_every_cell": 504,
+    "outward_projected_global_likelihood_ratio": 504,
+    "strict_global_bad_null_certificate": 504,
+    "exact_empty_relaxed_null": 882,
+    "fixed_convex_direction_region_and_relevant_cost": 144,
+    "single_frozen_convex_suggestion": 144,
+    "exact_full_domain_concave_tangent": 144,
+    "outward_joint_numerator_and_frozen_tangent_multiplier": 144,
+    "strict_global_tangent_exclusion": 144,
+    "all_36_checkpoint_and_24_original_return_projections_in_frozen_order": 3,
+    "same_actual_paid_prefix_native_counts_joint_rounds_and_tails": 108,
+    "shared_raw_complete_trajectory_mean_vectors_and_policy_choices": 108,
+    "row_engine_original_threshold_and_analytic_reward": 108,
+    "row_original_all_alternatives_at_shared_joint_mean_choice": 216,
+    "profile_reference_actual_paid_projection_direction_and_cost": 648,
+    "row_three_alternatives_AND": 216,
+    "row_all_queries_AND": 108,
+    "direct_original_threshold_and_analytic_reward": 108,
+    "direct_fixed_ordered_streams_at_shared_joint_mean_choice": 216,
+    "complete_conditional_round_score_statistics_without_row_minimum": 648,
+    "frozen_conditional_score_support_null_and_event_threshold": 648,
+    "direct_outward_lower_log_product_and_threshold": 648,
+    "direct_exact_certification_status": 648,
+    "direct_three_alternatives_AND": 216,
+    "direct_all_queries_AND_and_comparison_records": 108,
+    "both_fixed_method_ready_flags_match_independent_all_queries": 108,
+    "per_checkpoint_actual_model_CPU_and_retention_wall_nonnegative": 108,
+    "original_public_return_projection_exactly_reuses_full_cap_decision_without_new_certificate": 72,
+    "all_new_ROW_profiles_used_once_in_private_life_file": 3,
+    "final_native_joint_counts_exact_actual_primitive_source_and_acquisition_fees": 3,
+    "actual_primitive_score_and_independent_private_cache_work": 57,
+    "private_life_row_and_direct_cache_sizes": 3,
+    "private_normalizer_actual_cache_statistics": 6,
+    "actual_checkpoint_process_CPU_by_scope": 9,
+    "actual_native_update_CPU_observation_and_retention_wall": 3,
+    "postfreeze_exact_truth_scores_and_false_certificate_counts_for_all_fixed_methods": 3,
+    "all_108_checkpoint_72_return_pairs_and_actual_full_primitive_source_charges": 1,
+    "independent_paired_readiness_critical_gaps_false_certificates_costs_and_signal_summary": 1
+  },
+  "failures": [],
+  "elapsed_seconds": 25.063062813016586,
+  "life_elapsed_seconds": {
+    "0": 22.174395828973502,
+    "1": 23.920120262017008,
+    "2": 25.014731788018253
+  },
+  "methods": {
+    "ROW_JOINT": {
+      "checkpoint_groups": {
+        "SOURCE": {
+          "pairs": 36,
+          "query_ready": 20,
+          "certified_by_query": {
+            "reward": 36,
+            "goal": 24,
+            "risk": 20
+          },
+          "critical_short_retry": {
+            "comparisons": 24,
+            "certified": 12
+          }
+        },
+        "SOURCE_PLUS_3072": {
+          "pairs": 36,
+          "query_ready": 24,
+          "certified_by_query": {
+            "reward": 36,
+            "goal": 24,
+            "risk": 24
+          },
+          "critical_short_retry": {
+            "comparisons": 24,
+            "certified": 12
+          }
+        },
+        "FULL_CAP": {
+          "pairs": 36,
+          "query_ready": 24,
+          "certified_by_query": {
+            "reward": 36,
+            "goal": 26,
+            "risk": 24
+          },
+          "critical_short_retry": {
+            "comparisons": 24,
+            "certified": 14
+          }
+        }
+      },
+      "terminal": {
+        "pairs": 72,
+        "query_ready": 48,
+        "certified_by_query": {
+          "reward": 72,
+          "goal": 50,
+          "risk": 48
+        },
+        "critical_short_retry": {
+          "comparisons": 48,
+          "certified": 26
+        }
+      },
+      "false_certificates": 0
+    },
+    "TRAJECTORY": {
+      "checkpoint_groups": {
+        "SOURCE": {
+          "pairs": 36,
+          "query_ready": 24,
+          "certified_by_query": {
+            "reward": 36,
+            "goal": 24,
+            "risk": 24
+          },
+          "critical_short_retry": {
+            "comparisons": 24,
+            "certified": 12
+          }
+        },
+        "SOURCE_PLUS_3072": {
+          "pairs": 36,
+          "query_ready": 24,
+          "certified_by_query": {
+            "reward": 36,
+            "goal": 28,
+            "risk": 24
+          },
+          "critical_short_retry": {
+            "comparisons": 24,
+            "certified": 16
+          }
+        },
+        "FULL_CAP": {
+          "pairs": 36,
+          "query_ready": 24,
+          "certified_by_query": {
+            "reward": 36,
+            "goal": 30,
+            "risk": 28
+          },
+          "critical_short_retry": {
+            "comparisons": 24,
+            "certified": 18
+          }
+        }
+      },
+      "terminal": {
+        "pairs": 72,
+        "query_ready": 48,
+        "certified_by_query": {
+          "reward": 72,
+          "goal": 59,
+          "risk": 56
+        },
+        "critical_short_retry": {
+          "comparisons": 48,
+          "certified": 35
+        }
+      },
+      "false_certificates": 0
+    }
+  },
+  "paired_checkpoint_groups": {
+    "SOURCE": {
+      "query_ready": {
+        "gains": 4,
+        "losses": 0,
+        "unchanged": 32,
+        "changes": [
+          {
+            "life": 2,
+            "identity": 0,
+            "cost_index": 0,
+            "index": null,
+            "before": false,
+            "after": true
+          },
+          {
+            "life": 2,
+            "identity": 0,
+            "cost_index": 1,
+            "index": null,
+            "before": false,
+            "after": true
+          },
+          {
+            "life": 2,
+            "identity": 0,
+            "cost_index": 2,
+            "index": null,
+            "before": false,
+            "after": true
+          },
+          {
+            "life": 2,
+            "identity": 0,
+            "cost_index": 3,
+            "index": null,
+            "before": false,
+            "after": true
+          }
+        ]
+      },
+      "reward": {
+        "gains": 0,
+        "losses": 0,
+        "unchanged": 36,
+        "changes": []
+      },
+      "goal": {
+        "gains": 0,
+        "losses": 0,
+        "unchanged": 36,
+        "changes": []
+      },
+      "risk": {
+        "gains": 4,
+        "losses": 0,
+        "unchanged": 32,
+        "changes": [
+          {
+            "life": 2,
+            "identity": 0,
+            "cost_index": 0,
+            "index": null,
+            "before": false,
+            "after": true
+          },
+          {
+            "life": 2,
+            "identity": 0,
+            "cost_index": 1,
+            "index": null,
+            "before": false,
+            "after": true
+          },
+          {
+            "life": 2,
+            "identity": 0,
+            "cost_index": 2,
+            "index": null,
+            "before": false,
+            "after": true
+          },
+          {
+            "life": 2,
+            "identity": 0,
+            "cost_index": 3,
+            "index": null,
+            "before": false,
+            "after": true
+          }
+        ]
+      }
+    },
+    "SOURCE_PLUS_3072": {
+      "query_ready": {
+        "gains": 0,
+        "losses": 0,
+        "unchanged": 36,
+        "changes": []
+      },
+      "reward": {
+        "gains": 0,
+        "losses": 0,
+        "unchanged": 36,
+        "changes": []
+      },
+      "goal": {
+        "gains": 4,
+        "losses": 0,
+        "unchanged": 32,
+        "changes": [
+          {
+            "life": 1,
+            "identity": 2,
+            "cost_index": 0,
+            "index": null,
+            "before": false,
+            "after": true
+          },
+          {
+            "life": 1,
+            "identity": 2,
+            "cost_index": 1,
+            "index": null,
+            "before": false,
+            "after": true
+          },
+          {
+            "life": 1,
+            "identity": 2,
+            "cost_index": 2,
+            "index": null,
+            "before": false,
+            "after": true
+          },
+          {
+            "life": 1,
+            "identity": 2,
+            "cost_index": 3,
+            "index": null,
+            "before": false,
+            "after": true
+          }
+        ]
+      },
+      "risk": {
+        "gains": 0,
+        "losses": 0,
+        "unchanged": 36,
+        "changes": []
+      }
+    },
+    "FULL_CAP": {
+      "query_ready": {
+        "gains": 0,
+        "losses": 0,
+        "unchanged": 36,
+        "changes": []
+      },
+      "reward": {
+        "gains": 0,
+        "losses": 0,
+        "unchanged": 36,
+        "changes": []
+      },
+      "goal": {
+        "gains": 4,
+        "losses": 0,
+        "unchanged": 32,
+        "changes": [
+          {
+            "life": 0,
+            "identity": 1,
+            "cost_index": 1,
+            "index": null,
+            "before": false,
+            "after": true
+          },
+          {
+            "life": 0,
+            "identity": 1,
+            "cost_index": 3,
+            "index": null,
+            "before": false,
+            "after": true
+          },
+          {
+            "life": 1,
+            "identity": 2,
+            "cost_index": 0,
+            "index": null,
+            "before": false,
+            "after": true
+          },
+          {
+            "life": 1,
+            "identity": 2,
+            "cost_index": 2,
+            "index": null,
+            "before": false,
+            "after": true
+          }
+        ]
+      },
+      "risk": {
+        "gains": 4,
+        "losses": 0,
+        "unchanged": 32,
+        "changes": [
+          {
+            "life": 2,
+            "identity": 1,
+            "cost_index": 0,
+            "index": null,
+            "before": false,
+            "after": true
+          },
+          {
+            "life": 2,
+            "identity": 1,
+            "cost_index": 1,
+            "index": null,
+            "before": false,
+            "after": true
+          },
+          {
+            "life": 2,
+            "identity": 1,
+            "cost_index": 2,
+            "index": null,
+            "before": false,
+            "after": true
+          },
+          {
+            "life": 2,
+            "identity": 1,
+            "cost_index": 3,
+            "index": null,
+            "before": false,
+            "after": true
+          }
+        ]
+      }
+    }
+  },
+  "terminal_paired": {
+    "query_ready": {
+      "gains": 0,
+      "losses": 0,
+      "unchanged": 72,
+      "changes": []
+    },
+    "reward": {
+      "gains": 0,
+      "losses": 0,
+      "unchanged": 72,
+      "changes": []
+    },
+    "goal": {
+      "gains": 9,
+      "losses": 0,
+      "unchanged": 63,
+      "changes": [
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 1,
+          "index": 63,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 1,
+          "index": 66,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 1,
+          "index": 72,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 1,
+          "identity": 2,
+          "cost_index": 2,
+          "index": 56,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 1,
+          "identity": 2,
+          "cost_index": 0,
+          "index": 61,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 1,
+          "identity": 2,
+          "cost_index": 2,
+          "index": 63,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 1,
+          "identity": 2,
+          "cost_index": 0,
+          "index": 66,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 1,
+          "identity": 2,
+          "cost_index": 0,
+          "index": 67,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 1,
+          "identity": 2,
+          "cost_index": 2,
+          "index": 73,
+          "before": false,
+          "after": true
+        }
+      ]
+    },
+    "risk": {
+      "gains": 8,
+      "losses": 0,
+      "unchanged": 64,
+      "changes": [
+        {
+          "life": 2,
+          "identity": 1,
+          "cost_index": 1,
+          "index": 55,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 2,
+          "identity": 1,
+          "cost_index": 2,
+          "index": 57,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 2,
+          "identity": 1,
+          "cost_index": 0,
+          "index": 59,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 2,
+          "identity": 1,
+          "cost_index": 3,
+          "index": 60,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 2,
+          "identity": 1,
+          "cost_index": 1,
+          "index": 61,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 2,
+          "identity": 1,
+          "cost_index": 2,
+          "index": 66,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 2,
+          "identity": 1,
+          "cost_index": 1,
+          "index": 69,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 2,
+          "identity": 1,
+          "cost_index": 2,
+          "index": 77,
+          "before": false,
+          "after": true
+        }
+      ]
+    }
+  },
+  "fee_ledger": [
+    {
+      "life": 0,
+      "source_samples": 4608,
+      "acquisition_samples": 9536,
+      "total_samples": 14144
+    },
+    {
+      "life": 1,
+      "source_samples": 4608,
+      "acquisition_samples": 12464,
+      "total_samples": 17072
+    },
+    {
+      "life": 2,
+      "source_samples": 4608,
+      "acquisition_samples": 12560,
+      "total_samples": 17168
+    }
+  ],
+  "positive_qualification_signal": true,
+  "qualification_only": true,
+  "complete_lifecycle_test": false,
+  "scientific_gate_changed": false
+}

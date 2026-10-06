@@ -1,0 +1,23 @@
+{
+  "schema": "acfqp.replication_analysis_checks.v93",
+  "independent_tests": 12,
+  "executed_test_cases": 15,
+  "failures": 0,
+  "environment_transitions": 0,
+  "tree_fits": 0,
+  "runs": [
+    {
+      "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_replication_v93.py",
+      "passed": 3,
+      "reported_seconds": 0.32,
+      "scope": "Initial natural contrasts, lifecycle weighting, cutoffs, and attribution"
+    },
+    {
+      "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_replication_v93.py",
+      "passed": 12,
+      "reported_seconds": 0.59,
+      "scope": "Completed actual-schema accounting, OOF diagnostics, matched budgets, and descriptive history SE"
+    }
+  ],
+  "main_analysis_executions": 0
+}

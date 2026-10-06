@@ -1,0 +1,93 @@
+{
+  "schema": "acfqp.component_target_freeze.v315",
+  "protocol": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/specs/COMPONENT_TARGETS_V315.md",
+  "prior_summary": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/local_targets_v314/summary.json",
+  "lifecycles": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "parents": 4,
+  "workers": 4,
+  "tasks": [
+    "A",
+    "B"
+  ],
+  "arms": [
+    "MC_MC",
+    "TD_MC",
+    "MC_TD",
+    "TD_TD",
+    "FIRST_LOCAL"
+  ],
+  "components": {
+    "MC_MC": [
+      "MC_LOCAL",
+      "MC_LOCAL"
+    ],
+    "TD_MC": [
+      "TD_LOCAL",
+      "MC_LOCAL"
+    ],
+    "MC_TD": [
+      "MC_LOCAL",
+      "TD_LOCAL"
+    ],
+    "TD_TD": [
+      "TD_LOCAL",
+      "TD_LOCAL"
+    ],
+    "FIRST_LOCAL": [
+      "FIRST_LOCAL",
+      "FIRST_LOCAL"
+    ]
+  },
+  "true_probabilities": {
+    "A": 0.1,
+    "B": 0.5
+  },
+  "source_versions": "V314_FIRST_V0_MC_V2_TD_V2",
+  "planning_probability": "V314_IMMUTABLE_FIRST_FIT_BANK_BELIEF",
+  "combination": "EXACT_IMMUTABLE_ARRAY_REFERENCES_ZERO_WEIGHT_COPY",
+  "new_training_raw_tiles": 0,
+  "new_fit_states": 0,
+  "new_parameter_writes": 0,
+  "query": {
+    "reward_weight": 1.0,
+    "failure_penalty": 4.0,
+    "goal_bonus": 4.0
+  },
+  "planner": "H2",
+  "max_steps": 8192,
+  "evaluation_games_per_cell": 32,
+  "seed_evaluation": 315900000000,
+  "expected_evaluation_games": 5120,
+  "action_probes": "FIRST_NEW_GAME_INITIAL_BOARD_PER_CELL",
+  "bootstrap_draws": 20000,
+  "bootstrap_seed": 31500001,
+  "mechanism_family": [
+    "reward_given_MC_WIN",
+    "reward_given_TD_WIN",
+    "WIN_given_MC_reward",
+    "WIN_given_TD_reward",
+    "interaction"
+  ],
+  "mechanism_family_ci": 0.99,
+  "pointwise_ci": 0.95,
+  "multiplicity": "BONFERRONI_FIVE_AB_CONTRASTS",
+  "evidence_scope": "FROZEN_V314_TRAINING_INSTANCES_NEW_PAIRED_EVALUATION_ONLY",
+  "stop_rule": "NO_ARM_SEED_FIT_BUDGET_OR_INTERVAL_SELECTION_RETAIN_ALL_ENDPOINTS"
+}

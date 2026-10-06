@@ -1,0 +1,23 @@
+{
+  "schema": "acfqp.bellman_analysis_checks.v94",
+  "independent_tests": 12,
+  "executed_test_cases": 15,
+  "failures": 0,
+  "environment_transitions": 0,
+  "tree_fits": 0,
+  "runs": [
+    {
+      "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_bellman_v94.py",
+      "passed": 3,
+      "reported_seconds": 0.21,
+      "scope": "Initial natural contrasts, history SE, risk utility, and attribution"
+    },
+    {
+      "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_bellman_v94.py",
+      "passed": 12,
+      "reported_seconds": 0.31,
+      "scope": "Full runner schema, warm-start fit counts, independent reference errors, cutoff costs, and fold isolation"
+    }
+  ],
+  "main_analysis_executions": 0
+}

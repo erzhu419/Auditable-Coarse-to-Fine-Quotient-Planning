@@ -1,0 +1,12 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_evidence_resampling_v89.py",
+      "session_failures": 0,
+      "scope": "Synthetic sample collector; no environment transitions or tree fits.",
+      "ground_calls": 0,
+      "main_campaign_calls": 0,
+      "synthetic_collector_calls": 36
+    }
+  ]
+}

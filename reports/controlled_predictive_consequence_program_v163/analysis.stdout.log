@@ -1,0 +1,9 @@
+{"event": "audited_source", "life": 1, "phase": "TRAIN_SOURCE", "games": 8}
+{"event": "audited_source", "life": 3, "phase": "TRAIN_SOURCE", "games": 8}
+{"event": "audited_source", "life": 0, "phase": "TRAIN_SOURCE", "games": 8}
+{"event": "audited_source", "life": 2, "phase": "TRAIN_SOURCE", "games": 8}
+{"event": "audited_branches", "life": 0, "phase": "SCREEN", "branches": 480}
+{"event": "audited_branches", "life": 1, "phase": "SCREEN", "branches": 480}
+{"event": "audited_branches", "life": 2, "phase": "SCREEN", "branches": 480}
+{"event": "audited_branches", "life": 3, "phase": "SCREEN", "branches": 480}
+{"complete": true, "primary_complete": false, "checks": 72, "failed": [], "seconds": 133.49583184794756}

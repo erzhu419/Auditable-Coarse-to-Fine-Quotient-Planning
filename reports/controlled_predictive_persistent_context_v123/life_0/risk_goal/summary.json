@@ -1,0 +1,335 @@
+{
+  "phases": {
+    "B": {
+      "BASELINE": {
+        "observations": 524288,
+        "blocks": 8192,
+        "source_actions": 64,
+        "switches": 3617,
+        "creations": 2,
+        "reactivations": 3615,
+        "log_loss_sum": 365857.24257097405,
+        "brier_sum": 132277.36668802853,
+        "absolute_probability_error_sum": 22290.56528159667,
+        "first_expected_activation": 64,
+        "last_wrong_action": 64,
+        "switches_after_first_expected": 3616,
+        "initial_source_probability": 0.08527131782945736,
+        "max_source_probability_deviation": 0.0,
+        "final_router": {
+          "schema": "acfqp.regime_memory.v115",
+          "method": "LIBRARY",
+          "warmup_observations": 256,
+          "block_size": 64,
+          "recent_window": 256,
+          "observations_seen": 524544,
+          "warmup_complete": true,
+          "active_module_id": 1,
+          "modules": [
+            {
+              "id": 0,
+              "alpha": 22,
+              "beta": 236,
+              "visits": 1
+            },
+            {
+              "id": 1,
+              "alpha": 184689,
+              "beta": 161169,
+              "visits": 5404
+            },
+            {
+              "id": 2,
+              "alpha": 77286,
+              "beta": 101148,
+              "visits": 2788
+            }
+          ],
+          "pending": {
+            "n": 0,
+            "fours": 0
+          },
+          "recent_ranks": [],
+          "stored_observation_counts": {
+            "statistics": 524544,
+            "pending": 0,
+            "raw": 0
+          },
+          "counts": {
+            "observations_received": 524544,
+            "beta_updates": 524544,
+            "predict_calls": 0,
+            "routing_blocks": 8192,
+            "candidate_predictive_scores": 32576,
+            "module_creations": 2,
+            "module_reactivations": 3615
+          }
+        },
+        "final_source_probability": 0.08527131782945736,
+        "source_probability_change": 0.0,
+        "source_action_fraction": 0.0001220703125,
+        "mean_log_loss": 0.6978173114222985,
+        "mean_brier": 0.25229905450444895,
+        "mean_absolute_probability_error": 0.04251587921447119
+      },
+      "PERSISTENT": {
+        "observations": 524288,
+        "blocks": 8192,
+        "source_actions": 64,
+        "switches": 20,
+        "creations": 3,
+        "reactivations": 17,
+        "log_loss_sum": 363536.5498691042,
+        "brier_sum": 131124.41392819516,
+        "absolute_probability_error_sum": 550.1430043690058,
+        "first_expected_activation": 64,
+        "last_wrong_action": 64,
+        "switches_after_first_expected": 19,
+        "initial_source_probability": 0.08527131782945736,
+        "max_source_probability_deviation": 0.0,
+        "final_router": {
+          "schema": "acfqp.persistent_context.v123",
+          "method": "LIBRARY",
+          "warmup_observations": 256,
+          "block_size": 64,
+          "recent_window": 256,
+          "observations_seen": 524544,
+          "warmup_complete": true,
+          "active_module_id": 3,
+          "modules": [
+            {
+              "id": 0,
+              "alpha": 22,
+              "beta": 236,
+              "visits": 1
+            },
+            {
+              "id": 1,
+              "alpha": 260537,
+              "beta": 260681,
+              "visits": 8144
+            },
+            {
+              "id": 2,
+              "alpha": 316,
+              "beta": 582,
+              "visits": 14
+            },
+            {
+              "id": 3,
+              "alpha": 1123,
+              "beta": 1055,
+              "visits": 34
+            }
+          ],
+          "pending": {
+            "n": 0,
+            "fours": 0
+          },
+          "recent_ranks": [],
+          "stored_observation_counts": {
+            "statistics": 524544,
+            "pending": 0,
+            "raw": 0
+          },
+          "counts": {
+            "observations_received": 524544,
+            "beta_updates": 524544,
+            "predict_calls": 0,
+            "routing_blocks": 8192,
+            "candidate_predictive_scores": 32609,
+            "module_creations": 3,
+            "module_reactivations": 17
+          },
+          "switch_odds": 64
+        },
+        "final_source_probability": 0.08527131782945736,
+        "source_probability_change": 0.0,
+        "source_action_fraction": 0.0001220703125,
+        "mean_log_loss": 0.6933909413702091,
+        "mean_brier": 0.2500999716342834,
+        "mean_absolute_probability_error": 0.0010493145072345844
+      }
+    },
+    "A_RETURN": {
+      "BASELINE": {
+        "observations": 524288,
+        "blocks": 8192,
+        "source_actions": 523968,
+        "switches": 9,
+        "creations": 0,
+        "reactivations": 9,
+        "log_loss_sum": 170180.09005128974,
+        "brier_sum": 47097.47079682029,
+        "absolute_probability_error_sum": 388.9148218723004,
+        "first_expected_activation": 64,
+        "last_wrong_action": 376000,
+        "switches_after_first_expected": 8,
+        "initial_source_probability": 0.08527131782945736,
+        "max_source_probability_deviation": 0.01831159443512692,
+        "final_router": {
+          "schema": "acfqp.regime_memory.v115",
+          "method": "LIBRARY",
+          "warmup_observations": 256,
+          "block_size": 64,
+          "recent_window": 256,
+          "observations_seen": 1048832,
+          "warmup_complete": true,
+          "active_module_id": 0,
+          "modules": [
+            {
+              "id": 0,
+              "alpha": 52235,
+              "beta": 472055,
+              "visits": 8189
+            },
+            {
+              "id": 1,
+              "alpha": 184689,
+              "beta": 161169,
+              "visits": 5404
+            },
+            {
+              "id": 2,
+              "alpha": 77350,
+              "beta": 101340,
+              "visits": 2792
+            }
+          ],
+          "pending": {
+            "n": 0,
+            "fours": 0
+          },
+          "recent_ranks": [],
+          "stored_observation_counts": {
+            "statistics": 1048832,
+            "pending": 0,
+            "raw": 0
+          },
+          "counts": {
+            "observations_received": 1048832,
+            "beta_updates": 1048832,
+            "predict_calls": 0,
+            "routing_blocks": 16384,
+            "candidate_predictive_scores": 65344,
+            "module_creations": 2,
+            "module_reactivations": 3624
+          }
+        },
+        "final_source_probability": 0.09962997577676477,
+        "source_probability_change": 0.01435865794730741,
+        "source_action_fraction": 0.9993896484375,
+        "mean_log_loss": 0.3245927620912356,
+        "mean_brier": 0.08983129653324183,
+        "mean_absolute_probability_error": 0.0007417961537786492
+      },
+      "PERSISTENT": {
+        "observations": 524288,
+        "blocks": 8192,
+        "source_actions": 523840,
+        "switches": 9,
+        "creations": 0,
+        "reactivations": 9,
+        "log_loss_sum": 170171.35825945696,
+        "brier_sum": 47091.07093477265,
+        "absolute_probability_error_sum": 396.32967658383325,
+        "first_expected_activation": 64,
+        "last_wrong_action": 376064,
+        "switches_after_first_expected": 8,
+        "initial_source_probability": 0.08527131782945736,
+        "max_source_probability_deviation": 0.01831159443512692,
+        "final_router": {
+          "schema": "acfqp.persistent_context.v123",
+          "method": "LIBRARY",
+          "warmup_observations": 256,
+          "block_size": 64,
+          "recent_window": 256,
+          "observations_seen": 1048832,
+          "warmup_complete": true,
+          "active_module_id": 0,
+          "modules": [
+            {
+              "id": 0,
+              "alpha": 52213,
+              "beta": 471949,
+              "visits": 8187
+            },
+            {
+              "id": 1,
+              "alpha": 260537,
+              "beta": 260681,
+              "visits": 8144
+            },
+            {
+              "id": 2,
+              "alpha": 402,
+              "beta": 880,
+              "visits": 20
+            },
+            {
+              "id": 3,
+              "alpha": 1123,
+              "beta": 1055,
+              "visits": 34
+            }
+          ],
+          "pending": {
+            "n": 0,
+            "fours": 0
+          },
+          "recent_ranks": [],
+          "stored_observation_counts": {
+            "statistics": 1048832,
+            "pending": 0,
+            "raw": 0
+          },
+          "counts": {
+            "observations_received": 1048832,
+            "beta_updates": 1048832,
+            "predict_calls": 0,
+            "routing_blocks": 16384,
+            "candidate_predictive_scores": 73569,
+            "module_creations": 3,
+            "module_reactivations": 26
+          },
+          "switch_odds": 64
+        },
+        "final_source_probability": 0.09961233359152323,
+        "source_probability_change": 0.014341015762065867,
+        "source_action_fraction": 0.9991455078125,
+        "mean_log_loss": 0.32457610752002136,
+        "mean_brier": 0.08981908976511507,
+        "mean_absolute_probability_error": 0.0007559388667751946
+      }
+    }
+  },
+  "rows_read": 1822,
+  "unique_reused_ranks": 1048576,
+  "unique_reused_warmup": 256,
+  "processing_counts": {
+    "BASELINE": {
+      "observations_received": 1048832,
+      "beta_updates": 1048832,
+      "predict_calls": 0,
+      "routing_blocks": 16384,
+      "candidate_predictive_scores": 65344,
+      "module_creations": 2,
+      "module_reactivations": 3624
+    },
+    "PERSISTENT": {
+      "observations_received": 1048832,
+      "beta_updates": 1048832,
+      "predict_calls": 0,
+      "routing_blocks": 16384,
+      "candidate_predictive_scores": 73569,
+      "module_creations": 3,
+      "module_reactivations": 26
+    }
+  },
+  "baseline_exact": true,
+  "life": 0,
+  "query": "risk_goal",
+  "source": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_context_bank_v122/life_0/risk_goal/training.jsonl.gz",
+  "source_file_bytes": 3080622,
+  "seconds": 3.7685293369941064
+}

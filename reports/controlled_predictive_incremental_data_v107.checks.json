@@ -1,0 +1,18 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "fixture_work": {
+        "candidate_files_read": 9,
+        "candidate_records_read": 32,
+        "training_statistics_recomputations": 2
+      },
+      "new_environment_transitions": 0,
+      "new_synthetic_transitions": 0,
+      "neural_model_fits": 0,
+      "neural_candidate_predictions": 0,
+      "new_feature_vectors": 0,
+      "scope": "compact synthetic candidate records and unchanged half-model payload fixtures"
+    }
+  ]
+}

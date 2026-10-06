@@ -1,0 +1,84 @@
+{
+  "attempts": [
+    {
+      "tests": 8,
+      "failures": 0,
+      "core_work": {
+        "vector_predictions": 11,
+        "component_predictions": 42,
+        "table_lookups": 1344,
+        "mc_updates": 7,
+        "component_updates": 21,
+        "table_update_occurrences": 672,
+        "table_updates": 336,
+        "training_games": 3,
+        "training_observed_afterstates": 6,
+        "training_analytic_goals": 1,
+        "censored_games": 1,
+        "censored_afterstates": 2,
+        "choose_calls": 2,
+        "action_vector_calls": 2,
+        "learned_terminal_checks": 8,
+        "learned_swipe_calls": 8,
+        "line_table_lookups": 32,
+        "legal_swipes": 6,
+        "terminal_goal_bypasses": 4,
+        "checkpoint_saves": 1,
+        "checkpoint_scanned_parameters": 49152,
+        "checkpoint_saved_parameters": 16
+      },
+      "reference_work": {
+        "value_predictions": 6,
+        "table_lookups": 192,
+        "td_updates": 3,
+        "table_updates": 48,
+        "table_update_occurrences": 96
+      },
+      "setup_counts": {
+        "cpp_compilations": 2,
+        "lookup_line_rewrites": 256,
+        "allocated_weight_parameters": 393216,
+        "allocated_weight_bytes": 3145728,
+        "cpp_library_cache_hits": 8,
+        "lookup_table_cache_hits": 9
+      },
+      "setup_seconds": 1.1199888629780617,
+      "newly_sampled_environment_transitions": 0,
+      "vector_optimizer_steps": 7,
+      "scalar_optimizer_steps": 24,
+      "scope": "Synthetic boards, fixed target arrays and policy fixtures only. No environment sampling."
+    },
+    {
+      "tests": 1,
+      "failures": 0,
+      "core_work": {
+        "mc_updates": 1,
+        "component_updates": 3,
+        "component_predictions": 15,
+        "table_lookups": 480,
+        "table_update_occurrences": 96,
+        "table_updates": 48,
+        "choose_calls": 1,
+        "action_vector_calls": 1,
+        "learned_terminal_checks": 4,
+        "learned_swipe_calls": 4,
+        "line_table_lookups": 16,
+        "legal_swipes": 3,
+        "terminal_goal_bypasses": 1,
+        "vector_predictions": 5
+      },
+      "reference_work": {},
+      "setup_counts": {
+        "cpp_compilations": 1,
+        "lookup_line_rewrites": 256,
+        "allocated_weight_parameters": 49152,
+        "allocated_weight_bytes": 393216
+      },
+      "setup_seconds": 0.513664066005731,
+      "newly_sampled_environment_transitions": 0,
+      "vector_optimizer_steps": 1,
+      "scalar_optimizer_steps": 3,
+      "scope": "Synthetic boards, fixed target arrays and policy fixtures only. No environment sampling."
+    }
+  ]
+}

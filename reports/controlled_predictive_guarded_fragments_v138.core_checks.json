@@ -1,0 +1,63 @@
+{
+  "attempts": [
+    {
+      "tests": 12,
+      "failures": 0,
+      "cache_work": {
+        "observations": 18,
+        "lookup_calls": 36,
+        "input_rank_reads": 954,
+        "input_cell_reads": 106,
+        "zero_mask_rank_reads": 816,
+        "misses": 26,
+        "compile_symbolic_swipes": 25,
+        "compile_symbolic_line_rewrites": 100,
+        "compile_equality_tests": 36,
+        "compile_guard_requests": 62,
+        "compiled_guards": 60,
+        "compile_symbolic_action_boards": 25,
+        "compile_goal_tests": 26,
+        "compile_symbolic_spawn_assignments": 21,
+        "bound_exit_cells": 288,
+        "bound_exit_rank_reads": 57,
+        "bound_reward_terms": 33,
+        "bound_reward_additions": 33,
+        "exit_status_learned_terminal_checks": 18,
+        "exit_status_learned_swipe_calls": 68,
+        "exit_status_learned_line_rewrites": 272,
+        "bind_calls": 18,
+        "cumulative_score_additions": 18,
+        "compiled_programs": 9,
+        "stored_anchor_rank_copies": 162,
+        "stored_exit_expression_slots": 144,
+        "stored_reward_expressions": 16,
+        "guard_trials": 18,
+        "guard_checks": 80,
+        "guard_rank_reads": 126,
+        "hits": 10,
+        "new_numeric_board_hits": 2,
+        "new_numeric_binding_hits": 3,
+        "guard_refinements": 3,
+        "guard_rejections": 10,
+        "compile_applicability_rejections": 4,
+        "serialized_programs": 2,
+        "copied_programs": 2,
+        "stored_programs": 3,
+        "stored_input_rank_copies": 54,
+        "stored_exit_rank_copies": 48,
+        "stored_score_copies": 6,
+        "copied_exit_cells": 32,
+        "copied_score_values": 4,
+        "applicability_rejections": 2
+      },
+      "oracle_work": {
+        "learned_swipe_calls": 128,
+        "learned_line_rewrites": 512,
+        "learned_terminal_checks": 22
+      },
+      "newly_sampled_environment_transitions": 0,
+      "newly_sampled_model_transitions": 0,
+      "scope": "Finite symbolic and concrete recorded fragments; no natural-game sampling."
+    }
+  ]
+}

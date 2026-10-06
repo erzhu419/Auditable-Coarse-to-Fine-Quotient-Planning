@@ -1,0 +1,53 @@
+{
+  "schema": "acfqp.retention_mechanism_freeze.v318",
+  "source_summary": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/greedy_targets_v317/summary.json",
+  "protocol": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/specs/RETENTION_MECHANISM_V318.md",
+  "lifecycles": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "parents": 4,
+  "workers": 4,
+  "task": "A",
+  "rounds": [
+    1,
+    2
+  ],
+  "alpha": 0.0025,
+  "actual_reproduction": "EXACT_ALL_PARAMETERS_TARGET_ARRAYS_AND_NATIVE_COUNTS_BEFORE_INTERVENTION",
+  "counterfactual": "FROZEN_FIRST_V0_WITH_ACTUAL_V1_CURRENT_HEAD",
+  "propagation": "COUPLED_HEAD_SWITCH_AT_NONWIN_H2_LEAF_BY_EXACT_CURRENT_ROUND_NONWIN_FIT_BOARD",
+  "support_encoding": "CELL_0_LOW_NIBBLE_UINT64",
+  "max_steps": 8192,
+  "evaluation_games_per_view": 32,
+  "new_views": [
+    "R1_OWN_LOCAL",
+    "R2_OWN_LOCAL",
+    "R2_FIRST_FULL",
+    "R2_FIRST_LOCAL"
+  ],
+  "expected_new_evaluation_games": 2048,
+  "new_training_raw_tiles": 0,
+  "evaluation_seed": 317900000000,
+  "bootstrap_seed": 31800001,
+  "bootstrap_draws": 20000,
+  "mechanism_family_size": 4,
+  "mechanism_ci_coverage": 0.9875,
+  "sample_nonwin_per_split": 64,
+  "probe_positions": "FIRST_AND_LAST_PER_SPLIT",
+  "stop_rule": "NO_LIFE_SEED_ALPHA_SUPPORT_TARGET_OR_INTERVAL_SELECTION_RETAIN_CUTOFF"
+}

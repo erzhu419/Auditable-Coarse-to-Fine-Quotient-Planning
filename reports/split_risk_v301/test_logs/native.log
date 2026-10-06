@@ -1,0 +1,88 @@
+....FFFF...........                                                      [100%]
+=================================== FAILURES ===================================
+_ test_game_start_two_head_updates_match_literal_occurrence_normalization[LOCAL_RISK] _
+
+kind = 'LOCAL_RISK'
+
+    @pytest.mark.parametrize('kind', ['LOCAL_RISK','GLOBAL_RISK'])
+    def test_game_start_two_head_updates_match_literal_occurrence_normalization(kind):
+        template=make_template(); actual,reference=SplitLeaf(template,kind,BUILD),SplitLeaf(template,kind,BUILD)
+        result=fit_split(actual,data(),BUILD); examples=literal_fit(reference,data())
+        np.testing.assert_array_equal(actual.reward_weights,reference.reward_weights)
+>       np.testing.assert_array_equal(actual.risk_weights,reference.risk_weights)
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 4 / 16384 (0.0244%)
+E       Max absolute difference among violations: 2.16840434e-19
+E       Max relative difference among violations: 1.76301317e-16
+E        ACTUAL: array([[-0.00123,  0.     ,  0.     , ...,  0.     ,  0.     ,  0.     ],
+E              [-0.00123,  0.     ,  0.     , ...,  0.     ,  0.     ,  0.     ],
+E              [-0.00123,  0.     ,  0.     , ...,  0.     ,  0.     ,  0.     ],...
+E        DESIRED: array([[-0.00123,  0.     ,  0.     , ...,  0.     ,  0.     ,  0.     ],
+E              [-0.00123,  0.     ,  0.     , ...,  0.     ,  0.     ,  0.     ],
+E              [-0.00123,  0.     ,  0.     , ...,  0.     ,  0.     ,  0.     ],...
+
+tests/test_native_split_risk_v301.py:146: AssertionError
+_ test_game_start_two_head_updates_match_literal_occurrence_normalization[GLOBAL_RISK] _
+
+kind = 'GLOBAL_RISK'
+
+    @pytest.mark.parametrize('kind', ['LOCAL_RISK','GLOBAL_RISK'])
+    def test_game_start_two_head_updates_match_literal_occurrence_normalization(kind):
+        template=make_template(); actual,reference=SplitLeaf(template,kind,BUILD),SplitLeaf(template,kind,BUILD)
+        result=fit_split(actual,data(),BUILD); examples=literal_fit(reference,data())
+        np.testing.assert_array_equal(actual.reward_weights,reference.reward_weights)
+>       np.testing.assert_array_equal(actual.risk_weights,reference.risk_weights)
+E       AssertionError: 
+E       Arrays are not equal
+E       
+E       Mismatched elements: 3 / 20 (15%)
+E       Max absolute difference among violations: 2.16840434e-19
+E       Max relative difference among violations: 1.74489318e-16
+E        ACTUAL: array([-1.242795e-03, -1.242695e-03, -1.242795e-03, -1.242695e-03,
+E              -1.242795e-03, -1.242909e-03, -1.242891e-03, -1.242795e-03,
+E              -1.242795e-03, -1.242884e-03, -1.242757e-03,  7.090895e-06,...
+E        DESIRED: array([-1.242795e-03, -1.242695e-03, -1.242795e-03, -1.242695e-03,
+E              -1.242795e-03, -1.242909e-03, -1.242891e-03, -1.242795e-03,
+E              -1.242795e-03, -1.242884e-03, -1.242757e-03,  7.090895e-06,...
+
+tests/test_native_split_risk_v301.py:146: AssertionError
+____ test_initial_source_value_h2_and_natural_rng_are_identical[LOCAL_RISK] ____
+
+kind = 'LOCAL_RISK'
+
+    @pytest.mark.parametrize('kind', ['LOCAL_RISK','GLOBAL_RISK'])
+    def test_initial_source_value_h2_and_natural_rng_are_identical(kind):
+        template=make_template(); leaf=SplitLeaf(template,kind,BUILD); leaf.freeze()
+        assert not leaf.risk_weights.flags.writeable and not leaf.reward_weights.flags.writeable
+        planner=FrozenLeafPlanner(template,2,BUILD); planner.spawn_probabilities=(.57,.43)
+        board=[1,1,2,0]+[0]*12
+        source=planner.choose(board); split=leaf.choose(board,.43)
+        for key in ('action','afterstate','score','value','tail_value','action_values','status','counts'):
+>           assert split[key]==source[key]
+E           assert 0.14199879807692312 == 0.14199879807692306
+
+tests/test_native_split_risk_v301.py:173: AssertionError
+___ test_initial_source_value_h2_and_natural_rng_are_identical[GLOBAL_RISK] ____
+
+kind = 'GLOBAL_RISK'
+
+    @pytest.mark.parametrize('kind', ['LOCAL_RISK','GLOBAL_RISK'])
+    def test_initial_source_value_h2_and_natural_rng_are_identical(kind):
+        template=make_template(); leaf=SplitLeaf(template,kind,BUILD); leaf.freeze()
+        assert not leaf.risk_weights.flags.writeable and not leaf.reward_weights.flags.writeable
+        planner=FrozenLeafPlanner(template,2,BUILD); planner.spawn_probabilities=(.57,.43)
+        board=[1,1,2,0]+[0]*12
+        source=planner.choose(board); split=leaf.choose(board,.43)
+        for key in ('action','afterstate','score','value','tail_value','action_values','status','counts'):
+>           assert split[key]==source[key]
+E           assert 0.14199879807692312 == 0.14199879807692306
+
+tests/test_native_split_risk_v301.py:173: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_native_split_risk_v301.py::test_game_start_two_head_updates_match_literal_occurrence_normalization[LOCAL_RISK]
+FAILED tests/test_native_split_risk_v301.py::test_game_start_two_head_updates_match_literal_occurrence_normalization[GLOBAL_RISK]
+FAILED tests/test_native_split_risk_v301.py::test_initial_source_value_h2_and_natural_rng_are_identical[LOCAL_RISK]
+FAILED tests/test_native_split_risk_v301.py::test_initial_source_value_h2_and_natural_rng_are_identical[GLOBAL_RISK]
+4 failed, 15 passed in 4.24s

@@ -1,0 +1,18 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "count_updates": 0,
+      "scope": "synthetic replay, prefix, scalar readout, saved-count and cohort fixtures"
+    },
+    {
+      "failures": 0,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "count_updates": 0,
+      "scope": "synthetic replay, prefix, scalar readout, saved-count and cohort fixtures"
+    }
+  ]
+}

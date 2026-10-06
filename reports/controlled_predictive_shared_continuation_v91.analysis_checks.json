@@ -1,0 +1,25 @@
+{
+  "attempts": [
+    {
+      "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_shared_continuation_v91.py",
+      "passed": 6,
+      "failed": 0,
+      "seconds": 0.22
+    },
+    {
+      "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_shared_continuation_v91.py -k complete_accounting",
+      "reason": "Include retained validation head and continuation prediction work in cost accounting.",
+      "passed": 1,
+      "failed": 0,
+      "deselected": 5,
+      "seconds": 0.20,
+      "repeated_tests": 1
+    }
+  ],
+  "unique_tests_passed": 6,
+  "test_executions_passed": 7,
+  "environment_calls": 0,
+  "sampled_transitions": 0,
+  "new_tree_fits": 0,
+  "main_campaign_calls": 0
+}

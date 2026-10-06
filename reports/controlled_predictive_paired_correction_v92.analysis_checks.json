@@ -1,0 +1,25 @@
+{
+  "attempts": [
+    {
+      "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_paired_correction_v92.py",
+      "passed": 11,
+      "failed": 0,
+      "seconds": 0.23
+    },
+    {
+      "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_paired_correction_v92.py -k natural_contrasts",
+      "reason": "Include all prespecified primary contrasts in gate decomposition.",
+      "passed": 1,
+      "failed": 0,
+      "deselected": 10,
+      "seconds": 0.32,
+      "repeated_tests": 1
+    }
+  ],
+  "unique_tests_passed": 11,
+  "test_executions_passed": 12,
+  "environment_calls": 0,
+  "sampled_transitions": 0,
+  "new_tree_fits": 0,
+  "main_campaign_calls": 0
+}

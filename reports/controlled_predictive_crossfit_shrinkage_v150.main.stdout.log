@@ -1,0 +1,50 @@
+{"event": "calibration_frozen", "life": 0, "query": "risk1", "beta": 0.3819195316187184}
+{"event": "calibration_frozen", "life": 2, "query": "risk1", "beta": 0.2747079470336357}
+{"event": "calibration_frozen", "life": 3, "query": "risk1", "beta": 0.2893844916742245}
+{"event": "calibration_frozen", "life": 1, "query": "risk1", "beta": 0.0}
+{"event": "calibration_frozen", "life": 0, "query": "risk8", "beta": 0.032982205990001304}
+{"event": "calibration_frozen", "life": 2, "query": "risk8", "beta": 0.06587168086593968}
+{"event": "calibration_frozen", "life": 3, "query": "risk8", "beta": 0.18861886771061287}
+{"event": "calibration_frozen", "life": 1, "query": "risk8", "beta": 0.0}
+{"event": "remeasured_roots", "life": 1, "query": "risk1", "roots": 4, "branches": 256}
+{"event": "remeasured_roots", "life": 2, "query": "risk1", "roots": 4, "branches": 256}
+{"event": "remeasured_roots", "life": 3, "query": "risk1", "roots": 4, "branches": 256}
+{"event": "remeasured_roots", "life": 0, "query": "risk1", "roots": 4, "branches": 256}
+{"event": "remeasured_roots", "life": 1, "query": "risk1", "roots": 8, "branches": 512}
+{"event": "remeasured_roots", "life": 0, "query": "risk1", "roots": 8, "branches": 512}
+{"event": "remeasured_roots", "life": 2, "query": "risk1", "roots": 8, "branches": 512}
+{"event": "remeasured_roots", "life": 3, "query": "risk1", "roots": 8, "branches": 512}
+{"event": "remeasured_roots", "life": 1, "query": "risk1", "roots": 12, "branches": 768}
+{"event": "remeasured_roots", "life": 0, "query": "risk1", "roots": 12, "branches": 768}
+{"event": "remeasured_roots", "life": 2, "query": "risk1", "roots": 12, "branches": 768}
+{"event": "remeasured_roots", "life": 3, "query": "risk1", "roots": 12, "branches": 768}
+{"event": "remeasured_roots", "life": 1, "query": "risk1", "roots": 16, "branches": 1024}
+{"event": "remeasured_roots", "life": 3, "query": "risk1", "roots": 16, "branches": 1024}
+{"event": "remeasured_roots", "life": 0, "query": "risk1", "roots": 16, "branches": 1024}
+{"event": "remeasured_roots", "life": 2, "query": "risk1", "roots": 16, "branches": 1024}
+{"event": "remeasured_roots", "life": 1, "query": "risk1", "roots": 20, "branches": 1280}
+{"event": "remeasured_roots", "life": 3, "query": "risk1", "roots": 20, "branches": 1280}
+{"event": "remeasured_roots", "life": 2, "query": "risk1", "roots": 20, "branches": 1280}
+{"event": "remeasured_roots", "life": 0, "query": "risk8", "roots": 4, "branches": 256}
+{"event": "remeasured_roots", "life": 1, "query": "risk1", "roots": 24, "branches": 1536}
+{"event": "remeasured_roots", "life": 0, "query": "risk8", "roots": 8, "branches": 512}
+{"event": "remeasured_roots", "life": 3, "query": "risk8", "roots": 4, "branches": 256}
+{"event": "remeasured_roots", "life": 2, "query": "risk8", "roots": 4, "branches": 256}
+{"event": "remeasured_roots", "life": 1, "query": "risk8", "roots": 4, "branches": 256}
+{"event": "remeasured_roots", "life": 3, "query": "risk8", "roots": 8, "branches": 512}
+{"event": "remeasured_roots", "life": 1, "query": "risk8", "roots": 8, "branches": 512}
+{"event": "remeasured_roots", "life": 0, "query": "risk8", "roots": 12, "branches": 768}
+{"event": "remeasured_roots", "life": 2, "query": "risk8", "roots": 8, "branches": 512}
+{"event": "remeasured_roots", "life": 3, "query": "risk8", "roots": 12, "branches": 768}
+{"event": "remeasured_roots", "life": 0, "query": "risk8", "roots": 16, "branches": 1024}
+{"event": "remeasured_roots", "life": 1, "query": "risk8", "roots": 12, "branches": 768}
+{"event": "remeasured_roots", "life": 2, "query": "risk8", "roots": 12, "branches": 768}
+{"event": "remeasured_roots", "life": 3, "query": "risk8", "roots": 16, "branches": 1024}
+{"event": "remeasured_roots", "life": 1, "query": "risk8", "roots": 16, "branches": 1024}
+{"event": "remeasured_roots", "life": 2, "query": "risk8", "roots": 16, "branches": 1024}
+{"event": "remeasured_roots", "life": 3, "query": "risk8", "roots": 20, "branches": 1280}
+{"event": "remeasured_roots", "life": 1, "query": "risk8", "roots": 20, "branches": 1280}
+{"event": "remeasured_roots", "life": 2, "query": "risk8", "roots": 20, "branches": 1280}
+{"event": "remeasured_roots", "life": 3, "query": "risk8", "roots": 24, "branches": 1536}
+{"event": "remeasured_roots", "life": 1, "query": "risk8", "roots": 24, "branches": 1536}
+{"status": "complete", "seconds": 287.6440758079989}

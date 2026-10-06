@@ -1,0 +1,44 @@
+{
+  "attempts": [
+    {
+      "tests": 5,
+      "failures": 0,
+      "development_work": {
+        "value_predictions": 102,
+        "table_lookups": 3264,
+        "td_updates": 3,
+        "table_updates": 39,
+        "table_update_occurrences": 96,
+        "choose_calls": 12,
+        "learned_terminal_checks": 41,
+        "learned_swipe_calls": 44,
+        "line_table_lookups": 176,
+        "legal_swipes": 29,
+        "terminal_goal_bypasses": 7,
+        "checkpoint_saves": 1,
+        "checkpoint_scanned_parameters": 16384,
+        "checkpoint_saved_parameters": 16,
+        "checkpoint_loads": 1,
+        "checkpoint_loaded_parameters": 16
+      },
+      "setup_work": {
+        "cpp_compilations": 1,
+        "lookup_line_rewrites": 15153,
+        "allocated_weight_parameters": 7200932,
+        "allocated_weight_bytes": 57607456,
+        "cpp_library_cache_hits": 7,
+        "lookup_table_cache_hits": 5
+      },
+      "reference_model_work": {
+        "learned_swipe_calls": 24,
+        "learned_line_rewrites": 96
+      },
+      "setup_seconds": 0.541530047012202,
+      "serialization_seconds": 0.0013197619991842657,
+      "newly_sampled_environment_transitions": 0,
+      "tree_fits": 0,
+      "optimizer_steps": 3,
+      "scope": "Synthetic tuple values, scalar TD updates, and identified rule swipes; no environment sampling."
+    }
+  ]
+}

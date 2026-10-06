@@ -1,0 +1,11 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "td_updates": 0,
+      "scope": "synthetic trace/model-file accounting; no actual learning or gameplay"
+    }
+  ]
+}

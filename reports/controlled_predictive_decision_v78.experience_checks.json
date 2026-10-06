@@ -1,0 +1,28 @@
+{
+  "schema": "acfqp.decision_experience.development_checks.v78",
+  "attempts": [
+    {
+      "command": "PYTHONPATH=src .venv-lmta-v42/bin/python -m pytest -q -s tests/test_controlled_predictive_decision_experience_v78.py",
+      "exit_code": 0,
+      "tests_passed": 3,
+      "tests_failed": 0,
+      "pytest_seconds": 0.21,
+      "command_seconds": 0.552437837,
+      "scope": "One true terminal rollout, three paired two-step rollouts, an illegal-action rejection, and observed-label boundary checks.",
+      "work": {
+        "sampled_rollout_calls": 4,
+        "sampled_transitions": 7,
+        "environment_random_draws": 14,
+        "initial_spawns": 0,
+        "state_from_board_v1": 12,
+        "swipe_board_v1": 64,
+        "rejected_illegal_rollout_calls": 1,
+        "step_v1": 0,
+        "enumerated_teacher_outcomes": 0
+      },
+      "ground_count_scope": "All ground calls made by these tests, including action-selection callbacks and the rejected illegal action.",
+      "main_experiment_calls": 0,
+      "reruns": 0
+    }
+  ]
+}

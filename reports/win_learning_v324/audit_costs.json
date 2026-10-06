@@ -1,0 +1,10 @@
+{
+  "schema": "acfqp.win_learning_full_execution_cost.v324",
+  "component_new_experiment_cpu_seconds": 1013.70855976,
+  "full_execution_process_tree_cpu_seconds": 1016.307556,
+  "final_serialization_and_shutdown_cpu_seconds": 2.5989962400000195,
+  "full_economic_source_and_experiment_cpu_seconds": 2718.145510057,
+  "independent_audit_process_tree_cpu_seconds": 253.205594,
+  "independent_audit_monotonic_wall_seconds": 69.87219331599772,
+  "scope": "Successful V312 SOURCE inherited once. Full new execution includes fresh target acquisition/fits and final shutdown. Previous target experiments excluded; audits separate; historical dynamics and failed-attempt CPU unknown."
+}

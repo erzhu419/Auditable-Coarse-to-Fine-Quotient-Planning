@@ -1,0 +1,22 @@
+{
+  "attempts": [
+    {
+      "session_failures": 0,
+      "scope": "Synthetic cohort choices and all 24 retained V81 first-round heldout roots.",
+      "ground_calls": 0,
+      "tree_fits": 0,
+      "model_uniform_draws": 0,
+      "source_root_records_read": 150,
+      "policy_payloads_read": 6,
+      "learned_terminal_checks": 26,
+      "learned_swipe_calls": 248,
+      "learned_line_rewrites": 992,
+      "advantage_feature_rows": 72,
+      "board_feature_rows": 216,
+      "tree_apply_rows": 72,
+      "advantage_prediction_rows": 72,
+      "tree_split_visits": 152,
+      "actual_heldout_roots_verified": 24
+    }
+  ]
+}

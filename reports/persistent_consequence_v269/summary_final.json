@@ -1,0 +1,5563 @@
+{
+  "limitations": [
+    "KAPPA=48 is a fixed doubled-count baseline, equivalent to 24 categorical pseudo-observations; it was not tuned from these outcomes.",
+    "No weather or phase labels enter the estimator.",
+    "No confidence certificate, original Gate or U006 assurance is changed."
+  ],
+  "records": [
+    {
+      "arms": {
+        "FACTORIZED_MODULE": [
+          {
+            "assignment": {
+              "audit_brier": "15259289/94128804",
+              "candidate_checks": [],
+              "candidate_count_before": 0,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 1,
+              "module_id": 0,
+              "reason": "initial",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "253/70",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "72104297/282386412",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                }
+              ],
+              "candidate_count_before": 1,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 1,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1851/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1791/490",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "assignment": {
+              "audit_brier": "25911553/85866534",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": true,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 42,
+                  "LOST": 0,
+                  "RECOVERY": 6
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 7,
+                  "LOST": 41
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 45,
+                  "LOST": 3
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 0,
+              "reason": "reuse_all_query_actions",
+              "reused": true
+            },
+            "audit_observations": 48,
+            "base_source": "module_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "48",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "17909/5110",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "33701/10780",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "59008309/141193206",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 3,
+              "module_id": 2,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "53267/16170",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "5981/1980",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "GLOBAL_SHRINK": [
+          {
+            "assignment": {
+              "audit_brier": "15259289/94128804",
+              "candidate_checks": [],
+              "candidate_count_before": 0,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 1,
+              "module_id": 0,
+              "reason": "initial",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "global_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "253/70",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "72104297/282386412",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                }
+              ],
+              "candidate_count_before": 1,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 1,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "global_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "48",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "19029/5110",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "18129/5110",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "assignment": {
+              "audit_brier": "25911553/85866534",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": true,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 42,
+                  "LOST": 0,
+                  "RECOVERY": 6
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 7,
+                  "LOST": 41
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 45,
+                  "LOST": 3
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 0,
+              "reason": "reuse_all_query_actions",
+              "reused": true
+            },
+            "audit_observations": 48,
+            "base_source": "global_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "48",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "250499/70810",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "21/100",
+                "policy_correct": false,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "224839/70810",
+                "set_action_agreement": false
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "59008309/141193206",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 3,
+              "module_id": 2,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "global_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "48",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "999089501/301863030",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "867341/285180",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "LOCKED_MARGINAL": [
+          {
+            "assignment": {
+              "audit_brier": "15259289/94128804",
+              "candidate_checks": [],
+              "candidate_count_before": 0,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 1,
+              "module_id": 0,
+              "reason": "initial",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history_committed",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "253/70",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "72104297/282386412",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                }
+              ],
+              "candidate_count_before": 1,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 1,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history_committed",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1851/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1791/490",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "assignment": {
+              "audit_brier": "25911553/85866534",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": true,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 42,
+                  "LOST": 0,
+                  "RECOVERY": 6
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 7,
+                  "LOST": 41
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 45,
+                  "LOST": 3
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 0,
+              "reason": "reuse_all_query_actions",
+              "reused": true
+            },
+            "audit_observations": 48,
+            "base_source": "module_history_committed",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "3443/970",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2521/780",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "59008309/141193206",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 3,
+              "module_id": 2,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history_committed",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "53267/16170",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "5981/1980",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "RESET": [
+          {
+            "audit_observations": 48,
+            "base_source": "none",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "253/70",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "base_source": "none",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1851/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1791/490",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "audit_observations": 48,
+            "base_source": "none",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "5981/1980",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "base_source": "none",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "53267/16170",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "5981/1980",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ]
+      },
+      "seed": 265401
+    },
+    {
+      "arms": {
+        "FACTORIZED_MODULE": [
+          {
+            "assignment": {
+              "audit_brier": "24504503/94128804",
+              "candidate_checks": [],
+              "candidate_count_before": 0,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 1,
+              "module_id": 0,
+              "reason": "initial",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "14455379/70596603",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                }
+              ],
+              "candidate_count_before": 1,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 1,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1891/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1871/490",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "assignment": {
+              "audit_brier": "360476459/1431108900",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": true,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 42,
+                  "LOST": 0,
+                  "RECOVERY": 6
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 13,
+                  "LOST": 35
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 43,
+                  "LOST": 5
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 0,
+              "reason": "reuse_all_query_actions",
+              "reused": true
+            },
+            "audit_observations": 48,
+            "base_source": "module_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "48",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "48100361/94128804",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 3,
+              "module_id": 2,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "18407/5390",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "GLOBAL_SHRINK": [
+          {
+            "assignment": {
+              "audit_brier": "24504503/94128804",
+              "candidate_checks": [],
+              "candidate_count_before": 0,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 1,
+              "module_id": 0,
+              "reason": "initial",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "global_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "14455379/70596603",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                }
+              ],
+              "candidate_count_before": 1,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 1,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "global_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "48",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "133243/35770",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "126983/35770",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "assignment": {
+              "audit_brier": "360476459/1431108900",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": true,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 42,
+                  "LOST": 0,
+                  "RECOVERY": 6
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 13,
+                  "LOST": 35
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 43,
+                  "LOST": 5
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 0,
+              "reason": "reuse_all_query_actions",
+              "reused": true
+            },
+            "audit_observations": 48,
+            "base_source": "global_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "48",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "249539/70810",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "17327/5460",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "48100361/94128804",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 3,
+              "module_id": 2,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "global_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "48",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "146210093/43123290",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "132043/40740",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "LOCKED_MARGINAL": [
+          {
+            "assignment": {
+              "audit_brier": "24504503/94128804",
+              "candidate_checks": [],
+              "candidate_count_before": 0,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 1,
+              "module_id": 0,
+              "reason": "initial",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history_committed",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "14455379/70596603",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                }
+              ],
+              "candidate_count_before": 1,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 1,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history_committed",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1891/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1871/490",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "assignment": {
+              "audit_brier": "360476459/1431108900",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": true,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 42,
+                  "LOST": 0,
+                  "RECOVERY": 6
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 13,
+                  "LOST": 35
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 43,
+                  "LOST": 5
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 0,
+              "reason": "reuse_all_query_actions",
+              "reused": true
+            },
+            "audit_observations": 48,
+            "base_source": "module_history_committed",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "3363/970",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "883/260",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "48100361/94128804",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 3,
+              "module_id": 2,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history_committed",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "18407/5390",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "RESET": [
+          {
+            "audit_observations": 48,
+            "base_source": "none",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "base_source": "none",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1891/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1871/490",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "audit_observations": 48,
+            "base_source": "none",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "base_source": "none",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "18407/5390",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ]
+      },
+      "seed": 265402
+    },
+    {
+      "arms": {
+        "FACTORIZED_MODULE": [
+          {
+            "assignment": {
+              "audit_brier": "41753113/141193206",
+              "candidate_checks": [],
+              "candidate_count_before": 0,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 1,
+              "module_id": 0,
+              "reason": "initial",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "5981/1980",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "49885625/282386412",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                }
+              ],
+              "candidate_count_before": 1,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 1,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1891/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1871/490",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "assignment": {
+              "audit_brier": "1905128/6351075",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": true,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 30,
+                  "LOST": 11,
+                  "RECOVERY": 7
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 43,
+                  "LOST": 5
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 48,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 1,
+              "reason": "reuse_all_query_actions",
+              "reused": true
+            },
+            "audit_observations": 48,
+            "base_source": "module_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "48",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "136083/35770",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "21/100",
+                "policy_correct": false,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "132663/35770",
+                "set_action_agreement": false
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "2860481/5762988",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 3,
+              "module_id": 2,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "911/330",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "4061/1980",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "GLOBAL_SHRINK": [
+          {
+            "assignment": {
+              "audit_brier": "41753113/141193206",
+              "candidate_checks": [],
+              "candidate_count_before": 0,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 1,
+              "module_id": 0,
+              "reason": "initial",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "global_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "5981/1980",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "49885625/282386412",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                }
+              ],
+              "candidate_count_before": 1,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 1,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "global_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "48",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "133243/35770",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "126983/35770",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "assignment": {
+              "audit_brier": "1905128/6351075",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": true,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 30,
+                  "LOST": 11,
+                  "RECOVERY": 7
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 43,
+                  "LOST": 5
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 48,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 1,
+              "reason": "reuse_all_query_actions",
+              "reused": true
+            },
+            "audit_observations": 48,
+            "base_source": "global_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "48",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "265059/70810",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "21/100",
+                "policy_correct": false,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "253959/70810",
+                "set_action_agreement": false
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "2860481/5762988",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 3,
+              "module_id": 2,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "global_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "48",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "1547/2000",
+                "policy_correct": false,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "12203/4234",
+                "set_action_agreement": false
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "642701/285180",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "LOCKED_MARGINAL": [
+          {
+            "assignment": {
+              "audit_brier": "41753113/141193206",
+              "candidate_checks": [],
+              "candidate_count_before": 0,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 1,
+              "module_id": 0,
+              "reason": "initial",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history_committed",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "5981/1980",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "49885625/282386412",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                }
+              ],
+              "candidate_count_before": 1,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 1,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history_committed",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1891/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1871/490",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "assignment": {
+              "audit_brier": "1905128/6351075",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": true,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 30,
+                  "LOST": 11,
+                  "RECOVERY": 7
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 43,
+                  "LOST": 5
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 48,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 1,
+              "reason": "reuse_all_query_actions",
+              "reused": true
+            },
+            "audit_observations": 48,
+            "base_source": "module_history_committed",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "3723/970",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "21/100",
+                "policy_correct": false,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "3663/970",
+                "set_action_agreement": false
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "2860481/5762988",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 3,
+              "module_id": 2,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history_committed",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "911/330",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "4061/1980",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "RESET": [
+          {
+            "audit_observations": 48,
+            "base_source": "none",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "5981/1980",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "base_source": "none",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1891/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1871/490",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "audit_observations": 48,
+            "base_source": "none",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1851/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "21/100",
+                "policy_correct": false,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1791/490",
+                "set_action_agreement": false
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "base_source": "none",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "911/330",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "4061/1980",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ]
+      },
+      "seed": 265403
+    },
+    {
+      "arms": {
+        "FACTORIZED_MODULE": [
+          {
+            "assignment": {
+              "audit_brier": "23858627/94128804",
+              "candidate_checks": [],
+              "candidate_count_before": 0,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 1,
+              "module_id": 0,
+              "reason": "initial",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "18285293/70596603",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                }
+              ],
+              "candidate_count_before": 1,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 1,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1891/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1871/490",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "assignment": {
+              "audit_brier": "418005119/1073331675",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": true,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 34,
+                  "LOST": 8,
+                  "RECOVERY": 6
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 43,
+                  "LOST": 5
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 48,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 1,
+              "reason": "reuse_all_query_actions",
+              "reused": true
+            },
+            "audit_observations": 48,
+            "base_source": "module_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "48",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "134123/35770",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "21/100",
+                "policy_correct": false,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "128743/35770",
+                "set_action_agreement": false
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "116873963/282386412",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 3,
+              "module_id": 2,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "127811/48510",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "4381/1980",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "GLOBAL_SHRINK": [
+          {
+            "assignment": {
+              "audit_brier": "23858627/94128804",
+              "candidate_checks": [],
+              "candidate_count_before": 0,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 1,
+              "module_id": 0,
+              "reason": "initial",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "global_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "18285293/70596603",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                }
+              ],
+              "candidate_count_before": 1,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 1,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "global_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "48",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "133243/35770",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "126983/35770",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "assignment": {
+              "audit_brier": "418005119/1073331675",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": true,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 34,
+                  "LOST": 8,
+                  "RECOVERY": 6
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 43,
+                  "LOST": 5
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 48,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 1,
+              "reason": "reuse_all_query_actions",
+              "reused": true
+            },
+            "audit_observations": 48,
+            "base_source": "global_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "48",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "261179/70810",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "21/100",
+                "policy_correct": false,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "246199/70810",
+                "set_action_agreement": false
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "116873963/282386412",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 3,
+              "module_id": 2,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "global_history",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "48",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "1547/2000",
+                "policy_correct": false,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "61983/21170",
+                "set_action_agreement": false
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "691661/285180",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "LOCKED_MARGINAL": [
+          {
+            "assignment": {
+              "audit_brier": "23858627/94128804",
+              "candidate_checks": [],
+              "candidate_count_before": 0,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 1,
+              "module_id": 0,
+              "reason": "initial",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history_committed",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "18285293/70596603",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                }
+              ],
+              "candidate_count_before": 1,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 1,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history_committed",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1891/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1871/490",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "assignment": {
+              "audit_brier": "418005119/1073331675",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": true,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": true,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 34,
+                  "LOST": 8,
+                  "RECOVERY": 6
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 43,
+                  "LOST": 5
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 48,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 2,
+              "module_id": 1,
+              "reason": "reuse_all_query_actions",
+              "reused": true
+            },
+            "audit_observations": 48,
+            "base_source": "module_history_committed",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "3683/970",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "21/100",
+                "policy_correct": false,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "3583/970",
+                "set_action_agreement": false
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "assignment": {
+              "audit_brier": "116873963/282386412",
+              "candidate_checks": [
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": true
+                  },
+                  "all_match": false,
+                  "module_id": 0
+                },
+                {
+                  "agreement": {
+                    "goal": false,
+                    "reward": true,
+                    "risk": false
+                  },
+                  "all_match": false,
+                  "module_id": 1
+                }
+              ],
+              "candidate_count_before": 2,
+              "history_counts": {
+                "DETOUR_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0,
+                  "RECOVERY": 0
+                },
+                "RECOVERY_RETRY": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                },
+                "SHORT_PASS": {
+                  "DELIVERY": 0,
+                  "LOST": 0
+                }
+              },
+              "module_count_after": 3,
+              "module_id": 2,
+              "reason": "abstain_local_split",
+              "reused": false
+            },
+            "audit_observations": 48,
+            "base_source": "module_history_committed",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "127811/48510",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "4381/1980",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ],
+        "RESET": [
+          {
+            "audit_observations": 48,
+            "base_source": "none",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1691/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "2207/660",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 1,
+            "observations": 144,
+            "phase": "A0",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "base_source": "none",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "193/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1891/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "191/50",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1871/490",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 2,
+            "observations": 288,
+            "phase": "B",
+            "weather_for_audit": "wet"
+          },
+          {
+            "audit_observations": 48,
+            "base_source": "none",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "SHORT"
+                ],
+                "exact_optimal_value": "7/2",
+                "exact_policy": "SHORT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1811/490",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "331/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "21/100",
+                "policy_correct": false,
+                "predicted_optimal_actions": [
+                  "SHORT"
+                ],
+                "predicted_policy": "SHORT",
+                "predicted_value": "1711/490",
+                "set_action_agreement": false
+              }
+            },
+            "modules": 2,
+            "observations": 432,
+            "phase": "A_prime",
+            "weather_for_audit": "normal"
+          },
+          {
+            "audit_observations": 48,
+            "base_source": "none",
+            "checkpoint": "shared_fit_prefix",
+            "kappa": "0",
+            "metrics": {
+              "goal": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "exact_optimal_value": "6547/2000",
+                "exact_policy": "DETOUR_RETRY",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETRY"
+                ],
+                "predicted_policy": "DETOUR_RETRY",
+                "predicted_value": "127811/48510",
+                "set_action_agreement": true
+              },
+              "reward": {
+                "exact_optimal_actions": [
+                  "WAIT"
+                ],
+                "exact_optimal_value": "0",
+                "exact_policy": "WAIT",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "WAIT"
+                ],
+                "predicted_policy": "WAIT",
+                "predicted_value": "0",
+                "set_action_agreement": true
+              },
+              "risk": {
+                "exact_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "exact_optimal_value": "311/100",
+                "exact_policy": "DETOUR_RETURN",
+                "exact_value_regret": "0",
+                "policy_correct": true,
+                "predicted_optimal_actions": [
+                  "DETOUR_RETURN"
+                ],
+                "predicted_policy": "DETOUR_RETURN",
+                "predicted_value": "4381/1980",
+                "set_action_agreement": true
+              }
+            },
+            "modules": 3,
+            "observations": 576,
+            "phase": "C",
+            "weather_for_audit": "blocked"
+          }
+        ]
+      },
+      "seed": 265404
+    }
+  ],
+  "schema": "acfqp.persistent_consequence_library.v269",
+  "scientific_gate": "NOT_A_FORMAL_GATE",
+  "settings": {
+    "assignment_rule": "LOCKED and FACTORIZED arms use V266 marginal action-agreement assignment",
+    "audit_per_operator": 16,
+    "fit_per_operator": 48,
+    "kappa": "48",
+    "queries": {
+      "goal": [
+        "1",
+        "0",
+        "4"
+      ],
+      "reward": [
+        "1",
+        "0",
+        "0"
+      ],
+      "risk": [
+        "1",
+        "4",
+        "4"
+      ]
+    },
+    "seeds": [
+      265401,
+      265402,
+      265403,
+      265404
+    ]
+  },
+  "status": "DEVELOPMENT_COMPLETE",
+  "summary": {
+    "FACTORIZED_MODULE": {
+      "exact_regrets": [
+        "0",
+        "0",
+        "21/100",
+        "21/100"
+      ],
+      "mean_exact_regret": "21/200",
+      "mean_policy_correct": 11.5,
+      "mean_set_action_agreement": 0.9583333333333334,
+      "policy_correct_counts": [
+        12,
+        12,
+        11,
+        11
+      ],
+      "set_action_agreement_counts": [
+        12,
+        12,
+        11,
+        11
+      ]
+    },
+    "GLOBAL_SHRINK": {
+      "exact_regrets": [
+        "21/100",
+        "0",
+        "1967/2000",
+        "1967/2000"
+      ],
+      "mean_exact_regret": "2177/4000",
+      "mean_policy_correct": 10.75,
+      "mean_set_action_agreement": 0.8958333333333334,
+      "policy_correct_counts": [
+        11,
+        12,
+        10,
+        10
+      ],
+      "set_action_agreement_counts": [
+        11,
+        12,
+        10,
+        10
+      ]
+    },
+    "LOCKED_MARGINAL": {
+      "exact_regrets": [
+        "0",
+        "0",
+        "21/100",
+        "21/100"
+      ],
+      "mean_exact_regret": "21/200",
+      "mean_policy_correct": 11.5,
+      "mean_set_action_agreement": 0.9583333333333334,
+      "policy_correct_counts": [
+        12,
+        12,
+        11,
+        11
+      ],
+      "set_action_agreement_counts": [
+        12,
+        12,
+        11,
+        11
+      ]
+    },
+    "RESET": {
+      "exact_regrets": [
+        "0",
+        "0",
+        "21/100",
+        "21/100"
+      ],
+      "mean_exact_regret": "21/200",
+      "mean_policy_correct": 11.5,
+      "mean_set_action_agreement": 0.9583333333333334,
+      "policy_correct_counts": [
+        12,
+        12,
+        11,
+        11
+      ],
+      "set_action_agreement_counts": [
+        12,
+        12,
+        11,
+        11
+      ]
+    }
+  }
+}

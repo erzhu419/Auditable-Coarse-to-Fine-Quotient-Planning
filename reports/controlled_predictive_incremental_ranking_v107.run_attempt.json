@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "scripts/run_controlled_predictive_incremental_ranking_v107.py",
+    "--output",
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_incremental_ranking_v107"
+  ],
+  "status": "complete",
+  "started_unix": 1789348045.7103808,
+  "returncode": 0,
+  "seconds": 6.8903466949705034,
+  "stderr_bytes": 0
+}

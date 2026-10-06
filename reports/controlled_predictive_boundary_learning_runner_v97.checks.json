@@ -1,0 +1,21 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_boundary_learning_runner_v97.py",
+      "test_failures": 0,
+      "scope": "Runner integration with mocked extraction, models and games; no actual learning or simulation.",
+      "mock_calls": {
+        "batch_loads": 2,
+        "weighting_calls": 2,
+        "fit_model_calls": 2,
+        "diagnostic_calls": 2,
+        "natural_games": 18,
+        "evaluation_game_calls": 18,
+        "reference_roots": 2
+      },
+      "ground_calls": 0,
+      "tree_fits": 0,
+      "main_campaign_calls": 0
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "fixture_work": {
+        "fixture_payload_files_written": 8,
+        "model_root_scores": 14,
+        "neural_candidate_predictions": 70,
+        "neural_hidden_activations": 700
+      },
+      "new_environment_transitions": 0,
+      "new_synthetic_transitions": 0,
+      "neural_model_fits": 0,
+      "actual_source_files_read": 0,
+      "scope": "synthetic source rows and manually specified scorer payloads"
+    }
+  ]
+}

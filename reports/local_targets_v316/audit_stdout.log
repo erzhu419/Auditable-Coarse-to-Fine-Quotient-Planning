@@ -1,0 +1,114 @@
+{
+  "status": "PASS",
+  "independent_valid": true,
+  "lifecycles": 16,
+  "fixed_source_parents": 4,
+  "fresh_source_audit_status": "PASS",
+  "fresh_source_provenance_checked": true,
+  "canonical_rows": 82304,
+  "physical_initial_acquisitions": 32,
+  "physical_post_acquisitions": 64,
+  "literal_actor_action_probes": 1024,
+  "reconstructed_head_versions": 160,
+  "immutable_bank_beliefs_valid": true,
+  "fixed_first_collector_valid": true,
+  "every_native_td_target_checked": true,
+  "saved_td_fit_rows": 3305378,
+  "trained_td_targets": 3303524,
+  "identical_factual_states_and_writes_valid": true,
+  "new_evaluation_games": 6144,
+  "new_training_raw_tiles": 8409055,
+  "new_target_cpu_seconds": 816.228523966,
+  "economic_source_and_target_cpu_seconds": 2518.066478023,
+  "primary_utility": {
+    "mean": 0.07233619689941406,
+    "ci95": [
+      -0.18985934257507325,
+      0.3834561347961423
+    ],
+    "lifecycle_deltas": {
+      "0": -0.48333740234375,
+      "1": 0.562408447265625,
+      "2": -0.846435546875,
+      "3": 0.1444091796875,
+      "4": 0.137939453125,
+      "5": 0.551422119140625,
+      "6": -0.485809326171875,
+      "7": 0.507110595703125,
+      "8": 2.0460205078125,
+      "9": -0.036224365234375,
+      "10": 0.08984375,
+      "11": 0.145416259765625,
+      "12": -0.38372802734375,
+      "13": -0.39825439453125,
+      "14": -0.165008544921875,
+      "15": -0.2283935546875
+    },
+    "improved_equal_worse": [
+      8,
+      0,
+      8
+    ],
+    "adverse_lifecycles": [
+      0,
+      2,
+      6,
+      9,
+      12,
+      13,
+      14,
+      15
+    ],
+    "parent_mean_deltas": {
+      "0": 0.3292236328125,
+      "1": 0.16983795166015625,
+      "2": -0.3518524169921875,
+      "3": 0.1421356201171875
+    },
+    "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS"
+  },
+  "primary_self_improvement_supported": false,
+  "primary_self_improvement_status": "UNRESOLVED",
+  "target_intervention_supported": true,
+  "target_intervention_status": "SUPPORTED_GAIN",
+  "final_net_gain_supported": true,
+  "final_net_gain_status": "SUPPORTED_GAIN",
+  "mc_self_improvement_supported": false,
+  "mc_self_improvement_status": "SUPPORTED_LOSS",
+  "final_task_improvement_supported": {
+    "A": false,
+    "B": true
+  },
+  "final_task_improvement_status": {
+    "A": "UNRESOLVED",
+    "B": "SUPPORTED_GAIN"
+  },
+  "task_retention_status": {
+    "A": "UNRESOLVED",
+    "B": "SUPPORTED_NONDECREASE"
+  },
+  "task_retention_supported": false,
+  "retained_improvement_supported": false,
+  "target_mechanism_supported": false,
+  "checkpoint_status": {
+    "ROUND1_A": {
+      "MC_LOCAL": "UNRESOLVED",
+      "TD_LOCAL": "UNRESOLVED"
+    },
+    "ROUND1_B": {
+      "MC_LOCAL": "SUPPORTED_LOSS",
+      "TD_LOCAL": "UNRESOLVED"
+    },
+    "ROUND2_A": {
+      "MC_LOCAL": "UNRESOLVED",
+      "TD_LOCAL": "UNRESOLVED"
+    },
+    "ROUND2_B": {
+      "MC_LOCAL": "SUPPORTED_LOSS",
+      "TD_LOCAL": "SUPPORTED_NONDECREASE"
+    }
+  },
+  "method": "One independent replay of every new initial and fixed-FIRST continuous raw tape with literal seeded cell/rank physics and complete natural labels. Actual sparse v0/v1/v2 lineage reconstruction, all declared first/last candidate H2 action probes, every native saved TD reward/WIN/kind target from its own frozen batch-start head and actual recorded successor, same factual address normalization and writes, paired own-FIRST/target-intervention/net-SOURCE/task-retention endpoints and complete actual cost closure.",
+  "limitations": "Fresh-target-training confirmation of the unchanged V314 dual-target method, conditional on four already audited V312 SOURCE parents and inherited deterministic dynamics. Supplied task/round boundaries address observed initial banks. All raw physics and saved TD targets are checked; actor choices are recomputed at the predeclared first/last probes. Complete fits, evaluation actions and bootstrap draws are not rerun. One-step factual targets do not establish the counterfactual H2 optimal operator. Prior SOURCE audit is read without replay; historical dynamics CPU remains unknown.",
+  "errors": []
+}

@@ -1,0 +1,17 @@
+{"event": "h1_control_complete", "life": 2, "query": "risk1"}
+{"event": "diagnostics_complete", "life": 2, "query": "risk1", "windows": 250}
+{"event": "h1_control_complete", "life": 0, "query": "risk1"}
+{"event": "diagnostics_complete", "life": 0, "query": "risk1", "windows": 262}
+{"event": "h1_control_complete", "life": 1, "query": "risk1"}
+{"event": "diagnostics_complete", "life": 1, "query": "risk1", "windows": 260}
+{"event": "h1_control_complete", "life": 3, "query": "risk1"}
+{"event": "diagnostics_complete", "life": 3, "query": "risk1", "windows": 235}
+{"event": "h1_control_complete", "life": 2, "query": "risk8"}
+{"event": "diagnostics_complete", "life": 2, "query": "risk8", "windows": 227}
+{"event": "h1_control_complete", "life": 0, "query": "risk8"}
+{"event": "diagnostics_complete", "life": 0, "query": "risk8", "windows": 250}
+{"event": "h1_control_complete", "life": 1, "query": "risk8"}
+{"event": "diagnostics_complete", "life": 1, "query": "risk8", "windows": 248}
+{"event": "h1_control_complete", "life": 3, "query": "risk8"}
+{"event": "diagnostics_complete", "life": 3, "query": "risk8", "windows": 241}
+{"status": "complete", "seconds": 9.8013898600002}

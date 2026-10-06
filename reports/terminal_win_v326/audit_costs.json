@@ -1,0 +1,10 @@
+{
+  "schema": "acfqp.terminal_win_full_execution_cost.v326",
+  "component_new_experiment_cpu_seconds": 4020.79575864,
+  "full_execution_process_tree_cpu_seconds": 4023.548444,
+  "final_serialization_and_shutdown_cpu_seconds": 2.752685360000214,
+  "full_economic_source_and_experiment_cpu_seconds": 5725.386398057,
+  "independent_audit_process_tree_cpu_seconds": 1384.7947139999999,
+  "independent_audit_monotonic_wall_seconds": 372.73577321201446,
+  "scope": "Successful V312 SOURCE inherited once. Full new execution includes fresh target acquisition, shared first spawns, terminal suffixes, equal-update replay fits and final shutdown. Previous target experiments excluded; audits separate; historical dynamics and failed-attempt CPU unknown."
+}

@@ -1,0 +1,18 @@
+{
+  "unique_tests": 8,
+  "failures": 0,
+  "new_environment_transitions": 0,
+  "td_updates": 0,
+  "attempts": [
+    {
+      "passed": 8,
+      "seconds": 0.29
+    },
+    {
+      "passed": 1,
+      "seconds": 0.25,
+      "note": "evaluation-copy view costs included; updated targeted accounting assertion"
+    }
+  ],
+  "scope": "Scripted synthetic engine and synthetic value object; no environment or native TD calls."
+}

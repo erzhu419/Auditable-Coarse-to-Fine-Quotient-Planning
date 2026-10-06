@@ -1,0 +1,321 @@
+{
+  "valid": true,
+  "complete": true,
+  "checks": [
+    {
+      "name": "complete_limited_source_code_manifest",
+      "passed": true
+    },
+    {
+      "name": "fixed_public_cases_and_private_worlds",
+      "passed": true
+    },
+    {
+      "name": "fresh_full_and_first128_source_complete",
+      "passed": true
+    },
+    {
+      "name": "fresh_full_and_first128_source_seeds",
+      "passed": true
+    },
+    {
+      "name": "fresh_full_and_first128_source_increments",
+      "passed": true
+    },
+    {
+      "name": "fresh_full_and_first128_source_budgets",
+      "passed": true
+    },
+    {
+      "name": "full_and_low_libraries_from_actual_shared_source_prefixes",
+      "passed": true
+    },
+    {
+      "name": "complete_unique_four_arm_fresh_targets",
+      "passed": true
+    },
+    {
+      "name": "four_arm_shared_fresh_target_prefixes",
+      "passed": true
+    },
+    {
+      "name": "life_0_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_0_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_0_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_0_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_0_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_1_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_1_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_1_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_1_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_1_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_2_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_2_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_2_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_2_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_2_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_3_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_3_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_3_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_3_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_3_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_4_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_4_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_4_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_4_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_4_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_5_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_5_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_5_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_5_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_5_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_6_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_6_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_6_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_6_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_6_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_7_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_7_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_7_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_7_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_7_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_8_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_8_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_8_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_8_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_8_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_9_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_9_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_9_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_9_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_9_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_10_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_10_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_10_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_10_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_10_independent_state",
+      "passed": true
+    },
+    {
+      "name": "life_11_independent_plans",
+      "passed": true
+    },
+    {
+      "name": "life_11_independent_choices",
+      "passed": true
+    },
+    {
+      "name": "life_11_independent_counts",
+      "passed": true
+    },
+    {
+      "name": "life_11_independent_queries",
+      "passed": true
+    },
+    {
+      "name": "life_11_independent_state",
+      "passed": true
+    },
+    {
+      "name": "delayed_true_history_queries_libraries_and_parameter_commits",
+      "passed": true
+    },
+    {
+      "name": "source_budget_statistics_strong_baselines_and_frozen_gates",
+      "passed": true
+    },
+    {
+      "name": "full_low_source_fees_separate_from_fresh_targets",
+      "passed": true
+    },
+    {
+      "name": "actual_fresh_source_generation_costs",
+      "passed": true
+    },
+    {
+      "name": "actual_target_sample_reset_draw_and_planning_costs",
+      "passed": true
+    },
+    {
+      "name": "full_union_retention_unique_parameter_memory_and_preparations",
+      "passed": true
+    },
+    {
+      "name": "actual_source_budget_bootstrap_costs",
+      "passed": true
+    },
+    {
+      "name": "oracle_scoring_after_all_decisions",
+      "passed": true
+    }
+  ],
+  "costs": {
+    "regenerated_consumed_samples": 151040,
+    "optimizer_pure_checks": 74452,
+    "mixture_components": 505221,
+    "optimizer_pair_checks": 111678
+  },
+  "seconds": 35.94639791100053
+}

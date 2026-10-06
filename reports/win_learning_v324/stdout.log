@@ -1,0 +1,97 @@
+{"event": "win_learning_initial_complete", "lifecycle": 1, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 2, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 3, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 0, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 1, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 2, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 0, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 3, "task": "B"}
+{"event": "win_learning_round_complete", "lifecycle": 1, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 2, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 3, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 0, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 1, "task": "B", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 2, "task": "B", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 3, "task": "B", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 0, "task": "B", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 2, "task": "A", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 3, "task": "A", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 1, "task": "A", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 0, "task": "A", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 2, "task": "B", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 3, "task": "B", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 1, "task": "B", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 0, "task": "B", "round": 2}
+{"event": "win_learning_initial_complete", "lifecycle": 6, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 7, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 5, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 4, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 6, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 5, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 4, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 7, "task": "B"}
+{"event": "win_learning_round_complete", "lifecycle": 6, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 4, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 5, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 7, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 6, "task": "B", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 4, "task": "B", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 5, "task": "B", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 7, "task": "B", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 6, "task": "A", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 4, "task": "A", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 5, "task": "A", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 7, "task": "A", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 4, "task": "B", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 5, "task": "B", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 6, "task": "B", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 7, "task": "B", "round": 2}
+{"event": "win_learning_initial_complete", "lifecycle": 8, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 10, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 9, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 11, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 8, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 10, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 9, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 11, "task": "B"}
+{"event": "win_learning_round_complete", "lifecycle": 10, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 9, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 8, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 11, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 10, "task": "B", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 8, "task": "B", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 9, "task": "B", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 11, "task": "B", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 10, "task": "A", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 9, "task": "A", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 8, "task": "A", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 11, "task": "A", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 10, "task": "B", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 8, "task": "B", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 9, "task": "B", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 11, "task": "B", "round": 2}
+{"event": "win_learning_initial_complete", "lifecycle": 12, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 14, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 15, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 13, "task": "A"}
+{"event": "win_learning_initial_complete", "lifecycle": 12, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 14, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 15, "task": "B"}
+{"event": "win_learning_initial_complete", "lifecycle": 13, "task": "B"}
+{"event": "win_learning_round_complete", "lifecycle": 12, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 15, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 14, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 13, "task": "A", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 12, "task": "B", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 14, "task": "B", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 15, "task": "B", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 13, "task": "B", "round": 1}
+{"event": "win_learning_round_complete", "lifecycle": 12, "task": "A", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 14, "task": "A", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 15, "task": "A", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 13, "task": "A", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 14, "task": "B", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 13, "task": "B", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 12, "task": "B", "round": 2}
+{"event": "win_learning_round_complete", "lifecycle": 15, "task": "B", "round": 2}
+{"event": "win_learning_complete", "status": "EXPERIMENT_COMPLETE", "primary": "UNRESOLVED", "retained": false}

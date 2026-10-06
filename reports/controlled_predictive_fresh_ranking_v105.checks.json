@@ -1,0 +1,20 @@
+{
+  "attempts": [
+    {
+      "failed_tests": 0,
+      "development_work": {
+        "neural_model_fits": 18,
+        "optimizer_steps": 148,
+        "v105_neural_model_fits": 6,
+        "v105_optimizer_steps": 52,
+        "v103_oracle_neural_model_fits": 12,
+        "v103_oracle_optimizer_steps": 96
+      },
+      "production_neural_model_fits": 0,
+      "production_optimizer_steps": 0,
+      "environment_transitions": 0,
+      "model_transitions": 0,
+      "scope": "Synthetic short-step models only; V103 three-family oracle runs use eight optimizer steps."
+    }
+  ]
+}

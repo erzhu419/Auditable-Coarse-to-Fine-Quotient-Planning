@@ -1,0 +1,14 @@
+{
+  "attempts": [
+    {
+      "tests": 6,
+      "failures": 0,
+      "seconds": 0.030303948995424435,
+      "environment_samples": 0,
+      "environment_random_draws": 0,
+      "native_model_calls": 0,
+      "model_updates": 0,
+      "scope": "Scripted choices and retained transitions; first feature disagreement, fixed slots and aliases"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "acfqp.lifelong_experience.development_checks.v77",
+  "attempts": [
+    {
+      "command": "PYTHONPATH=src .venv-lmta-v42/bin/python -m pytest -q -s tests/test_controlled_predictive_lifelong_experience_v77.py",
+      "exit_code": 0,
+      "tests_passed": 3,
+      "tests_failed": 0,
+      "pytest_seconds": 0.24,
+      "command_seconds": 0.622914482,
+      "scope": "One sampled natural-game transition and one exact support comparison; synthetic observed trajectories test reward/event boundaries and cutoff omission.",
+      "work": {
+        "sampled_episode_calls": 1,
+        "sampled_transitions": 1,
+        "step_v1": 1,
+        "enumerated_teacher_outcomes": 28,
+        "state_from_board_v1": 33,
+        "swipe_board_v1": 146
+      },
+      "ground_count_scope": "All calls during the three tests, including calls made internally by the single exact-support comparison.",
+      "main_experiment_calls": 0,
+      "reruns": 0
+    }
+  ]
+}

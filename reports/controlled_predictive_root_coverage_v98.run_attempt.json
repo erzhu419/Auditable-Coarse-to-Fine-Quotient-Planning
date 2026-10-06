@@ -1,0 +1,15 @@
+{
+  "status": "complete",
+  "command": [
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "-u",
+    "scripts/run_controlled_predictive_root_coverage_v98.py",
+    "--output",
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_root_coverage_v98"
+  ],
+  "cwd": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration",
+  "attempt": 1,
+  "exit_code": 0,
+  "wall_seconds": 1012.0749675600091,
+  "stderr_bytes": 0
+}

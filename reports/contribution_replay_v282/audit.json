@@ -1,0 +1,97 @@
+{
+  "status": "PASS",
+  "independent_valid": true,
+  "source_pairs": 128,
+  "beforecommit_recommendations": 36864,
+  "committed_events": 26315,
+  "changed_prediction_rows": 3530,
+  "new_environment_observations": 0,
+  "map_recommendation_and_regret_matches": 36864,
+  "map_phase_totals_matched": 384,
+  "map_mean_recommendation_regret": "2517947/1280000",
+  "contributions": {
+    "source_factor_transfer": {
+      "mean_delta": "-396277/51200",
+      "sources_improved_equal_worse": [
+        126,
+        0,
+        2
+      ],
+      "decisions": {
+        "improved": 2319,
+        "equal": 34190,
+        "worse": 355,
+        "changed_policy": 2674
+      },
+      "one_improved_source": {
+        "source_seed": 28040100,
+        "target_seed": 28090100,
+        "delta": "-6381/2000"
+      },
+      "one_adverse_source": {
+        "source_seed": 28044700,
+        "target_seed": 28094700,
+        "delta": "5601/1000"
+      }
+    },
+    "parameter_update": {
+      "mean_delta": "-4067083/640000",
+      "sources_improved_equal_worse": [
+        13,
+        110,
+        5
+      ],
+      "decisions": {
+        "improved": 756,
+        "equal": 36016,
+        "worse": 92,
+        "changed_policy": 848
+      },
+      "one_improved_source": {
+        "source_seed": 28040400,
+        "target_seed": 28090400,
+        "delta": "-166961/10000"
+      },
+      "one_adverse_source": {
+        "source_seed": 28045100,
+        "target_seed": 28095100,
+        "delta": "7381/1000"
+      }
+    },
+    "structure_update": {
+      "mean_delta": "-213583/1280000",
+      "sources_improved_equal_worse": [
+        7,
+        115,
+        6
+      ],
+      "decisions": {
+        "improved": 163,
+        "equal": 36483,
+        "worse": 218,
+        "changed_policy": 381
+      },
+      "one_improved_source": {
+        "source_seed": 28041300,
+        "target_seed": 28091300,
+        "delta": "-5301/2500"
+      },
+      "one_adverse_source": {
+        "source_seed": 28041000,
+        "target_seed": 28091000,
+        "delta": "55879/2500"
+      }
+    }
+  },
+  "costs": {
+    "actual_v280_arms_checked": 5,
+    "physical_source_observations": 122880,
+    "shared_natural_warmup_observations": 14543,
+    "parent_checkpoint_loads": 4,
+    "planning_lifecycles_with_setup_checked": 16,
+    "natural_trace_bytes": 44967999
+  },
+  "method": "Independent literal laws, exact Fraction posterior/argmax/regret and beforecommit prefix replay; all changed rows, source/phase aggregates and actual cost fields compared. No V280/V281/V282 producer imports or new target feedback.",
+  "scope": "Fixed-history recommendation diagnostics; source-plus-factor contribution is joint. Natural planning contrast is conditional on the same four frozen parents. Detailed costs and whole-run timing are separate views and are not added together.",
+  "errors": []
+}

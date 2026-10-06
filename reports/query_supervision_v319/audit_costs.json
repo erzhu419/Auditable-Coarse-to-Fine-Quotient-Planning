@@ -1,0 +1,14 @@
+{
+  "schema": "acfqp.query_supervision_full_execution_cost.v319",
+  "created_utc": "2026-10-06T05:17:42.738388+00:00",
+  "execution_receipt": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/query_supervision_v319/execution.json",
+  "original_audit": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/query_supervision_v319/audit.json",
+  "component_new_experiment_cpu_seconds": 442.12110789999997,
+  "full_execution_process_tree_cpu_seconds": 445.87827799999997,
+  "final_serialization_and_shutdown_cpu_seconds": 3.757170099999996,
+  "inherited_successful_source_and_v317_cpu_seconds": 2567.0898184679995,
+  "full_economic_source_v317_and_experiment_cpu_seconds": 3012.9680964679997,
+  "independent_audit_process_tree_cpu_seconds": 184.102707,
+  "independent_audit_monotonic_wall_seconds": 197.5730445460067,
+  "scope": "Authoritative successful-run process CPU includes final serialization and shutdown. Audit CPU is separate. Original audit and scientific receipts unchanged; historical dynamics and archived V317 failed-attempt CPU remain unknown."
+}

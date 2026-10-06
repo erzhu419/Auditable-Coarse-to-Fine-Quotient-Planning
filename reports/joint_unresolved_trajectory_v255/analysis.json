@@ -1,0 +1,480 @@
+{
+  "valid": true,
+  "complete": true,
+  "records": 360,
+  "public_pairs": 180,
+  "intermediate_records": 2460,
+  "life_arm_jobs": 6,
+  "complete_rounds": 36026,
+  "retained_direct_comparisons": 14760,
+  "unique_actual_prefix_evidence": 1956,
+  "independently_evaluated_direct_comparisons": 11736,
+  "exact_prefix_evidence_reuses": 504,
+  "physical_observations": 78320,
+  "physical_source_samples": 27648,
+  "physical_acquisition_samples": 50672,
+  "methods": {
+    "DIRECT_RR": {
+      "checkpoint_groups": {
+        "SOURCE": {
+          "records": 36,
+          "query_ready": 20,
+          "certified_by_query": {
+            "reward": 36,
+            "goal": 24,
+            "risk": 20
+          }
+        },
+        "SOURCE_PLUS_3072": {
+          "records": 36,
+          "query_ready": 24,
+          "certified_by_query": {
+            "reward": 36,
+            "goal": 24,
+            "risk": 24
+          }
+        },
+        "FULL_CAP": {
+          "records": 36,
+          "query_ready": 28,
+          "certified_by_query": {
+            "reward": 36,
+            "goal": 30,
+            "risk": 32
+          }
+        }
+      },
+      "terminal": {
+        "records": 72,
+        "query_ready": 56,
+        "certified_by_query": {
+          "reward": 72,
+          "goal": 59,
+          "risk": 64
+        }
+      },
+      "false_public_certificates": 0,
+      "false_intermediate_certificates": 0,
+      "total_samples": 48112,
+      "source_samples": 13824,
+      "acquisition_samples": 34288,
+      "false_certificates": 0
+    },
+    "DIRECT_JOINT_UNRESOLVED": {
+      "checkpoint_groups": {
+        "SOURCE": {
+          "records": 36,
+          "query_ready": 20,
+          "certified_by_query": {
+            "reward": 36,
+            "goal": 24,
+            "risk": 20
+          }
+        },
+        "SOURCE_PLUS_3072": {
+          "records": 36,
+          "query_ready": 24,
+          "certified_by_query": {
+            "reward": 36,
+            "goal": 26,
+            "risk": 32
+          }
+        },
+        "FULL_CAP": {
+          "records": 36,
+          "query_ready": 36,
+          "certified_by_query": {
+            "reward": 36,
+            "goal": 36,
+            "risk": 36
+          }
+        }
+      },
+      "terminal": {
+        "records": 72,
+        "query_ready": 72,
+        "certified_by_query": {
+          "reward": 72,
+          "goal": 72,
+          "risk": 72
+        }
+      },
+      "false_public_certificates": 0,
+      "false_intermediate_certificates": 0,
+      "total_samples": 30208,
+      "source_samples": 13824,
+      "acquisition_samples": 16384,
+      "false_certificates": 0
+    }
+  },
+  "terminal_paired": {
+    "query_ready": {
+      "gains": 16,
+      "losses": 0,
+      "unchanged": 56,
+      "changes": [
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 2,
+          "index": 58,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 2,
+          "index": 60,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 1,
+          "index": 63,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 2,
+          "index": 64,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 0,
+          "index": 65,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 1,
+          "index": 66,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 1,
+          "index": 72,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 2,
+          "index": 75,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 1,
+          "identity": 2,
+          "cost_index": 2,
+          "index": 56,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 1,
+          "identity": 2,
+          "cost_index": 3,
+          "index": 58,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 1,
+          "identity": 2,
+          "cost_index": 0,
+          "index": 61,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 1,
+          "identity": 2,
+          "cost_index": 2,
+          "index": 63,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 1,
+          "identity": 2,
+          "cost_index": 0,
+          "index": 66,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 1,
+          "identity": 2,
+          "cost_index": 0,
+          "index": 67,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 1,
+          "identity": 2,
+          "cost_index": 3,
+          "index": 70,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 1,
+          "identity": 2,
+          "cost_index": 2,
+          "index": 73,
+          "before": false,
+          "after": true
+        }
+      ]
+    },
+    "reward": {
+      "gains": 0,
+      "losses": 0,
+      "unchanged": 72,
+      "changes": []
+    },
+    "goal": {
+      "gains": 13,
+      "losses": 0,
+      "unchanged": 59,
+      "changes": [
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 2,
+          "index": 58,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 2,
+          "index": 60,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 2,
+          "index": 64,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 0,
+          "index": 65,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 2,
+          "index": 75,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 1,
+          "identity": 2,
+          "cost_index": 2,
+          "index": 56,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 1,
+          "identity": 2,
+          "cost_index": 3,
+          "index": 58,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 1,
+          "identity": 2,
+          "cost_index": 0,
+          "index": 61,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 1,
+          "identity": 2,
+          "cost_index": 2,
+          "index": 63,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 1,
+          "identity": 2,
+          "cost_index": 0,
+          "index": 66,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 1,
+          "identity": 2,
+          "cost_index": 0,
+          "index": 67,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 1,
+          "identity": 2,
+          "cost_index": 3,
+          "index": 70,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 1,
+          "identity": 2,
+          "cost_index": 2,
+          "index": 73,
+          "before": false,
+          "after": true
+        }
+      ]
+    },
+    "risk": {
+      "gains": 8,
+      "losses": 0,
+      "unchanged": 64,
+      "changes": [
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 2,
+          "index": 58,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 2,
+          "index": 60,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 1,
+          "index": 63,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 2,
+          "index": 64,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 0,
+          "index": 65,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 1,
+          "index": 66,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 1,
+          "index": 72,
+          "before": false,
+          "after": true
+        },
+        {
+          "life": 0,
+          "identity": 1,
+          "cost_index": 2,
+          "index": 75,
+          "before": false,
+          "after": true
+        }
+      ]
+    }
+  },
+  "positive_qualification_signal": true,
+  "qualification_only": true,
+  "scientific_gate_changed": false,
+  "checks": {
+    "literal_frozen_filtered_RR_protocol_all_current_checks_event_scope_and_truth_freeze": 1,
+    "all360_public_case_projections_literal_roster_frozen_before_sampling": 1,
+    "captured_all_declared_new_sources_tests_and_frozen_spec": 1,
+    "captured_source_exact_bytes_unchanged": 76,
+    "one_source_and_all_batch_end_check_frames_retained": 6,
+    "own_actual_primitive_seed_continuous_offset_filtered_cursor_and_conditional_path": 78320,
+    "complete_conditional_round_actual_primitive_refs_no_tail_or_offpath_R": 36026,
+    "literal_batch_frozen_current_eligibility_clamp_cursor_and_actual_type_fees": 205,
+    "all12_current_cost_type_checks_in_literal_order": 205,
+    "current_check_own_native_prefix_joint_rounds_tails_fees_and_shared_choices": 2460,
+    "direct_original_threshold_and_analytic_reward": 1956,
+    "direct_fixed_ordered_streams_at_shared_joint_mean_choice": 3912,
+    "complete_conditional_round_score_statistics_without_row_minimum": 11736,
+    "frozen_conditional_score_support_null_and_event_threshold": 11736,
+    "direct_outward_lower_log_product_and_threshold": 11736,
+    "direct_exact_certification_status": 11736,
+    "direct_three_alternatives_AND": 3912,
+    "direct_all_queries_AND_and_comparison_records": 1956,
+    "current_three_query_ready_not_latched_from_earlier_check": 2460,
+    "actual_check_point_and_direct_proof_CPU_nonnegative": 2460,
+    "actual_current_ready_by_type_all12_AND_and_paid_check_meta": 205,
+    "no_acquisition_after_all12_current_ready_or_full_cap": 199,
+    "stop_at_first_current_all12_ready_or_full_cap": 6,
+    "all_actual_primitives_rounds_source_and_stop_retained_once": 6,
+    "all60_public_projections_reference_own_actual_paid_check_without_new_evidence": 6,
+    "actual_final_native_joint_counts_complete_source_charge_and_current_stop": 6,
+    "own_arm_actual_controlled_draw_and_fixed_score_cache_work": 66,
+    "own_arm_original_direct_score_prefix_cache_size": 6,
+    "own_arm_normalizer_cache_statistics": 12,
+    "actual_intermediate_check_process_CPU": 12,
+    "actual_type_selection_native_update_CPU_and_observation_output_wall": 6,
+    "normalized_postfreeze_truth_queries_and_all_false_certificate_counts": 12,
+    "same_actual_prefix_cost_and_direction_reuses_exact_audited_direct_proof": 504,
+    "paired_sources_identical_potential_observations_both_arms_physically_charged": 3,
+    "independent_actual_fees_all_intermediate_errors_paired_gains_and_qualification_summary": 1,
+    "actual_parent_scoring_elapsed_and_six_worker_wall_costs_nonnegative": 1,
+    "all_public_and_intermediate_decision_incidents_scored_after_freeze": 1,
+    "physical_own_source_fees_and_total_primitive_caps": 1
+  },
+  "failures": [],
+  "elapsed_seconds": 386.03227353299735
+}

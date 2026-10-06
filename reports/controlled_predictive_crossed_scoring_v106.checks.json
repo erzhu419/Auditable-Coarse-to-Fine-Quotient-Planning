@@ -1,0 +1,27 @@
+{
+  "attempts": [
+    {
+      "failed_tests": 0,
+      "development_work": {
+        "fixture_neural_candidate_predictions": 640,
+        "fixture_neural_hidden_activations": 6400,
+        "scorer_model_payloads_loaded": 49,
+        "scorer_model_root_scores": 130,
+        "scorer_diagonal_model_root_scores": 34,
+        "scorer_neural_candidate_predictions": 650,
+        "scorer_neural_hidden_activations": 6440,
+        "scorer_neural_model_fits": 0,
+        "scorer_optimizer_steps": 0,
+        "scorer_new_environment_transitions": 0,
+        "scorer_new_synthetic_transitions": 0,
+        "scorer_model_prefix_trajectories": 0
+      },
+      "production_neural_candidate_predictions": 0,
+      "neural_model_fits": 0,
+      "optimizer_steps": 0,
+      "environment_transitions": 0,
+      "model_transitions": 0,
+      "scope": "Untrained synthetic frozen payloads and real neural scoring; no model fitting or sampling."
+    }
+  ]
+}

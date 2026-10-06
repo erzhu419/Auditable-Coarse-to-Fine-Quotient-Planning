@@ -1,0 +1,18 @@
+{
+  "attempts": [
+    {
+      "failures": 1,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "model_updates": 0,
+      "scope": "synthetic frozen curve, transition-budget, pause, TD targets and context-bank accounting"
+    },
+    {
+      "failures": 0,
+      "environment_samples": 0,
+      "model_samples": 0,
+      "model_updates": 0,
+      "scope": "synthetic frozen curve, transition-budget, pause, TD targets and context-bank accounting"
+    }
+  ]
+}

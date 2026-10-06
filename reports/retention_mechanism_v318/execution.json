@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "scripts/run_retention_mechanism_v318.py",
+    "--source-summary",
+    "reports/greedy_targets_v317/summary.json",
+    "--output",
+    "reports/retention_mechanism_v318"
+  ],
+  "cwd": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration",
+  "started_utc": "2026-10-06T04:29:29.603600+00:00",
+  "completed_utc": "2026-10-06T04:30:18.381772+00:00",
+  "exit_code": 0,
+  "process_tree_cpu_seconds": 175.790211,
+  "monotonic_wall_seconds": 54.065166427986696,
+  "summary_exists": true,
+  "scientific_status": "TERMINAL_PENDING_AUDIT"
+}

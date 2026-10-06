@@ -1,0 +1,21 @@
+...F...............                                                      [100%]
+=================================== FAILURES ===================================
+_ test_actual_native_b_ranks_follow_environment_draws_instead_of_model_probability _
+
+    def test_actual_native_b_ranks_follow_environment_draws_instead_of_model_probability():
+        leaf = small_leaf()
+        leaf.freeze()
+        engine = core.NativeValueStream(leaf, 29800003001, BUILD)
+        try:
+            receipt = engine.advance(leaf, 0, None, 1/258, .5, tile_budget=64)
+            draws = engine.common_draws(29800003001, 64)
+>           assert [s['rank'] for s in receipt['raw_spawns']] == [1+(draw[1]<.5) for draw in draws]
+E           assert [2, 2, 2, 2, 1, 2, ...] == [np.int64(1),...int64(1), ...]
+E             
+E             At index 0 diff: 2 != np.int64(1)
+E             Use -v to get more diff
+
+tests/test_stable_b_v298.py:101: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_stable_b_v298.py::test_actual_native_b_ranks_follow_environment_draws_instead_of_model_probability
+1 failed, 18 passed in 5.60s

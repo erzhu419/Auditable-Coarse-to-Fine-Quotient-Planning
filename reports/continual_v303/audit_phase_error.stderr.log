@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/verify_continual_v303.py", line 721, in <module>
+    main()
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/verify_continual_v303.py", line 713, in main
+    result = audit(directory)
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/verify_continual_v303.py", line 675, in audit
+    record,counts,censored = check_lifecycle(life,canonical)
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/verify_continual_v303.py", line 310, in check_lifecycle
+    n = check_acquisition(row,state); games = ds['games']; fit_games = games[:n]; heldout_games = games[n:]
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/verify_continual_v303.py", line 239, in check_acquisition
+    require(learned(ds['actor_memory_B_end']) == state['memory'].learned(), 'actual all-raw stage final actor memory')
+KeyError: 'actor_memory_B_end'

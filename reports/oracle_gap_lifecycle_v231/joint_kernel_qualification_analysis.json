@@ -1,0 +1,50 @@
+{
+  "valid": true,
+  "complete": true,
+  "old_countermodels": 47,
+  "classifications": {
+    "inside": 34,
+    "excluded": 13
+  },
+  "actual_chosen_countermodels": {
+    "excluded": 11
+  },
+  "true_kernels": 12,
+  "true_kernel_classifications": {
+    "inside": 12
+  },
+  "checks": {
+    "old_countermodels_independently_verified": 1,
+    "qualification_only": 1,
+    "proposed_event_allocation": 1,
+    "complete_prefix_constraint_roster": 59,
+    "fixed_operator_subset_and_threshold": 237,
+    "exact_product_likelihood_classification": 237,
+    "correct_snapshot_status": 59,
+    "correct_actual_terminal_policy_flag": 47,
+    "all_old_countermodels_classified_once": 1,
+    "true_kernel_coverage_flag": 12,
+    "all_selected_true_kernels_once": 1,
+    "classification_summary": 1,
+    "true_kernel_summary": 1
+  },
+  "expected": {
+    "old_countermodels_independently_verified": 1,
+    "qualification_only": 1,
+    "proposed_event_allocation": 1,
+    "complete_prefix_constraint_roster": 59,
+    "fixed_operator_subset_and_threshold": 237,
+    "exact_product_likelihood_classification": 237,
+    "correct_snapshot_status": 59,
+    "correct_actual_terminal_policy_flag": 47,
+    "all_old_countermodels_classified_once": 1,
+    "true_kernel_coverage_flag": 12,
+    "all_selected_true_kernels_once": 1,
+    "classification_summary": 1,
+    "true_kernel_summary": 1
+  },
+  "failures": {},
+  "new_observations": 0,
+  "query_certificate_obtained": false,
+  "seconds": 1.0546953000011854
+}

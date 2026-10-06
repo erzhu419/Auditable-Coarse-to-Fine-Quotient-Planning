@@ -1,0 +1,14 @@
+{
+  "attempts": [
+    {
+      "tests": 7,
+      "failures": 0,
+      "seconds": 0.02811553399078548,
+      "environment_samples": 0,
+      "environment_random_draws": 0,
+      "native_model_calls": 0,
+      "model_updates": 0,
+      "scope": "Mocked source replay, prequential timing, frozen snapshots, paired probes and H2 continuation"
+    }
+  ]
+}

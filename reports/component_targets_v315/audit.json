@@ -1,0 +1,298 @@
+{
+  "status": "PASS",
+  "independent_valid": true,
+  "lifecycles": 16,
+  "fixed_source_parents": 4,
+  "prior_v314_audit_status": "PASS",
+  "prior_raw_and_targets_replayed": false,
+  "immutable_component_links_valid": true,
+  "immutable_bank_probabilities_valid": true,
+  "reconstructed_head_instances": 96,
+  "sparse_version_files_read": 224,
+  "literal_initial_board_probes": 160,
+  "new_evaluation_games": 5120,
+  "new_training_raw_tiles": 0,
+  "new_fit_states": 0,
+  "new_parameter_writes": 0,
+  "mechanism_family_size": 5,
+  "family_interval_level": 0.99,
+  "new_evaluation_total_cpu_seconds": 185.41939561499998,
+  "economic_source_and_target_and_new_cpu_seconds": 2752.16069277,
+  "mechanism_family_status": {
+    "reward_given_MC_WIN": "SUPPORTED_POSITIVE",
+    "reward_given_TD_WIN": "SUPPORTED_POSITIVE",
+    "WIN_given_MC_reward": "UNRESOLVED",
+    "WIN_given_TD_reward": "UNRESOLVED",
+    "interaction": "UNRESOLVED"
+  },
+  "task_retention_status": {
+    "MC_MC": {
+      "A": "UNRESOLVED",
+      "B": "SUPPORTED_LOSS"
+    },
+    "TD_MC": {
+      "A": "SUPPORTED_NONDECREASE",
+      "B": "UNRESOLVED"
+    },
+    "MC_TD": {
+      "A": "UNRESOLVED",
+      "B": "SUPPORTED_LOSS"
+    },
+    "TD_TD": {
+      "A": "UNRESOLVED",
+      "B": "SUPPORTED_NONDECREASE"
+    }
+  },
+  "complete_game_endpoints": true,
+  "mechanism_contrasts": {
+    "reward_given_MC_WIN": {
+      "mean": 0.7471809387207031,
+      "lifecycle_deltas": {
+        "0": 0.812713623046875,
+        "1": -0.722930908203125,
+        "2": 0.589111328125,
+        "3": 1.239410400390625,
+        "4": 1.282440185546875,
+        "5": 1.2611083984375,
+        "6": 1.562286376953125,
+        "7": 0.511444091796875,
+        "8": -0.149688720703125,
+        "9": 1.55548095703125,
+        "10": 1.519989013671875,
+        "11": 0.93670654296875,
+        "12": 0.6724853515625,
+        "13": 0.3077392578125,
+        "14": 0.917877197265625,
+        "15": -0.341278076171875
+      },
+      "improved_equal_worse": [
+        13,
+        0,
+        3
+      ],
+      "adverse_lifecycles": [
+        1,
+        8,
+        15
+      ],
+      "parent_mean_deltas": {
+        "0": 0.6544876098632812,
+        "1": 0.6003494262695312,
+        "2": 1.1473159790039062,
+        "3": 0.5865707397460938
+      },
+      "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS_AND_REALIZED_V314_HEADS",
+      "ci95": [
+        0.4305108070373535,
+        1.0426835536956787
+      ],
+      "ci99": [
+        0.3239087772369385,
+        1.1197179031372073
+      ],
+      "family_status": "SUPPORTED_POSITIVE"
+    },
+    "reward_given_TD_WIN": {
+      "mean": 0.8445625305175781,
+      "lifecycle_deltas": {
+        "0": 0.9033203125,
+        "1": -0.19677734375,
+        "2": -0.71539306640625,
+        "3": 0.5565185546875,
+        "4": 2.67999267578125,
+        "5": 0.0140380859375,
+        "6": 1.165985107421875,
+        "7": 1.535797119140625,
+        "8": 1.412139892578125,
+        "9": 1.4669189453125,
+        "10": 0.623504638671875,
+        "11": 2.013397216796875,
+        "12": 0.31036376953125,
+        "13": 0.596038818359375,
+        "14": 0.968292236328125,
+        "15": 0.178863525390625
+      },
+      "improved_equal_worse": [
+        14,
+        0,
+        2
+      ],
+      "adverse_lifecycles": [
+        1,
+        2
+      ],
+      "parent_mean_deltas": {
+        "0": 1.3264541625976562,
+        "1": 0.47005462646484375,
+        "2": 0.5105972290039062,
+        "3": 1.0711441040039062
+      },
+      "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS_AND_REALIZED_V314_HEADS",
+      "ci95": [
+        0.4782281398773193,
+        1.217879247665405
+      ],
+      "ci99": [
+        0.36873071670532226,
+        1.3219025230407722
+      ],
+      "family_status": "SUPPORTED_POSITIVE"
+    },
+    "WIN_given_MC_reward": {
+      "mean": 0.0050411224365234375,
+      "lifecycle_deltas": {
+        "0": 0.68072509765625,
+        "1": -0.47930908203125,
+        "2": 0.330230712890625,
+        "3": 2.170166015625,
+        "4": -1.08221435546875,
+        "5": 0.610595703125,
+        "6": 0.219482421875,
+        "7": -0.3475341796875,
+        "8": -1.485260009765625,
+        "9": -1.16986083984375,
+        "10": 0.5667724609375,
+        "11": -0.20623779296875,
+        "12": -0.858123779296875,
+        "13": 0.9869384765625,
+        "14": 0.16400146484375,
+        "15": -0.01971435546875
+      },
+      "improved_equal_worse": [
+        8,
+        0,
+        8
+      ],
+      "adverse_lifecycles": [
+        1,
+        4,
+        7,
+        8,
+        9,
+        11,
+        12,
+        15
+      ],
+      "parent_mean_deltas": {
+        "0": -0.68621826171875,
+        "1": -0.012908935546875,
+        "2": 0.32012176513671875,
+        "3": 0.399169921875
+      },
+      "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS_AND_REALIZED_V314_HEADS",
+      "ci95": [
+        -0.3632774353027344,
+        0.4071181297302246
+      ],
+      "ci99": [
+        -0.45077272415161135,
+        0.5287390708923342
+      ],
+      "family_status": "UNRESOLVED"
+    },
+    "WIN_given_TD_reward": {
+      "mean": 0.10242271423339844,
+      "lifecycle_deltas": {
+        "0": 0.771331787109375,
+        "1": 0.046844482421875,
+        "2": -0.974273681640625,
+        "3": 1.487274169921875,
+        "4": 0.315338134765625,
+        "5": -0.636474609375,
+        "6": -0.17681884765625,
+        "7": 0.67681884765625,
+        "8": 0.076568603515625,
+        "9": -1.2584228515625,
+        "10": -0.3297119140625,
+        "11": 0.870452880859375,
+        "12": -1.220245361328125,
+        "13": 1.275238037109375,
+        "14": 0.21441650390625,
+        "15": 0.50042724609375
+      },
+      "improved_equal_worse": [
+        10,
+        0,
+        6
+      ],
+      "adverse_lifecycles": [
+        2,
+        5,
+        6,
+        9,
+        10,
+        12
+      ],
+      "parent_mean_deltas": {
+        "0": -0.014251708984375,
+        "1": -0.1432037353515625,
+        "2": -0.31659698486328125,
+        "3": 0.8837432861328125
+      },
+      "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS_AND_REALIZED_V314_HEADS",
+      "ci95": [
+        -0.22804970741271974,
+        0.42558927536010654
+      ],
+      "ci99": [
+        -0.3208889961242676,
+        0.5217234230041516
+      ],
+      "family_status": "UNRESOLVED"
+    },
+    "interaction": {
+      "mean": 0.097381591796875,
+      "lifecycle_deltas": {
+        "0": 0.090606689453125,
+        "1": 0.526153564453125,
+        "2": -1.30450439453125,
+        "3": -0.682891845703125,
+        "4": 1.397552490234375,
+        "5": -1.2470703125,
+        "6": -0.39630126953125,
+        "7": 1.02435302734375,
+        "8": 1.56182861328125,
+        "9": -0.08856201171875,
+        "10": -0.896484375,
+        "11": 1.076690673828125,
+        "12": -0.36212158203125,
+        "13": 0.288299560546875,
+        "14": 0.0504150390625,
+        "15": 0.5201416015625
+      },
+      "improved_equal_worse": [
+        9,
+        0,
+        7
+      ],
+      "adverse_lifecycles": [
+        2,
+        3,
+        5,
+        6,
+        9,
+        10,
+        12
+      ],
+      "parent_mean_deltas": {
+        "0": 0.671966552734375,
+        "1": -0.1302947998046875,
+        "2": -0.63671875,
+        "3": 0.4845733642578125
+      },
+      "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS_AND_REALIZED_V314_HEADS",
+      "ci95": [
+        -0.24709548950195312,
+        0.4203012943267814
+      ],
+      "ci99": [
+        -0.3551823616027832,
+        0.5101701259613042
+      ],
+      "family_status": "UNRESOLVED"
+    }
+  },
+  "method": "Read completed V314 independent PASS without replaying old tapes or target arrays; independently reconstruct only the actual SOURCE-relative sparse head versions, verify exact frozen reward/WIN component ownership and unchanged update counts, independent seeded initial boards and all candidate native H2 actions for each new cell, all new paired natural endpoint utilities and counts, signed lifecycle effects with family 99%/pointwise 95% interval decisions and complete new/cumulative physical-economic compute.",
+  "limitations": "New evaluation evidence is conditional on the same sixteen realized V314 training instances and four frozen SOURCE parents. Five family effects describe realized component utility contributions and interaction; they do not establish a new-training-population effect, microscopic learning cause or independent growth confirmation. Complete evaluation actions and bootstrap draws are not rerun; only the declared initial-board probes are recomputed. Historical dynamics CPU remains unknown.",
+  "errors": []
+}

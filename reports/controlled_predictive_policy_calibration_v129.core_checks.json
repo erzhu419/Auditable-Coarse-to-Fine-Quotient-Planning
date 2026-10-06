@@ -1,0 +1,33 @@
+{
+  "attempts": [
+    {
+      "tests": 6,
+      "failures": 0,
+      "calibration_work": {
+        "calibration_games": 5,
+        "calibration_observed_afterstates": 10,
+        "calibration_samples": 7,
+        "source_tail_predictions": 7,
+        "source_table_lookups": 224,
+        "calibration_analytic_goals": 1,
+        "censored_games": 1,
+        "censored_afterstates": 2
+      },
+      "source_reference_work": {
+        "value_predictions": 2,
+        "table_lookups": 64
+      },
+      "setup_counts": {
+        "cpp_compilations": 2,
+        "cpp_library_cache_hits": 4,
+        "lookup_line_rewrites": 256,
+        "allocated_weight_parameters": 49152,
+        "allocated_weight_bytes": 393216,
+        "lookup_table_cache_hits": 2
+      },
+      "newly_sampled_environment_transitions": 0,
+      "optimizer_steps": 0,
+      "scope": "Synthetic retained boards/scores and candidate fixtures; offsets only, source parameters unchanged."
+    }
+  ]
+}

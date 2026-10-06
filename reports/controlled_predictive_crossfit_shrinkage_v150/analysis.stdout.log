@@ -1,0 +1,5 @@
+{"event": "audited_acquisition", "life": 0, "replayed_swipes": 4900272}
+{"event": "audited_acquisition", "life": 1, "replayed_swipes": 11403348}
+{"event": "audited_acquisition", "life": 2, "replayed_swipes": 17453708}
+{"event": "audited_acquisition", "life": 3, "replayed_swipes": 23639764}
+{"complete": true, "primary_complete": true, "checks": 59, "failed": [], "seconds": 341.36965733800025}

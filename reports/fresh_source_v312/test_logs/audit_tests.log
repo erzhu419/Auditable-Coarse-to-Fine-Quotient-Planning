@@ -1,0 +1,4 @@
+command: python3 -m pytest -q tests/test_verify_fresh_source_v312.py
+..................                                                       [100%]
+18 passed in 0.83s
+exit_code: 0

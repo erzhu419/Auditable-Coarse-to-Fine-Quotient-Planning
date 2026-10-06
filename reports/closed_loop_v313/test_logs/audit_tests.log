@@ -1,0 +1,59 @@
+COMMAND: python3 -m pytest -q tests/test_verify_closed_loop_v313.py
+...........F...                                                          [100%]
+=================================== FAILURES ===================================
+___ test_sparse_versions_reassemble_source_initial_and_actual_zero_reversion ___
+
+tmp_path = PosixPath('/tmp/pytest-of-erzhu419/pytest-303/test_sparse_versions_reassembl0')
+actors = (<acfqp.science.controlled_predictive_ntuple_td_v120.NtupleValue object at 0x7605a343c610>, <acfqp.science.native_spli...301.SplitLeaf object at 0x7605a343feb0>, <acfqp.science.native_linear_win_v311.LinearWinLeaf object at 0x7605a343d420>)
+
+    def test_sparse_versions_reassemble_source_initial_and_actual_zero_reversion(tmp_path, actors):
+        source, local, _ = actors
+        local.reward_weights.flags.writeable = True; local.risk_weights.flags.writeable = True
+        original_reward, original_risk = local.reward_weights.copy(), local.risk_weights.copy()
+        identity = dict(lifecycle=0, parent=0, context_id=0, arm='CLOSED_LOCAL')
+        provenance = dict(parent=0, checkpoint='fresh-source.npz')
+        try:
+            local.reward_weights[0, 0] += 1.
+>           v0 = save_version(local, provenance, 0, 0, 'CLOSED_LOCAL', 0, tmp_path/'v0.npz')
+
+tests/test_verify_closed_loop_v313.py:154: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+leaf = <acfqp.science.native_split_risk_v301.SplitLeaf object at 0x7605a343feb0>
+source = {'checkpoint': 'fresh-source.npz', 'parent': 0}, lifecycle = 0
+context_id = 0, arm = 'CLOSED_LOCAL', version = 0
+path = PosixPath('/tmp/pytest-of-erzhu419/pytest-303/test_sparse_versions_reassembl0/v0.npz')
+
+    def save_version(leaf, source, lifecycle, context_id, arm, version, path,
+                     *, base=None, previous=None):
+        """v0 differs from SOURCE/neutral terminal; later versions from previous weights."""
+        started, cpu = perf_counter(), process_time()
+        path = Path(path).resolve(); path.parent.mkdir(parents=True, exist_ok=True)
+        terminal = terminal_weights(leaf)
+        neutral = 0. if leaf.kind == 'LOCAL_RISK' else 1./64.
+        if version == 0:
+            reward_reference, terminal_reference = leaf.model.weights, neutral
+            if base is not None or previous is not None:
+                raise ValueError('Initial head history uses its actual SOURCE baseline')
+        else:
+            if base is None or previous is None:
+                raise ValueError('Consolidated head history requires its previous version')
+            reward_reference, terminal_reference = previous['reward'], previous['terminal']
+        reward_indices = np.flatnonzero(leaf.reward_weights != reward_reference).astype(np.int64)
+        terminal_indices = np.flatnonzero(terminal != terminal_reference).astype(np.int64)
+        metadata = dict(schema='acfqp.head_version.v313', head_kind=leaf.kind,
+            lifecycle=lifecycle, parent=source['parent'], context_id=context_id,
+            arm=arm, version=version, updates=leaf.updates, file=str(path),
+            base_file=None if base is None else base['file'], source_checkpoint=source['checkpoint'],
+            default_terminal=neutral, parameter_count=int(leaf.reward_weights.size),
+            reward_indices_count=int(reward_indices.size), terminal_indices_count=int(terminal_indices.size))
+        np.savez_compressed(path, reward_indices=reward_indices,
+            reward_values=leaf.reward_weights[reward_indices], terminal_indices=terminal_indices,
+>           terminal_values=terminal[terminal_indices], metadata_json=json.dumps(metadata, sort_keys=True))
+E       IndexError: index 4 is out of bounds for axis 0 with size 4
+
+src/acfqp/science/closed_loop_versions_v313.py:47: IndexError
+=========================== short test summary info ============================
+FAILED tests/test_verify_closed_loop_v313.py::test_sparse_versions_reassemble_source_initial_and_actual_zero_reversion
+1 failed, 14 passed in 6.37s
+EXIT_CODE: 1

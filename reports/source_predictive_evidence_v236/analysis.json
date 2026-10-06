@@ -1,0 +1,101 @@
+{
+  "valid": true,
+  "complete": true,
+  "records": 9,
+  "exact_predictive_membership_checks": 9,
+  "groups": {
+    "V235_countermodel": {
+      "witnesses": 6,
+      "admitted": 6,
+      "excluded": 0,
+      "by_kind": {
+        "failure": {
+          "witnesses": 6,
+          "admitted": 6,
+          "excluded": 0
+        },
+        "positive": {
+          "witnesses": 0,
+          "admitted": 0,
+          "excluded": 0
+        }
+      }
+    },
+    "V234_rectangle": {
+      "witnesses": 3,
+      "admitted": 0,
+      "excluded": 3,
+      "by_kind": {
+        "failure": {
+          "witnesses": 2,
+          "admitted": 0,
+          "excluded": 2
+        },
+        "positive": {
+          "witnesses": 1,
+          "admitted": 0,
+          "excluded": 1
+        }
+      }
+    }
+  },
+  "primary_risk_admitted": 6,
+  "full_qualification_allowed": false,
+  "prior_independent_mixture_obstructions": 4,
+  "prior_independent_mixture_obstructions_by_origin": {
+    "V235_countermodel": 4,
+    "V234_rectangle": 0
+  },
+  "prior_independent_mixture_obstruction_identities": [
+    {
+      "life": 0,
+      "index": 58,
+      "arm": "ORACLE_BALANCED",
+      "origin": "V235_countermodel"
+    },
+    {
+      "life": 1,
+      "index": 56,
+      "arm": "ORACLE_BALANCED",
+      "origin": "V235_countermodel"
+    },
+    {
+      "life": 2,
+      "index": 55,
+      "arm": "ORACLE_BALANCED",
+      "origin": "V235_countermodel"
+    },
+    {
+      "life": 2,
+      "index": 55,
+      "arm": "ORACLE_GAP",
+      "origin": "V235_countermodel"
+    }
+  ],
+  "prior_independent_scope": "normalized_mixtures_of_this_fixed_validation_likelihood_only",
+  "query_certificates_obtained": false,
+  "new_observations": 0,
+  "new_paid_samples": 0,
+  "checks": {
+    "prior_evidence_independently_valid": 1,
+    "nine_fixed_witnesses_and_six_main_blockers": 1,
+    "fixed_eight_family_event_budget": 1,
+    "fixed_source_training_validation_rule": 1,
+    "frozen_phase1_scope": 1,
+    "original_identity_case_fee_and_observation_scope": 9,
+    "original_comparison_and_necessary_projection": 9,
+    "independent_training_activation_and_complete_validation_split": 9,
+    "source_training_paid_counts_and_cumulative_fees": 9,
+    "exact_original_bad_gap": 9,
+    "exact_sequential_prediction_and_joint_tradeoff": 9,
+    "prediction_is_bounded_by_validation_mle": 9,
+    "exact_joint_ratio_decision": 9,
+    "compact_outward_log_intervals": 9,
+    "observed_validation_geometry_and_exact_tradeoff": 9,
+    "per_row_validation_kl_bounds": 9,
+    "fixed_witness_only_interpretation": 9,
+    "frozen_continuation_and_summary": 1
+  },
+  "failures": [],
+  "seconds": 3.1548193880007602
+}

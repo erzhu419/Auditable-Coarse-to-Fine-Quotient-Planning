@@ -1,0 +1,12 @@
+{
+  "attempts": [
+    {
+      "tests": 3,
+      "passed": 3,
+      "seconds": 0.22,
+      "scope": "Synthetic incremental wiring, fresh paired seeds, held-out return decomposition and censoring",
+      "new_environment_transitions": 0,
+      "tree_fits": 0
+    }
+  ]
+}

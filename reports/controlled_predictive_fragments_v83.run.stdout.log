@@ -1,0 +1,193 @@
+{"phase": "root", "lifecycle": 1, "checkpoint": 6, "completed_roots": 1, "roots": 12, "transitions": 17079, "outcomes": {"LOST": 40}}
+{"phase": "root", "lifecycle": 0, "checkpoint": 6, "completed_roots": 1, "roots": 12, "transitions": 19041, "outcomes": {"LOST": 40}}
+{"phase": "root", "lifecycle": 2, "checkpoint": 6, "completed_roots": 1, "roots": 12, "transitions": 17622, "outcomes": {"LOST": 40}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 6, "completed_roots": 2, "roots": 12, "transitions": 35383, "outcomes": {"LOST": 80}}
+{"phase": "root", "lifecycle": 2, "checkpoint": 6, "completed_roots": 2, "roots": 12, "transitions": 36314, "outcomes": {"LOST": 80}}
+{"phase": "root", "lifecycle": 0, "checkpoint": 6, "completed_roots": 2, "roots": 12, "transitions": 39726, "outcomes": {"LOST": 80}}
+{"phase": "root", "lifecycle": 0, "checkpoint": 6, "completed_roots": 3, "roots": 12, "transitions": 56943, "outcomes": {"LOST": 120}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 6, "completed_roots": 3, "roots": 12, "transitions": 56590, "outcomes": {"LOST": 120}}
+{"phase": "root", "lifecycle": 2, "checkpoint": 6, "completed_roots": 3, "roots": 12, "transitions": 56064, "outcomes": {"LOST": 120}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 6, "completed_roots": 4, "roots": 12, "transitions": 76653, "outcomes": {"LOST": 160}}
+{"phase": "root", "lifecycle": 0, "checkpoint": 6, "completed_roots": 4, "roots": 12, "transitions": 78053, "outcomes": {"LOST": 160}}
+{"phase": "root", "lifecycle": 2, "checkpoint": 6, "completed_roots": 4, "roots": 12, "transitions": 76598, "outcomes": {"LOST": 160}}
+{"phase": "root", "lifecycle": 0, "checkpoint": 6, "completed_roots": 5, "roots": 12, "transitions": 96187, "outcomes": {"LOST": 200}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 6, "completed_roots": 5, "roots": 12, "transitions": 96514, "outcomes": {"LOST": 200}}
+{"phase": "root", "lifecycle": 2, "checkpoint": 6, "completed_roots": 5, "roots": 12, "transitions": 95706, "outcomes": {"LOST": 200}}
+{"phase": "root", "lifecycle": 0, "checkpoint": 6, "completed_roots": 6, "roots": 12, "transitions": 115411, "outcomes": {"LOST": 240}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 6, "completed_roots": 6, "roots": 12, "transitions": 115539, "outcomes": {"LOST": 240}}
+{"phase": "root", "lifecycle": 2, "checkpoint": 6, "completed_roots": 6, "roots": 12, "transitions": 117449, "outcomes": {"LOST": 240}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 6, "completed_roots": 7, "roots": 12, "transitions": 136711, "outcomes": {"LOST": 280}}
+{"phase": "root", "lifecycle": 0, "checkpoint": 6, "completed_roots": 7, "roots": 12, "transitions": 138422, "outcomes": {"LOST": 278, "WON": 2}}
+{"phase": "root", "lifecycle": 2, "checkpoint": 6, "completed_roots": 7, "roots": 12, "transitions": 140349, "outcomes": {"LOST": 280}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 6, "completed_roots": 8, "roots": 12, "transitions": 157244, "outcomes": {"LOST": 320}}
+{"phase": "root", "lifecycle": 0, "checkpoint": 6, "completed_roots": 8, "roots": 12, "transitions": 159695, "outcomes": {"LOST": 318, "WON": 2}}
+{"phase": "root", "lifecycle": 2, "checkpoint": 6, "completed_roots": 8, "roots": 12, "transitions": 161619, "outcomes": {"LOST": 320}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 6, "completed_roots": 9, "roots": 12, "transitions": 178782, "outcomes": {"LOST": 360}}
+{"phase": "root", "lifecycle": 0, "checkpoint": 6, "completed_roots": 9, "roots": 12, "transitions": 179864, "outcomes": {"LOST": 356, "WON": 4}}
+{"phase": "root", "lifecycle": 2, "checkpoint": 6, "completed_roots": 9, "roots": 12, "transitions": 182086, "outcomes": {"LOST": 359, "WON": 1}}
+{"phase": "root", "lifecycle": 0, "checkpoint": 6, "completed_roots": 10, "roots": 12, "transitions": 202005, "outcomes": {"LOST": 396, "WON": 4}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 6, "completed_roots": 10, "roots": 12, "transitions": 201270, "outcomes": {"LOST": 400}}
+{"phase": "root", "lifecycle": 2, "checkpoint": 6, "completed_roots": 10, "roots": 12, "transitions": 202665, "outcomes": {"LOST": 399, "WON": 1}}
+{"phase": "root", "lifecycle": 0, "checkpoint": 6, "completed_roots": 11, "roots": 12, "transitions": 222906, "outcomes": {"LOST": 436, "WON": 4}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 6, "completed_roots": 11, "roots": 12, "transitions": 224269, "outcomes": {"LOST": 440}}
+{"phase": "root", "lifecycle": 2, "checkpoint": 6, "completed_roots": 11, "roots": 12, "transitions": 222246, "outcomes": {"LOST": 439, "WON": 1}}
+{"phase": "root", "lifecycle": 0, "checkpoint": 6, "completed_roots": 12, "roots": 12, "transitions": 242110, "outcomes": {"LOST": 475, "WON": 5}}
+{"phase": "game", "lifecycle": 0, "checkpoint": 6, "method": "ONE_STEP", "query": "reward", "replica": 0, "score": 5352, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 6, "method": "FRAGMENT", "query": "reward", "replica": 0, "score": 5352, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 6, "method": "FROZEN_6", "query": "reward", "replica": 0, "score": 5352, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 6, "method": "FIXED_SPACE4", "query": "reward", "replica": 0, "score": 7044, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 6, "method": "H2_ONLY", "query": "reward", "replica": 0, "score": 5352, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 0, "checkpoint": 6, "method": "FRAGMENT", "query": "risk_goal", "replica": 0, "score": 7544, "status": "LOST", "option": "H2"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 6, "method": "FROZEN_6", "query": "risk_goal", "replica": 0, "score": 7544, "status": "LOST", "option": "H2"}
+{"phase": "root", "lifecycle": 2, "checkpoint": 6, "completed_roots": 12, "roots": 12, "transitions": 243229, "outcomes": {"LOST": 479, "WON": 1}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 6, "completed_roots": 12, "roots": 12, "transitions": 245988, "outcomes": {"LOST": 479, "WON": 1}}
+{"phase": "game", "lifecycle": 0, "checkpoint": 6, "method": "FIXED_SPACE4", "query": "risk_goal", "replica": 0, "score": 7092, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 6, "method": "H2_ONLY", "query": "risk_goal", "replica": 0, "score": 7544, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 0, "checkpoint": 6, "method": "ONE_STEP", "query": "risk_goal", "replica": 0, "score": 7544, "status": "LOST", "option": "H2"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 6, "method": "FROZEN_6", "query": "reward", "replica": 0, "score": 7196, "status": "LOST", "option": "H2"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 6, "method": "FRAGMENT", "query": "reward", "replica": 1, "score": 3204, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 6, "method": "FRAGMENT", "query": "reward", "replica": 0, "score": 11844, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 6, "method": "FIXED_SPACE4", "query": "reward", "replica": 0, "score": 3904, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 6, "method": "FROZEN_6", "query": "reward", "replica": 1, "score": 3204, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 6, "method": "FIXED_SPACE4", "query": "reward", "replica": 1, "score": 3204, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 6, "method": "H2_ONLY", "query": "reward", "replica": 0, "score": 7196, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 1, "checkpoint": 6, "method": "FROZEN_6", "query": "reward", "replica": 0, "score": 11844, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 6, "method": "H2_ONLY", "query": "reward", "replica": 1, "score": 3204, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 0, "checkpoint": 6, "method": "ONE_STEP", "query": "reward", "replica": 1, "score": 3204, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 6, "method": "ONE_STEP", "query": "reward", "replica": 0, "score": 7196, "status": "LOST", "option": "H2"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 6, "method": "FIXED_SPACE4", "query": "reward", "replica": 0, "score": 11736, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 6, "method": "FROZEN_6", "query": "risk_goal", "replica": 1, "score": 5056, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 6, "method": "FRAGMENT", "query": "reward", "replica": 0, "score": 7196, "status": "LOST", "option": "H2"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 6, "method": "FIXED_SPACE4", "query": "risk_goal", "replica": 1, "score": 5056, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 6, "method": "H2_ONLY", "query": "risk_goal", "replica": 1, "score": 5056, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 2, "checkpoint": 6, "method": "FIXED_SPACE4", "query": "risk_goal", "replica": 0, "score": 11772, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 6, "method": "H2_ONLY", "query": "reward", "replica": 0, "score": 15700, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 0, "checkpoint": 6, "method": "ONE_STEP", "query": "risk_goal", "replica": 1, "score": 5056, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 6, "method": "H2_ONLY", "query": "risk_goal", "replica": 0, "score": 7168, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 0, "checkpoint": 6, "method": "FRAGMENT", "query": "risk_goal", "replica": 1, "score": 5056, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 6, "method": "ONE_STEP", "query": "reward", "replica": 0, "score": 11844, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 6, "method": "ONE_STEP", "query": "risk_goal", "replica": 0, "score": 14512, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 6, "method": "FROZEN_6", "query": "risk_goal", "replica": 0, "score": 11876, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 6, "method": "FIXED_SPACE4", "query": "risk_goal", "replica": 0, "score": 11736, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 6, "method": "FRAGMENT", "query": "risk_goal", "replica": 0, "score": 14512, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 6, "method": "H2_ONLY", "query": "risk_goal", "replica": 0, "score": 15692, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 2, "checkpoint": 6, "method": "FROZEN_6", "query": "risk_goal", "replica": 0, "score": 14512, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 6, "method": "FIXED_SPACE4", "query": "reward", "replica": 1, "score": 5636, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 6, "method": "ONE_STEP", "query": "risk_goal", "replica": 0, "score": 11876, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 6, "method": "H2_ONLY", "query": "reward", "replica": 1, "score": 7036, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 2, "checkpoint": 6, "method": "ONE_STEP", "query": "reward", "replica": 1, "score": 7036, "status": "LOST", "option": "H2"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 6, "method": "FRAGMENT", "query": "risk_goal", "replica": 0, "score": 11876, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 6, "method": "FRAGMENT", "query": "reward", "replica": 1, "score": 7036, "status": "LOST", "option": "H2"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 6, "method": "FROZEN_6", "query": "reward", "replica": 1, "score": 6824, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 6, "method": "FROZEN_6", "query": "reward", "replica": 1, "score": 7036, "status": "LOST", "option": "H2"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 6, "method": "FIXED_SPACE4", "query": "reward", "replica": 1, "score": 7232, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 6, "method": "H2_ONLY", "query": "risk_goal", "replica": 1, "score": 7316, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 1, "checkpoint": 6, "method": "H2_ONLY", "query": "reward", "replica": 1, "score": 6824, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 2, "checkpoint": 6, "method": "ONE_STEP", "query": "risk_goal", "replica": 1, "score": 7316, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 6, "method": "ONE_STEP", "query": "reward", "replica": 1, "score": 6824, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 6, "method": "FRAGMENT", "query": "risk_goal", "replica": 1, "score": 7316, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 6, "method": "FRAGMENT", "query": "reward", "replica": 1, "score": 6824, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 6, "method": "FROZEN_6", "query": "risk_goal", "replica": 1, "score": 7316, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 6, "method": "FIXED_SPACE4", "query": "risk_goal", "replica": 1, "score": 11392, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 6, "method": "FIXED_SPACE4", "query": "risk_goal", "replica": 1, "score": 12136, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 6, "method": "H2_ONLY", "query": "risk_goal", "replica": 1, "score": 7420, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 1, "checkpoint": 6, "method": "ONE_STEP", "query": "risk_goal", "replica": 1, "score": 7420, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 6, "method": "FRAGMENT", "query": "risk_goal", "replica": 1, "score": 7420, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 6, "method": "FROZEN_6", "query": "risk_goal", "replica": 1, "score": 7420, "status": "LOST", "option": "SPACE_1"}
+{"phase": "root", "lifecycle": 0, "checkpoint": 12, "completed_roots": 1, "roots": 12, "transitions": 23027, "outcomes": {"LOST": 40}}
+{"phase": "root", "lifecycle": 2, "checkpoint": 12, "completed_roots": 1, "roots": 12, "transitions": 21267, "outcomes": {"LOST": 39, "WON": 1}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 12, "completed_roots": 1, "roots": 12, "transitions": 21244, "outcomes": {"LOST": 40}}
+{"phase": "root", "lifecycle": 0, "checkpoint": 12, "completed_roots": 2, "roots": 12, "transitions": 42180, "outcomes": {"LOST": 80}}
+{"phase": "root", "lifecycle": 2, "checkpoint": 12, "completed_roots": 2, "roots": 12, "transitions": 42051, "outcomes": {"LOST": 79, "WON": 1}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 12, "completed_roots": 2, "roots": 12, "transitions": 43692, "outcomes": {"LOST": 80}}
+{"phase": "root", "lifecycle": 0, "checkpoint": 12, "completed_roots": 3, "roots": 12, "transitions": 63226, "outcomes": {"LOST": 120}}
+{"phase": "root", "lifecycle": 2, "checkpoint": 12, "completed_roots": 3, "roots": 12, "transitions": 58221, "outcomes": {"LOST": 119, "WON": 1}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 12, "completed_roots": 3, "roots": 12, "transitions": 61322, "outcomes": {"LOST": 120}}
+{"phase": "root", "lifecycle": 0, "checkpoint": 12, "completed_roots": 4, "roots": 12, "transitions": 84131, "outcomes": {"LOST": 158, "WON": 2}}
+{"phase": "root", "lifecycle": 2, "checkpoint": 12, "completed_roots": 4, "roots": 12, "transitions": 74209, "outcomes": {"LOST": 158, "WON": 2}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 12, "completed_roots": 4, "roots": 12, "transitions": 78938, "outcomes": {"LOST": 160}}
+{"phase": "root", "lifecycle": 2, "checkpoint": 12, "completed_roots": 5, "roots": 12, "transitions": 94184, "outcomes": {"LOST": 196, "WON": 4}}
+{"phase": "root", "lifecycle": 0, "checkpoint": 12, "completed_roots": 5, "roots": 12, "transitions": 104777, "outcomes": {"LOST": 198, "WON": 2}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 12, "completed_roots": 5, "roots": 12, "transitions": 97683, "outcomes": {"LOST": 200}}
+{"phase": "root", "lifecycle": 2, "checkpoint": 12, "completed_roots": 6, "roots": 12, "transitions": 114563, "outcomes": {"LOST": 236, "WON": 4}}
+{"phase": "root", "lifecycle": 0, "checkpoint": 12, "completed_roots": 6, "roots": 12, "transitions": 127517, "outcomes": {"LOST": 237, "WON": 3}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 12, "completed_roots": 6, "roots": 12, "transitions": 120250, "outcomes": {"LOST": 240}}
+{"phase": "root", "lifecycle": 0, "checkpoint": 12, "completed_roots": 7, "roots": 12, "transitions": 143938, "outcomes": {"LOST": 277, "WON": 3}}
+{"phase": "root", "lifecycle": 2, "checkpoint": 12, "completed_roots": 7, "roots": 12, "transitions": 135200, "outcomes": {"LOST": 276, "WON": 4}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 12, "completed_roots": 7, "roots": 12, "transitions": 141738, "outcomes": {"LOST": 280}}
+{"phase": "root", "lifecycle": 0, "checkpoint": 12, "completed_roots": 8, "roots": 12, "transitions": 166455, "outcomes": {"LOST": 317, "WON": 3}}
+{"phase": "root", "lifecycle": 2, "checkpoint": 12, "completed_roots": 8, "roots": 12, "transitions": 155603, "outcomes": {"LOST": 316, "WON": 4}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 12, "completed_roots": 8, "roots": 12, "transitions": 160231, "outcomes": {"LOST": 320}}
+{"phase": "root", "lifecycle": 0, "checkpoint": 12, "completed_roots": 9, "roots": 12, "transitions": 189134, "outcomes": {"LOST": 356, "WON": 4}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 12, "completed_roots": 9, "roots": 12, "transitions": 179424, "outcomes": {"LOST": 360}}
+{"phase": "root", "lifecycle": 2, "checkpoint": 12, "completed_roots": 9, "roots": 12, "transitions": 181562, "outcomes": {"LOST": 356, "WON": 4}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 12, "completed_roots": 10, "roots": 12, "transitions": 200210, "outcomes": {"LOST": 400}}
+{"phase": "root", "lifecycle": 0, "checkpoint": 12, "completed_roots": 10, "roots": 12, "transitions": 213149, "outcomes": {"LOST": 396, "WON": 4}}
+{"phase": "root", "lifecycle": 2, "checkpoint": 12, "completed_roots": 10, "roots": 12, "transitions": 202439, "outcomes": {"LOST": 396, "WON": 4}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 12, "completed_roots": 11, "roots": 12, "transitions": 219096, "outcomes": {"LOST": 440}}
+{"phase": "root", "lifecycle": 0, "checkpoint": 12, "completed_roots": 11, "roots": 12, "transitions": 234939, "outcomes": {"LOST": 436, "WON": 4}}
+{"phase": "root", "lifecycle": 2, "checkpoint": 12, "completed_roots": 11, "roots": 12, "transitions": 225761, "outcomes": {"LOST": 436, "WON": 4}}
+{"phase": "root", "lifecycle": 1, "checkpoint": 12, "completed_roots": 12, "roots": 12, "transitions": 239844, "outcomes": {"LOST": 479, "WON": 1}}
+{"phase": "game", "lifecycle": 1, "checkpoint": 12, "method": "FROZEN_6", "query": "reward", "replica": 0, "score": 11844, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 12, "method": "FIXED_SPACE4", "query": "reward", "replica": 0, "score": 11736, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 12, "method": "H2_ONLY", "query": "reward", "replica": 0, "score": 15700, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 1, "checkpoint": 12, "method": "ONE_STEP", "query": "reward", "replica": 0, "score": 11844, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 12, "method": "FRAGMENT", "query": "reward", "replica": 0, "score": 11844, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 12, "method": "FIXED_SPACE4", "query": "risk_goal", "replica": 0, "score": 11736, "status": "LOST", "option": "SPACE_4"}
+{"phase": "root", "lifecycle": 0, "checkpoint": 12, "completed_roots": 12, "roots": 12, "transitions": 257013, "outcomes": {"LOST": 476, "WON": 4}}
+{"phase": "game", "lifecycle": 0, "checkpoint": 12, "method": "FRAGMENT", "query": "reward", "replica": 0, "score": 5352, "status": "LOST", "option": "SPACE_1"}
+{"phase": "root", "lifecycle": 2, "checkpoint": 12, "completed_roots": 12, "roots": 12, "transitions": 246459, "outcomes": {"LOST": 476, "WON": 4}}
+{"phase": "game", "lifecycle": 1, "checkpoint": 12, "method": "H2_ONLY", "query": "risk_goal", "replica": 0, "score": 15692, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 0, "checkpoint": 12, "method": "FROZEN_6", "query": "reward", "replica": 0, "score": 5352, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 12, "method": "FIXED_SPACE4", "query": "reward", "replica": 0, "score": 3904, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 12, "method": "FIXED_SPACE4", "query": "reward", "replica": 0, "score": 7044, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 12, "method": "H2_ONLY", "query": "reward", "replica": 0, "score": 7196, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 1, "checkpoint": 12, "method": "ONE_STEP", "query": "risk_goal", "replica": 0, "score": 11876, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 12, "method": "H2_ONLY", "query": "reward", "replica": 0, "score": 5352, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 2, "checkpoint": 12, "method": "ONE_STEP", "query": "reward", "replica": 0, "score": 7196, "status": "LOST", "option": "H2"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 12, "method": "ONE_STEP", "query": "reward", "replica": 0, "score": 5352, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 12, "method": "FRAGMENT", "query": "risk_goal", "replica": 0, "score": 11876, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 12, "method": "FRAGMENT", "query": "reward", "replica": 0, "score": 7196, "status": "LOST", "option": "H2"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 12, "method": "FROZEN_6", "query": "risk_goal", "replica": 0, "score": 7544, "status": "LOST", "option": "H2"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 12, "method": "FROZEN_6", "query": "risk_goal", "replica": 0, "score": 11876, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 12, "method": "FROZEN_6", "query": "reward", "replica": 0, "score": 7196, "status": "LOST", "option": "H2"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 12, "method": "FIXED_SPACE4", "query": "risk_goal", "replica": 0, "score": 7092, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 12, "method": "H2_ONLY", "query": "risk_goal", "replica": 0, "score": 7168, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 1, "checkpoint": 12, "method": "FIXED_SPACE4", "query": "reward", "replica": 1, "score": 7232, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 12, "method": "H2_ONLY", "query": "risk_goal", "replica": 0, "score": 7544, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 1, "checkpoint": 12, "method": "H2_ONLY", "query": "reward", "replica": 1, "score": 6824, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 0, "checkpoint": 12, "method": "ONE_STEP", "query": "risk_goal", "replica": 0, "score": 7544, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 12, "method": "ONE_STEP", "query": "risk_goal", "replica": 0, "score": 14512, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 12, "method": "ONE_STEP", "query": "reward", "replica": 1, "score": 6824, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 12, "method": "FRAGMENT", "query": "risk_goal", "replica": 0, "score": 7544, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 12, "method": "FROZEN_6", "query": "reward", "replica": 1, "score": 3204, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 12, "method": "FRAGMENT", "query": "reward", "replica": 1, "score": 6824, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 12, "method": "FIXED_SPACE4", "query": "reward", "replica": 1, "score": 3204, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 12, "method": "FRAGMENT", "query": "risk_goal", "replica": 0, "score": 14512, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 12, "method": "H2_ONLY", "query": "reward", "replica": 1, "score": 3204, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 1, "checkpoint": 12, "method": "FROZEN_6", "query": "reward", "replica": 1, "score": 6824, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 12, "method": "ONE_STEP", "query": "reward", "replica": 1, "score": 3204, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 12, "method": "FRAGMENT", "query": "reward", "replica": 1, "score": 3204, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 12, "method": "FROZEN_6", "query": "risk_goal", "replica": 0, "score": 14512, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 12, "method": "H2_ONLY", "query": "risk_goal", "replica": 1, "score": 7420, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 0, "checkpoint": 12, "method": "FIXED_SPACE4", "query": "risk_goal", "replica": 1, "score": 5056, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 12, "method": "ONE_STEP", "query": "risk_goal", "replica": 1, "score": 7420, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 12, "method": "H2_ONLY", "query": "risk_goal", "replica": 1, "score": 5056, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 2, "checkpoint": 12, "method": "FIXED_SPACE4", "query": "risk_goal", "replica": 0, "score": 11772, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 12, "method": "ONE_STEP", "query": "risk_goal", "replica": 1, "score": 5056, "status": "LOST", "option": "H2"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 12, "method": "FRAGMENT", "query": "risk_goal", "replica": 1, "score": 7420, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 12, "method": "H2_ONLY", "query": "reward", "replica": 1, "score": 7036, "status": "LOST", "option": null}
+{"phase": "game", "lifecycle": 0, "checkpoint": 12, "method": "FRAGMENT", "query": "risk_goal", "replica": 1, "score": 5056, "status": "LOST", "option": "H2"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 12, "method": "FROZEN_6", "query": "risk_goal", "replica": 1, "score": 7420, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 0, "checkpoint": 12, "method": "FROZEN_6", "query": "risk_goal", "replica": 1, "score": 5056, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 12, "method": "ONE_STEP", "query": "reward", "replica": 1, "score": 7036, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 12, "method": "FRAGMENT", "query": "reward", "replica": 1, "score": 7036, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 1, "checkpoint": 12, "method": "FIXED_SPACE4", "query": "risk_goal", "replica": 1, "score": 11392, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 12, "method": "FROZEN_6", "query": "reward", "replica": 1, "score": 7036, "status": "LOST", "option": "H2"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 12, "method": "FIXED_SPACE4", "query": "reward", "replica": 1, "score": 5636, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 12, "method": "ONE_STEP", "query": "risk_goal", "replica": 1, "score": 7316, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 12, "method": "FRAGMENT", "query": "risk_goal", "replica": 1, "score": 7316, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 12, "method": "FROZEN_6", "query": "risk_goal", "replica": 1, "score": 7316, "status": "LOST", "option": "SPACE_1"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 12, "method": "FIXED_SPACE4", "query": "risk_goal", "replica": 1, "score": 12136, "status": "LOST", "option": "SPACE_4"}
+{"phase": "game", "lifecycle": 2, "checkpoint": 12, "method": "H2_ONLY", "query": "risk_goal", "replica": 1, "score": 7316, "status": "LOST", "option": null}
+{"phase": "complete", "seconds": 528.1412456980324}

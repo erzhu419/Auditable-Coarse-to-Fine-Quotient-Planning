@@ -1,0 +1,14 @@
+{
+  "attempts": [
+    {
+      "tests": 6,
+      "failures": 0,
+      "seconds": 0.04591835700557567,
+      "newly_sampled_environment_transitions": 0,
+      "environment_random_draws": 0,
+      "native_model_calls": 0,
+      "optimizer_steps": 0,
+      "scope": "Synthetic labels and mocked acquisition, fitting and phase execution; no native or environment calls"
+    }
+  ]
+}

@@ -1,0 +1,5967 @@
+{
+  "schema": "acfqp.exact_h3.v177.analysis",
+  "valid": true,
+  "complete": true,
+  "primary_complete": true,
+  "passed_checks": 128,
+  "total_checks": 128,
+  "checks": [
+    {
+      "name": "one_native_complete_vector_query",
+      "passed": true
+    },
+    {
+      "name": "fixed47H3_source24H3_target_one_excludedH2",
+      "passed": true
+    },
+    {
+      "name": "distinct71_root_identities",
+      "passed": true
+    },
+    {
+      "name": "observed_roots_D4_immediate_rewards",
+      "passed": true
+    },
+    {
+      "name": "source_group_binding",
+      "passed": true
+    },
+    {
+      "name": "all_inputs_first_read_in_frozen_order",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/source/roster.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/roster.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/source/queries.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/source/RAW.kernel.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/source/RAW.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_00/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_00/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_01/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_01/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_02/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_02/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_03/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_03/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_04/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_04/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_05/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_05/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_06/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_06/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_07/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_07/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_08/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_08/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_09/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_09/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_10/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_10/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_11/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_11/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_12/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_12/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_13/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_13/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_14/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_14/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_15/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_15/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_16/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_16/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_17/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_17/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_18/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_18/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_19/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_19/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_20/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_20/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_21/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_21/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_22/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_22/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_23/FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input_bytes:inputs/target/v69_h3_23/FULL.plans.json",
+      "passed": true
+    },
+    {
+      "name": "source_RAW_ground_kernel",
+      "passed": true
+    },
+    {
+      "name": "original_source_root_horizons",
+      "passed": true
+    },
+    {
+      "name": "source_exact_full_vectors_and_fraction_labels",
+      "passed": true
+    },
+    {
+      "name": "standalone_source_labels",
+      "passed": true
+    },
+    {
+      "name": "source_DP_costs",
+      "passed": true
+    },
+    {
+      "name": "independent_exact_candidate_and_node_fit:ONE",
+      "passed": true
+    },
+    {
+      "name": "independent_exact_candidate_and_node_fit:TREE",
+      "passed": true
+    },
+    {
+      "name": "learning_costs:one_fit_counts",
+      "passed": true
+    },
+    {
+      "name": "learning_costs:one_node_fit_counts",
+      "passed": true
+    },
+    {
+      "name": "learning_costs:tree_fit_counts",
+      "passed": true
+    },
+    {
+      "name": "learning_costs:tree_search_counts",
+      "passed": true
+    },
+    {
+      "name": "learning_costs:tree_node_fit_counts",
+      "passed": true
+    },
+    {
+      "name": "label_free_frozen_choices:SOURCE",
+      "passed": true
+    },
+    {
+      "name": "label_free_frozen_choices:TARGET",
+      "passed": true
+    },
+    {
+      "name": "decision_costs",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_00",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_00",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_01",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_01",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_02",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_02",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_03",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_03",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_04",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_04",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_05",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_05",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_06",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_06",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_07",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_07",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_08",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_08",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_09",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_09",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_10",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_10",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_11",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_11",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_12",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_12",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_13",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_13",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_14",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_14",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_15",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_15",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_16",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_16",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_17",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_17",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_18",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_18",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_19",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_19",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_20",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_20",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_21",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_21",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_22",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_22",
+      "passed": true
+    },
+    {
+      "name": "target_FULL_literal_identity:v69_h3_23",
+      "passed": true
+    },
+    {
+      "name": "target_native_spawn_rule:v69_h3_23",
+      "passed": true
+    },
+    {
+      "name": "target_exact_full_vectors_and_fraction_labels",
+      "passed": true
+    },
+    {
+      "name": "target_DP_costs",
+      "passed": true
+    },
+    {
+      "name": "target_choices_frozen_before_target_label_reads",
+      "passed": true
+    },
+    {
+      "name": "complete_execution_without_new_samples",
+      "passed": true
+    },
+    {
+      "name": "preparation_input_costs",
+      "passed": true
+    },
+    {
+      "name": "independent_exact_headroom_regret_and_weighting",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "schema": "acfqp.exact_h3.v177.summary",
+    "complete": true,
+    "cohorts": {
+      "SOURCE": {
+        "roots": 47,
+        "design_groups": 12,
+        "primary_weighting": "DESIGN_GROUP_MEAN",
+        "aggregates": {
+          "ROOT_MEAN": {
+            "metrics": {
+              "TREE": {
+                "components": [
+                  0.697043155405031,
+                  0.10463829787234043,
+                  0.425531914893617
+                ],
+                "utility": 1.0179367724263075
+              },
+              "ONE": {
+                "components": [
+                  0.6741057781102245,
+                  0.10843971631205673,
+                  0.40425531914893614
+                ],
+                "utility": 0.9699213809471039
+              },
+              "FALLBACK": {
+                "components": [
+                  0.6424431021904551,
+                  0.13247872340425532,
+                  0.3776595744680851
+                ],
+                "utility": 0.8876239532542849
+              },
+              "ORACLE": {
+                "components": [
+                  0.7825013084321439,
+                  0.06361702127659576,
+                  0.425531914893617
+                ],
+                "utility": 1.1444162020491653
+              }
+            },
+            "headroom": 0.17449482110206138,
+            "tree_minus_one": 0.04801539147920364,
+            "oracle_minus_tree": 0.12647942962285774,
+            "informative": true,
+            "headroom_closed_fraction": 0.2751680031301308
+          },
+          "DESIGN_GROUP_MEAN": {
+            "metrics": {
+              "TREE": {
+                "components": [
+                  0.6899582177056206,
+                  0.10870833333333334,
+                  0.4236111111111111
+                ],
+                "utility": 1.0048609954833985
+              },
+              "ONE": {
+                "components": [
+                  0.6672521204065394,
+                  0.11243055555555555,
+                  0.40277777777777773
+                ],
+                "utility": 0.9575993426287615
+              },
+              "FALLBACK": {
+                "components": [
+                  0.6364875275788484,
+                  0.13666319444444444,
+                  0.3767361111111111
+                ],
+                "utility": 0.876560444245515
+              },
+              "ORACLE": {
+                "components": [
+                  0.77520450563784,
+                  0.06854166666666667,
+                  0.4236111111111111
+                ],
+                "utility": 1.1302739500822845
+              }
+            },
+            "headroom": 0.17267460745352303,
+            "tree_minus_one": 0.047261652854637015,
+            "oracle_minus_tree": 0.12541295459888602,
+            "informative": true,
+            "headroom_closed_fraction": 0.27370354884031184
+          }
+        },
+        "diagnostics": {
+          "headroom_roots": 31,
+          "tree_improved_roots": 16,
+          "tree_worsened_roots": 7,
+          "tree_same_value_roots": 24,
+          "tree_one_action_changes": 31,
+          "fallback_counts": {
+            "TREE": 0,
+            "ONE": 0
+          },
+          "oracle_action_disagreements": {
+            "TREE": 25,
+            "ONE": 36
+          },
+          "positive_regret_roots": {
+            "TREE": 24,
+            "ONE": 31
+          }
+        },
+        "groups": [
+          {
+            "source_id": "DESIGN_SOURCE:00",
+            "roots": 4,
+            "metrics": {
+              "TREE": {
+                "components": [
+                  0.32148681640625,
+                  0.2545,
+                  0.0
+                ]
+              },
+              "ONE": {
+                "components": [
+                  0.32283935546875,
+                  0.25,
+                  0.0
+                ]
+              },
+              "FALLBACK": {
+                "components": [
+                  0.37607421874999997,
+                  0.235375,
+                  0.0
+                ]
+              },
+              "ORACLE": {
+                "components": [
+                  0.45997314453125,
+                  0.0225,
+                  0.0
+                ]
+              }
+            }
+          },
+          {
+            "source_id": "DESIGN_SOURCE:01",
+            "roots": 4,
+            "metrics": {
+              "TREE": {
+                "components": [
+                  0.242763671875,
+                  0.75,
+                  0.0
+                ]
+              },
+              "ONE": {
+                "components": [
+                  0.292412109375,
+                  0.75,
+                  0.0
+                ]
+              },
+              "FALLBACK": {
+                "components": [
+                  0.242529296875,
+                  0.725,
+                  0.0
+                ]
+              },
+              "ORACLE": {
+                "components": [
+                  0.29912109375,
+                  0.5,
+                  0.0
+                ]
+              }
+            }
+          },
+          {
+            "source_id": "DESIGN_SOURCE:02",
+            "roots": 4,
+            "metrics": {
+              "TREE": {
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "ONE": {
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "FALLBACK": {
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "ORACLE": {
+                "components": [
+                  1.3127701822916666,
+                  0.0,
+                  1.0
+                ]
+              }
+            }
+          },
+          {
+            "source_id": "DESIGN_SOURCE:03",
+            "roots": 3,
+            "metrics": {
+              "TREE": {
+                "components": [
+                  0.3569661458333333,
+                  0.3,
+                  0.3333333333333333
+                ]
+              },
+              "ONE": {
+                "components": [
+                  0.34513020833333335,
+                  0.3,
+                  0.3333333333333333
+                ]
+              },
+              "FALLBACK": {
+                "components": [
+                  0.3565755208333334,
+                  0.3333333333333333,
+                  0.3333333333333333
+                ]
+              },
+              "ORACLE": {
+                "components": [
+                  0.4322547743055556,
+                  0.3,
+                  0.3333333333333333
+                ]
+              }
+            }
+          },
+          {
+            "source_id": "DESIGN_SOURCE:04",
+            "roots": 4,
+            "metrics": {
+              "TREE": {
+                "components": [
+                  1.040101521809896,
+                  0.0,
+                  0.5
+                ]
+              },
+              "ONE": {
+                "components": [
+                  1.0378318277994791,
+                  0.002375,
+                  0.5
+                ]
+              },
+              "FALLBACK": {
+                "components": [
+                  0.9776610310872396,
+                  0.0,
+                  0.4375
+                ]
+              },
+              "ORACLE": {
+                "components": [
+                  1.0404459635416665,
+                  0.0,
+                  0.5
+                ]
+              }
+            }
+          },
+          {
+            "source_id": "DESIGN_SOURCE:05",
+            "roots": 4,
+            "metrics": {
+              "TREE": {
+                "components": [
+                  1.3179633544921876,
+                  0.0,
+                  0.75
+                ]
+              },
+              "ONE": {
+                "components": [
+                  1.0757181396484374,
+                  0.025,
+                  0.5
+                ]
+              },
+              "FALLBACK": {
+                "components": [
+                  1.0049032958984376,
+                  0.11875,
+                  0.5
+                ]
+              },
+              "ORACLE": {
+                "components": [
+                  1.3244925537109375,
+                  0.0,
+                  0.75
+                ]
+              }
+            }
+          },
+          {
+            "source_id": "DESIGN_SOURCE:06",
+            "roots": 4,
+            "metrics": {
+              "TREE": {
+                "components": [
+                  0.7737435777452257,
+                  0.0,
+                  0.5
+                ]
+              },
+              "ONE": {
+                "components": [
+                  0.7668660481770834,
+                  0.0,
+                  0.5
+                ]
+              },
+              "FALLBACK": {
+                "components": [
+                  0.7737435777452257,
+                  0.0,
+                  0.5
+                ]
+              },
+              "ORACLE": {
+                "components": [
+                  0.8362435777452257,
+                  0.0,
+                  0.5
+                ]
+              }
+            }
+          },
+          {
+            "source_id": "DESIGN_SOURCE:07",
+            "roots": 4,
+            "metrics": {
+              "TREE": {
+                "components": [
+                  0.8493684895833333,
+                  0.0,
+                  0.5
+                ]
+              },
+              "ONE": {
+                "components": [
+                  0.8492176649305555,
+                  0.0,
+                  0.5
+                ]
+              },
+              "FALLBACK": {
+                "components": [
+                  0.77658203125,
+                  0.0,
+                  0.5
+                ]
+              },
+              "ORACLE": {
+                "components": [
+                  0.8714339192708334,
+                  0.0,
+                  0.5
+                ]
+              }
+            }
+          },
+          {
+            "source_id": "DESIGN_SOURCE:08",
+            "roots": 4,
+            "metrics": {
+              "TREE": {
+                "components": [
+                  0.7987163628472222,
+                  0.0,
+                  0.5
+                ]
+              },
+              "ONE": {
+                "components": [
+                  0.7985872395833333,
+                  0.0,
+                  0.5
+                ]
+              },
+              "FALLBACK": {
+                "components": [
+                  0.54902099609375,
+                  0.2275,
+                  0.25
+                ]
+              },
+              "ORACLE": {
+                "components": [
+                  0.7990630425347223,
+                  0.0,
+                  0.5
+                ]
+              }
+            }
+          },
+          {
+            "source_id": "DESIGN_SOURCE:09",
+            "roots": 4,
+            "metrics": {
+              "TREE": {
+                "components": [
+                  0.47029296875,
+                  0.0,
+                  0.25
+                ]
+              },
+              "ONE": {
+                "components": [
+                  0.40967447916666666,
+                  0.0,
+                  0.25
+                ]
+              },
+              "FALLBACK": {
+                "components": [
+                  0.4735959201388889,
+                  0.0,
+                  0.25
+                ]
+              },
+              "ORACLE": {
+                "components": [
+                  0.4742892795138889,
+                  0.0,
+                  0.25
+                ]
+              }
+            }
+          },
+          {
+            "source_id": "DESIGN_SOURCE:10",
+            "roots": 4,
+            "metrics": {
+              "TREE": {
+                "components": [
+                  0.66144775390625,
+                  0.0,
+                  0.5
+                ]
+              },
+              "ONE": {
+                "components": [
+                  0.6618310546875,
+                  0.02025,
+                  0.5
+                ]
+              },
+              "FALLBACK": {
+                "components": [
+                  0.66144775390625,
+                  0.0,
+                  0.5
+                ]
+              },
+              "ORACLE": {
+                "components": [
+                  0.75518310546875,
+                  0.0,
+                  0.5
+                ]
+              }
+            }
+          },
+          {
+            "source_id": "DESIGN_SOURCE:11",
+            "roots": 4,
+            "metrics": {
+              "TREE": {
+                "components": [
+                  0.44664794921875,
+                  0.0,
+                  0.25
+                ]
+              },
+              "ONE": {
+                "components": [
+                  0.4469173177083333,
+                  0.0015416666666666667,
+                  0.25
+                ]
+              },
+              "FALLBACK": {
+                "components": [
+                  0.44571668836805556,
+                  0.0,
+                  0.25
+                ]
+              },
+              "ORACLE": {
+                "components": [
+                  0.6971834309895834,
+                  0.0,
+                  0.25
+                ]
+              }
+            }
+          }
+        ],
+        "root_records": [
+          {
+            "root_id": "v6_crossing_rescue_pair_0",
+            "source_id": "DESIGN_SOURCE:00",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.07615234375,
+                  0.018,
+                  0.0
+                ],
+                "utility": 0.05815234375,
+                "regret": 0.018400390625,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.076552734375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.076552734375,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.07615234375,
+                  0.018,
+                  0.0
+                ],
+                "utility": 0.05815234375,
+                "regret": 0.018400390625,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "RIGHT",
+                "components": [
+                  0.076552734375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.076552734375,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": -0.018400390625
+          },
+          {
+            "root_id": "v6_crossing_rescue_pair_1",
+            "source_id": "DESIGN_SOURCE:00",
+            "modes": {
+              "TREE": {
+                "action": "RIGHT",
+                "components": [
+                  0.381865234375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.381865234375,
+                "regret": 0.498994140625,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  0.4276953125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.4276953125,
+                "regret": 0.4531640625,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.6306640625,
+                  0.01,
+                  0.0
+                ],
+                "utility": 0.6206640625,
+                "regret": 0.26019531250000005,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "LEFT",
+                "components": [
+                  0.880859375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.880859375,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.4531640625,
+            "tree_minus_one": -0.04583007812500001
+          },
+          {
+            "root_id": "v6_crossing_rescue_pair_2",
+            "source_id": "DESIGN_SOURCE:00",
+            "modes": {
+              "TREE": {
+                "action": "RIGHT",
+                "components": [
+                  0.3240234375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.3240234375,
+                "regret": 0.04511718749999999,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  0.283203125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.283203125,
+                "regret": 0.0859375,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.2892578125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.2892578125,
+                "regret": 0.07988281250000001,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "LEFT",
+                "components": [
+                  0.369140625,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.369140625,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0859375,
+            "tree_minus_one": 0.04082031250000001
+          },
+          {
+            "root_id": "v6_crossing_rescue_pair_3",
+            "source_id": "DESIGN_SOURCE:00",
+            "modes": {
+              "TREE": {
+                "action": "UP",
+                "components": [
+                  0.50390625,
+                  1.0,
+                  0.0
+                ],
+                "utility": -0.49609375,
+                "regret": 0.91943359375,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  0.50390625,
+                  1.0,
+                  0.0
+                ],
+                "utility": -0.49609375,
+                "regret": 0.91943359375,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.50822265625,
+                  0.9135,
+                  0.0
+                ],
+                "utility": -0.40527734375,
+                "regret": 0.8286171875,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "RIGHT",
+                "components": [
+                  0.51333984375,
+                  0.09,
+                  0.0
+                ],
+                "utility": 0.42333984375,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.91943359375,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v6_spawn_edge_rescue_0",
+            "source_id": "DESIGN_SOURCE:01",
+            "modes": {
+              "TREE": {
+                "action": "UP",
+                "components": [
+                  0.064609375,
+                  1.0,
+                  0.0
+                ],
+                "utility": -0.935390625,
+                "regret": 0.09906250000000005,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  0.064609375,
+                  1.0,
+                  0.0
+                ],
+                "utility": -0.935390625,
+                "regret": 0.09906250000000005,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.063671875,
+                  0.9,
+                  0.0
+                ],
+                "utility": -0.836328125,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  0.063671875,
+                  0.9,
+                  0.0
+                ],
+                "utility": -0.836328125,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.09906250000000005,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v6_spawn_edge_rescue_1",
+            "source_id": "DESIGN_SOURCE:01",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.125390625,
+                  1.0,
+                  0.0
+                ],
+                "utility": -0.874609375,
+                "regret": 1.1263671875,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  0.3517578125,
+                  0.1,
+                  0.0
+                ],
+                "utility": 0.25175781249999996,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.125390625,
+                  1.0,
+                  0.0
+                ],
+                "utility": -0.874609375,
+                "regret": 1.1263671875,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "UP",
+                "components": [
+                  0.3517578125,
+                  0.1,
+                  0.0
+                ],
+                "utility": 0.25175781249999996,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": -1.1263671875
+          },
+          {
+            "root_id": "v6_spawn_edge_rescue_2",
+            "source_id": "DESIGN_SOURCE:01",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.251171875,
+                  0.9,
+                  0.0
+                ],
+                "utility": -0.6488281250000001,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  0.252109375,
+                  1.0,
+                  0.0
+                ],
+                "utility": -0.7478906249999999,
+                "regret": 0.09906249999999983,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.251171875,
+                  0.9,
+                  0.0
+                ],
+                "utility": -0.6488281250000001,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  0.251171875,
+                  0.9,
+                  0.0
+                ],
+                "utility": -0.6488281250000001,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.09906249999999983,
+            "tree_minus_one": 0.09906249999999983
+          },
+          {
+            "root_id": "v6_spawn_edge_rescue_3",
+            "source_id": "DESIGN_SOURCE:01",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.5298828125,
+                  0.1,
+                  0.0
+                ],
+                "utility": 0.42988281250000004,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  0.501171875,
+                  0.9,
+                  0.0
+                ],
+                "utility": -0.398828125,
+                "regret": 0.8287109375,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.5298828125,
+                  0.1,
+                  0.0
+                ],
+                "utility": 0.42988281250000004,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  0.5298828125,
+                  0.1,
+                  0.0
+                ],
+                "utility": 0.42988281250000004,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.8287109375,
+            "tree_minus_one": 0.8287109375
+          },
+          {
+            "root_id": "v6_crossed_vacancy_goal_detour_0",
+            "source_id": "DESIGN_SOURCE:02",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v6_crossed_vacancy_goal_detour_1",
+            "source_id": "DESIGN_SOURCE:02",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v6_crossed_vacancy_goal_detour_2",
+            "source_id": "DESIGN_SOURCE:02",
+            "modes": {
+              "TREE": {
+                "action": "RIGHT",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.7510807291666666,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.7510807291666666,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.7510807291666666,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "UP",
+                "components": [
+                  1.7510807291666666,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.7510807291666666,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.7510807291666666,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v6_crossed_vacancy_goal_detour_3",
+            "source_id": "DESIGN_SOURCE:02",
+            "modes": {
+              "TREE": {
+                "action": "UP",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.5,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.5,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.5,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "LEFT",
+                "components": [
+                  1.5,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.5,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.5,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v6_control_last_pair_spawn_risk",
+            "source_id": "DESIGN_SOURCE:03",
+            "modes": {
+              "TREE": {
+                "action": "RIGHT",
+                "components": [
+                  0.003125,
+                  0.9,
+                  0.0
+                ],
+                "utility": -0.896875,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.003125,
+                  0.9,
+                  0.0
+                ],
+                "utility": -0.896875,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  0.001953125,
+                  1.0,
+                  0.0
+                ],
+                "utility": -0.998046875,
+                "regret": 0.10117187500000002,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "RIGHT",
+                "components": [
+                  0.003125,
+                  0.9,
+                  0.0
+                ],
+                "utility": -0.896875,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v6_control_dense_merge_choice",
+            "source_id": "DESIGN_SOURCE:03",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.0677734375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.0677734375,
+                "regret": 0.007115885416666662,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.032265625,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.032265625,
+                "regret": 0.04262369791666667,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.0677734375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.0677734375,
+                "regret": 0.007115885416666662,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "LEFT",
+                "components": [
+                  0.07488932291666667,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.07488932291666667,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.04262369791666667,
+            "tree_minus_one": 0.035507812500000006
+          },
+          {
+            "root_id": "v6_control_adjacent_1024_goal",
+            "source_id": "DESIGN_SOURCE:03",
+            "modes": {
+              "TREE": {
+                "action": "LEFT",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.21875,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.21875,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.21875,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "UP",
+                "components": [
+                  1.21875,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.21875,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.21875,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v68_source_00",
+            "source_id": "DESIGN_SOURCE:04",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  1.0033919270833334,
+                  0.0,
+                  0.0
+                ],
+                "utility": 1.0033919270833334,
+                "regret": 0.001106770833333215,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  1.0044986979166666,
+                  0.0,
+                  0.0
+                ],
+                "utility": 1.0044986979166666,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  1.0033919270833334,
+                  0.0,
+                  0.0
+                ],
+                "utility": 1.0033919270833334,
+                "regret": 0.001106770833333215,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "UP",
+                "components": [
+                  1.0044986979166666,
+                  0.0,
+                  0.0
+                ],
+                "utility": 1.0044986979166666,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": -0.001106770833333215
+          },
+          {
+            "root_id": "v68_source_01",
+            "source_id": "DESIGN_SOURCE:04",
+            "modes": {
+              "TREE": {
+                "action": "LEFT",
+                "components": [
+                  0.50708984375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.50708984375,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.504716796875,
+                  0.0095,
+                  0.0
+                ],
+                "utility": 0.49521679687500003,
+                "regret": 0.01187304687499996,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  0.50708984375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.50708984375,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "LEFT",
+                "components": [
+                  0.50708984375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.50708984375,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.01187304687499996,
+            "tree_minus_one": 0.01187304687499996
+          },
+          {
+            "root_id": "v68_source_02",
+            "source_id": "DESIGN_SOURCE:04",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  1.0078125,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0078125,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.0078125,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  1.0078125,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0078125,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  1.0078125,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0078125,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0078125,
+            "tree_minus_one": 0.0078125
+          },
+          {
+            "root_id": "v68_source_03",
+            "source_id": "DESIGN_SOURCE:04",
+            "modes": {
+              "TREE": {
+                "action": "UP",
+                "components": [
+                  1.64211181640625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.64211181640625,
+                "regret": 0.0002709960937501421,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  1.64211181640625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.64211181640625,
+                "regret": 0.0002709960937501421,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  1.392349853515625,
+                  0.0,
+                  0.75
+                ],
+                "utility": 2.1423498535156247,
+                "regret": 0.5000329589843755,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "RIGHT",
+                "components": [
+                  1.6423828125,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.6423828125,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0002709960937501421,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v68_source_04",
+            "source_id": "DESIGN_SOURCE:05",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  1.03125,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.03125,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.0365234375,
+                  0.1,
+                  0.0
+                ],
+                "utility": -0.0634765625,
+                "regret": 2.0947265625,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  1.03125,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.03125,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  1.03125,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.03125,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 2.0947265625,
+            "tree_minus_one": 2.0947265625
+          },
+          {
+            "root_id": "v68_source_05",
+            "source_id": "DESIGN_SOURCE:05",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.23678359375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.23678359375,
+                "regret": 0.026116796874999987,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.262529296875,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.262529296875,
+                "regret": 0.00037109374999999556,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.23678359375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.23678359375,
+                "regret": 0.026116796874999987,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "LEFT",
+                "components": [
+                  0.262900390625,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.262900390625,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.00037109374999999556,
+            "tree_minus_one": -0.02574570312499999
+          },
+          {
+            "root_id": "v68_source_06",
+            "source_id": "DESIGN_SOURCE:05",
+            "modes": {
+              "TREE": {
+                "action": "UP",
+                "components": [
+                  1.75,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.75,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  1.75,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.75,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.50037109375,
+                  0.475,
+                  0.0
+                ],
+                "utility": 0.025371093750000018,
+                "regret": 2.72462890625,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "UP",
+                "components": [
+                  1.75,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.75,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v68_source_07",
+            "source_id": "DESIGN_SOURCE:05",
+            "modes": {
+              "TREE": {
+                "action": "RIGHT",
+                "components": [
+                  2.25381982421875,
+                  0.0,
+                  1.0
+                ],
+                "utility": 3.25381982421875,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  2.25381982421875,
+                  0.0,
+                  1.0
+                ],
+                "utility": 3.25381982421875,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  2.25120849609375,
+                  0.0,
+                  1.0
+                ],
+                "utility": 3.25120849609375,
+                "regret": 0.0026113281249999787,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "RIGHT",
+                "components": [
+                  2.25381982421875,
+                  0.0,
+                  1.0
+                ],
+                "utility": 3.25381982421875,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v68_source_08",
+            "source_id": "DESIGN_SOURCE:06",
+            "modes": {
+              "TREE": {
+                "action": "LEFT",
+                "components": [
+                  1.5,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.5,
+                "regret": 0.25,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  1.5,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.5,
+                "regret": 0.25,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  1.5,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.5,
+                "regret": 0.25,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "UP",
+                "components": [
+                  1.75,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.75,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.25,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v68_source_09",
+            "source_id": "DESIGN_SOURCE:06",
+            "modes": {
+              "TREE": {
+                "action": "LEFT",
+                "components": [
+                  1.00390625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.00390625,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  1.00390625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.00390625,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  1.00390625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.00390625,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "LEFT",
+                "components": [
+                  1.00390625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.00390625,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v68_source_10",
+            "source_id": "DESIGN_SOURCE:06",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.04929861111111111,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.04929861111111111,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.032805989583333334,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.032805989583333334,
+                "regret": 0.01649262152777778,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.04929861111111111,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.04929861111111111,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  0.04929861111111111,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.04929861111111111,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.01649262152777778,
+            "tree_minus_one": 0.01649262152777778
+          },
+          {
+            "root_id": "v68_source_11",
+            "source_id": "DESIGN_SOURCE:06",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.5417694498697917,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.5417694498697917,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  0.530751953125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.530751953125,
+                "regret": 0.011017496744791688,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.5417694498697917,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.5417694498697917,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  0.5417694498697917,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.5417694498697917,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.011017496744791688,
+            "tree_minus_one": 0.011017496744791688
+          },
+          {
+            "root_id": "v68_source_12",
+            "source_id": "DESIGN_SOURCE:07",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  1.0625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0625,
+                "regret": 0.025371093750000018,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  1.0625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0625,
+                "regret": 0.025371093750000018,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  1.0625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0625,
+                "regret": 0.025371093750000018,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "LEFT",
+                "components": [
+                  1.08787109375,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.08787109375,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.025371093750000018,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v68_source_13",
+            "source_id": "DESIGN_SOURCE:07",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.11106770833333333,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.11106770833333333,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  0.11046440972222223,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.11046440972222223,
+                "regret": 0.0006032986111111083,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.11106770833333333,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.11106770833333333,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  0.11106770833333333,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.11106770833333333,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0006032986111111083,
+            "tree_minus_one": 0.0006032986111111083
+          },
+          {
+            "root_id": "v68_source_14",
+            "source_id": "DESIGN_SOURCE:07",
+            "modes": {
+              "TREE": {
+                "action": "UP",
+                "components": [
+                  0.72,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.72,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  0.72,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.72,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.42885416666666665,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.42885416666666665,
+                "regret": 0.2911458333333333,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "UP",
+                "components": [
+                  0.72,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.72,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v68_source_15",
+            "source_id": "DESIGN_SOURCE:07",
+            "modes": {
+              "TREE": {
+                "action": "LEFT",
+                "components": [
+                  1.50390625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.50390625,
+                "regret": 0.06289062500000009,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  1.50390625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.50390625,
+                "regret": 0.06289062500000009,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  1.50390625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.50390625,
+                "regret": 0.06289062500000009,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  1.566796875,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.566796875,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.06289062500000009,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v68_source_16",
+            "source_id": "DESIGN_SOURCE:08",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.43892578125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.43892578125,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  0.43840928819444447,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.43840928819444447,
+                "regret": 0.0005164930555555114,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.43892578125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.43892578125,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  0.43892578125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.43892578125,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0005164930555555114,
+            "tree_minus_one": 0.0005164930555555114
+          },
+          {
+            "root_id": "v68_source_17",
+            "source_id": "DESIGN_SOURCE:08",
+            "modes": {
+              "TREE": {
+                "action": "RIGHT",
+                "components": [
+                  0.2535959201388889,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.2535959201388889,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.2535959201388889,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.2535959201388889,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  0.253095703125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.253095703125,
+                "regret": 0.0005002170138888595,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "RIGHT",
+                "components": [
+                  0.2535959201388889,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.2535959201388889,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v68_source_18",
+            "source_id": "DESIGN_SOURCE:08",
+            "modes": {
+              "TREE": {
+                "action": "RIGHT",
+                "components": [
+                  1.500390625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.500390625,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  1.500390625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.500390625,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  0.502109375,
+                  0.91,
+                  0.0
+                ],
+                "utility": -0.40789062500000006,
+                "regret": 2.90828125,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "RIGHT",
+                "components": [
+                  1.500390625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.500390625,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v68_source_19",
+            "source_id": "DESIGN_SOURCE:08",
+            "modes": {
+              "TREE": {
+                "action": "UP",
+                "components": [
+                  1.001953125,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.001953125,
+                "regret": 0.001386718750000071,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  1.001953125,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.001953125,
+                "regret": 0.001386718750000071,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  1.001953125,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.001953125,
+                "regret": 0.001386718750000071,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "LEFT",
+                "components": [
+                  1.00333984375,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.00333984375,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.001386718750000071,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v68_source_20",
+            "source_id": "DESIGN_SOURCE:09",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.00779296875,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.00779296875,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.005201822916666667,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.005201822916666667,
+                "regret": 0.0025911458333333333,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  0.00501953125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.00501953125,
+                "regret": 0.0027734375000000007,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  0.00779296875,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.00779296875,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0025911458333333333,
+            "tree_minus_one": 0.0025911458333333333
+          },
+          {
+            "root_id": "v68_source_21",
+            "source_id": "DESIGN_SOURCE:09",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.76400390625,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.76400390625,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  0.5131640625,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.5131640625,
+                "regret": 0.25083984375,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.76400390625,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.76400390625,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  0.76400390625,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.76400390625,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.25083984375,
+            "tree_minus_one": 0.25083984375
+          },
+          {
+            "root_id": "v68_source_22",
+            "source_id": "DESIGN_SOURCE:09",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.109375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.109375,
+                "regret": 0.00036024305555555636,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.10470703125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.10470703125,
+                "regret": 0.0050282118055555575,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  0.10973524305555556,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.10973524305555556,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "LEFT",
+                "components": [
+                  0.10973524305555556,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.10973524305555556,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0050282118055555575,
+            "tree_minus_one": 0.004667968750000001
+          },
+          {
+            "root_id": "v68_source_23",
+            "source_id": "DESIGN_SOURCE:09",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.015625,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  1.015625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.015625,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  1.015625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.015625,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "LEFT",
+                "components": [
+                  1.015625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.015625,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": -0.015625
+          },
+          {
+            "root_id": "v68_source_24",
+            "source_id": "DESIGN_SOURCE:10",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.110634765625,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.110634765625,
+                "regret": 0.12455078125,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.11099609375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.11099609375,
+                "regret": 0.12418945312500002,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.110634765625,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.110634765625,
+                "regret": 0.12455078125,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "LEFT",
+                "components": [
+                  0.235185546875,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.235185546875,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.12418945312500002,
+            "tree_minus_one": -0.00036132812499999056
+          },
+          {
+            "root_id": "v68_source_25",
+            "source_id": "DESIGN_SOURCE:10",
+            "modes": {
+              "TREE": {
+                "action": "UP",
+                "components": [
+                  1.0625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0625,
+                "regret": 0.25,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  1.0625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0625,
+                "regret": 0.25,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  1.0625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0625,
+                "regret": 0.25,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "LEFT",
+                "components": [
+                  1.3125,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.3125,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.25,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v68_source_26",
+            "source_id": "DESIGN_SOURCE:10",
+            "modes": {
+              "TREE": {
+                "action": "RIGHT",
+                "components": [
+                  1.12890625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.12890625,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  1.12890625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.12890625,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  1.12890625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.12890625,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "LEFT",
+                "components": [
+                  1.12890625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.12890625,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v68_source_27",
+            "source_id": "DESIGN_SOURCE:10",
+            "modes": {
+              "TREE": {
+                "action": "LEFT",
+                "components": [
+                  0.34375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.34375,
+                "regret": 0.0003906249999999778,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.344921875,
+                  0.081,
+                  0.0
+                ],
+                "utility": 0.263921875,
+                "regret": 0.08021875,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  0.34375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.34375,
+                "regret": 0.0003906249999999778,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  0.344140625,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.344140625,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.08021875,
+            "tree_minus_one": 0.07982812500000003
+          },
+          {
+            "root_id": "v68_source_28",
+            "source_id": "DESIGN_SOURCE:11",
+            "modes": {
+              "TREE": {
+                "action": "RIGHT",
+                "components": [
+                  0.7501953125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.7501953125,
+                "regret": 0.5003841145833332,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  0.7512727864583333,
+                  0.006166666666666667,
+                  0.0
+                ],
+                "utility": 0.7451061197916666,
+                "regret": 0.5054733072916666,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.7562358940972222,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.7562358940972222,
+                "regret": 0.494343532986111,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "LEFT",
+                "components": [
+                  1.2505794270833333,
+                  0.0,
+                  0.0
+                ],
+                "utility": 1.2505794270833333,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.5054733072916666,
+            "tree_minus_one": 0.005089192708333412
+          },
+          {
+            "root_id": "v68_source_29",
+            "source_id": "DESIGN_SOURCE:11",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.5017578125000002,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.5017578125000002,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.5017578125000002,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "RIGHT",
+                "components": [
+                  1.5017578125,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.5017578125,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.5017578125000002,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v68_source_30",
+            "source_id": "DESIGN_SOURCE:11",
+            "modes": {
+              "TREE": {
+                "action": "RIGHT",
+                "components": [
+                  0.016123046875,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.016123046875,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.016123046875,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.016123046875,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.013154296875,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.013154296875,
+                "regret": 0.002968750000000001,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "RIGHT",
+                "components": [
+                  0.016123046875,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.016123046875,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v68_source_31",
+            "source_id": "DESIGN_SOURCE:11",
+            "modes": {
+              "TREE": {
+                "action": "RIGHT",
+                "components": [
+                  0.0202734375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.0202734375,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.0202734375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.0202734375,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.0134765625,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.0134765625,
+                "regret": 0.006796875000000001,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "RIGHT",
+                "components": [
+                  0.0202734375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.0202734375,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": 0.0
+          }
+        ]
+      },
+      "TARGET": {
+        "roots": 24,
+        "design_groups": 6,
+        "primary_weighting": "ROOT_MEAN",
+        "aggregates": {
+          "ROOT_MEAN": {
+            "metrics": {
+              "TREE": {
+                "components": [
+                  0.616309629087095,
+                  0.058791666666666666,
+                  0.4166666666666667
+                ],
+                "utility": 0.974184629087095
+              },
+              "ONE": {
+                "components": [
+                  0.6320557273582176,
+                  0.04172916666666667,
+                  0.4166666666666667
+                ],
+                "utility": 1.0069932273582176
+              },
+              "FALLBACK": {
+                "components": [
+                  0.5410145568847656,
+                  0.12325000000000001,
+                  0.375
+                ],
+                "utility": 0.7927645568847657
+              },
+              "ORACLE": {
+                "components": [
+                  0.7062522176106771,
+                  0.041666666666666664,
+                  0.4166666666666667
+                ],
+                "utility": 1.0812522176106771
+              }
+            },
+            "headroom": 0.07425899025245952,
+            "tree_minus_one": -0.03280859827112259,
+            "oracle_minus_tree": 0.10706758852358211,
+            "informative": true,
+            "headroom_closed_fraction": -0.44181314827447365
+          },
+          "DESIGN_GROUP_MEAN": {
+            "metrics": {
+              "TREE": {
+                "components": [
+                  0.616309629087095,
+                  0.058791666666666666,
+                  0.4166666666666667
+                ],
+                "utility": 0.974184629087095
+              },
+              "ONE": {
+                "components": [
+                  0.6320557273582176,
+                  0.04172916666666667,
+                  0.4166666666666667
+                ],
+                "utility": 1.0069932273582176
+              },
+              "FALLBACK": {
+                "components": [
+                  0.5410145568847656,
+                  0.12325000000000001,
+                  0.375
+                ],
+                "utility": 0.7927645568847657
+              },
+              "ORACLE": {
+                "components": [
+                  0.7062522176106771,
+                  0.041666666666666664,
+                  0.4166666666666667
+                ],
+                "utility": 1.0812522176106771
+              }
+            },
+            "headroom": 0.07425899025245952,
+            "tree_minus_one": -0.03280859827112259,
+            "oracle_minus_tree": 0.10706758852358211,
+            "informative": true,
+            "headroom_closed_fraction": -0.44181314827447365
+          }
+        },
+        "diagnostics": {
+          "headroom_roots": 13,
+          "tree_improved_roots": 5,
+          "tree_worsened_roots": 8,
+          "tree_same_value_roots": 11,
+          "tree_one_action_changes": 16,
+          "fallback_counts": {
+            "TREE": 0,
+            "ONE": 0
+          },
+          "oracle_action_disagreements": {
+            "TREE": 17,
+            "ONE": 18
+          },
+          "positive_regret_roots": {
+            "TREE": 15,
+            "ONE": 13
+          }
+        },
+        "groups": [
+          {
+            "source_id": "DESIGN_SOURCE:00",
+            "roots": 4,
+            "metrics": {
+              "TREE": {
+                "components": [
+                  0.5325058322482639,
+                  0.0,
+                  0.5
+                ]
+              },
+              "ONE": {
+                "components": [
+                  0.5333882649739583,
+                  0.0,
+                  0.5
+                ]
+              },
+              "FALLBACK": {
+                "components": [
+                  0.5325058322482639,
+                  0.0,
+                  0.5
+                ]
+              },
+              "ORACLE": {
+                "components": [
+                  0.6993994140625001,
+                  0.0,
+                  0.5
+                ]
+              }
+            }
+          },
+          {
+            "source_id": "DESIGN_SOURCE:01",
+            "roots": 4,
+            "metrics": {
+              "TREE": {
+                "components": [
+                  0.657554931640625,
+                  0.0,
+                  0.25
+                ]
+              },
+              "ONE": {
+                "components": [
+                  0.7245540364583333,
+                  0.0,
+                  0.25
+                ]
+              },
+              "FALLBACK": {
+                "components": [
+                  0.578990478515625,
+                  0.1375,
+                  0.25
+                ]
+              },
+              "ORACLE": {
+                "components": [
+                  0.8471291097005208,
+                  0.0,
+                  0.25
+                ]
+              }
+            }
+          },
+          {
+            "source_id": "DESIGN_SOURCE:02",
+            "roots": 4,
+            "metrics": {
+              "TREE": {
+                "components": [
+                  0.8790256076388889,
+                  0.00075,
+                  0.75
+                ]
+              },
+              "ONE": {
+                "components": [
+                  0.8792371961805556,
+                  0.0,
+                  0.75
+                ]
+              },
+              "FALLBACK": {
+                "components": [
+                  0.8779345703125,
+                  0.00075,
+                  0.75
+                ]
+              },
+              "ORACLE": {
+                "components": [
+                  0.8812456597222222,
+                  0.0,
+                  0.75
+                ]
+              }
+            }
+          },
+          {
+            "source_id": "DESIGN_SOURCE:03",
+            "roots": 4,
+            "metrics": {
+              "TREE": {
+                "components": [
+                  0.14888671875,
+                  0.25,
+                  0.0
+                ]
+              },
+              "ONE": {
+                "components": [
+                  0.16877766927083332,
+                  0.25,
+                  0.0
+                ]
+              },
+              "FALLBACK": {
+                "components": [
+                  0.09671749538845487,
+                  0.25,
+                  0.0
+                ]
+              },
+              "ORACLE": {
+                "components": [
+                  0.29543915473090276,
+                  0.25,
+                  0.0
+                ]
+              }
+            }
+          },
+          {
+            "source_id": "DESIGN_SOURCE:04",
+            "roots": 4,
+            "metrics": {
+              "TREE": {
+                "components": [
+                  1.211079345703125,
+                  0.0,
+                  0.75
+                ]
+              },
+              "ONE": {
+                "components": [
+                  1.211079345703125,
+                  0.0,
+                  0.75
+                ]
+              },
+              "FALLBACK": {
+                "components": [
+                  0.8901123046875,
+                  0.25,
+                  0.5
+                ]
+              },
+              "ORACLE": {
+                "components": [
+                  1.234516845703125,
+                  0.0,
+                  0.75
+                ]
+              }
+            }
+          },
+          {
+            "source_id": "DESIGN_SOURCE:05",
+            "roots": 4,
+            "metrics": {
+              "TREE": {
+                "components": [
+                  0.26880533854166666,
+                  0.10200000000000001,
+                  0.25
+                ]
+              },
+              "ONE": {
+                "components": [
+                  0.2752978515625,
+                  0.000375,
+                  0.25
+                ]
+              },
+              "FALLBACK": {
+                "components": [
+                  0.26982666015625,
+                  0.10125,
+                  0.25
+                ]
+              },
+              "ORACLE": {
+                "components": [
+                  0.27978312174479164,
+                  0.0,
+                  0.25
+                ]
+              }
+            }
+          }
+        ],
+        "root_records": [
+          {
+            "root_id": "v69_h3_00",
+            "source_id": "DESIGN_SOURCE:00",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.0970947265625,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.0970947265625,
+                "regret": 0.010913085937499997,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  0.1033642578125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.1033642578125,
+                "regret": 0.0046435546874999956,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.0970947265625,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.0970947265625,
+                "regret": 0.010913085937499997,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "RIGHT",
+                "components": [
+                  0.1080078125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.1080078125,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0046435546874999956,
+            "tree_minus_one": -0.006269531250000002
+          },
+          {
+            "root_id": "v69_h3_01",
+            "source_id": "DESIGN_SOURCE:00",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  1.00390625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.00390625,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  1.00390625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.00390625,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  1.00390625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.00390625,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  1.00390625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.00390625,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v69_h3_02",
+            "source_id": "DESIGN_SOURCE:00",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.013397352430555556,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.013397352430555556,
+                "regret": 2.0616319444444198e-05,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.010657552083333334,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.010657552083333334,
+                "regret": 0.0027604166666666662,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.013397352430555556,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.013397352430555556,
+                "regret": 2.0616319444444198e-05,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "LEFT",
+                "components": [
+                  0.01341796875,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.01341796875,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0027604166666666662,
+            "tree_minus_one": 0.002739800347222222
+          },
+          {
+            "root_id": "v69_h3_03",
+            "source_id": "DESIGN_SOURCE:00",
+            "modes": {
+              "TREE": {
+                "action": "LEFT",
+                "components": [
+                  1.015625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.015625,
+                "regret": 0.6566406250000001,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  1.015625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.015625,
+                "regret": 0.6566406250000001,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  1.015625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.015625,
+                "regret": 0.6566406250000001,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  1.672265625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.672265625,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.6566406250000001,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v69_h3_04",
+            "source_id": "DESIGN_SOURCE:01",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.1270458984375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.1270458984375,
+                "regret": 0.25755615234374996,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.38460205078125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.38460205078125,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.1270458984375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.1270458984375,
+                "regret": 0.25755615234374996,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "RIGHT",
+                "components": [
+                  0.38460205078125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.38460205078125,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": -0.25755615234374996
+          },
+          {
+            "root_id": "v69_h3_05",
+            "source_id": "DESIGN_SOURCE:01",
+            "modes": {
+              "TREE": {
+                "action": "LEFT",
+                "components": [
+                  0.313916015625,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.313916015625,
+                "regret": 0.18692708333333335,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.3243562825520833,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.3243562825520833,
+                "regret": 0.17648681640625002,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  0.313916015625,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.313916015625,
+                "regret": 0.18692708333333335,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "UP",
+                "components": [
+                  0.5008430989583333,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.5008430989583333,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.17648681640625002,
+            "tree_minus_one": -0.01044026692708333
+          },
+          {
+            "root_id": "v69_h3_06",
+            "source_id": "DESIGN_SOURCE:01",
+            "modes": {
+              "TREE": {
+                "action": "RIGHT",
+                "components": [
+                  0.9392578125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.9392578125,
+                "regret": 0.31074218750000004,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.9392578125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.9392578125,
+                "regret": 0.31074218750000004,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  0.625,
+                  0.55,
+                  0.0
+                ],
+                "utility": 0.07499999999999996,
+                "regret": 1.175,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "UP",
+                "components": [
+                  1.25,
+                  0.0,
+                  0.0
+                ],
+                "utility": 1.25,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.31074218750000004,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v69_h3_07",
+            "source_id": "DESIGN_SOURCE:01",
+            "modes": {
+              "TREE": {
+                "action": "UP",
+                "components": [
+                  1.25,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.25,
+                "regret": 0.0030712890624999822,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  1.25,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.25,
+                "regret": 0.0030712890624999822,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  1.25,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.25,
+                "regret": 0.0030712890624999822,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "LEFT",
+                "components": [
+                  1.2530712890625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.2530712890625,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0030712890624999822,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v69_h3_08",
+            "source_id": "DESIGN_SOURCE:02",
+            "modes": {
+              "TREE": {
+                "action": "UP",
+                "components": [
+                  1.5047417534722223,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.5047417534722225,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  1.5047417534722223,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.5047417534722225,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  1.5003776041666668,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.5003776041666668,
+                "regret": 0.004364149305555731,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "UP",
+                "components": [
+                  1.5047417534722223,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.5047417534722225,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v69_h3_09",
+            "source_id": "DESIGN_SOURCE:02",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  1.00390625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.00390625,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.00390625,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  1.00390625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.00390625,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  1.00390625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.00390625,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.00390625,
+            "tree_minus_one": 0.00390625
+          },
+          {
+            "root_id": "v69_h3_10",
+            "source_id": "DESIGN_SOURCE:02",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  1.001953125,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.001953125,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  1.001953125,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.001953125,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  1.001953125,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.001953125,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  1.001953125,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.001953125,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v69_h3_11",
+            "source_id": "DESIGN_SOURCE:02",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.005501302083333334,
+                  0.003,
+                  0.0
+                ],
+                "utility": 0.0025013020833333337,
+                "regret": 0.011880208333333333,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.01025390625,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.01025390625,
+                "regret": 0.004127604166666667,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.005501302083333334,
+                  0.003,
+                  0.0
+                ],
+                "utility": 0.0025013020833333337,
+                "regret": 0.011880208333333333,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "LEFT",
+                "components": [
+                  0.014381510416666667,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.014381510416666667,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.004127604166666667,
+            "tree_minus_one": -0.007752604166666666
+          },
+          {
+            "root_id": "v69_h3_12",
+            "source_id": "DESIGN_SOURCE:03",
+            "modes": {
+              "TREE": {
+                "action": "RIGHT",
+                "components": [
+                  0.0078125,
+                  1.0,
+                  0.0
+                ],
+                "utility": -0.9921875,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.0078125,
+                  1.0,
+                  0.0
+                ],
+                "utility": -0.9921875,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.0078125,
+                  1.0,
+                  0.0
+                ],
+                "utility": -0.9921875,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  0.0078125,
+                  1.0,
+                  0.0
+                ],
+                "utility": -0.9921875,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v69_h3_13",
+            "source_id": "DESIGN_SOURCE:03",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.022109375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.022109375,
+                "regret": 0.0074978298611111105,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.02959635416666667,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.02959635416666667,
+                "regret": 1.0850694444442671e-05,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  0.02960720486111111,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.02960720486111111,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "LEFT",
+                "components": [
+                  0.02960720486111111,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.02960720486111111,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 1.0850694444442671e-05,
+            "tree_minus_one": -0.007486979166666668
+          },
+          {
+            "root_id": "v69_h3_14",
+            "source_id": "DESIGN_SOURCE:03",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.303896484375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.303896484375,
+                "regret": 0.2749521484375,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.07221354166666667,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.07221354166666667,
+                "regret": 0.5066350911458333,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  0.08772176106770833,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.08772176106770833,
+                "regret": 0.49112687174479164,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "UP",
+                "components": [
+                  0.5788486328125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.5788486328125,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.5066350911458333,
+            "tree_minus_one": 0.23168294270833334
+          },
+          {
+            "root_id": "v69_h3_15",
+            "source_id": "DESIGN_SOURCE:03",
+            "modes": {
+              "TREE": {
+                "action": "LEFT",
+                "components": [
+                  0.261728515625,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.261728515625,
+                "regret": 0.30375976562499996,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.56548828125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.56548828125,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  0.261728515625,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.261728515625,
+                "regret": 0.30375976562499996,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "RIGHT",
+                "components": [
+                  0.56548828125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.56548828125,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": -0.30375976562499996
+          },
+          {
+            "root_id": "v69_h3_16",
+            "source_id": "DESIGN_SOURCE:04",
+            "modes": {
+              "TREE": {
+                "action": "RIGHT",
+                "components": [
+                  1.5625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.5625,
+                "regret": 0.09375,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  1.5625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.5625,
+                "regret": 0.09375,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  1.5625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.5625,
+                "regret": 0.09375,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  1.65625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.65625,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.09375,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v69_h3_17",
+            "source_id": "DESIGN_SOURCE:04",
+            "modes": {
+              "TREE": {
+                "action": "RIGHT",
+                "components": [
+                  0.7661923828125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.7661923828125,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.7661923828125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.7661923828125,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  0.48056640625,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.48056640625,
+                "regret": 0.2856259765625,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "RIGHT",
+                "components": [
+                  0.7661923828125,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.7661923828125,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v69_h3_18",
+            "source_id": "DESIGN_SOURCE:04",
+            "modes": {
+              "TREE": {
+                "action": "UP",
+                "components": [
+                  1.5,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.5,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  1.5,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.5,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.5017578125,
+                  1.0,
+                  0.0
+                ],
+                "utility": -0.49824218750000004,
+                "regret": 2.9982421875,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "UP",
+                "components": [
+                  1.5,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.5,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v69_h3_19",
+            "source_id": "DESIGN_SOURCE:04",
+            "modes": {
+              "TREE": {
+                "action": "UP",
+                "components": [
+                  1.015625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.015625,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "UP",
+                "components": [
+                  1.015625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.015625,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  1.015625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.015625,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  1.015625,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.015625,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": 0.0
+          },
+          {
+            "root_id": "v69_h3_20",
+            "source_id": "DESIGN_SOURCE:05",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  1.005859375,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.005859375,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  1.0,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.0,
+                "regret": 0.005859375,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  1.005859375,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.005859375,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "DOWN",
+                "components": [
+                  1.005859375,
+                  0.0,
+                  1.0
+                ],
+                "utility": 2.005859375,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.005859375,
+            "tree_minus_one": 0.005859375
+          },
+          {
+            "root_id": "v69_h3_21",
+            "source_id": "DESIGN_SOURCE:05",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.02126953125,
+                  0.405,
+                  0.0
+                ],
+                "utility": -0.38373046875000005,
+                "regret": 0.42279296875000005,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.0390625,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.0390625,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "DOWN",
+                "components": [
+                  0.02126953125,
+                  0.405,
+                  0.0
+                ],
+                "utility": -0.38373046875000005,
+                "regret": 0.42279296875000005,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "LEFT",
+                "components": [
+                  0.0390625,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.0390625,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": -0.42279296875000005
+          },
+          {
+            "root_id": "v69_h3_22",
+            "source_id": "DESIGN_SOURCE:05",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.0296875,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.0296875,
+                "regret": 0.00023600260416666713,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.017841796875,
+                  0.0015,
+                  0.0
+                ],
+                "utility": 0.016341796874999998,
+                "regret": 0.013581705729166667,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  0.029923502604166666,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.029923502604166666,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "LEFT",
+                "components": [
+                  0.029923502604166666,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.029923502604166666,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.013581705729166667,
+            "tree_minus_one": 0.013345703125
+          },
+          {
+            "root_id": "v69_h3_23",
+            "source_id": "DESIGN_SOURCE:05",
+            "modes": {
+              "TREE": {
+                "action": "DOWN",
+                "components": [
+                  0.018404947916666668,
+                  0.003,
+                  0.0
+                ],
+                "utility": 0.015404947916666668,
+                "regret": 0.028882161458333333,
+                "fallback": false
+              },
+              "ONE": {
+                "action": "RIGHT",
+                "components": [
+                  0.044287109375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.044287109375,
+                "regret": 0.0,
+                "fallback": false
+              },
+              "FALLBACK": {
+                "action": "LEFT",
+                "components": [
+                  0.022254231770833334,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.022254231770833334,
+                "regret": 0.022032877604166667,
+                "fallback": false
+              },
+              "ORACLE": {
+                "action": "RIGHT",
+                "components": [
+                  0.044287109375,
+                  0.0,
+                  0.0
+                ],
+                "utility": 0.044287109375,
+                "regret": 0.0,
+                "fallback": false
+              }
+            },
+            "headroom": 0.0,
+            "tree_minus_one": -0.028882161458333333
+          }
+        ]
+      }
+    },
+    "learned_splits": 1,
+    "candidate_reasons": {
+      "insufficient_fit_child_roots": 122,
+      "positive_utility": 24,
+      "utility_not_positive": 14
+    },
+    "new_environment_samples": 0,
+    "new_source_games": 0,
+    "new_native_weight_updates": 0
+  },
+  "rational_restoration": {
+    "maximum_probability_restoration": 2.2204460492503132e-17,
+    "maximum_reward_restoration": 1.1102230246251565e-16
+  },
+  "costs": {
+    "new_environment_samples": 0,
+    "physical_branches_replayed": 0,
+    "new_source_games": 0,
+    "new_native_weight_updates": 0,
+    "inherited_cost_refs": [
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_learning_v68/manifest.json",
+        "fields": [
+          "source",
+          "models"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_composition_v69/manifest.json",
+        "fields": [
+          "acquisition",
+          "source_semantics_reference"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_composition_v69/targets.jsonl",
+        "fields": [
+          "arms.*.costs",
+          "ground",
+          "portable",
+          "case_seconds"
+        ]
+      },
+      {
+        "path": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v177_runtime_tmp/readonly_preflight.json",
+        "fields": [
+          "costs"
+        ]
+      }
+    ],
+    "test_refs": [
+      "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v177_runtime_tmp/core_checks.json",
+      "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v177_runtime_tmp/runner_checks.json",
+      "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/v177_runtime_tmp/analyzer_checks.json"
+    ],
+    "original_run_costs": {
+      "source_evaluation": {
+        "counts": {
+          "kernel_cells_read": 6190,
+          "kernel_probability_recoveries": 27855,
+          "probability_grid_changed_atoms": 10700,
+          "probability_grid_max_error": 2.2204460492503132e-17,
+          "kernel_reward_recoveries": 27855,
+          "reward_grid_changed_atoms": 200,
+          "reward_grid_max_error": 1.1102230246251565e-16,
+          "kernel_outcomes_read": 27855,
+          "horizon_edge_checks": 27855,
+          "kernel_rows_read": 19795,
+          "probability_mass_checks": 19795,
+          "terminal_vector_initializations": 7,
+          "teacher_policy_reads": 6183,
+          "teacher_outcomes_evaluated": 8728,
+          "teacher_component_accumulations": 26184,
+          "teacher_action_rows_evaluated": 6183,
+          "teacher_states_evaluated": 6183,
+          "root_outcomes_evaluated": 609,
+          "root_component_accumulations": 1827,
+          "root_action_rows_evaluated": 169,
+          "oracle_utility_evaluations": 169,
+          "root_labels_emitted": 47
+        },
+        "seconds": 0.5434244320058497
+      },
+      "learning": {
+        "seconds": 0.13736739500018302,
+        "one_fit_counts": {
+          "source_fold_assignments": 12,
+          "examples_examined": 47,
+          "paired_vector_labels": 233,
+          "paired_component_subtractions": 699,
+          "examples_fitted": 47,
+          "root_feature_tile_reads": 752,
+          "legal_action_reads": 169,
+          "immediate_reward_reads": 169,
+          "exact_action_vector_reads": 169,
+          "label_component_reads": 507,
+          "tail_reward_subtractions": 169,
+          "utility_immediate_reward_loads": 169,
+          "observed_terminal_action_averages": 169
+        },
+        "one_node_fit_counts": {
+          "leaf_fits": 1,
+          "leaf_fit_root_visits": 47,
+          "leaf_pair_observations": 233,
+          "laplacian_scalar_accumulations": 932,
+          "rhs_component_accumulations": 1398,
+          "laplacian_solves": 1,
+          "laplacian_matrix_cells": 16,
+          "laplacian_rhs_cells": 12,
+          "zero_sum_constraint_rows": 1,
+          "zero_sum_constraint_cells": 4,
+          "centered_solver_matrix_cells": 20,
+          "centered_solver_rhs_cells": 15,
+          "loss_component_residuals": 699,
+          "full_discovery_node_fits": 1
+        },
+        "tree_fit_counts": {
+          "source_fold_assignments": 12,
+          "examples_examined": 47,
+          "paired_vector_labels": 233,
+          "paired_component_subtractions": 699,
+          "examples_fitted": 47,
+          "root_feature_tile_reads": 752,
+          "legal_action_reads": 169,
+          "immediate_reward_reads": 169,
+          "exact_action_vector_reads": 169,
+          "label_component_reads": 507,
+          "tail_reward_subtractions": 169,
+          "utility_immediate_reward_loads": 169,
+          "observed_terminal_action_averages": 169
+        },
+        "tree_search_counts": {
+          "utility_search_nodes_evaluated": 3,
+          "utility_candidates_evaluated": 160,
+          "utility_split_feature_threshold_tests": 7520,
+          "utility_structurally_eligible_candidates": 38,
+          "leaf_fits": 228,
+          "leaf_fit_root_visits": 3572,
+          "leaf_pair_observations": 17708,
+          "laplacian_scalar_accumulations": 70832,
+          "rhs_component_accumulations": 106248,
+          "laplacian_solves": 228,
+          "laplacian_matrix_cells": 3648,
+          "laplacian_rhs_cells": 2736,
+          "zero_sum_constraint_rows": 228,
+          "zero_sum_constraint_cells": 912,
+          "centered_solver_matrix_cells": 4560,
+          "centered_solver_rhs_cells": 3420,
+          "loss_component_residuals": 53124,
+          "crossfit_parent_leaf_fits": 76,
+          "crossfit_child_leaf_fits": 152,
+          "crossfit_policy_support_checks": 3572,
+          "crossfit_action_support_lookups": 12844,
+          "crossfit_component_membership_lookups": 12844,
+          "crossfit_coefficient_component_reads": 38532,
+          "crossfit_exact_reward_reads": 12844,
+          "crossfit_utility_evaluations": 12844,
+          "crossfit_supported_policy_decisions": 3572,
+          "utility_comparable_candidates": 38,
+          "crossfit_observed_terminal_component_reads": 10716,
+          "crossfit_actual_component_subtractions": 5358,
+          "crossfit_source_component_accumulations": 5358,
+          "crossfit_source_component_normalizations": 1368,
+          "crossfit_source_utility_evaluations": 456,
+          "crossfit_direction_scores": 76,
+          "utility_positive_candidate_comparisons": 24,
+          "utility_global_candidate_comparisons": 1,
+          "utility_splits_applied": 1,
+          "utility_nodes_without_two_fit_children": 2
+        },
+        "tree_node_fit_counts": {
+          "leaf_fits": 3,
+          "leaf_fit_root_visits": 94,
+          "leaf_pair_observations": 466,
+          "laplacian_scalar_accumulations": 1864,
+          "rhs_component_accumulations": 2796,
+          "laplacian_solves": 3,
+          "laplacian_matrix_cells": 48,
+          "laplacian_rhs_cells": 36,
+          "zero_sum_constraint_rows": 3,
+          "zero_sum_constraint_cells": 12,
+          "centered_solver_matrix_cells": 60,
+          "centered_solver_rhs_cells": 45,
+          "loss_component_residuals": 1398,
+          "full_discovery_node_fits": 3
+        }
+      },
+      "decision_counts": {
+        "SOURCE": {
+          "partition_decisions": 94,
+          "partition_legal_action_reads": 338,
+          "partition_node_lookups": 94,
+          "partition_feature_threshold_tests": 47,
+          "partition_leaf_records_examined": 113,
+          "partition_action_support_lookups": 338,
+          "partition_pair_support_lookups": 466,
+          "partition_coefficient_component_reads": 1014,
+          "partition_immediate_reward_reads": 338,
+          "partition_reward_additions": 338,
+          "partition_predicted_pair_component_subtractions": 1398,
+          "partition_utility_evaluations": 338,
+          "partition_group_lookups": 47
+        },
+        "TARGET": {
+          "partition_decisions": 48,
+          "partition_legal_action_reads": 182,
+          "partition_node_lookups": 48,
+          "partition_feature_threshold_tests": 24,
+          "partition_leaf_records_examined": 56,
+          "partition_action_support_lookups": 182,
+          "partition_pair_support_lookups": 262,
+          "partition_coefficient_component_reads": 546,
+          "partition_immediate_reward_reads": 182,
+          "partition_reward_additions": 182,
+          "partition_predicted_pair_component_subtractions": 786,
+          "partition_utility_evaluations": 182,
+          "partition_group_lookups": 24
+        }
+      },
+      "target_evaluations": [
+        {
+          "root_id": "v69_h3_00",
+          "counts": {
+            "kernel_cells_read": 125,
+            "kernel_rational_outcomes_loaded": 507,
+            "kernel_outcomes_read": 507,
+            "horizon_edge_checks": 507,
+            "kernel_rows_read": 376,
+            "probability_mass_checks": 376,
+            "terminal_vector_initializations": 2,
+            "teacher_policy_reads": 123,
+            "teacher_outcomes_evaluated": 168,
+            "teacher_component_accumulations": 504,
+            "teacher_action_rows_evaluated": 123,
+            "teacher_states_evaluated": 123,
+            "root_outcomes_evaluated": 12,
+            "root_component_accumulations": 36,
+            "root_action_rows_evaluated": 4,
+            "oracle_utility_evaluations": 4,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.005990234996716026
+        },
+        {
+          "root_id": "v69_h3_01",
+          "counts": {
+            "kernel_cells_read": 99,
+            "kernel_rational_outcomes_loaded": 393,
+            "kernel_outcomes_read": 393,
+            "horizon_edge_checks": 393,
+            "kernel_rows_read": 293,
+            "probability_mass_checks": 293,
+            "terminal_vector_initializations": 5,
+            "teacher_policy_reads": 94,
+            "teacher_outcomes_evaluated": 118,
+            "teacher_component_accumulations": 354,
+            "teacher_action_rows_evaluated": 94,
+            "teacher_states_evaluated": 94,
+            "root_outcomes_evaluated": 10,
+            "root_component_accumulations": 30,
+            "root_action_rows_evaluated": 4,
+            "oracle_utility_evaluations": 4,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.005165697002667002
+        },
+        {
+          "root_id": "v69_h3_02",
+          "counts": {
+            "kernel_cells_read": 304,
+            "kernel_rational_outcomes_loaded": 1275,
+            "kernel_outcomes_read": 1275,
+            "horizon_edge_checks": 1275,
+            "kernel_rows_read": 918,
+            "probability_mass_checks": 918,
+            "terminal_vector_initializations": 2,
+            "teacher_policy_reads": 302,
+            "teacher_outcomes_evaluated": 410,
+            "teacher_component_accumulations": 1230,
+            "teacher_action_rows_evaluated": 302,
+            "teacher_states_evaluated": 302,
+            "root_outcomes_evaluated": 24,
+            "root_component_accumulations": 72,
+            "root_action_rows_evaluated": 4,
+            "oracle_utility_evaluations": 4,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.028801751999708358
+        },
+        {
+          "root_id": "v69_h3_03",
+          "counts": {
+            "kernel_cells_read": 90,
+            "kernel_rational_outcomes_loaded": 350,
+            "kernel_outcomes_read": 350,
+            "horizon_edge_checks": 350,
+            "kernel_rows_read": 258,
+            "probability_mass_checks": 258,
+            "terminal_vector_initializations": 5,
+            "teacher_policy_reads": 85,
+            "teacher_outcomes_evaluated": 112,
+            "teacher_component_accumulations": 336,
+            "teacher_action_rows_evaluated": 85,
+            "teacher_states_evaluated": 85,
+            "root_outcomes_evaluated": 14,
+            "root_component_accumulations": 42,
+            "root_action_rows_evaluated": 4,
+            "oracle_utility_evaluations": 4,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.0051257759987493046
+        },
+        {
+          "root_id": "v69_h3_04",
+          "counts": {
+            "kernel_cells_read": 181,
+            "kernel_rational_outcomes_loaded": 725,
+            "kernel_outcomes_read": 725,
+            "horizon_edge_checks": 725,
+            "kernel_rows_read": 562,
+            "probability_mass_checks": 562,
+            "terminal_vector_initializations": 3,
+            "teacher_policy_reads": 178,
+            "teacher_outcomes_evaluated": 253,
+            "teacher_component_accumulations": 759,
+            "teacher_action_rows_evaluated": 178,
+            "teacher_states_evaluated": 178,
+            "root_outcomes_evaluated": 16,
+            "root_component_accumulations": 48,
+            "root_action_rows_evaluated": 4,
+            "oracle_utility_evaluations": 4,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.008357271006389055
+        },
+        {
+          "root_id": "v69_h3_05",
+          "counts": {
+            "kernel_cells_read": 429,
+            "kernel_rational_outcomes_loaded": 1816,
+            "kernel_outcomes_read": 1816,
+            "horizon_edge_checks": 1816,
+            "kernel_rows_read": 1321,
+            "probability_mass_checks": 1321,
+            "terminal_vector_initializations": 2,
+            "teacher_policy_reads": 427,
+            "teacher_outcomes_evaluated": 588,
+            "teacher_component_accumulations": 1764,
+            "teacher_action_rows_evaluated": 427,
+            "teacher_states_evaluated": 427,
+            "root_outcomes_evaluated": 28,
+            "root_component_accumulations": 84,
+            "root_action_rows_evaluated": 4,
+            "oracle_utility_evaluations": 4,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.017965551000088453
+        },
+        {
+          "root_id": "v69_h3_06",
+          "counts": {
+            "kernel_cells_read": 68,
+            "kernel_rational_outcomes_loaded": 280,
+            "kernel_outcomes_read": 280,
+            "horizon_edge_checks": 280,
+            "kernel_rows_read": 186,
+            "probability_mass_checks": 186,
+            "terminal_vector_initializations": 3,
+            "teacher_policy_reads": 65,
+            "teacher_outcomes_evaluated": 98,
+            "teacher_component_accumulations": 294,
+            "teacher_action_rows_evaluated": 65,
+            "teacher_states_evaluated": 65,
+            "root_outcomes_evaluated": 12,
+            "root_component_accumulations": 36,
+            "root_action_rows_evaluated": 4,
+            "oracle_utility_evaluations": 4,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.0044932419987162575
+        },
+        {
+          "root_id": "v69_h3_07",
+          "counts": {
+            "kernel_cells_read": 70,
+            "kernel_rational_outcomes_loaded": 259,
+            "kernel_outcomes_read": 259,
+            "horizon_edge_checks": 259,
+            "kernel_rows_read": 198,
+            "probability_mass_checks": 198,
+            "terminal_vector_initializations": 5,
+            "teacher_policy_reads": 65,
+            "teacher_outcomes_evaluated": 87,
+            "teacher_component_accumulations": 261,
+            "teacher_action_rows_evaluated": 65,
+            "teacher_states_evaluated": 65,
+            "root_outcomes_evaluated": 10,
+            "root_component_accumulations": 30,
+            "root_action_rows_evaluated": 4,
+            "oracle_utility_evaluations": 4,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.004051564996188972
+        },
+        {
+          "root_id": "v69_h3_08",
+          "counts": {
+            "kernel_cells_read": 155,
+            "kernel_rational_outcomes_loaded": 668,
+            "kernel_outcomes_read": 668,
+            "horizon_edge_checks": 668,
+            "kernel_rows_read": 494,
+            "probability_mass_checks": 494,
+            "terminal_vector_initializations": 5,
+            "teacher_policy_reads": 150,
+            "teacher_outcomes_evaluated": 203,
+            "teacher_component_accumulations": 609,
+            "teacher_action_rows_evaluated": 150,
+            "teacher_states_evaluated": 150,
+            "root_outcomes_evaluated": 20,
+            "root_component_accumulations": 60,
+            "root_action_rows_evaluated": 4,
+            "oracle_utility_evaluations": 4,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.007421852998959366
+        },
+        {
+          "root_id": "v69_h3_09",
+          "counts": {
+            "kernel_cells_read": 2,
+            "kernel_rational_outcomes_loaded": 4,
+            "kernel_outcomes_read": 4,
+            "horizon_edge_checks": 4,
+            "kernel_rows_read": 4,
+            "probability_mass_checks": 4,
+            "terminal_vector_initializations": 1,
+            "teacher_policy_reads": 1,
+            "teacher_outcomes_evaluated": 1,
+            "teacher_component_accumulations": 3,
+            "teacher_action_rows_evaluated": 1,
+            "teacher_states_evaluated": 1,
+            "root_outcomes_evaluated": 4,
+            "root_component_accumulations": 12,
+            "root_action_rows_evaluated": 4,
+            "oracle_utility_evaluations": 4,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.0019415080023463815
+        },
+        {
+          "root_id": "v69_h3_10",
+          "counts": {
+            "kernel_cells_read": 2,
+            "kernel_rational_outcomes_loaded": 4,
+            "kernel_outcomes_read": 4,
+            "horizon_edge_checks": 4,
+            "kernel_rows_read": 4,
+            "probability_mass_checks": 4,
+            "terminal_vector_initializations": 1,
+            "teacher_policy_reads": 1,
+            "teacher_outcomes_evaluated": 1,
+            "teacher_component_accumulations": 3,
+            "teacher_action_rows_evaluated": 1,
+            "teacher_states_evaluated": 1,
+            "root_outcomes_evaluated": 4,
+            "root_component_accumulations": 12,
+            "root_action_rows_evaluated": 4,
+            "oracle_utility_evaluations": 4,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.0017749570033629425
+        },
+        {
+          "root_id": "v69_h3_11",
+          "counts": {
+            "kernel_cells_read": 313,
+            "kernel_rational_outcomes_loaded": 1330,
+            "kernel_outcomes_read": 1330,
+            "horizon_edge_checks": 1330,
+            "kernel_rows_read": 930,
+            "probability_mass_checks": 930,
+            "terminal_vector_initializations": 2,
+            "teacher_policy_reads": 311,
+            "teacher_outcomes_evaluated": 430,
+            "teacher_component_accumulations": 1290,
+            "teacher_action_rows_evaluated": 311,
+            "teacher_states_evaluated": 311,
+            "root_outcomes_evaluated": 24,
+            "root_component_accumulations": 72,
+            "root_action_rows_evaluated": 4,
+            "oracle_utility_evaluations": 4,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.01338987300550798
+        },
+        {
+          "root_id": "v69_h3_12",
+          "counts": {
+            "kernel_cells_read": 2,
+            "kernel_rational_outcomes_loaded": 4,
+            "kernel_outcomes_read": 4,
+            "horizon_edge_checks": 4,
+            "kernel_rows_read": 4,
+            "probability_mass_checks": 4,
+            "terminal_vector_initializations": 1,
+            "teacher_policy_reads": 1,
+            "teacher_outcomes_evaluated": 1,
+            "teacher_component_accumulations": 3,
+            "teacher_action_rows_evaluated": 1,
+            "teacher_states_evaluated": 1,
+            "root_outcomes_evaluated": 4,
+            "root_component_accumulations": 12,
+            "root_action_rows_evaluated": 4,
+            "oracle_utility_evaluations": 4,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.0016809499938972294
+        },
+        {
+          "root_id": "v69_h3_13",
+          "counts": {
+            "kernel_cells_read": 141,
+            "kernel_rational_outcomes_loaded": 658,
+            "kernel_outcomes_read": 658,
+            "horizon_edge_checks": 658,
+            "kernel_rows_read": 430,
+            "probability_mass_checks": 430,
+            "terminal_vector_initializations": 2,
+            "teacher_policy_reads": 139,
+            "teacher_outcomes_evaluated": 219,
+            "teacher_component_accumulations": 657,
+            "teacher_action_rows_evaluated": 139,
+            "teacher_states_evaluated": 139,
+            "root_outcomes_evaluated": 14,
+            "root_component_accumulations": 42,
+            "root_action_rows_evaluated": 3,
+            "oracle_utility_evaluations": 3,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.0071570689979125746
+        },
+        {
+          "root_id": "v69_h3_14",
+          "counts": {
+            "kernel_cells_read": 352,
+            "kernel_rational_outcomes_loaded": 1551,
+            "kernel_outcomes_read": 1551,
+            "horizon_edge_checks": 1551,
+            "kernel_rows_read": 1121,
+            "probability_mass_checks": 1121,
+            "terminal_vector_initializations": 2,
+            "teacher_policy_reads": 350,
+            "teacher_outcomes_evaluated": 488,
+            "teacher_component_accumulations": 1464,
+            "teacher_action_rows_evaluated": 350,
+            "teacher_states_evaluated": 350,
+            "root_outcomes_evaluated": 24,
+            "root_component_accumulations": 72,
+            "root_action_rows_evaluated": 4,
+            "oracle_utility_evaluations": 4,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.01496954699541675
+        },
+        {
+          "root_id": "v69_h3_15",
+          "counts": {
+            "kernel_cells_read": 64,
+            "kernel_rational_outcomes_loaded": 258,
+            "kernel_outcomes_read": 258,
+            "horizon_edge_checks": 258,
+            "kernel_rows_read": 172,
+            "probability_mass_checks": 172,
+            "terminal_vector_initializations": 3,
+            "teacher_policy_reads": 61,
+            "teacher_outcomes_evaluated": 89,
+            "teacher_component_accumulations": 267,
+            "teacher_action_rows_evaluated": 61,
+            "teacher_states_evaluated": 61,
+            "root_outcomes_evaluated": 8,
+            "root_component_accumulations": 24,
+            "root_action_rows_evaluated": 2,
+            "oracle_utility_evaluations": 2,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.0043603520025499165
+        },
+        {
+          "root_id": "v69_h3_16",
+          "counts": {
+            "kernel_cells_read": 50,
+            "kernel_rational_outcomes_loaded": 182,
+            "kernel_outcomes_read": 182,
+            "horizon_edge_checks": 182,
+            "kernel_rows_read": 148,
+            "probability_mass_checks": 148,
+            "terminal_vector_initializations": 5,
+            "teacher_policy_reads": 45,
+            "teacher_outcomes_evaluated": 58,
+            "teacher_component_accumulations": 174,
+            "teacher_action_rows_evaluated": 45,
+            "teacher_states_evaluated": 45,
+            "root_outcomes_evaluated": 10,
+            "root_component_accumulations": 30,
+            "root_action_rows_evaluated": 4,
+            "oracle_utility_evaluations": 4,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.003488762005872559
+        },
+        {
+          "root_id": "v69_h3_17",
+          "counts": {
+            "kernel_cells_read": 439,
+            "kernel_rational_outcomes_loaded": 2056,
+            "kernel_outcomes_read": 2056,
+            "horizon_edge_checks": 2056,
+            "kernel_rows_read": 1488,
+            "probability_mass_checks": 1488,
+            "terminal_vector_initializations": 2,
+            "teacher_policy_reads": 437,
+            "teacher_outcomes_evaluated": 628,
+            "teacher_component_accumulations": 1884,
+            "teacher_action_rows_evaluated": 437,
+            "teacher_states_evaluated": 437,
+            "root_outcomes_evaluated": 28,
+            "root_component_accumulations": 84,
+            "root_action_rows_evaluated": 4,
+            "oracle_utility_evaluations": 4,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.019424938000156544
+        },
+        {
+          "root_id": "v69_h3_18",
+          "counts": {
+            "kernel_cells_read": 7,
+            "kernel_rational_outcomes_loaded": 10,
+            "kernel_outcomes_read": 10,
+            "horizon_edge_checks": 10,
+            "kernel_rows_read": 8,
+            "probability_mass_checks": 8,
+            "terminal_vector_initializations": 3,
+            "teacher_policy_reads": 4,
+            "teacher_outcomes_evaluated": 5,
+            "teacher_component_accumulations": 15,
+            "teacher_action_rows_evaluated": 4,
+            "teacher_states_evaluated": 4,
+            "root_outcomes_evaluated": 4,
+            "root_component_accumulations": 12,
+            "root_action_rows_evaluated": 2,
+            "oracle_utility_evaluations": 2,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.001872628999990411
+        },
+        {
+          "root_id": "v69_h3_19",
+          "counts": {
+            "kernel_cells_read": 14,
+            "kernel_rational_outcomes_loaded": 30,
+            "kernel_outcomes_read": 30,
+            "horizon_edge_checks": 30,
+            "kernel_rows_read": 24,
+            "probability_mass_checks": 24,
+            "terminal_vector_initializations": 5,
+            "teacher_policy_reads": 9,
+            "teacher_outcomes_evaluated": 11,
+            "teacher_component_accumulations": 33,
+            "teacher_action_rows_evaluated": 9,
+            "teacher_states_evaluated": 9,
+            "root_outcomes_evaluated": 6,
+            "root_component_accumulations": 18,
+            "root_action_rows_evaluated": 4,
+            "oracle_utility_evaluations": 4,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.0019974550014012493
+        },
+        {
+          "root_id": "v69_h3_20",
+          "counts": {
+            "kernel_cells_read": 2,
+            "kernel_rational_outcomes_loaded": 4,
+            "kernel_outcomes_read": 4,
+            "horizon_edge_checks": 4,
+            "kernel_rows_read": 4,
+            "probability_mass_checks": 4,
+            "terminal_vector_initializations": 1,
+            "teacher_policy_reads": 1,
+            "teacher_outcomes_evaluated": 1,
+            "teacher_component_accumulations": 3,
+            "teacher_action_rows_evaluated": 1,
+            "teacher_states_evaluated": 1,
+            "root_outcomes_evaluated": 4,
+            "root_component_accumulations": 12,
+            "root_action_rows_evaluated": 4,
+            "oracle_utility_evaluations": 4,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.001684230999671854
+        },
+        {
+          "root_id": "v69_h3_21",
+          "counts": {
+            "kernel_cells_read": 83,
+            "kernel_rational_outcomes_loaded": 341,
+            "kernel_outcomes_read": 341,
+            "horizon_edge_checks": 341,
+            "kernel_rows_read": 226,
+            "probability_mass_checks": 226,
+            "terminal_vector_initializations": 3,
+            "teacher_policy_reads": 80,
+            "teacher_outcomes_evaluated": 123,
+            "teacher_component_accumulations": 369,
+            "teacher_action_rows_evaluated": 80,
+            "teacher_states_evaluated": 80,
+            "root_outcomes_evaluated": 12,
+            "root_component_accumulations": 36,
+            "root_action_rows_evaluated": 4,
+            "oracle_utility_evaluations": 4,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.004725689999759197
+        },
+        {
+          "root_id": "v69_h3_22",
+          "counts": {
+            "kernel_cells_read": 195,
+            "kernel_rational_outcomes_loaded": 859,
+            "kernel_outcomes_read": 859,
+            "horizon_edge_checks": 859,
+            "kernel_rows_read": 590,
+            "probability_mass_checks": 590,
+            "terminal_vector_initializations": 2,
+            "teacher_policy_reads": 193,
+            "teacher_outcomes_evaluated": 284,
+            "teacher_component_accumulations": 852,
+            "teacher_action_rows_evaluated": 193,
+            "teacher_states_evaluated": 193,
+            "root_outcomes_evaluated": 16,
+            "root_component_accumulations": 48,
+            "root_action_rows_evaluated": 4,
+            "oracle_utility_evaluations": 4,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.009102232004806865
+        },
+        {
+          "root_id": "v69_h3_23",
+          "counts": {
+            "kernel_cells_read": 360,
+            "kernel_rational_outcomes_loaded": 1531,
+            "kernel_outcomes_read": 1531,
+            "horizon_edge_checks": 1531,
+            "kernel_rows_read": 1064,
+            "probability_mass_checks": 1064,
+            "terminal_vector_initializations": 2,
+            "teacher_policy_reads": 358,
+            "teacher_outcomes_evaluated": 506,
+            "teacher_component_accumulations": 1518,
+            "teacher_action_rows_evaluated": 358,
+            "teacher_states_evaluated": 358,
+            "root_outcomes_evaluated": 28,
+            "root_component_accumulations": 84,
+            "root_action_rows_evaluated": 4,
+            "oracle_utility_evaluations": 4,
+            "root_labels_emitted": 1
+          },
+          "seconds": 0.01517098699696362
+        }
+      ],
+      "preparation_and_input_counts": {
+        "json_read_operations": 53,
+        "input_bytes_read": 7671387,
+        "root_records_read": 71,
+        "root_tile_reads": 1136,
+        "root_board_transforms": 568,
+        "root_action_transports": 284,
+        "root_ground_swipe_calls": 284,
+        "fallback_immediate_reward_comparisons": 260
+      }
+    },
+    "independent_input_counts": {
+      "json_read_operations": 61,
+      "input_bytes_read": 14761280,
+      "input_byte_comparisons": 53,
+      "input_comparison_bytes_read": 15342774
+    },
+    "independent_root_counts": {
+      "root_records_read": 71,
+      "root_tile_reads": 1136,
+      "root_board_transforms": 568,
+      "root_action_transports": 284,
+      "root_ground_swipe_calls": 284,
+      "fallback_immediate_reward_comparisons": 260,
+      "json_read_operations": 53,
+      "input_bytes_read": 7671387
+    },
+    "independent_exact_DP_counts": {
+      "kernel_rows_read": 30618,
+      "kernel_outcomes_read": 42950,
+      "horizon_edge_checks": 42950,
+      "kernel_probability_recoveries": 27855,
+      "kernel_reward_recoveries": 27855,
+      "probability_grid_changed_atoms": 10700,
+      "reward_grid_changed_atoms": 200,
+      "probability_grid_max_error": 2.2204460492503132e-17,
+      "reward_grid_max_error": 1.1102230246251565e-16,
+      "probability_mass_checks": 30618,
+      "kernel_cells_read": 9737,
+      "terminal_vector_initializations": 74,
+      "teacher_action_rows_evaluated": 9663,
+      "teacher_outcomes_evaluated": 13610,
+      "teacher_component_accumulations": 40830,
+      "teacher_policy_reads": 9663,
+      "teacher_states_evaluated": 9663,
+      "root_action_rows_evaluated": 260,
+      "root_outcomes_evaluated": 945,
+      "root_component_accumulations": 2835,
+      "oracle_utility_evaluations": 260,
+      "root_labels_emitted": 71,
+      "kernel_rational_outcomes_loaded": 15095
+    },
+    "independent_fit_counts": {
+      "examples_examined": 94,
+      "examples_fitted": 94,
+      "root_feature_tile_reads": 1504,
+      "legal_action_reads": 338,
+      "immediate_reward_reads": 338,
+      "exact_action_vector_reads": 338,
+      "label_component_reads": 1014,
+      "tail_reward_subtractions": 338,
+      "paired_vector_labels": 466,
+      "paired_component_subtractions": 1398,
+      "utility_immediate_reward_loads": 338,
+      "observed_terminal_action_averages": 338,
+      "source_fold_assignments": 24,
+      "leaf_fits": 232,
+      "leaf_fit_root_visits": 3713,
+      "leaf_pair_observations": 18407,
+      "laplacian_scalar_accumulations": 73628,
+      "rhs_component_accumulations": 110442,
+      "laplacian_solves": 232,
+      "laplacian_matrix_cells": 3712,
+      "laplacian_rhs_cells": 2784,
+      "zero_sum_constraint_rows": 232,
+      "zero_sum_constraint_cells": 928,
+      "centered_solver_matrix_cells": 4640,
+      "centered_solver_rhs_cells": 3480,
+      "loss_component_residuals": 55221,
+      "full_discovery_node_fits": 4,
+      "utility_search_nodes_evaluated": 3,
+      "utility_candidates_evaluated": 160,
+      "utility_split_feature_threshold_tests": 7520,
+      "utility_structurally_eligible_candidates": 38,
+      "crossfit_parent_leaf_fits": 76,
+      "crossfit_child_leaf_fits": 152,
+      "crossfit_policy_support_checks": 3572,
+      "crossfit_action_support_lookups": 12844,
+      "crossfit_component_membership_lookups": 12844,
+      "crossfit_coefficient_component_reads": 38532,
+      "crossfit_exact_reward_reads": 12844,
+      "crossfit_utility_evaluations": 12844,
+      "crossfit_supported_policy_decisions": 3572,
+      "utility_comparable_candidates": 38,
+      "crossfit_observed_terminal_component_reads": 10716,
+      "crossfit_actual_component_subtractions": 5358,
+      "crossfit_source_component_accumulations": 5358,
+      "crossfit_source_component_normalizations": 1368,
+      "crossfit_source_utility_evaluations": 456,
+      "crossfit_direction_scores": 76,
+      "utility_positive_candidate_comparisons": 24,
+      "utility_global_candidate_comparisons": 1,
+      "utility_splits_applied": 1,
+      "utility_nodes_without_two_fit_children": 2
+    },
+    "independent_choice_counts": {
+      "SOURCE": {
+        "partition_decisions": 94,
+        "partition_legal_action_reads": 338,
+        "partition_node_lookups": 94,
+        "partition_feature_threshold_tests": 47,
+        "partition_leaf_records_examined": 113,
+        "partition_action_support_lookups": 338,
+        "partition_pair_support_lookups": 466,
+        "partition_coefficient_component_reads": 1014,
+        "partition_immediate_reward_reads": 338,
+        "partition_reward_additions": 338,
+        "partition_predicted_pair_component_subtractions": 1398,
+        "partition_utility_evaluations": 338,
+        "partition_group_lookups": 47
+      },
+      "TARGET": {
+        "partition_decisions": 48,
+        "partition_legal_action_reads": 182,
+        "partition_node_lookups": 48,
+        "partition_feature_threshold_tests": 24,
+        "partition_leaf_records_examined": 56,
+        "partition_action_support_lookups": 182,
+        "partition_pair_support_lookups": 262,
+        "partition_coefficient_component_reads": 546,
+        "partition_immediate_reward_reads": 182,
+        "partition_reward_additions": 182,
+        "partition_predicted_pair_component_subtractions": 786,
+        "partition_utility_evaluations": 182,
+        "partition_group_lookups": 24
+      }
+    },
+    "seconds": 1.0598348099956638
+  }
+}

@@ -1,0 +1,77 @@
+{"event": "snapshot_saved", "life": 0, "age": 1, "summary": {"num_programs": 27, "num_buckets": 27, "total_guards": 619, "total_exit_expressions": 306, "total_exit_cell_slots": 432, "total_reward_expressions": 54, "total_instructions": 1159, "total_anchor_rank_copies": 486}}
+{"event": "snapshot_saved", "life": 1, "age": 1, "summary": {"num_programs": 31, "num_buckets": 31, "total_guards": 642, "total_exit_expressions": 327, "total_exit_cell_slots": 496, "total_reward_expressions": 50, "total_instructions": 1250, "total_anchor_rank_copies": 558}}
+{"event": "snapshot_saved", "life": 3, "age": 1, "summary": {"num_programs": 34, "num_buckets": 34, "total_guards": 740, "total_exit_expressions": 376, "total_exit_cell_slots": 544, "total_reward_expressions": 63, "total_instructions": 1415, "total_anchor_rank_copies": 612}}
+{"event": "snapshot_saved", "life": 2, "age": 1, "summary": {"num_programs": 32, "num_buckets": 32, "total_guards": 629, "total_exit_expressions": 328, "total_exit_cell_slots": 512, "total_reward_expressions": 60, "total_instructions": 1265, "total_anchor_rank_copies": 576}}
+{"event": "snapshot_saved", "life": 0, "age": 8, "summary": {"num_programs": 252, "num_buckets": 252, "total_guards": 5211, "total_exit_expressions": 2639, "total_exit_cell_slots": 4032, "total_reward_expressions": 507, "total_instructions": 10254, "total_anchor_rank_copies": 4536}}
+{"event": "snapshot_saved", "life": 3, "age": 8, "summary": {"num_programs": 261, "num_buckets": 261, "total_guards": 5361, "total_exit_expressions": 2755, "total_exit_cell_slots": 4176, "total_reward_expressions": 503, "total_instructions": 10562, "total_anchor_rank_copies": 4698}}
+{"event": "snapshot_saved", "life": 1, "age": 8, "summary": {"num_programs": 255, "num_buckets": 255, "total_guards": 5298, "total_exit_expressions": 2702, "total_exit_cell_slots": 4080, "total_reward_expressions": 501, "total_instructions": 10389, "total_anchor_rank_copies": 4590}}
+{"event": "snapshot_saved", "life": 2, "age": 8, "summary": {"num_programs": 261, "num_buckets": 261, "total_guards": 5371, "total_exit_expressions": 2745, "total_exit_cell_slots": 4176, "total_reward_expressions": 521, "total_instructions": 10590, "total_anchor_rank_copies": 4698}}
+{"event": "snapshot_saved", "life": 0, "age": 64, "summary": {"num_programs": 1977, "num_buckets": 1972, "total_guards": 40948, "total_exit_expressions": 20872, "total_exit_cell_slots": 31632, "total_reward_expressions": 3863, "total_instructions": 80397, "total_anchor_rank_copies": 35586}}
+{"event": "snapshot_saved", "life": 2, "age": 64, "summary": {"num_programs": 1951, "num_buckets": 1947, "total_guards": 39884, "total_exit_expressions": 20475, "total_exit_cell_slots": 31216, "total_reward_expressions": 3767, "total_instructions": 78769, "total_anchor_rank_copies": 35118}}
+{"event": "snapshot_saved", "life": 3, "age": 64, "summary": {"num_programs": 2048, "num_buckets": 2040, "total_guards": 42509, "total_exit_expressions": 21656, "total_exit_cell_slots": 32768, "total_reward_expressions": 4047, "total_instructions": 83420, "total_anchor_rank_copies": 36864}}
+{"event": "snapshot_saved", "life": 1, "age": 64, "summary": {"num_programs": 2047, "num_buckets": 2036, "total_guards": 42144, "total_exit_expressions": 21545, "total_exit_cell_slots": 32752, "total_reward_expressions": 4040, "total_instructions": 83030, "total_anchor_rank_copies": 36846}}
+{"event": "control_complete", "life": 0, "replica": 0, "steps": 689}
+{"event": "control_complete", "life": 1, "replica": 0, "steps": 535}
+{"event": "control_complete", "life": 3, "replica": 0, "steps": 968}
+{"event": "control_complete", "life": 2, "replica": 0, "steps": 956}
+{"event": "control_complete", "life": 0, "replica": 1, "steps": 982}
+{"event": "control_complete", "life": 2, "replica": 1, "steps": 971}
+{"event": "control_complete", "life": 1, "replica": 1, "steps": 1079}
+{"event": "control_complete", "life": 3, "replica": 1, "steps": 1021}
+{"event": "control_complete", "life": 0, "replica": 2, "steps": 973}
+{"event": "control_complete", "life": 2, "replica": 2, "steps": 971}
+{"event": "control_complete", "life": 3, "replica": 2, "steps": 960}
+{"event": "control_complete", "life": 1, "replica": 2, "steps": 1043}
+{"event": "control_complete", "life": 0, "replica": 3, "steps": 1029}
+{"event": "control_complete", "life": 1, "replica": 3, "steps": 608}
+{"event": "control_complete", "life": 2, "replica": 3, "steps": 1036}
+{"event": "control_complete", "life": 3, "replica": 3, "steps": 1079}
+{"event": "control_complete", "life": 0, "replica": 4, "steps": 938}
+{"event": "control_complete", "life": 1, "replica": 4, "steps": 1026}
+{"event": "control_complete", "life": 2, "replica": 4, "steps": 953}
+{"event": "control_complete", "life": 3, "replica": 4, "steps": 1039}
+{"event": "control_complete", "life": 0, "replica": 5, "steps": 1025}
+{"event": "control_complete", "life": 2, "replica": 5, "steps": 896}
+{"event": "control_complete", "life": 1, "replica": 5, "steps": 1096}
+{"event": "control_complete", "life": 3, "replica": 5, "steps": 994}
+{"event": "control_complete", "life": 0, "replica": 6, "steps": 1003}
+{"event": "control_complete", "life": 2, "replica": 6, "steps": 999}
+{"event": "control_complete", "life": 1, "replica": 6, "steps": 1064}
+{"event": "control_complete", "life": 3, "replica": 6, "steps": 1019}
+{"event": "control_complete", "life": 0, "replica": 7, "steps": 1184}
+{"event": "control_complete", "life": 2, "replica": 7, "steps": 1073}
+{"event": "control_complete", "life": 1, "replica": 7, "steps": 982}
+{"event": "control_complete", "life": 3, "replica": 7, "steps": 941}
+{"event": "control_complete", "life": 0, "replica": 8, "steps": 980}
+{"event": "control_complete", "life": 2, "replica": 8, "steps": 1098}
+{"event": "control_complete", "life": 3, "replica": 8, "steps": 1185}
+{"event": "control_complete", "life": 1, "replica": 8, "steps": 1283}
+{"event": "control_complete", "life": 0, "replica": 9, "steps": 886}
+{"event": "control_complete", "life": 2, "replica": 9, "steps": 935}
+{"event": "control_complete", "life": 3, "replica": 9, "steps": 974}
+{"event": "control_complete", "life": 0, "replica": 10, "steps": 972}
+{"event": "control_complete", "life": 1, "replica": 9, "steps": 1075}
+{"event": "control_complete", "life": 2, "replica": 10, "steps": 1085}
+{"event": "control_complete", "life": 0, "replica": 11, "steps": 549}
+{"event": "control_complete", "life": 3, "replica": 10, "steps": 1113}
+{"event": "control_complete", "life": 1, "replica": 10, "steps": 979}
+{"event": "control_complete", "life": 0, "replica": 12, "steps": 963}
+{"event": "control_complete", "life": 3, "replica": 11, "steps": 904}
+{"event": "control_complete", "life": 2, "replica": 11, "steps": 1083}
+{"event": "control_complete", "life": 1, "replica": 11, "steps": 1048}
+{"event": "control_complete", "life": 0, "replica": 13, "steps": 1029}
+{"event": "control_complete", "life": 2, "replica": 12, "steps": 1005}
+{"event": "control_complete", "life": 3, "replica": 12, "steps": 1135}
+{"event": "control_complete", "life": 1, "replica": 12, "steps": 783}
+{"event": "control_complete", "life": 0, "replica": 14, "steps": 966}
+{"event": "control_complete", "life": 2, "replica": 13, "steps": 934}
+{"event": "control_complete", "life": 3, "replica": 13, "steps": 1250}
+{"event": "control_complete", "life": 1, "replica": 13, "steps": 1063}
+{"event": "control_complete", "life": 0, "replica": 15, "steps": 934}
+{"event": "control_complete", "life": 2, "replica": 14, "steps": 997}
+{"event": "control_complete", "life": 3, "replica": 14, "steps": 1008}
+{"event": "control_complete", "life": 1, "replica": 14, "steps": 881}
+{"event": "control_complete", "life": 2, "replica": 15, "steps": 1069}
+{"event": "control_complete", "life": 3, "replica": 15, "steps": 954}
+{"event": "control_complete", "life": 1, "replica": 15, "steps": 1180}
+{"status": "complete", "seconds": 10.21104454100714}

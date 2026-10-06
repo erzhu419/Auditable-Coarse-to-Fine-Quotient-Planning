@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "scripts/analyze_controlled_predictive_nested_selection_v112.py",
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_nested_selection_v112"
+  ],
+  "status": "complete",
+  "started_unix": 1789809517.3180418,
+  "returncode": 0,
+  "seconds": 0.2081573830000707,
+  "stderr_bytes": 0
+}

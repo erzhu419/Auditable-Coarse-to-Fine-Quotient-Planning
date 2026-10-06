@@ -1,0 +1,15 @@
+{
+  "status": "complete",
+  "command": [
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "-u",
+    "scripts/run_controlled_predictive_terminal_anchor_v99.py",
+    "--output",
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_terminal_anchor_v99"
+  ],
+  "cwd": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration",
+  "attempt": 1,
+  "exit_code": 0,
+  "wall_seconds": 769.7122377239866,
+  "stderr_bytes": 0
+}

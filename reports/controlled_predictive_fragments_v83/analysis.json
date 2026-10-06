@@ -1,0 +1,4894 @@
+{
+  "schema": "acfqp.terminating_fragments_analysis.v83",
+  "complete": true,
+  "cohort": {
+    "lifecycle_roster_complete": true,
+    "evaluation_roster_complete": true,
+    "paired_seeds_complete": true,
+    "fixed_controls_unchanged": true,
+    "fixed_control_changes": [],
+    "first_fragment_matches_frozen": true,
+    "first_snapshot_changes": [],
+    "selector_checkpoints_match": true,
+    "controller_wiring_complete": true,
+    "source_accounting_complete": true,
+    "paired_terminal_cohorts": [
+      {
+        "id": 0,
+        "checkpoint": 6,
+        "query": "reward",
+        "roster_complete": true,
+        "seeds_paired": true,
+        "complete_replicas": 2,
+        "excluded_replicas": []
+      },
+      {
+        "id": 0,
+        "checkpoint": 6,
+        "query": "risk_goal",
+        "roster_complete": true,
+        "seeds_paired": true,
+        "complete_replicas": 2,
+        "excluded_replicas": []
+      },
+      {
+        "id": 0,
+        "checkpoint": 12,
+        "query": "reward",
+        "roster_complete": true,
+        "seeds_paired": true,
+        "complete_replicas": 2,
+        "excluded_replicas": []
+      },
+      {
+        "id": 0,
+        "checkpoint": 12,
+        "query": "risk_goal",
+        "roster_complete": true,
+        "seeds_paired": true,
+        "complete_replicas": 2,
+        "excluded_replicas": []
+      },
+      {
+        "id": 1,
+        "checkpoint": 6,
+        "query": "reward",
+        "roster_complete": true,
+        "seeds_paired": true,
+        "complete_replicas": 2,
+        "excluded_replicas": []
+      },
+      {
+        "id": 1,
+        "checkpoint": 6,
+        "query": "risk_goal",
+        "roster_complete": true,
+        "seeds_paired": true,
+        "complete_replicas": 2,
+        "excluded_replicas": []
+      },
+      {
+        "id": 1,
+        "checkpoint": 12,
+        "query": "reward",
+        "roster_complete": true,
+        "seeds_paired": true,
+        "complete_replicas": 2,
+        "excluded_replicas": []
+      },
+      {
+        "id": 1,
+        "checkpoint": 12,
+        "query": "risk_goal",
+        "roster_complete": true,
+        "seeds_paired": true,
+        "complete_replicas": 2,
+        "excluded_replicas": []
+      },
+      {
+        "id": 2,
+        "checkpoint": 6,
+        "query": "reward",
+        "roster_complete": true,
+        "seeds_paired": true,
+        "complete_replicas": 2,
+        "excluded_replicas": []
+      },
+      {
+        "id": 2,
+        "checkpoint": 6,
+        "query": "risk_goal",
+        "roster_complete": true,
+        "seeds_paired": true,
+        "complete_replicas": 2,
+        "excluded_replicas": []
+      },
+      {
+        "id": 2,
+        "checkpoint": 12,
+        "query": "reward",
+        "roster_complete": true,
+        "seeds_paired": true,
+        "complete_replicas": 2,
+        "excluded_replicas": []
+      },
+      {
+        "id": 2,
+        "checkpoint": 12,
+        "query": "risk_goal",
+        "roster_complete": true,
+        "seeds_paired": true,
+        "complete_replicas": 2,
+        "excluded_replicas": []
+      }
+    ],
+    "expected_games": 120,
+    "all_evaluation_games_terminal": true,
+    "games": 120,
+    "terminal_games": 120,
+    "status_counts": {
+      "LOST": 120
+    },
+    "terminal_means": {
+      "score": 7983.133333333333,
+      "utility": 1.8980143229166666,
+      "steps": 520.55,
+      "max_rank": 9.166666666666666
+    },
+    "selected_options": {
+      "NO_SELECTION": 24,
+      "SPACE_1": 56,
+      "H2": 16,
+      "SPACE_4": 24
+    },
+    "duration_budgets": {
+      "0": 40,
+      "1": 56,
+      "4": 24
+    },
+    "actual_fragment_lengths": {
+      "0": 40,
+      "1": 56,
+      "4": 24
+    },
+    "games_with_fragment": 80,
+    "fragment_actions": 152,
+    "seconds": 57.686259723908734
+  },
+  "checkpoints": [
+    {
+      "episodes": 6,
+      "methods": {
+        "H2_ONLY": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "terminal_games": 6,
+                "status_counts": {
+                  "LOST": 6
+                },
+                "terminal_means": {
+                  "score": 7552.0,
+                  "utility": 3.6875,
+                  "steps": 501.0,
+                  "max_rank": 9.0
+                },
+                "selected_options": {
+                  "NO_SELECTION": 6
+                },
+                "duration_budgets": {
+                  "0": 6
+                },
+                "actual_fragment_lengths": {
+                  "0": 6
+                },
+                "games_with_fragment": 0,
+                "fragment_actions": 0,
+                "seconds": 3.03675441397354
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 4278.0,
+                    "utility": 2.0888671875,
+                    "steps": 319.5,
+                    "max_rank": 8.5
+                  },
+                  "selected_options": {
+                    "NO_SELECTION": 2
+                  },
+                  "duration_budgets": {
+                    "0": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "0": 2
+                  },
+                  "games_with_fragment": 0,
+                  "fragment_actions": 0,
+                  "seconds": 0.6441120160161518
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 11262.0,
+                    "utility": 5.4990234375,
+                    "steps": 696.5,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "NO_SELECTION": 2
+                  },
+                  "duration_budgets": {
+                    "0": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "0": 2
+                  },
+                  "games_with_fragment": 0,
+                  "fragment_actions": 0,
+                  "seconds": 1.459574062959291
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 7116.0,
+                    "utility": 3.474609375,
+                    "steps": 487.0,
+                    "max_rank": 9.0
+                  },
+                  "selected_options": {
+                    "NO_SELECTION": 2
+                  },
+                  "duration_budgets": {
+                    "0": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "0": 2
+                  },
+                  "games_with_fragment": 0,
+                  "fragment_actions": 0,
+                  "seconds": 0.9330683349980973
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "terminal_games": 6,
+                "status_counts": {
+                  "LOST": 6
+                },
+                "terminal_means": {
+                  "score": 8366.0,
+                  "utility": 0.0849609375,
+                  "steps": 550.5,
+                  "max_rank": 9.166666666666666
+                },
+                "selected_options": {
+                  "NO_SELECTION": 6
+                },
+                "duration_budgets": {
+                  "0": 6
+                },
+                "actual_fragment_lengths": {
+                  "0": 6
+                },
+                "games_with_fragment": 0,
+                "fragment_actions": 0,
+                "seconds": 3.3307424170779996
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 6300.0,
+                    "utility": -0.923828125,
+                    "steps": 430.0,
+                    "max_rank": 9.0
+                  },
+                  "selected_options": {
+                    "NO_SELECTION": 2
+                  },
+                  "duration_budgets": {
+                    "0": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "0": 2
+                  },
+                  "games_with_fragment": 0,
+                  "fragment_actions": 0,
+                  "seconds": 0.8880599500262178
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 11556.0,
+                    "utility": 1.642578125,
+                    "steps": 723.5,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "NO_SELECTION": 2
+                  },
+                  "duration_budgets": {
+                    "0": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "0": 2
+                  },
+                  "games_with_fragment": 0,
+                  "fragment_actions": 0,
+                  "seconds": 1.483138978073839
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 7242.0,
+                    "utility": -0.4638671875,
+                    "steps": 498.0,
+                    "max_rank": 9.0
+                  },
+                  "selected_options": {
+                    "NO_SELECTION": 2
+                  },
+                  "duration_budgets": {
+                    "0": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "0": 2
+                  },
+                  "games_with_fragment": 0,
+                  "fragment_actions": 0,
+                  "seconds": 0.9595434889779426
+                }
+              ]
+            }
+          },
+          "cumulative_cost_attribution": {
+            "lifecycles": [
+              {
+                "id": 0,
+                "evaluation_seconds": 1.5873107429943047,
+                "total_seconds": 1.5873107429943047
+              },
+              {
+                "id": 1,
+                "evaluation_seconds": 3.0461093739722855,
+                "total_seconds": 3.0461093739722855
+              },
+              {
+                "id": 2,
+                "evaluation_seconds": 1.9609439960331656,
+                "total_seconds": 1.9609439960331656
+              }
+            ],
+            "totals": {
+              "evaluation_seconds": 6.594364112999756,
+              "total_seconds": 6.594364112999756
+            }
+          }
+        },
+        "ONE_STEP": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "terminal_games": 6,
+                "status_counts": {
+                  "LOST": 6
+                },
+                "terminal_means": {
+                  "score": 6909.333333333333,
+                  "utility": 3.3736979166666665,
+                  "steps": 463.1666666666667,
+                  "max_rank": 9.0
+                },
+                "selected_options": {
+                  "SPACE_1": 4,
+                  "H2": 2
+                },
+                "duration_budgets": {
+                  "1": 4,
+                  "0": 2
+                },
+                "actual_fragment_lengths": {
+                  "1": 4,
+                  "0": 2
+                },
+                "games_with_fragment": 4,
+                "fragment_actions": 4,
+                "seconds": 2.7624956539366394
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 4278.0,
+                    "utility": 2.0888671875,
+                    "steps": 319.5,
+                    "max_rank": 8.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 0.786556544015184
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 9334.0,
+                    "utility": 4.5576171875,
+                    "steps": 583.0,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 1.0501074929488823
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 7116.0,
+                    "utility": 3.474609375,
+                    "steps": 487.0,
+                    "max_rank": 9.0
+                  },
+                  "selected_options": {
+                    "H2": 2
+                  },
+                  "duration_budgets": {
+                    "0": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "0": 2
+                  },
+                  "games_with_fragment": 0,
+                  "fragment_actions": 0,
+                  "seconds": 0.9258316169725731
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "terminal_games": 6,
+                "status_counts": {
+                  "LOST": 6
+                },
+                "terminal_means": {
+                  "score": 8954.0,
+                  "utility": 0.3720703125,
+                  "steps": 573.0,
+                  "max_rank": 9.333333333333334
+                },
+                "selected_options": {
+                  "H2": 1,
+                  "SPACE_1": 5
+                },
+                "duration_budgets": {
+                  "0": 1,
+                  "1": 5
+                },
+                "actual_fragment_lengths": {
+                  "0": 1,
+                  "1": 5
+                },
+                "games_with_fragment": 5,
+                "fragment_actions": 5,
+                "seconds": 3.2470986009575427
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 6300.0,
+                    "utility": -0.923828125,
+                    "steps": 430.0,
+                    "max_rank": 9.0
+                  },
+                  "selected_options": {
+                    "H2": 1,
+                    "SPACE_1": 1
+                  },
+                  "duration_budgets": {
+                    "0": 1,
+                    "1": 1
+                  },
+                  "actual_fragment_lengths": {
+                    "0": 1,
+                    "1": 1
+                  },
+                  "games_with_fragment": 1,
+                  "fragment_actions": 1,
+                  "seconds": 0.7689335669856519
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 9648.0,
+                    "utility": 0.7109375,
+                    "steps": 612.5,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 1.187488380994182
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 10914.0,
+                    "utility": 1.3291015625,
+                    "steps": 676.5,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 1.2906766529777087
+                }
+              ]
+            }
+          },
+          "cumulative_cost_attribution": {
+            "lifecycles": [
+              {
+                "id": 0,
+                "evaluation_seconds": 1.6132784630171955,
+                "source_seconds": 6.335468789970037,
+                "branch_seconds": 240.56358550395817,
+                "fitting_seconds": 0.8594315150403418,
+                "export_seconds": 0.00031812803354114294,
+                "total_seconds": 249.37208240001928
+              },
+              {
+                "id": 1,
+                "evaluation_seconds": 2.3255216300021857,
+                "source_seconds": 8.183314667956438,
+                "branch_seconds": 243.31717642000876,
+                "fitting_seconds": 0.705959910992533,
+                "export_seconds": 0.0002500429982319474,
+                "total_seconds": 254.53222267195815
+              },
+              {
+                "id": 2,
+                "evaluation_seconds": 2.3040483450167812,
+                "source_seconds": 8.586766740016174,
+                "branch_seconds": 242.8689072179841,
+                "fitting_seconds": 0.6984718180028722,
+                "export_seconds": 0.00023612595396116376,
+                "total_seconds": 254.45843024697388
+              }
+            ],
+            "totals": {
+              "source_seconds": 23.105550197942648,
+              "export_seconds": 0.0008042969857342541,
+              "branch_seconds": 726.749669141951,
+              "evaluation_seconds": 6.242848438036162,
+              "fitting_seconds": 2.263863244035747,
+              "total_seconds": 758.3627353189513
+            }
+          }
+        },
+        "FRAGMENT": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "terminal_games": 6,
+                "status_counts": {
+                  "LOST": 6
+                },
+                "terminal_means": {
+                  "score": 6909.333333333333,
+                  "utility": 3.3736979166666665,
+                  "steps": 463.1666666666667,
+                  "max_rank": 9.0
+                },
+                "selected_options": {
+                  "SPACE_1": 4,
+                  "H2": 2
+                },
+                "duration_budgets": {
+                  "1": 4,
+                  "0": 2
+                },
+                "actual_fragment_lengths": {
+                  "1": 4,
+                  "0": 2
+                },
+                "games_with_fragment": 4,
+                "fragment_actions": 4,
+                "seconds": 2.640534559963271
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 4278.0,
+                    "utility": 2.0888671875,
+                    "steps": 319.5,
+                    "max_rank": 8.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 0.598211882985197
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 9334.0,
+                    "utility": 4.5576171875,
+                    "steps": 583.0,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 1.0999737239908427
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 7116.0,
+                    "utility": 3.474609375,
+                    "steps": 487.0,
+                    "max_rank": 9.0
+                  },
+                  "selected_options": {
+                    "H2": 2
+                  },
+                  "duration_budgets": {
+                    "0": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "0": 2
+                  },
+                  "games_with_fragment": 0,
+                  "fragment_actions": 0,
+                  "seconds": 0.9423489529872313
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "terminal_games": 6,
+                "status_counts": {
+                  "LOST": 6
+                },
+                "terminal_means": {
+                  "score": 8954.0,
+                  "utility": 0.3720703125,
+                  "steps": 573.0,
+                  "max_rank": 9.333333333333334
+                },
+                "selected_options": {
+                  "H2": 1,
+                  "SPACE_1": 5
+                },
+                "duration_budgets": {
+                  "0": 1,
+                  "1": 5
+                },
+                "actual_fragment_lengths": {
+                  "0": 1,
+                  "1": 5
+                },
+                "games_with_fragment": 5,
+                "fragment_actions": 5,
+                "seconds": 3.4428455640445463
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 6300.0,
+                    "utility": -0.923828125,
+                    "steps": 430.0,
+                    "max_rank": 9.0
+                  },
+                  "selected_options": {
+                    "H2": 1,
+                    "SPACE_1": 1
+                  },
+                  "duration_budgets": {
+                    "0": 1,
+                    "1": 1
+                  },
+                  "actual_fragment_lengths": {
+                    "0": 1,
+                    "1": 1
+                  },
+                  "games_with_fragment": 1,
+                  "fragment_actions": 1,
+                  "seconds": 0.9134708149940707
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 9648.0,
+                    "utility": 0.7109375,
+                    "steps": 612.5,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 1.2064643640769646
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 10914.0,
+                    "utility": 1.3291015625,
+                    "steps": 676.5,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 1.322910384973511
+                }
+              ]
+            }
+          },
+          "cumulative_cost_attribution": {
+            "lifecycles": [
+              {
+                "id": 0,
+                "evaluation_seconds": 1.566161392023787,
+                "source_seconds": 6.335468789970037,
+                "branch_seconds": 240.56358550395817,
+                "fitting_seconds": 0.8594315150403418,
+                "export_seconds": 0.00031812803354114294,
+                "total_seconds": 249.32496532902587
+              },
+              {
+                "id": 1,
+                "evaluation_seconds": 2.394871963013429,
+                "source_seconds": 8.183314667956438,
+                "branch_seconds": 243.31717642000876,
+                "fitting_seconds": 0.705959910992533,
+                "export_seconds": 0.0002500429982319474,
+                "total_seconds": 254.6015730049694
+              },
+              {
+                "id": 2,
+                "evaluation_seconds": 2.350954608002212,
+                "source_seconds": 8.586766740016174,
+                "branch_seconds": 242.8689072179841,
+                "fitting_seconds": 0.6984718180028722,
+                "export_seconds": 0.00023612595396116376,
+                "total_seconds": 254.5053365099593
+              }
+            ],
+            "totals": {
+              "source_seconds": 23.105550197942648,
+              "export_seconds": 0.0008042969857342541,
+              "branch_seconds": 726.749669141951,
+              "evaluation_seconds": 6.311987963039428,
+              "fitting_seconds": 2.263863244035747,
+              "total_seconds": 758.4318748439546
+            }
+          }
+        },
+        "FROZEN_6": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "terminal_games": 6,
+                "status_counts": {
+                  "LOST": 6
+                },
+                "terminal_means": {
+                  "score": 6909.333333333333,
+                  "utility": 3.3736979166666665,
+                  "steps": 463.1666666666667,
+                  "max_rank": 9.0
+                },
+                "selected_options": {
+                  "SPACE_1": 4,
+                  "H2": 2
+                },
+                "duration_budgets": {
+                  "1": 4,
+                  "0": 2
+                },
+                "actual_fragment_lengths": {
+                  "1": 4,
+                  "0": 2
+                },
+                "games_with_fragment": 4,
+                "fragment_actions": 4,
+                "seconds": 2.587863498076331
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 4278.0,
+                    "utility": 2.0888671875,
+                    "steps": 319.5,
+                    "max_rank": 8.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 0.5662579020136036
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 9334.0,
+                    "utility": 4.5576171875,
+                    "steps": 583.0,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 1.109835422015749
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 7116.0,
+                    "utility": 3.474609375,
+                    "steps": 487.0,
+                    "max_rank": 9.0
+                  },
+                  "selected_options": {
+                    "H2": 2
+                  },
+                  "duration_budgets": {
+                    "0": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "0": 2
+                  },
+                  "games_with_fragment": 0,
+                  "fragment_actions": 0,
+                  "seconds": 0.9117701740469784
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "terminal_games": 6,
+                "status_counts": {
+                  "LOST": 6
+                },
+                "terminal_means": {
+                  "score": 8954.0,
+                  "utility": 0.3720703125,
+                  "steps": 573.0,
+                  "max_rank": 9.333333333333334
+                },
+                "selected_options": {
+                  "H2": 1,
+                  "SPACE_1": 5
+                },
+                "duration_budgets": {
+                  "0": 1,
+                  "1": 5
+                },
+                "actual_fragment_lengths": {
+                  "0": 1,
+                  "1": 5
+                },
+                "games_with_fragment": 5,
+                "fragment_actions": 5,
+                "seconds": 3.4740311399800703
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 6300.0,
+                    "utility": -0.923828125,
+                    "steps": 430.0,
+                    "max_rank": 9.0
+                  },
+                  "selected_options": {
+                    "H2": 1,
+                    "SPACE_1": 1
+                  },
+                  "duration_budgets": {
+                    "0": 1,
+                    "1": 1
+                  },
+                  "actual_fragment_lengths": {
+                    "0": 1,
+                    "1": 1
+                  },
+                  "games_with_fragment": 1,
+                  "fragment_actions": 1,
+                  "seconds": 1.018003957986366
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 9648.0,
+                    "utility": 0.7109375,
+                    "steps": 612.5,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 1.1068596849800088
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 10914.0,
+                    "utility": 1.3291015625,
+                    "steps": 676.5,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 1.3491674970136955
+                }
+              ]
+            }
+          },
+          "cumulative_cost_attribution": {
+            "lifecycles": [
+              {
+                "id": 0,
+                "evaluation_seconds": 1.6364326450275257,
+                "source_seconds": 6.335468789970037,
+                "branch_seconds": 240.56358550395817,
+                "fitting_seconds": 0.8594315150403418,
+                "export_seconds": 0.00031812803354114294,
+                "total_seconds": 249.3952365820296
+              },
+              {
+                "id": 1,
+                "evaluation_seconds": 2.3033508279477246,
+                "source_seconds": 8.183314667956438,
+                "branch_seconds": 243.31717642000876,
+                "fitting_seconds": 0.705959910992533,
+                "export_seconds": 0.0002500429982319474,
+                "total_seconds": 254.5100518699037
+              },
+              {
+                "id": 2,
+                "evaluation_seconds": 2.349064201989677,
+                "source_seconds": 8.586766740016174,
+                "branch_seconds": 242.8689072179841,
+                "fitting_seconds": 0.6984718180028722,
+                "export_seconds": 0.00023612595396116376,
+                "total_seconds": 254.50344610394677
+              }
+            ],
+            "totals": {
+              "source_seconds": 23.105550197942648,
+              "export_seconds": 0.0008042969857342541,
+              "branch_seconds": 726.749669141951,
+              "evaluation_seconds": 6.288847674964927,
+              "fitting_seconds": 2.263863244035747,
+              "total_seconds": 758.4087345558801
+            }
+          }
+        },
+        "FIXED_SPACE4": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "terminal_games": 6,
+                "status_counts": {
+                  "LOST": 6
+                },
+                "terminal_means": {
+                  "score": 6459.333333333333,
+                  "utility": 3.1539713541666665,
+                  "steps": 443.0,
+                  "max_rank": 8.833333333333334
+                },
+                "selected_options": {
+                  "SPACE_4": 6
+                },
+                "duration_budgets": {
+                  "4": 6
+                },
+                "actual_fragment_lengths": {
+                  "4": 6
+                },
+                "games_with_fragment": 6,
+                "fragment_actions": 24,
+                "seconds": 2.492524977948051
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 5124.0,
+                    "utility": 2.501953125,
+                    "steps": 373.0,
+                    "max_rank": 8.5
+                  },
+                  "selected_options": {
+                    "SPACE_4": 2
+                  },
+                  "duration_budgets": {
+                    "4": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "4": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 8,
+                  "seconds": 0.6820699979434721
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 9484.0,
+                    "utility": 4.630859375,
+                    "steps": 602.0,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "SPACE_4": 2
+                  },
+                  "duration_budgets": {
+                    "4": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "4": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 8,
+                  "seconds": 1.1419540609931573
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 4770.0,
+                    "utility": 2.3291015625,
+                    "steps": 354.0,
+                    "max_rank": 8.5
+                  },
+                  "selected_options": {
+                    "SPACE_4": 2
+                  },
+                  "duration_budgets": {
+                    "4": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "4": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 8,
+                  "seconds": 0.6685009190114215
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "terminal_games": 6,
+                "status_counts": {
+                  "LOST": 6
+                },
+                "terminal_means": {
+                  "score": 9864.0,
+                  "utility": 0.81640625,
+                  "steps": 602.5,
+                  "max_rank": 9.666666666666666
+                },
+                "selected_options": {
+                  "SPACE_4": 6
+                },
+                "duration_budgets": {
+                  "4": 6
+                },
+                "actual_fragment_lengths": {
+                  "4": 6
+                },
+                "games_with_fragment": 6,
+                "fragment_actions": 24,
+                "seconds": 3.5434148829081096
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 6074.0,
+                    "utility": -1.0341796875,
+                    "steps": 416.5,
+                    "max_rank": 9.0
+                  },
+                  "selected_options": {
+                    "SPACE_4": 2
+                  },
+                  "duration_budgets": {
+                    "4": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "4": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 8,
+                  "seconds": 0.7153060589917004
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 11564.0,
+                    "utility": 1.646484375,
+                    "steps": 683.5,
+                    "max_rank": 10.0
+                  },
+                  "selected_options": {
+                    "SPACE_4": 2
+                  },
+                  "duration_budgets": {
+                    "4": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "4": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 8,
+                  "seconds": 1.3425056439591572
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 11954.0,
+                    "utility": 1.8369140625,
+                    "steps": 707.5,
+                    "max_rank": 10.0
+                  },
+                  "selected_options": {
+                    "SPACE_4": 2
+                  },
+                  "duration_budgets": {
+                    "4": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "4": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 8,
+                  "seconds": 1.485603179957252
+                }
+              ]
+            }
+          },
+          "cumulative_cost_attribution": {
+            "lifecycles": [
+              {
+                "id": 0,
+                "evaluation_seconds": 1.452848408895079,
+                "total_seconds": 1.452848408895079
+              },
+              {
+                "id": 1,
+                "evaluation_seconds": 2.5807265750481747,
+                "total_seconds": 2.5807265750481747
+              },
+              {
+                "id": 2,
+                "evaluation_seconds": 2.2369332789676264,
+                "total_seconds": 2.2369332789676264
+              }
+            ],
+            "totals": {
+              "evaluation_seconds": 6.27050826291088,
+              "total_seconds": 6.27050826291088
+            }
+          }
+        }
+      }
+    },
+    {
+      "episodes": 12,
+      "methods": {
+        "H2_ONLY": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "terminal_games": 6,
+                "status_counts": {
+                  "LOST": 6
+                },
+                "terminal_means": {
+                  "score": 7552.0,
+                  "utility": 3.6875,
+                  "steps": 501.0,
+                  "max_rank": 9.0
+                },
+                "selected_options": {
+                  "NO_SELECTION": 6
+                },
+                "duration_budgets": {
+                  "0": 6
+                },
+                "actual_fragment_lengths": {
+                  "0": 6
+                },
+                "games_with_fragment": 0,
+                "fragment_actions": 0,
+                "seconds": 2.681193269963842
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 4278.0,
+                    "utility": 2.0888671875,
+                    "steps": 319.5,
+                    "max_rank": 8.5
+                  },
+                  "selected_options": {
+                    "NO_SELECTION": 2
+                  },
+                  "duration_budgets": {
+                    "0": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "0": 2
+                  },
+                  "games_with_fragment": 0,
+                  "fragment_actions": 0,
+                  "seconds": 0.5393372980179265
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 11262.0,
+                    "utility": 5.4990234375,
+                    "steps": 696.5,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "NO_SELECTION": 2
+                  },
+                  "duration_budgets": {
+                    "0": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "0": 2
+                  },
+                  "games_with_fragment": 0,
+                  "fragment_actions": 0,
+                  "seconds": 1.2953759619267657
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 7116.0,
+                    "utility": 3.474609375,
+                    "steps": 487.0,
+                    "max_rank": 9.0
+                  },
+                  "selected_options": {
+                    "NO_SELECTION": 2
+                  },
+                  "duration_budgets": {
+                    "0": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "0": 2
+                  },
+                  "games_with_fragment": 0,
+                  "fragment_actions": 0,
+                  "seconds": 0.8464800100191496
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "terminal_games": 6,
+                "status_counts": {
+                  "LOST": 6
+                },
+                "terminal_means": {
+                  "score": 8366.0,
+                  "utility": 0.0849609375,
+                  "steps": 550.5,
+                  "max_rank": 9.166666666666666
+                },
+                "selected_options": {
+                  "NO_SELECTION": 6
+                },
+                "duration_budgets": {
+                  "0": 6
+                },
+                "actual_fragment_lengths": {
+                  "0": 6
+                },
+                "games_with_fragment": 0,
+                "fragment_actions": 0,
+                "seconds": 2.807194971013814
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 6300.0,
+                    "utility": -0.923828125,
+                    "steps": 430.0,
+                    "max_rank": 9.0
+                  },
+                  "selected_options": {
+                    "NO_SELECTION": 2
+                  },
+                  "duration_budgets": {
+                    "0": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "0": 2
+                  },
+                  "games_with_fragment": 0,
+                  "fragment_actions": 0,
+                  "seconds": 0.7537861799937673
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 11556.0,
+                    "utility": 1.642578125,
+                    "steps": 723.5,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "NO_SELECTION": 2
+                  },
+                  "duration_budgets": {
+                    "0": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "0": 2
+                  },
+                  "games_with_fragment": 0,
+                  "fragment_actions": 0,
+                  "seconds": 1.231054115050938
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 7242.0,
+                    "utility": -0.4638671875,
+                    "steps": 498.0,
+                    "max_rank": 9.0
+                  },
+                  "selected_options": {
+                    "NO_SELECTION": 2
+                  },
+                  "duration_budgets": {
+                    "0": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "0": 2
+                  },
+                  "games_with_fragment": 0,
+                  "fragment_actions": 0,
+                  "seconds": 0.8223546759691089
+                }
+              ]
+            }
+          },
+          "cumulative_cost_attribution": {
+            "lifecycles": [
+              {
+                "id": 0,
+                "evaluation_seconds": 2.9313627340015955,
+                "total_seconds": 2.9313627340015955
+              },
+              {
+                "id": 1,
+                "evaluation_seconds": 5.6680349400267005,
+                "total_seconds": 5.6680349400267005
+              },
+              {
+                "id": 2,
+                "evaluation_seconds": 3.6951485000899993,
+                "total_seconds": 3.6951485000899993
+              }
+            ],
+            "totals": {
+              "evaluation_seconds": 12.294546174118295,
+              "total_seconds": 12.294546174118295
+            }
+          }
+        },
+        "ONE_STEP": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "terminal_games": 6,
+                "status_counts": {
+                  "LOST": 6
+                },
+                "terminal_means": {
+                  "score": 6909.333333333333,
+                  "utility": 3.3736979166666665,
+                  "steps": 463.1666666666667,
+                  "max_rank": 9.0
+                },
+                "selected_options": {
+                  "SPACE_1": 5,
+                  "H2": 1
+                },
+                "duration_budgets": {
+                  "1": 5,
+                  "0": 1
+                },
+                "actual_fragment_lengths": {
+                  "1": 5,
+                  "0": 1
+                },
+                "games_with_fragment": 5,
+                "fragment_actions": 5,
+                "seconds": 2.4064190289354883
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 4278.0,
+                    "utility": 2.0888671875,
+                    "steps": 319.5,
+                    "max_rank": 8.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 0.5485583639820106
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 9334.0,
+                    "utility": 4.5576171875,
+                    "steps": 583.0,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 0.9842569509637542
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 7116.0,
+                    "utility": 3.474609375,
+                    "steps": 487.0,
+                    "max_rank": 9.0
+                  },
+                  "selected_options": {
+                    "H2": 1,
+                    "SPACE_1": 1
+                  },
+                  "duration_budgets": {
+                    "0": 1,
+                    "1": 1
+                  },
+                  "actual_fragment_lengths": {
+                    "0": 1,
+                    "1": 1
+                  },
+                  "games_with_fragment": 1,
+                  "fragment_actions": 1,
+                  "seconds": 0.8736037139897235
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "terminal_games": 6,
+                "status_counts": {
+                  "LOST": 6
+                },
+                "terminal_means": {
+                  "score": 8954.0,
+                  "utility": 0.3720703125,
+                  "steps": 573.0,
+                  "max_rank": 9.333333333333334
+                },
+                "selected_options": {
+                  "SPACE_1": 5,
+                  "H2": 1
+                },
+                "duration_budgets": {
+                  "1": 5,
+                  "0": 1
+                },
+                "actual_fragment_lengths": {
+                  "1": 5,
+                  "0": 1
+                },
+                "games_with_fragment": 5,
+                "fragment_actions": 5,
+                "seconds": 2.9364273800165392
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 6300.0,
+                    "utility": -0.923828125,
+                    "steps": 430.0,
+                    "max_rank": 9.0
+                  },
+                  "selected_options": {
+                    "SPACE_1": 1,
+                    "H2": 1
+                  },
+                  "duration_budgets": {
+                    "1": 1,
+                    "0": 1
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 1,
+                    "0": 1
+                  },
+                  "games_with_fragment": 1,
+                  "fragment_actions": 1,
+                  "seconds": 0.726993516960647
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 9648.0,
+                    "utility": 0.7109375,
+                    "steps": 612.5,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 1.0921303000068292
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 10914.0,
+                    "utility": 1.3291015625,
+                    "steps": 676.5,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 1.117303563049063
+                }
+              ]
+            }
+          },
+          "cumulative_cost_attribution": {
+            "lifecycles": [
+              {
+                "id": 0,
+                "evaluation_seconds": 2.941251758020371,
+                "source_seconds": 12.384376397996675,
+                "branch_seconds": 496.63480641297065,
+                "fitting_seconds": 0.8627677580225281,
+                "export_seconds": 0.0006918670260347426,
+                "total_seconds": 512.8238941940363
+              },
+              {
+                "id": 1,
+                "evaluation_seconds": 4.484882913006004,
+                "source_seconds": 15.45471739792265,
+                "branch_seconds": 484.61539195803925,
+                "fitting_seconds": 0.7100553199998103,
+                "export_seconds": 0.0005549429915845394,
+                "total_seconds": 505.2656025319593
+              },
+              {
+                "id": 2,
+                "evaluation_seconds": 4.368598433036823,
+                "source_seconds": 16.48270022502402,
+                "branch_seconds": 489.77308436098974,
+                "fitting_seconds": 0.7021413340116851,
+                "export_seconds": 0.0006581039051525295,
+                "total_seconds": 511.3271824569674
+              }
+            ],
+            "totals": {
+              "source_seconds": 44.321794020943344,
+              "export_seconds": 0.0019049139227718115,
+              "branch_seconds": 1471.0232827319996,
+              "evaluation_seconds": 11.794733104063198,
+              "fitting_seconds": 2.2749644120340236,
+              "total_seconds": 1529.416679182963
+            }
+          }
+        },
+        "FRAGMENT": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "terminal_games": 6,
+                "status_counts": {
+                  "LOST": 6
+                },
+                "terminal_means": {
+                  "score": 6909.333333333333,
+                  "utility": 3.3736979166666665,
+                  "steps": 463.1666666666667,
+                  "max_rank": 9.0
+                },
+                "selected_options": {
+                  "SPACE_1": 5,
+                  "H2": 1
+                },
+                "duration_budgets": {
+                  "1": 5,
+                  "0": 1
+                },
+                "actual_fragment_lengths": {
+                  "1": 5,
+                  "0": 1
+                },
+                "games_with_fragment": 5,
+                "fragment_actions": 5,
+                "seconds": 2.4596791740041226
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 4278.0,
+                    "utility": 2.0888671875,
+                    "steps": 319.5,
+                    "max_rank": 8.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 0.5217950259684585
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 9334.0,
+                    "utility": 4.5576171875,
+                    "steps": 583.0,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 1.091023433022201
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 7116.0,
+                    "utility": 3.474609375,
+                    "steps": 487.0,
+                    "max_rank": 9.0
+                  },
+                  "selected_options": {
+                    "H2": 1,
+                    "SPACE_1": 1
+                  },
+                  "duration_budgets": {
+                    "0": 1,
+                    "1": 1
+                  },
+                  "actual_fragment_lengths": {
+                    "0": 1,
+                    "1": 1
+                  },
+                  "games_with_fragment": 1,
+                  "fragment_actions": 1,
+                  "seconds": 0.846860715013463
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "terminal_games": 6,
+                "status_counts": {
+                  "LOST": 6
+                },
+                "terminal_means": {
+                  "score": 8954.0,
+                  "utility": 0.3720703125,
+                  "steps": 573.0,
+                  "max_rank": 9.333333333333334
+                },
+                "selected_options": {
+                  "SPACE_1": 5,
+                  "H2": 1
+                },
+                "duration_budgets": {
+                  "1": 5,
+                  "0": 1
+                },
+                "actual_fragment_lengths": {
+                  "1": 5,
+                  "0": 1
+                },
+                "games_with_fragment": 5,
+                "fragment_actions": 5,
+                "seconds": 2.9118662020773627
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 6300.0,
+                    "utility": -0.923828125,
+                    "steps": 430.0,
+                    "max_rank": 9.0
+                  },
+                  "selected_options": {
+                    "SPACE_1": 1,
+                    "H2": 1
+                  },
+                  "duration_budgets": {
+                    "1": 1,
+                    "0": 1
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 1,
+                    "0": 1
+                  },
+                  "games_with_fragment": 1,
+                  "fragment_actions": 1,
+                  "seconds": 0.6941007550340146
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 9648.0,
+                    "utility": 0.7109375,
+                    "steps": 612.5,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 1.0939265919732861
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 10914.0,
+                    "utility": 1.3291015625,
+                    "steps": 676.5,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 1.123838855070062
+                }
+              ]
+            }
+          },
+          "cumulative_cost_attribution": {
+            "lifecycles": [
+              {
+                "id": 0,
+                "evaluation_seconds": 2.8317152630188502,
+                "source_seconds": 12.384376397996675,
+                "branch_seconds": 496.63480641297065,
+                "fitting_seconds": 0.8627677580225281,
+                "export_seconds": 0.0006918670260347426,
+                "total_seconds": 512.7143576990347
+              },
+              {
+                "id": 1,
+                "evaluation_seconds": 4.658922560047358,
+                "source_seconds": 15.45471739792265,
+                "branch_seconds": 484.61539195803925,
+                "fitting_seconds": 0.7100553199998103,
+                "export_seconds": 0.0005549429915845394,
+                "total_seconds": 505.43964217900066
+              },
+              {
+                "id": 2,
+                "evaluation_seconds": 4.398533732921351,
+                "source_seconds": 16.48270022502402,
+                "branch_seconds": 489.77308436098974,
+                "fitting_seconds": 0.7021413340116851,
+                "export_seconds": 0.0006581039051525295,
+                "total_seconds": 511.35711775685195
+              }
+            ],
+            "totals": {
+              "source_seconds": 44.321794020943344,
+              "export_seconds": 0.0019049139227718115,
+              "branch_seconds": 1471.0232827319996,
+              "evaluation_seconds": 11.88917155598756,
+              "fitting_seconds": 2.2749644120340236,
+              "total_seconds": 1529.5111176348873
+            }
+          }
+        },
+        "FROZEN_6": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "terminal_games": 6,
+                "status_counts": {
+                  "LOST": 6
+                },
+                "terminal_means": {
+                  "score": 6909.333333333333,
+                  "utility": 3.3736979166666665,
+                  "steps": 463.1666666666667,
+                  "max_rank": 9.0
+                },
+                "selected_options": {
+                  "SPACE_1": 4,
+                  "H2": 2
+                },
+                "duration_budgets": {
+                  "1": 4,
+                  "0": 2
+                },
+                "actual_fragment_lengths": {
+                  "1": 4,
+                  "0": 2
+                },
+                "games_with_fragment": 4,
+                "fragment_actions": 4,
+                "seconds": 2.507621230906807
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 4278.0,
+                    "utility": 2.0888671875,
+                    "steps": 319.5,
+                    "max_rank": 8.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 0.5097724229563028
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 9334.0,
+                    "utility": 4.5576171875,
+                    "steps": 583.0,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 1.0576420829747804
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 7116.0,
+                    "utility": 3.474609375,
+                    "steps": 487.0,
+                    "max_rank": 9.0
+                  },
+                  "selected_options": {
+                    "H2": 2
+                  },
+                  "duration_budgets": {
+                    "0": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "0": 2
+                  },
+                  "games_with_fragment": 0,
+                  "fragment_actions": 0,
+                  "seconds": 0.9402067249757238
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "terminal_games": 6,
+                "status_counts": {
+                  "LOST": 6
+                },
+                "terminal_means": {
+                  "score": 8954.0,
+                  "utility": 0.3720703125,
+                  "steps": 573.0,
+                  "max_rank": 9.333333333333334
+                },
+                "selected_options": {
+                  "H2": 1,
+                  "SPACE_1": 5
+                },
+                "duration_budgets": {
+                  "0": 1,
+                  "1": 5
+                },
+                "actual_fragment_lengths": {
+                  "0": 1,
+                  "1": 5
+                },
+                "games_with_fragment": 5,
+                "fragment_actions": 5,
+                "seconds": 3.0141309490427375
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 6300.0,
+                    "utility": -0.923828125,
+                    "steps": 430.0,
+                    "max_rank": 9.0
+                  },
+                  "selected_options": {
+                    "H2": 1,
+                    "SPACE_1": 1
+                  },
+                  "duration_budgets": {
+                    "0": 1,
+                    "1": 1
+                  },
+                  "actual_fragment_lengths": {
+                    "0": 1,
+                    "1": 1
+                  },
+                  "games_with_fragment": 1,
+                  "fragment_actions": 1,
+                  "seconds": 0.8161815039929934
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 9648.0,
+                    "utility": 0.7109375,
+                    "steps": 612.5,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 1.0560187239898369
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 10914.0,
+                    "utility": 1.3291015625,
+                    "steps": 676.5,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "SPACE_1": 2
+                  },
+                  "duration_budgets": {
+                    "1": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "1": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 2,
+                  "seconds": 1.1419307210599072
+                }
+              ]
+            }
+          },
+          "cumulative_cost_attribution": {
+            "lifecycles": [
+              {
+                "id": 0,
+                "evaluation_seconds": 3.0138537699822336,
+                "source_seconds": 6.335468789970037,
+                "branch_seconds": 240.56358550395817,
+                "fitting_seconds": 0.8594315150403418,
+                "export_seconds": 0.00031812803354114294,
+                "total_seconds": 250.77265770698432
+              },
+              {
+                "id": 1,
+                "evaluation_seconds": 4.496140545932576,
+                "source_seconds": 8.183314667956438,
+                "branch_seconds": 243.31717642000876,
+                "fitting_seconds": 0.705959910992533,
+                "export_seconds": 0.0002500429982319474,
+                "total_seconds": 256.70284158788854
+              },
+              {
+                "id": 2,
+                "evaluation_seconds": 4.507720171939582,
+                "source_seconds": 8.586766740016174,
+                "branch_seconds": 242.8689072179841,
+                "fitting_seconds": 0.6984718180028722,
+                "export_seconds": 0.00023612595396116376,
+                "total_seconds": 256.6621020738967
+              }
+            ],
+            "totals": {
+              "source_seconds": 23.105550197942648,
+              "export_seconds": 0.0008042969857342541,
+              "branch_seconds": 726.749669141951,
+              "evaluation_seconds": 12.017714487854391,
+              "fitting_seconds": 2.263863244035747,
+              "total_seconds": 764.1376013687695
+            }
+          }
+        },
+        "FIXED_SPACE4": {
+          "queries": {
+            "reward": {
+              "pooled": {
+                "games": 6,
+                "terminal_games": 6,
+                "status_counts": {
+                  "LOST": 6
+                },
+                "terminal_means": {
+                  "score": 6459.333333333333,
+                  "utility": 3.1539713541666665,
+                  "steps": 443.0,
+                  "max_rank": 8.833333333333334
+                },
+                "selected_options": {
+                  "SPACE_4": 6
+                },
+                "duration_budgets": {
+                  "4": 6
+                },
+                "actual_fragment_lengths": {
+                  "4": 6
+                },
+                "games_with_fragment": 6,
+                "fragment_actions": 24,
+                "seconds": 2.282827125978656
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 5124.0,
+                    "utility": 2.501953125,
+                    "steps": 373.0,
+                    "max_rank": 8.5
+                  },
+                  "selected_options": {
+                    "SPACE_4": 2
+                  },
+                  "duration_budgets": {
+                    "4": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "4": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 8,
+                  "seconds": 0.6079968819976784
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 9484.0,
+                    "utility": 4.630859375,
+                    "steps": 602.0,
+                    "max_rank": 9.5
+                  },
+                  "selected_options": {
+                    "SPACE_4": 2
+                  },
+                  "duration_budgets": {
+                    "4": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "4": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 8,
+                  "seconds": 1.110790339007508
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 4770.0,
+                    "utility": 2.3291015625,
+                    "steps": 354.0,
+                    "max_rank": 8.5
+                  },
+                  "selected_options": {
+                    "SPACE_4": 2
+                  },
+                  "duration_budgets": {
+                    "4": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "4": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 8,
+                  "seconds": 0.5640399049734697
+                }
+              ]
+            },
+            "risk_goal": {
+              "pooled": {
+                "games": 6,
+                "terminal_games": 6,
+                "status_counts": {
+                  "LOST": 6
+                },
+                "terminal_means": {
+                  "score": 9864.0,
+                  "utility": 0.81640625,
+                  "steps": 602.5,
+                  "max_rank": 9.666666666666666
+                },
+                "selected_options": {
+                  "SPACE_4": 6
+                },
+                "duration_budgets": {
+                  "4": 6
+                },
+                "actual_fragment_lengths": {
+                  "4": 6
+                },
+                "games_with_fragment": 6,
+                "fragment_actions": 24,
+                "seconds": 3.1205946831032634
+              },
+              "lifecycles": [
+                {
+                  "id": 0,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 6074.0,
+                    "utility": -1.0341796875,
+                    "steps": 416.5,
+                    "max_rank": 9.0
+                  },
+                  "selected_options": {
+                    "SPACE_4": 2
+                  },
+                  "duration_budgets": {
+                    "4": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "4": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 8,
+                  "seconds": 0.7432567960349843
+                },
+                {
+                  "id": 1,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 11564.0,
+                    "utility": 1.646484375,
+                    "steps": 683.5,
+                    "max_rank": 10.0
+                  },
+                  "selected_options": {
+                    "SPACE_4": 2
+                  },
+                  "duration_budgets": {
+                    "4": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "4": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 8,
+                  "seconds": 1.1377517400542274
+                },
+                {
+                  "id": 2,
+                  "games": 2,
+                  "terminal_games": 2,
+                  "status_counts": {
+                    "LOST": 2
+                  },
+                  "terminal_means": {
+                    "score": 11954.0,
+                    "utility": 1.8369140625,
+                    "steps": 707.5,
+                    "max_rank": 10.0
+                  },
+                  "selected_options": {
+                    "SPACE_4": 2
+                  },
+                  "duration_budgets": {
+                    "4": 2
+                  },
+                  "actual_fragment_lengths": {
+                    "4": 2
+                  },
+                  "games_with_fragment": 2,
+                  "fragment_actions": 8,
+                  "seconds": 1.2395861470140517
+                }
+              ]
+            }
+          },
+          "cumulative_cost_attribution": {
+            "lifecycles": [
+              {
+                "id": 0,
+                "evaluation_seconds": 2.8591026038629934,
+                "total_seconds": 2.8591026038629934
+              },
+              {
+                "id": 1,
+                "evaluation_seconds": 4.917230591061525,
+                "total_seconds": 4.917230591061525
+              },
+              {
+                "id": 2,
+                "evaluation_seconds": 4.111639293958433,
+                "total_seconds": 4.111639293958433
+              }
+            ],
+            "totals": {
+              "evaluation_seconds": 11.887972488882951,
+              "total_seconds": 11.887972488882951
+            }
+          }
+        }
+      }
+    }
+  ],
+  "final_comparisons": {
+    "FRAGMENT_minus_H2_ONLY": {
+      "reward": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 1,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": -1928.0,
+            "mean_utility_delta": -0.94140625
+          },
+          {
+            "id": 2,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": -642.6666666666666,
+        "mean_utility_delta": -0.3138020833333333,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 1
+      },
+      "risk_goal": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 1,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": -1908.0,
+            "mean_utility_delta": -0.931640625
+          },
+          {
+            "id": 2,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 3672.0,
+            "mean_utility_delta": 1.79296875
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": 588.0,
+        "mean_utility_delta": 0.287109375,
+        "positive_lifecycles": 1,
+        "negative_lifecycles": 1
+      }
+    },
+    "FRAGMENT_minus_ONE_STEP": {
+      "reward": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 1,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 2,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": 0.0,
+        "mean_utility_delta": 0.0,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 0
+      },
+      "risk_goal": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 1,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 2,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": 0.0,
+        "mean_utility_delta": 0.0,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 0
+      }
+    },
+    "FRAGMENT_minus_FROZEN_6": {
+      "reward": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 1,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 2,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": 0.0,
+        "mean_utility_delta": 0.0,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 0
+      },
+      "risk_goal": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 1,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 2,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": 0.0,
+        "mean_utility_delta": 0.0,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 0
+      }
+    },
+    "FRAGMENT_minus_FIXED_SPACE4": {
+      "reward": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": -846.0,
+            "mean_utility_delta": -0.4130859375
+          },
+          {
+            "id": 1,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": -150.0,
+            "mean_utility_delta": -0.0732421875
+          },
+          {
+            "id": 2,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 2346.0,
+            "mean_utility_delta": 1.1455078125
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": 450.0,
+        "mean_utility_delta": 0.2197265625,
+        "positive_lifecycles": 1,
+        "negative_lifecycles": 2
+      },
+      "risk_goal": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 226.0,
+            "mean_utility_delta": 0.1103515625
+          },
+          {
+            "id": 1,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": -1916.0,
+            "mean_utility_delta": -0.935546875
+          },
+          {
+            "id": 2,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": -1040.0,
+            "mean_utility_delta": -0.5078125
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": -910.0,
+        "mean_utility_delta": -0.4443359375,
+        "positive_lifecycles": 1,
+        "negative_lifecycles": 2
+      }
+    }
+  },
+  "first_to_last_checkpoint_change": {
+    "H2_ONLY": {
+      "reward": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 1,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 2,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": 0.0,
+        "mean_utility_delta": 0.0,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 0
+      },
+      "risk_goal": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 1,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 2,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": 0.0,
+        "mean_utility_delta": 0.0,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 0
+      }
+    },
+    "ONE_STEP": {
+      "reward": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 1,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 2,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": 0.0,
+        "mean_utility_delta": 0.0,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 0
+      },
+      "risk_goal": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 1,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 2,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": 0.0,
+        "mean_utility_delta": 0.0,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 0
+      }
+    },
+    "FRAGMENT": {
+      "reward": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 1,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 2,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": 0.0,
+        "mean_utility_delta": 0.0,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 0
+      },
+      "risk_goal": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 1,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 2,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": 0.0,
+        "mean_utility_delta": 0.0,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 0
+      }
+    },
+    "FROZEN_6": {
+      "reward": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 1,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 2,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": 0.0,
+        "mean_utility_delta": 0.0,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 0
+      },
+      "risk_goal": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 1,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 2,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": 0.0,
+        "mean_utility_delta": 0.0,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 0
+      }
+    },
+    "FIXED_SPACE4": {
+      "reward": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 1,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 2,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": 0.0,
+        "mean_utility_delta": 0.0,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 0
+      },
+      "risk_goal": {
+        "lifecycles": [
+          {
+            "id": 0,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 1,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          },
+          {
+            "id": 2,
+            "pairs": 2,
+            "estimable": true,
+            "mean_score_delta": 0.0,
+            "mean_utility_delta": 0.0
+          }
+        ],
+        "all_lifecycles_estimable": true,
+        "mean_score_delta": 0.0,
+        "mean_utility_delta": 0.0,
+        "positive_lifecycles": 0,
+        "negative_lifecycles": 0
+      }
+    }
+  },
+  "learning_sources": {
+    "batches": [
+      {
+        "id": 0,
+        "checkpoint": 6,
+        "source": {
+          "games": 12,
+          "roots": 12,
+          "outcomes": {
+            "LOST": 12
+          },
+          "work": {
+            "environment_random_draws": 12848,
+            "initial_spawns": 24,
+            "ground_state_status_calls": 6412,
+            "ground_status_internal_swipe_calls": 25648,
+            "ground_swipe_calls": 32048,
+            "ground_explicit_swipe_calls": 6400,
+            "sampled_transitions": 6400
+          },
+          "planning_counts": {
+            "learned_terminal_checks": 12800,
+            "learned_swipe_calls": 51200,
+            "learned_line_rewrites": 204800,
+            "controller_active_decisions": 6400,
+            "h2_active_actions": 6400,
+            "legal_swipes": 178811,
+            "model_uniform_draws": 25600,
+            "model_spawn_samples": 45050,
+            "h2_cutoff_contracts": 45050,
+            "h2_contract_compiled_programs": 6400,
+            "h2_contract_full_board_materializations": 0,
+            "h2_contract_factorized_contexts": 45050,
+            "h2_contract_candidate_predicate_evaluations": 0,
+            "h2_contract_contract_materializations": 32474,
+            "h2_contract_effect_key_constructions": 156286,
+            "h2_contract_effect_cache_lookups": 156286,
+            "h2_contract_effect_cache_hits": 31307,
+            "h2_contract_effect_cache_entries": 124979,
+            "h2_contract_effect_score_aggregations": 124979,
+            "h2_contract_effect_output_line_references": 625144,
+            "h2_contract_effect_vacancy_keys": 0,
+            "h2_contract_effect_exact_output_keys": 156286,
+            "h2_contract_direct_observation_evaluations": 45050,
+            "h2_contract_prepare_calls": 45050,
+            "h2_contract_line_lookups": 720800,
+            "h2_contract_line_evaluations": 358414,
+            "h2_contract_line_summary_adjacent_tests": 1060910,
+            "h2_contract_line_cache_hits": 362386,
+            "h2_contract_context_contract_evaluations": 45050,
+            "h2_contract_predicate_calls": 45050,
+            "h2_contract_candidate_action_changed_tests": 180200,
+            "h2_contract_candidate_action_predicate_evaluations": 124979,
+            "h2_contract_terminal_predicate_evaluations": 124979,
+            "h2_contract_terminal_spawn_rank_classifications": 249958,
+            "h2_contract_predicate_materializations": 45050,
+            "h2_contract_contract_cache_lookups": 45050,
+            "h2_contract_contract_fraction_accumulations": 221328,
+            "h2_contract_terminal_probability_combinations": 221328,
+            "h2_contract_contract_cache_hits": 12576,
+            "h2_contract_base_adjacent_tests": 27313,
+            "h2_contract_cross_line_adjacent_tests": 16836,
+            "h2_contract_base_hole_neighbor_reads": 1009,
+            "h2_contract_hole_neighbor_rank_reads": 2053
+          },
+          "seconds": 6.335468789970037
+        },
+        "branches": {
+          "roots": 12,
+          "trajectories": 480,
+          "censored_roots": 0,
+          "outcomes": {
+            "LOST": 475,
+            "WON": 5
+          },
+          "work": {
+            "ground_state_status_calls": 242590,
+            "ground_status_internal_swipe_calls": 970340,
+            "ground_swipe_calls": 1212450,
+            "ground_explicit_swipe_calls": 242110,
+            "environment_random_draws": 484220,
+            "sampled_transitions": 242110
+          },
+          "planning_counts": {
+            "learned_terminal_checks": 484220,
+            "learned_swipe_calls": 1936880,
+            "learned_line_rewrites": 7747520,
+            "controller_active_decisions": 242110,
+            "fragment_selections": 480,
+            "fragments_initiated": 384,
+            "h2_active_actions": 241150,
+            "legal_swipes": 6612140,
+            "model_uniform_draws": 968440,
+            "model_spawn_samples": 1682822,
+            "h2_cutoff_contracts": 1682822,
+            "h2_contract_compiled_programs": 241150,
+            "h2_contract_full_board_materializations": 0,
+            "h2_contract_factorized_contexts": 1682822,
+            "h2_contract_candidate_predicate_evaluations": 0,
+            "h2_contract_contract_materializations": 1221210,
+            "h2_contract_effect_key_constructions": 5767256,
+            "h2_contract_effect_cache_lookups": 5767256,
+            "h2_contract_effect_cache_hits": 1176925,
+            "h2_contract_effect_cache_entries": 4590331,
+            "h2_contract_effect_score_aggregations": 4590331,
+            "h2_contract_effect_output_line_references": 23069024,
+            "h2_contract_effect_vacancy_keys": 0,
+            "h2_contract_effect_exact_output_keys": 5767256,
+            "h2_contract_direct_observation_evaluations": 1682822,
+            "h2_contract_prepare_calls": 1682822,
+            "h2_contract_line_lookups": 26925152,
+            "h2_contract_line_evaluations": 13808590,
+            "h2_contract_line_summary_adjacent_tests": 40871585,
+            "h2_contract_context_contract_evaluations": 1682822,
+            "h2_contract_predicate_calls": 1682822,
+            "h2_contract_candidate_action_changed_tests": 6731288,
+            "h2_contract_candidate_action_predicate_evaluations": 4590331,
+            "h2_contract_terminal_predicate_evaluations": 4590331,
+            "h2_contract_terminal_spawn_rank_classifications": 9180662,
+            "h2_contract_predicate_materializations": 1682822,
+            "h2_contract_contract_cache_lookups": 1682822,
+            "h2_contract_contract_fraction_accumulations": 8257734,
+            "h2_contract_terminal_probability_combinations": 8257734,
+            "h2_contract_line_cache_hits": 13116562,
+            "h2_contract_contract_cache_hits": 461612,
+            "h2_contract_base_adjacent_tests": 1386907,
+            "h2_contract_cross_line_adjacent_tests": 814094,
+            "h2_contract_hole_neighbor_rank_reads": 102353,
+            "h2_contract_base_hole_neighbor_reads": 48290,
+            "dummy_model_uniform_draws": 3840,
+            "fragment_active_actions": 960
+          },
+          "seconds": 240.56358550395817
+        },
+        "cumulative_dataset": {
+          "records": 48,
+          "training_records": 40,
+          "heldout_records": 8
+        },
+        "update": {
+          "checkpoint": 6,
+          "input_records": 48,
+          "reference_records_excluded": 0,
+          "training_records": 40,
+          "heldout_records": 8,
+          "queries": {
+            "reward": {
+              "training_rows": 20,
+              "heldout_rows": 4,
+              "nodes": 3,
+              "leaves": 2,
+              "training_target_mean": [
+                0.50865478515625,
+                0.0,
+                0.0
+              ],
+              "heldout_mse_components": [
+                0.4568801042106416,
+                0.0,
+                0.0
+              ]
+            },
+            "risk_goal": {
+              "training_rows": 20,
+              "heldout_rows": 4,
+              "nodes": 3,
+              "leaves": 2,
+              "training_target_mean": [
+                -0.365380859375,
+                0.03125,
+                -0.03125
+              ],
+              "heldout_mse_components": [
+                0.2541037752396531,
+                0.00010850694444444444,
+                0.00010850694444444444
+              ]
+            }
+          },
+          "counts": {
+            "metadata_rows_read": 48,
+            "training_rows_read": 40,
+            "fragment_feature_rows": 48,
+            "board_feature_rows": 48,
+            "tree_fits": 2,
+            "fit_rows": 40,
+            "validation_rows_read": 8,
+            "tree_apply_rows": 8,
+            "tree_split_visits": 8
+          },
+          "seconds": 0.8594315150403418
+        }
+      },
+      {
+        "id": 0,
+        "checkpoint": 12,
+        "source": {
+          "games": 12,
+          "roots": 12,
+          "outcomes": {
+            "LOST": 12
+          },
+          "work": {
+            "environment_random_draws": 12200,
+            "initial_spawns": 24,
+            "ground_state_status_calls": 6088,
+            "ground_status_internal_swipe_calls": 24352,
+            "ground_swipe_calls": 30428,
+            "ground_explicit_swipe_calls": 6076,
+            "sampled_transitions": 6076
+          },
+          "planning_counts": {
+            "learned_terminal_checks": 12152,
+            "learned_swipe_calls": 48608,
+            "learned_line_rewrites": 194432,
+            "controller_active_decisions": 6076,
+            "h2_active_actions": 6076,
+            "legal_swipes": 168882,
+            "model_uniform_draws": 24304,
+            "model_spawn_samples": 42792,
+            "h2_cutoff_contracts": 42792,
+            "h2_contract_compiled_programs": 6076,
+            "h2_contract_full_board_materializations": 0,
+            "h2_contract_factorized_contexts": 42792,
+            "h2_contract_candidate_predicate_evaluations": 0,
+            "h2_contract_contract_materializations": 30866,
+            "h2_contract_effect_key_constructions": 147486,
+            "h2_contract_effect_cache_lookups": 147486,
+            "h2_contract_effect_cache_hits": 30712,
+            "h2_contract_effect_cache_entries": 116774,
+            "h2_contract_effect_score_aggregations": 116774,
+            "h2_contract_effect_output_line_references": 589944,
+            "h2_contract_effect_vacancy_keys": 0,
+            "h2_contract_effect_exact_output_keys": 147486,
+            "h2_contract_direct_observation_evaluations": 42792,
+            "h2_contract_prepare_calls": 42792,
+            "h2_contract_line_lookups": 684672,
+            "h2_contract_line_evaluations": 337233,
+            "h2_contract_line_summary_adjacent_tests": 997475,
+            "h2_contract_line_cache_hits": 347439,
+            "h2_contract_context_contract_evaluations": 42792,
+            "h2_contract_predicate_calls": 42792,
+            "h2_contract_candidate_action_changed_tests": 171168,
+            "h2_contract_candidate_action_predicate_evaluations": 116774,
+            "h2_contract_terminal_predicate_evaluations": 116774,
+            "h2_contract_terminal_spawn_rank_classifications": 233548,
+            "h2_contract_predicate_materializations": 42792,
+            "h2_contract_contract_cache_lookups": 42792,
+            "h2_contract_contract_fraction_accumulations": 209438,
+            "h2_contract_terminal_probability_combinations": 209438,
+            "h2_contract_contract_cache_hits": 11926,
+            "h2_contract_base_adjacent_tests": 29567,
+            "h2_contract_base_hole_neighbor_reads": 1135,
+            "h2_contract_cross_line_adjacent_tests": 17695,
+            "h2_contract_hole_neighbor_rank_reads": 2217
+          },
+          "seconds": 6.048907608026639
+        },
+        "branches": {
+          "roots": 12,
+          "trajectories": 480,
+          "censored_roots": 0,
+          "outcomes": {
+            "LOST": 476,
+            "WON": 4
+          },
+          "work": {
+            "ground_state_status_calls": 257493,
+            "ground_status_internal_swipe_calls": 1029956,
+            "ground_swipe_calls": 1286969,
+            "ground_explicit_swipe_calls": 257013,
+            "environment_random_draws": 514026,
+            "sampled_transitions": 257013
+          },
+          "planning_counts": {
+            "learned_terminal_checks": 514026,
+            "learned_swipe_calls": 2056104,
+            "learned_line_rewrites": 8224416,
+            "controller_active_decisions": 257013,
+            "fragment_selections": 480,
+            "fragments_initiated": 384,
+            "h2_active_actions": 256053,
+            "legal_swipes": 7011160,
+            "model_uniform_draws": 1028052,
+            "model_spawn_samples": 1784770,
+            "h2_cutoff_contracts": 1784770,
+            "h2_contract_compiled_programs": 256053,
+            "h2_contract_full_board_materializations": 0,
+            "h2_contract_factorized_contexts": 1784770,
+            "h2_contract_candidate_predicate_evaluations": 0,
+            "h2_contract_contract_materializations": 1293705,
+            "h2_contract_effect_key_constructions": 6115281,
+            "h2_contract_effect_cache_lookups": 6115281,
+            "h2_contract_effect_cache_hits": 1254959,
+            "h2_contract_effect_cache_entries": 4860322,
+            "h2_contract_effect_score_aggregations": 4860322,
+            "h2_contract_effect_output_line_references": 24461124,
+            "h2_contract_effect_vacancy_keys": 0,
+            "h2_contract_effect_exact_output_keys": 6115281,
+            "h2_contract_direct_observation_evaluations": 1784770,
+            "h2_contract_prepare_calls": 1784770,
+            "h2_contract_line_lookups": 28556320,
+            "h2_contract_line_evaluations": 14651268,
+            "h2_contract_line_summary_adjacent_tests": 43360744,
+            "h2_contract_line_cache_hits": 13905052,
+            "h2_contract_context_contract_evaluations": 1784770,
+            "h2_contract_predicate_calls": 1784770,
+            "h2_contract_candidate_action_changed_tests": 7139080,
+            "h2_contract_candidate_action_predicate_evaluations": 4860322,
+            "h2_contract_terminal_predicate_evaluations": 4860322,
+            "h2_contract_terminal_spawn_rank_classifications": 9720644,
+            "h2_contract_predicate_materializations": 1784770,
+            "h2_contract_contract_cache_lookups": 1784770,
+            "h2_contract_contract_fraction_accumulations": 8746298,
+            "h2_contract_terminal_probability_combinations": 8746298,
+            "h2_contract_contract_cache_hits": 491065,
+            "h2_contract_base_adjacent_tests": 1486024,
+            "h2_contract_cross_line_adjacent_tests": 893070,
+            "h2_contract_hole_neighbor_rank_reads": 112043,
+            "h2_contract_base_hole_neighbor_reads": 51941,
+            "dummy_model_uniform_draws": 3840,
+            "fragment_active_actions": 960
+          },
+          "seconds": 256.0712209090125
+        },
+        "cumulative_dataset": {
+          "records": 96,
+          "training_records": 80,
+          "heldout_records": 16
+        },
+        "update": {
+          "checkpoint": 12,
+          "input_records": 96,
+          "reference_records_excluded": 0,
+          "training_records": 80,
+          "heldout_records": 16,
+          "queries": {
+            "reward": {
+              "training_rows": 40,
+              "heldout_rows": 8,
+              "nodes": 7,
+              "leaves": 4,
+              "training_target_mean": [
+                0.318609619140625,
+                -0.003125,
+                0.003125
+              ],
+              "heldout_mse_components": [
+                0.5580475395545363,
+                0.0069580078125,
+                0.0069580078125
+              ]
+            },
+            "risk_goal": {
+              "training_rows": 40,
+              "heldout_rows": 8,
+              "nodes": 9,
+              "leaves": 5,
+              "training_target_mean": [
+                -0.05810546875,
+                0.0125,
+                -0.0125
+              ],
+              "heldout_mse_components": [
+                1.1789743904955685,
+                0.00439453125,
+                0.00439453125
+              ]
+            }
+          },
+          "counts": {
+            "metadata_rows_read": 96,
+            "training_rows_read": 80,
+            "fragment_feature_rows": 96,
+            "board_feature_rows": 96,
+            "tree_fits": 2,
+            "fit_rows": 80,
+            "validation_rows_read": 16,
+            "tree_apply_rows": 16,
+            "tree_split_visits": 40
+          },
+          "seconds": 0.003336242982186377
+        }
+      },
+      {
+        "id": 1,
+        "checkpoint": 6,
+        "source": {
+          "games": 12,
+          "roots": 12,
+          "outcomes": {
+            "LOST": 12
+          },
+          "work": {
+            "environment_random_draws": 16580,
+            "initial_spawns": 24,
+            "ground_state_status_calls": 8278,
+            "ground_status_internal_swipe_calls": 33112,
+            "ground_swipe_calls": 41378,
+            "ground_explicit_swipe_calls": 8266,
+            "sampled_transitions": 8266
+          },
+          "planning_counts": {
+            "learned_terminal_checks": 16532,
+            "learned_swipe_calls": 66128,
+            "learned_line_rewrites": 264512,
+            "controller_active_decisions": 8266,
+            "h2_active_actions": 8266,
+            "legal_swipes": 229269,
+            "model_uniform_draws": 33064,
+            "model_spawn_samples": 57924,
+            "h2_cutoff_contracts": 57924,
+            "h2_contract_compiled_programs": 8266,
+            "h2_contract_full_board_materializations": 0,
+            "h2_contract_factorized_contexts": 57924,
+            "h2_contract_candidate_predicate_evaluations": 0,
+            "h2_contract_contract_materializations": 41482,
+            "h2_contract_effect_key_constructions": 200307,
+            "h2_contract_effect_cache_lookups": 200307,
+            "h2_contract_effect_cache_hits": 41992,
+            "h2_contract_effect_cache_entries": 158315,
+            "h2_contract_effect_score_aggregations": 158315,
+            "h2_contract_effect_output_line_references": 801228,
+            "h2_contract_effect_vacancy_keys": 0,
+            "h2_contract_effect_exact_output_keys": 200307,
+            "h2_contract_direct_observation_evaluations": 57924,
+            "h2_contract_prepare_calls": 57924,
+            "h2_contract_line_lookups": 926784,
+            "h2_contract_line_evaluations": 463882,
+            "h2_contract_line_summary_adjacent_tests": 1372024,
+            "h2_contract_line_cache_hits": 462902,
+            "h2_contract_context_contract_evaluations": 57924,
+            "h2_contract_predicate_calls": 57924,
+            "h2_contract_candidate_action_changed_tests": 231696,
+            "h2_contract_candidate_action_predicate_evaluations": 158315,
+            "h2_contract_terminal_predicate_evaluations": 158315,
+            "h2_contract_terminal_spawn_rank_classifications": 316630,
+            "h2_contract_predicate_materializations": 57924,
+            "h2_contract_contract_cache_lookups": 57924,
+            "h2_contract_contract_fraction_accumulations": 282150,
+            "h2_contract_terminal_probability_combinations": 282150,
+            "h2_contract_contract_cache_hits": 16442,
+            "h2_contract_base_adjacent_tests": 44479,
+            "h2_contract_cross_line_adjacent_tests": 28944,
+            "h2_contract_base_hole_neighbor_reads": 1490,
+            "h2_contract_hole_neighbor_rank_reads": 3414
+          },
+          "seconds": 8.183314667956438
+        },
+        "branches": {
+          "roots": 12,
+          "trajectories": 480,
+          "censored_roots": 0,
+          "outcomes": {
+            "LOST": 479,
+            "WON": 1
+          },
+          "work": {
+            "ground_state_status_calls": 246468,
+            "ground_status_internal_swipe_calls": 985868,
+            "ground_swipe_calls": 1231856,
+            "ground_explicit_swipe_calls": 245988,
+            "environment_random_draws": 491976,
+            "sampled_transitions": 245988
+          },
+          "planning_counts": {
+            "learned_terminal_checks": 491976,
+            "learned_swipe_calls": 1967904,
+            "learned_line_rewrites": 7871616,
+            "controller_active_decisions": 245988,
+            "fragment_selections": 480,
+            "fragments_initiated": 384,
+            "h2_active_actions": 245028,
+            "legal_swipes": 6704036,
+            "model_uniform_draws": 983952,
+            "model_spawn_samples": 1707968,
+            "h2_cutoff_contracts": 1707968,
+            "h2_contract_compiled_programs": 245028,
+            "h2_contract_full_board_materializations": 0,
+            "h2_contract_factorized_contexts": 1707968,
+            "h2_contract_candidate_predicate_evaluations": 0,
+            "h2_contract_contract_materializations": 1238641,
+            "h2_contract_effect_key_constructions": 5846646,
+            "h2_contract_effect_cache_lookups": 5846646,
+            "h2_contract_effect_cache_hits": 1200910,
+            "h2_contract_effect_cache_entries": 4645736,
+            "h2_contract_effect_score_aggregations": 4645736,
+            "h2_contract_effect_output_line_references": 23386584,
+            "h2_contract_effect_vacancy_keys": 0,
+            "h2_contract_effect_exact_output_keys": 5846646,
+            "h2_contract_direct_observation_evaluations": 1707968,
+            "h2_contract_prepare_calls": 1707968,
+            "h2_contract_line_lookups": 27327488,
+            "h2_contract_line_evaluations": 14025033,
+            "h2_contract_line_summary_adjacent_tests": 41507701,
+            "h2_contract_line_cache_hits": 13302455,
+            "h2_contract_context_contract_evaluations": 1707968,
+            "h2_contract_predicate_calls": 1707968,
+            "h2_contract_candidate_action_changed_tests": 6831872,
+            "h2_contract_candidate_action_predicate_evaluations": 4645736,
+            "h2_contract_terminal_predicate_evaluations": 4645736,
+            "h2_contract_terminal_spawn_rank_classifications": 9291472,
+            "h2_contract_predicate_materializations": 1707968,
+            "h2_contract_contract_cache_lookups": 1707968,
+            "h2_contract_contract_fraction_accumulations": 8368010,
+            "h2_contract_terminal_probability_combinations": 8368010,
+            "h2_contract_contract_cache_hits": 469327,
+            "h2_contract_base_adjacent_tests": 1477166,
+            "h2_contract_cross_line_adjacent_tests": 875738,
+            "h2_contract_base_hole_neighbor_reads": 51773,
+            "h2_contract_hole_neighbor_rank_reads": 109817,
+            "dummy_model_uniform_draws": 3840,
+            "fragment_active_actions": 960
+          },
+          "seconds": 243.31717642000876
+        },
+        "cumulative_dataset": {
+          "records": 48,
+          "training_records": 40,
+          "heldout_records": 8
+        },
+        "update": {
+          "checkpoint": 6,
+          "input_records": 48,
+          "reference_records_excluded": 0,
+          "training_records": 40,
+          "heldout_records": 8,
+          "queries": {
+            "reward": {
+              "training_rows": 20,
+              "heldout_rows": 4,
+              "nodes": 3,
+              "leaves": 2,
+              "training_target_mean": [
+                0.05579833984375,
+                0.0,
+                0.0
+              ],
+              "heldout_mse_components": [
+                0.2087753303349018,
+                0.0,
+                0.0
+              ]
+            },
+            "risk_goal": {
+              "training_rows": 20,
+              "heldout_rows": 4,
+              "nodes": 3,
+              "leaves": 2,
+              "training_target_mean": [
+                0.11395263671875,
+                -0.00625,
+                0.00625
+              ],
+              "heldout_mse_components": [
+                0.8178724961148369,
+                0.00010850694444444444,
+                0.00010850694444444444
+              ]
+            }
+          },
+          "counts": {
+            "metadata_rows_read": 48,
+            "training_rows_read": 40,
+            "fragment_feature_rows": 48,
+            "board_feature_rows": 48,
+            "tree_fits": 2,
+            "fit_rows": 40,
+            "validation_rows_read": 8,
+            "tree_apply_rows": 8,
+            "tree_split_visits": 8
+          },
+          "seconds": 0.705959910992533
+        }
+      },
+      {
+        "id": 1,
+        "checkpoint": 12,
+        "source": {
+          "games": 12,
+          "roots": 12,
+          "outcomes": {
+            "LOST": 12
+          },
+          "work": {
+            "environment_random_draws": 14688,
+            "initial_spawns": 24,
+            "ground_state_status_calls": 7332,
+            "ground_status_internal_swipe_calls": 29328,
+            "ground_swipe_calls": 36648,
+            "ground_explicit_swipe_calls": 7320,
+            "sampled_transitions": 7320
+          },
+          "planning_counts": {
+            "learned_terminal_checks": 14640,
+            "learned_swipe_calls": 58560,
+            "learned_line_rewrites": 234240,
+            "controller_active_decisions": 7320,
+            "h2_active_actions": 7320,
+            "legal_swipes": 203470,
+            "model_uniform_draws": 29280,
+            "model_spawn_samples": 51358,
+            "h2_cutoff_contracts": 51358,
+            "h2_contract_compiled_programs": 7320,
+            "h2_contract_full_board_materializations": 0,
+            "h2_contract_factorized_contexts": 51358,
+            "h2_contract_candidate_predicate_evaluations": 0,
+            "h2_contract_contract_materializations": 37110,
+            "h2_contract_effect_key_constructions": 177791,
+            "h2_contract_effect_cache_lookups": 177791,
+            "h2_contract_effect_cache_hits": 36785,
+            "h2_contract_effect_cache_entries": 141006,
+            "h2_contract_effect_score_aggregations": 141006,
+            "h2_contract_effect_output_line_references": 711164,
+            "h2_contract_effect_vacancy_keys": 0,
+            "h2_contract_effect_exact_output_keys": 177791,
+            "h2_contract_direct_observation_evaluations": 51358,
+            "h2_contract_prepare_calls": 51358,
+            "h2_contract_line_lookups": 821728,
+            "h2_contract_line_evaluations": 409462,
+            "h2_contract_line_summary_adjacent_tests": 1211358,
+            "h2_contract_line_cache_hits": 412266,
+            "h2_contract_context_contract_evaluations": 51358,
+            "h2_contract_predicate_calls": 51358,
+            "h2_contract_candidate_action_changed_tests": 205432,
+            "h2_contract_candidate_action_predicate_evaluations": 141006,
+            "h2_contract_terminal_predicate_evaluations": 141006,
+            "h2_contract_terminal_spawn_rank_classifications": 282012,
+            "h2_contract_predicate_materializations": 51358,
+            "h2_contract_contract_cache_lookups": 51358,
+            "h2_contract_contract_fraction_accumulations": 252750,
+            "h2_contract_terminal_probability_combinations": 252750,
+            "h2_contract_contract_cache_hits": 14248,
+            "h2_contract_base_adjacent_tests": 33337,
+            "h2_contract_cross_line_adjacent_tests": 20325,
+            "h2_contract_hole_neighbor_rank_reads": 2534,
+            "h2_contract_base_hole_neighbor_reads": 1153
+          },
+          "seconds": 7.271402729966212
+        },
+        "branches": {
+          "roots": 12,
+          "trajectories": 480,
+          "censored_roots": 0,
+          "outcomes": {
+            "LOST": 479,
+            "WON": 1
+          },
+          "work": {
+            "ground_state_status_calls": 240324,
+            "ground_status_internal_swipe_calls": 961292,
+            "ground_swipe_calls": 1201136,
+            "ground_explicit_swipe_calls": 239844,
+            "environment_random_draws": 479688,
+            "sampled_transitions": 239844
+          },
+          "planning_counts": {
+            "learned_terminal_checks": 479688,
+            "learned_swipe_calls": 1918752,
+            "learned_line_rewrites": 7675008,
+            "controller_active_decisions": 239844,
+            "fragment_selections": 480,
+            "fragments_initiated": 384,
+            "h2_active_actions": 238884,
+            "legal_swipes": 6532577,
+            "model_uniform_draws": 959376,
+            "model_spawn_samples": 1664642,
+            "h2_cutoff_contracts": 1664642,
+            "h2_contract_compiled_programs": 238884,
+            "h2_contract_full_board_materializations": 0,
+            "h2_contract_factorized_contexts": 1664642,
+            "h2_contract_candidate_predicate_evaluations": 0,
+            "h2_contract_contract_materializations": 1208847,
+            "h2_contract_effect_key_constructions": 5696828,
+            "h2_contract_effect_cache_lookups": 5696828,
+            "h2_contract_effect_cache_hits": 1164531,
+            "h2_contract_effect_cache_entries": 4532297,
+            "h2_contract_effect_score_aggregations": 4532297,
+            "h2_contract_effect_output_line_references": 22787312,
+            "h2_contract_effect_vacancy_keys": 0,
+            "h2_contract_effect_exact_output_keys": 5696828,
+            "h2_contract_direct_observation_evaluations": 1664642,
+            "h2_contract_prepare_calls": 1664642,
+            "h2_contract_line_lookups": 26634272,
+            "h2_contract_line_evaluations": 13703529,
+            "h2_contract_line_summary_adjacent_tests": 40556106,
+            "h2_contract_line_cache_hits": 12930743,
+            "h2_contract_context_contract_evaluations": 1664642,
+            "h2_contract_predicate_calls": 1664642,
+            "h2_contract_candidate_action_changed_tests": 6658568,
+            "h2_contract_candidate_action_predicate_evaluations": 4532297,
+            "h2_contract_terminal_predicate_evaluations": 4532297,
+            "h2_contract_terminal_spawn_rank_classifications": 9064594,
+            "h2_contract_predicate_materializations": 1664642,
+            "h2_contract_contract_cache_lookups": 1664642,
+            "h2_contract_contract_fraction_accumulations": 8166248,
+            "h2_contract_terminal_probability_combinations": 8166248,
+            "h2_contract_contract_cache_hits": 455795,
+            "h2_contract_base_adjacent_tests": 1421325,
+            "h2_contract_cross_line_adjacent_tests": 846049,
+            "h2_contract_hole_neighbor_rank_reads": 105839,
+            "h2_contract_base_hole_neighbor_reads": 49988,
+            "dummy_model_uniform_draws": 3840,
+            "fragment_active_actions": 960
+          },
+          "seconds": 241.2982155380305
+        },
+        "cumulative_dataset": {
+          "records": 96,
+          "training_records": 80,
+          "heldout_records": 16
+        },
+        "update": {
+          "checkpoint": 12,
+          "input_records": 96,
+          "reference_records_excluded": 0,
+          "training_records": 80,
+          "heldout_records": 16,
+          "queries": {
+            "reward": {
+              "training_rows": 40,
+              "heldout_rows": 8,
+              "nodes": 7,
+              "leaves": 4,
+              "training_target_mean": [
+                0.264031982421875,
+                0.0,
+                0.0
+              ],
+              "heldout_mse_components": [
+                0.34712884037031067,
+                0.0,
+                0.0
+              ]
+            },
+            "risk_goal": {
+              "training_rows": 40,
+              "heldout_rows": 8,
+              "nodes": 7,
+              "leaves": 4,
+              "training_target_mean": [
+                0.24466552734375,
+                -0.00625,
+                0.00625
+              ],
+              "heldout_mse_components": [
+                0.5991228990670707,
+                0.00021701388888888888,
+                0.00021701388888888888
+              ]
+            }
+          },
+          "counts": {
+            "metadata_rows_read": 96,
+            "training_rows_read": 80,
+            "fragment_feature_rows": 96,
+            "board_feature_rows": 96,
+            "tree_fits": 2,
+            "fit_rows": 80,
+            "validation_rows_read": 16,
+            "tree_apply_rows": 16,
+            "tree_split_visits": 28
+          },
+          "seconds": 0.00409540900727734
+        }
+      },
+      {
+        "id": 2,
+        "checkpoint": 6,
+        "source": {
+          "games": 12,
+          "roots": 12,
+          "outcomes": {
+            "LOST": 12
+          },
+          "work": {
+            "environment_random_draws": 17554,
+            "initial_spawns": 24,
+            "ground_state_status_calls": 8765,
+            "ground_status_internal_swipe_calls": 35060,
+            "ground_swipe_calls": 43813,
+            "ground_explicit_swipe_calls": 8753,
+            "sampled_transitions": 8753
+          },
+          "planning_counts": {
+            "learned_terminal_checks": 17506,
+            "learned_swipe_calls": 70024,
+            "learned_line_rewrites": 280096,
+            "controller_active_decisions": 8753,
+            "h2_active_actions": 8753,
+            "legal_swipes": 242126,
+            "model_uniform_draws": 35012,
+            "model_spawn_samples": 61268,
+            "h2_cutoff_contracts": 61268,
+            "h2_contract_compiled_programs": 8753,
+            "h2_contract_full_board_materializations": 0,
+            "h2_contract_factorized_contexts": 61268,
+            "h2_contract_candidate_predicate_evaluations": 0,
+            "h2_contract_contract_materializations": 44145,
+            "h2_contract_effect_key_constructions": 211492,
+            "h2_contract_effect_cache_lookups": 211492,
+            "h2_contract_effect_cache_hits": 44598,
+            "h2_contract_effect_cache_entries": 166894,
+            "h2_contract_effect_score_aggregations": 166894,
+            "h2_contract_effect_output_line_references": 845968,
+            "h2_contract_effect_vacancy_keys": 0,
+            "h2_contract_effect_exact_output_keys": 211492,
+            "h2_contract_direct_observation_evaluations": 61268,
+            "h2_contract_prepare_calls": 61268,
+            "h2_contract_line_lookups": 980288,
+            "h2_contract_line_evaluations": 491187,
+            "h2_contract_line_summary_adjacent_tests": 1451999,
+            "h2_contract_line_cache_hits": 489101,
+            "h2_contract_context_contract_evaluations": 61268,
+            "h2_contract_predicate_calls": 61268,
+            "h2_contract_candidate_action_changed_tests": 245072,
+            "h2_contract_candidate_action_predicate_evaluations": 166894,
+            "h2_contract_terminal_predicate_evaluations": 166894,
+            "h2_contract_terminal_spawn_rank_classifications": 333788,
+            "h2_contract_predicate_materializations": 61268,
+            "h2_contract_contract_cache_lookups": 61268,
+            "h2_contract_contract_fraction_accumulations": 300334,
+            "h2_contract_terminal_probability_combinations": 300334,
+            "h2_contract_contract_cache_hits": 17123,
+            "h2_contract_base_adjacent_tests": 47833,
+            "h2_contract_cross_line_adjacent_tests": 28412,
+            "h2_contract_hole_neighbor_rank_reads": 3508,
+            "h2_contract_base_hole_neighbor_reads": 1660
+          },
+          "seconds": 8.586766740016174
+        },
+        "branches": {
+          "roots": 12,
+          "trajectories": 480,
+          "censored_roots": 0,
+          "outcomes": {
+            "LOST": 479,
+            "WON": 1
+          },
+          "work": {
+            "ground_state_status_calls": 243709,
+            "ground_status_internal_swipe_calls": 974832,
+            "ground_swipe_calls": 1218061,
+            "ground_explicit_swipe_calls": 243229,
+            "environment_random_draws": 486458,
+            "sampled_transitions": 243229
+          },
+          "planning_counts": {
+            "learned_terminal_checks": 486458,
+            "learned_swipe_calls": 1945832,
+            "learned_line_rewrites": 7783328,
+            "controller_active_decisions": 243229,
+            "fragment_selections": 480,
+            "fragments_initiated": 384,
+            "h2_active_actions": 242269,
+            "legal_swipes": 6651878,
+            "model_uniform_draws": 972916,
+            "model_spawn_samples": 1691520,
+            "h2_cutoff_contracts": 1691520,
+            "h2_contract_compiled_programs": 242269,
+            "h2_contract_full_board_materializations": 0,
+            "h2_contract_factorized_contexts": 1691520,
+            "h2_contract_candidate_predicate_evaluations": 0,
+            "h2_contract_contract_materializations": 1224988,
+            "h2_contract_effect_key_constructions": 5802615,
+            "h2_contract_effect_cache_lookups": 5802615,
+            "h2_contract_effect_cache_hits": 1188691,
+            "h2_contract_effect_cache_entries": 4613924,
+            "h2_contract_effect_score_aggregations": 4613924,
+            "h2_contract_effect_output_line_references": 23210460,
+            "h2_contract_effect_vacancy_keys": 0,
+            "h2_contract_effect_exact_output_keys": 5802615,
+            "h2_contract_direct_observation_evaluations": 1691520,
+            "h2_contract_prepare_calls": 1691520,
+            "h2_contract_line_lookups": 27064320,
+            "h2_contract_line_evaluations": 13849665,
+            "h2_contract_line_summary_adjacent_tests": 40983469,
+            "h2_contract_context_contract_evaluations": 1691520,
+            "h2_contract_predicate_calls": 1691520,
+            "h2_contract_candidate_action_changed_tests": 6766080,
+            "h2_contract_candidate_action_predicate_evaluations": 4613924,
+            "h2_contract_terminal_predicate_evaluations": 4613924,
+            "h2_contract_terminal_spawn_rank_classifications": 9227848,
+            "h2_contract_predicate_materializations": 1691520,
+            "h2_contract_contract_cache_lookups": 1691520,
+            "h2_contract_contract_fraction_accumulations": 8289350,
+            "h2_contract_terminal_probability_combinations": 8289350,
+            "h2_contract_line_cache_hits": 13214655,
+            "h2_contract_contract_cache_hits": 466532,
+            "h2_contract_base_adjacent_tests": 1376329,
+            "h2_contract_cross_line_adjacent_tests": 829440,
+            "h2_contract_base_hole_neighbor_reads": 48830,
+            "h2_contract_hole_neighbor_rank_reads": 103782,
+            "dummy_model_uniform_draws": 3840,
+            "fragment_active_actions": 960
+          },
+          "seconds": 242.8689072179841
+        },
+        "cumulative_dataset": {
+          "records": 48,
+          "training_records": 40,
+          "heldout_records": 8
+        },
+        "update": {
+          "checkpoint": 6,
+          "input_records": 48,
+          "reference_records_excluded": 0,
+          "training_records": 40,
+          "heldout_records": 8,
+          "queries": {
+            "reward": {
+              "training_rows": 20,
+              "heldout_rows": 4,
+              "nodes": 3,
+              "leaves": 2,
+              "training_target_mean": [
+                -0.26400146484375,
+                0.0,
+                0.0
+              ],
+              "heldout_mse_components": [
+                1.6015278548002243,
+                0.0,
+                0.0
+              ]
+            },
+            "risk_goal": {
+              "training_rows": 20,
+              "heldout_rows": 4,
+              "nodes": 3,
+              "leaves": 2,
+              "training_target_mean": [
+                0.299267578125,
+                -0.00625,
+                0.00625
+              ],
+              "heldout_mse_components": [
+                0.5237604230642319,
+                0.000244140625,
+                0.000244140625
+              ]
+            }
+          },
+          "counts": {
+            "metadata_rows_read": 48,
+            "training_rows_read": 40,
+            "fragment_feature_rows": 48,
+            "board_feature_rows": 48,
+            "tree_fits": 2,
+            "fit_rows": 40,
+            "validation_rows_read": 8,
+            "tree_apply_rows": 8,
+            "tree_split_visits": 8
+          },
+          "seconds": 0.6984718180028722
+        }
+      },
+      {
+        "id": 2,
+        "checkpoint": 12,
+        "source": {
+          "games": 12,
+          "roots": 12,
+          "outcomes": {
+            "LOST": 12
+          },
+          "work": {
+            "environment_random_draws": 15748,
+            "initial_spawns": 24,
+            "ground_state_status_calls": 7862,
+            "ground_status_internal_swipe_calls": 31448,
+            "ground_swipe_calls": 39298,
+            "ground_explicit_swipe_calls": 7850,
+            "sampled_transitions": 7850
+          },
+          "planning_counts": {
+            "learned_terminal_checks": 15700,
+            "learned_swipe_calls": 62800,
+            "learned_line_rewrites": 251200,
+            "controller_active_decisions": 7850,
+            "h2_active_actions": 7850,
+            "legal_swipes": 216487,
+            "model_uniform_draws": 31400,
+            "model_spawn_samples": 55086,
+            "h2_cutoff_contracts": 55086,
+            "h2_contract_compiled_programs": 7850,
+            "h2_contract_full_board_materializations": 0,
+            "h2_contract_factorized_contexts": 55086,
+            "h2_contract_candidate_predicate_evaluations": 0,
+            "h2_contract_contract_materializations": 39637,
+            "h2_contract_effect_key_constructions": 188944,
+            "h2_contract_effect_cache_lookups": 188944,
+            "h2_contract_effect_cache_hits": 38994,
+            "h2_contract_effect_cache_entries": 149950,
+            "h2_contract_effect_score_aggregations": 149950,
+            "h2_contract_effect_output_line_references": 755776,
+            "h2_contract_effect_vacancy_keys": 0,
+            "h2_contract_effect_exact_output_keys": 188944,
+            "h2_contract_direct_observation_evaluations": 55086,
+            "h2_contract_prepare_calls": 55086,
+            "h2_contract_line_lookups": 881376,
+            "h2_contract_line_evaluations": 440619,
+            "h2_contract_line_summary_adjacent_tests": 1303564,
+            "h2_contract_line_cache_hits": 440757,
+            "h2_contract_context_contract_evaluations": 55086,
+            "h2_contract_predicate_calls": 55086,
+            "h2_contract_candidate_action_changed_tests": 220344,
+            "h2_contract_candidate_action_predicate_evaluations": 149950,
+            "h2_contract_terminal_predicate_evaluations": 149950,
+            "h2_contract_terminal_spawn_rank_classifications": 299900,
+            "h2_contract_predicate_materializations": 55086,
+            "h2_contract_contract_cache_lookups": 55086,
+            "h2_contract_contract_fraction_accumulations": 268058,
+            "h2_contract_terminal_probability_combinations": 268058,
+            "h2_contract_contract_cache_hits": 15449,
+            "h2_contract_base_adjacent_tests": 50196,
+            "h2_contract_base_hole_neighbor_reads": 1833,
+            "h2_contract_cross_line_adjacent_tests": 31332,
+            "h2_contract_hole_neighbor_rank_reads": 4001
+          },
+          "seconds": 7.895933485007845
+        },
+        "branches": {
+          "roots": 12,
+          "trajectories": 480,
+          "censored_roots": 0,
+          "outcomes": {
+            "LOST": 476,
+            "WON": 4
+          },
+          "work": {
+            "ground_state_status_calls": 246939,
+            "ground_status_internal_swipe_calls": 987740,
+            "ground_swipe_calls": 1234199,
+            "ground_explicit_swipe_calls": 246459,
+            "environment_random_draws": 492918,
+            "sampled_transitions": 246459
+          },
+          "planning_counts": {
+            "learned_terminal_checks": 492918,
+            "learned_swipe_calls": 1971672,
+            "learned_line_rewrites": 7886688,
+            "controller_active_decisions": 246459,
+            "fragment_selections": 480,
+            "fragments_initiated": 384,
+            "h2_active_actions": 245499,
+            "legal_swipes": 6720674,
+            "model_uniform_draws": 985836,
+            "model_spawn_samples": 1711294,
+            "h2_cutoff_contracts": 1711294,
+            "h2_contract_compiled_programs": 245499,
+            "h2_contract_full_board_materializations": 0,
+            "h2_contract_factorized_contexts": 1711294,
+            "h2_contract_candidate_predicate_evaluations": 0,
+            "h2_contract_contract_materializations": 1240457,
+            "h2_contract_effect_key_constructions": 5861571,
+            "h2_contract_effect_cache_lookups": 5861571,
+            "h2_contract_effect_cache_hits": 1204033,
+            "h2_contract_effect_cache_entries": 4657538,
+            "h2_contract_effect_score_aggregations": 4657538,
+            "h2_contract_effect_output_line_references": 23446284,
+            "h2_contract_effect_vacancy_keys": 0,
+            "h2_contract_effect_exact_output_keys": 5861571,
+            "h2_contract_direct_observation_evaluations": 1711294,
+            "h2_contract_prepare_calls": 1711294,
+            "h2_contract_line_lookups": 27380704,
+            "h2_contract_line_evaluations": 14016815,
+            "h2_contract_line_summary_adjacent_tests": 41487677,
+            "h2_contract_context_contract_evaluations": 1711294,
+            "h2_contract_predicate_calls": 1711294,
+            "h2_contract_candidate_action_changed_tests": 6845176,
+            "h2_contract_candidate_action_predicate_evaluations": 4657538,
+            "h2_contract_terminal_predicate_evaluations": 4657538,
+            "h2_contract_terminal_spawn_rank_classifications": 9315076,
+            "h2_contract_predicate_materializations": 1711294,
+            "h2_contract_contract_cache_lookups": 1711294,
+            "h2_contract_contract_fraction_accumulations": 8384896,
+            "h2_contract_terminal_probability_combinations": 8384896,
+            "h2_contract_line_cache_hits": 13363889,
+            "h2_contract_contract_cache_hits": 470837,
+            "h2_contract_base_adjacent_tests": 1446542,
+            "h2_contract_base_hole_neighbor_reads": 49973,
+            "h2_contract_cross_line_adjacent_tests": 863155,
+            "h2_contract_hole_neighbor_rank_reads": 108213,
+            "dummy_model_uniform_draws": 3840,
+            "fragment_active_actions": 960
+          },
+          "seconds": 246.90417714300565
+        },
+        "cumulative_dataset": {
+          "records": 96,
+          "training_records": 80,
+          "heldout_records": 16
+        },
+        "update": {
+          "checkpoint": 12,
+          "input_records": 96,
+          "reference_records_excluded": 0,
+          "training_records": 80,
+          "heldout_records": 16,
+          "queries": {
+            "reward": {
+              "training_rows": 40,
+              "heldout_rows": 8,
+              "nodes": 7,
+              "leaves": 4,
+              "training_target_mean": [
+                -0.099072265625,
+                -0.009375,
+                0.009375
+              ],
+              "heldout_mse_components": [
+                1.3499405533075333,
+                0.0089111328125,
+                0.0089111328125
+              ]
+            },
+            "risk_goal": {
+              "training_rows": 40,
+              "heldout_rows": 8,
+              "nodes": 5,
+              "leaves": 3,
+              "training_target_mean": [
+                0.054827880859375,
+                -0.003125,
+                0.003125
+              ],
+              "heldout_mse_components": [
+                0.34453742662254644,
+                0.0,
+                0.0
+              ]
+            }
+          },
+          "counts": {
+            "metadata_rows_read": 96,
+            "training_rows_read": 80,
+            "fragment_feature_rows": 96,
+            "board_feature_rows": 96,
+            "tree_fits": 2,
+            "fit_rows": 80,
+            "validation_rows_read": 16,
+            "tree_apply_rows": 16,
+            "tree_split_visits": 32
+          },
+          "seconds": 0.003669516008812934
+        }
+      }
+    ],
+    "unique_final_labels": {
+      "records": 288,
+      "training_records": 240,
+      "heldout_records": 48
+    },
+    "cumulative_fit_work": {
+      "metadata_rows_read": 432,
+      "training_rows_read": 360,
+      "fragment_feature_rows": 432,
+      "board_feature_rows": 432,
+      "tree_fits": 12,
+      "fit_rows": 360,
+      "validation_rows_read": 72,
+      "tree_apply_rows": 72,
+      "tree_split_visits": 124
+    }
+  },
+  "query_responses": [
+    {
+      "id": 0,
+      "checkpoint": 6,
+      "method": "H2_ONLY",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 0,
+      "checkpoint": 6,
+      "method": "ONE_STEP",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 0,
+      "checkpoint": 6,
+      "method": "FRAGMENT",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 0,
+      "checkpoint": 6,
+      "method": "FROZEN_6",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 0,
+      "checkpoint": 6,
+      "method": "FIXED_SPACE4",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 0,
+      "checkpoint": 12,
+      "method": "H2_ONLY",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 0,
+      "checkpoint": 12,
+      "method": "ONE_STEP",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 0,
+      "checkpoint": 12,
+      "method": "FRAGMENT",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 0,
+      "checkpoint": 12,
+      "method": "FROZEN_6",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 0,
+      "checkpoint": 12,
+      "method": "FIXED_SPACE4",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 1,
+      "checkpoint": 6,
+      "method": "H2_ONLY",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 1,
+      "checkpoint": 6,
+      "method": "ONE_STEP",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 1,
+      "checkpoint": 6,
+      "method": "FRAGMENT",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 1,
+      "checkpoint": 6,
+      "method": "FROZEN_6",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 1,
+      "checkpoint": 6,
+      "method": "FIXED_SPACE4",
+      "pairs": 2,
+      "identical_trajectory_pairs": 1
+    },
+    {
+      "id": 1,
+      "checkpoint": 12,
+      "method": "H2_ONLY",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 1,
+      "checkpoint": 12,
+      "method": "ONE_STEP",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 1,
+      "checkpoint": 12,
+      "method": "FRAGMENT",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 1,
+      "checkpoint": 12,
+      "method": "FROZEN_6",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 1,
+      "checkpoint": 12,
+      "method": "FIXED_SPACE4",
+      "pairs": 2,
+      "identical_trajectory_pairs": 1
+    },
+    {
+      "id": 2,
+      "checkpoint": 6,
+      "method": "H2_ONLY",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 2,
+      "checkpoint": 6,
+      "method": "ONE_STEP",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 2,
+      "checkpoint": 6,
+      "method": "FRAGMENT",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 2,
+      "checkpoint": 6,
+      "method": "FROZEN_6",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 2,
+      "checkpoint": 6,
+      "method": "FIXED_SPACE4",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 2,
+      "checkpoint": 12,
+      "method": "H2_ONLY",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 2,
+      "checkpoint": 12,
+      "method": "ONE_STEP",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 2,
+      "checkpoint": 12,
+      "method": "FRAGMENT",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 2,
+      "checkpoint": 12,
+      "method": "FROZEN_6",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    },
+    {
+      "id": 2,
+      "checkpoint": 12,
+      "method": "FIXED_SPACE4",
+      "pairs": 2,
+      "identical_trajectory_pairs": 0
+    }
+  ],
+  "actual_executed_work": {
+    "source_games": 72,
+    "roots": 72,
+    "trajectories": 2880,
+    "censored_roots": 0,
+    "new_labels": 288,
+    "phases": {
+      "source": {
+        "ground": {
+          "environment_random_draws": 89618,
+          "initial_spawns": 144,
+          "ground_state_status_calls": 44737,
+          "ground_status_internal_swipe_calls": 178948,
+          "ground_swipe_calls": 223613,
+          "ground_explicit_swipe_calls": 44665,
+          "sampled_transitions": 44665
+        },
+        "planning": {
+          "learned_terminal_checks": 89330,
+          "learned_swipe_calls": 357320,
+          "learned_line_rewrites": 1429280,
+          "controller_active_decisions": 44665,
+          "h2_active_actions": 44665,
+          "legal_swipes": 1239045,
+          "model_uniform_draws": 178660,
+          "model_spawn_samples": 313478,
+          "h2_cutoff_contracts": 313478,
+          "h2_contract_compiled_programs": 44665,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 313478,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 225714,
+          "h2_contract_effect_key_constructions": 1082306,
+          "h2_contract_effect_cache_lookups": 1082306,
+          "h2_contract_effect_cache_hits": 224388,
+          "h2_contract_effect_cache_entries": 857918,
+          "h2_contract_effect_score_aggregations": 857918,
+          "h2_contract_effect_output_line_references": 4329224,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 1082306,
+          "h2_contract_direct_observation_evaluations": 313478,
+          "h2_contract_prepare_calls": 313478,
+          "h2_contract_line_lookups": 5015648,
+          "h2_contract_line_evaluations": 2500797,
+          "h2_contract_line_summary_adjacent_tests": 7397330,
+          "h2_contract_line_cache_hits": 2514851,
+          "h2_contract_context_contract_evaluations": 313478,
+          "h2_contract_predicate_calls": 313478,
+          "h2_contract_candidate_action_changed_tests": 1253912,
+          "h2_contract_candidate_action_predicate_evaluations": 857918,
+          "h2_contract_terminal_predicate_evaluations": 857918,
+          "h2_contract_terminal_spawn_rank_classifications": 1715836,
+          "h2_contract_predicate_materializations": 313478,
+          "h2_contract_contract_cache_lookups": 313478,
+          "h2_contract_contract_fraction_accumulations": 1534058,
+          "h2_contract_terminal_probability_combinations": 1534058,
+          "h2_contract_contract_cache_hits": 87764,
+          "h2_contract_base_adjacent_tests": 232725,
+          "h2_contract_cross_line_adjacent_tests": 143544,
+          "h2_contract_base_hole_neighbor_reads": 8280,
+          "h2_contract_hole_neighbor_rank_reads": 17727
+        },
+        "outcomes": {
+          "LOST": 72
+        }
+      },
+      "branches": {
+        "ground": {
+          "ground_state_status_calls": 1477523,
+          "ground_status_internal_swipe_calls": 5910028,
+          "ground_swipe_calls": 7384671,
+          "ground_explicit_swipe_calls": 1474643,
+          "environment_random_draws": 2949286,
+          "sampled_transitions": 1474643
+        },
+        "planning": {
+          "learned_terminal_checks": 2949286,
+          "learned_swipe_calls": 11797144,
+          "learned_line_rewrites": 47188576,
+          "controller_active_decisions": 1474643,
+          "fragment_selections": 2880,
+          "fragments_initiated": 2304,
+          "h2_active_actions": 1468883,
+          "legal_swipes": 40232465,
+          "model_uniform_draws": 5898572,
+          "model_spawn_samples": 10243016,
+          "h2_cutoff_contracts": 10243016,
+          "h2_contract_compiled_programs": 1468883,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 10243016,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 7427848,
+          "h2_contract_effect_key_constructions": 35090197,
+          "h2_contract_effect_cache_lookups": 35090197,
+          "h2_contract_effect_cache_hits": 7190049,
+          "h2_contract_effect_cache_entries": 27900148,
+          "h2_contract_effect_score_aggregations": 27900148,
+          "h2_contract_effect_output_line_references": 140360788,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 35090197,
+          "h2_contract_direct_observation_evaluations": 10243016,
+          "h2_contract_prepare_calls": 10243016,
+          "h2_contract_line_lookups": 163888256,
+          "h2_contract_line_evaluations": 84054900,
+          "h2_contract_line_summary_adjacent_tests": 248767282,
+          "h2_contract_context_contract_evaluations": 10243016,
+          "h2_contract_predicate_calls": 10243016,
+          "h2_contract_candidate_action_changed_tests": 40972064,
+          "h2_contract_candidate_action_predicate_evaluations": 27900148,
+          "h2_contract_terminal_predicate_evaluations": 27900148,
+          "h2_contract_terminal_spawn_rank_classifications": 55800296,
+          "h2_contract_predicate_materializations": 10243016,
+          "h2_contract_contract_cache_lookups": 10243016,
+          "h2_contract_contract_fraction_accumulations": 50212536,
+          "h2_contract_terminal_probability_combinations": 50212536,
+          "h2_contract_line_cache_hits": 79833356,
+          "h2_contract_contract_cache_hits": 2815168,
+          "h2_contract_base_adjacent_tests": 8594293,
+          "h2_contract_cross_line_adjacent_tests": 5121546,
+          "h2_contract_hole_neighbor_rank_reads": 642047,
+          "h2_contract_base_hole_neighbor_reads": 300795,
+          "dummy_model_uniform_draws": 23040,
+          "fragment_active_actions": 5760
+        },
+        "outcomes": {
+          "LOST": 2864,
+          "WON": 16
+        }
+      },
+      "evaluation": {
+        "ground": {
+          "environment_random_draws": 125412,
+          "initial_spawns": 240,
+          "ground_state_status_calls": 62586,
+          "ground_status_internal_swipe_calls": 250344,
+          "ground_swipe_calls": 312810,
+          "ground_explicit_swipe_calls": 62466,
+          "sampled_transitions": 62466
+        },
+        "planning": {
+          "learned_terminal_checks": 124932,
+          "learned_swipe_calls": 499728,
+          "learned_line_rewrites": 1998912,
+          "controller_active_decisions": 62466,
+          "h2_active_actions": 62314,
+          "legal_swipes": 1738808,
+          "model_uniform_draws": 249864,
+          "model_spawn_samples": 438624,
+          "h2_cutoff_contracts": 438624,
+          "h2_contract_compiled_programs": 62314,
+          "h2_contract_full_board_materializations": 0,
+          "h2_contract_factorized_contexts": 438624,
+          "h2_contract_candidate_predicate_evaluations": 0,
+          "h2_contract_contract_materializations": 314900,
+          "h2_contract_effect_key_constructions": 1518974,
+          "h2_contract_effect_cache_lookups": 1518974,
+          "h2_contract_effect_cache_hits": 319440,
+          "h2_contract_effect_cache_entries": 1199534,
+          "h2_contract_effect_score_aggregations": 1199534,
+          "h2_contract_effect_output_line_references": 6075896,
+          "h2_contract_effect_vacancy_keys": 0,
+          "h2_contract_effect_exact_output_keys": 1518974,
+          "h2_contract_direct_observation_evaluations": 438624,
+          "h2_contract_prepare_calls": 438624,
+          "h2_contract_line_lookups": 7017984,
+          "h2_contract_line_evaluations": 3463086,
+          "h2_contract_line_summary_adjacent_tests": 10242546,
+          "h2_contract_line_cache_hits": 3554898,
+          "h2_contract_context_contract_evaluations": 438624,
+          "h2_contract_predicate_calls": 438624,
+          "h2_contract_candidate_action_changed_tests": 1754496,
+          "h2_contract_candidate_action_predicate_evaluations": 1199534,
+          "h2_contract_terminal_predicate_evaluations": 1199534,
+          "h2_contract_terminal_spawn_rank_classifications": 2399068,
+          "h2_contract_predicate_materializations": 438624,
+          "h2_contract_contract_cache_lookups": 438624,
+          "h2_contract_contract_fraction_accumulations": 2146108,
+          "h2_contract_terminal_probability_combinations": 2146108,
+          "h2_contract_contract_cache_hits": 123724,
+          "h2_contract_base_adjacent_tests": 282804,
+          "h2_contract_cross_line_adjacent_tests": 171972,
+          "h2_contract_hole_neighbor_rank_reads": 22300,
+          "h2_contract_base_hole_neighbor_reads": 10070,
+          "selector_decisions": 72,
+          "fragment_feature_rows": 240,
+          "board_feature_rows": 240,
+          "tree_apply_rows": 240,
+          "tree_split_visits": 348,
+          "fragment_prediction_rows": 240,
+          "fragment_selections": 96,
+          "fragments_initiated": 80,
+          "dummy_model_uniform_draws": 608,
+          "fragment_active_actions": 152
+        },
+        "outcomes": {
+          "LOST": 120
+        }
+      }
+    },
+    "newly_sampled_transitions": 1581774,
+    "actual_wall_seconds": 528.1412456980324,
+    "workers": 3,
+    "lifecycle_phase_seconds": [
+      {
+        "id": 0,
+        "seconds": 524.4978920579888
+      },
+      {
+        "id": 1,
+        "seconds": 525.0510945859714
+      },
+      {
+        "id": 2,
+        "seconds": 528.0843754149973
+      }
+    ]
+  },
+  "evidence_scope": "Effects use a common terminal cohort across all five methods, first paired within lifecycle, then averaged equally across lifecycles. Cutoffs retain costs but are not failures or terminal utilities. Completeness describes execution, not scientific improvement. Learned choice uses supplied primitives, lengths and trigger. Each method's cumulative construction attribution shares the same acquisition and must not be summed into actual wall time; source and branch batches are counted once."
+}

@@ -1,0 +1,406 @@
+{
+  "valid": true,
+  "complete": true,
+  "records": 24,
+  "certificates": 300,
+  "partition_leaves": 3918,
+  "true_kernels_inside": 24,
+  "false_certificates": 0,
+  "checks": {
+    "old_input_records_independently_audited": 1,
+    "zero_observation_qualification": 1,
+    "post_certificate_truth_phase": 1,
+    "all_fixed_failures_and_controls_once": 1,
+    "frozen_input_selection_manifest": 1,
+    "retained_input_equals_original": 24,
+    "fixed_selection_kind_and_phase": 24,
+    "unchanged_case_and_old_decisions": 24,
+    "complete_unchanged_prefix_roster": 24,
+    "all_selected_true_kernels_inside": 24,
+    "all_three_queries_once": 24,
+    "unchanged_selected_pure_policy": 72,
+    "complete_comparison_roster": 72,
+    "ordered_prefix_short_circuit": 216,
+    "certificate_uses_fixed_comparison": 300,
+    "certificate_uses_declared_prefix": 300,
+    "outward_exact_product_mixture_lower": 300,
+    "outward_event_threshold_upper": 300,
+    "fixed_partition_covers_full_retry_simplex": 291,
+    "exact_retry_interaction_slope": 291,
+    "partition_probability_domain": 3918,
+    "relaxed_gap_row_roster": 3918,
+    "partition_endpoint": 3918,
+    "exact_endpoint_gap": 23508,
+    "endpoint_relaxes_complete_retry_cell": 23508,
+    "exact_maximum_relaxed_gap": 3918,
+    "exact_empty_relaxed_null": 930,
+    "complete_empty_global_null": 72,
+    "strict_global_null_exclusion_status": 291,
+    "certified_truth_not_in_bad_null": 300,
+    "valid_used_prefix_and_comparison_decision": 216,
+    "query_and_all_comparators": 72,
+    "supported_likelihood_leaf": 2988,
+    "legal_null_multiplier": 2988,
+    "optimization_row_roster": 2988,
+    "legal_row_likelihood_dual": 5906,
+    "outward_row_likelihood_upper": 5976,
+    "retry_interval_mle_probability": 2988,
+    "outward_retry_interval_likelihood_upper": 2988,
+    "outward_complete_null_likelihood_upper": 2988,
+    "global_likelihood_bound_covers_all_cells": 219,
+    "outward_global_likelihood_ratio_lower": 219,
+    "empty_likelihood_row_simplex": 70,
+    "query_ready_all_three_queries": 24,
+    "independent_true_regrets": 24,
+    "bad_null_mle_is_exact_prefix_maximizer": 9,
+    "bad_null_mle_inside_region": 9,
+    "bad_null_mle_really_in_null": 9,
+    "mle_unknown_not_intersection_impossibility": 9,
+    "summary_counts": 1
+  },
+  "expected": {
+    "old_input_records_independently_audited": 1,
+    "zero_observation_qualification": 1,
+    "post_certificate_truth_phase": 1,
+    "all_fixed_failures_and_controls_once": 1,
+    "frozen_input_selection_manifest": 1,
+    "retained_input_equals_original": 24,
+    "fixed_selection_kind_and_phase": 24,
+    "unchanged_case_and_old_decisions": 24,
+    "complete_unchanged_prefix_roster": 24,
+    "all_selected_true_kernels_inside": 24,
+    "all_three_queries_once": 24,
+    "unchanged_selected_pure_policy": 72,
+    "complete_comparison_roster": 72,
+    "ordered_prefix_short_circuit": 216,
+    "certificate_uses_fixed_comparison": 300,
+    "certificate_uses_declared_prefix": 300,
+    "outward_exact_product_mixture_lower": 300,
+    "outward_event_threshold_upper": 300,
+    "fixed_partition_covers_full_retry_simplex": 291,
+    "exact_retry_interaction_slope": 291,
+    "partition_probability_domain": 3918,
+    "relaxed_gap_row_roster": 3918,
+    "partition_endpoint": 3918,
+    "exact_endpoint_gap": 23508,
+    "endpoint_relaxes_complete_retry_cell": 23508,
+    "exact_maximum_relaxed_gap": 3918,
+    "exact_empty_relaxed_null": 930,
+    "complete_empty_global_null": 72,
+    "strict_global_null_exclusion_status": 291,
+    "certified_truth_not_in_bad_null": 300,
+    "valid_used_prefix_and_comparison_decision": 216,
+    "query_and_all_comparators": 72,
+    "supported_likelihood_leaf": 2988,
+    "legal_null_multiplier": 2988,
+    "optimization_row_roster": 2988,
+    "legal_row_likelihood_dual": 5906,
+    "outward_row_likelihood_upper": 5976,
+    "retry_interval_mle_probability": 2988,
+    "outward_retry_interval_likelihood_upper": 2988,
+    "outward_complete_null_likelihood_upper": 2988,
+    "global_likelihood_bound_covers_all_cells": 219,
+    "outward_global_likelihood_ratio_lower": 219,
+    "empty_likelihood_row_simplex": 70,
+    "query_ready_all_three_queries": 24,
+    "independent_true_regrets": 24,
+    "bad_null_mle_is_exact_prefix_maximizer": 9,
+    "bad_null_mle_inside_region": 9,
+    "bad_null_mle_really_in_null": 9,
+    "mle_unknown_not_intersection_impossibility": 9,
+    "summary_counts": 1
+  },
+  "failures": {},
+  "truth_coverage": [
+    {
+      "life": 0,
+      "index": 42,
+      "arm": "ORACLE_BALANCED",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "inherited_pool": true,
+        "source": true,
+        "inherited_source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 0,
+      "index": 42,
+      "arm": "ORACLE_GAP",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "inherited_pool": true,
+        "source": true,
+        "inherited_source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 0,
+      "index": 54,
+      "arm": "ORACLE_BALANCED",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 0,
+      "index": 54,
+      "arm": "ORACLE_GAP",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 0,
+      "index": 58,
+      "arm": "ORACLE_BALANCED",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 0,
+      "index": 58,
+      "arm": "ORACLE_GAP",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 1,
+      "index": 42,
+      "arm": "ORACLE_BALANCED",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "inherited_pool": true,
+        "source": true,
+        "inherited_source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 1,
+      "index": 42,
+      "arm": "ORACLE_GAP",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "inherited_pool": true,
+        "source": true,
+        "inherited_source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 1,
+      "index": 44,
+      "arm": "ORACLE_BALANCED",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "inherited_pool": true,
+        "source": true,
+        "inherited_source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 1,
+      "index": 44,
+      "arm": "ORACLE_GAP",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "inherited_pool": true,
+        "source": true,
+        "inherited_source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 1,
+      "index": 54,
+      "arm": "ORACLE_BALANCED",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 1,
+      "index": 54,
+      "arm": "ORACLE_GAP",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 1,
+      "index": 56,
+      "arm": "ORACLE_BALANCED",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 1,
+      "index": 56,
+      "arm": "ORACLE_GAP",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 2,
+      "index": 42,
+      "arm": "ORACLE_BALANCED",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "inherited_pool": true,
+        "source": true,
+        "inherited_source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 2,
+      "index": 42,
+      "arm": "ORACLE_GAP",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "inherited_pool": true,
+        "source": true,
+        "inherited_source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 2,
+      "index": 44,
+      "arm": "ORACLE_BALANCED",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "inherited_pool": true,
+        "source": true,
+        "inherited_source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 2,
+      "index": 44,
+      "arm": "ORACLE_GAP",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "inherited_pool": true,
+        "source": true,
+        "inherited_source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 2,
+      "index": 45,
+      "arm": "ORACLE_BALANCED",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "inherited_pool": true,
+        "source": true,
+        "inherited_source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 2,
+      "index": 47,
+      "arm": "ORACLE_GAP",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "inherited_pool": true,
+        "source": true,
+        "inherited_source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 2,
+      "index": 54,
+      "arm": "ORACLE_BALANCED",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 2,
+      "index": 54,
+      "arm": "ORACLE_GAP",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 2,
+      "index": 55,
+      "arm": "ORACLE_BALANCED",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "source": true,
+        "member": true
+      }
+    },
+    {
+      "life": 2,
+      "index": 55,
+      "arm": "ORACLE_GAP",
+      "all_inside": true,
+      "prefixes": {
+        "pool": true,
+        "source": true,
+        "member": true
+      }
+    }
+  ],
+  "new_observations": 0,
+  "seconds": 4.628203796979506
+}

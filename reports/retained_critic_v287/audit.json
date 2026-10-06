@@ -1,0 +1,101 @@
+{
+  "status": "PASS",
+  "independent_valid": true,
+  "lifecycles": 16,
+  "fixed_source_parents": 4,
+  "new_training_environment_observations": 0,
+  "evaluation_games": 768,
+  "evaluation_cutoffs": 0,
+  "fitted_afterstates_per_trainable_arm": 1655968,
+  "heldout_afterstates_per_arm": 429088,
+  "excluded_tail_raw_tiles_billed": 6689,
+  "economic_training_raw_tiles_per_arm": 13391491,
+  "contrasts": {
+    "EPISODIC_MC_minus_FROZEN": {
+      "mean": -6.618736267089844,
+      "ci95": [
+        -7.721758651733398,
+        -5.5371639251708995
+      ],
+      "improved_equal_worse": [
+        0,
+        0,
+        16
+      ],
+      "adverse_lifecycles": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ]
+    },
+    "SHADOW_TD_minus_FROZEN": {
+      "mean": -0.83734130859375,
+      "ci95": [
+        -1.90026912689209,
+        0.19692325592041007
+      ],
+      "improved_equal_worse": [
+        7,
+        0,
+        9
+      ],
+      "adverse_lifecycles": [
+        0,
+        1,
+        2,
+        3,
+        5,
+        6,
+        7,
+        8,
+        14
+      ]
+    },
+    "EPISODIC_MC_minus_SHADOW_TD": {
+      "mean": -5.781394958496094,
+      "ci95": [
+        -7.018614768981934,
+        -4.665633201599122
+      ],
+      "improved_equal_worse": [
+        0,
+        0,
+        16
+      ],
+      "adverse_lifecycles": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ]
+    }
+  },
+  "method": "Canonical retained score/terminal/fit-prefix metadata, factual MC suffixes, fit/heldout/eval inventories, signed means and costs. No world or weight replay; existing 20000-draw CI not recomputed.",
+  "limitations": "Heldout MSE/MAE moment consistency and aggregate weighting checked; per-afterstate predictions and TD bootstrap weight values not reexecuted. Conditional on four existing sources, not a causal comparison with V286 actor feedback.",
+  "errors": []
+}

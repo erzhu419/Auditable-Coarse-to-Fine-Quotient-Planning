@@ -1,0 +1,13 @@
+{
+  "attempts": [
+    {
+      "tests": 1,
+      "failures": 0,
+      "seconds": 0.3312091209954815,
+      "newly_sampled_environment_transitions": 0,
+      "native_model_calls": 0,
+      "optimizer_updates": 0,
+      "scope": "Full analyzer schema with synthetic in-memory traces; reported fixture transitions are not sampled data"
+    }
+  ]
+}

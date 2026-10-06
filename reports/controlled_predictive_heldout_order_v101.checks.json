@@ -1,0 +1,23 @@
+{
+  "schema": "acfqp.heldout_order_analysis_checks.v101",
+  "status": "passed",
+  "test_file": "tests/test_analyze_controlled_predictive_heldout_order_v101.py",
+  "tests": 6,
+  "attempts": [
+    {
+      "tests_passed": 6,
+      "seconds": 0.23
+    },
+    {
+      "tests_passed": 6,
+      "seconds": 0.33,
+      "reason": "Bind actual cohort work counters and the five runner execution checks"
+    }
+  ],
+  "counts": {
+    "new_environment_transitions": 0,
+    "new_model_transitions": 0,
+    "new_model_fits": 0
+  },
+  "scope": "Synthetic dictionaries only; no model fitting or simulation. Main experiment and formal analysis were not run by these tests."
+}

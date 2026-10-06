@@ -1,0 +1,102 @@
+{
+  "status": "PASS",
+  "independent_valid": true,
+  "lifecycles": 16,
+  "fixed_source_parents": 4,
+  "training_raw_tiles": 18874368,
+  "new_training_raw_tiles_per_arm": 6291456,
+  "economic_training_raw_tiles_per_arm": 17585795,
+  "raw_rank_and_blind_memory_equal": true,
+  "training_chunks": 295056,
+  "td_receipt_examples": 393404,
+  "new_value_updates": {
+    "FROZEN": 0,
+    "ORDINARY_TD": 6273201,
+    "PERSISTENT_TD": 6273213
+  },
+  "evaluation_games": 2560,
+  "evaluation_cutoffs": 0,
+  "training_completed_games": 22834,
+  "training_cutoffs": 0,
+  "trace_bytes": 124532883,
+  "signed_contrasts": {
+    "PERSISTENT_TD_minus_ORDINARY_TD": {
+      "mean": 0.329132080078125,
+      "ci95": [
+        -0.08608881632486985,
+        0.744659042358398
+      ],
+      "improved_equal_worse": [
+        10,
+        0,
+        6
+      ],
+      "adverse_lifecycles": [
+        0,
+        3,
+        6,
+        11,
+        12,
+        13
+      ]
+    },
+    "PERSISTENT_TD_minus_FROZEN": {
+      "mean": -0.9998397827148434,
+      "ci95": [
+        -1.545341618855794,
+        -0.4309424082438151
+      ],
+      "improved_equal_worse": [
+        3,
+        0,
+        13
+      ],
+      "adverse_lifecycles": [
+        0,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ]
+    },
+    "ORDINARY_TD_minus_FROZEN": {
+      "mean": -1.3289718627929683,
+      "ci95": [
+        -1.846056747436523,
+        -0.7930548350016272
+      ],
+      "improved_equal_worse": [
+        2,
+        0,
+        14
+      ],
+      "adverse_lifecycles": [
+        0,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        12,
+        13,
+        14,
+        15
+      ]
+    }
+  },
+  "bootstrap_scope": "All signed phase/lifecycle deltas and fixed-parent inputs checked. Registered 20000-draw intervals not recomputed.",
+  "limitations": "Training action/score/status and bank-credit inventories checked without replaying intermediate boards or TD weights. All evaluation terminal boards checked. Conditional on four existing sources; no optimal-value claim.",
+  "errors": []
+}

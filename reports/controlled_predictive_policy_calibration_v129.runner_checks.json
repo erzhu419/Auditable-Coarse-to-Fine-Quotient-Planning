@@ -1,0 +1,20 @@
+{
+  "attempts": [
+    {
+      "tests": 5,
+      "failures": 1,
+      "newly_sampled_environment_transitions": 0,
+      "environment_random_draws": 0,
+      "optimizer_steps": 0,
+      "scope": "Mocked model choices, source capsules and short episode result; no native or environment execution."
+    },
+    {
+      "tests": 1,
+      "failures": 0,
+      "newly_sampled_environment_transitions": 0,
+      "environment_random_draws": 0,
+      "optimizer_steps": 0,
+      "scope": "Mocked model choices, source capsules and short episode result; no native or environment execution."
+    }
+  ]
+}

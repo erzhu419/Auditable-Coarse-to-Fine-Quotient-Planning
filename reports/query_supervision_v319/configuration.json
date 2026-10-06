@@ -1,0 +1,70 @@
+{
+  "schema": "acfqp.query_supervision_freeze.v319",
+  "source_summary": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/greedy_targets_v317/summary.json",
+  "protocol": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/specs/QUERY_SUPERVISION_V319.md",
+  "lifecycles": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "parents": 4,
+  "workers": 4,
+  "tasks": [
+    "A",
+    "B"
+  ],
+  "arms": [
+    "FACTUAL_LOCAL",
+    "QUERY_LOCAL"
+  ],
+  "rounds": [
+    1,
+    2
+  ],
+  "alpha": 0.0025,
+  "groups_per_arm_task_round": 16384,
+  "replicas_per_group": 4,
+  "census_anchors_per_task_round": 32768,
+  "true_probabilities": {
+    "A": 0.1,
+    "B": 0.5
+  },
+  "teacher": "IMMUTABLE_ACTUAL_V317_FIRST_LOCAL_V0_ALL_ROUNDS_AND_BOTH_ARMS",
+  "planning_probability": "IMMUTABLE_ACTUAL_BANK_FIRST_FIT_BELIEF",
+  "anchor": "COMPLETE_FIT_NONWIN_CURRENT_AFTERSTATE_WITH_SAME_GAME_PREDECESSOR_POSTSPAWN",
+  "query_root": "ONE_UNIFORM_POOL_INDEX_DRAW_PER_ANCHOR_ACTUAL_H2_CALL_MULTIPLICITY",
+  "valid_selection": "EQUIDISTANT_VALID_CENSUS_POSITIONS_SHARED_BETWEEN_ARMS",
+  "reset_access": "ARBITRARY_AFTERSTATE_GENERATIVE_ACCESS_FOR_BOTH_ARMS",
+  "target": "GROUND_POSTSPAWN_SINGLE_COMBINED_FIRST_DIRECT_BRANCH",
+  "update": "GROUPED_LOCAL_CURRENT_PREDICTION_ONCE_PER_ROOTGROUP_MEAN_REPLICAS",
+  "max_steps": 8192,
+  "evaluation_games_per_cell": 32,
+  "seed_selector": 319100000000,
+  "seed_ground": 319500000000,
+  "collection_life_stride": 10000000,
+  "collection_task_stride": 1000000,
+  "collection_round_stride": 100000,
+  "seed_evaluation": 319900000000,
+  "bootstrap_seed": 31900001,
+  "bootstrap_draws": 20000,
+  "primary": "QUERY_LOCAL_minus_FIRST_LOCAL_FINAL_AB",
+  "coverage": "QUERY_LOCAL_minus_FACTUAL_LOCAL_FINAL_AB",
+  "retention": "FINAL_QUERY_MINUS_OWN_FIRST_PER_TASK_CI_LOWER_NONNEGATIVE",
+  "expected_new_training_raw_tiles": 8388608,
+  "expected_new_evaluation_games": 6144,
+  "evidence_scope": "FIXED_EXISTING_FIRST_COHORT_FOUR_FROZEN_PARENTS_GENERATIVE_ONE_STEP_SUPERVISION",
+  "stop_rule": "WHOLE_COHORT_HOLD_IF_INSUFFICIENT_CENSUS_OR_CUTOFF_NO_REPLACEMENTS_OR_TUNING"
+}

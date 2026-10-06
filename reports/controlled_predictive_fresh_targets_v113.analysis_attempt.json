@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "scripts/analyze_controlled_predictive_fresh_targets_v113.py",
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_fresh_targets_v113"
+  ],
+  "status": "complete",
+  "started_unix": 1789812263.9658196,
+  "returncode": 0,
+  "seconds": 0.3053526830008195,
+  "stderr_bytes": 0
+}

@@ -1,0 +1,35 @@
+V293 core finite checks: existing outputs only; no test rerun for this log.
+
+Command:
+PYTHONPATH=src .venv-lmta-v42/bin/python -m pytest -q tests/test_shadow_deployment_core_v293.py --basetemp=reports/shadow_deployment_v293/core_test_runtime
+Observed output:
+..... [100%]
+5 passed in 7.91s
+Includes fixed eight-pair Student-t selector, shared carrier/shadow dataflow,
+paid validation and exact deployment remainder, three science components,
+and actual native-host three-phase/three-arm goal-rank-4 integration.
+
+Command after adding explicit old-proposal immutability assertion:
+PYTHONPATH=src .venv-lmta-v42/bin/python -m pytest -q tests/test_shadow_deployment_core_v293.py::test_shared_carrier_is_submission_independent_and_proposals_are_immutable --basetemp=reports/shadow_deployment_v293/core_test_runtime
+Observed output:
+. [100%]
+1 passed in 1.51s
+The B shadow has theta=13 while B validation of the A incumbent still uses
+the independent readonly A proposal at theta=3.
+
+Prelaunch seed isolation:
+The first actual native smoke used the proposed V293 seed families with a
+separate zero-initialized goal-rank-4 model. Before formal acquisition, all
+five environment seed families were mechanically offset by +10000, without
+changing the roster, controls, quotas, methods or selector. Future native
+fixtures patch all four core seed functions to the independent base
+293000030000. The native integration was not rerun after literal seed edits.
+
+Command after adding the pure seed-roster test:
+PYTHONPATH=src .venv-lmta-v42/bin/python -m pytest -q tests/test_shadow_deployment_core_v293.py::test_environment_seed_families_use_the_uniform_prelaunch_offset --basetemp=reports/shadow_deployment_v293/core_test_runtime
+Observed output:
+. [100%]
+1 passed in 0.27s
+Six distinct core cases passed in total; the targeted immutability rerun
+does not add a seventh case. All builds and test artifacts remain under
+reports/shadow_deployment_v293.

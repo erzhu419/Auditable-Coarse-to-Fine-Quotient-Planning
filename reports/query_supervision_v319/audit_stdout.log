@@ -1,0 +1,54 @@
+{"event": "independent_query_supervision_life_checked", "lifecycle": 0}
+{"event": "independent_query_supervision_life_checked", "lifecycle": 1}
+{"event": "independent_query_supervision_life_checked", "lifecycle": 2}
+{"event": "independent_query_supervision_life_checked", "lifecycle": 3}
+{"event": "independent_query_supervision_life_checked", "lifecycle": 4}
+{"event": "independent_query_supervision_life_checked", "lifecycle": 5}
+{"event": "independent_query_supervision_life_checked", "lifecycle": 6}
+{"event": "independent_query_supervision_life_checked", "lifecycle": 7}
+{"event": "independent_query_supervision_life_checked", "lifecycle": 8}
+{"event": "independent_query_supervision_life_checked", "lifecycle": 9}
+{"event": "independent_query_supervision_life_checked", "lifecycle": 10}
+{"event": "independent_query_supervision_life_checked", "lifecycle": 11}
+{"event": "independent_query_supervision_life_checked", "lifecycle": 12}
+{"event": "independent_query_supervision_life_checked", "lifecycle": 13}
+{"event": "independent_query_supervision_life_checked", "lifecycle": 14}
+{"event": "independent_query_supervision_life_checked", "lifecycle": 15}
+{
+  "status": "PASS",
+  "independent_valid": true,
+  "lifecycles": 16,
+  "fixed_source_parents": 4,
+  "prior_v317_audit_status": "PASS",
+  "prior_full_audit_repeated": false,
+  "decoded_canonical_rows": 82305,
+  "reconstructed_post_rows": 16448,
+  "retained_raw_tiles_reconstructed": 4194304,
+  "literal_teacher_H2_probes": 1024,
+  "physical_supervision_samples": 8388608,
+  "fitted_rootgroups": 2097152,
+  "independently_checked_joint_targets": 8388608,
+  "independently_checked_selected_actions": 8388608,
+  "actual_parameter_writes_per_head": 66062494,
+  "group_artifact_array_bytes": 436207616,
+  "new_head_versions": 128,
+  "target_kind_1": 8349480,
+  "target_kind_2": 10332,
+  "target_kind_3": 28796,
+  "census_files": 64,
+  "group_files": 128,
+  "teacher_version_and_immutable_bank_beliefs_valid": true,
+  "all_census_paths_and_selector_draws_checked": true,
+  "every_new_physical_spawn_and_joint_target_checked": true,
+  "actual_group_means_and_normalized_writes_valid": true,
+  "new_training_raw_tiles": 8388608,
+  "new_evaluation_games": 6144,
+  "complete_game_endpoints": true,
+  "primary_status": "SUPPORTED_LOSS",
+  "retained_improvement_supported": false,
+  "coverage_status": "SUPPORTED_LOSS",
+  "new_experiment_cpu_seconds": 442.12110789999997,
+  "economic_source_v317_and_experiment_cpu_seconds": 3009.2109263679995,
+  "limitations": "Conditional on four audited V312 parents and the reused sixteen-life FIRST cohort. One necessary retained post-batch physical reconstruction establishes the new census and roots; no prior full audit is repeated. Both arms have arbitrary-afterstate generative reset access, and their targets use the frozen bootstrapped FIRST teacher. These are explicit four-member one-step groups, not terminal MC games. All query paths, selector draws, physical supervision spawns, joint targets, group means and actual address-write counts are independently checked. FIRST H2 choice linkage is checked at fixed boundary probes; private parameter fits, new evaluation games and bootstrap draws are not independently rerun. Historical dynamics and archived failed-attempt CPU remain unknown.",
+  "errors": []
+}

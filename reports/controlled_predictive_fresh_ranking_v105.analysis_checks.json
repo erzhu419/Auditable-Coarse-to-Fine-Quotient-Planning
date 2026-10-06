@@ -1,0 +1,14 @@
+{
+  "schema": "acfqp.fresh_ranking_analysis_checks.v105",
+  "status": "passed",
+  "test_file": "tests/test_analyze_controlled_predictive_fresh_ranking_v105.py",
+  "tests": 6,
+  "attempts": 1,
+  "seconds": 0.49,
+  "counts": {
+    "new_environment_transitions": 0,
+    "new_model_prefix_transitions": 0,
+    "new_neural_model_fits": 0
+  },
+  "scope": "Adapted synthetic fixtures only: fresh acquisition charged once, new width fits, same-root/equal-history directions, censoring, recipe metadata and reference event/audit binding. No fitting or sampling."
+}

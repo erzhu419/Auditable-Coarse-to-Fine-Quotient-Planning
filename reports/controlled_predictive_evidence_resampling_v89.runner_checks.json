@@ -1,0 +1,18 @@
+{
+  "attempts": [
+    {
+      "session_failures": 0,
+      "ground_work": {
+        "environment_random_draws": 2856,
+        "initial_spawns": 28,
+        "ground_state_status_calls": 1414,
+        "ground_status_internal_swipe_calls": 5656,
+        "ground_swipe_calls": 7056,
+        "ground_explicit_swipe_calls": 1400,
+        "sampled_transitions": 1400
+      },
+      "new_tree_fits": 0,
+      "main_campaign_calls": 0
+    }
+  ]
+}

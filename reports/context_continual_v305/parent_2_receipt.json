@@ -1,0 +1,45 @@
+{
+  "parent": 2,
+  "source_setup": {
+    "wall_seconds": 0.6685418120032409,
+    "cpu_seconds": 0.23153786399999998,
+    "setup_counts": {
+      "cpp_compilations": 1,
+      "lookup_line_rewrites": 14641,
+      "allocated_weight_parameters": 14172488,
+      "allocated_weight_bytes": 113379904,
+      "cpp_library_cache_hits": 1,
+      "lookup_table_cache_hits": 1,
+      "source_parameters_copied": 7086244,
+      "source_weight_bytes_copied": 56689952
+    },
+    "checkpoint_loads": 1,
+    "checkpoint_loaded_parameters": 1802353,
+    "leaf_weight_bytes": 56689952,
+    "resident_source_and_leaf_weight_bytes": 113379904,
+    "inherited_updates": 2819175,
+    "new_leaf_updates": 0
+  },
+  "reconstruction": {
+    "canonical_rows_read": 98451,
+    "reconstructed_stages": 48,
+    "counts": {
+      "ground_explicit_swipe_calls": 6311462,
+      "ground_swipe_calls": 6752526,
+      "ground_state_status_calls": 113412,
+      "ground_status_internal_swipe_calls": 441064,
+      "warmup_records": 52
+    },
+    "cpu_seconds": 157.18684772499907
+  },
+  "native_evaluation_setup": {
+    "counts": {
+      "cpp_compilations": 1,
+      "cpp_translation_units_compiled": 4
+    },
+    "seconds": 2.0249703510053223
+  },
+  "cpu_seconds": 286.62387534,
+  "wall_seconds": 305.2301346660097,
+  "compiler_cpu_seconds": 4.001383
+}

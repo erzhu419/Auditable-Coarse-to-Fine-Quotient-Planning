@@ -1,0 +1,44 @@
+....FF..                                                                 [100%]
+=================================== FAILURES ===================================
+_ test_missing_planned_facts_stop_instead_of_silently_reducing_the_cohort[round] _
+
+retained_document = ({'by_lifecycle': [{'lifecycle': 0, 'parent': 0, 'rounds': {'1': {'A': {...}}, '2': {'A': {...}}}}, {'lifecycle': 4, '...ycle': 3, ...}, {'arm': 'SOURCE', 'kind': 'TRAIN', 'lifecycle': 7, 'parent': 3, ...}, ...], 'selected_bytes': 128124}})
+missing = 'round'
+
+    @pytest.mark.parametrize('missing', ['lifecycle', 'round', 'first_chunk'])
+    def test_missing_planned_facts_stop_instead_of_silently_reducing_the_cohort(retained_document, missing):
+        document, _, written = retained_document
+        if missing == 'lifecycle':
+            document['by_lifecycle'] = [row for row in document['by_lifecycle'] if row['lifecycle'] != 12]
+            message = 'all four retained lifecycles'
+        else:
+            rows = written[0]['rows']
+            selected = [i for i,row in enumerate(rows) if row.get('lifecycle')==0 and row.get('phase')=='A_R2']
+>           assert len(selected) > 1
+E           assert 1 > 1
+E            +  where 1 = len([3])
+
+tests/test_retention_facts_v318.py:199: AssertionError
+_ test_missing_planned_facts_stop_instead_of_silently_reducing_the_cohort[first_chunk] _
+
+retained_document = ({'by_lifecycle': [{'lifecycle': 0, 'parent': 0, 'rounds': {'1': {'A': {...}}, '2': {'A': {...}}}}, {'lifecycle': 4, '...ycle': 3, ...}, {'arm': 'SOURCE', 'kind': 'TRAIN', 'lifecycle': 7, 'parent': 3, ...}, ...], 'selected_bytes': 128124}})
+missing = 'first_chunk'
+
+    @pytest.mark.parametrize('missing', ['lifecycle', 'round', 'first_chunk'])
+    def test_missing_planned_facts_stop_instead_of_silently_reducing_the_cohort(retained_document, missing):
+        document, _, written = retained_document
+        if missing == 'lifecycle':
+            document['by_lifecycle'] = [row for row in document['by_lifecycle'] if row['lifecycle'] != 12]
+            message = 'all four retained lifecycles'
+        else:
+            rows = written[0]['rows']
+            selected = [i for i,row in enumerate(rows) if row.get('lifecycle')==0 and row.get('phase')=='A_R2']
+>           assert len(selected) > 1
+E           assert 1 > 1
+E            +  where 1 = len([3])
+
+tests/test_retention_facts_v318.py:199: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_retention_facts_v318.py::test_missing_planned_facts_stop_instead_of_silently_reducing_the_cohort[round]
+FAILED tests/test_retention_facts_v318.py::test_missing_planned_facts_stop_instead_of_silently_reducing_the_cohort[first_chunk]
+2 failed, 6 passed in 0.98s

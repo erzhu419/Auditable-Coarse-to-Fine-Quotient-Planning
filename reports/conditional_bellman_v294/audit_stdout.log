@@ -1,0 +1,81 @@
+{
+  "status": "PASS",
+  "independent_valid": true,
+  "lifecycles": 16,
+  "fixed_source_parents": 4,
+  "canonical_rows": 12300,
+  "new_training_environment_raw_tiles": 0,
+  "reused_carrier_raw_tiles": 3145728,
+  "reused_warmup_raw_tiles": 14073,
+  "economic_training_raw_tiles_per_arm": {
+    "FROZEN": 14439393,
+    "MC_BOARD": 14439393,
+    "MC_CONDITIONED": 14439393,
+    "BELLMAN_BOARD": 14439393,
+    "BELLMAN_CONDITIONED": 14439393
+  },
+  "physical_science_games": 14848,
+  "logical_science_game_references": 17920,
+  "ranking_anchors": 144,
+  "ranking_rollouts": 16096,
+  "science_cutoffs": 0,
+  "ranking_cutoffs": 0,
+  "processed_training_samples_per_arm": {
+    "FROZEN": 0,
+    "MC_BOARD": 2456034,
+    "MC_CONDITIONED": 2456034,
+    "BELLMAN_BOARD": 2456034,
+    "BELLMAN_CONDITIONED": 2456034
+  },
+  "materializations": 384,
+  "net_gain_supported": false,
+  "correction_supported": true,
+  "primary": {
+    "mean": -0.13000488281250017,
+    "ci95": [
+      -0.5865100860595703,
+      0.3187831560770654
+    ],
+    "lifecycle_deltas": {
+      "0": -1.1679077148437509,
+      "1": 0.0357666015625,
+      "2": 1.021626790364583,
+      "3": 0.44940185546875,
+      "4": -0.980672200520833,
+      "5": 0.030192057291666075,
+      "6": 0.32080078125,
+      "7": 1.555196126302084,
+      "8": 0.34798177083333304,
+      "9": 1.6823730468749991,
+      "10": -0.722615559895833,
+      "11": -0.95281982421875,
+      "12": -1.574727376302083,
+      "13": -0.945170084635417,
+      "14": 0.54327392578125,
+      "15": -1.7227783203125009
+    },
+    "improved_equal_worse": [
+      9,
+      0,
+      7
+    ],
+    "adverse_lifecycles": [
+      0,
+      4,
+      10,
+      11,
+      12,
+      13,
+      15
+    ],
+    "parent_mean_deltas": {
+      "0": -0.8438313802083335,
+      "1": 0.20079040527343706,
+      "2": 0.290771484375,
+      "3": -0.16775004069010424
+    },
+    "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS"
+  },
+  "errors": [],
+  "limitations": "Compact independent accounting and statistical-input audit. No old carrier/world/source-weight replay, refitting or 20000-draw CI regeneration. Factual target construction and composite arithmetic have finite literal tests; signed effects are recomputed from all retained game metrics/rollouts. Ranking is finite SOURCE-policy continuation evidence, not optimal Q. Bellman changes objective and bootstrap. Four old sources are fixed."
+}

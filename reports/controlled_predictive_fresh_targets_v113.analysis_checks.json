@@ -1,0 +1,22 @@
+{
+  "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_analyze_controlled_predictive_fresh_targets_v113.py",
+  "attempts": 1,
+  "returncode": 0,
+  "passed": 5,
+  "pytest_seconds": 0.43,
+  "scope": "Synthetic retained-log fixtures only; no production analysis, sampling, prefix construction or neural scoring.",
+  "detected_failures": [
+    "diagonal replacement or wrong weights in four source by four fresh target matrices",
+    "mixing inherited learning with new source, reference or prefix work; broken random-draw cost identities",
+    "invalidating a valid source trigger after source cutoff or accepting censored terminal references",
+    "missing cross-model decisions silently dropped or replaced by derived scores",
+    "old target stream reused or selected event differs from the frozen source choice"
+  ],
+  "development_work": {
+    "new_environment_transitions": 0,
+    "new_synthetic_transitions": 0,
+    "neural_model_fits": 0,
+    "optimizer_steps": 0,
+    "neural_candidate_predictions": 0
+  }
+}

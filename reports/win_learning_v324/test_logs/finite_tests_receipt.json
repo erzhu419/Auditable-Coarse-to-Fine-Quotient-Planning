@@ -1,0 +1,23 @@
+{
+  "native": {
+    "passed": 4,
+    "seconds": 6.62,
+    "stdout": "native_tests.log"
+  },
+  "analysis": {
+    "passed": 45,
+    "seconds": 0.93,
+    "stdout": "analysis_tests.log"
+  },
+  "driver": {
+    "passed": 6,
+    "seconds": 0.35,
+    "stdout": "driver_tests.log"
+  },
+  "audit": {
+    "passed": 12,
+    "seconds": 0.95,
+    "stdout": "audit_tests.log"
+  },
+  "distinct_cases_passed": 67
+}

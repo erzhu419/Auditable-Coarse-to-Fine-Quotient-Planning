@@ -1,0 +1,73 @@
+{"event": "acquired_roots", "life": 0, "query": "risk1", "roots": 8, "branches": 128}
+{"event": "acquired_roots", "life": 3, "query": "risk1", "roots": 8, "branches": 128}
+{"event": "acquired_roots", "life": 1, "query": "risk1", "roots": 8, "branches": 128}
+{"event": "acquired_roots", "life": 2, "query": "risk1", "roots": 8, "branches": 128}
+{"event": "acquired_roots", "life": 0, "query": "risk1", "roots": 16, "branches": 256}
+{"event": "acquired_roots", "life": 2, "query": "risk1", "roots": 16, "branches": 256}
+{"event": "acquired_roots", "life": 1, "query": "risk1", "roots": 16, "branches": 256}
+{"event": "acquired_roots", "life": 3, "query": "risk1", "roots": 16, "branches": 256}
+{"event": "acquired_roots", "life": 3, "query": "risk1", "roots": 24, "branches": 384}
+{"event": "acquired_roots", "life": 2, "query": "risk1", "roots": 24, "branches": 384}
+{"event": "acquired_roots", "life": 0, "query": "risk1", "roots": 24, "branches": 384}
+{"event": "acquired_roots", "life": 1, "query": "risk1", "roots": 24, "branches": 384}
+{"event": "acquired_roots", "life": 2, "query": "risk1", "roots": 32, "branches": 512}
+{"event": "acquired_roots", "life": 0, "query": "risk1", "roots": 32, "branches": 512}
+{"event": "acquired_roots", "life": 3, "query": "risk1", "roots": 32, "branches": 512}
+{"event": "acquired_roots", "life": 1, "query": "risk1", "roots": 32, "branches": 512}
+{"event": "acquired_roots", "life": 2, "query": "risk8", "roots": 8, "branches": 128}
+{"event": "acquired_roots", "life": 3, "query": "risk8", "roots": 8, "branches": 128}
+{"event": "acquired_roots", "life": 1, "query": "risk8", "roots": 8, "branches": 128}
+{"event": "acquired_roots", "life": 0, "query": "risk8", "roots": 8, "branches": 128}
+{"event": "acquired_roots", "life": 2, "query": "risk8", "roots": 16, "branches": 256}
+{"event": "acquired_roots", "life": 3, "query": "risk8", "roots": 16, "branches": 256}
+{"event": "acquired_roots", "life": 1, "query": "risk8", "roots": 16, "branches": 256}
+{"event": "acquired_roots", "life": 0, "query": "risk8", "roots": 16, "branches": 256}
+{"event": "acquired_roots", "life": 1, "query": "risk8", "roots": 24, "branches": 384}
+{"event": "acquired_roots", "life": 0, "query": "risk8", "roots": 24, "branches": 384}
+{"event": "acquired_roots", "life": 2, "query": "risk8", "roots": 24, "branches": 384}
+{"event": "acquired_roots", "life": 3, "query": "risk8", "roots": 24, "branches": 384}
+{"event": "acquired_roots", "life": 0, "query": "risk8", "roots": 32, "branches": 512}
+{"event": "acquired_roots", "life": 2, "query": "risk8", "roots": 32, "branches": 512}
+{"event": "acquired_roots", "life": 3, "query": "risk8", "roots": 32, "branches": 512}
+{"event": "acquired_roots", "life": 1, "query": "risk8", "roots": 32, "branches": 512}
+{"event": "models_frozen", "life": 0, "query": "risk1", "old_roots": 16, "new_roots": 16}
+{"event": "models_frozen", "life": 2, "query": "risk1", "old_roots": 16, "new_roots": 16}
+{"event": "models_frozen", "life": 3, "query": "risk1", "old_roots": 16, "new_roots": 16}
+{"event": "models_frozen", "life": 1, "query": "risk1", "old_roots": 16, "new_roots": 16}
+{"event": "models_frozen", "life": 0, "query": "risk8", "old_roots": 16, "new_roots": 16}
+{"event": "models_frozen", "life": 2, "query": "risk8", "old_roots": 16, "new_roots": 16}
+{"event": "models_frozen", "life": 3, "query": "risk8", "old_roots": 16, "new_roots": 16}
+{"event": "models_frozen", "life": 1, "query": "risk8", "old_roots": 16, "new_roots": 16}
+{"event": "control_complete", "life": 0, "query": "risk1", "method": "H2"}
+{"event": "control_complete", "life": 1, "query": "risk1", "method": "H2"}
+{"event": "control_complete", "life": 2, "query": "risk1", "method": "H2"}
+{"event": "control_complete", "life": 3, "query": "risk1", "method": "H2"}
+{"event": "control_complete", "life": 0, "query": "risk1", "method": "PRIOR"}
+{"event": "control_complete", "life": 1, "query": "risk1", "method": "PRIOR"}
+{"event": "control_complete", "life": 3, "query": "risk1", "method": "PRIOR"}
+{"event": "control_complete", "life": 2, "query": "risk1", "method": "PRIOR"}
+{"event": "control_complete", "life": 0, "query": "risk1", "method": "REPLAY"}
+{"event": "control_complete", "life": 3, "query": "risk1", "method": "REPLAY"}
+{"event": "control_complete", "life": 1, "query": "risk1", "method": "REPLAY"}
+{"event": "control_complete", "life": 2, "query": "risk1", "method": "REPLAY"}
+{"event": "control_complete", "life": 3, "query": "risk1", "method": "UPDATED"}
+{"event": "control_complete", "life": 1, "query": "risk1", "method": "UPDATED"}
+{"event": "control_complete", "life": 0, "query": "risk1", "method": "UPDATED"}
+{"event": "control_complete", "life": 2, "query": "risk1", "method": "UPDATED"}
+{"event": "control_complete", "life": 3, "query": "risk8", "method": "H2"}
+{"event": "control_complete", "life": 0, "query": "risk8", "method": "H2"}
+{"event": "control_complete", "life": 1, "query": "risk8", "method": "H2"}
+{"event": "control_complete", "life": 2, "query": "risk8", "method": "H2"}
+{"event": "control_complete", "life": 3, "query": "risk8", "method": "PRIOR"}
+{"event": "control_complete", "life": 0, "query": "risk8", "method": "PRIOR"}
+{"event": "control_complete", "life": 1, "query": "risk8", "method": "PRIOR"}
+{"event": "control_complete", "life": 2, "query": "risk8", "method": "PRIOR"}
+{"event": "control_complete", "life": 0, "query": "risk8", "method": "REPLAY"}
+{"event": "control_complete", "life": 3, "query": "risk8", "method": "REPLAY"}
+{"event": "control_complete", "life": 1, "query": "risk8", "method": "REPLAY"}
+{"event": "control_complete", "life": 2, "query": "risk8", "method": "REPLAY"}
+{"event": "control_complete", "life": 3, "query": "risk8", "method": "UPDATED"}
+{"event": "control_complete", "life": 0, "query": "risk8", "method": "UPDATED"}
+{"event": "control_complete", "life": 1, "query": "risk8", "method": "UPDATED"}
+{"event": "control_complete", "life": 2, "query": "risk8", "method": "UPDATED"}
+{"status": "complete", "seconds": 146.5726552490014}

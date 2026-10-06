@@ -1,0 +1,93 @@
+{
+  "attempts": [
+    {
+      "tests": 8,
+      "failures": 0,
+      "core_work": {
+        "choose_calls": 19,
+        "parent_source_choose_calls": 13,
+        "parent_source_learned_terminal_checks": 34,
+        "parent_source_learned_swipe_calls": 40,
+        "parent_source_line_table_lookups": 160,
+        "parent_source_legal_swipes": 21,
+        "parent_source_value_predictions": 17,
+        "parent_source_table_lookups": 544,
+        "parent_choose_calls": 13,
+        "parent_constant_probability_predictions": 21,
+        "residual_predictions": 27,
+        "residual_table_lookups": 864,
+        "residual_terminal_goal_bypasses": 8,
+        "parent_source_terminal_goal_bypasses": 7,
+        "pair_feature_occurrences": 416,
+        "pair_distinct_addresses": 154,
+        "pair_nonzero_difference_addresses": 90,
+        "pair_signed_difference_occurrences": 104,
+        "pair_table_lookups": 90,
+        "pair_table_updates": 90,
+        "pair_update_occurrences": 104,
+        "pair_fit_calls": 7,
+        "pair_updates": 5,
+        "unidentifiable_pairs": 2,
+        "pair_terminal_goal_bypasses": 1,
+        "learned_terminal_checks": 18,
+        "learned_swipe_calls": 20,
+        "line_table_lookups": 80,
+        "legal_swipes": 12,
+        "checkpoint_saves": 1,
+        "checkpoint_scanned_parameters": 16384,
+        "checkpoint_saved_parameters": 18,
+        "checkpoint_loads": 1,
+        "checkpoint_loaded_parameters": 18
+      },
+      "source_work": {
+        "choose_calls": 58,
+        "learned_terminal_checks": 160,
+        "learned_swipe_calls": 184,
+        "line_table_lookups": 736,
+        "legal_swipes": 102,
+        "value_predictions": 80,
+        "table_lookups": 2560,
+        "terminal_goal_bypasses": 34
+      },
+      "parent_work": {
+        "source_choose_calls": 38,
+        "source_learned_terminal_checks": 104,
+        "source_learned_swipe_calls": 120,
+        "source_line_table_lookups": 480,
+        "source_legal_swipes": 66,
+        "source_value_predictions": 52,
+        "source_table_lookups": 1664,
+        "choose_calls": 38,
+        "exact_anchor_bypasses": 6,
+        "source_terminal_goal_bypasses": 22,
+        "constant_probability_predictions": 48
+      },
+      "reference_work": {
+        "reference_feature_address_occurrences": 224,
+        "source_choose_calls": 20,
+        "source_learned_terminal_checks": 56,
+        "source_learned_swipe_calls": 64,
+        "source_line_table_lookups": 256,
+        "source_legal_swipes": 36,
+        "source_value_predictions": 28,
+        "source_table_lookups": 896,
+        "choose_calls": 20,
+        "exact_anchor_bypasses": 10,
+        "source_terminal_goal_bypasses": 12,
+        "constant_probability_predictions": 18
+      },
+      "setup_counts": {
+        "cpp_compilations": 3,
+        "lookup_line_rewrites": 256,
+        "allocated_weight_parameters": 311296,
+        "allocated_weight_bytes": 2490368,
+        "cpp_library_cache_hits": 20,
+        "lookup_table_cache_hits": 10,
+        "allocated_count_entries": 131072,
+        "allocated_count_bytes": 1048576
+      },
+      "newly_sampled_environment_transitions": 0,
+      "scope": "Synthetic boards only. Source-prefixed counters overlap source_work; loaded histories excluded."
+    }
+  ]
+}

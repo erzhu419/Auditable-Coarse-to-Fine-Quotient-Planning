@@ -1,0 +1,164 @@
+{
+  "valid": true,
+  "records": 12,
+  "checks": {
+    "complete_selection": 1,
+    "unchanged_case": 12,
+    "actual_256_prefix": 12,
+    "fresh_paired_seeds": 12,
+    "frozen_library_input": 12,
+    "initial_plan": 12,
+    "stop_not_ignored": 94,
+    "exact_acquisition_choice": 94,
+    "fresh_draws": 94,
+    "draw_offsets": 94,
+    "actual_batch_plan": 94,
+    "true_query_bound": 94,
+    "true_risk_bound": 94,
+    "correct_terminal_stop": 12,
+    "terminal_plan": 12,
+    "terminal_actual_counts": 12,
+    "suffix_budget": 12,
+    "prefix_counts": 12,
+    "no_library_commit": 12,
+    "true_completion": 12,
+    "paid_reference_fees": 12,
+    "actual_environment_work": 12,
+    "forecast_not_committed": 12,
+    "all_actual_history_scored": 12,
+    "oracle_after_decision_replay": 106,
+    "actual_total_budget": 1,
+    "qualification_scope": 1,
+    "oracle_only_after_decisions": 1
+  },
+  "expected": {
+    "complete_selection": 1,
+    "unchanged_case": 12,
+    "actual_256_prefix": 12,
+    "fresh_paired_seeds": 12,
+    "frozen_library_input": 12,
+    "initial_plan": 12,
+    "stop_not_ignored": 94,
+    "exact_acquisition_choice": 94,
+    "fresh_draws": 94,
+    "draw_offsets": 94,
+    "actual_batch_plan": 94,
+    "true_query_bound": 94,
+    "true_risk_bound": 94,
+    "correct_terminal_stop": 12,
+    "terminal_plan": 12,
+    "terminal_actual_counts": 12,
+    "suffix_budget": 12,
+    "prefix_counts": 12,
+    "no_library_commit": 12,
+    "true_completion": 12,
+    "paid_reference_fees": 12,
+    "actual_environment_work": 12,
+    "forecast_not_committed": 12,
+    "all_actual_history_scored": 12,
+    "oracle_after_decision_replay": 106,
+    "actual_total_budget": 1,
+    "qualification_scope": 1,
+    "oracle_only_after_decisions": 1
+  },
+  "new_environment_observations": 1504,
+  "per_record": [
+    {
+      "life": 0,
+      "index": 58,
+      "method": "OLD_V229",
+      "spent": 384,
+      "additional_paid_samples": 128,
+      "completed": false
+    },
+    {
+      "life": 0,
+      "index": 58,
+      "method": "CANDIDATE_MULTI",
+      "spent": 384,
+      "additional_paid_samples": 128,
+      "completed": false
+    },
+    {
+      "life": 1,
+      "index": 58,
+      "method": "CANDIDATE_MULTI",
+      "spent": 384,
+      "additional_paid_samples": 128,
+      "completed": false
+    },
+    {
+      "life": 1,
+      "index": 58,
+      "method": "OLD_V229",
+      "spent": 384,
+      "additional_paid_samples": 128,
+      "completed": false
+    },
+    {
+      "life": 2,
+      "index": 42,
+      "method": "OLD_V229",
+      "spent": 384,
+      "additional_paid_samples": 128,
+      "completed": false
+    },
+    {
+      "life": 2,
+      "index": 42,
+      "method": "CANDIDATE_MULTI",
+      "spent": 384,
+      "additional_paid_samples": 128,
+      "completed": false
+    },
+    {
+      "life": 2,
+      "index": 44,
+      "method": "CANDIDATE_MULTI",
+      "spent": 384,
+      "additional_paid_samples": 128,
+      "completed": false
+    },
+    {
+      "life": 2,
+      "index": 44,
+      "method": "OLD_V229",
+      "spent": 384,
+      "additional_paid_samples": 128,
+      "completed": false
+    },
+    {
+      "life": 4,
+      "index": 44,
+      "method": "OLD_V229",
+      "spent": 384,
+      "additional_paid_samples": 128,
+      "completed": false
+    },
+    {
+      "life": 4,
+      "index": 44,
+      "method": "CANDIDATE_MULTI",
+      "spent": 352,
+      "additional_paid_samples": 96,
+      "completed": true
+    },
+    {
+      "life": 4,
+      "index": 58,
+      "method": "CANDIDATE_MULTI",
+      "spent": 384,
+      "additional_paid_samples": 128,
+      "completed": false
+    },
+    {
+      "life": 4,
+      "index": 58,
+      "method": "OLD_V229",
+      "spent": 384,
+      "additional_paid_samples": 128,
+      "completed": false
+    }
+  ],
+  "seconds": 6.596662644005846
+}

@@ -1,0 +1,357 @@
+{
+  "valid": true,
+  "complete": true,
+  "checks": [
+    {
+      "name": "previous_full_cohort_independently_verified",
+      "passed": true
+    },
+    {
+      "name": "fixed_retained_input_and_source_manifest",
+      "passed": true
+    },
+    {
+      "name": "complete_unchanged_retained_four_arm_cohort",
+      "passed": true
+    },
+    {
+      "name": "life_0_retained_member",
+      "passed": true
+    },
+    {
+      "name": "life_0_retained_execution",
+      "passed": true
+    },
+    {
+      "name": "life_0_retained_knowledge",
+      "passed": true
+    },
+    {
+      "name": "life_0_retained_state",
+      "passed": true
+    },
+    {
+      "name": "life_0_retained_fees",
+      "passed": true
+    },
+    {
+      "name": "life_0_retained_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_1_retained_member",
+      "passed": true
+    },
+    {
+      "name": "life_1_retained_execution",
+      "passed": true
+    },
+    {
+      "name": "life_1_retained_knowledge",
+      "passed": true
+    },
+    {
+      "name": "life_1_retained_state",
+      "passed": true
+    },
+    {
+      "name": "life_1_retained_fees",
+      "passed": true
+    },
+    {
+      "name": "life_1_retained_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_2_retained_member",
+      "passed": true
+    },
+    {
+      "name": "life_2_retained_execution",
+      "passed": true
+    },
+    {
+      "name": "life_2_retained_knowledge",
+      "passed": true
+    },
+    {
+      "name": "life_2_retained_state",
+      "passed": true
+    },
+    {
+      "name": "life_2_retained_fees",
+      "passed": true
+    },
+    {
+      "name": "life_2_retained_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_3_retained_member",
+      "passed": true
+    },
+    {
+      "name": "life_3_retained_execution",
+      "passed": true
+    },
+    {
+      "name": "life_3_retained_knowledge",
+      "passed": true
+    },
+    {
+      "name": "life_3_retained_state",
+      "passed": true
+    },
+    {
+      "name": "life_3_retained_fees",
+      "passed": true
+    },
+    {
+      "name": "life_3_retained_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_4_retained_member",
+      "passed": true
+    },
+    {
+      "name": "life_4_retained_execution",
+      "passed": true
+    },
+    {
+      "name": "life_4_retained_knowledge",
+      "passed": true
+    },
+    {
+      "name": "life_4_retained_state",
+      "passed": true
+    },
+    {
+      "name": "life_4_retained_fees",
+      "passed": true
+    },
+    {
+      "name": "life_4_retained_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_5_retained_member",
+      "passed": true
+    },
+    {
+      "name": "life_5_retained_execution",
+      "passed": true
+    },
+    {
+      "name": "life_5_retained_knowledge",
+      "passed": true
+    },
+    {
+      "name": "life_5_retained_state",
+      "passed": true
+    },
+    {
+      "name": "life_5_retained_fees",
+      "passed": true
+    },
+    {
+      "name": "life_5_retained_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_6_retained_member",
+      "passed": true
+    },
+    {
+      "name": "life_6_retained_execution",
+      "passed": true
+    },
+    {
+      "name": "life_6_retained_knowledge",
+      "passed": true
+    },
+    {
+      "name": "life_6_retained_state",
+      "passed": true
+    },
+    {
+      "name": "life_6_retained_fees",
+      "passed": true
+    },
+    {
+      "name": "life_6_retained_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_7_retained_member",
+      "passed": true
+    },
+    {
+      "name": "life_7_retained_execution",
+      "passed": true
+    },
+    {
+      "name": "life_7_retained_knowledge",
+      "passed": true
+    },
+    {
+      "name": "life_7_retained_state",
+      "passed": true
+    },
+    {
+      "name": "life_7_retained_fees",
+      "passed": true
+    },
+    {
+      "name": "life_7_retained_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_8_retained_member",
+      "passed": true
+    },
+    {
+      "name": "life_8_retained_execution",
+      "passed": true
+    },
+    {
+      "name": "life_8_retained_knowledge",
+      "passed": true
+    },
+    {
+      "name": "life_8_retained_state",
+      "passed": true
+    },
+    {
+      "name": "life_8_retained_fees",
+      "passed": true
+    },
+    {
+      "name": "life_8_retained_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_9_retained_member",
+      "passed": true
+    },
+    {
+      "name": "life_9_retained_execution",
+      "passed": true
+    },
+    {
+      "name": "life_9_retained_knowledge",
+      "passed": true
+    },
+    {
+      "name": "life_9_retained_state",
+      "passed": true
+    },
+    {
+      "name": "life_9_retained_fees",
+      "passed": true
+    },
+    {
+      "name": "life_9_retained_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_10_retained_member",
+      "passed": true
+    },
+    {
+      "name": "life_10_retained_execution",
+      "passed": true
+    },
+    {
+      "name": "life_10_retained_knowledge",
+      "passed": true
+    },
+    {
+      "name": "life_10_retained_state",
+      "passed": true
+    },
+    {
+      "name": "life_10_retained_fees",
+      "passed": true
+    },
+    {
+      "name": "life_10_retained_certificates",
+      "passed": true
+    },
+    {
+      "name": "life_11_retained_member",
+      "passed": true
+    },
+    {
+      "name": "life_11_retained_execution",
+      "passed": true
+    },
+    {
+      "name": "life_11_retained_knowledge",
+      "passed": true
+    },
+    {
+      "name": "life_11_retained_state",
+      "passed": true
+    },
+    {
+      "name": "life_11_retained_fees",
+      "passed": true
+    },
+    {
+      "name": "life_11_retained_certificates",
+      "passed": true
+    },
+    {
+      "name": "FULL_FIXED_unchanged_retained_fees",
+      "passed": true
+    },
+    {
+      "name": "LOW_FIXED_unchanged_retained_fees",
+      "passed": true
+    },
+    {
+      "name": "LOW_PARAM_unchanged_retained_fees",
+      "passed": true
+    },
+    {
+      "name": "LOW_UNION_unchanged_retained_fees",
+      "passed": true
+    },
+    {
+      "name": "independent_retained_queries_and_actual_candidate_scope",
+      "passed": true
+    },
+    {
+      "name": "descriptive_paired_query_statistics_and_unchanged_scientific_gate",
+      "passed": true
+    },
+    {
+      "name": "complete_retained_replay_comparisons",
+      "passed": true
+    },
+    {
+      "name": "zero_source_and_target_environment_samples",
+      "passed": true
+    },
+    {
+      "name": "retained_historical_fees_are_preserved",
+      "passed": true
+    },
+    {
+      "name": "fixed_descriptive_bootstrap_work",
+      "passed": true
+    },
+    {
+      "name": "all_terminal_decisions_frozen_before_oracle_scoring",
+      "passed": true
+    }
+  ],
+  "stage_environment_samples": 0,
+  "costs": {
+    "optimizer_pure_checks": 5832,
+    "mixture_components": 31959,
+    "optimizer_pair_checks": 8748
+  },
+  "seconds": 11.21082500598277
+}

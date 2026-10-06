@@ -1,0 +1,130 @@
+{"event": "checkpoint_saved", "life": 3, "query": "risk1", "kind": "PRIOR", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 1, "query": "risk1", "kind": "PRIOR", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 0, "query": "risk1", "kind": "PRIOR", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 2, "query": "risk1", "kind": "PRIOR", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 3, "query": "risk1", "kind": "PRIOR", "age": 32768, "updates": 32761, "episodes": 41}
+{"event": "checkpoint_saved", "life": 1, "query": "risk1", "kind": "PRIOR", "age": 32768, "updates": 32765, "episodes": 40}
+{"event": "checkpoint_saved", "life": 2, "query": "risk1", "kind": "PRIOR", "age": 32768, "updates": 32764, "episodes": 40}
+{"event": "checkpoint_saved", "life": 0, "query": "risk1", "kind": "PRIOR", "age": 32768, "updates": 32764, "episodes": 44}
+{"event": "checkpoint_saved", "life": 0, "query": "risk1", "kind": "PRIOR", "age": 131072, "updates": 131061, "episodes": 165}
+{"event": "checkpoint_saved", "life": 1, "query": "risk1", "kind": "PRIOR", "age": 131072, "updates": 131057, "episodes": 159}
+{"event": "checkpoint_saved", "life": 3, "query": "risk1", "kind": "PRIOR", "age": 131072, "updates": 131053, "episodes": 158}
+{"event": "checkpoint_saved", "life": 2, "query": "risk1", "kind": "PRIOR", "age": 131072, "updates": 131060, "episodes": 165}
+{"event": "checkpoint_saved", "life": 3, "query": "risk1", "kind": "PRIOR", "age": 524288, "updates": 524216, "episodes": 631}
+{"event": "checkpoint_saved", "life": 3, "query": "risk1", "kind": "SCRATCH", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 1, "query": "risk1", "kind": "PRIOR", "age": 524288, "updates": 524218, "episodes": 628}
+{"event": "checkpoint_saved", "life": 0, "query": "risk1", "kind": "PRIOR", "age": 524288, "updates": 524227, "episodes": 649}
+{"event": "checkpoint_saved", "life": 1, "query": "risk1", "kind": "SCRATCH", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 0, "query": "risk1", "kind": "SCRATCH", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 2, "query": "risk1", "kind": "PRIOR", "age": 524288, "updates": 524222, "episodes": 654}
+{"event": "checkpoint_saved", "life": 2, "query": "risk1", "kind": "SCRATCH", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 3, "query": "risk1", "kind": "SCRATCH", "age": 32768, "updates": 32767, "episodes": 102}
+{"event": "checkpoint_saved", "life": 0, "query": "risk1", "kind": "SCRATCH", "age": 32768, "updates": 32767, "episodes": 107}
+{"event": "checkpoint_saved", "life": 1, "query": "risk1", "kind": "SCRATCH", "age": 32768, "updates": 32767, "episodes": 104}
+{"event": "checkpoint_saved", "life": 2, "query": "risk1", "kind": "SCRATCH", "age": 32768, "updates": 32767, "episodes": 107}
+{"event": "checkpoint_saved", "life": 3, "query": "risk1", "kind": "SCRATCH", "age": 131072, "updates": 131071, "episodes": 316}
+{"event": "checkpoint_saved", "life": 1, "query": "risk1", "kind": "SCRATCH", "age": 131072, "updates": 131071, "episodes": 328}
+{"event": "checkpoint_saved", "life": 0, "query": "risk1", "kind": "SCRATCH", "age": 131072, "updates": 131071, "episodes": 331}
+{"event": "checkpoint_saved", "life": 2, "query": "risk1", "kind": "SCRATCH", "age": 131072, "updates": 131071, "episodes": 335}
+{"event": "checkpoint_saved", "life": 0, "query": "risk1", "kind": "SCRATCH", "age": 524288, "updates": 524279, "episodes": 953}
+{"event": "checkpoint_saved", "life": 3, "query": "risk1", "kind": "SCRATCH", "age": 524288, "updates": 524281, "episodes": 966}
+{"event": "checkpoint_saved", "life": 1, "query": "risk1", "kind": "SCRATCH", "age": 524288, "updates": 524278, "episodes": 1000}
+{"event": "checkpoint_saved", "life": 0, "query": "risk8", "kind": "PRIOR", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 3, "query": "risk8", "kind": "PRIOR", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 1, "query": "risk8", "kind": "PRIOR", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 2, "query": "risk1", "kind": "SCRATCH", "age": 524288, "updates": 524278, "episodes": 966}
+{"event": "checkpoint_saved", "life": 2, "query": "risk8", "kind": "PRIOR", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 0, "query": "risk8", "kind": "PRIOR", "age": 32768, "updates": 32762, "episodes": 39}
+{"event": "checkpoint_saved", "life": 3, "query": "risk8", "kind": "PRIOR", "age": 32768, "updates": 32764, "episodes": 42}
+{"event": "checkpoint_saved", "life": 1, "query": "risk8", "kind": "PRIOR", "age": 32768, "updates": 32762, "episodes": 38}
+{"event": "checkpoint_saved", "life": 2, "query": "risk8", "kind": "PRIOR", "age": 32768, "updates": 32760, "episodes": 39}
+{"event": "checkpoint_saved", "life": 0, "query": "risk8", "kind": "PRIOR", "age": 131072, "updates": 131050, "episodes": 162}
+{"event": "checkpoint_saved", "life": 3, "query": "risk8", "kind": "PRIOR", "age": 131072, "updates": 131054, "episodes": 160}
+{"event": "checkpoint_saved", "life": 1, "query": "risk8", "kind": "PRIOR", "age": 131072, "updates": 131059, "episodes": 162}
+{"event": "checkpoint_saved", "life": 2, "query": "risk8", "kind": "PRIOR", "age": 131072, "updates": 131051, "episodes": 161}
+{"event": "checkpoint_saved", "life": 0, "query": "risk8", "kind": "PRIOR", "age": 524288, "updates": 524210, "episodes": 638}
+{"event": "checkpoint_saved", "life": 0, "query": "risk8", "kind": "SCRATCH", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 3, "query": "risk8", "kind": "PRIOR", "age": 524288, "updates": 524210, "episodes": 627}
+{"event": "checkpoint_saved", "life": 3, "query": "risk8", "kind": "SCRATCH", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 1, "query": "risk8", "kind": "PRIOR", "age": 524288, "updates": 524226, "episodes": 634}
+{"event": "checkpoint_saved", "life": 1, "query": "risk8", "kind": "SCRATCH", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 2, "query": "risk8", "kind": "PRIOR", "age": 524288, "updates": 524211, "episodes": 625}
+{"event": "checkpoint_saved", "life": 2, "query": "risk8", "kind": "SCRATCH", "age": 0, "updates": 0, "episodes": 0}
+{"event": "checkpoint_saved", "life": 0, "query": "risk8", "kind": "SCRATCH", "age": 32768, "updates": 32767, "episodes": 112}
+{"event": "checkpoint_saved", "life": 3, "query": "risk8", "kind": "SCRATCH", "age": 32768, "updates": 32767, "episodes": 113}
+{"event": "checkpoint_saved", "life": 1, "query": "risk8", "kind": "SCRATCH", "age": 32768, "updates": 32767, "episodes": 115}
+{"event": "checkpoint_saved", "life": 2, "query": "risk8", "kind": "SCRATCH", "age": 32768, "updates": 32767, "episodes": 108}
+{"event": "checkpoint_saved", "life": 0, "query": "risk8", "kind": "SCRATCH", "age": 131072, "updates": 131071, "episodes": 375}
+{"event": "checkpoint_saved", "life": 3, "query": "risk8", "kind": "SCRATCH", "age": 131072, "updates": 131071, "episodes": 362}
+{"event": "checkpoint_saved", "life": 1, "query": "risk8", "kind": "SCRATCH", "age": 131072, "updates": 131071, "episodes": 376}
+{"event": "checkpoint_saved", "life": 2, "query": "risk8", "kind": "SCRATCH", "age": 131072, "updates": 131071, "episodes": 361}
+{"event": "checkpoint_saved", "life": 0, "query": "risk8", "kind": "SCRATCH", "age": 524288, "updates": 524287, "episodes": 1128}
+{"event": "checkpoint_saved", "life": 3, "query": "risk8", "kind": "SCRATCH", "age": 524288, "updates": 524285, "episodes": 1093}
+{"event": "checkpoint_saved", "life": 1, "query": "risk8", "kind": "SCRATCH", "age": 524288, "updates": 524285, "episodes": 1109}
+{"event": "checkpoint_saved", "life": 2, "query": "risk8", "kind": "SCRATCH", "age": 524288, "updates": 524285, "episodes": 1101}
+{"event": "all_training_frozen"}
+{"event": "control_complete", "life": 3, "query": "risk1", "kind": "PRIOR", "age": 0}
+{"event": "control_complete", "life": 2, "query": "risk1", "kind": "PRIOR", "age": 0}
+{"event": "control_complete", "life": 0, "query": "risk1", "kind": "PRIOR", "age": 0}
+{"event": "control_complete", "life": 1, "query": "risk1", "kind": "PRIOR", "age": 0}
+{"event": "control_complete", "life": 0, "query": "risk1", "kind": "PRIOR", "age": 32768}
+{"event": "control_complete", "life": 2, "query": "risk1", "kind": "PRIOR", "age": 32768}
+{"event": "control_complete", "life": 3, "query": "risk1", "kind": "PRIOR", "age": 32768}
+{"event": "control_complete", "life": 1, "query": "risk1", "kind": "PRIOR", "age": 32768}
+{"event": "control_complete", "life": 0, "query": "risk1", "kind": "PRIOR", "age": 131072}
+{"event": "control_complete", "life": 2, "query": "risk1", "kind": "PRIOR", "age": 131072}
+{"event": "control_complete", "life": 3, "query": "risk1", "kind": "PRIOR", "age": 131072}
+{"event": "control_complete", "life": 1, "query": "risk1", "kind": "PRIOR", "age": 131072}
+{"event": "control_complete", "life": 2, "query": "risk1", "kind": "PRIOR", "age": 524288}
+{"event": "control_complete", "life": 3, "query": "risk1", "kind": "PRIOR", "age": 524288}
+{"event": "control_complete", "life": 0, "query": "risk1", "kind": "PRIOR", "age": 524288}
+{"event": "control_complete", "life": 2, "query": "risk1", "kind": "SCRATCH", "age": 0}
+{"event": "control_complete", "life": 3, "query": "risk1", "kind": "SCRATCH", "age": 0}
+{"event": "control_complete", "life": 1, "query": "risk1", "kind": "PRIOR", "age": 524288}
+{"event": "control_complete", "life": 0, "query": "risk1", "kind": "SCRATCH", "age": 0}
+{"event": "control_complete", "life": 1, "query": "risk1", "kind": "SCRATCH", "age": 0}
+{"event": "control_complete", "life": 3, "query": "risk1", "kind": "SCRATCH", "age": 32768}
+{"event": "control_complete", "life": 2, "query": "risk1", "kind": "SCRATCH", "age": 32768}
+{"event": "control_complete", "life": 0, "query": "risk1", "kind": "SCRATCH", "age": 32768}
+{"event": "control_complete", "life": 1, "query": "risk1", "kind": "SCRATCH", "age": 32768}
+{"event": "control_complete", "life": 3, "query": "risk1", "kind": "SCRATCH", "age": 131072}
+{"event": "control_complete", "life": 2, "query": "risk1", "kind": "SCRATCH", "age": 131072}
+{"event": "control_complete", "life": 0, "query": "risk1", "kind": "SCRATCH", "age": 131072}
+{"event": "control_complete", "life": 1, "query": "risk1", "kind": "SCRATCH", "age": 131072}
+{"event": "control_complete", "life": 3, "query": "risk1", "kind": "SCRATCH", "age": 524288}
+{"event": "control_complete", "life": 2, "query": "risk1", "kind": "SCRATCH", "age": 524288}
+{"event": "control_complete", "life": 0, "query": "risk1", "kind": "SCRATCH", "age": 524288}
+{"event": "control_complete", "life": 1, "query": "risk1", "kind": "SCRATCH", "age": 524288}
+{"event": "control_complete", "life": 3, "query": "risk8", "kind": "PRIOR", "age": 0}
+{"event": "control_complete", "life": 0, "query": "risk8", "kind": "PRIOR", "age": 0}
+{"event": "control_complete", "life": 2, "query": "risk8", "kind": "PRIOR", "age": 0}
+{"event": "control_complete", "life": 1, "query": "risk8", "kind": "PRIOR", "age": 0}
+{"event": "control_complete", "life": 3, "query": "risk8", "kind": "PRIOR", "age": 32768}
+{"event": "control_complete", "life": 0, "query": "risk8", "kind": "PRIOR", "age": 32768}
+{"event": "control_complete", "life": 2, "query": "risk8", "kind": "PRIOR", "age": 32768}
+{"event": "control_complete", "life": 1, "query": "risk8", "kind": "PRIOR", "age": 32768}
+{"event": "control_complete", "life": 3, "query": "risk8", "kind": "PRIOR", "age": 131072}
+{"event": "control_complete", "life": 2, "query": "risk8", "kind": "PRIOR", "age": 131072}
+{"event": "control_complete", "life": 0, "query": "risk8", "kind": "PRIOR", "age": 131072}
+{"event": "control_complete", "life": 1, "query": "risk8", "kind": "PRIOR", "age": 131072}
+{"event": "control_complete", "life": 3, "query": "risk8", "kind": "PRIOR", "age": 524288}
+{"event": "control_complete", "life": 3, "query": "risk8", "kind": "SCRATCH", "age": 0}
+{"event": "control_complete", "life": 2, "query": "risk8", "kind": "PRIOR", "age": 524288}
+{"event": "control_complete", "life": 0, "query": "risk8", "kind": "PRIOR", "age": 524288}
+{"event": "control_complete", "life": 3, "query": "risk8", "kind": "SCRATCH", "age": 32768}
+{"event": "control_complete", "life": 2, "query": "risk8", "kind": "SCRATCH", "age": 0}
+{"event": "control_complete", "life": 1, "query": "risk8", "kind": "PRIOR", "age": 524288}
+{"event": "control_complete", "life": 0, "query": "risk8", "kind": "SCRATCH", "age": 0}
+{"event": "control_complete", "life": 2, "query": "risk8", "kind": "SCRATCH", "age": 32768}
+{"event": "control_complete", "life": 1, "query": "risk8", "kind": "SCRATCH", "age": 0}
+{"event": "control_complete", "life": 0, "query": "risk8", "kind": "SCRATCH", "age": 32768}
+{"event": "control_complete", "life": 3, "query": "risk8", "kind": "SCRATCH", "age": 131072}
+{"event": "control_complete", "life": 1, "query": "risk8", "kind": "SCRATCH", "age": 32768}
+{"event": "control_complete", "life": 2, "query": "risk8", "kind": "SCRATCH", "age": 131072}
+{"event": "control_complete", "life": 0, "query": "risk8", "kind": "SCRATCH", "age": 131072}
+{"event": "control_complete", "life": 3, "query": "risk8", "kind": "SCRATCH", "age": 524288}
+{"event": "control_complete", "life": 1, "query": "risk8", "kind": "SCRATCH", "age": 131072}
+{"event": "control_complete", "life": 0, "query": "risk8", "kind": "SCRATCH", "age": 524288}
+{"event": "control_complete", "life": 2, "query": "risk8", "kind": "SCRATCH", "age": 524288}
+{"event": "control_complete", "life": 1, "query": "risk8", "kind": "SCRATCH", "age": 524288}
+{"status": "complete", "seconds": 472.00970101199346}

@@ -1,0 +1,13 @@
+{
+  "attempts": [
+    {
+      "command": ".venv-lmta-v42/bin/python -m pytest -q tests/test_controlled_predictive_shared_continuation_runner_v91.py",
+      "passed": 2,
+      "failed": 0,
+      "seconds": 0.23,
+      "sampled_transitions": 0,
+      "new_tree_fits": 0,
+      "scope": "Mocked batch lifecycle proves accumulating history, frozen controls, inherited cost and new paired evaluation seeds."
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+{"attempts":[{"seed":9890000000,"sampled_transitions":40,"new_environment_random_draws":80,"restoration_random_draws":14,"model_restoration_random_draws":28,"fitted_models":0,"full_support_teacher_calls":0,"main_campaign_calls":0,"exact_environment_steps":true,"exact_planner_rng_states":true}]}

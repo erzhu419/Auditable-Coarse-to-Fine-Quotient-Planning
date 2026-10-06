@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "exit_code": 0,
+  "seconds": 0.7647120829788037,
+  "stdout": ".                                                                        [100%]\n1 passed in 0.20s\n",
+  "stderr": "",
+  "new_environment_transitions": 0,
+  "new_tree_fits": 0,
+  "scope": "Synthetic validation means, half-reference ordering, and incomplete/missing-trigger cohort exclusion"
+}

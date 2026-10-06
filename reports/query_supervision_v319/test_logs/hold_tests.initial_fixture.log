@@ -1,0 +1,67 @@
+...F                                                                     [100%]
+=================================== FAILURES ===================================
+_ test_whole_cohort_hold_skips_inference_keeps_completed_parents_and_counts_only_paid_stages _
+
+tmp_path = PosixPath('/tmp/pytest-of-erzhu419/pytest-394/test_whole_cohort_hold_skips_i0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x761f9825ea10>
+
+    def test_whole_cohort_hold_skips_inference_keeps_completed_parents_and_counts_only_paid_stages(tmp_path,monkeypatch):
+        source_dir = tmp_path/'source'; source_dir.mkdir()
+        source = source_dir/'summary.json'
+        source.write_text(json.dumps(dict(status='EXPERIMENT_COMPLETE',
+            source_provenance=dict(parents=[dict(parent=p) for p in range(4)]),
+            accounting=dict(economic_source_and_target_cpu_seconds=100.))))
+        (source_dir/'audit.json').write_text(json.dumps(dict(independent_valid=True)))
+        partial = completed_row(0)
+        partial['rounds'] = {'1':{}}
+        partial['census_failure'] = dict(task='A',round=1,reason=INSUFFICIENT,query=None)
+        parents = {p:dict(parent=p,status='HOLD_CENSUS' if p==0 else 'PARENT_COMPLETE',
+            lifecycles=[partial] if p==0 else [completed_row(life) for life in range(p,16,4)],
+            source_setup={},cpu_seconds=10.,compiler_cpu_seconds=2.,wall_seconds=4.) for p in range(4)}
+        monkeypatch.setattr(driver,'_run_parent',lambda source,document,out:deepcopy(parents[source['parent']]))
+        class InlinePool:
+            def __init__(self,**kwargs):pass
+            def __enter__(self):return self
+            def __exit__(self,*args):pass
+            def submit(self,function,*args):return SimpleNamespace(result=lambda:function(*args))
+        monkeypatch.setattr(driver,'ProcessPoolExecutor',InlinePool)
+        monkeypatch.setattr(driver,'as_completed',lambda jobs:reversed(jobs))
+        def no_inference(*args,**kwargs):
+            raise AssertionError('Incomplete frozen cohort must not enter summarize or bootstrap')
+        monkeypatch.setattr(driver,'summarize',no_inference)
+        cpu_ticks,wall_ticks = iter((0.,5.)),iter((100.,109.))
+        monkeypatch.setattr(driver,'process_time',lambda:next(cpu_ticks))
+        monkeypatch.setattr(driver,'perf_counter',lambda:next(wall_ticks))
+    
+        out = tmp_path/'result'
+        result = driver.run(source,out)
+        assert result['status'] == 'HOLD_CENSUS'
+        assert result['settings']['lifecycles'] == list(range(16))
+        assert [row['lifecycle'] for row in result['by_lifecycle']] == [0,1,2,3,5,6,7,9,10,11,13,14,15]
+        assert result['summary']['primary_self_improvement_status'] == 'HOLD_CENSUS'
+        assert result['summary']['coverage_intervention_status'] == 'HOLD_CENSUS'
+        assert 'final_ab_contrasts' not in result['summary']
+        for flag in ('primary_self_improvement_supported','coverage_intervention_supported',
+                'retained_improvement_supported','coverage_mechanism_supported'):
+            assert not result['summary'][flag]
+        assert result['summary']['census_failures'] == [dict(lifecycle=0,parent=0,**partial['census_failure'])]
+        account = result['accounting']
+        assert account['new_evaluation_games'] == 128+12*384
+        assert account['new_training_raw_tiles'] == 12*32
+        assert account['group_files'] == account['new_head_files'] == 12*8
+        assert account['new_experiment_cpu_seconds'] == 53.
+        assert account['economic_source_v317_and_experiment_cpu_seconds'] == 153.
+>       assert json.loads((out/'summary.json').read_text()) == result
+E       AssertionError: assert {'accounting'...on.v319', ...} == {'accounting'...on.v319', ...}
+E         
+E         Omitting 9 identical items, use -vv to show
+E         Differing items:
+E         {'settings': {'alpha': 0.0025, 'anchor': 'COMPLETE_FIT_NONWIN_CURRENT_AFTERSTATE_WITH_SAME_GAME_PREDECESSOR_POSTSPAWN', 'arms': ['FACTUAL_LOCAL', 'QUERY_LOCAL'], 'bootstrap_draws': 20000, ...}} != {'settings': {'alpha': 0.0025, 'anchor': 'COMPLETE_FIT_NONWIN_CURRENT_AFTERSTATE_WITH_SAME_GAME_PREDECESSOR_POSTSPAWN', 'arms': ('FACTUAL_LOCAL', 'QUERY_LOCAL'), 'bootstrap_draws': 20000, ...}}
+E         Use -v to get more diff
+
+tests/test_query_supervision_hold_v319.py:213: AssertionError
+----------------------------- Captured stdout call -----------------------------
+{"event": "query_supervision_complete", "status": "HOLD_CENSUS", "primary": "HOLD_CENSUS", "retained": false}
+=========================== short test summary info ============================
+FAILED tests/test_query_supervision_hold_v319.py::test_whole_cohort_hold_skips_inference_keeps_completed_parents_and_counts_only_paid_stages
+1 failed, 3 passed in 0.42s

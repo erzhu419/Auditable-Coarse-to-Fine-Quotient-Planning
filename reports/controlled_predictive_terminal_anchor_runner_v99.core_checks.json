@@ -1,0 +1,19 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_terminal_anchor_runner_v99.py",
+      "session_failures": 0,
+      "scope": "Mock batch/fit/evaluation and mock physical prefixes only.",
+      "tree_fits": 0,
+      "model_predictions": 0,
+      "ground_sampled_transitions": 0,
+      "synthetic_transitions": 0,
+      "main_campaign_calls": 0,
+      "mock_batch_loads": 2,
+      "mock_fit_calls": 4,
+      "mock_evaluation_calls": 1,
+      "mock_prefix_calls": 10,
+      "prefix_only_zero_predictions": 8
+    }
+  ]
+}

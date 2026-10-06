@@ -1,0 +1,10 @@
+{
+  "schema": "acfqp.win_terminal_full_execution_cost.v325",
+  "component_new_experiment_cpu_seconds": 439.995325172,
+  "full_execution_process_tree_cpu_seconds": 442.746072,
+  "final_serialization_and_shutdown_cpu_seconds": 2.7507468280000467,
+  "full_economic_source_v324_and_calibration_cpu_seconds": 3160.891582057,
+  "independent_audit_process_tree_cpu_seconds": 205.845507,
+  "independent_audit_monotonic_wall_seconds": 55.69951043999754,
+  "scope": "Successful SOURCE/V324 inherited once. Full new execution includes snapshot reads/restores/new terminal suffixes and final shutdown. Diagnostic audit separate; historical dynamics and failed-attempt CPU unknown."
+}

@@ -1,0 +1,4 @@
+COMMAND: python3 -m pytest -q tests/test_verify_closed_loop_v313.py::test_sparse_versions_reassemble_source_initial_and_actual_zero_reversion
+.                                                                        [100%]
+1 passed in 4.33s
+EXIT_CODE: 0

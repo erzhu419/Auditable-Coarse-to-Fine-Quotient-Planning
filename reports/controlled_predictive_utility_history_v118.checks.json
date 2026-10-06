@@ -1,0 +1,14 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "development_work": {
+        "synthetic_capsule_calls": 5
+      },
+      "newly_sampled_environment_transitions": 0,
+      "new_synthetic_transitions": 0,
+      "neural_model_fits": 0,
+      "scope": "handwritten source payloads and poisoned outer-evaluation fields"
+    }
+  ]
+}

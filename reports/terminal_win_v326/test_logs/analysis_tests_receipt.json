@@ -1,0 +1,11 @@
+{
+  "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src .venv-lmta-v42/bin/python -m pytest -q -p no:cacheprovider tests/test_terminal_win_analysis_v326.py",
+  "workdir": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration",
+  "evaluation_seed": 3269000000000,
+  "exit_code": 0,
+  "passed_cases": 10,
+  "pytest_reported_wall_seconds": 0.48,
+  "execution_wall_seconds": 0.8625173199980054,
+  "stdout": "..........                                                               [100%]\n10 passed in 0.48s\n",
+  "stderr": ""
+}

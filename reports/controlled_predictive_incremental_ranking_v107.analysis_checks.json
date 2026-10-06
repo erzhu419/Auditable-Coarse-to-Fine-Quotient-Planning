@@ -1,0 +1,15 @@
+{
+  "schema": "acfqp.incremental_ranking_analysis_checks.v107",
+  "status": "passed",
+  "test_file": "tests/test_analyze_controlled_predictive_incremental_ranking_v107.py",
+  "tests": 5,
+  "attempts": 1,
+  "seconds": 0.31,
+  "counts": {
+    "new_environment_transitions": 0,
+    "new_model_prefix_transitions": 0,
+    "new_neural_model_fits": 0,
+    "new_neural_candidate_predictions": 0
+  },
+  "scope": "Small synthetic retained-data fixtures: paired warm/scratch matrix means, exact separation of new fits/scoring from inherited data and parameter lineage, actual first-batch half statistics, reset Adam semantics, missing new decisions and censored reference cost retention. No production analysis, model fitting, candidate scoring or sampling."
+}

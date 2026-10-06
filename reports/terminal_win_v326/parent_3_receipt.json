@@ -1,0 +1,40 @@
+{
+  "parent": 3,
+  "status": "COMPLETE",
+  "source_setup": {
+    "wall_seconds": 0.670239243976539,
+    "cpu_seconds": 0.20360381300000002,
+    "setup_counts": {
+      "cpp_compilations": 1,
+      "lookup_line_rewrites": 14641,
+      "allocated_weight_parameters": 14172488,
+      "allocated_weight_bytes": 113379904,
+      "cpp_library_cache_hits": 1,
+      "lookup_table_cache_hits": 1,
+      "source_parameters_copied": 7086244,
+      "source_weight_bytes_copied": 56689952
+    },
+    "checkpoint_loads": 1,
+    "checkpoint_loaded_parameters": 1798376,
+    "leaf_weight_bytes": 56689952,
+    "resident_source_and_leaf_weight_bytes": 113379904,
+    "inherited_updates": 2819634,
+    "new_leaf_updates": 0
+  },
+  "canonical_rows": 20575,
+  "paid_raw_by_phase": {
+    "A0": 527680,
+    "NONE": 0,
+    "B0": 525623,
+    "A_R1": 262144,
+    "B_R1": 262144,
+    "A_R2": 262144,
+    "B_R2": 262144
+  },
+  "paid_factual_raw_tiles": 2101879,
+  "trace_file": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/terminal_win_v326/parent_3_trace.jsonl.gz",
+  "trace_bytes": 32434329,
+  "cpu_seconds": 997.319976973,
+  "compiler_cpu_seconds": 9.647733,
+  "wall_seconds": 1083.910548379994
+}

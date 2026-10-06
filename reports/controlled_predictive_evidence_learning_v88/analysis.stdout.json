@@ -1,0 +1,774 @@
+{
+  "complete": true,
+  "cohort": {
+    "lifecycle_roster_complete": true,
+    "evaluation_roster_complete": true,
+    "paired_seeds_complete": true,
+    "controller_wiring_complete": true,
+    "training_candidate_label_accounting_complete": true,
+    "gate_change_roster_complete": true,
+    "paired_histories_complete": true,
+    "expected_games": 672,
+    "all_evaluation_games_terminal": true,
+    "games": 672,
+    "terminal_games": 672,
+    "status_counts": {
+      "LOST": 672
+    },
+    "terminal_means": {
+      "score": 9244.339285714286,
+      "utility": 2.5138375418526784,
+      "steps": 585.2946428571429,
+      "max_rank": 9.360119047619047
+    },
+    "selected_options": {
+      "NO_SELECTION": 96,
+      "SNAKE_4": 36,
+      "SPACE_4": 106,
+      "SNAKE_1": 105,
+      "H2": 256,
+      "SPACE_1": 73
+    },
+    "duration_budgets": {
+      "0": 352,
+      "4": 142,
+      "1": 178
+    },
+    "actual_fragment_lengths": {
+      "0": 352,
+      "4": 142,
+      "1": 178
+    },
+    "games_with_fragment": 320,
+    "completed_four_step_fragments": 142,
+    "fragment_actions": 746,
+    "seconds": 319.52332783676684
+  },
+  "scores": {
+    "H2_ONLY": {
+      "reward": 8714.25,
+      "risk_goal": 9846.416666666666
+    },
+    "COVERAGE_OLD": {
+      "reward": 8797.416666666666,
+      "risk_goal": 9608.833333333334
+    },
+    "COVERAGE_POINT": {
+      "reward": 9163.583333333334,
+      "risk_goal": 9640.916666666666
+    },
+    "COVERAGE_SUPPORTED": {
+      "reward": 8258.166666666666,
+      "risk_goal": 9846.416666666666
+    },
+    "REPEAT_OLD": {
+      "reward": 8845.916666666666,
+      "risk_goal": 9849.083333333334
+    },
+    "REPEAT_POINT": {
+      "reward": 8890.25,
+      "risk_goal": 9398.833333333334
+    },
+    "REPEAT_SUPPORTED": {
+      "reward": 8714.25,
+      "risk_goal": 9846.416666666666
+    }
+  },
+  "effects": {
+    "COVERAGE_SUPPORTED_minus_COVERAGE_POINT": {
+      "reward": {
+        "score": -905.4166666666666,
+        "utility": -0.4420979817708333,
+        "life_score": [
+          -1487.75,
+          -232.75,
+          -995.75
+        ],
+        "life_utility": [
+          -0.7264404296875,
+          -0.1136474609375,
+          -0.4862060546875
+        ]
+      },
+      "risk_goal": {
+        "score": 205.5,
+        "utility": 0.100341796875,
+        "life_score": [
+          0.0,
+          130.25,
+          486.25
+        ],
+        "life_utility": [
+          0.0,
+          0.0635986328125,
+          0.2374267578125
+        ]
+      }
+    },
+    "COVERAGE_SUPPORTED_minus_COVERAGE_OLD": {
+      "reward": {
+        "score": -539.25,
+        "utility": -0.2633056640625,
+        "life_score": [
+          92.75,
+          -617.75,
+          -1092.75
+        ],
+        "life_utility": [
+          0.0452880859375,
+          -0.3016357421875,
+          -0.5335693359375
+        ]
+      },
+      "risk_goal": {
+        "score": 237.58333333333334,
+        "utility": 0.11600748697916667,
+        "life_score": [
+          -1419.5,
+          1300.5,
+          831.75
+        ],
+        "life_utility": [
+          -0.693115234375,
+          0.635009765625,
+          0.4061279296875
+        ]
+      }
+    },
+    "COVERAGE_POINT_minus_COVERAGE_OLD": {
+      "reward": {
+        "score": 366.1666666666667,
+        "utility": 0.17879231770833334,
+        "life_score": [
+          1580.5,
+          -385.0,
+          -97.0
+        ],
+        "life_utility": [
+          0.771728515625,
+          -0.18798828125,
+          -0.04736328125
+        ]
+      },
+      "risk_goal": {
+        "score": 32.083333333333336,
+        "utility": 0.015665690104166668,
+        "life_score": [
+          -1419.5,
+          1170.25,
+          345.5
+        ],
+        "life_utility": [
+          -0.693115234375,
+          0.5714111328125,
+          0.168701171875
+        ]
+      }
+    },
+    "COVERAGE_SUPPORTED_minus_H2_ONLY": {
+      "reward": {
+        "score": -456.0833333333333,
+        "utility": -0.22269694010416666,
+        "life_score": [
+          0.0,
+          0.0,
+          -1368.25
+        ],
+        "life_utility": [
+          0.0,
+          0.0,
+          -0.6680908203125
+        ]
+      },
+      "risk_goal": {
+        "score": 0.0,
+        "utility": 0.0,
+        "life_score": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "life_utility": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "COVERAGE_POINT_minus_H2_ONLY": {
+      "reward": {
+        "score": 449.3333333333333,
+        "utility": 0.21940104166666666,
+        "life_score": [
+          1487.75,
+          232.75,
+          -372.5
+        ],
+        "life_utility": [
+          0.7264404296875,
+          0.1136474609375,
+          -0.181884765625
+        ]
+      },
+      "risk_goal": {
+        "score": -205.5,
+        "utility": -0.100341796875,
+        "life_score": [
+          0.0,
+          -130.25,
+          -486.25
+        ],
+        "life_utility": [
+          0.0,
+          -0.0635986328125,
+          -0.2374267578125
+        ]
+      }
+    },
+    "COVERAGE_OLD_minus_H2_ONLY": {
+      "reward": {
+        "score": 83.16666666666667,
+        "utility": 0.040608723958333336,
+        "life_score": [
+          -92.75,
+          617.75,
+          -275.5
+        ],
+        "life_utility": [
+          -0.0452880859375,
+          0.3016357421875,
+          -0.134521484375
+        ]
+      },
+      "risk_goal": {
+        "score": -237.58333333333334,
+        "utility": -0.11600748697916667,
+        "life_score": [
+          1419.5,
+          -1300.5,
+          -831.75
+        ],
+        "life_utility": [
+          0.693115234375,
+          -0.635009765625,
+          -0.4061279296875
+        ]
+      }
+    },
+    "REPEAT_SUPPORTED_minus_REPEAT_POINT": {
+      "reward": {
+        "score": -176.0,
+        "utility": -0.0859375,
+        "life_score": [
+          -427.0,
+          -388.25,
+          287.25
+        ],
+        "life_utility": [
+          -0.20849609375,
+          -0.1895751953125,
+          0.1402587890625
+        ]
+      },
+      "risk_goal": {
+        "score": 447.5833333333333,
+        "utility": 0.21854654947916666,
+        "life_score": [
+          -1592.5,
+          1759.0,
+          1176.25
+        ],
+        "life_utility": [
+          -0.777587890625,
+          0.85888671875,
+          0.5743408203125
+        ]
+      }
+    },
+    "REPEAT_SUPPORTED_minus_REPEAT_OLD": {
+      "reward": {
+        "score": -131.66666666666666,
+        "utility": -0.06429036458333333,
+        "life_score": [
+          -1317.75,
+          373.75,
+          549.0
+        ],
+        "life_utility": [
+          -0.6434326171875,
+          0.1824951171875,
+          0.26806640625
+        ]
+      },
+      "risk_goal": {
+        "score": -2.6666666666666665,
+        "utility": -0.0013020833333333333,
+        "life_score": [
+          -1106.25,
+          1555.75,
+          -457.5
+        ],
+        "life_utility": [
+          -0.5401611328125,
+          0.7596435546875,
+          -0.223388671875
+        ]
+      }
+    },
+    "REPEAT_POINT_minus_REPEAT_OLD": {
+      "reward": {
+        "score": 44.333333333333336,
+        "utility": 0.021647135416666668,
+        "life_score": [
+          -890.75,
+          762.0,
+          261.75
+        ],
+        "life_utility": [
+          -0.4349365234375,
+          0.3720703125,
+          0.1278076171875
+        ]
+      },
+      "risk_goal": {
+        "score": -450.25,
+        "utility": -0.2198486328125,
+        "life_score": [
+          486.25,
+          -203.25,
+          -1633.75
+        ],
+        "life_utility": [
+          0.2374267578125,
+          -0.0992431640625,
+          -0.7977294921875
+        ]
+      }
+    },
+    "REPEAT_SUPPORTED_minus_H2_ONLY": {
+      "reward": {
+        "score": 0.0,
+        "utility": 0.0,
+        "life_score": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "life_utility": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "risk_goal": {
+        "score": 0.0,
+        "utility": 0.0,
+        "life_score": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "life_utility": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "REPEAT_POINT_minus_H2_ONLY": {
+      "reward": {
+        "score": 176.0,
+        "utility": 0.0859375,
+        "life_score": [
+          427.0,
+          388.25,
+          -287.25
+        ],
+        "life_utility": [
+          0.20849609375,
+          0.1895751953125,
+          -0.1402587890625
+        ]
+      },
+      "risk_goal": {
+        "score": -447.5833333333333,
+        "utility": -0.21854654947916666,
+        "life_score": [
+          1592.5,
+          -1759.0,
+          -1176.25
+        ],
+        "life_utility": [
+          0.777587890625,
+          -0.85888671875,
+          -0.5743408203125
+        ]
+      }
+    },
+    "REPEAT_OLD_minus_H2_ONLY": {
+      "reward": {
+        "score": 131.66666666666666,
+        "utility": 0.06429036458333333,
+        "life_score": [
+          1317.75,
+          -373.75,
+          -549.0
+        ],
+        "life_utility": [
+          0.6434326171875,
+          -0.1824951171875,
+          -0.26806640625
+        ]
+      },
+      "risk_goal": {
+        "score": 2.6666666666666665,
+        "utility": 0.0013020833333333333,
+        "life_score": [
+          1106.25,
+          -1555.75,
+          457.5
+        ],
+        "life_utility": [
+          0.5401611328125,
+          -0.7596435546875,
+          0.223388671875
+        ]
+      }
+    }
+  },
+  "gates": {
+    "COVERAGE_SUPPORTED_minus_COVERAGE_POINT": {
+      "reward": {
+        "enabled": {
+          "pairs": 0,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": null,
+          "h2_conditional_score": null
+        },
+        "disabled": {
+          "pairs": 36,
+          "old_score_contribution": -905.4166666666666,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": -1207.2222222222222,
+          "h2_conditional_score": 0.0
+        },
+        "both_h2": {
+          "pairs": 6,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": 0.0,
+          "h2_conditional_score": 0.0
+        },
+        "same_fragment": {
+          "pairs": 6,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": -456.0833333333333,
+          "old_conditional_score": 0.0,
+          "h2_conditional_score": -3648.6666666666665
+        },
+        "changed_fragment": {
+          "pairs": 0,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": null,
+          "h2_conditional_score": null
+        }
+      },
+      "risk_goal": {
+        "enabled": {
+          "pairs": 0,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": null,
+          "h2_conditional_score": null
+        },
+        "disabled": {
+          "pairs": 32,
+          "old_score_contribution": 205.5,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": 308.25,
+          "h2_conditional_score": 0.0
+        },
+        "both_h2": {
+          "pairs": 16,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": 0.0,
+          "h2_conditional_score": 0.0
+        },
+        "same_fragment": {
+          "pairs": 0,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": null,
+          "h2_conditional_score": null
+        },
+        "changed_fragment": {
+          "pairs": 0,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": null,
+          "h2_conditional_score": null
+        }
+      }
+    },
+    "COVERAGE_SUPPORTED_minus_COVERAGE_OLD": {
+      "reward": {
+        "enabled": {
+          "pairs": 1,
+          "old_score_contribution": -83.66666666666667,
+          "h2_score_contribution": -83.66666666666667,
+          "old_conditional_score": -4016.0,
+          "h2_conditional_score": -4016.0
+        },
+        "disabled": {
+          "pairs": 37,
+          "old_score_contribution": -324.3333333333333,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": -420.7567567567568,
+          "h2_conditional_score": 0.0
+        },
+        "both_h2": {
+          "pairs": 5,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": 0.0,
+          "h2_conditional_score": 0.0
+        },
+        "same_fragment": {
+          "pairs": 2,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": -217.75,
+          "old_conditional_score": 0.0,
+          "h2_conditional_score": -5226.0
+        },
+        "changed_fragment": {
+          "pairs": 3,
+          "old_score_contribution": -131.25,
+          "h2_score_contribution": -154.66666666666666,
+          "old_conditional_score": -2100.0,
+          "h2_conditional_score": -2474.6666666666665
+        }
+      },
+      "risk_goal": {
+        "enabled": {
+          "pairs": 0,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": null,
+          "h2_conditional_score": null
+        },
+        "disabled": {
+          "pairs": 30,
+          "old_score_contribution": 237.58333333333334,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": 380.1333333333333,
+          "h2_conditional_score": 0.0
+        },
+        "both_h2": {
+          "pairs": 18,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": 0.0,
+          "h2_conditional_score": 0.0
+        },
+        "same_fragment": {
+          "pairs": 0,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": null,
+          "h2_conditional_score": null
+        },
+        "changed_fragment": {
+          "pairs": 0,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": null,
+          "h2_conditional_score": null
+        }
+      }
+    },
+    "REPEAT_SUPPORTED_minus_REPEAT_POINT": {
+      "reward": {
+        "enabled": {
+          "pairs": 0,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": null,
+          "h2_conditional_score": null
+        },
+        "disabled": {
+          "pairs": 48,
+          "old_score_contribution": -176.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": -176.0,
+          "h2_conditional_score": 0.0
+        },
+        "both_h2": {
+          "pairs": 0,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": null,
+          "h2_conditional_score": null
+        },
+        "same_fragment": {
+          "pairs": 0,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": null,
+          "h2_conditional_score": null
+        },
+        "changed_fragment": {
+          "pairs": 0,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": null,
+          "h2_conditional_score": null
+        }
+      },
+      "risk_goal": {
+        "enabled": {
+          "pairs": 0,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": null,
+          "h2_conditional_score": null
+        },
+        "disabled": {
+          "pairs": 45,
+          "old_score_contribution": 447.5833333333333,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": 477.4222222222222,
+          "h2_conditional_score": 0.0
+        },
+        "both_h2": {
+          "pairs": 3,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": 0.0,
+          "h2_conditional_score": 0.0
+        },
+        "same_fragment": {
+          "pairs": 0,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": null,
+          "h2_conditional_score": null
+        },
+        "changed_fragment": {
+          "pairs": 0,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": null,
+          "h2_conditional_score": null
+        }
+      }
+    },
+    "REPEAT_SUPPORTED_minus_REPEAT_OLD": {
+      "reward": {
+        "enabled": {
+          "pairs": 0,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": null,
+          "h2_conditional_score": null
+        },
+        "disabled": {
+          "pairs": 44,
+          "old_score_contribution": -131.66666666666666,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": -143.63636363636363,
+          "h2_conditional_score": 0.0
+        },
+        "both_h2": {
+          "pairs": 4,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": 0.0,
+          "h2_conditional_score": 0.0
+        },
+        "same_fragment": {
+          "pairs": 0,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": null,
+          "h2_conditional_score": null
+        },
+        "changed_fragment": {
+          "pairs": 0,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": null,
+          "h2_conditional_score": null
+        }
+      },
+      "risk_goal": {
+        "enabled": {
+          "pairs": 0,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": null,
+          "h2_conditional_score": null
+        },
+        "disabled": {
+          "pairs": 31,
+          "old_score_contribution": -2.6666666666666665,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": -4.129032258064516,
+          "h2_conditional_score": 0.0
+        },
+        "both_h2": {
+          "pairs": 17,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": 0.0,
+          "h2_conditional_score": 0.0
+        },
+        "same_fragment": {
+          "pairs": 0,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": null,
+          "h2_conditional_score": null
+        },
+        "changed_fragment": {
+          "pairs": 0,
+          "old_score_contribution": 0.0,
+          "h2_score_contribution": 0.0,
+          "old_conditional_score": null,
+          "h2_conditional_score": null
+        }
+      }
+    }
+  },
+  "new_transitions": 393318,
+  "fits": {
+    "COVERAGE": {
+      "input_roots_read": 104,
+      "training_roots_read": 92,
+      "paired_root_replicas_read": 736,
+      "board_feature_rows": 92,
+      "tree_fits": 6,
+      "classifier_tree_fits": 6,
+      "fit_rows": 92,
+      "fit_roots": 92,
+      "fit_candidate_labels": 368,
+      "leaf_stat_roots": 92,
+      "node_stat_memberships": 306
+    },
+    "REPEAT": {
+      "input_roots_read": 72,
+      "training_roots_read": 60,
+      "paired_root_replicas_read": 744,
+      "board_feature_rows": 60,
+      "tree_fits": 6,
+      "classifier_tree_fits": 6,
+      "fit_rows": 60,
+      "fit_roots": 60,
+      "fit_candidate_labels": 240,
+      "leaf_stat_roots": 60,
+      "node_stat_memberships": 140
+    }
+  }
+}

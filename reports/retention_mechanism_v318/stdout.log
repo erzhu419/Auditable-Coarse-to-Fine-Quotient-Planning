@@ -1,0 +1,17 @@
+{"event": "retention_mechanism_life_complete", "lifecycle": 0, "reproduction_exact": true}
+{"event": "retention_mechanism_life_complete", "lifecycle": 3, "reproduction_exact": true}
+{"event": "retention_mechanism_life_complete", "lifecycle": 1, "reproduction_exact": true}
+{"event": "retention_mechanism_life_complete", "lifecycle": 2, "reproduction_exact": true}
+{"event": "retention_mechanism_life_complete", "lifecycle": 7, "reproduction_exact": true}
+{"event": "retention_mechanism_life_complete", "lifecycle": 4, "reproduction_exact": true}
+{"event": "retention_mechanism_life_complete", "lifecycle": 5, "reproduction_exact": true}
+{"event": "retention_mechanism_life_complete", "lifecycle": 6, "reproduction_exact": true}
+{"event": "retention_mechanism_life_complete", "lifecycle": 11, "reproduction_exact": true}
+{"event": "retention_mechanism_life_complete", "lifecycle": 8, "reproduction_exact": true}
+{"event": "retention_mechanism_life_complete", "lifecycle": 9, "reproduction_exact": true}
+{"event": "retention_mechanism_life_complete", "lifecycle": 10, "reproduction_exact": true}
+{"event": "retention_mechanism_life_complete", "lifecycle": 15, "reproduction_exact": true}
+{"event": "retention_mechanism_life_complete", "lifecycle": 12, "reproduction_exact": true}
+{"event": "retention_mechanism_life_complete", "lifecycle": 13, "reproduction_exact": true}
+{"event": "retention_mechanism_life_complete", "lifecycle": 14, "reproduction_exact": true}
+{"event": "retention_mechanism_complete", "status": "DIAGNOSTIC_COMPLETE"}

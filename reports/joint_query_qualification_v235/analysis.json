@@ -1,0 +1,102 @@
+{
+  "valid": true,
+  "complete": true,
+  "records": 24,
+  "comparisons": 144,
+  "independently_checked_leaves": 2438,
+  "statuses": {
+    "certified": 119,
+    "unknown": 25
+  },
+  "families": {
+    "D_FULL_R": 13,
+    "S_D_FULL_R": 33,
+    "D_REC_R": 28,
+    "D_FULL": 15,
+    "S_D_FULL": 22,
+    "S": 20,
+    "S_D_DEL": 13
+  },
+  "witness_kinds": {
+    "global_likelihood_dual": 144
+  },
+  "unique_profile_calls": 138,
+  "false_certificates": 0,
+  "groups": {
+    "failure": {
+      "targets": 12,
+      "old_query_ready": 0,
+      "v234_query_ready": 2,
+      "query_ready": 0,
+      "queries": {
+        "reward": 12,
+        "goal": 4,
+        "risk": 2
+      },
+      "blockers_by_family": {
+        "S_D_DEL": 6,
+        "S_D_FULL_R": 8,
+        "S_D_FULL": 8,
+        "D_REC_R": 2
+      }
+    },
+    "positive": {
+      "targets": 12,
+      "old_query_ready": 12,
+      "v234_query_ready": 11,
+      "query_ready": 11,
+      "queries": {
+        "reward": 12,
+        "goal": 12,
+        "risk": 11
+      },
+      "blockers_by_family": {
+        "D_REC_R": 1
+      }
+    }
+  },
+  "new_observations": 0,
+  "new_paid_samples": 0,
+  "checks": {
+    "independent_fixed_witness_prerequisite_passed": 1,
+    "frozen_full_qualification_event_scope": 1,
+    "same_audited_paid_tape_copy": 1,
+    "same_fixed_twenty_four_case_roster": 1,
+    "original_paid_snapshot_and_costs": 24,
+    "exact_reward_wait_policy": 24,
+    "original_query_policy_and_complete_alternatives": 48,
+    "canonical_full_paid_sufficient_counts": 144,
+    "original_fixed_comparison_and_event": 144,
+    "global_gap_preserving_zero_count_embedding": 144,
+    "outward_true_projected_mixture_numerator": 144,
+    "outward_fixed_event_threshold": 144,
+    "fixed_partition_covers_entire_retry_simplex": 144,
+    "exact_query_retry_interaction_slope": 144,
+    "partition_probability_domain": 2438,
+    "relaxed_gap_row_roster": 2438,
+    "partition_endpoint": 2438,
+    "exact_endpoint_gap": 14628,
+    "endpoint_relaxes_complete_retry_cell": 14628,
+    "exact_maximum_relaxed_gap": 2438,
+    "supported_likelihood_leaf": 1858,
+    "legal_null_multiplier": 1858,
+    "optimization_row_roster": 1858,
+    "empty_likelihood_row_simplex": 767,
+    "outward_row_likelihood_upper": 3716,
+    "legal_row_likelihood_dual": 2949,
+    "retry_interval_mle_probability": 1858,
+    "outward_retry_interval_likelihood_upper": 1858,
+    "outward_complete_null_likelihood_upper": 1858,
+    "global_likelihood_upper_covers_every_cell": 144,
+    "outward_projected_global_likelihood_ratio": 144,
+    "strict_global_bad_null_certificate": 144,
+    "exact_empty_relaxed_null": 580,
+    "exact_query_comparison_and": 48,
+    "exact_three_query_and": 24,
+    "exact_record_cache_accounting": 24,
+    "post_certificate_unchanged_truth_scoring": 24,
+    "exact_qualification_summary": 1
+  },
+  "failures": [],
+  "seconds": 3.1900479840114713
+}

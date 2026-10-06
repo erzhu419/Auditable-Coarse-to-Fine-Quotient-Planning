@@ -1,0 +1,39 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "development_work": {
+        "predict_many_calls": 20,
+        "prediction_boards": 58,
+        "policy_prediction_rows": 174,
+        "policy_vector_rollouts": 732,
+        "model_uniform_draws": 1566,
+        "model_spawn_samples": 5928,
+        "learned_terminal_checks": 5928,
+        "learned_swipe_calls": 23372,
+        "learned_line_rewrites": 93488,
+        "legal_swipes": 20182,
+        "rollout_actions": 5196
+      },
+      "reference_model_work": {
+        "learned_terminal_checks": 9698,
+        "learned_swipe_calls": 43012,
+        "learned_line_rewrites": 172048,
+        "legal_swipes": 15550,
+        "model_spawn_samples": 5151,
+        "rollout_actions": 4545
+      },
+      "setup_work": {
+        "cpp_compilations": 1,
+        "lookup_line_rewrites": 2673,
+        "cpp_library_cache_hits": 9,
+        "lookup_table_cache_hits": 7
+      },
+      "setup_seconds": 0.7431050169834634,
+      "newly_sampled_environment_transitions": 0,
+      "tree_fits": 0,
+      "optimizer_steps": 0,
+      "scope": "Synthetic boards and supplied learned rules; compiled and Python model rollouts only."
+    }
+  ]
+}

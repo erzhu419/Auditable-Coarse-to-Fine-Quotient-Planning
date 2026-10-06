@@ -1,0 +1,5 @@
+{"phase": "fold_complete", "heldout_life": 11, "source_lives": [12, 13, 14], "training_roots": 58, "new_models": 2}
+{"phase": "fold_complete", "heldout_life": 12, "source_lives": [11, 13, 14], "training_roots": 59, "new_models": 2}
+{"phase": "fold_complete", "heldout_life": 13, "source_lives": [11, 12, 14], "training_roots": 59, "new_models": 2}
+{"phase": "fold_complete", "heldout_life": 14, "source_lives": [11, 12, 13], "training_roots": 58, "new_models": 2}
+{"phase": "complete", "new_models": 8, "new_decisions": 128, "counts": {"model_payloads_loaded": 8, "model_root_scores": 128, "neural_candidate_predictions": 640, "neural_hidden_activations": 6400, "new_environment_transitions": 0, "new_synthetic_transitions": 0, "neural_model_fits": 0, "optimizer_steps": 0, "model_prefix_trajectories": 0}, "seconds": 3.9980242929996166}

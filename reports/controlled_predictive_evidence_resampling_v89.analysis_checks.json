@@ -1,0 +1,21 @@
+{
+  "attempts": [
+    {
+      "passed": 3,
+      "failed": 3,
+      "reason": "runner budget settings key mismatch"
+    },
+    {
+      "passed": 6,
+      "failed": 0,
+      "reason": "budget settings key corrected"
+    },
+    {
+      "passed": 7,
+      "failed": 0,
+      "reason": "add unresolved-to-positive subgroup separation"
+    }
+  ],
+  "ground_transitions": 0,
+  "new_tree_fits": 0
+}

@@ -1,0 +1,17 @@
+# V160: bounded mobility restoration (frozen before new sampling)
+
+Question: can a vacancy-restoration module cause useful terminal effects under the same frozen H2 continuation, before attempting to learn its call rule?
+
+Use all 64 frozen V153 roots inherited through audited V159: four histories, risk1/risk8 queries, H2/LEARN8 source policies and four predetermined slots per cell. No new root selection and no old learned module prediction is used. Pair 32 fresh suffix seeds across H2, OTHER8 and MOBILITY (6,144 physical branches; at most 12,288,000 transitions). No fitting, gate reentry or additional suffixes.
+
+- H2: own target-query frozen H2 from the root onward.
+- OTHER8: other-query frozen H2 for eight steps or until terminal, then own H2 permanently.
+- MOBILITY: for each legal frozen learned swipe, maximize exact expected vacancies after spawn, `afterstate.count(0)-1`; supported spawning always fills one vacancy. Lexical action order breaks ties. After the actual spawn, exit on terminal first, then vacancies at least initial vacancies plus two, then eight-step budget. Continue with own H2 permanently. The initial plus-two threshold is not clipped or changed by root.
+
+Every actual action uses standard 2048 physics and a uniform-empty-cell spawn with rank 1/2 probabilities .9/.1. Each branch has a 2,000-transition cap, no extra initial spawn, and a winning swipe still spawns. Seed = `160*100000000+20000000+life*1000000+query_index*100000+source_index*10000+slot*100+suffix`, suffix 0..31, shared across modes. All teachers are frozen SINGLE H2 and use their own query when invoked. No prior module/gate predictor is loaded.
+
+Primary: paired MOBILITY minus H2 terminal utility separately for risk1/risk8, all roots and both sources. Terminal components remain reward `score/2048`, failure and success; utility is reward minus query failure penalty plus query success reward. Secondary: MOBILITY minus OTHER8 and OTHER8 minus H2, individual histories/sources and predetermined vacancy strata TIGHT (initial vacancies <=2) / ROOMY (>2). Module completion, exit reasons and duration are diagnostics, not success criteria.
+
+For each contrast, average the 32 paired suffix differences per root, average selected roots within each history, then equally average all four histories. Report pointwise conditional 95% intervals using paired suffix sample variance and these fixed weights. They condition on these roots and four histories. A missing history/any cutoff makes the affected statistic incomplete; preserve all cutoffs/costs without replacements. Do not choose a favorable subgroup, threshold, budget or module after reading outcomes. This hand-specified module does not itself establish general strategic learning; any favorable result requires fresh confirmation before learning a caller.
+
+Retain full action/spawn/choice histories and compact outcomes, exact environment and decision counters, frozen teacher states/loads and unchanged learned rewrite payload. Reference prior acquisition (V158 4,026,405 transitions) and all inherited costs. Focused tests are charged separately. Freeze Python/C++ dependencies, tests, this protocol and stage runner once before sampling. Run one production attempt and one independent audit; replay physics, seeds, module objective and exit, teacher choices/counts, rosters, compact outcomes and statistics. Compare frozen source bytes once after audit. Keep U005 FAIL and U006 unstarted.

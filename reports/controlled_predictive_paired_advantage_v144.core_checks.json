@@ -1,0 +1,60 @@
+{
+  "attempts": [
+    {
+      "tests": 11,
+      "failures": 0,
+      "learner_work": {
+        "feature_board_reads": 592,
+        "feature_rank_reads": 6720,
+        "feature_occurrences": 1120,
+        "pair_distinct_addresses": 317,
+        "pair_nonzero_difference_addresses": 270,
+        "pair_signed_difference_occurrences": 360,
+        "pair_predictions": 17,
+        "weight_address_lookups": 270,
+        "component_weight_reads": 810,
+        "update_calls": 6,
+        "allocated_weight_addresses": 72,
+        "pair_updates": 5,
+        "weight_address_updates": 90,
+        "component_weight_updates": 270,
+        "unidentifiable_pairs": 1,
+        "checkpoint_saves": 2,
+        "checkpoint_saved_addresses": 36,
+        "checkpoint_saved_parameters": 108
+      },
+      "selector_work": {
+        "choose_calls": 7,
+        "baseline_choose_calls": 7,
+        "baseline_learned_swipe_calls": 140,
+        "baseline_value_predictions": 112,
+        "candidate_choose_calls": 7,
+        "candidate_learned_swipe_calls": 280,
+        "candidate_model_sampled_transitions": 56,
+        "candidate_disagreements": 6,
+        "learner_feature_board_reads": 128,
+        "learner_feature_rank_reads": 1536,
+        "learner_feature_occurrences": 256,
+        "learner_pair_distinct_addresses": 76,
+        "learner_pair_nonzero_difference_addresses": 72,
+        "learner_pair_signed_difference_occurrences": 96,
+        "learner_pair_predictions": 4,
+        "learner_weight_address_lookups": 72,
+        "learner_component_weight_reads": 216,
+        "selected_h1": 2,
+        "same_action_bypasses": 1,
+        "terminal_pair_bypasses": 2
+      },
+      "setup_counts": {
+        "pattern_integer_cells": 2304,
+        "pattern_bytes": 9216,
+        "loaded_weight_addresses": 18,
+        "loaded_weight_parameters": 54,
+        "loaded_numeric_weight_bytes": 432
+      },
+      "newly_sampled_environment_transitions": 0,
+      "newly_sampled_model_transitions": 0,
+      "scope": "Static exact tuple features and synthetic three-component targets; both planner interfaces mocked."
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+F.FF..                                                                   [100%]
+=================================== FAILURES ===================================
+_ test_one_combined_direct_branch_feeds_both_targets_and_frozen_batch_snapshot _
+
+    def test_one_combined_direct_branch_feeds_both_targets_and_frozen_batch_snapshot():
+>       leaf, data = coupled_fixture()
+
+tests/test_native_greedy_targets_v317.py:124: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_native_greedy_targets_v317.py:91: in coupled_fixture
+    features = [Counter(indices(leaf, after)) for after in legal]
+tests/test_native_greedy_targets_v317.py:91: in <listcomp>
+    features = [Counter(indices(leaf, after)) for after in legal]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+leaf = <acfqp.science.native_split_risk_v301.SplitLeaf object at 0x77698e23be50>
+board = [0, 0, 0, 0, 1, 0, ...]
+
+    def indices(leaf, board):
+        result = []
+        for tuple_index, pattern in enumerate(leaf.model.patterns):
+            address = 0
+            for cell in pattern:
+>               address = address * leaf.radix + int(board[cell])
+E               TypeError: only integer scalar arrays can be converted to a scalar index
+
+tests/test_native_greedy_targets_v317.py:39: TypeError
+_ test_literal_game_start_commits_collision_denominators_and_sarsa_write_budget_match _
+
+    def test_literal_game_start_commits_collision_denominators_and_sarsa_write_budget_match():
+>       leaf, data = coupled_fixture()
+
+tests/test_native_greedy_targets_v317.py:185: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_native_greedy_targets_v317.py:91: in coupled_fixture
+    features = [Counter(indices(leaf, after)) for after in legal]
+tests/test_native_greedy_targets_v317.py:91: in <listcomp>
+    features = [Counter(indices(leaf, after)) for after in legal]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+leaf = <acfqp.science.native_split_risk_v301.SplitLeaf object at 0x77698e234520>
+board = [0, 0, 0, 0, 1, 0, ...]
+
+    def indices(leaf, board):
+        result = []
+        for tuple_index, pattern in enumerate(leaf.model.patterns):
+            address = 0
+            for cell in pattern:
+>               address = address * leaf.radix + int(board[cell])
+E               TypeError: only integer scalar arrays can be converted to a scalar index
+
+tests/test_native_greedy_targets_v317.py:39: TypeError
+_ test_recorded_rewards_successor_afterstates_and_heldout_boards_do_not_enter_greedy_targets _
+
+    def test_recorded_rewards_successor_afterstates_and_heldout_boards_do_not_enter_greedy_targets():
+>       first, data = coupled_fixture()
+
+tests/test_native_greedy_targets_v317.py:217: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_native_greedy_targets_v317.py:91: in coupled_fixture
+    features = [Counter(indices(leaf, after)) for after in legal]
+tests/test_native_greedy_targets_v317.py:91: in <listcomp>
+    features = [Counter(indices(leaf, after)) for after in legal]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+leaf = <acfqp.science.native_split_risk_v301.SplitLeaf object at 0x77698e23a710>
+board = [0, 0, 0, 0, 1, 0, ...]
+
+    def indices(leaf, board):
+        result = []
+        for tuple_index, pattern in enumerate(leaf.model.patterns):
+            address = 0
+            for cell in pattern:
+>               address = address * leaf.radix + int(board[cell])
+E               TypeError: only integer scalar arrays can be converted to a scalar index
+
+tests/test_native_greedy_targets_v317.py:39: TypeError
+=========================== short test summary info ============================
+FAILED tests/test_native_greedy_targets_v317.py::test_one_combined_direct_branch_feeds_both_targets_and_frozen_batch_snapshot
+FAILED tests/test_native_greedy_targets_v317.py::test_literal_game_start_commits_collision_denominators_and_sarsa_write_budget_match
+FAILED tests/test_native_greedy_targets_v317.py::test_recorded_rewards_successor_afterstates_and_heldout_boards_do_not_enter_greedy_targets
+3 failed, 3 passed in 10.25s

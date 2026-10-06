@@ -1,0 +1,65 @@
+{"event": "fresh_source_block_complete", "life": 3, "episodes": 256, "updates": 87225, "statuses": {"LOST": 256}, "seconds": 12.777089553856058}
+{"event": "fresh_source_block_complete", "life": 0, "episodes": 256, "updates": 89769, "statuses": {"LOST": 256}, "seconds": 12.997410931246122}
+{"event": "fresh_source_block_complete", "life": 1, "episodes": 256, "updates": 88665, "statuses": {"LOST": 256}, "seconds": 13.105672005884117}
+{"event": "fresh_source_block_complete", "life": 2, "episodes": 256, "updates": 92578, "statuses": {"LOST": 256}, "seconds": 13.432758532173466}
+{"event": "fresh_source_block_complete", "life": 0, "episodes": 512, "updates": 206890, "statuses": {"LOST": 256}, "seconds": 18.41204576380551}
+{"event": "fresh_source_block_complete", "life": 1, "episodes": 512, "updates": 208292, "statuses": {"LOST": 256}, "seconds": 18.96364403498592}
+{"event": "fresh_source_block_complete", "life": 2, "episodes": 512, "updates": 213254, "statuses": {"LOST": 256}, "seconds": 19.069023747491883}
+{"event": "fresh_source_block_complete", "life": 3, "episodes": 512, "updates": 214427, "statuses": {"LOST": 255, "WON": 1}, "seconds": 20.322252405952895}
+{"event": "fresh_source_block_complete", "life": 0, "episodes": 768, "updates": 346668, "statuses": {"LOST": 256}, "seconds": 25.622055254585575}
+{"event": "fresh_source_block_complete", "life": 1, "episodes": 768, "updates": 346308, "statuses": {"LOST": 254, "WON": 2}, "seconds": 25.032048796099843}
+{"event": "fresh_source_block_complete", "life": 2, "episodes": 768, "updates": 358053, "statuses": {"LOST": 255, "WON": 1}, "seconds": 25.32287114695646}
+{"event": "fresh_source_block_complete", "life": 3, "episodes": 768, "updates": 357951, "statuses": {"LOST": 255, "WON": 1}, "seconds": 25.892150572530227}
+{"event": "fresh_source_block_complete", "life": 1, "episodes": 1024, "updates": 497703, "statuses": {"LOST": 254, "WON": 2}, "seconds": 22.47389650286641}
+{"event": "fresh_source_block_complete", "life": 0, "episodes": 1024, "updates": 501040, "statuses": {"LOST": 252, "WON": 4}, "seconds": 23.36808467292576}
+{"event": "fresh_source_block_complete", "life": 2, "episodes": 1024, "updates": 513201, "statuses": {"LOST": 256}, "seconds": 23.129420151090017}
+{"event": "fresh_source_block_complete", "life": 3, "episodes": 1024, "updates": 516972, "statuses": {"LOST": 254, "WON": 2}, "seconds": 24.385554098989815}
+{"event": "fresh_source_block_complete", "life": 1, "episodes": 1280, "updates": 661053, "statuses": {"LOST": 253, "WON": 3}, "seconds": 26.062390032719122}
+{"event": "fresh_source_block_complete", "life": 0, "episodes": 1280, "updates": 662598, "statuses": {"LOST": 254, "WON": 2}, "seconds": 25.712766132957768}
+{"event": "fresh_source_block_complete", "life": 2, "episodes": 1280, "updates": 682409, "statuses": {"LOST": 252, "WON": 4}, "seconds": 26.17274792396347}
+{"event": "fresh_source_block_complete", "life": 3, "episodes": 1280, "updates": 680702, "statuses": {"LOST": 252, "WON": 4}, "seconds": 25.577626343671}
+{"event": "fresh_source_block_complete", "life": 1, "episodes": 1536, "updates": 834574, "statuses": {"LOST": 249, "WON": 7}, "seconds": 26.374617668188876}
+{"event": "fresh_source_block_complete", "life": 0, "episodes": 1536, "updates": 834225, "statuses": {"LOST": 247, "WON": 9}, "seconds": 26.011454935651273}
+{"event": "fresh_source_block_complete", "life": 2, "episodes": 1536, "updates": 863058, "statuses": {"LOST": 248, "WON": 8}, "seconds": 27.58584414195502}
+{"event": "fresh_source_block_complete", "life": 3, "episodes": 1536, "updates": 852739, "statuses": {"LOST": 248, "WON": 8}, "seconds": 26.481267691153334}
+{"event": "fresh_source_block_complete", "life": 0, "episodes": 1792, "updates": 1011582, "statuses": {"LOST": 249, "WON": 7}, "seconds": 32.92816103520454}
+{"event": "fresh_source_block_complete", "life": 1, "episodes": 1792, "updates": 1014080, "statuses": {"LOST": 248, "WON": 8}, "seconds": 33.69512017580564}
+{"event": "fresh_source_block_complete", "life": 3, "episodes": 1792, "updates": 1029342, "statuses": {"LOST": 250, "WON": 6}, "seconds": 32.94612939894432}
+{"event": "fresh_source_block_complete", "life": 2, "episodes": 1792, "updates": 1051855, "statuses": {"LOST": 246, "WON": 10}, "seconds": 35.33939812990138}
+{"event": "fresh_source_block_complete", "life": 0, "episodes": 2048, "updates": 1198468, "statuses": {"LOST": 248, "WON": 8}, "seconds": 32.39104494242929}
+{"event": "fresh_source_block_complete", "life": 1, "episodes": 2048, "updates": 1197799, "statuses": {"LOST": 244, "WON": 12}, "seconds": 32.23033716875943}
+{"event": "fresh_source_block_complete", "life": 3, "episodes": 2048, "updates": 1216409, "statuses": {"LOST": 241, "WON": 15}, "seconds": 32.69811593988561}
+{"event": "fresh_source_block_complete", "life": 2, "episodes": 2048, "updates": 1236052, "statuses": {"LOST": 244, "WON": 12}, "seconds": 32.25819741660962}
+{"event": "fresh_source_block_complete", "life": 1, "episodes": 2304, "updates": 1378400, "statuses": {"LOST": 243, "WON": 13}, "seconds": 28.528101963194786}
+{"event": "fresh_source_block_complete", "life": 0, "episodes": 2304, "updates": 1392543, "statuses": {"LOST": 246, "WON": 10}, "seconds": 30.30049624721869}
+{"event": "fresh_source_block_complete", "life": 3, "episodes": 2304, "updates": 1405387, "statuses": {"LOST": 246, "WON": 10}, "seconds": 29.551588282280136}
+{"event": "fresh_source_block_complete", "life": 2, "episodes": 2304, "updates": 1430569, "statuses": {"LOST": 244, "WON": 12}, "seconds": 30.43114669743227}
+{"event": "fresh_source_block_complete", "life": 1, "episodes": 2560, "updates": 1572773, "statuses": {"LOST": 246, "WON": 10}, "seconds": 29.889577373949578}
+{"event": "fresh_source_block_complete", "life": 0, "episodes": 2560, "updates": 1580409, "statuses": {"LOST": 242, "WON": 14}, "seconds": 29.06279687114875}
+{"event": "fresh_source_block_complete", "life": 3, "episodes": 2560, "updates": 1597694, "statuses": {"LOST": 245, "WON": 11}, "seconds": 29.874294748937245}
+{"event": "fresh_source_block_complete", "life": 2, "episodes": 2560, "updates": 1626153, "statuses": {"LOST": 244, "WON": 12}, "seconds": 30.261640990705928}
+{"event": "fresh_source_block_complete", "life": 0, "episodes": 2816, "updates": 1775143, "statuses": {"LOST": 242, "WON": 14}, "seconds": 29.223940751864575}
+{"event": "fresh_source_block_complete", "life": 1, "episodes": 2816, "updates": 1772533, "statuses": {"LOST": 246, "WON": 10}, "seconds": 30.447573946410557}
+{"event": "fresh_source_block_complete", "life": 3, "episodes": 2816, "updates": 1793955, "statuses": {"WON": 17, "LOST": 239}, "seconds": 29.393392993166344}
+{"event": "fresh_source_block_complete", "life": 2, "episodes": 2816, "updates": 1820276, "statuses": {"LOST": 239, "WON": 17}, "seconds": 29.997376078215893}
+{"event": "fresh_source_block_complete", "life": 0, "episodes": 3072, "updates": 1980996, "statuses": {"LOST": 240, "WON": 16}, "seconds": 31.443806754075922}
+{"event": "fresh_source_block_complete", "life": 1, "episodes": 3072, "updates": 1974186, "statuses": {"LOST": 238, "WON": 18}, "seconds": 30.81230462831445}
+{"event": "fresh_source_block_complete", "life": 3, "episodes": 3072, "updates": 1999841, "statuses": {"LOST": 233, "WON": 23}, "seconds": 30.35965091289836}
+{"event": "fresh_source_block_complete", "life": 2, "episodes": 3072, "updates": 2020883, "statuses": {"LOST": 228, "WON": 28}, "seconds": 30.283279205061262}
+{"event": "fresh_source_block_complete", "life": 0, "episodes": 3328, "updates": 2183978, "statuses": {"LOST": 233, "WON": 23}, "seconds": 31.456887946318602}
+{"event": "fresh_source_block_complete", "life": 1, "episodes": 3328, "updates": 2179364, "statuses": {"LOST": 239, "WON": 17}, "seconds": 31.520374241255922}
+{"event": "fresh_source_block_complete", "life": 3, "episodes": 3328, "updates": 2198868, "statuses": {"LOST": 239, "WON": 17}, "seconds": 31.322117296484066}
+{"event": "fresh_source_block_complete", "life": 2, "episodes": 3328, "updates": 2227796, "statuses": {"LOST": 234, "WON": 22}, "seconds": 31.71395976495114}
+{"event": "fresh_source_block_complete", "life": 0, "episodes": 3584, "updates": 2384900, "statuses": {"LOST": 229, "WON": 27}, "seconds": 30.808704505092464}
+{"event": "fresh_source_block_complete", "life": 1, "episodes": 3584, "updates": 2384706, "statuses": {"LOST": 228, "WON": 28}, "seconds": 32.96084354163031}
+{"event": "fresh_source_block_complete", "life": 3, "episodes": 3584, "updates": 2401659, "statuses": {"LOST": 230, "WON": 26}, "seconds": 32.48699721726007}
+{"event": "fresh_source_block_complete", "life": 2, "episodes": 3584, "updates": 2432748, "statuses": {"LOST": 238, "WON": 18}, "seconds": 32.66391087137163}
+{"event": "fresh_source_block_complete", "life": 0, "episodes": 3840, "updates": 2590495, "statuses": {"LOST": 234, "WON": 22}, "seconds": 31.435483120789286}
+{"event": "fresh_source_block_complete", "life": 1, "episodes": 3840, "updates": 2582901, "statuses": {"LOST": 239, "WON": 17}, "seconds": 30.732190009002807}
+{"event": "fresh_source_block_complete", "life": 3, "episodes": 3840, "updates": 2607654, "statuses": {"LOST": 234, "WON": 22}, "seconds": 31.505900716321776}
+{"event": "fresh_source_block_complete", "life": 2, "episodes": 3840, "updates": 2635871, "statuses": {"LOST": 233, "WON": 23}, "seconds": 31.514621092937887}
+{"event": "fresh_source_block_complete", "life": 0, "episodes": 4096, "updates": 2796444, "statuses": {"LOST": 239, "WON": 17}, "seconds": 31.50281952196383}
+{"event": "fresh_source_block_complete", "life": 1, "episodes": 4096, "updates": 2797691, "statuses": {"LOST": 232, "WON": 24}, "seconds": 32.89501782201114}
+{"event": "fresh_source_block_complete", "life": 3, "episodes": 4096, "updates": 2819634, "statuses": {"LOST": 225, "WON": 31}, "seconds": 31.924809673713753}
+{"event": "fresh_source_block_complete", "life": 2, "episodes": 4096, "updates": 2838017, "statuses": {"LOST": 240, "WON": 16}, "seconds": 30.77543041392346}
+{"event": "fresh_source_complete", "status": "SOURCE_COMPLETE", "source_training_games": 16384}

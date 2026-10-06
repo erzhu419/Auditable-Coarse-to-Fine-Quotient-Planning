@@ -1,0 +1,26 @@
+{"phase": "cohort_frozen", "roots": 32, "new_roots": 24, "inherited_roots": 8, "recovered_prediction_events": 800}
+{"phase": "reference", "root": "life_9_reward_5", "completed": 1, "censored": false, "trajectories": 160, "transitions": 76828}
+{"phase": "reference", "root": "life_9_reward_3", "completed": 2, "censored": false, "trajectories": 160, "transitions": 78959}
+{"phase": "reference", "root": "life_9_reward_2", "completed": 3, "censored": false, "trajectories": 160, "transitions": 82911}
+{"phase": "reference", "root": "life_9_reward_4", "completed": 4, "censored": false, "trajectories": 160, "transitions": 91459}
+{"phase": "reference", "root": "life_9_reward_7", "completed": 5, "censored": false, "trajectories": 160, "transitions": 78868}
+{"phase": "reference", "root": "life_9_reward_6", "completed": 6, "censored": false, "trajectories": 160, "transitions": 81680}
+{"phase": "reference", "root": "life_9_risk_goal_2", "completed": 7, "censored": false, "trajectories": 160, "transitions": 92137}
+{"phase": "reference", "root": "life_9_risk_goal_3", "completed": 8, "censored": false, "trajectories": 160, "transitions": 92537}
+{"phase": "reference", "root": "life_9_risk_goal_5", "completed": 9, "censored": false, "trajectories": 160, "transitions": 79858}
+{"phase": "reference", "root": "life_9_risk_goal_4", "completed": 10, "censored": false, "trajectories": 160, "transitions": 88401}
+{"phase": "reference", "root": "life_9_risk_goal_6", "completed": 11, "censored": false, "trajectories": 160, "transitions": 75527}
+{"phase": "reference", "root": "life_9_risk_goal_7", "completed": 12, "censored": false, "trajectories": 160, "transitions": 85301}
+{"phase": "reference", "root": "life_10_reward_2", "completed": 13, "censored": false, "trajectories": 160, "transitions": 78789}
+{"phase": "reference", "root": "life_10_reward_3", "completed": 14, "censored": false, "trajectories": 160, "transitions": 82281}
+{"phase": "reference", "root": "life_10_reward_4", "completed": 15, "censored": false, "trajectories": 160, "transitions": 79144}
+{"phase": "reference", "root": "life_10_reward_5", "completed": 16, "censored": false, "trajectories": 160, "transitions": 76298}
+{"phase": "reference", "root": "life_10_reward_6", "completed": 17, "censored": false, "trajectories": 160, "transitions": 79264}
+{"phase": "reference", "root": "life_10_reward_7", "completed": 18, "censored": false, "trajectories": 160, "transitions": 75251}
+{"phase": "reference", "root": "life_10_risk_goal_2", "completed": 19, "censored": false, "trajectories": 160, "transitions": 81646}
+{"phase": "reference", "root": "life_10_risk_goal_3", "completed": 20, "censored": false, "trajectories": 160, "transitions": 82543}
+{"phase": "reference", "root": "life_10_risk_goal_4", "completed": 21, "censored": false, "trajectories": 160, "transitions": 91536}
+{"phase": "reference", "root": "life_10_risk_goal_5", "completed": 22, "censored": false, "trajectories": 160, "transitions": 79334}
+{"phase": "reference", "root": "life_10_risk_goal_6", "completed": 23, "censored": false, "trajectories": 160, "transitions": 86856}
+{"phase": "reference", "root": "life_10_risk_goal_7", "completed": 24, "censored": false, "trajectories": 160, "transitions": 84779}
+{"phase": "complete", "seconds": 610.0424223620212}

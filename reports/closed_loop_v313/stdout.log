@@ -1,0 +1,97 @@
+{"event": "closed_loop_initial_complete", "lifecycle": 3, "task": "A", "context": 0}
+{"event": "closed_loop_initial_complete", "lifecycle": 1, "task": "A", "context": 0}
+{"event": "closed_loop_initial_complete", "lifecycle": 0, "task": "A", "context": 0}
+{"event": "closed_loop_initial_complete", "lifecycle": 2, "task": "A", "context": 0}
+{"event": "closed_loop_initial_complete", "lifecycle": 3, "task": "B", "context": 1}
+{"event": "closed_loop_initial_complete", "lifecycle": 1, "task": "B", "context": 1}
+{"event": "closed_loop_initial_complete", "lifecycle": 2, "task": "B", "context": 1}
+{"event": "closed_loop_initial_complete", "lifecycle": 0, "task": "B", "context": 1}
+{"event": "closed_loop_round_complete", "lifecycle": 3, "task": "A", "round_index": 1, "quota": 51479}
+{"event": "closed_loop_round_complete", "lifecycle": 1, "task": "A", "round_index": 1, "quota": 50667}
+{"event": "closed_loop_round_complete", "lifecycle": 2, "task": "A", "round_index": 1, "quota": 51157}
+{"event": "closed_loop_round_complete", "lifecycle": 0, "task": "A", "round_index": 1, "quota": 51757}
+{"event": "closed_loop_round_complete", "lifecycle": 3, "task": "B", "round_index": 1, "quota": 51971}
+{"event": "closed_loop_round_complete", "lifecycle": 1, "task": "B", "round_index": 1, "quota": 51049}
+{"event": "closed_loop_round_complete", "lifecycle": 2, "task": "B", "round_index": 1, "quota": 51499}
+{"event": "closed_loop_round_complete", "lifecycle": 0, "task": "B", "round_index": 1, "quota": 51729}
+{"event": "closed_loop_round_complete", "lifecycle": 3, "task": "A", "round_index": 2, "quota": 51414}
+{"event": "closed_loop_round_complete", "lifecycle": 1, "task": "A", "round_index": 2, "quota": 50801}
+{"event": "closed_loop_round_complete", "lifecycle": 0, "task": "A", "round_index": 2, "quota": 50704}
+{"event": "closed_loop_round_complete", "lifecycle": 2, "task": "A", "round_index": 2, "quota": 50717}
+{"event": "closed_loop_round_complete", "lifecycle": 3, "task": "B", "round_index": 2, "quota": 50865}
+{"event": "closed_loop_round_complete", "lifecycle": 1, "task": "B", "round_index": 2, "quota": 50392}
+{"event": "closed_loop_round_complete", "lifecycle": 0, "task": "B", "round_index": 2, "quota": 52465}
+{"event": "closed_loop_round_complete", "lifecycle": 2, "task": "B", "round_index": 2, "quota": 51133}
+{"event": "closed_loop_initial_complete", "lifecycle": 7, "task": "A", "context": 0}
+{"event": "closed_loop_initial_complete", "lifecycle": 5, "task": "A", "context": 0}
+{"event": "closed_loop_initial_complete", "lifecycle": 4, "task": "A", "context": 0}
+{"event": "closed_loop_initial_complete", "lifecycle": 6, "task": "A", "context": 0}
+{"event": "closed_loop_initial_complete", "lifecycle": 7, "task": "B", "context": 1}
+{"event": "closed_loop_initial_complete", "lifecycle": 5, "task": "B", "context": 1}
+{"event": "closed_loop_initial_complete", "lifecycle": 4, "task": "B", "context": 1}
+{"event": "closed_loop_initial_complete", "lifecycle": 6, "task": "B", "context": 1}
+{"event": "closed_loop_round_complete", "lifecycle": 7, "task": "A", "round_index": 1, "quota": 52225}
+{"event": "closed_loop_round_complete", "lifecycle": 5, "task": "A", "round_index": 1, "quota": 51332}
+{"event": "closed_loop_round_complete", "lifecycle": 4, "task": "A", "round_index": 1, "quota": 50715}
+{"event": "closed_loop_round_complete", "lifecycle": 6, "task": "A", "round_index": 1, "quota": 51655}
+{"event": "closed_loop_round_complete", "lifecycle": 7, "task": "B", "round_index": 1, "quota": 51140}
+{"event": "closed_loop_round_complete", "lifecycle": 5, "task": "B", "round_index": 1, "quota": 49844}
+{"event": "closed_loop_round_complete", "lifecycle": 4, "task": "B", "round_index": 1, "quota": 51384}
+{"event": "closed_loop_round_complete", "lifecycle": 6, "task": "B", "round_index": 1, "quota": 50942}
+{"event": "closed_loop_round_complete", "lifecycle": 7, "task": "A", "round_index": 2, "quota": 51463}
+{"event": "closed_loop_round_complete", "lifecycle": 4, "task": "A", "round_index": 2, "quota": 50931}
+{"event": "closed_loop_round_complete", "lifecycle": 5, "task": "A", "round_index": 2, "quota": 51582}
+{"event": "closed_loop_round_complete", "lifecycle": 6, "task": "A", "round_index": 2, "quota": 51069}
+{"event": "closed_loop_round_complete", "lifecycle": 7, "task": "B", "round_index": 2, "quota": 51297}
+{"event": "closed_loop_round_complete", "lifecycle": 5, "task": "B", "round_index": 2, "quota": 51746}
+{"event": "closed_loop_round_complete", "lifecycle": 4, "task": "B", "round_index": 2, "quota": 51138}
+{"event": "closed_loop_round_complete", "lifecycle": 6, "task": "B", "round_index": 2, "quota": 51579}
+{"event": "closed_loop_initial_complete", "lifecycle": 11, "task": "A", "context": 0}
+{"event": "closed_loop_initial_complete", "lifecycle": 9, "task": "A", "context": 0}
+{"event": "closed_loop_initial_complete", "lifecycle": 8, "task": "A", "context": 0}
+{"event": "closed_loop_initial_complete", "lifecycle": 10, "task": "A", "context": 0}
+{"event": "closed_loop_initial_complete", "lifecycle": 11, "task": "B", "context": 1}
+{"event": "closed_loop_initial_complete", "lifecycle": 9, "task": "B", "context": 1}
+{"event": "closed_loop_initial_complete", "lifecycle": 8, "task": "B", "context": 1}
+{"event": "closed_loop_initial_complete", "lifecycle": 10, "task": "B", "context": 1}
+{"event": "closed_loop_round_complete", "lifecycle": 11, "task": "A", "round_index": 1, "quota": 51942}
+{"event": "closed_loop_round_complete", "lifecycle": 9, "task": "A", "round_index": 1, "quota": 50342}
+{"event": "closed_loop_round_complete", "lifecycle": 8, "task": "A", "round_index": 1, "quota": 50787}
+{"event": "closed_loop_round_complete", "lifecycle": 10, "task": "A", "round_index": 1, "quota": 49895}
+{"event": "closed_loop_round_complete", "lifecycle": 11, "task": "B", "round_index": 1, "quota": 50902}
+{"event": "closed_loop_round_complete", "lifecycle": 9, "task": "B", "round_index": 1, "quota": 51646}
+{"event": "closed_loop_round_complete", "lifecycle": 8, "task": "B", "round_index": 1, "quota": 51546}
+{"event": "closed_loop_round_complete", "lifecycle": 10, "task": "B", "round_index": 1, "quota": 50641}
+{"event": "closed_loop_round_complete", "lifecycle": 11, "task": "A", "round_index": 2, "quota": 50931}
+{"event": "closed_loop_round_complete", "lifecycle": 9, "task": "A", "round_index": 2, "quota": 51370}
+{"event": "closed_loop_round_complete", "lifecycle": 8, "task": "A", "round_index": 2, "quota": 52135}
+{"event": "closed_loop_round_complete", "lifecycle": 10, "task": "A", "round_index": 2, "quota": 51649}
+{"event": "closed_loop_round_complete", "lifecycle": 11, "task": "B", "round_index": 2, "quota": 51218}
+{"event": "closed_loop_round_complete", "lifecycle": 9, "task": "B", "round_index": 2, "quota": 50787}
+{"event": "closed_loop_round_complete", "lifecycle": 8, "task": "B", "round_index": 2, "quota": 51319}
+{"event": "closed_loop_round_complete", "lifecycle": 10, "task": "B", "round_index": 2, "quota": 51702}
+{"event": "closed_loop_initial_complete", "lifecycle": 15, "task": "A", "context": 0}
+{"event": "closed_loop_initial_complete", "lifecycle": 13, "task": "A", "context": 0}
+{"event": "closed_loop_initial_complete", "lifecycle": 12, "task": "A", "context": 0}
+{"event": "closed_loop_initial_complete", "lifecycle": 14, "task": "A", "context": 0}
+{"event": "closed_loop_initial_complete", "lifecycle": 15, "task": "B", "context": 1}
+{"event": "closed_loop_initial_complete", "lifecycle": 13, "task": "B", "context": 1}
+{"event": "closed_loop_initial_complete", "lifecycle": 12, "task": "B", "context": 1}
+{"event": "closed_loop_initial_complete", "lifecycle": 14, "task": "B", "context": 1}
+{"event": "closed_loop_round_complete", "lifecycle": 15, "task": "A", "round_index": 1, "quota": 50559}
+{"event": "closed_loop_round_complete", "lifecycle": 13, "task": "A", "round_index": 1, "quota": 51928}
+{"event": "closed_loop_round_complete", "lifecycle": 12, "task": "A", "round_index": 1, "quota": 51928}
+{"event": "closed_loop_round_complete", "lifecycle": 14, "task": "A", "round_index": 1, "quota": 51079}
+{"event": "closed_loop_round_complete", "lifecycle": 15, "task": "B", "round_index": 1, "quota": 50596}
+{"event": "closed_loop_round_complete", "lifecycle": 13, "task": "B", "round_index": 1, "quota": 51475}
+{"event": "closed_loop_round_complete", "lifecycle": 12, "task": "B", "round_index": 1, "quota": 52944}
+{"event": "closed_loop_round_complete", "lifecycle": 14, "task": "B", "round_index": 1, "quota": 52131}
+{"event": "closed_loop_round_complete", "lifecycle": 15, "task": "A", "round_index": 2, "quota": 51278}
+{"event": "closed_loop_round_complete", "lifecycle": 13, "task": "A", "round_index": 2, "quota": 50918}
+{"event": "closed_loop_round_complete", "lifecycle": 12, "task": "A", "round_index": 2, "quota": 51790}
+{"event": "closed_loop_round_complete", "lifecycle": 14, "task": "A", "round_index": 2, "quota": 51542}
+{"event": "closed_loop_round_complete", "lifecycle": 15, "task": "B", "round_index": 2, "quota": 51286}
+{"event": "closed_loop_round_complete", "lifecycle": 13, "task": "B", "round_index": 2, "quota": 50603}
+{"event": "closed_loop_round_complete", "lifecycle": 12, "task": "B", "round_index": 2, "quota": 51576}
+{"event": "closed_loop_round_complete", "lifecycle": 14, "task": "B", "round_index": 2, "quota": 51555}
+{"event": "closed_loop_complete", "primary": {"mean": -0.6257858276367188, "ci95": [-0.9249883174896241, -0.3007693767547608], "lifecycle_deltas": {"0": -0.835296630859375, "1": -0.080291748046875, "2": -1.80267333984375, "3": -1.260833740234375, "4": -1.087493896484375, "5": -0.222259521484375, "6": -0.269073486328125, "7": 0.566375732421875, "8": 0.54205322265625, "9": -0.989959716796875, "10": -1.070220947265625, "11": -0.60498046875, "12": -0.6109619140625, "13": 0.37945556640625, "14": -1.07080078125, "15": -1.595611572265625}, "improved_equal_worse": [3, 0, 13], "adverse_lifecycles": [0, 1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 14, 15], "parent_mean_deltas": {"0": -0.4979248046875, "1": -0.22826385498046875, "2": -1.053192138671875, "3": -0.7237625122070312}, "interval_scope": "CONDITIONAL_ON_FOUR_FROZEN_PARENTS"}}

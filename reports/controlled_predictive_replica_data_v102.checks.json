@@ -1,0 +1,12 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "new_environment_transitions": 0,
+      "new_synthetic_transitions": 0,
+      "neural_model_fits": 0,
+      "neural_candidate_predictions": 0,
+      "scope": "synthetic retained data fixtures only"
+    }
+  ]
+}

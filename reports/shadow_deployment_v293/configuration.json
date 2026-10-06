@@ -1,0 +1,75 @@
+{
+  "schema": "acfqp.shadow_deployment_freeze.v293",
+  "protocol": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/specs/SHADOW_DEPLOYMENT_V293.md",
+  "source_summary": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/natural_episode_v292/summary.json",
+  "lifecycles": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "parents": 4,
+  "arms": [
+    "FROZEN_H2",
+    "UNCONDITIONAL_H2",
+    "VALIDATED_H2"
+  ],
+  "phases": [
+    [
+      "A",
+      0.1
+    ],
+    [
+      "B",
+      0.5
+    ],
+    [
+      "A_prime",
+      0.1
+    ]
+  ],
+  "carrier_raw_tiles_per_phase": 65536,
+  "online_raw_tiles_per_arm_phase": 262144,
+  "validation_pairs": 8,
+  "evaluation_games": 32,
+  "max_steps": 8192,
+  "alpha": 0.0025,
+  "query": {
+    "reward_weight": 1.0,
+    "failure_penalty": 4.0,
+    "goal_bonus": 4.0
+  },
+  "seed_warmup": 293100010000,
+  "seed_carrier": 293200010000,
+  "seed_deployment": 293400010000,
+  "seed_validation": 293600010000,
+  "seed_evaluation": 293900010000,
+  "bootstrap_seed": 29300001,
+  "bootstrap_draws": 20000,
+  "primary": "VALIDATED_H2_minus_FROZEN_H2_THREE_PHASE_COMPLETE_GAME_UTILITY",
+  "mechanism": "VALIDATED_H2_minus_UNCONDITIONAL_H2",
+  "submission": "EIGHT_PAIRED_T_95_LOWER_STRICTLY_POSITIVE_AND_NO_CUTOFF",
+  "student_t_critical_df7": 2.364624251,
+  "acquisition": "FROZEN_SOURCE_H2_CARRIER_WITH_PERSISTENT_SHARED_EPISODE_MEAN_SHADOW",
+  "memory_input": "CARRIER_RAW_ONLY_INCLUDING_INITIAL",
+  "online_budget": "SHARED_CARRIER_PLUS_ACTUAL_COMPLETE_VALIDATION_PLUS_REMAINING_DEPLOYMENT_RAW",
+  "retention": "SAVED_A_BELIEF_AND_A_SEEDS_ACROSS_ALL_CHECKPOINTS",
+  "correction": "CURRENT_B_HEAD_MINUS_OWN_SAVED_A_HEAD_WITH_SAME_B_BELIEF_AND_SEEDS",
+  "finite_test_passes": {
+    "core": 6,
+    "analysis": 14,
+    "driver": 3
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "attempts": [
+    {
+      "tests": 7,
+      "failures": 0,
+      "seconds": 0.033644842000057906,
+      "environment_samples": 0,
+      "environment_random_draws": 0,
+      "native_model_calls": 0,
+      "model_updates": 0,
+      "scope": "Mocked retained-episode replay, matched updates, frozen models, root-value alias and roster"
+    }
+  ]
+}

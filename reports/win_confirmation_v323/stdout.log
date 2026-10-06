@@ -1,0 +1,17 @@
+{"event": "win_confirmation_life_complete", "lifecycle": 3, "new_games": 384}
+{"event": "win_confirmation_life_complete", "lifecycle": 1, "new_games": 384}
+{"event": "win_confirmation_life_complete", "lifecycle": 2, "new_games": 384}
+{"event": "win_confirmation_life_complete", "lifecycle": 0, "new_games": 384}
+{"event": "win_confirmation_life_complete", "lifecycle": 7, "new_games": 384}
+{"event": "win_confirmation_life_complete", "lifecycle": 6, "new_games": 384}
+{"event": "win_confirmation_life_complete", "lifecycle": 4, "new_games": 384}
+{"event": "win_confirmation_life_complete", "lifecycle": 5, "new_games": 384}
+{"event": "win_confirmation_life_complete", "lifecycle": 11, "new_games": 384}
+{"event": "win_confirmation_life_complete", "lifecycle": 8, "new_games": 384}
+{"event": "win_confirmation_life_complete", "lifecycle": 10, "new_games": 384}
+{"event": "win_confirmation_life_complete", "lifecycle": 9, "new_games": 384}
+{"event": "win_confirmation_life_complete", "lifecycle": 12, "new_games": 384}
+{"event": "win_confirmation_life_complete", "lifecycle": 15, "new_games": 384}
+{"event": "win_confirmation_life_complete", "lifecycle": 13, "new_games": 384}
+{"event": "win_confirmation_life_complete", "lifecycle": 14, "new_games": 384}
+{"event": "win_confirmation_complete", "status": "EVALUATION_COMPLETE", "primary": "SUPPORTED_GAIN", "retained_execution_gain": false}

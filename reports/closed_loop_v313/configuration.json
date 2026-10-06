@@ -1,0 +1,87 @@
+{
+  "schema": "acfqp.closed_loop_freeze.v313",
+  "protocol": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/specs/CLOSED_LOOP_V313.md",
+  "source_summary": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/fresh_source_v312/source_summary.json",
+  "lifecycles": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "parents": 4,
+  "workers": 4,
+  "arms": [
+    "SOURCE",
+    "FIRST_LOCAL",
+    "FIRST_LINEAR",
+    "FIXED_LOCAL",
+    "CLOSED_LOCAL",
+    "CLOSED_LINEAR"
+  ],
+  "tasks": [
+    "A",
+    "B"
+  ],
+  "true_probabilities": {
+    "A": 0.1,
+    "B": 0.5
+  },
+  "rounds": [
+    1,
+    2
+  ],
+  "initial_raw_per_task": 131072,
+  "round_raw_per_collector": 65536,
+  "fit_fraction": 0.8,
+  "alpha": 0.0025,
+  "query": {
+    "reward_weight": 1.0,
+    "failure_penalty": 4.0,
+    "goal_bonus": 4.0
+  },
+  "max_steps": 8192,
+  "initial_contexts": "V309_CONFIRMED_NEW_BANKS_DISTINCT_PRECONDITION",
+  "initial_heads": "NEW_TARGET_FACTS_FIRST_LOCAL_AND_FIRST_LINEAR_FROM_V312_SOURCE",
+  "context_updates": "SUPPLIED_KNOWN_TASK_BANK_FROM_ITS_INITIAL_OBSERVED_ROUTE",
+  "planning_probability": "IMMUTABLE_ACTUAL_BANK_FIRST_FIT_BELIEF",
+  "collectors": {
+    "FIXED_LOCAL": "FIRST_LOCAL_VERSION_0",
+    "CLOSED_LOCAL": "PREVIOUS_OWN_LOCAL_VERSION",
+    "CLOSED_LINEAR": "PREVIOUS_OWN_LINEAR_VERSION"
+  },
+  "shared_cohort": "ROUND_1_LOCAL_IDENTICAL_FIRST_ACTOR_SHARED_PHYSICALLY_CHARGED_PER_ARM",
+  "quota": "MINIMUM_ELIGIBLE_NONWINNING_80_PERCENT_FIT_STATES_PER_TASK_ROUND",
+  "selection": "CHRONOLOGICAL_ELIGIBLE_PREFIX_MASK_FULL_FACTUAL_SUFFIXES_NO_OLD_LABEL_REPLAY",
+  "head_history": "SOURCE_RELATIVE_SPARSE_V0_AND_ACTUAL_CHANGED_ADDRESS_V1_V2",
+  "action_probes": "FIRST_EIGHT_AND_LAST_EIGHT_ACTIONS_EACH_NEW_BATCH",
+  "seed_initial_warmup": 313100000000,
+  "seed_initial_training": 313200000000,
+  "seed_collection": 313500000000,
+  "collection_life_stride": 10000000,
+  "collection_task_stride": 1000000,
+  "collection_round_stride": 100000,
+  "seed_evaluation": 313900000000,
+  "evaluation_games_per_cell": 32,
+  "bootstrap_draws": 20000,
+  "bootstrap_seed": 31300001,
+  "primary": "CLOSED_LOCAL_minus_FIRST_LOCAL_FINAL_AB",
+  "feedback": "CLOSED_LOCAL_minus_FIXED_LOCAL_FINAL_AB",
+  "retention": "FINAL_LOCAL_MINUS_OWN_FIRST_PER_TASK_CI_LOWER_NONNEGATIVE",
+  "planning_control": "SAME_FIRST_AND_FINAL_LOCAL_LINEAR_HEAD_DIRECT_VS_H2",
+  "expected_post_raw_physical": 10485760,
+  "expected_evaluation_games": 13312,
+  "evidence_scope": "DEVELOPMENT_16_NEW_TARGET_LIVES_CONDITIONAL_ON_FOUR_FROZEN_V312_VALUE_PARENTS_SHARED_DYNAMICS",
+  "stop_rule": "NO_SEED_ALPHA_QUOTA_OR_CHECKPOINT_TUNING_RETAIN_CUTOFFS_AND_LOSS"
+}

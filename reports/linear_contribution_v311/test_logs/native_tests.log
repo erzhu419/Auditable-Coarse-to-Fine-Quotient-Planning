@@ -1,0 +1,37 @@
+F.......                                                                 [100%]
+=================================== FAILURES ===================================
+_____ test_initial_heads_copy_original_source_and_match_its_full_h2_values _____
+
+    def test_initial_heads_copy_original_source_and_match_its_full_h2_values():
+        original = template(); original.weights.flags.writeable=True; original.weights[:]=999.; original.freeze()
+        leaf = LinearWinLeaf(original, BUILD)
+        np.testing.assert_array_equal(leaf.reward_weights, original.parent.source.weights)
+        assert leaf.weights is leaf.reward_weights
+        assert not np.shares_memory(leaf.reward_weights, original.parent.source.weights)
+        assert not np.shares_memory(leaf.reward_weights, leaf.win_weights)
+        assert np.all(leaf.win_weights==1/64)
+        assert leaf.setup_counts['allocated_weight_parameters']==2*leaf.reward_weights.size
+        assert leaf.setup_counts['allocated_weight_bytes']==2*leaf.reward_weights.nbytes
+        assert leaf.setup_counts['source_parameters_copied']==leaf.reward_weights.size
+        assert leaf.setup_counts['initialized_half_win_parameters']==leaf.win_weights.size
+        leaf.freeze()
+        source = QueryTD(original.parent, 'PRIOR', BUILD); source.freeze()
+        planner = FrozenLeafPlanner(source, 2, BUILD); planner.spawn_probabilities=(.57, .43)
+        for board in ([2]+[0]*15, [1, 1, 2, 0]+[0]*12):
+            components = predict_components(leaf, board)
+            assert components['win_prediction']==.5
+            assert components['combined_prediction']==source.model.value(board)
+            expected, actual = planner.choose(board), leaf.choose(board, .43)
+            for key in ('action', 'afterstate', 'score', 'value', 'tail_value', 'action_values', 'status', 'counts'):
+>               assert actual[key]==expected[key]
+E               AssertionError: assert 'RIGHT' == 'DOWN'
+E                 
+E                 - DOWN
+E                 + RIGHT
+
+tests/test_native_linear_win_v311.py:103: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_native_linear_win_v311.py::test_initial_heads_copy_original_source_and_match_its_full_h2_values
+1 failed, 7 passed in 5.35s
+.                                                                        [100%]
+1 passed in 3.27s

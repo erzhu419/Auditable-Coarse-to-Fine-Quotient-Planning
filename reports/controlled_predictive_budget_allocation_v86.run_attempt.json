@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/.venv-lmta-v42/bin/python",
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/scripts/run_controlled_predictive_budget_allocation_v86.py",
+    "--output",
+    "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_budget_allocation_v86"
+  ],
+  "exit_code": 0,
+  "outer_seconds": 767.4334209929802,
+  "stderr_bytes": 0
+}

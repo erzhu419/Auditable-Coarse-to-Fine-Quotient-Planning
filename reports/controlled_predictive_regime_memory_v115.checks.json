@@ -1,0 +1,22 @@
+{
+  "attempts": [
+    {
+      "failed_tests": 0,
+      "development_work": {
+        "observations_received": 4668,
+        "beta_updates": 4382,
+        "predict_calls": 4668,
+        "routing_blocks": 7,
+        "candidate_predictive_scores": 18,
+        "module_creations": 3,
+        "module_reactivations": 4
+      },
+      "environment_transitions": 0,
+      "model_transitions": 0,
+      "neural_model_fits": 0,
+      "optimizer_steps": 0,
+      "neural_candidate_predictions": 0,
+      "scope": "Fixed synthetic post-action rank sequences; no environment sampling or planning."
+    }
+  ]
+}

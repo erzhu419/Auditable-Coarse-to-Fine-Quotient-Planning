@@ -1,0 +1,20 @@
+{
+  "attempts": [
+    {
+      "failed_tests": 0,
+      "development_work": {
+        "neural_model_fits": 7,
+        "optimizer_steps": 49,
+        "diagnostic_candidate_predictions": 280,
+        "diagnostic_hidden_activations": 2560,
+        "optimizer_parameter_updates": 23884,
+        "direct_objective_evaluations": 3
+      },
+      "production_neural_model_fits": 0,
+      "production_optimizer_steps": 0,
+      "environment_transitions": 0,
+      "model_transitions": 0,
+      "scope": "Short-step synthetic fits; half payload lineage is fixture metadata, not executed fitting."
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{"event": "roster_frozen", "slots": 128, "probes": 94}
+{"event": "replay_progress", "life": 0, "transitions": 107427}
+{"event": "replay_progress", "life": 1, "transitions": 103612}
+{"event": "replay_progress", "life": 3, "transitions": 108854}
+{"event": "replay_progress", "life": 2, "transitions": 109343}
+{"event": "replay_progress", "life": 0, "transitions": 210677}
+{"event": "replay_progress", "life": 1, "transitions": 210050}
+{"event": "replay_progress", "life": 3, "transitions": 222418}
+{"event": "replay_progress", "life": 2, "transitions": 221112}
+{"event": "replay_progress", "life": 0, "transitions": 317994}
+{"event": "replay_progress", "life": 1, "transitions": 317402}
+{"event": "replay_progress", "life": 3, "transitions": 328089}
+{"event": "replay_progress", "life": 2, "transitions": 325845}
+{"status": "complete", "seconds": 7.513876237004297}

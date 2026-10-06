@@ -1,0 +1,40 @@
+{
+  "valid": true,
+  "complete": true,
+  "cases": 7,
+  "accepted": 6,
+  "unknown": 1,
+  "groups": {
+    "failure": {
+      "cases": 6,
+      "found": 6
+    },
+    "positive": {
+      "cases": 1,
+      "found": 0
+    }
+  },
+  "attempts": 8,
+  "minimum_exact_gap": "62500012499999/1250000000000000",
+  "scope": "canonical_terminal_only",
+  "new_observations": 0,
+  "new_paid_samples": 0,
+  "checks": {
+    "prior_complete_certificates_already_audited": 1,
+    "fixed_seven_post_qualification_comparisons": 1,
+    "fixed_proposal_scope_and_numeric_limits": 1,
+    "unchanged_unresolved_original_comparison": 7,
+    "two_frozen_initial_vectors": 7,
+    "fixed_order_and_bounded_proposals": 7,
+    "post_diagnostic_claim_scope": 7,
+    "exact_bad_simplex_gap_and_region": 6,
+    "exact_joint_ratio_decision": 6,
+    "compact_outward_log_intervals": 6,
+    "conditional_likelihood_geometry_bounds": 6,
+    "conditional_per_row_kl_bounds": 6,
+    "failure_to_find_stays_unknown": 1,
+    "exact_countermodel_summary": 1
+  },
+  "failures": [],
+  "seconds": 0.778071293985704
+}

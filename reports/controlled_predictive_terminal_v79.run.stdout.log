@@ -1,0 +1,28 @@
+{"phase": "suffixes", "lifecycle": 0, "episodes": 39, "completed": 32, "expected": 112, "new_transitions": 6261, "outcomes": {"LOST": 32}}
+{"phase": "suffixes", "lifecycle": 0, "episodes": 39, "completed": 64, "expected": 112, "new_transitions": 11129, "outcomes": {"LOST": 64}}
+{"phase": "suffixes", "lifecycle": 0, "episodes": 39, "completed": 96, "expected": 112, "new_transitions": 18403, "outcomes": {"LOST": 96}}
+{"phase": "stage_complete", "lifecycle": 0, "episodes": 39, "trajectories": 112, "new_transitions": 20742, "outcomes": {"LOST": 112}}
+{"phase": "suffixes", "lifecycle": 0, "episodes": 75, "completed": 32, "expected": 112, "new_transitions": 7980, "outcomes": {"LOST": 32}}
+{"phase": "suffixes", "lifecycle": 0, "episodes": 75, "completed": 64, "expected": 112, "new_transitions": 14284, "outcomes": {"LOST": 64}}
+{"phase": "suffixes", "lifecycle": 0, "episodes": 75, "completed": 96, "expected": 112, "new_transitions": 20843, "outcomes": {"LOST": 96}}
+{"phase": "stage_complete", "lifecycle": 0, "episodes": 75, "trajectories": 112, "new_transitions": 24240, "outcomes": {"LOST": 112}}
+{"phase": "suffixes", "lifecycle": 1, "episodes": 39, "completed": 32, "expected": 128, "new_transitions": 6639, "outcomes": {"LOST": 32}}
+{"phase": "suffixes", "lifecycle": 1, "episodes": 39, "completed": 64, "expected": 128, "new_transitions": 12507, "outcomes": {"LOST": 64}}
+{"phase": "suffixes", "lifecycle": 1, "episodes": 39, "completed": 96, "expected": 128, "new_transitions": 16956, "outcomes": {"LOST": 96}}
+{"phase": "suffixes", "lifecycle": 1, "episodes": 39, "completed": 128, "expected": 128, "new_transitions": 22724, "outcomes": {"LOST": 128}}
+{"phase": "stage_complete", "lifecycle": 1, "episodes": 39, "trajectories": 128, "new_transitions": 22724, "outcomes": {"LOST": 128}}
+{"phase": "suffixes", "lifecycle": 1, "episodes": 75, "completed": 32, "expected": 128, "new_transitions": 5289, "outcomes": {"LOST": 32}}
+{"phase": "suffixes", "lifecycle": 1, "episodes": 75, "completed": 64, "expected": 128, "new_transitions": 11277, "outcomes": {"LOST": 64}}
+{"phase": "suffixes", "lifecycle": 1, "episodes": 75, "completed": 96, "expected": 128, "new_transitions": 17253, "outcomes": {"LOST": 96}}
+{"phase": "suffixes", "lifecycle": 1, "episodes": 75, "completed": 128, "expected": 128, "new_transitions": 23153, "outcomes": {"LOST": 128}}
+{"phase": "stage_complete", "lifecycle": 1, "episodes": 75, "trajectories": 128, "new_transitions": 23153, "outcomes": {"LOST": 128}}
+{"phase": "suffixes", "lifecycle": 2, "episodes": 39, "completed": 32, "expected": 104, "new_transitions": 6897, "outcomes": {"LOST": 32}}
+{"phase": "suffixes", "lifecycle": 2, "episodes": 39, "completed": 64, "expected": 104, "new_transitions": 12181, "outcomes": {"LOST": 64}}
+{"phase": "suffixes", "lifecycle": 2, "episodes": 39, "completed": 96, "expected": 104, "new_transitions": 16957, "outcomes": {"LOST": 96}}
+{"phase": "stage_complete", "lifecycle": 2, "episodes": 39, "trajectories": 104, "new_transitions": 19286, "outcomes": {"LOST": 104}}
+{"phase": "suffixes", "lifecycle": 2, "episodes": 75, "completed": 32, "expected": 128, "new_transitions": 4437, "outcomes": {"LOST": 32}}
+{"phase": "suffixes", "lifecycle": 2, "episodes": 75, "completed": 64, "expected": 128, "new_transitions": 10487, "outcomes": {"LOST": 64}}
+{"phase": "suffixes", "lifecycle": 2, "episodes": 75, "completed": 96, "expected": 128, "new_transitions": 16761, "outcomes": {"LOST": 96}}
+{"phase": "suffixes", "lifecycle": 2, "episodes": 75, "completed": 128, "expected": 128, "new_transitions": 22187, "outcomes": {"LOST": 128}}
+{"phase": "stage_complete", "lifecycle": 2, "episodes": 75, "trajectories": 128, "new_transitions": 22187, "outcomes": {"LOST": 128}}
+{"phase": "complete", "seconds": 154.04929422598798}

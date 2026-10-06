@@ -1,0 +1,24 @@
+{
+  "attempts": [
+    {
+      "failed_tests": 0,
+      "development_work": {
+        "selections": 48,
+        "validation_folds": 144,
+        "root_comparisons": 1152,
+        "cached_decision_lookups": 2304,
+        "neural_candidate_predictions": 0,
+        "neural_model_fits": 0,
+        "new_environment_transitions": 0,
+        "new_synthetic_transitions": 0,
+        "selection_calls": 3,
+        "cost_accounting_calls": 1
+      },
+      "production_neural_model_fits": 0,
+      "production_optimizer_steps": 0,
+      "environment_transitions": 0,
+      "model_transitions": 0,
+      "scope": "Synthetic cached decisions and reference summaries only; no production models, fits or scoring."
+    }
+  ]
+}

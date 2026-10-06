@@ -1,0 +1,17 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "fixture_work": {
+        "mock_source_games": 49,
+        "mock_prefix_trajectories": 7680,
+        "mock_reference_trajectories": 480,
+        "real_reference_audits": 3
+      },
+      "newly_sampled_environment_transitions": 0,
+      "new_synthetic_transitions": 0,
+      "neural_model_fits": 0,
+      "scope": "mock collectors and hand-written prefix/reference traces; unchanged real reference audit"
+    }
+  ]
+}

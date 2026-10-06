@@ -1,0 +1,5556 @@
+{
+  "schema": "acfqp.reference_feasibility.v199.analysis",
+  "valid": true,
+  "complete": true,
+  "primary_complete": true,
+  "checks": [
+    {
+      "name": "five_fixed_original_inputs_in_protocol_order",
+      "passed": true
+    },
+    {
+      "name": "retained_input:inputs/v69_manifest.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input:inputs/v69_h4_00_FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input:inputs/v69_h4_00_portable_inputs.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input:inputs/v69_h4_01_FULL.model.json",
+      "passed": true
+    },
+    {
+      "name": "retained_input:inputs/v69_h4_01_portable_inputs.json",
+      "passed": true
+    },
+    {
+      "name": "complete_retained_V69_and_same_fourteen_original_queries",
+      "passed": true
+    },
+    {
+      "name": "two_retained_FULL_H4_roots_and_portable_root_bindings",
+      "passed": true
+    },
+    {
+      "name": "six_joint_profile_closed_rational_models_mappings_and_memberships",
+      "passed": true
+    },
+    {
+      "name": "fourteen_own_quotient_policies_and_both_root_joint_vectors_per_width",
+      "passed": true
+    },
+    {
+      "name": "all_ACTIVE_replay_regrets_three_component_errors_curve_and_routing",
+      "passed": true
+    },
+    {
+      "name": "exact_width_positive_control_values_and_component_predictions",
+      "passed": true
+    },
+    {
+      "name": "native_model_and_membership_exact:0",
+      "passed": true
+    },
+    {
+      "name": "native_model_and_membership_exact:1/256",
+      "passed": true
+    },
+    {
+      "name": "native_model_and_membership_exact:1/64",
+      "passed": true
+    },
+    {
+      "name": "native_model_and_membership_exact:1/16",
+      "passed": true
+    },
+    {
+      "name": "native_model_and_membership_exact:1/4",
+      "passed": true
+    },
+    {
+      "name": "native_model_and_membership_exact:1",
+      "passed": true
+    },
+    {
+      "name": "all_retained_kernel_profile_compile_planning_replay_and_input_work",
+      "passed": true
+    },
+    {
+      "name": "fixed_protocol_and_original_query_profiles_precede_six_model_curve",
+      "passed": true
+    },
+    {
+      "name": "complete_without_new_physics_fits_solves_or_teacher_tapes",
+      "passed": true
+    }
+  ],
+  "total_checks": 21,
+  "passed_checks": 21,
+  "summary": {
+    "schema": "acfqp.reference_feasibility.v199.summary",
+    "complete": true,
+    "ground": {
+      "cells": 1487,
+      "active_cells": 1479,
+      "action_rows": 4400,
+      "outcomes": 6525
+    },
+    "curve": [
+      {
+        "width": [
+          0,
+          1
+        ],
+        "model": {
+          "cells": 512,
+          "active_cells": 508,
+          "action_rows": 1487,
+          "outcomes": 2693,
+          "serialized_bytes": 69973,
+          "mapping_bytes": 14730,
+          "membership_bytes": 10313,
+          "max_reward_spread": 0.0,
+          "max_successor_tv": 0.45
+        },
+        "queries": [
+          {
+            "query": "goal_1_risk_1",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 511,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 510,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.0,
+            "max_active_prediction_error": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "new_combined_query",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 511,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 510,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.0,
+            "max_active_prediction_error": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "new_low_risk_goal",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 511,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 510,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.0,
+            "max_active_prediction_error": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "new_risk_goal",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 511,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 510,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.0,
+            "max_active_prediction_error": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "new_scaled_reward",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 511,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.254128125,
+                "actual_utility": 0.254128125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 510,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.19174604166666667,
+                "actual_utility": 0.19174604166666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.0,
+            "max_active_prediction_error": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_goal_2_risk_0_5",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 511,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 510,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.0,
+            "max_active_prediction_error": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_risk_0_1",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 511,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 510,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.0,
+            "max_active_prediction_error": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_risk_0_5",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 511,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 510,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.0,
+            "max_active_prediction_error": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_risk_2",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 511,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 510,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.0,
+            "max_active_prediction_error": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_0",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 511,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 510,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.0,
+            "max_active_prediction_error": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_0_05",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 511,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 510,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.0,
+            "max_active_prediction_error": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_0_2",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 511,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 510,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.0,
+            "max_active_prediction_error": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_1",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 511,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 510,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.0,
+            "max_active_prediction_error": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_5",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 511,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 510,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.0,
+            "max_active_prediction_error": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "max_active_regret": 0.0,
+        "max_active_prediction_error": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "qualifies": true
+      },
+      {
+        "width": [
+          1,
+          256
+        ],
+        "model": {
+          "cells": 469,
+          "active_cells": 465,
+          "action_rows": 1346,
+          "outcomes": 2410,
+          "serialized_bytes": 63077,
+          "mapping_bytes": 14701,
+          "membership_bytes": 9969,
+          "max_reward_spread": 0.001953125,
+          "max_successor_tv": 0.45
+        },
+        "queries": [
+          {
+            "query": "goal_1_risk_1",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 468,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353134765625,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 467,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47909191321402467,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47934928385416664,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47934928385416664,
+                "regret": 1.58203125e-05
+              }
+            ],
+            "max_active_regret": 0.001953125,
+            "max_active_prediction_error": [
+              0.0018780048076923077,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "new_combined_query",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 468,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353134765625,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 467,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47909191321402467,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47934928385416664,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47934928385416664,
+                "regret": 1.58203125e-05
+              }
+            ],
+            "max_active_regret": 0.001953125,
+            "max_active_prediction_error": [
+              0.0018780048076923077,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "new_low_risk_goal",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 468,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353134765625,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 467,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47909191321402467,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47934928385416664,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47934928385416664,
+                "regret": 1.58203125e-05
+              }
+            ],
+            "max_active_regret": 0.001953125,
+            "max_active_prediction_error": [
+              0.0018780048076923077,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "new_risk_goal",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 468,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353134765625,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 467,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47909191321402467,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47934928385416664,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47934928385416664,
+                "regret": 1.58203125e-05
+              }
+            ],
+            "max_active_regret": 0.001953125,
+            "max_active_prediction_error": [
+              0.0018780048076923077,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "new_scaled_reward",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 468,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353134765625,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.254128125,
+                "actual_utility": 0.254128125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 467,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47909191321402467,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47934928385416664,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.19174604166666667,
+                "actual_utility": 0.19173971354166666,
+                "regret": 6.328125e-06
+              }
+            ],
+            "max_active_regret": 0.00078125,
+            "max_active_prediction_error": [
+              0.0018780048076923077,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_goal_2_risk_0_5",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 468,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353134765625,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 467,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47909191321402467,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47934928385416664,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47934928385416664,
+                "regret": 1.58203125e-05
+              }
+            ],
+            "max_active_regret": 0.001953125,
+            "max_active_prediction_error": [
+              0.0018780048076923077,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_risk_0_1",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 468,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353134765625,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 467,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47909191321402467,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47934928385416664,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47934928385416664,
+                "regret": 1.58203125e-05
+              }
+            ],
+            "max_active_regret": 0.001953125,
+            "max_active_prediction_error": [
+              0.0018780048076923077,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_risk_0_5",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 468,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353134765625,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 467,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47909191321402467,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47934928385416664,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47934928385416664,
+                "regret": 1.58203125e-05
+              }
+            ],
+            "max_active_regret": 0.001953125,
+            "max_active_prediction_error": [
+              0.0018780048076923077,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_risk_2",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 468,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353134765625,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 467,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47909191321402467,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47934928385416664,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47934928385416664,
+                "regret": 1.58203125e-05
+              }
+            ],
+            "max_active_regret": 0.001953125,
+            "max_active_prediction_error": [
+              0.0018780048076923077,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_0",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 468,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353134765625,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 467,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47909191321402467,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47934928385416664,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47934928385416664,
+                "regret": 1.58203125e-05
+              }
+            ],
+            "max_active_regret": 0.001953125,
+            "max_active_prediction_error": [
+              0.0018780048076923077,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_0_05",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 468,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353134765625,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 467,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47909191321402467,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47934928385416664,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47934928385416664,
+                "regret": 1.58203125e-05
+              }
+            ],
+            "max_active_regret": 0.001953125,
+            "max_active_prediction_error": [
+              0.0018780048076923077,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_0_2",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 468,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353134765625,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 467,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47909191321402467,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47934928385416664,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47934928385416664,
+                "regret": 1.58203125e-05
+              }
+            ],
+            "max_active_regret": 0.001953125,
+            "max_active_prediction_error": [
+              0.0018780048076923077,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_1",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 468,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353134765625,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 467,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47909191321402467,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47934928385416664,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47934928385416664,
+                "regret": 1.58203125e-05
+              }
+            ],
+            "max_active_regret": 0.001953125,
+            "max_active_prediction_error": [
+              0.0018780048076923077,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_5",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 468,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6353134765625,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 467,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47909191321402467,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47934928385416664,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47934928385416664,
+                "regret": 1.58203125e-05
+              }
+            ],
+            "max_active_regret": 0.001953125,
+            "max_active_prediction_error": [
+              0.0018780048076923077,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "max_active_regret": 0.001953125,
+        "max_active_prediction_error": [
+          0.0018780048076923077,
+          0.0,
+          0.0
+        ],
+        "qualifies": true
+      },
+      {
+        "width": [
+          1,
+          64
+        ],
+        "model": {
+          "cells": 379,
+          "active_cells": 375,
+          "action_rows": 1063,
+          "outcomes": 1965,
+          "serialized_bytes": 50900,
+          "mapping_bytes": 14422,
+          "membership_bytes": 9249,
+          "max_reward_spread": 0.01171875,
+          "max_successor_tv": 0.5
+        },
+        "queries": [
+          {
+            "query": "goal_1_risk_1",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 378,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371011952964029,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 377,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4792909543197933,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47933658854166666,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47933658854166666,
+                "regret": 2.8515625e-05
+              }
+            ],
+            "max_active_regret": 0.00390625,
+            "max_active_prediction_error": [
+              0.009488932291666667,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "new_combined_query",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 378,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371011952964029,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 377,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4792909543197933,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47933658854166666,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47933658854166666,
+                "regret": 2.8515625e-05
+              }
+            ],
+            "max_active_regret": 0.00390625,
+            "max_active_prediction_error": [
+              0.009488932291666667,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "new_low_risk_goal",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 378,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371011952964029,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 377,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4792909543197933,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47933658854166666,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47933658854166666,
+                "regret": 2.8515625e-05
+              }
+            ],
+            "max_active_regret": 0.00390625,
+            "max_active_prediction_error": [
+              0.009488932291666667,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "new_risk_goal",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 378,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371011952964029,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 377,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4792909543197933,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47933658854166666,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47933658854166666,
+                "regret": 2.8515625e-05
+              }
+            ],
+            "max_active_regret": 0.00390625,
+            "max_active_prediction_error": [
+              0.009488932291666667,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "new_scaled_reward",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 378,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371011952964029,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.254128125,
+                "actual_utility": 0.254128125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 377,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4792909543197933,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47933658854166666,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.19174604166666667,
+                "actual_utility": 0.19173463541666666,
+                "regret": 1.140625e-05
+              }
+            ],
+            "max_active_regret": 0.0015625,
+            "max_active_prediction_error": [
+              0.009488932291666667,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_goal_2_risk_0_5",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 378,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371011952964029,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 377,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4792909543197933,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47933658854166666,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47933658854166666,
+                "regret": 2.8515625e-05
+              }
+            ],
+            "max_active_regret": 0.00390625,
+            "max_active_prediction_error": [
+              0.009488932291666667,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_risk_0_1",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 378,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371011952964029,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 377,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4792909543197933,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47933658854166666,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47933658854166666,
+                "regret": 2.8515625e-05
+              }
+            ],
+            "max_active_regret": 0.00390625,
+            "max_active_prediction_error": [
+              0.009488932291666667,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_risk_0_5",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 378,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371011952964029,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 377,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4792909543197933,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47933658854166666,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47933658854166666,
+                "regret": 2.8515625e-05
+              }
+            ],
+            "max_active_regret": 0.00390625,
+            "max_active_prediction_error": [
+              0.009488932291666667,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_risk_2",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 378,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371011952964029,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 377,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4792909543197933,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47933658854166666,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47933658854166666,
+                "regret": 2.8515625e-05
+              }
+            ],
+            "max_active_regret": 0.00390625,
+            "max_active_prediction_error": [
+              0.009488932291666667,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_0",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 378,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371011952964029,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 377,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4792909543197933,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47933658854166666,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47933658854166666,
+                "regret": 2.8515625e-05
+              }
+            ],
+            "max_active_regret": 0.008203125,
+            "max_active_prediction_error": [
+              0.009488932291666667,
+              0.005,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_0_05",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 378,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371011952964029,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 377,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4792909543197933,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47933658854166666,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47933658854166666,
+                "regret": 2.8515625e-05
+              }
+            ],
+            "max_active_regret": 0.00390625,
+            "max_active_prediction_error": [
+              0.009488932291666667,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_0_2",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 378,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371011952964029,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 377,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4792909543197933,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47933658854166666,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47933658854166666,
+                "regret": 2.8515625e-05
+              }
+            ],
+            "max_active_regret": 0.00390625,
+            "max_active_prediction_error": [
+              0.009488932291666667,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_1",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 378,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371011952964029,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 377,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4792909543197933,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47933658854166666,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47933658854166666,
+                "regret": 2.8515625e-05
+              }
+            ],
+            "max_active_regret": 0.00390625,
+            "max_active_prediction_error": [
+              0.009488932291666667,
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_5",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 378,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371011952964029,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 377,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4792909543197933,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47933658854166666,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47933658854166666,
+                "regret": 2.8515625e-05
+              }
+            ],
+            "max_active_regret": 0.00390625,
+            "max_active_prediction_error": [
+              0.009488932291666667,
+              0.0,
+              0.0
+            ]
+          }
+        ],
+        "max_active_regret": 0.008203125,
+        "max_active_prediction_error": [
+          0.009488932291666667,
+          0.005,
+          0.0
+        ],
+        "qualifies": true
+      },
+      {
+        "width": [
+          1,
+          16
+        ],
+        "model": {
+          "cells": 357,
+          "active_cells": 353,
+          "action_rows": 997,
+          "outcomes": 1872,
+          "serialized_bytes": 48181,
+          "mapping_bytes": 14414,
+          "membership_bytes": 9073,
+          "max_reward_spread": 0.02734375,
+          "max_successor_tv": 0.6
+        },
+        "queries": [
+          {
+            "query": "goal_1_risk_1",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 356,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371038061019813,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 355,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47667199580732683,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.01171875,
+            "max_active_prediction_error": [
+              0.01821414262820513,
+              0.005,
+              0.0
+            ]
+          },
+          {
+            "query": "new_combined_query",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 356,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371038061019813,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 355,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47667199580732683,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.01171875,
+            "max_active_prediction_error": [
+              0.01821414262820513,
+              0.005,
+              0.0
+            ]
+          },
+          {
+            "query": "new_low_risk_goal",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 356,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371038061019813,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 355,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47667199580732683,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.01171875,
+            "max_active_prediction_error": [
+              0.01821414262820513,
+              0.005,
+              0.0
+            ]
+          },
+          {
+            "query": "new_risk_goal",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 356,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371038061019813,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 355,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47667199580732683,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.01171875,
+            "max_active_prediction_error": [
+              0.01821414262820513,
+              0.005,
+              0.0
+            ]
+          },
+          {
+            "query": "new_scaled_reward",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 356,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371038061019813,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.254128125,
+                "actual_utility": 0.254128125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 355,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47667199580732683,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.19174604166666667,
+                "actual_utility": 0.19174604166666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.0046875,
+            "max_active_prediction_error": [
+              0.01821414262820513,
+              0.005,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_goal_2_risk_0_5",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 356,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371038061019813,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 355,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47667199580732683,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.01171875,
+            "max_active_prediction_error": [
+              0.01821414262820513,
+              0.005,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_risk_0_1",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 356,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371038061019813,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 355,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47667199580732683,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.01171875,
+            "max_active_prediction_error": [
+              0.01821414262820513,
+              0.005,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_risk_0_5",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 356,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371038061019813,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 355,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47667199580732683,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.01171875,
+            "max_active_prediction_error": [
+              0.01821414262820513,
+              0.005,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_risk_2",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 356,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371038061019813,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 355,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47667199580732683,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.01171875,
+            "max_active_prediction_error": [
+              0.01821414262820513,
+              0.005,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_0",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 356,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371038061019813,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 355,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47667199580732683,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.01171875,
+            "max_active_prediction_error": [
+              0.01821414262820513,
+              0.005,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_0_05",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 356,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371038061019813,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 355,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47667199580732683,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.01171875,
+            "max_active_prediction_error": [
+              0.01821414262820513,
+              0.005,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_0_2",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 356,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371038061019813,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 355,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47667199580732683,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.01171875,
+            "max_active_prediction_error": [
+              0.01821414262820513,
+              0.005,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_1",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 356,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371038061019813,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 355,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47667199580732683,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.01171875,
+            "max_active_prediction_error": [
+              0.01821414262820513,
+              0.005,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_5",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 356,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.6371038061019813,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353203125,
+                "regret": 0.0
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 355,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47667199580732683,
+                  0.0,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.01171875,
+            "max_active_prediction_error": [
+              0.01821414262820513,
+              0.005,
+              0.0
+            ]
+          }
+        ],
+        "max_active_regret": 0.01171875,
+        "max_active_prediction_error": [
+          0.01821414262820513,
+          0.005,
+          0.0
+        ],
+        "qualifies": false
+      },
+      {
+        "width": [
+          1,
+          4
+        ],
+        "model": {
+          "cells": 241,
+          "active_cells": 237,
+          "action_rows": 666,
+          "outcomes": 1390,
+          "serialized_bytes": 34731,
+          "mapping_bytes": 13910,
+          "membership_bytes": 8145,
+          "max_reward_spread": 0.12890625,
+          "max_successor_tv": 0.95
+        },
+        "queries": [
+          {
+            "query": "goal_1_risk_1",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 240,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.5919022331686581,
+                  0.0002593872549019608,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6351416015625,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6351416015625,
+                "regret": 0.0001787109375
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 239,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4758258204636943,
+                  0.0001950673322697408,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.4793404947916667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.4793404947916667,
+                "regret": 2.4609375e-05
+              }
+            ],
+            "max_active_regret": 0.16875,
+            "max_active_prediction_error": [
+              0.10549172794117648,
+              0.0996078431372549,
+              0.0
+            ]
+          },
+          {
+            "query": "new_combined_query",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 240,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.5919022331686581,
+                  0.0002593872549019608,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6351416015625,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6351416015625,
+                "regret": 0.0001787109375
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 239,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4758258204636943,
+                  0.0001950673322697408,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.4793404947916667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.4793404947916667,
+                "regret": 2.4609375e-05
+              }
+            ],
+            "max_active_regret": 0.0900625,
+            "max_active_prediction_error": [
+              0.10549172794117648,
+              0.0996078431372549,
+              0.0
+            ]
+          },
+          {
+            "query": "new_low_risk_goal",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 240,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.5919111687155331,
+                  0.0003135232843137255,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353115234375,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353115234375,
+                "regret": 8.7890625e-06
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 239,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4758258204636943,
+                  0.0001950673322697408,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.4793404947916667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.4793404947916667,
+                "regret": 2.4609375e-05
+              }
+            ],
+            "max_active_regret": 0.078125,
+            "max_active_prediction_error": [
+              0.10549172794117648,
+              0.0996078431372549,
+              0.0
+            ]
+          },
+          {
+            "query": "new_risk_goal",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 240,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.5919111687155331,
+                  0.0003135232843137255,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353115234375,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353115234375,
+                "regret": 8.7890625e-06
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 239,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4758258204636943,
+                  0.0001950673322697408,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.4793404947916667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.4793404947916667,
+                "regret": 2.4609375e-05
+              }
+            ],
+            "max_active_regret": 0.078125,
+            "max_active_prediction_error": [
+              0.10549172794117648,
+              0.0996078431372549,
+              0.0
+            ]
+          },
+          {
+            "query": "new_scaled_reward",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 240,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.5919022331686581,
+                  0.0002593872549019608,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6351416015625,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.254128125,
+                "actual_utility": 0.254056640625,
+                "regret": 7.1484375e-05
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 239,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4758258204636943,
+                  0.0001950673322697408,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.4793404947916667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.19174604166666667,
+                "actual_utility": 0.19173619791666666,
+                "regret": 9.84375e-06
+              }
+            ],
+            "max_active_regret": 0.0675,
+            "max_active_prediction_error": [
+              0.10549172794117648,
+              0.0996078431372549,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_goal_2_risk_0_5",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 240,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.5919022331686581,
+                  0.0002593872549019608,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6351416015625,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6351416015625,
+                "regret": 0.0001787109375
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 239,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4758258204636943,
+                  0.0001950673322697408,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.4793404947916667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.4793404947916667,
+                "regret": 2.4609375e-05
+              }
+            ],
+            "max_active_regret": 0.0990625,
+            "max_active_prediction_error": [
+              0.10549172794117648,
+              0.0996078431372549,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_risk_0_1",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 240,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.5919111687155331,
+                  0.0003135232843137255,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353115234375,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353115234375,
+                "regret": 8.7890625e-06
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 239,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4758258204636943,
+                  0.0001950673322697408,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.4793404947916667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.4793404947916667,
+                "regret": 2.4609375e-05
+              }
+            ],
+            "max_active_regret": 0.0810625,
+            "max_active_prediction_error": [
+              0.10549172794117648,
+              0.0996078431372549,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_risk_0_5",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 240,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.5919022331686581,
+                  0.0002593872549019608,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6351416015625,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6351416015625,
+                "regret": 0.0001787109375
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 239,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4758258204636943,
+                  0.0001950673322697408,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.4793404947916667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.4793404947916667,
+                "regret": 2.4609375e-05
+              }
+            ],
+            "max_active_regret": 0.0990625,
+            "max_active_prediction_error": [
+              0.10549172794117648,
+              0.0996078431372549,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_risk_2",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 240,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.5919022331686581,
+                  0.0002593872549019608,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6351416015625,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6351416015625,
+                "regret": 0.0001787109375
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 239,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.47560783623089087,
+                  6.024821039526922e-05,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47935690104166667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47935690104166667,
+                "regret": 8.203125e-06
+              }
+            ],
+            "max_active_regret": 0.26875,
+            "max_active_prediction_error": [
+              0.10549172794117648,
+              0.0996078431372549,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_0",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 240,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.5919111687155331,
+                  0.0009025857843137255,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353115234375,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353115234375,
+                "regret": 8.7890625e-06
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 239,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4758258204636943,
+                  0.00024136362856603708,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.4793404947916667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.4793404947916667,
+                "regret": 2.4609375e-05
+              }
+            ],
+            "max_active_regret": 0.078125,
+            "max_active_prediction_error": [
+              0.10549172794117648,
+              0.13427841868603635,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_0_05",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 240,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.5919111687155331,
+                  0.0003135232843137255,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6353115234375,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6353115234375,
+                "regret": 8.7890625e-06
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 239,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4758258204636943,
+                  0.0001950673322697408,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.4793404947916667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.4793404947916667,
+                "regret": 2.4609375e-05
+              }
+            ],
+            "max_active_regret": 0.0788125,
+            "max_active_prediction_error": [
+              0.10549172794117648,
+              0.0996078431372549,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_0_2",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 240,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.5919022331686581,
+                  0.0002593872549019608,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6351416015625,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6351416015625,
+                "regret": 0.0001787109375
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 239,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4758258204636943,
+                  0.0001950673322697408,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.4793404947916667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.4793404947916667,
+                "regret": 2.4609375e-05
+              }
+            ],
+            "max_active_regret": 0.0855625,
+            "max_active_prediction_error": [
+              0.10549172794117648,
+              0.0996078431372549,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_1",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 240,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.5919022331686581,
+                  0.0002593872549019608,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6351416015625,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6351416015625,
+                "regret": 0.0001787109375
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 239,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4758258204636943,
+                  0.0001950673322697408,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.4793404947916667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.4793404947916667,
+                "regret": 2.4609375e-05
+              }
+            ],
+            "max_active_regret": 0.16875,
+            "max_active_prediction_error": [
+              0.10549172794117648,
+              0.0996078431372549,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_5",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 240,
+                "action": "UP",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.5919022331686581,
+                  0.0002593872549019608,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.6351416015625,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.6351416015625,
+                "regret": 0.0001787109375
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 239,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.4755145738738647,
+                  3.374961095549331e-05,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.47936510416666667,
+                "regret": 0.0
+              }
+            ],
+            "max_active_regret": 0.56875,
+            "max_active_prediction_error": [
+              0.10549172794117648,
+              0.0996078431372549,
+              0.0
+            ]
+          }
+        ],
+        "max_active_regret": 0.56875,
+        "max_active_prediction_error": [
+          0.10549172794117648,
+          0.13427841868603635,
+          0.0
+        ],
+        "qualifies": false
+      },
+      {
+        "width": [
+          1,
+          1
+        ],
+        "model": {
+          "cells": 91,
+          "active_cells": 87,
+          "action_rows": 236,
+          "outcomes": 585,
+          "serialized_bytes": 14260,
+          "mapping_bytes": 13256,
+          "membership_bytes": 6954,
+          "max_reward_spread": 0.62890625,
+          "max_successor_tv": 0.9615384615384616
+        },
+        "queries": [
+          {
+            "query": "goal_1_risk_1",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.20743292752572706,
+                  0.10940565040081256,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.501818359375,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.501818359375,
+                "regret": 0.133501953125
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.20743292752572706,
+                  0.10940565040081256,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.40340185546875,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.40340185546875,
+                "regret": 0.07596324869791667
+              }
+            ],
+            "max_active_regret": 1.430451171875,
+            "max_active_prediction_error": [
+              0.5878543440402477,
+              0.8938080495356037,
+              0.0
+            ]
+          },
+          {
+            "query": "new_combined_query",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.20743292752572706,
+                  0.10940565040081256,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.501818359375,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.501818359375,
+                "regret": 0.133501953125
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.20743292752572706,
+                  0.10940565040081256,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.40340185546875,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.40340185546875,
+                "regret": 0.07596324869791667
+              }
+            ],
+            "max_active_regret": 0.787851171875,
+            "max_active_prediction_error": [
+              0.5878543440402477,
+              0.8938080495356037,
+              0.0
+            ]
+          },
+          {
+            "query": "new_low_risk_goal",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.20759265056876022,
+                  0.1099489276544029,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.501818359375,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.501818359375,
+                "regret": 0.133501953125
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.20759265056876022,
+                  0.1099489276544029,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.40340185546875,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.40340185546875,
+                "regret": 0.07596324869791667
+              }
+            ],
+            "max_active_regret": 0.621484375,
+            "max_active_prediction_error": [
+              0.5878543440402477,
+              0.8938080495356037,
+              0.0
+            ]
+          },
+          {
+            "query": "new_risk_goal",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.20759265056876022,
+                  0.1099489276544029,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.501818359375,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.501818359375,
+                "regret": 0.133501953125
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.20759265056876022,
+                  0.1099489276544029,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.40340185546875,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.40340185546875,
+                "regret": 0.07596324869791667
+              }
+            ],
+            "max_active_regret": 0.621484375,
+            "max_active_prediction_error": [
+              0.5878543440402477,
+              0.8938080495356037,
+              0.0
+            ]
+          },
+          {
+            "query": "new_scaled_reward",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.20743292752572706,
+                  0.10940565040081256,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.501818359375,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.254128125,
+                "actual_utility": 0.20072734375,
+                "regret": 0.05340078125
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.20743292752572706,
+                  0.10940565040081256,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.40340185546875,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.19174604166666667,
+                "actual_utility": 0.1613607421875,
+                "regret": 0.030385299479166666
+              }
+            ],
+            "max_active_regret": 0.57218046875,
+            "max_active_prediction_error": [
+              0.5878543440402477,
+              0.8938080495356037,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_goal_2_risk_0_5",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.20743292752572706,
+                  0.10940565040081256,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.501818359375,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.501818359375,
+                "regret": 0.133501953125
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.20743292752572706,
+                  0.10940565040081256,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.40340185546875,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.40340185546875,
+                "regret": 0.07596324869791667
+              }
+            ],
+            "max_active_regret": 0.971451171875,
+            "max_active_prediction_error": [
+              0.5878543440402477,
+              0.8938080495356037,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_risk_0_1",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.20759265056876022,
+                  0.1099489276544029,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.501818359375,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.501818359375,
+                "regret": 0.133501953125
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.20759265056876022,
+                  0.1099489276544029,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.40340185546875,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.40340185546875,
+                "regret": 0.07596324869791667
+              }
+            ],
+            "max_active_regret": 0.621484375,
+            "max_active_prediction_error": [
+              0.5878543440402477,
+              0.8938080495356037,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_risk_0_5",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.20743292752572706,
+                  0.10940565040081256,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.501818359375,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.501818359375,
+                "regret": 0.133501953125
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.20743292752572706,
+                  0.10940565040081256,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.40340185546875,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.40340185546875,
+                "regret": 0.07596324869791667
+              }
+            ],
+            "max_active_regret": 0.971451171875,
+            "max_active_prediction_error": [
+              0.5878543440402477,
+              0.8938080495356037,
+              0.0
+            ]
+          },
+          {
+            "query": "probe_risk_2",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.20733438222567685,
+                  0.1093132166544079,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.501818359375,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.501818359375,
+                "regret": 0.133501953125
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.20733438222567685,
+                  0.1093132166544079,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.40340185546875,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.40340185546875,
+                "regret": 0.07596324869791667
+              }
+            ],
+            "max_active_regret": 2.348451171875,
+            "max_active_prediction_error": [
+              0.5878543440402477,
+              0.8938080495356037,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_0",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.20759265056876022,
+                  0.14617801564331728,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.501818359375,
+                  0.7371,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.501818359375,
+                "regret": 0.133501953125
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.20759265056876022,
+                  0.14617801564331728,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.40340185546875,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.40340185546875,
+                "regret": 0.07596324869791667
+              }
+            ],
+            "max_active_regret": 0.621484375,
+            "max_active_prediction_error": [
+              0.5878543440402477,
+              0.8938080495356037,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_0_05",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.20759265056876022,
+                  0.1099489276544029,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.501818359375,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.501818359375,
+                "regret": 0.133501953125
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.20759265056876022,
+                  0.1099489276544029,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.40340185546875,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.40340185546875,
+                "regret": 0.07596324869791667
+              }
+            ],
+            "max_active_regret": 0.621484375,
+            "max_active_prediction_error": [
+              0.5878543440402477,
+              0.8938080495356037,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_0_2",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.20759265056876022,
+                  0.1099489276544029,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.501818359375,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.501818359375,
+                "regret": 0.133501953125
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.20759265056876022,
+                  0.1099489276544029,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.40340185546875,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.40340185546875,
+                "regret": 0.07596324869791667
+              }
+            ],
+            "max_active_regret": 0.696051171875,
+            "max_active_prediction_error": [
+              0.5878543440402477,
+              0.8938080495356037,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_1",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.20743292752572706,
+                  0.10940565040081256,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.501818359375,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.501818359375,
+                "regret": 0.133501953125
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.20743292752572706,
+                  0.10940565040081256,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.40340185546875,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.40340185546875,
+                "regret": 0.07596324869791667
+              }
+            ],
+            "max_active_regret": 1.430451171875,
+            "max_active_prediction_error": [
+              0.5878543440402477,
+              0.8938080495356037,
+              0.0
+            ]
+          },
+          {
+            "query": "risk_5",
+            "root_records": [
+              {
+                "case": "v69_h4_00",
+                "union_root": 325,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "UP",
+                "predicted_rfs": [
+                  0.18839865490290195,
+                  0.10338286246932396,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.501818359375,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.6353203125,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.6353203125,
+                "actual_utility": 0.501818359375,
+                "regret": 0.133501953125
+              },
+              {
+                "case": "v69_h4_01",
+                "union_root": 1486,
+                "abstract_root": 90,
+                "action": "RIGHT",
+                "oracle_action": "RIGHT",
+                "predicted_rfs": [
+                  0.18839865490290195,
+                  0.10338286246932396,
+                  0.0
+                ],
+                "actual_rfs": [
+                  0.287728515625,
+                  0.0,
+                  0.0
+                ],
+                "oracle_rfs": [
+                  0.47936510416666667,
+                  0.0,
+                  0.0
+                ],
+                "oracle_utility": 0.47936510416666667,
+                "actual_utility": 0.287728515625,
+                "regret": 0.19163658854166668
+              }
+            ],
+            "max_active_regret": 5.102451171875,
+            "max_active_prediction_error": [
+              0.5955108166928705,
+              0.8938080495356037,
+              0.0
+            ]
+          }
+        ],
+        "max_active_regret": 5.102451171875,
+        "max_active_prediction_error": [
+          0.5955108166928705,
+          0.8938080495356037,
+          0.0
+        ],
+        "qualifies": false
+      }
+    ],
+    "positive_control_valid": true,
+    "routing": {
+      "qualifying_widths": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          256
+        ],
+        [
+          1,
+          64
+        ]
+      ],
+      "next_step": "learn_reference_distinctions"
+    }
+  },
+  "costs": {
+    "independent_numerical_counts": {
+      "kernel_payloads_decoded": 2,
+      "kernel_cells_decoded": 1487,
+      "kernel_action_rows_decoded": 4400,
+      "kernel_outcomes_decoded": 6525,
+      "union_states_remapped": 1487,
+      "union_action_rows_remapped": 4400,
+      "union_outcomes_remapped": 6525,
+      "oracle_dp_calls": 14,
+      "oracle_dp_states": 20818,
+      "oracle_dp_terminal_states": 112,
+      "oracle_dp_active_states": 20706,
+      "oracle_dp_action_rows": 61600,
+      "oracle_dp_outcome_terms": 91350,
+      "oracle_dp_reward_additions": 91350,
+      "oracle_dp_component_products": 274050,
+      "oracle_dp_component_additions": 274050,
+      "oracle_dp_utility_evaluations": 61600,
+      "oracle_dp_choice_comparisons": 40894,
+      "profile_partition_states": 8922,
+      "profile_coordinate_reads": 1108800,
+      "compiled_cells": 2049,
+      "compiled_member_action_rows": 26400,
+      "compiled_member_outcome_terms": 39150,
+      "compiled_expected_reward_products": 39150,
+      "compiled_expected_reward_additions": 39150,
+      "compiled_successor_additions": 78300,
+      "compiled_reward_member_additions": 26400,
+      "compiled_reward_mean_divisions": 5795,
+      "compiled_successor_mean_divisions": 10915,
+      "compiled_action_rows": 5795,
+      "compiled_outcomes": 10915,
+      "compiled_member_tv_coordinates": 43076,
+      "compiled_tv_evaluations": 26400,
+      "abstract_dp_calls": 84,
+      "abstract_dp_states": 28686,
+      "abstract_dp_terminal_states": 336,
+      "abstract_dp_active_states": 28350,
+      "abstract_dp_action_rows": 81130,
+      "abstract_dp_outcome_terms": 152810,
+      "abstract_dp_reward_additions": 152810,
+      "abstract_dp_component_products": 458430,
+      "abstract_dp_component_additions": 458430,
+      "abstract_dp_utility_evaluations": 81130,
+      "abstract_dp_choice_comparisons": 52780,
+      "policy_lifts": 124236,
+      "replay_dp_calls": 84,
+      "replay_dp_states": 124908,
+      "replay_dp_terminal_states": 672,
+      "replay_dp_active_states": 124236,
+      "replay_dp_action_rows": 124236,
+      "replay_dp_outcome_terms": 188709,
+      "replay_dp_reward_additions": 188709,
+      "replay_dp_component_products": 566127,
+      "replay_dp_component_additions": 566127,
+      "evaluation_active_regret_states": 124236,
+      "evaluation_component_error_coordinates": 372708,
+      "evaluation_root_records": 168,
+      "profile_floor_divisions": 924000
+    },
+    "reconstructed_original_counts": {
+      "kernel_payloads_decoded": 2,
+      "kernel_cells_decoded": 1487,
+      "kernel_action_rows_decoded": 4400,
+      "kernel_outcomes_decoded": 6525,
+      "union_states_remapped": 1487,
+      "union_action_rows_remapped": 4400,
+      "union_outcomes_remapped": 6525,
+      "oracle_dp_calls": 14,
+      "oracle_dp_states": 20818,
+      "oracle_dp_terminal_states": 112,
+      "oracle_dp_active_states": 20706,
+      "oracle_dp_action_rows": 61600,
+      "oracle_dp_outcome_terms": 91350,
+      "oracle_dp_reward_additions": 91350,
+      "oracle_dp_component_products": 274050,
+      "oracle_dp_component_additions": 274050,
+      "oracle_dp_utility_evaluations": 61600,
+      "oracle_dp_choice_comparisons": 40894,
+      "profile_partition_states": 8922,
+      "profile_coordinate_reads": 1108800,
+      "compiled_cells": 2049,
+      "compiled_member_action_rows": 26400,
+      "compiled_member_outcome_terms": 39150,
+      "compiled_expected_reward_products": 39150,
+      "compiled_expected_reward_additions": 39150,
+      "compiled_successor_additions": 78300,
+      "compiled_reward_member_additions": 26400,
+      "compiled_reward_mean_divisions": 5795,
+      "compiled_successor_mean_divisions": 10915,
+      "compiled_action_rows": 5795,
+      "compiled_outcomes": 10915,
+      "compiled_member_tv_coordinates": 43076,
+      "compiled_tv_evaluations": 26400,
+      "abstract_dp_calls": 84,
+      "abstract_dp_states": 28686,
+      "abstract_dp_terminal_states": 336,
+      "abstract_dp_active_states": 28350,
+      "abstract_dp_action_rows": 81130,
+      "abstract_dp_outcome_terms": 152810,
+      "abstract_dp_reward_additions": 152810,
+      "abstract_dp_component_products": 458430,
+      "abstract_dp_component_additions": 458430,
+      "abstract_dp_utility_evaluations": 81130,
+      "abstract_dp_choice_comparisons": 52780,
+      "policy_lifts": 124236,
+      "replay_dp_calls": 84,
+      "replay_dp_states": 124908,
+      "replay_dp_terminal_states": 672,
+      "replay_dp_active_states": 124236,
+      "replay_dp_action_rows": 124236,
+      "replay_dp_outcome_terms": 188709,
+      "replay_dp_reward_additions": 188709,
+      "replay_dp_component_products": 566127,
+      "replay_dp_component_additions": 566127,
+      "evaluation_active_regret_states": 124236,
+      "evaluation_component_error_coordinates": 372708,
+      "evaluation_root_records": 168,
+      "profile_floor_divisions": 924000,
+      "new_environment_samples": 0,
+      "new_physical_samples": 0,
+      "new_model_fits": 0,
+      "new_parameter_solves": 0,
+      "new_native_weight_updates": 0,
+      "new_teacher_tapes": 0,
+      "input_files_read": 5,
+      "input_files_retained": 5,
+      "input_bytes_read": 253340,
+      "input_bytes_retained": 253340
+    },
+    "independent_input_counts": {
+      "json_read_operations": 10,
+      "json_bytes_read": 5284919,
+      "retained_input_byte_comparisons": 5,
+      "comparison_bytes_read": 506680
+    },
+    "new_environment_samples": 0,
+    "new_physical_samples": 0,
+    "new_model_fits": 0,
+    "new_parameter_solves": 0,
+    "new_native_weight_updates": 0,
+    "new_teacher_tapes": 0,
+    "inherited_input_refs": [
+      "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_composition_v69/manifest.json",
+      "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_composition_v69/v69_h4_00/FULL.model.json",
+      "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_composition_v69/v69_h4_00/portable_inputs.json",
+      "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_composition_v69/v69_h4_01/FULL.model.json",
+      "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/controlled_predictive_composition_v69/v69_h4_01/portable_inputs.json"
+    ],
+    "seconds": 12.171178916993085
+  }
+}

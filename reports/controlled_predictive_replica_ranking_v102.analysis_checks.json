@@ -1,0 +1,14 @@
+{
+  "schema": "acfqp.replica_ranking_analysis_checks.v102",
+  "status": "passed",
+  "test_file": "tests/test_analyze_controlled_predictive_replica_ranking_v102.py",
+  "tests": 6,
+  "attempts": 1,
+  "seconds": 0.43,
+  "counts": {
+    "new_environment_transitions": 0,
+    "new_model_transitions": 0,
+    "new_model_fits": 0
+  },
+  "scope": "Synthetic fixtures only; no fitting or sampling. Checks cover retained-feature accounting, all-ordinal semantics, independent A/B reference slices, censoring, train-only conflict mass roster, model age and exact 24 contrasts."
+}

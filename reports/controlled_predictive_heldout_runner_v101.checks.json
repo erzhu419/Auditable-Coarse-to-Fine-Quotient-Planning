@@ -1,0 +1,11 @@
+{
+  "attempts": [
+    {
+      "failed_tests": 0,
+      "environment_transitions": 0,
+      "model_transitions": 0,
+      "neural_fits": 0,
+      "scope": "Synthetic reference records and mocked execution ordering only."
+    }
+  ]
+}

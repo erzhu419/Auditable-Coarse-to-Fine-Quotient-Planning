@@ -1,0 +1,18 @@
+{
+  "attempts": [
+    {
+      "failures": 0,
+      "fixture_work": {
+        "mock_source_loader_calls": 20,
+        "mock_records_returned": 100
+      },
+      "new_environment_transitions": 0,
+      "new_synthetic_transitions": 0,
+      "neural_model_fits": 0,
+      "neural_candidate_predictions": 0,
+      "new_feature_vectors": 0,
+      "actual_source_files_read": 0,
+      "scope": "synthetic records and mocked original loader; no production bank reads"
+    }
+  ]
+}

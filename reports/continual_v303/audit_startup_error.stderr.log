@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/verify_continual_v303.py", line 720, in <module>
+    main()
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/verify_continual_v303.py", line 712, in main
+    result = audit(directory)
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/verify_continual_v303.py", line 672, in audit
+    canonical,rows_read = read_canonical(document); records = []; processed = Counter(); cutoffs = 0
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/verify_continual_v303.py", line 167, in read_canonical
+    state['warm_events'].extend(check_warmup(row,state['warm_rows'],memory))
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/verify_continual_v303.py", line 140, in check_warmup
+    check_stage_context(row)
+  File "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/scripts/verify_continual_v303.py", line 101, in check_stage_context
+    require(row['arm'] == 'FROZEN', 'canonical acquisition uses original frozen SOURCE')
+KeyError: 'arm'

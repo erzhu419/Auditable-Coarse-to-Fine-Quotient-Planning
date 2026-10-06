@@ -1,0 +1,51 @@
+{
+  "schema": "acfqp.retained_critic_freeze.v287",
+  "protocol": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/specs/RETAINED_CRITIC_V287.md",
+  "source_summary": "/home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/reports/natural_online_value_v286/summary.json",
+  "lifecycles": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "parents": 4,
+  "arms": [
+    "FROZEN",
+    "SHADOW_TD",
+    "EPISODIC_MC"
+  ],
+  "phase": "A",
+  "fit_fraction": 0.8,
+  "alpha": 0.0025,
+  "evaluation_games": 16,
+  "seed_evaluation": 287500000000,
+  "bootstrap_draws": 20000,
+  "bootstrap_seed": 28700001,
+  "max_steps": 8192,
+  "finite_test_passes": {
+    "native": 8,
+    "reconstruction": 7,
+    "analysis": 9,
+    "driver": 3
+  },
+  "query": {
+    "reward_weight": 1.0,
+    "failure_penalty": 4.0,
+    "goal_bonus": 4.0
+  },
+  "primary": "EPISODIC_MC_minus_FROZEN",
+  "observations": "RETAINED_FROZEN_A_ALL_RAW_INCLUDING_INITIAL",
+  "evaluation": "STATIC_FIT_PREFIX_BELIEF_AND_VALUE_WITHOUT_FEEDBACK"
+}

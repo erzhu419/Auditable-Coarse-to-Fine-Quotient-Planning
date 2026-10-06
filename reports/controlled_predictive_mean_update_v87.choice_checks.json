@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "exit_code": 0,
+  "seconds": 0.6048052629921585,
+  "stdout": ".                                                                        [100%]\n1 passed in 0.19s\n",
+  "stderr": "",
+  "new_environment_transitions": 0,
+  "new_tree_fits": 0,
+  "scope": "Synthetic mean shifts, preserved source ranking, changed H2 gates, and common incomplete-root exclusion"
+}

@@ -1,0 +1,17 @@
+{
+  "attempts": [
+    {
+      "tests": 5,
+      "failures": 0,
+      "seconds": 0.35
+    },
+    {
+      "tests": 1,
+      "failures": 0,
+      "seconds": 0.26
+    }
+  ],
+  "newly_sampled_environment_transitions": 0,
+  "optimizer_steps": 0,
+  "scope": "Synthetic ranks and mocked values only. One new targeted evaluation test added after first five passed."
+}

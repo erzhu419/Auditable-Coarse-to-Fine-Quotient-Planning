@@ -1,0 +1,15 @@
+{
+  "schema": "acfqp.query_update_analysis_checks.v108",
+  "status": "passed",
+  "test_file": "tests/test_analyze_controlled_predictive_query_update_v108.py",
+  "tests": 5,
+  "attempts": 1,
+  "seconds": 0.47,
+  "counts": {
+    "new_environment_transitions": 0,
+    "new_model_prefix_transitions": 0,
+    "new_neural_model_fits": 0,
+    "new_neural_candidate_predictions": 0
+  },
+  "scope": "Synthetic retained-data fixtures only: opposite query effects preserved across all prespecified contrasts, full-root denominator and active-query roster binding, active optimizer root/pair cost counted once, inherited baseline/reference separation, missing decisions and censored references. No production analysis, fitting, model scoring or sampling."
+}

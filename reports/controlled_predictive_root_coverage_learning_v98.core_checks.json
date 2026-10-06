@@ -1,0 +1,46 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_root_coverage_learning_v98.py",
+      "session_failures": 0,
+      "scope": "Small synthetic paired trees only; no source extraction or campaign.",
+      "ground_sampled_transitions": 0,
+      "main_campaign_calls": 0,
+      "paired_metadata_rows_read": 8448,
+      "paired_training_rows_read": 3936,
+      "board_feature_rows": 15232,
+      "paired_feature_rows": 7616,
+      "feature_cache_builds": 32,
+      "cached_current_pair_rows": 3936,
+      "cached_nonzero_next_pair_rows": 2624,
+      "tree_fits": 48,
+      "fit_rows": 23616,
+      "fit_output_vectors": 23616,
+      "pair_mc_tree_fits": 16,
+      "paired_continuation_predictions": 21792,
+      "paired_exact_zero_predictions": 2624,
+      "tree_apply_rows": 38336,
+      "tree_split_visits": 201560,
+      "bootstrap_pair_rows": 7872,
+      "bootstrap_nonzero_pair_rows": 5248,
+      "pair_fqe_tree_fits": 32,
+      "heldout_pair_rows": 1056,
+      "comparison_board_feature_rows": 480,
+      "comparison_paired_feature_rows": 240,
+      "comparison_paired_continuation_predictions": 240,
+      "comparison_paired_exact_zero_predictions": 0,
+      "comparison_tree_apply_rows": 480,
+      "comparison_tree_split_visits": 2456
+    },
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_root_coverage_learning_v98.py",
+      "session_failures": 0,
+      "scope": "Small synthetic paired trees only; no source extraction or campaign.",
+      "ground_sampled_transitions": 0,
+      "main_campaign_calls": 0,
+      "mock_acquisition_batches": 2,
+      "mock_fit_calls": 4,
+      "mock_evaluation_calls": 1
+    }
+  ]
+}

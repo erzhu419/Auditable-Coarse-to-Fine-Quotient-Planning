@@ -1,0 +1,12 @@
+.........                                                                [100%]
+=============================== warnings summary ===============================
+tests/test_native_b_mechanism_v299.py::test_fixed_second_action_uses_source_selection_and_max_reselection_is_nonnegative
+  /home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/tests/test_native_b_mechanism_v299.py:141: RuntimeWarning: invalid value encountered in subtract
+    assert np.all((result['current_q']-result['frozen_second_q'])[legal]>=-1e-12)
+
+tests/test_native_b_mechanism_v299.py::test_fixed_second_action_uses_source_selection_and_max_reselection_is_nonnegative
+  /home/erzhu419/mine_code/Auditable Coarse-to-Fine Quotient Planning/workspaces/acfqp-controlled-predictive-quotient-exploration/tests/test_native_b_mechanism_v299.py:142: RuntimeWarning: invalid value encountered in subtract
+    assert np.any((result['current_q']-result['frozen_second_q'])[legal]>1e-5)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+9 passed, 2 warnings in 2.35s

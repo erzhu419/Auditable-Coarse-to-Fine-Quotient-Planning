@@ -1,0 +1,241 @@
+{
+  "schema": "acfqp.structured_route_task.v201.analysis",
+  "complete": true,
+  "valid": true,
+  "checks": [
+    {
+      "name": "fixed_roster",
+      "passed": true
+    },
+    {
+      "name": "frozen_source_manifest",
+      "passed": true
+    },
+    {
+      "name": "frozen_execution_and_zero_learning",
+      "passed": true
+    },
+    {
+      "name": "model_semantics:v201_normal_low_r17_20",
+      "passed": true
+    },
+    {
+      "name": "joint_pure_policies:v201_normal_low_r17_20",
+      "passed": true
+    },
+    {
+      "name": "full_h2_h1_continuations:v201_normal_low_r17_20",
+      "passed": true
+    },
+    {
+      "name": "achievable_hard_optimum:v201_normal_low_r17_20",
+      "passed": true
+    },
+    {
+      "name": "model_semantics:v201_normal_low_r19_20",
+      "passed": true
+    },
+    {
+      "name": "joint_pure_policies:v201_normal_low_r19_20",
+      "passed": true
+    },
+    {
+      "name": "full_h2_h1_continuations:v201_normal_low_r19_20",
+      "passed": true
+    },
+    {
+      "name": "achievable_hard_optimum:v201_normal_low_r19_20",
+      "passed": true
+    },
+    {
+      "name": "model_semantics:v201_normal_high_r17_20",
+      "passed": true
+    },
+    {
+      "name": "joint_pure_policies:v201_normal_high_r17_20",
+      "passed": true
+    },
+    {
+      "name": "full_h2_h1_continuations:v201_normal_high_r17_20",
+      "passed": true
+    },
+    {
+      "name": "achievable_hard_optimum:v201_normal_high_r17_20",
+      "passed": true
+    },
+    {
+      "name": "model_semantics:v201_normal_high_r19_20",
+      "passed": true
+    },
+    {
+      "name": "joint_pure_policies:v201_normal_high_r19_20",
+      "passed": true
+    },
+    {
+      "name": "full_h2_h1_continuations:v201_normal_high_r19_20",
+      "passed": true
+    },
+    {
+      "name": "achievable_hard_optimum:v201_normal_high_r19_20",
+      "passed": true
+    },
+    {
+      "name": "model_semantics:v201_wet_low_r17_20",
+      "passed": true
+    },
+    {
+      "name": "joint_pure_policies:v201_wet_low_r17_20",
+      "passed": true
+    },
+    {
+      "name": "full_h2_h1_continuations:v201_wet_low_r17_20",
+      "passed": true
+    },
+    {
+      "name": "achievable_hard_optimum:v201_wet_low_r17_20",
+      "passed": true
+    },
+    {
+      "name": "model_semantics:v201_wet_low_r19_20",
+      "passed": true
+    },
+    {
+      "name": "joint_pure_policies:v201_wet_low_r19_20",
+      "passed": true
+    },
+    {
+      "name": "full_h2_h1_continuations:v201_wet_low_r19_20",
+      "passed": true
+    },
+    {
+      "name": "achievable_hard_optimum:v201_wet_low_r19_20",
+      "passed": true
+    },
+    {
+      "name": "model_semantics:v201_wet_high_r17_20",
+      "passed": true
+    },
+    {
+      "name": "joint_pure_policies:v201_wet_high_r17_20",
+      "passed": true
+    },
+    {
+      "name": "full_h2_h1_continuations:v201_wet_high_r17_20",
+      "passed": true
+    },
+    {
+      "name": "achievable_hard_optimum:v201_wet_high_r17_20",
+      "passed": true
+    },
+    {
+      "name": "model_semantics:v201_wet_high_r19_20",
+      "passed": true
+    },
+    {
+      "name": "joint_pure_policies:v201_wet_high_r19_20",
+      "passed": true
+    },
+    {
+      "name": "full_h2_h1_continuations:v201_wet_high_r19_20",
+      "passed": true
+    },
+    {
+      "name": "achievable_hard_optimum:v201_wet_high_r19_20",
+      "passed": true
+    },
+    {
+      "name": "model_semantics:v201_blocked_low_r17_20",
+      "passed": true
+    },
+    {
+      "name": "joint_pure_policies:v201_blocked_low_r17_20",
+      "passed": true
+    },
+    {
+      "name": "full_h2_h1_continuations:v201_blocked_low_r17_20",
+      "passed": true
+    },
+    {
+      "name": "achievable_hard_optimum:v201_blocked_low_r17_20",
+      "passed": true
+    },
+    {
+      "name": "model_semantics:v201_blocked_low_r19_20",
+      "passed": true
+    },
+    {
+      "name": "joint_pure_policies:v201_blocked_low_r19_20",
+      "passed": true
+    },
+    {
+      "name": "full_h2_h1_continuations:v201_blocked_low_r19_20",
+      "passed": true
+    },
+    {
+      "name": "achievable_hard_optimum:v201_blocked_low_r19_20",
+      "passed": true
+    },
+    {
+      "name": "model_semantics:v201_blocked_high_r17_20",
+      "passed": true
+    },
+    {
+      "name": "joint_pure_policies:v201_blocked_high_r17_20",
+      "passed": true
+    },
+    {
+      "name": "full_h2_h1_continuations:v201_blocked_high_r17_20",
+      "passed": true
+    },
+    {
+      "name": "achievable_hard_optimum:v201_blocked_high_r17_20",
+      "passed": true
+    },
+    {
+      "name": "model_semantics:v201_blocked_high_r19_20",
+      "passed": true
+    },
+    {
+      "name": "joint_pure_policies:v201_blocked_high_r19_20",
+      "passed": true
+    },
+    {
+      "name": "full_h2_h1_continuations:v201_blocked_high_r19_20",
+      "passed": true
+    },
+    {
+      "name": "achievable_hard_optimum:v201_blocked_high_r19_20",
+      "passed": true
+    },
+    {
+      "name": "five_qualification_conditions",
+      "passed": true
+    }
+  ],
+  "conditions": {
+    "DELAYED_STRUCTURE": true,
+    "OBJECTIVE_CONFLICT": true,
+    "FOLLOWUP_CONTROL": true,
+    "PLANNING_NEEDED": true,
+    "HARD_CONSTRAINT": true
+  },
+  "qualification_pass": true,
+  "decision": "TASK_QUALIFIED",
+  "costs": {
+    "retained_files_read": 6,
+    "retained_bytes_read": 290180,
+    "reconstructed_contexts": 12,
+    "declared_states": 108,
+    "declared_action_rows": 108,
+    "declared_support_outcomes": 156,
+    "closed_full_policy_vectors": 48,
+    "policy_replay_states": 896,
+    "policy_replay_action_rows": 544,
+    "policy_replay_outcomes": 704,
+    "finite_formula_calls": 4968,
+    "frontier_orientation_checks": 24,
+    "frontier_edge_checks": 36,
+    "frontier_achievable_candidates": 36
+  },
+  "seconds": 0.08244455000385642
+}

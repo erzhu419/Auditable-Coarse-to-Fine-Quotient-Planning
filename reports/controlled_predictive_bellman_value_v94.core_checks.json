@@ -1,0 +1,30 @@
+{
+  "attempts": [
+    {
+      "test_module": "/home/erzhu419/mine_code/acfqp-controlled-predictive-quotient-exploration/tests/test_controlled_predictive_bellman_value_v94.py",
+      "session_failures": 0,
+      "scope": "Synthetic two-round Bellman models and heads; no source extraction or environment sampling.",
+      "sampled_transitions": 0,
+      "main_campaign_calls": 0,
+      "bellman_metadata_rows_read": 2304,
+      "board_feature_rows": 2068,
+      "feature_cache_builds": 12,
+      "cached_training_rows": 1024,
+      "cached_bootstrap_rows": 384,
+      "tree_fits": 40,
+      "fit_rows": 3088,
+      "fit_output_vectors": 3136,
+      "mc_tail_tree_fits": 12,
+      "tree_apply_rows": 4484,
+      "bootstrap_prediction_rows": 768,
+      "fqe_tree_fits": 24,
+      "continuation_predictions": 640,
+      "completed_prefix_roots": 20,
+      "metadata_rows_read": 80,
+      "packed_roots": 20,
+      "training_roots_read": 16,
+      "fit_roots": 16,
+      "validation_roots_read": 4
+    }
+  ]
+}
