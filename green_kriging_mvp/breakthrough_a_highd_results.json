@@ -1,0 +1,302 @@
+{
+  "4D": {
+    "dim": 4,
+    "n_samples": 60,
+    "methods": {
+      "Online-PIMC-Search (True Env)": {
+        "queries": {
+          "Q1_seen_goal": {
+            "mean_cost": 9.693930291569366,
+            "mean_hazard": 2.7471662858980963,
+            "reach_rate": 0.9666666666666667,
+            "ms": 9670.865173917264
+          },
+          "Q2_unseen_goal": {
+            "mean_cost": 10.454494009251725,
+            "mean_hazard": 2.7998157953735765,
+            "reach_rate": 0.9666666666666667,
+            "ms": 14214.838773943484
+          },
+          "Q3_unseen_multigoal": {
+            "mean_cost": 8.17887051373874,
+            "mean_hazard": 3.2233098772814097,
+            "reach_rate": 1.0,
+            "ms": 12015.131989028305
+          }
+        },
+        "avg_cost": 9.442431604853278,
+        "avg_ms": 11966.945312296351
+      },
+      "Exact-GreenResidual-1A (True q)": {
+        "queries": {
+          "Q1_seen_goal": {
+            "mean_cost": 9.676645493827133,
+            "mean_hazard": 1.599057224882867,
+            "reach_rate": 0.7416666666666667,
+            "ms": 658.5579100064933
+          },
+          "Q2_unseen_goal": {
+            "mean_cost": 8.40916389540765,
+            "mean_hazard": 1.8413041756660984,
+            "reach_rate": 0.85,
+            "ms": 1368.1795299053192
+          },
+          "Q3_unseen_multigoal": {
+            "mean_cost": 6.777698393718656,
+            "mean_hazard": 2.2085011962854635,
+            "reach_rate": 0.9916666666666667,
+            "ms": 1009.4459899701178
+          }
+        },
+        "avg_cost": 8.287835927651146,
+        "avg_ms": 1012.0611432939768
+      },
+      "Pure-Free-Green (Analytic Bessel)": {
+        "queries": {
+          "Q1_seen_goal": {
+            "mean_cost": 12.290466102945015,
+            "mean_hazard": 9.962286312830365,
+            "reach_rate": 1.0,
+            "ms": 0.1
+          },
+          "Q2_unseen_goal": {
+            "mean_cost": 12.594283293484118,
+            "mean_hazard": 10.241471891950376,
+            "reach_rate": 1.0,
+            "ms": 0.1
+          },
+          "Q3_unseen_multigoal": {
+            "mean_cost": 11.79270271895728,
+            "mean_hazard": 9.791389559016034,
+            "reach_rate": 1.0,
+            "ms": 0.1
+          }
+        },
+        "avg_cost": 12.225817371795472,
+        "avg_ms": 0.10000000000000002
+      },
+      "Ordinary-Kriging-V (Q1)": {
+        "queries": {
+          "Q1_seen_goal": {
+            "cost": 9.695195889155816,
+            "hazard": 1.6505145890844262,
+            "reach": 0.7,
+            "ms": 1137.3350544599816
+          },
+          "Q2_unseen_goal": {
+            "cost": 36.970660892542256,
+            "hazard": 15.026181371531317,
+            "reach": 0.0,
+            "ms": 0.0
+          },
+          "Q3_unseen_multigoal": {
+            "cost": 9.393462707963879,
+            "hazard": 2.848168179256322,
+            "reach": 0.8571428571428572,
+            "ms": 0.0
+          }
+        },
+        "avg_cost": 18.686439829887316,
+        "avg_ms": 379.11168481999385
+      },
+      "PINN-HJB (retrained/query)": {
+        "queries": {
+          "Q1_seen_goal": {
+            "cost": 12.79959709212244,
+            "hazard": 2.4503657348874057,
+            "reach": 0.44285714285714284,
+            "ms": 38625.6824209122
+          },
+          "Q2_unseen_goal": {
+            "cost": 11.84481767015722,
+            "hazard": 1.7682130201498043,
+            "reach": 0.5238095238095237,
+            "ms": 3856.6894190153107
+          },
+          "Q3_unseen_multigoal": {
+            "cost": 13.951232887778325,
+            "hazard": 3.1086311223825103,
+            "reach": 0.43333333333333335,
+            "ms": 4299.358630552888
+          }
+        },
+        "avg_cost": 12.865215883352661,
+        "avg_ms": 15593.9101568268
+      },
+      "GreenResidual-Kriging-1A (Ours)": {
+        "queries": {
+          "Q1_seen_goal": {
+            "cost": 9.674591755648006,
+            "hazard": 2.249938664083439,
+            "reach": 0.8,
+            "ms": 1566.6975219501182
+          },
+          "Q2_unseen_goal": {
+            "cost": 7.455918070921053,
+            "hazard": 2.4041947636340177,
+            "reach": 0.9333333333333333,
+            "ms": 1221.5666904812679
+          },
+          "Q3_unseen_multigoal": {
+            "cost": 6.68886359661756,
+            "hazard": 2.13532989672629,
+            "reach": 0.9904761904761905,
+            "ms": 1096.8846814939752
+          }
+        },
+        "avg_cost": 7.939791141062206,
+        "avg_ms": 1295.0496313084539
+      }
+    }
+  },
+  "6D": {
+    "dim": 6,
+    "n_samples": 100,
+    "methods": {
+      "Online-PIMC-Search (True Env)": {
+        "queries": {
+          "Q1_seen_goal": {
+            "mean_cost": 15.10799784744562,
+            "mean_hazard": 4.661513571464668,
+            "reach_rate": 0.9,
+            "ms": 10353.14338398166
+          },
+          "Q2_unseen_goal": {
+            "mean_cost": 13.89844962100172,
+            "mean_hazard": 4.569688762140114,
+            "reach_rate": 0.9333333333333333,
+            "ms": 9341.866652015597
+          },
+          "Q3_unseen_multigoal": {
+            "mean_cost": 9.996597523936673,
+            "mean_hazard": 4.666621067174886,
+            "reach_rate": 1.0,
+            "ms": 5350.375947076827
+          }
+        },
+        "avg_cost": 13.001014997461338,
+        "avg_ms": 8348.461994358027
+      },
+      "Exact-GreenResidual-1A (True q)": {
+        "queries": {
+          "Q1_seen_goal": {
+            "mean_cost": 8.311735022270108,
+            "mean_hazard": 3.5509863154593737,
+            "reach_rate": 1.0,
+            "ms": 452.95898197218776
+          },
+          "Q2_unseen_goal": {
+            "mean_cost": 10.153845223011976,
+            "mean_hazard": 3.18491260875916,
+            "reach_rate": 0.8583333333333333,
+            "ms": 691.3131140172482
+          },
+          "Q3_unseen_multigoal": {
+            "mean_cost": 7.7172825352384775,
+            "mean_hazard": 3.3592958387168164,
+            "reach_rate": 1.0,
+            "ms": 654.1787451133132
+          }
+        },
+        "avg_cost": 8.727620926840187,
+        "avg_ms": 599.4836137009164
+      },
+      "Pure-Free-Green (Analytic Bessel)": {
+        "queries": {
+          "Q1_seen_goal": {
+            "mean_cost": 12.874729273427029,
+            "mean_hazard": 10.548861803575381,
+            "reach_rate": 1.0,
+            "ms": 0.1
+          },
+          "Q2_unseen_goal": {
+            "mean_cost": 14.161631772078993,
+            "mean_hazard": 11.473677064832092,
+            "reach_rate": 1.0,
+            "ms": 0.1
+          },
+          "Q3_unseen_multigoal": {
+            "mean_cost": 12.606622963615369,
+            "mean_hazard": 10.411369765786857,
+            "reach_rate": 1.0,
+            "ms": 0.1
+          }
+        },
+        "avg_cost": 13.214328003040464,
+        "avg_ms": 0.10000000000000002
+      },
+      "Ordinary-Kriging-V (Q1)": {
+        "queries": {
+          "Q1_seen_goal": {
+            "cost": 10.172157102888267,
+            "hazard": 4.8643715194387855,
+            "reach": 0.9857142857142858,
+            "ms": 1047.1034930087626
+          },
+          "Q2_unseen_goal": {
+            "cost": 48.37783937818779,
+            "hazard": 23.73207820626139,
+            "reach": 0.0,
+            "ms": 0.0
+          },
+          "Q3_unseen_multigoal": {
+            "cost": 10.874900071708167,
+            "hazard": 5.558725820325538,
+            "reach": 1.0,
+            "ms": 0.0
+          }
+        },
+        "avg_cost": 23.141632184261407,
+        "avg_ms": 349.03449766958755
+      },
+      "PINN-HJB (retrained/query)": {
+        "queries": {
+          "Q1_seen_goal": {
+            "cost": 20.253143160507875,
+            "hazard": 4.591190711447174,
+            "reach": 0.2238095238095238,
+            "ms": 6101.399190491065
+          },
+          "Q2_unseen_goal": {
+            "cost": 18.490145906322354,
+            "hazard": 4.369199652016281,
+            "reach": 0.3,
+            "ms": 53974.940349464305
+          },
+          "Q3_unseen_multigoal": {
+            "cost": 19.44810511973424,
+            "hazard": 5.984508300068361,
+            "reach": 0.37142857142857144,
+            "ms": 18943.358374992386
+          }
+        },
+        "avg_cost": 19.397131395521487,
+        "avg_ms": 26339.899304982584
+      },
+      "GreenResidual-Kriging-1A (Ours)": {
+        "queries": {
+          "Q1_seen_goal": {
+            "cost": 9.124538006744913,
+            "hazard": 3.8441850768315264,
+            "reach": 0.9285714285714286,
+            "ms": 2206.2578399199992
+          },
+          "Q2_unseen_goal": {
+            "cost": 8.608282133279868,
+            "hazard": 3.7281852642072586,
+            "reach": 0.9761904761904762,
+            "ms": 2659.881313913502
+          },
+          "Q3_unseen_multigoal": {
+            "cost": 7.900725810962478,
+            "hazard": 3.622930543734892,
+            "reach": 1.0,
+            "ms": 1670.4688279423863
+          }
+        },
+        "avg_cost": 8.544515316995753,
+        "avg_ms": 2178.8693272586293
+      }
+    }
+  }
+}

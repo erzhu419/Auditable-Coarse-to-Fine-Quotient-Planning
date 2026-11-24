@@ -1,0 +1,192 @@
+{
+  "B1_calibration": {
+    "Regime1_HazardsOnly": {
+      "15": {
+        "avg_coverage": 0.9924252222423413,
+        "avg_width": 3.0357807229309084,
+        "avg_mae": 0.5354625714005842,
+        "per_query": {
+          "Q1_seen_goal": {
+            "coverage": 0.9900497512437813,
+            "width": 3.230401596188075
+          },
+          "Q2_unseen_goal": {
+            "coverage": 1.0,
+            "width": 3.3134798626094466
+          },
+          "Q3_unseen_multigoal": {
+            "coverage": 0.9896013864818024,
+            "width": 2.45368845250618
+          },
+          "Q4_dynamic_constraint": {
+            "coverage": 0.9900497512437813,
+            "width": 3.145552980419932
+          }
+        }
+      },
+      "30": {
+        "avg_coverage": 0.9924252222423413,
+        "avg_width": 2.524788053175388,
+        "avg_mae": 0.31548096044360174,
+        "per_query": {
+          "Q1_seen_goal": {
+            "coverage": 0.9900497512437813,
+            "width": 2.7255276533807353
+          },
+          "Q2_unseen_goal": {
+            "coverage": 1.0,
+            "width": 2.6863241421579596
+          },
+          "Q3_unseen_multigoal": {
+            "coverage": 0.9896013864818024,
+            "width": 2.04415089097314
+          },
+          "Q4_dynamic_constraint": {
+            "coverage": 0.9900497512437813,
+            "width": 2.643149526189718
+          }
+        }
+      },
+      "60": {
+        "avg_coverage": 0.9924252222423413,
+        "avg_width": 1.9996485626365788,
+        "avg_mae": 0.303368936308842,
+        "per_query": {
+          "Q1_seen_goal": {
+            "coverage": 0.9900497512437813,
+            "width": 2.094920256045348
+          },
+          "Q2_unseen_goal": {
+            "coverage": 1.0,
+            "width": 2.152795619262189
+          },
+          "Q3_unseen_multigoal": {
+            "coverage": 0.9896013864818024,
+            "width": 1.676536123512241
+          },
+          "Q4_dynamic_constraint": {
+            "coverage": 0.9900497512437813,
+            "width": 2.0743422517265375
+          }
+        }
+      }
+    },
+    "Regime2_HazardsPlusVortex": {
+      "15": {
+        "avg_coverage": 1.0,
+        "avg_width": 4.709999219920298,
+        "avg_mae": 0.6119605313152899,
+        "per_query": {
+          "Q1_seen_goal": {
+            "coverage": 1.0,
+            "width": 5.017171005446354
+          },
+          "Q2_unseen_goal": {
+            "coverage": 1.0,
+            "width": 5.10289253045795
+          },
+          "Q3_unseen_multigoal": {
+            "coverage": 1.0,
+            "width": 3.744182845485685
+          },
+          "Q4_dynamic_constraint": {
+            "coverage": 1.0,
+            "width": 4.975750498291202
+          }
+        }
+      },
+      "30": {
+        "avg_coverage": 1.0,
+        "avg_width": 4.40957411308224,
+        "avg_mae": 0.3830583715113272,
+        "per_query": {
+          "Q1_seen_goal": {
+            "coverage": 1.0,
+            "width": 4.75088265177351
+          },
+          "Q2_unseen_goal": {
+            "coverage": 1.0,
+            "width": 4.659558541232959
+          },
+          "Q3_unseen_multigoal": {
+            "coverage": 1.0,
+            "width": 3.495794789735632
+          },
+          "Q4_dynamic_constraint": {
+            "coverage": 1.0,
+            "width": 4.732060469586856
+          }
+        }
+      },
+      "60": {
+        "avg_coverage": 1.0,
+        "avg_width": 3.757949453407231,
+        "avg_mae": 0.34672317861505847,
+        "per_query": {
+          "Q1_seen_goal": {
+            "coverage": 1.0,
+            "width": 3.972534775273189
+          },
+          "Q2_unseen_goal": {
+            "coverage": 1.0,
+            "width": 4.031918298207852
+          },
+          "Q3_unseen_multigoal": {
+            "coverage": 1.0,
+            "width": 3.03554371619825
+          },
+          "Q4_dynamic_constraint": {
+            "coverage": 1.0,
+            "width": 3.9918010239496327
+          }
+        }
+      }
+    }
+  },
+  "B2_lethal_safety": {
+    "reference": {
+      "Exact-Green-1A (Oracle)": {
+        "cost": 5.138331699764192,
+        "crash": 0.08750000000000001,
+        "reach": 0.9125
+      },
+      "Pure-Free-Green": {
+        "cost": 19.708300499618773,
+        "crash": 0.665,
+        "reach": 0.335
+      }
+    },
+    "methods": {
+      "Mean-1A (Passive N=14)": {
+        "cost": 5.249030115461295,
+        "crash": 0.08715277777777777,
+        "reach": 0.9128472222222223,
+        "avg_probes": 14.0
+      },
+      "Mean-1A (Passive N=24)": {
+        "cost": 5.189207776117392,
+        "crash": 0.08506944444444445,
+        "reach": 0.9149305555555556,
+        "avg_probes": 24.0
+      },
+      "Global-UCB-1A (Passive N=14)": {
+        "cost": 15.248395230058463,
+        "crash": 0.48506944444444444,
+        "reach": 0.5149305555555556,
+        "avg_probes": 14.0
+      },
+      "Global-UCB-1A (Passive N=24)": {
+        "cost": 14.002465590034738,
+        "crash": 0.4350694444444444,
+        "reach": 0.5649305555555555,
+        "avg_probes": 24.0
+      },
+      "Corridor-Gated-1A (N0=14+active)": {
+        "cost": 12.67077968803951,
+        "crash": 0.38298611111111114,
+        "reach": 0.6170138888888889,
+        "avg_probes": 23.3125
+      }
+    }
+  }
+}

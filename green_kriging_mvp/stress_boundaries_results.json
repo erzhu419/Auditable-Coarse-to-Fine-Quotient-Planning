@@ -1,0 +1,258 @@
+{
+  "stress1_ontrajectory": {
+    "R1_OnTraj_Hazards": {
+      "oracle_avg": 2.9623297888452513,
+      "free_avg": 5.814488629333113,
+      "checkpoints": {
+        "4": {
+          "avg_raw_macro_pts": 35.666666666666664,
+          "1A_zero_shot": {
+            "Q1_seen_goal": 3.0315012720027057,
+            "Q2_unseen_goal": 3.100159678170396,
+            "Q3_unseen_multigoal": 2.9802510851745256,
+            "Q4_dynamic_constraint": 3.262445502766276
+          },
+          "1A_avg": 3.093589384528476,
+          "1A_Q2_plus2ep": 3.0843176302789943,
+          "OK_V": {
+            "Q1_seen_goal": 11.445610775000796,
+            "Q2_unseen_goal": 17.538876879853717,
+            "Q3_unseen_multigoal": 9.462126211142769,
+            "Q4_dynamic_constraint": 12.068821464144605
+          },
+          "OK_avg": 12.628858832535471
+        },
+        "8": {
+          "avg_raw_macro_pts": 72.33333333333333,
+          "1A_zero_shot": {
+            "Q1_seen_goal": 2.950875913365902,
+            "Q2_unseen_goal": 3.0695048077218687,
+            "Q3_unseen_multigoal": 3.008203329653773,
+            "Q4_dynamic_constraint": 3.2662666725903446
+          },
+          "1A_avg": 3.0737126808329718,
+          "1A_Q2_plus2ep": 3.14441843886952,
+          "OK_V": {
+            "Q1_seen_goal": 8.638358714093059,
+            "Q2_unseen_goal": 14.678876512737498,
+            "Q3_unseen_multigoal": 7.475998945078676,
+            "Q4_dynamic_constraint": 9.07534845407581
+          },
+          "OK_avg": 9.96714565649626
+        },
+        "16": {
+          "avg_raw_macro_pts": 134.0,
+          "1A_zero_shot": {
+            "Q1_seen_goal": 3.0166961640292222,
+            "Q2_unseen_goal": 3.0991653119580036,
+            "Q3_unseen_multigoal": 3.0524708916118626,
+            "Q4_dynamic_constraint": 3.2851391654073563
+          },
+          "1A_avg": 3.113367883251611,
+          "1A_Q2_plus2ep": 3.129705938034222,
+          "OK_V": {
+            "Q1_seen_goal": 8.496271902597263,
+            "Q2_unseen_goal": 12.871432416371198,
+            "Q3_unseen_multigoal": 6.66284514244036,
+            "Q4_dynamic_constraint": 8.723708823338812
+          },
+          "OK_avg": 9.188564571186909
+        }
+      }
+    },
+    "R2_OnTraj_HazardsPlusVortex": {
+      "oracle_avg": 2.7294279098532828,
+      "free_avg": 5.6250510282918444,
+      "checkpoints": {
+        "4": {
+          "avg_raw_macro_pts": 39.0,
+          "1A_zero_shot": {
+            "Q1_seen_goal": 2.9889036406023517,
+            "Q2_unseen_goal": 3.201126574305249,
+            "Q3_unseen_multigoal": 2.8818565902227355,
+            "Q4_dynamic_constraint": 3.0983886262813987
+          },
+          "1A_avg": 3.0425688578529337,
+          "1A_Q2_plus2ep": 3.1967650400570746,
+          "OK_V": {
+            "Q1_seen_goal": 9.94400242862475,
+            "Q2_unseen_goal": 13.85066250498218,
+            "Q3_unseen_multigoal": 9.438151003602737,
+            "Q4_dynamic_constraint": 10.51433462673831
+          },
+          "OK_avg": 10.936787640986994
+        },
+        "8": {
+          "avg_raw_macro_pts": 77.66666666666667,
+          "1A_zero_shot": {
+            "Q1_seen_goal": 2.9052026524325103,
+            "Q2_unseen_goal": 3.26583554198664,
+            "Q3_unseen_multigoal": 2.8290093870757733,
+            "Q4_dynamic_constraint": 3.069783772286557
+          },
+          "1A_avg": 3.0174578384453703,
+          "1A_Q2_plus2ep": 3.234784769190289,
+          "OK_V": {
+            "Q1_seen_goal": 8.387374330263158,
+            "Q2_unseen_goal": 13.028524574134849,
+            "Q3_unseen_multigoal": 5.3378895378927425,
+            "Q4_dynamic_constraint": 8.45053322422549
+          },
+          "OK_avg": 8.801080416629059
+        },
+        "16": {
+          "avg_raw_macro_pts": 137.66666666666666,
+          "1A_zero_shot": {
+            "Q1_seen_goal": 2.8610385606123643,
+            "Q2_unseen_goal": 3.1725424585881625,
+            "Q3_unseen_multigoal": 2.7812115527503862,
+            "Q4_dynamic_constraint": 3.148877145028251
+          },
+          "1A_avg": 2.9909174292447913,
+          "1A_Q2_plus2ep": 3.1247361417793513,
+          "OK_V": {
+            "Q1_seen_goal": 7.483525454127599,
+            "Q2_unseen_goal": 13.437370932344486,
+            "Q3_unseen_multigoal": 4.853919655860982,
+            "Q4_dynamic_constraint": 7.595786677804111
+          },
+          "OK_avg": 8.342650680034295
+        }
+      }
+    }
+  },
+  "stress2_umaze": {
+    "2D_UMaze": {
+      "oracle": {
+        "mean_cost": 2.8810637355803506,
+        "std_cost": 0.05117400891434657,
+        "mean_hazard": 1.31355992527878,
+        "mean_ctrl": 1.3951338103015711,
+        "reach_rate": 1.0,
+        "mean_steps": 20.893333333333334
+      },
+      "exact_1a": {
+        "mean_cost": 3.437646962060422,
+        "std_cost": 0.0830284421530121,
+        "mean_hazard": 2.11668800935139,
+        "mean_ctrl": 1.1066239527090318,
+        "reach_rate": 1.0,
+        "mean_steps": 25.98
+      },
+      "free": {
+        "mean_cost": 6.362823001980525,
+        "std_cost": 0.2641008166293189,
+        "mean_hazard": 5.476983082065489,
+        "mean_ctrl": 0.48378991991503556,
+        "reach_rate": 1.0,
+        "mean_steps": 48.733333333333334
+      },
+      "learned": {
+        "probes_40": {
+          "cost": 3.6007944998847514,
+          "hazard": 2.3169259176649795,
+          "reach": 1.0
+        },
+        "probes_80": {
+          "cost": 3.4843653543937165,
+          "hazard": 2.094999963340309,
+          "reach": 1.0
+        },
+        "on_traj_12ep": {
+          "cost": 3.3553291521157718,
+          "hazard": 1.9305250997968144,
+          "reach": 1.0
+        }
+      }
+    },
+    "4D_Wall": {
+      "free": {
+        "mean_cost": 18.559005417607242,
+        "mean_hazard": 16.610146551969645,
+        "reach_rate": 1.0
+      },
+      "round1": {
+        "mean_cost": 15.503054122657003,
+        "mean_hazard": 1.0493967222617324,
+        "reach_rate": 0.2916666666666667,
+        "ess": [
+          2.438209098474843
+        ]
+      },
+      "round2": {
+        "mean_cost": 10.33930104042722,
+        "mean_hazard": 2.8299880913936817,
+        "reach_rate": 0.85,
+        "ess": [
+          2.438209098474843,
+          4.891231093544512
+        ]
+      }
+    }
+  },
+  "stress3_mismatch": {
+    "3A_unknown_sigma": {
+      "sigma_true": 0.72,
+      "sigma_hat": 0.7112793204540935,
+      "oracle_avg": 3.5231512423856843,
+      "Wrong Fixed sigma=0.25": 4.78805516054778,
+      "Online-Estimated sigma=0.711": 3.6928021668876605,
+      "True sigma=0.72": 3.722236179715862
+    },
+    "3B_anisotropic_saturated": {
+      "polish_ms": 84.57450772402808,
+      "methods": {
+        "Exact-Nonlinear-HJB-Oracle": {
+          "avg_cost": 3.6651639667219573,
+          "per_query": [
+            3.624822574020079,
+            3.479567993956975,
+            3.676160302176511,
+            3.8801049967342633
+          ],
+          "gap_pct": 0.0
+        },
+        "Pure-Free-Green": {
+          "avg_cost": 6.778755057747331,
+          "per_query": [
+            6.42356687520238,
+            6.869417851030075,
+            6.703051191222673,
+            7.118984313534197
+          ],
+          "gap_pct": 84.95093587341199
+        },
+        "Naive-Isotropic-Green-1A (N=30)": {
+          "avg_cost": 4.371126154508866,
+          "per_query": [
+            4.153989197135799,
+            4.28882106349552,
+            4.445243283925533,
+            4.5964510734786135
+          ],
+          "gap_pct": 19.261408062414908
+        },
+        "R-Scaled-Green-1A (N=30)": {
+          "avg_cost": 4.620639192894109,
+          "per_query": [
+            4.565586457388808,
+            4.563438940699726,
+            4.504139672609194,
+            4.8493917008787095
+          ],
+          "gap_pct": 26.069099086628533
+        },
+        "Green-1A + 4-step PI Polish (N=30)": {
+          "avg_cost": 3.757115697901699,
+          "per_query": [
+            3.609573799532576,
+            3.551535538635642,
+            3.851640165760985,
+            4.015713287677593
+          ],
+          "gap_pct": 2.5088026624353494
+        }
+      }
+    }
+  }
+}
