@@ -1,0 +1,153 @@
+{
+  "point_probing": {
+    "n_maps": 10,
+    "total_probes": 24,
+    "methods": {
+      "Oracle-FD": {
+        "mean_deploy_cost": 4.455516255561041,
+        "mean_hazard_cost": 0.8003003041993886,
+        "mean_acq_ms": 0.0,
+        "per_map_costs": [
+          5.257491193680538,
+          4.209213783040117,
+          5.435421909397982,
+          4.480816617032685,
+          4.6005210268114105,
+          4.651856122215839,
+          2.8424715395026183,
+          3.3467383664999915,
+          4.76043129942432,
+          4.970200698004913
+        ]
+      },
+      "Random": {
+        "mean_deploy_cost": 7.0725261542832385,
+        "mean_hazard_cost": 3.2944803046329154,
+        "mean_acq_ms": 13.99946347810328,
+        "per_map_costs": [
+          8.819895084194172,
+          6.705764701516933,
+          8.411241080417353,
+          5.887355991791402,
+          7.075651602935114,
+          6.515956107283354,
+          3.195392518800529,
+          3.5819780732577073,
+          11.912171327602673,
+          8.619855055033144
+        ]
+      },
+      "Global-MaxVar": {
+        "mean_deploy_cost": 8.114382292148177,
+        "mean_hazard_cost": 4.645131968897285,
+        "mean_acq_ms": 14.813349139876664,
+        "per_map_costs": [
+          9.20656045158177,
+          5.237919106066098,
+          8.11253150875877,
+          17.607109435706015,
+          6.6818373052720945,
+          9.550938459102227,
+          3.9227977961210847,
+          5.336341868718375,
+          7.219927034208531,
+          8.267859955946806
+        ]
+      },
+      "Corridor-Heuristic": {
+        "mean_deploy_cost": 6.475653603614174,
+        "mean_hazard_cost": 2.6616380339300783,
+        "mean_acq_ms": 15.50968864466995,
+        "per_map_costs": [
+          9.087318616833748,
+          5.0995988054124,
+          7.283333870965838,
+          6.190590915434574,
+          7.901519352047753,
+          6.577099191048387,
+          3.423003647052941,
+          5.322185872514141,
+          6.714572147733231,
+          7.157313617098733
+        ]
+      },
+      "Doob-Adjoint-Sensitivity": {
+        "mean_deploy_cost": 6.6688840684079125,
+        "mean_hazard_cost": 2.977852548349886,
+        "mean_acq_ms": 21.18172135669738,
+        "per_map_costs": [
+          8.074771588702676,
+          4.929356578135979,
+          7.221399653724215,
+          6.332625495005398,
+          7.626098501188873,
+          7.425020276973537,
+          3.1313271813605703,
+          6.583851510864439,
+          7.515604791300455,
+          7.848785106822985
+        ]
+      }
+    },
+    "paired_differences": {
+      "Doob_minus_Random": {
+        "mean": -0.4036420858753253,
+        "ci95": 1.2005102166510013
+      },
+      "Doob_minus_Global-MaxVar": {
+        "mean": -1.4454982237402638,
+        "ci95": 2.227536356864089
+      },
+      "Doob_minus_Corridor-Heuristic": {
+        "mean": 0.19323046479373804,
+        "ci95": 0.4282375347997079
+      }
+    }
+  },
+  "reachable_trajectory_exploration": {
+    "n_maps": 8,
+    "episodes_per_map": 4,
+    "methods": {
+      "Greedy-Exploit-Traj": {
+        "mean_explore_episode_cost": 9.142915555151003,
+        "mean_post_explore_deploy_cost": 5.4843323935371195
+      },
+      "GlobalVar-Detour-Traj": {
+        "mean_explore_episode_cost": 9.646894197178515,
+        "mean_post_explore_deploy_cost": 5.354261435204789
+      },
+      "Doob-Sensitivity-Detour-Traj": {
+        "mean_explore_episode_cost": 9.141456863029218,
+        "mean_post_explore_deploy_cost": 5.616895988171869
+      }
+    },
+    "doob_minus_greedy_deploy": {
+      "mean": 0.13256359463474948,
+      "ci95": 0.2418916150317382
+    },
+    "doob_minus_globalvar_deploy": {
+      "mean": 0.26263455296707977,
+      "ci95": 0.5662762558097519
+    }
+  },
+  "nonlinear_robust_hjb_bounds": {
+    "N=15": {
+      "pointwise_empirical_coverage": 0.947265625,
+      "simultaneous_64pt_map_fraction": 0.75,
+      "mean_interval_width": 3.668433437222179,
+      "max_robust_hjb_iter_diff": 8.285946151431745e-09
+    },
+    "N=30": {
+      "pointwise_empirical_coverage": 1.0,
+      "simultaneous_64pt_map_fraction": 1.0,
+      "mean_interval_width": 3.298179204144755,
+      "max_robust_hjb_iter_diff": 3.893295197343605e-08
+    },
+    "N=60": {
+      "pointwise_empirical_coverage": 1.0,
+      "simultaneous_64pt_map_fraction": 1.0,
+      "mean_interval_width": 2.791237405755605,
+      "max_robust_hjb_iter_diff": 8.941039908449966e-09
+    }
+  }
+}

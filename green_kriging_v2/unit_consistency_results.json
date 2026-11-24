@@ -1,0 +1,74 @@
+{
+  "1_anisotropic_kkt": {
+    "adversarial_g_1_1_u": [
+      -1.772905925675713,
+      -0.3111343418861441
+    ],
+    "adversarial_g_1_1_hamiltonian": -1.3887742007836612,
+    "max_diff_vs_slsqp_26_cases": 2.9010724930840207e-07,
+    "pass": true
+  },
+  "2_monotone_non_lmdp_pi": {
+    "final_bellman_diff": 8.881784197001252e-14,
+    "solve_ms": 528.6437789909542,
+    "pass": true
+  },
+  "3_readout_and_gradient_consistency": {
+    "2D": {
+      "goal_value_error": 0.0,
+      "goal_ctrl_norm": 0.0,
+      "max_policy_vs_neg_grad_error": 2.917576826234913e-10,
+      "pass": true
+    },
+    "3D": {
+      "goal_value_error": 0.0,
+      "goal_ctrl_norm": 0.0,
+      "max_policy_vs_neg_grad_error": 4.983609373849437e-10,
+      "pass": true
+    }
+  },
+  "4_exact_capacitary_and_convergence": {
+    "capacitary_vs_fresh_fd_rel_Z_err": 4.8405723873654995e-14,
+    "port_reduced_r4_vs_fd_mean_V_diff": 0.039418798554045786,
+    "port_reduced_min_Z": 4.0363015837075225e-06,
+    "grid_refinement_max_err_vs_161": {
+      "21": 0.07963234389216722,
+      "41": 0.03151235887640247,
+      "81": 0.01186355949897977
+    },
+    "pass": true
+  },
+  "5_highd_and_underactuated_boundaries": {
+    "nearby_goals_boundary_values": [
+      0.0,
+      0.0
+    ],
+    "underactuated_boundary_residual": -0.26689639554121997,
+    "underactuated_expected_residual": -0.26689639554121997,
+    "underactuated_riccati_r0_max_err": 4.440892098500626e-16,
+    "pass": true
+  },
+  "6_highd_continuation_fk": {
+    "survivor_fraction_at_horizon": 0.0020161290322580645,
+    "mean_ess": 97.64738589443337,
+    "estimated_V": [
+      3.395562292872405,
+      4.966800141490491
+    ],
+    "analytical_R4_V": [
+      3.352509842433532,
+      4.904312476670815
+    ],
+    "relative_error": [
+      0.012841856538032447,
+      0.01274137101110959
+    ],
+    "pass": true
+  },
+  "7_crn_reproducibility": {
+    "max_traj_diff": 0.0,
+    "clip_fraction": 0.0,
+    "pass": true
+  },
+  "ALL_PASSED": true
+}
