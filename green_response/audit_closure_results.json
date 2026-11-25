@@ -1,0 +1,165 @@
+{
+  "metadata": {
+    "python_version": "3.10.12",
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "processor": "x86_64",
+    "numpy_version": "2.2.6",
+    "scipy_version": "1.15.3",
+    "sklearn_version": "1.7.2",
+    "thread_env": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1"
+    },
+    "active_threadpools": [
+      {
+        "user_api": "blas",
+        "internal_api": "openblas",
+        "num_threads": 1,
+        "prefix": "libscipy_openblas",
+        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/numpy.libs/libscipy_openblas64_-56d6093b.so",
+        "version": "0.3.29",
+        "threading_layer": "pthreads",
+        "architecture": "SkylakeX"
+      },
+      {
+        "user_api": "blas",
+        "internal_api": "openblas",
+        "num_threads": 1,
+        "prefix": "libscipy_openblas",
+        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/scipy.libs/libscipy_openblas-68440149.so",
+        "version": "0.3.28",
+        "threading_layer": "pthreads",
+        "architecture": "SkylakeX"
+      },
+      {
+        "user_api": "openmp",
+        "internal_api": "openmp",
+        "num_threads": 1,
+        "prefix": "libgomp",
+        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/scikit_learn.libs/libgomp-a34b3233.so.1.0.0",
+        "version": null
+      }
+    ]
+  },
+  "1_single_query_sign_and_enclosure_54_cases": {
+    "gpt6_sign_probe_27_failing_cases": 0,
+    "gpt6_sign_probe_27_violated_nodes": 0,
+    "adversarial_2goal_27_failing_cases": 0,
+    "worst_raw_min_Z": 1.028109595152682e-05,
+    "pass": true
+  },
+  "2_3d_nested_tree_eager_vs_lazy_invariance": {
+    "wp0_ring_nodes": 12,
+    "lazy_L1_to_EXACT_total_backsolves": 12,
+    "zero_wasted_backsolves": true,
+    "max_eager_vs_lazy_column_diff": 2.220446049250313e-16,
+    "max_A0_column_residual": 4.902328543110457e-15,
+    "pass": true
+  },
+  "3_signed_barrier_probe_32_cases": {
+    "levels_tested": [
+      "L1",
+      "L4",
+      "L8",
+      "EXACT"
+    ],
+    "all_valid_without_clamping": true,
+    "violated_node_case_pairs": 0,
+    "pass": true
+  },
+  "4_tour_t0_absorption_and_m7_bnb_5040_audit": {
+    "inside_start_first_selected_is_2": true,
+    "inside_start_bound_violations_across_240_intervals": 0,
+    "inside_start_exact_regret": 0.0,
+    "m7_total_permutations": 5040,
+    "m7_unique_leaves_evaluated": 65,
+    "m7_pruned_permutations": 4975,
+    "m7_certified": true,
+    "m7_bound_and_prefix_violations": 0,
+    "m7_exact_regret": 0.0,
+    "pass": true
+  },
+  "5_subset_macro_bellman_m8_audit": {
+    "coarse_L1_bounds": [
+      7.906943395669932,
+      17.18697741027466
+    ],
+    "final_certified_bounds": [
+      12.846125673444515,
+      12.846125720905572
+    ],
+    "exact_optimal_macro_cost": 12.846125697175047,
+    "exact_evaluated_policy_cost": 12.846125697175047,
+    "exact_macro_regret": 0.0,
+    "planning_ms": 478.4754680003971,
+    "certified": true,
+    "pass": true
+  },
+  "6_anisotropic_kkt_policy_and_51sq_tolerance": {
+    "u_code": [
+      -1.7218215606183263,
+      -0.5247194616076969
+    ],
+    "u_exact_brentq": [
+      -1.7218215606183267,
+      -0.5247194616076971
+    ],
+    "u_slsqp": [
+      -1.7218215591787291,
+      -0.5247194724579237
+    ],
+    "hamiltonian_excess_vs_exact_kkt": 4.440892098500626e-16,
+    "q6_51sq_bellman_residual": 5.648814749292796e-13,
+    "q6_51sq_sweeps_used": 7,
+    "fixed_3_step_sweeps_reported": 3,
+    "pass": true
+  },
+  "7_3d_classical_reuse_accounting_probe": {
+    "map400_cached_fd_total_lu_factorizations": 19,
+    "double_factorizations_on_any_single_query": 0,
+    "warm_ilu_initial_x0_ptp": 0.2780077121047892,
+    "warm_ilu_info0_count_of_20": 20,
+    "warm_ilu_lu_fallbacks_of_20": 1,
+    "pass": true
+  },
+  "8_highd_spec_guard_scalar_r_and_prior_equivalence": {
+    "rejected_anisotropic_R": true,
+    "rejected_finite_u_max": true,
+    "scalar_R2_max_hjb_discrepancy": 1.482464373481207e-09,
+    "prior_mean_vs_residual_gp_val_diff": 0.0,
+    "prior_mean_vs_residual_gp_grad_diff": 0.0,
+    "pass": true
+  },
+  "9_highd_trace_consistency_and_robust_hjb": {
+    "near4_unclipped_raw_rms": 0.002666948476674423,
+    "policy_plus_fd_grad_max_err": 3.580144736226032e-09,
+    "reflecting_wall_normal_u": 4.972190975129005e-16,
+    "robust_hjb_exact_disk_residual": 1.0186296250935811e-14,
+    "robust_hjb_4096_dir_residual": 5.0820167185827714e-05,
+    "pass": true
+  },
+  "10_kinetic_telescoping_adjoint_and_pimc": {
+    "seed14500_measured_telescoping_discrepancy": 4.973799150320701e-14,
+    "seed14500_continuation_diffs_6rounds": [
+      11.993453270624975,
+      4.755474591853778,
+      2.3528325082840382,
+      0.2676086840870777,
+      0.08769668194978308,
+      0.013045445749348517
+    ],
+    "seed14500_scope_diagnostics": {
+      "incoming_pos_boundary_raw_rms": 0.14691507589115926,
+      "unanchored_vel_cap_boundary_raw_rms": 3.9987715797907266,
+      "specular_wall_pair_raw_rms": 1.4431731058511388
+    },
+    "killed_adjoint_vs_fd_abs_diff": 5.36304778364638e-10,
+    "killed_adjoint_goal_mass": 0.0,
+    "pimc_free_world_action_variance": 5.298714759495383e-32,
+    "pass": true
+  },
+  "ALL_PASSED": true
+}
