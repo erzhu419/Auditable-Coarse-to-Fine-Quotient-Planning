@@ -1,0 +1,86 @@
+{
+  "metadata": {
+    "python_version": "3.10.12",
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "processor": "x86_64",
+    "numpy_version": "2.2.6",
+    "scipy_version": "1.15.3",
+    "sklearn_version": "1.7.2",
+    "thread_env": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1"
+    }
+  },
+  "1_tour_certificate_zero_violation_audit": {
+    "tasks_tested": 36,
+    "permutations_checked_per_stage": 4320,
+    "certified_tasks": 22,
+    "unresolved_tasks": 14,
+    "certification_rate": 0.6111111111111112,
+    "bound_violations_at_r1": 0,
+    "bound_violations_at_final": 0,
+    "certified_regret_violations_above_epsilon": 0,
+    "max_certified_exact_node_regret": 0.0,
+    "max_all_exact_node_regret": 0.029470416785834175,
+    "min_interval_enclosure_slack": 1.1013412404281553e-12,
+    "pass": true
+  },
+  "2_single_query_positivity_and_fd_enclosure": {
+    "worst_pre_floor_raw_min_Z": 1.028109595152682e-05,
+    "total_negative_nodes": 0,
+    "fd_exterior_enclosure_violations_across_27_cases": 0,
+    "overlap_permutation_max_V_diff": 0.0,
+    "pass": true
+  },
+  "3_highd_collar_pde_residual_and_even_wall": {
+    "residual_at_1_55_analytical": -0.5652632024748628,
+    "residual_at_1_55_independent_fd": -0.5652632014978516,
+    "max_abs_diff_analytical_vs_fd_across_all_collar_and_corner_pts": 1.3820455890822814e-09,
+    "even_extension_jump_across_wall": 0.0,
+    "ref2d_pde_241_at_1_55": 1.4620263355754441,
+    "ref2d_uncorrected_base_at_1_55": 1.5445633083507704,
+    "ref2d_continuum_collar_dt_0_003": 1.4473735751766668,
+    "ref2d_discrete_telescoping_dt_0_003": 1.4744180154546178,
+    "disc_minus_cont_gap_decay_dt_0_02_to_0_003": [
+      0.09053979815155389,
+      0.027044440277951054
+    ],
+    "pass": true
+  },
+  "4_highd_unclipped_trace_and_gradient_consistency": {
+    "unclipped_raw_rms_errors": [
+      0.002666948476674377,
+      0.002364639629080918
+    ],
+    "unclipped_raw_min_values_honest": [
+      -0.025662138448348942,
+      -0.014892120755058497
+    ],
+    "max_policy_vs_neg_fd_grad_value_fn_mismatch": 4.76542991179052e-09,
+    "max_reflecting_wall_normal_policy": 4.972190975129005e-16,
+    "pass": true
+  },
+  "5_continuous_disk_robust_hjb": {
+    "exact_continuous_disk_residual": 1.0186296250935811e-14,
+    "independent_4096_dir_residual": 5.0820167185827714e-05,
+    "v3_64_angle_discretization_error_reference": 0.00908577,
+    "pass": true
+  },
+  "6_kinetic_kkt_adjoint_and_pimc_checks": {
+    "kinetic_wall_bounces": 266,
+    "kinetic_unaccounted_guide_jump": 0.0,
+    "kinetic_continuation_max_diffs": [
+      6.842352005691122,
+      0.28920536856253687,
+      0.007231421419231054
+    ],
+    "kkt_equal_tol_bellman_residual": 2.8899131976345416e-09,
+    "killed_adjoint_vs_fd_abs_diff": 5.36304778364638e-10,
+    "killed_adjoint_goal_mass": 0.0,
+    "pimc_interior_free_world_action_variance": 5.298714759495383e-32,
+    "pass": true
+  },
+  "ALL_PASSED": true
+}
