@@ -1,0 +1,313 @@
+{
+  "highd_4d": {
+    "dim": 4,
+    "n_maps": 8,
+    "n_probes": 60,
+    "mean_gp_fit_ms": 274.5071607059799,
+    "methods": {
+      "Pure-Base-Guide": {
+        "mean_cost": 5.723922727252347,
+        "reach_rate": 1.0,
+        "clip_fraction": 0.0,
+        "ours_minus_method_cost": {
+          "mean": -1.5793671482964764,
+          "student_t_ci95": 0.6081407550435023
+        },
+        "gp_amortized_ms": 0.0,
+        "query_build_ms": 0.33782163518480957,
+        "single_traj_exec_ms": 8.654951438074932,
+        "batch45_exec_ms": 26.68501841253601,
+        "amortized_T_K1_sequential_ms": 8.992773073259741,
+        "amortized_T_K5_sequential_ms": 43.61257882555947,
+        "amortized_T_K20_sequential_ms": 173.43685039668344,
+        "amortized_T_batch45_ms": 27.02284004772082,
+        "per_map_costs": [
+          4.334653101544237,
+          7.0010810263573084,
+          4.9634986976735105,
+          5.4133725827264145,
+          5.890955037592055,
+          7.592571532371804,
+          4.887560229209587,
+          5.707689610543858
+        ]
+      },
+      "SameGP-PlainMC-Distill": {
+        "mean_cost": 11.64323942982475,
+        "reach_rate": 0.7935185185185185,
+        "clip_fraction": 0.0,
+        "ours_minus_method_cost": {
+          "mean": -7.498683850868878,
+          "student_t_ci95": 6.379474703475041
+        },
+        "gp_amortized_ms": 91.5023869019933,
+        "query_build_ms": 2606.514786108164,
+        "single_traj_exec_ms": 18.574384943349287,
+        "batch45_exec_ms": 97.79593189402172,
+        "amortized_T_K1_sequential_ms": 2716.5915579535067,
+        "amortized_T_K5_sequential_ms": 2790.889097726904,
+        "amortized_T_K20_sequential_ms": 3069.504871877143,
+        "amortized_T_batch45_ms": 2795.813104904179,
+        "per_map_costs": [
+          29.46245709834606,
+          9.187469366516554,
+          6.917262643176772,
+          6.751770942573884,
+          13.409973284426401,
+          11.197728768758973,
+          7.529786682185428,
+          8.689466652613916
+        ]
+      },
+      "SameGP-Centered-PIMC-H16": {
+        "mean_cost": 5.657618295353535,
+        "reach_rate": 0.9972222222222222,
+        "clip_fraction": 0.0,
+        "ours_minus_method_cost": {
+          "mean": -1.5130627163976644,
+          "student_t_ci95": 0.6694927475765159
+        },
+        "gp_amortized_ms": 91.5023869019933,
+        "query_build_ms": 0.375801813788712,
+        "single_traj_exec_ms": 292.39999938484596,
+        "batch45_exec_ms": 5374.251299489212,
+        "amortized_T_K1_sequential_ms": 384.278188100628,
+        "amortized_T_K5_sequential_ms": 1553.878185640012,
+        "amortized_T_K20_sequential_ms": 5939.878176412702,
+        "amortized_T_batch45_ms": 5466.129488204994,
+        "per_map_costs": [
+          4.213956341212033,
+          6.559451863184702,
+          4.903264850934074,
+          4.908579133385964,
+          6.38519086352203,
+          7.886940838876485,
+          4.889260616316766,
+          5.5143018553962255
+        ]
+      },
+      "SameGP-Centered-PIMC-H48": {
+        "mean_cost": 5.353072010377088,
+        "reach_rate": 1.0,
+        "clip_fraction": 0.0,
+        "ours_minus_method_cost": {
+          "mean": -1.208516431421217,
+          "student_t_ci95": 0.4265573641585196
+        },
+        "gp_amortized_ms": 91.5023869019933,
+        "query_build_ms": 0.31836156267672777,
+        "single_traj_exec_ms": 368.5389662568923,
+        "batch45_exec_ms": 4544.018701747214,
+        "amortized_T_K1_sequential_ms": 460.35971472156234,
+        "amortized_T_K5_sequential_ms": 1934.5155797491316,
+        "amortized_T_K20_sequential_ms": 7462.600073602516,
+        "amortized_T_batch45_ms": 4635.8394502118845,
+        "per_map_costs": [
+          4.192106722331449,
+          6.193063279742709,
+          4.7609061906101715,
+          4.877467942059593,
+          6.146850790210254,
+          6.784931515776331,
+          4.706665071629824,
+          5.162584570656367
+        ]
+      },
+      "SameGP-Reflected-GreenRes": {
+        "mean_cost": 4.14455557895587,
+        "reach_rate": 1.0,
+        "clip_fraction": 0.0,
+        "ours_minus_method_cost": {
+          "mean": 0.0,
+          "student_t_ci95": 0.0
+        },
+        "gp_amortized_ms": 91.5023869019933,
+        "query_build_ms": 660.3770653891843,
+        "single_traj_exec_ms": 8.270827772018189,
+        "batch45_exec_ms": 43.17507043985339,
+        "amortized_T_K1_sequential_ms": 760.1502800631957,
+        "amortized_T_K5_sequential_ms": 793.2335911512686,
+        "amortized_T_K20_sequential_ms": 917.2960077315413,
+        "amortized_T_batch45_ms": 795.0545227310309,
+        "per_map_costs": [
+          3.7164110756728435,
+          4.399780636125043,
+          3.6671664743556662,
+          4.020924721745659,
+          4.507916406471353,
+          4.8995594588693026,
+          3.888608858053278,
+          4.056077000353819
+        ]
+      }
+    }
+  },
+  "highd_6d": {
+    "dim": 6,
+    "n_maps": 8,
+    "n_probes": 100,
+    "mean_gp_fit_ms": 901.8928028817754,
+    "methods": {
+      "Pure-Base-Guide": {
+        "mean_cost": 4.043872527660266,
+        "reach_rate": 1.0,
+        "clip_fraction": 0.0,
+        "ours_minus_method_cost": {
+          "mean": -0.24410926306586755,
+          "student_t_ci95": 0.1514129018490288
+        },
+        "gp_amortized_ms": 0.0,
+        "query_build_ms": 0.3503419866319746,
+        "single_traj_exec_ms": 8.899350000622992,
+        "batch45_exec_ms": 27.335063108087827,
+        "amortized_T_K1_sequential_ms": 9.249691987254966,
+        "amortized_T_K5_sequential_ms": 44.84709198974693,
+        "amortized_T_K20_sequential_ms": 178.3373419990918,
+        "amortized_T_batch45_ms": 27.6854050947198,
+        "per_map_costs": [
+          4.727138198931528,
+          3.432125732952983,
+          3.6568387037594747,
+          4.2343044139668855,
+          3.635763804055505,
+          4.13789280345775,
+          4.178859210972882,
+          4.348057353185126
+        ]
+      },
+      "SameGP-PlainMC-Distill": {
+        "mean_cost": 10.985018603845468,
+        "reach_rate": 0.6537037037037037,
+        "clip_fraction": 0.0,
+        "ours_minus_method_cost": {
+          "mean": -7.185255339251069,
+          "student_t_ci95": 3.05627655641391
+        },
+        "gp_amortized_ms": 300.6309342939251,
+        "query_build_ms": 5517.336235827921,
+        "single_traj_exec_ms": 33.578607137314975,
+        "batch45_exec_ms": 147.1568316143627,
+        "amortized_T_K1_sequential_ms": 5851.545777259161,
+        "amortized_T_K5_sequential_ms": 5985.860205808421,
+        "amortized_T_K20_sequential_ms": 6489.539312868145,
+        "amortized_T_batch45_ms": 5965.124001736209,
+        "per_map_costs": [
+          19.612735921767104,
+          12.697767803949853,
+          8.611051810369334,
+          8.997561745404104,
+          7.799242386573745,
+          10.539046380651472,
+          8.932701327947306,
+          10.69004145410083
+        ]
+      },
+      "SameGP-Centered-PIMC-H16": {
+        "mean_cost": 3.9853791691897866,
+        "reach_rate": 1.0,
+        "clip_fraction": 0.0,
+        "ours_minus_method_cost": {
+          "mean": -0.18561590459538752,
+          "student_t_ci95": 0.1063169218396249
+        },
+        "gp_amortized_ms": 300.6309342939251,
+        "query_build_ms": 0.3839408454950899,
+        "single_traj_exec_ms": 346.1691493672939,
+        "batch45_exec_ms": 6245.454625439986,
+        "amortized_T_K1_sequential_ms": 647.1840245067142,
+        "amortized_T_K5_sequential_ms": 2031.8606219758897,
+        "amortized_T_K20_sequential_ms": 7224.397862485298,
+        "amortized_T_batch45_ms": 6546.469500579406,
+        "per_map_costs": [
+          4.667185097566267,
+          3.4454835914769935,
+          3.6536493289970635,
+          4.141263359104774,
+          3.6107803364229345,
+          3.932965558276468,
+          4.045844906646662,
+          4.385861175027132
+        ]
+      },
+      "SameGP-Centered-PIMC-H48": {
+        "mean_cost": 4.066011558391677,
+        "reach_rate": 1.0,
+        "clip_fraction": 0.0,
+        "ours_minus_method_cost": {
+          "mean": -0.2662482937972785,
+          "student_t_ci95": 0.10661307948826886
+        },
+        "gp_amortized_ms": 300.6309342939251,
+        "query_build_ms": 0.356414772492523,
+        "single_traj_exec_ms": 539.9571828796372,
+        "batch45_exec_ms": 8395.207259998037,
+        "amortized_T_K1_sequential_ms": 840.9445319460549,
+        "amortized_T_K5_sequential_ms": 3000.7732634646036,
+        "amortized_T_K20_sequential_ms": 11100.131006659161,
+        "amortized_T_batch45_ms": 8696.194609064454,
+        "per_map_costs": [
+          4.687486797382532,
+          3.565065647293259,
+          3.747801559362061,
+          4.214264909228668,
+          3.5416029485941096,
+          4.110328811624467,
+          4.145246243913544,
+          4.516295549734781
+        ]
+      },
+      "SameGP-Reflected-GreenRes": {
+        "mean_cost": 3.7997632645943993,
+        "reach_rate": 1.0,
+        "clip_fraction": 0.0,
+        "ours_minus_method_cost": {
+          "mean": 0.0,
+          "student_t_ci95": 0.0
+        },
+        "gp_amortized_ms": 300.6309342939251,
+        "query_build_ms": 1730.2345281641465,
+        "single_traj_exec_ms": 9.288350217199575,
+        "batch45_exec_ms": 50.28802144806832,
+        "amortized_T_K1_sequential_ms": 2040.1538126752712,
+        "amortized_T_K5_sequential_ms": 2077.3072135440693,
+        "amortized_T_K20_sequential_ms": 2216.632466802063,
+        "amortized_T_batch45_ms": 2081.1534839061396,
+        "per_map_costs": [
+          4.255938199599445,
+          3.3862937992935667,
+          3.6669155631354236,
+          3.937668806771567,
+          3.4095225551147372,
+          3.698260820652824,
+          3.809100108076373,
+          4.234406264111258
+        ]
+      }
+    }
+  },
+  "underactuated_attribution": {
+    "n_maps": 6,
+    "configs": {
+      "Centered-LQRGuided-PIMC": {
+        "mean_cost": 16.36805181076689,
+        "reach_rate": 0.8425925925925926,
+        "vel_clip_fraction": 0.0
+      },
+      "GreenRes-Iso-ShortSim(v2-like)": {
+        "mean_cost": 15.750270506982716,
+        "reach_rate": 0.5092592592592593,
+        "vel_clip_fraction": 0.0
+      },
+      "GreenRes-Iso-LongSim(9s)": {
+        "mean_cost": 17.70974940251809,
+        "reach_rate": 0.7037037037037037,
+        "vel_clip_fraction": 0.0
+      },
+      "GreenRes-AnisoInwardBnd-LongSim(9s)": {
+        "mean_cost": 11.904661371663542,
+        "reach_rate": 0.9722222222222223,
+        "vel_clip_fraction": 0.0
+      }
+    }
+  }
+}

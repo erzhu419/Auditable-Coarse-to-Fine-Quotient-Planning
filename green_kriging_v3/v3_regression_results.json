@@ -1,0 +1,51 @@
+{
+  "1_schur_port_unconditional_positivity": {
+    "worst_pre_floor_raw_min_Z": 1.3078144223423027e-05,
+    "total_negative_nodes_across_27_adversarial_cases": 0,
+    "monotone_port_refinement_convergence": true,
+    "pass": true
+  },
+  "2_goal_overlap_and_permutation_invariance": {
+    "overlap_grid_node_count": 3,
+    "overlap_max_V_error_vs_min_phi": 0.0,
+    "goal_permutation_max_V_diff": 0.0,
+    "raw_min_Z_on_overlap": 3.185481577161328e-05,
+    "pass": true
+  },
+  "3_and_4_highd_neumann_and_exterior_trace": {
+    "max_reflecting_wall_normal_derivative": 4.1991580856906444e-16,
+    "exterior_trace_rms_errors_at_1e_minus_7": [
+      0.0009148347006076124,
+      0.0015065630128398583
+    ],
+    "min_exterior_value": 0.0,
+    "pass": true
+  },
+  "5_antithetic_centered_pimc_variance": {
+    "free_world_mean_squared_action_diff_vs_u0": 7.113903732080352e-33,
+    "v2_uncentered_spurious_mse_reference": 0.7469,
+    "pass": true
+  },
+  "6_killed_adjoint_exactness": {
+    "uniform_dq_finite_diff": 1.197739838865175,
+    "uniform_dq_killed_adjoint_sum": 1.1977398389713003,
+    "abs_diff": 1.0612533074549901e-10,
+    "absorbing_goal_occupation_mass": 0.0,
+    "pass": true
+  },
+  "7_true_discrete_bellman_residuals": {
+    "non_lmdp_true_bellman_residual": 2.8899105330992825e-13,
+    "robust_hjb_true_discrete_residual": 7.252314003055204e-15,
+    "pass": true
+  },
+  "8_protocol_post_step_and_latent_std": {
+    "one_step_final_hit_cost": 0.7999999999999999,
+    "one_step_reach_rate": 1.0,
+    "one_step_timeout_rate": 0.0,
+    "mean_latent_std_at_observed_pts": 0.12650205611566692,
+    "obs_noise_std": 0.2802823253474758,
+    "sklearn_predictive_std_incl_noise": 0.3082856314135917,
+    "pass": true
+  },
+  "ALL_PASSED": true
+}
