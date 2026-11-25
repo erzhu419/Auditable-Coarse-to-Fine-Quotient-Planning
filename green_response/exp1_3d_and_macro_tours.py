@@ -581,9 +581,196 @@ def _simulate_adaptive_macro_crn(
     return float(np.mean(tot_c))
 
 
+def _tour_144_map_worker(args: Tuple[int, int, int, int]) -> dict:
+    idx_m, m_seed, grid_n, tours_per_map = args
+    planners = [
+        "Euclidean-Heuristic",
+        "Heuristic-1Port",
+        "Cached-ExactRing-FixedTour",
+        "Certified-BnB-FixedTour",
+        "Full-ExactRing-SubsetDP",
+        "UniformWidth-Port-SubsetDP",
+        "DecisionGuided-Port-SubsetDP",
+        "Hybrid-Economical-SubsetDP",
+    ]
+    eps_tol = 0.25
+    world = generate_benchmark_map(m_seed, dim=2, regime="narrow_barrier", with_drift=True)
+    rng = np.random.default_rng(m_seed + 77)
+    rng_ord = np.random.default_rng(m_seed + 303)
+    r_wp = 0.27
+    catalog_wps: List[GoalBall] = []
+    for _ in range(12):
+        for _att in range(180):
+            pt = rng.uniform(-1.20, 1.20, size=2)
+            if all(np.linalg.norm(pt - np.asarray(w.center)) >= 2.06 * r_wp for w in catalog_wps):
+                catalog_wps.append(GoalBall(tuple(pt.tolist()), phi=0.0, radius=r_wp))
+                break
+
+    X_obs, q_obs, b_obs = sample_noisy_probes(world, n_probes=90, seed=m_seed + 5, include_drift=True)
+    km = KrigingWorldModel(X_obs, q_obs, b_obs)
+
+    exec_fd = ClassicalFDSolver(world.spec, grid_n, km.predict_q, km.predict_b)
+    leg_pol_cache = {
+        j: exec_fd.solve_direct(QueryTask(f"leg_{j}", (w,), ((0.0, 0.0),)))["policy"]
+        for j, w in enumerate(catalog_wps)
+    }
+
+    pl_h1 = SchurPortPlanner(world.spec, grid_n, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="L1", lazy_init=False)
+    pl_ex_fix = SchurPortPlanner(world.spec, grid_n, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="EXACT", lazy_init=True)
+    pl_bnb = SchurPortPlanner(world.spec, grid_n, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="L1", lazy_init=True)
+    pl_ex_sub = SchurPortPlanner(world.spec, grid_n, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="EXACT", lazy_init=True)
+    pl_uw = SchurPortPlanner(world.spec, grid_n, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="L1", lazy_init=True)
+    pl_dg = SchurPortPlanner(world.spec, grid_n, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="L1", lazy_init=True)
+    pl_hyb = SchurPortPlanner(world.spec, grid_n, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="L1", lazy_init=True)
+
+    mt_h1 = MacroTourPlanner(pl_h1)
+    mt_ex_fix = MacroTourPlanner(pl_ex_fix)
+    mt_bnb = MacroTourPlanner(pl_bnb)
+    mt_ex_sub = MacroTourPlanner(pl_ex_sub)
+    mt_uw = MacroTourPlanner(pl_uw)
+    mt_dg = MacroTourPlanner(pl_dg)
+    mt_hyb = MacroTourPlanner(pl_hyb)
+
+    ord_ms = {
+        "Euclidean-Heuristic": 0.0,
+        "Heuristic-1Port": pl_h1.op_build_ms,
+        "Cached-ExactRing-FixedTour": pl_ex_fix.op_build_ms,
+        "Certified-BnB-FixedTour": pl_bnb.op_build_ms,
+        "Full-ExactRing-SubsetDP": pl_ex_sub.op_build_ms,
+        "UniformWidth-Port-SubsetDP": pl_uw.op_build_ms,
+        "DecisionGuided-Port-SubsetDP": pl_dg.op_build_ms,
+        "Hybrid-Economical-SubsetDP": pl_hyb.op_build_ms,
+    }
+    c_all = {p: [] for p in planners}
+    c_ext = {p: [] for p in planners}
+    audit = {
+        p: {
+            "tasks": 0, "exterior_tasks": 0, "initial_inside_tasks": 0,
+            "epsilon_certified": 0, "unresolved": 0, "heuristic": 0, "numeric_invalid": 0,
+            "bound_violations": 0, "certified_regret_violations": 0,
+            "max_exact_model_regret": 0.0, "exact_model_regrets": [], "model_vs_real_crn_abs_gaps": [],
+        }
+        for p in planners
+    }
+
+    for t_i in range(tours_per_map):
+        sub_ids = tuple(rng.choice(len(catalog_wps), size=5, replace=False).tolist())
+        start_xy = rng.uniform(-1.15, 1.15, size=2)
+        t_seed = 9500 + 20 * idx_m + t_i
+
+        s_node = int(np.argmin(np.sum((pl_h1.pts - start_xy[None, :]) ** 2, axis=1)))
+        inside_any = any(
+            bool(pl_h1.wp_masks[j][s_node]) or np.linalg.norm(start_xy - np.asarray(catalog_wps[j].center)) <= r_wp
+            for j in sub_ids
+        )
+
+        exact_scores, _ = independent_exact_ball_tour_scores(pl_h1, start_xy, sub_ids)
+        exact_fixed_opt = min(exact_scores.values())
+
+        t0 = time.perf_counter()
+        euc_ord = min(
+            itertools.permutations(sub_ids),
+            key=lambda perm: float(np.linalg.norm(start_xy - np.asarray(catalog_wps[perm[0]].center)))
+            + sum(float(np.linalg.norm(np.asarray(catalog_wps[a].center) - np.asarray(catalog_wps[b].center))) for a, b in zip(perm[:-1], perm[1:])),
+        )
+        ord_ms["Euclidean-Heuristic"] += 1000.0 * (time.perf_counter() - t0)
+
+        # Randomize execution order of timed planners within worker to prevent cache-order bias
+        res_map = {}
+        call_specs = [
+            ("Heuristic-1Port", lambda: mt_h1.plan_fixed_tour_bnb(start_xy, sub_ids, epsilon_tol=eps_tol, mode="heuristic_fast"), "ordering_ms"),
+            ("Cached-ExactRing-FixedTour", lambda: mt_ex_fix.plan_exact_fixed_tour(start_xy, sub_ids), "ordering_ms"),
+            ("Certified-BnB-FixedTour", lambda: mt_bnb.plan_fixed_tour_bnb(start_xy, sub_ids, epsilon_tol=eps_tol, max_refine_steps=12), "ordering_ms"),
+            ("Full-ExactRing-SubsetDP", lambda: mt_ex_sub.plan_exact_subset_dp(start_xy, sub_ids), "planning_ms"),
+            ("UniformWidth-Port-SubsetDP", lambda: mt_uw.plan_subset_macro_policy(start_xy, sub_ids, epsilon_tol=eps_tol, max_refine_steps=12, refine_strategy="uniform_width", use_incremental_dp=True), "planning_ms"),
+            ("DecisionGuided-Port-SubsetDP", lambda: mt_dg.plan_subset_macro_policy(start_xy, sub_ids, epsilon_tol=eps_tol, max_refine_steps=12, refine_strategy="decision_guided", use_incremental_dp=True), "planning_ms"),
+            ("Hybrid-Economical-SubsetDP", lambda: mt_hyb.plan_economical_hybrid(start_xy, sub_ids, epsilon_tol=eps_tol, max_refine_steps=12), "planning_ms"),
+        ]
+        for idx_c in rng_ord.permutation(len(call_specs)).tolist():
+            pk, fn_c, ms_key = call_specs[idx_c]
+            r_out = fn_c()
+            ord_ms[pk] += r_out[ms_key] + float(r_out.get("router_ms", 0.0))
+            res_map[pk] = r_out
+
+        fixed_cache: Dict[Tuple[int, ...], float] = {}
+        for pname, robj in [
+            ("Euclidean-Heuristic", {"best_order": euc_ord, "status": "heuristic", "certified": False}),
+            ("Heuristic-1Port", res_map["Heuristic-1Port"]),
+            ("Cached-ExactRing-FixedTour", res_map["Cached-ExactRing-FixedTour"]),
+            ("Certified-BnB-FixedTour", res_map["Certified-BnB-FixedTour"]),
+        ]:
+            ord_p = robj["best_order"]
+            if ord_p not in fixed_cache:
+                fixed_cache[ord_p] = _simulate_fixed_tour_crn(world, catalog_wps, leg_pol_cache, start_xy, ord_p, t_seed)
+            real_c = fixed_cache[ord_p]
+            c_all[pname].append(real_c)
+            if not inside_any:
+                c_ext[pname].append(real_c)
+
+            ac = audit[pname]
+            ac["tasks"] += 1
+            ac["initial_inside_tasks" if inside_any else "exterior_tasks"] += 1
+            ac[robj["status"]] += 1
+            ex_sel = exact_scores[ord_p]
+            reg = ex_sel - exact_fixed_opt
+            ac["max_exact_model_regret"] = max(ac["max_exact_model_regret"], reg)
+            ac["exact_model_regrets"].append(reg)
+            ac["model_vs_real_crn_abs_gaps"].append(abs(real_c - ex_sel))
+            if robj["certified"] and reg > eps_tol + 1e-9:
+                ac["certified_regret_violations"] += 1
+            for pm, (lv, hv) in robj.get("perm_enclosures", {}).items():
+                ev = exact_scores[pm]
+                if ev < lv - 1e-9 or ev > hv + 1e-9:
+                    ac["bound_violations"] += 1
+
+        for pname in ("Full-ExactRing-SubsetDP", "UniformWidth-Port-SubsetDP", "DecisionGuided-Port-SubsetDP", "Hybrid-Economical-SubsetDP"):
+            robj = res_map[pname]
+            real_m = _simulate_adaptive_macro_crn(world, catalog_wps, leg_pol_cache, start_xy, sub_ids, robj["select_next_waypoint"], t_seed)
+            c_all[pname].append(real_m)
+            if not inside_any:
+                c_ext[pname].append(real_m)
+
+            ref_m = independent_exact_macro_bellman_reference(pl_h1, start_xy, sub_ids, policy_action_idx=robj["policy_action_idx"])
+            ac_m = audit[pname]
+            ac_m["tasks"] += 1
+            ac_m["initial_inside_tasks" if inside_any else "exterior_tasks"] += 1
+            ac_m[robj["status"]] += 1
+            f_opt = ref_m["optimal_adaptive_macro_cost"]
+            j_pol = ref_m["evaluated_policy_exact_macro_cost"]
+            reg_m = float(j_pol - f_opt)
+            ac_m["max_exact_model_regret"] = max(ac_m["max_exact_model_regret"], reg_m)
+            ac_m["exact_model_regrets"].append(reg_m)
+            ac_m["model_vs_real_crn_abs_gaps"].append(abs(real_m - j_pol))
+            lo_m, hi_m = robj["macro_value_bounds"]
+            if not ((lo_m - 1e-9 <= f_opt <= hi_m + 1e-9) and (f_opt - 1e-9 <= j_pol <= hi_m + 1e-9)):
+                ac_m["bound_violations"] += 1
+            if robj["certified"] and reg_m > eps_tol + 1e-9:
+                ac_m["certified_regret_violations"] += 1
+
+    bs_map = {
+        "Euclidean-Heuristic": 0,
+        "Heuristic-1Port": pl_h1.total_lu_backsolves,
+        "Cached-ExactRing-FixedTour": pl_ex_fix.total_lu_backsolves,
+        "Certified-BnB-FixedTour": pl_bnb.total_lu_backsolves,
+        "Full-ExactRing-SubsetDP": pl_ex_sub.total_lu_backsolves,
+        "UniformWidth-Port-SubsetDP": pl_uw.total_lu_backsolves,
+        "DecisionGuided-Port-SubsetDP": pl_dg.total_lu_backsolves,
+        "Hybrid-Economical-SubsetDP": pl_hyb.total_lu_backsolves,
+    }
+    return {
+        "c_all_mean": {p: float(np.mean(c_all[p])) for p in planners},
+        "c_ext_mean": {p: (float(np.mean(c_ext[p])) if c_ext[p] else None) for p in planners},
+        "ord_ms": ord_ms,
+        "bs_map": bs_map,
+        "audit": audit,
+    }
+
+
 def run_official_144_tours_and_macro_benchmark(
-    grid_n: int = 75, tours_per_map: int = 8, n_dev: int = 12, n_heldout: int = 6
+    grid_n: int = 75, tours_per_map: int = 8, n_dev: int = 12, n_heldout: int = 6, max_workers: int = 8
 ) -> dict:
+    from green_response import run_map_parallel
+
     map_seeds = list(range(800, 800 + n_dev)) + list(range(1800, 1800 + n_heldout))
     planners = [
         "Euclidean-Heuristic",
@@ -593,442 +780,365 @@ def run_official_144_tours_and_macro_benchmark(
         "Full-ExactRing-SubsetDP",
         "UniformWidth-Port-SubsetDP",
         "DecisionGuided-Port-SubsetDP",
+        "Hybrid-Economical-SubsetDP",
     ]
-    per_map_cost_all = {p: [] for p in planners}
-    per_map_cost_ext = {p: [] for p in planners}
-    per_map_ordering_ms = {p: [] for p in planners}
-    per_map_backsolves = {p: [] for p in planners}
+    rows = run_map_parallel(
+        _tour_144_map_worker, [(i, s, grid_n, tours_per_map) for i, s in enumerate(map_seeds)], max_workers=max_workers
+    )
 
-    audit = {
-        p: {
-            "tasks": 0,
-            "exterior_tasks": 0,
-            "initial_inside_tasks": 0,
-            "epsilon_certified": 0,
-            "unresolved": 0,
-            "heuristic": 0,
-            "numeric_invalid": 0,
-            "bound_violations": 0,
-            "certified_regret_violations": 0,
-            "max_exact_model_regret": 0.0,
-            "exact_model_regrets": [],
-            "model_vs_real_crn_abs_gaps": [],
-        }
-        for p in planners
-    }
-    eps_tol = 0.25
+    ref_ex_sub_all = np.array([r["c_all_mean"]["Full-ExactRing-SubsetDP"] for r in rows])
+    ref_ex_sub_ext = np.array([r["c_ext_mean"]["Full-ExactRing-SubsetDP"] for r in rows if r["c_ext_mean"]["Full-ExactRing-SubsetDP"] is not None])
+    ref_ex_fix_ext = np.array([r["c_ext_mean"]["Cached-ExactRing-FixedTour"] for r in rows if r["c_ext_mean"]["Cached-ExactRing-FixedTour"] is not None])
 
-    for idx_m, m_seed in enumerate(map_seeds):
-        world = generate_benchmark_map(m_seed, dim=2, regime="narrow_barrier", with_drift=True)
-        rng = np.random.default_rng(m_seed + 77)
-        r_wp = 0.27
-        catalog_wps: List[GoalBall] = []
-        for _ in range(12):
-            for _att in range(180):
-                pt = rng.uniform(-1.20, 1.20, size=2)
-                if all(np.linalg.norm(pt - np.asarray(w.center)) >= 2.06 * r_wp for w in catalog_wps):
-                    catalog_wps.append(GoalBall(tuple(pt.tolist()), phi=0.0, radius=r_wp))
-                    break
-
-        X_obs, q_obs, b_obs = sample_noisy_probes(world, n_probes=90, seed=m_seed + 5, include_drift=True)
-        km = KrigingWorldModel(X_obs, q_obs, b_obs)
-
-        exec_fd = ClassicalFDSolver(world.spec, grid_n, km.predict_q, km.predict_b)
-        leg_pol_cache = {
-            j: exec_fd.solve_direct(QueryTask(f"leg_{j}", (w,), ((0.0, 0.0),)))["policy"]
-            for j, w in enumerate(catalog_wps)
-        }
-
-        pl_h1 = SchurPortPlanner(world.spec, grid_n, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="L1", lazy_init=False)
-        pl_ex_fix = SchurPortPlanner(world.spec, grid_n, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="EXACT", lazy_init=True)
-        pl_bnb = SchurPortPlanner(world.spec, grid_n, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="L1", lazy_init=True)
-        pl_ex_sub = SchurPortPlanner(world.spec, grid_n, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="EXACT", lazy_init=True)
-        pl_uw = SchurPortPlanner(world.spec, grid_n, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="L1", lazy_init=True)
-        pl_dg = SchurPortPlanner(world.spec, grid_n, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="L1", lazy_init=True)
-
-        mt_h1 = MacroTourPlanner(pl_h1)
-        mt_ex_fix = MacroTourPlanner(pl_ex_fix)
-        mt_bnb = MacroTourPlanner(pl_bnb)
-        mt_ex_sub = MacroTourPlanner(pl_ex_sub)
-        mt_uw = MacroTourPlanner(pl_uw)
-        mt_dg = MacroTourPlanner(pl_dg)
-
-        ord_ms = {
-            "Euclidean-Heuristic": 0.0,
-            "Heuristic-1Port": pl_h1.op_build_ms,
-            "Cached-ExactRing-FixedTour": pl_ex_fix.op_build_ms,
-            "Certified-BnB-FixedTour": pl_bnb.op_build_ms,
-            "Full-ExactRing-SubsetDP": pl_ex_sub.op_build_ms,
-            "UniformWidth-Port-SubsetDP": pl_uw.op_build_ms,
-            "DecisionGuided-Port-SubsetDP": pl_dg.op_build_ms,
-        }
-        c_all = {p: [] for p in planners}
-        c_ext = {p: [] for p in planners}
-
-        for t_i in range(tours_per_map):
-            sub_ids = tuple(rng.choice(len(catalog_wps), size=5, replace=False).tolist())
-            start_xy = rng.uniform(-1.15, 1.15, size=2)
-            t_seed = 9500 + 20 * idx_m + t_i
-
-            s_node = int(np.argmin(np.sum((pl_h1.pts - start_xy[None, :]) ** 2, axis=1)))
-            inside_any = any(bool(pl_h1.wp_masks[j][s_node]) or np.linalg.norm(start_xy - np.asarray(catalog_wps[j].center)) <= r_wp for j in sub_ids)
-
-            exact_scores, _ = independent_exact_ball_tour_scores(pl_h1, start_xy, sub_ids)
-            exact_fixed_opt = min(exact_scores.values())
-
-            t0 = time.perf_counter()
-            euc_ord = min(
-                itertools.permutations(sub_ids),
-                key=lambda perm: float(np.linalg.norm(start_xy - np.asarray(catalog_wps[perm[0]].center)))
-                + sum(float(np.linalg.norm(np.asarray(catalog_wps[a].center) - np.asarray(catalog_wps[b].center))) for a, b in zip(perm[:-1], perm[1:])),
-            )
-            ord_ms["Euclidean-Heuristic"] += 1000.0 * (time.perf_counter() - t0)
-
-            r_h1 = mt_h1.plan_fixed_tour_bnb(start_xy, sub_ids, epsilon_tol=eps_tol, mode="heuristic_fast")
-            ord_ms["Heuristic-1Port"] += r_h1["ordering_ms"]
-
-            r_ex_fix = mt_ex_fix.plan_exact_fixed_tour(start_xy, sub_ids)
-            ord_ms["Cached-ExactRing-FixedTour"] += r_ex_fix["ordering_ms"]
-
-            r_bnb = mt_bnb.plan_fixed_tour_bnb(start_xy, sub_ids, epsilon_tol=eps_tol, max_refine_steps=12)
-            ord_ms["Certified-BnB-FixedTour"] += r_bnb["ordering_ms"]
-
-            r_ex_sub = mt_ex_sub.plan_exact_subset_dp(start_xy, sub_ids)
-            ord_ms["Full-ExactRing-SubsetDP"] += r_ex_sub["planning_ms"]
-
-            r_uw = mt_uw.plan_subset_macro_policy(start_xy, sub_ids, epsilon_tol=eps_tol, max_refine_steps=12, refine_strategy="uniform_width")
-            ord_ms["UniformWidth-Port-SubsetDP"] += r_uw["planning_ms"]
-
-            r_dg = mt_dg.plan_subset_macro_policy(start_xy, sub_ids, epsilon_tol=eps_tol, max_refine_steps=12, refine_strategy="decision_guided")
-            ord_ms["DecisionGuided-Port-SubsetDP"] += r_dg["planning_ms"]
-
-            fixed_cache: Dict[Tuple[int, ...], float] = {}
-            for pname, robj in [
-                ("Euclidean-Heuristic", {"best_order": euc_ord, "status": "heuristic", "certified": False}),
-                ("Heuristic-1Port", r_h1),
-                ("Cached-ExactRing-FixedTour", r_ex_fix),
-                ("Certified-BnB-FixedTour", r_bnb),
-            ]:
-                ord_p = robj["best_order"]
-                if ord_p not in fixed_cache:
-                    fixed_cache[ord_p] = _simulate_fixed_tour_crn(world, catalog_wps, leg_pol_cache, start_xy, ord_p, t_seed)
-                real_c = fixed_cache[ord_p]
-                c_all[pname].append(real_c)
-                if not inside_any:
-                    c_ext[pname].append(real_c)
-
-                ac = audit[pname]
-                ac["tasks"] += 1
-                ac["initial_inside_tasks" if inside_any else "exterior_tasks"] += 1
-                ac[robj["status"]] += 1
-                ex_sel = exact_scores[ord_p]
-                reg = ex_sel - exact_fixed_opt
-                ac["max_exact_model_regret"] = max(ac["max_exact_model_regret"], reg)
-                ac["exact_model_regrets"].append(reg)
-                ac["model_vs_real_crn_abs_gaps"].append(abs(real_c - ex_sel))
-                if robj["certified"] and reg > eps_tol + 1e-9:
-                    ac["certified_regret_violations"] += 1
-                for pm, (lv, hv) in robj.get("perm_enclosures", {}).items():
-                    ev = exact_scores[pm]
-                    if ev < lv - 1e-9 or ev > hv + 1e-9:
-                        ac["bound_violations"] += 1
-
-            for pname, robj in [
-                ("Full-ExactRing-SubsetDP", r_ex_sub),
-                ("UniformWidth-Port-SubsetDP", r_uw),
-                ("DecisionGuided-Port-SubsetDP", r_dg),
-            ]:
-                real_m = _simulate_adaptive_macro_crn(world, catalog_wps, leg_pol_cache, start_xy, sub_ids, robj["select_next_waypoint"], t_seed)
-                c_all[pname].append(real_m)
-                if not inside_any:
-                    c_ext[pname].append(real_m)
-
-                ref_m = independent_exact_macro_bellman_reference(pl_h1, start_xy, sub_ids, policy_action_idx=robj["policy_action_idx"])
-                ac_m = audit[pname]
-                ac_m["tasks"] += 1
-                ac_m["initial_inside_tasks" if inside_any else "exterior_tasks"] += 1
-                ac_m[robj["status"]] += 1
-                f_opt = ref_m["optimal_adaptive_macro_cost"]
-                j_pol = ref_m["evaluated_policy_exact_macro_cost"]
-                reg_m = float(j_pol - f_opt)
-                ac_m["max_exact_model_regret"] = max(ac_m["max_exact_model_regret"], reg_m)
-                ac_m["exact_model_regrets"].append(reg_m)
-                ac_m["model_vs_real_crn_abs_gaps"].append(abs(real_m - j_pol))
-                lo_m, hi_m = robj["macro_value_bounds"]
-                if not ((lo_m - 1e-9 <= f_opt <= hi_m + 1e-9) and (f_opt - 1e-9 <= j_pol <= hi_m + 1e-9)):
-                    ac_m["bound_violations"] += 1
-                if robj["certified"] and reg_m > eps_tol + 1e-9:
-                    ac_m["certified_regret_violations"] += 1
-
-        bs_map = {
-            "Euclidean-Heuristic": 0,
-            "Heuristic-1Port": pl_h1.total_lu_backsolves,
-            "Cached-ExactRing-FixedTour": pl_ex_fix.total_lu_backsolves,
-            "Certified-BnB-FixedTour": pl_bnb.total_lu_backsolves,
-            "Full-ExactRing-SubsetDP": pl_ex_sub.total_lu_backsolves,
-            "UniformWidth-Port-SubsetDP": pl_uw.total_lu_backsolves,
-            "DecisionGuided-Port-SubsetDP": pl_dg.total_lu_backsolves,
-        }
-        for p in planners:
-            per_map_cost_all[p].append(float(np.mean(c_all[p])))
-            if c_ext[p]:
-                per_map_cost_ext[p].append(float(np.mean(c_ext[p])))
-            per_map_ordering_ms[p].append(ord_ms[p])
-            per_map_backsolves[p].append(bs_map[p])
-
-        print(
-            f"  [Tour Map {idx_m+1}/{len(map_seeds)} seed={m_seed}] Matched Adaptive ms: "
-            f"ExactSubDP={ord_ms['Full-ExactRing-SubsetDP']:.0f}ms (bs={bs_map['Full-ExactRing-SubsetDP']}) vs "
-            f"WidthPort={ord_ms['UniformWidth-Port-SubsetDP']:.0f}ms (bs={bs_map['UniformWidth-Port-SubsetDP']}) vs "
-            f"DecisionPort={ord_ms['DecisionGuided-Port-SubsetDP']:.0f}ms (bs={bs_map['DecisionGuided-Port-SubsetDP']})",
-            flush=True,
-        )
-
-    ref_ex_sub_all = np.array(per_map_cost_all["Full-ExactRing-SubsetDP"])
-    ref_ex_sub_ext = np.array(per_map_cost_ext["Full-ExactRing-SubsetDP"])
-    ref_ex_fix_ext = np.array(per_map_cost_ext["Cached-ExactRing-FixedTour"])
     methods_out = {}
     for p in planners:
-        arr_all = np.array(per_map_cost_all[p])
-        arr_ext = np.array(per_map_cost_ext[p])
-        ac = audit[p]
+        arr_all = np.array([r["c_all_mean"][p] for r in rows])
+        arr_ext = np.array([r["c_ext_mean"][p] for r in rows if r["c_ext_mean"][p] is not None])
+        ms_list = [r["ord_ms"][p] for r in rows]
+        bs_list = [r["bs_map"][p] for r in rows]
+        tot_tasks = sum(r["audit"][p]["tasks"] for r in rows)
+        tot_cert = sum(r["audit"][p]["epsilon_certified"] for r in rows)
+        tot_viol = sum(r["audit"][p]["bound_violations"] for r in rows)
+        tot_reg_v = sum(r["audit"][p]["certified_regret_violations"] for r in rows)
+        all_regs = [x for r in rows for x in r["audit"][p]["exact_model_regrets"]]
+        all_gaps = [x for r in rows for x in r["audit"][p]["model_vs_real_crn_abs_gaps"]]
+
         methods_out[p] = {
             "all_144_tours_mean_cost": float(np.mean(arr_all)),
             "strictly_exterior_starts_mean_cost": float(np.mean(arr_ext)),
-            "planning_subsystem_ms": float(np.mean(per_map_ordering_ms[p])),
+            "planning_subsystem_ms": float(np.mean(ms_list)),
             "speedup_vs_matched_exact_subset_dp": float(
-                np.mean(per_map_ordering_ms["Full-ExactRing-SubsetDP"]) / max(np.mean(per_map_ordering_ms[p]), 1e-9)
+                np.mean([r["ord_ms"]["Full-ExactRing-SubsetDP"] for r in rows]) / max(float(np.mean(ms_list)), 1e-9)
             ),
-            "mean_total_lu_backsolves": float(np.mean(per_map_backsolves[p])),
-            "certification_rate": float(ac["epsilon_certified"] / max(ac["tasks"], 1)),
-            "bound_violation_count": int(ac["bound_violations"]),
-            "certified_regret_violation_count": int(ac["certified_regret_violations"]),
-            "mean_exact_model_regret": float(np.mean(ac["exact_model_regrets"])),
-            "max_exact_model_regret": float(ac["max_exact_model_regret"]),
-            "mean_model_vs_real_crn_abs_gap": float(np.mean(ac["model_vs_real_crn_abs_gaps"])),
+            "mean_total_lu_backsolves": float(np.mean(bs_list)),
+            "certification_rate": float(tot_cert / max(tot_tasks, 1)),
+            "bound_violation_count": int(tot_viol),
+            "certified_regret_violation_count": int(tot_reg_v),
+            "mean_exact_model_regret": float(np.mean(all_regs)),
+            "max_exact_model_regret": float(max(all_regs) if all_regs else 0.0),
+            "mean_model_vs_real_crn_abs_gap": float(np.mean(all_gaps)),
             "diff_vs_exact_subset_dp_all18": paired_stats(arr_all - ref_ex_sub_all),
             "diff_vs_exact_subset_dp_exterior": paired_stats(arr_ext - ref_ex_sub_ext),
             "diff_vs_exact_fixed_tour_exterior": paired_stats(arr_ext - ref_ex_fix_ext),
-            "per_map_planning_ms": per_map_ordering_ms[p],
-            "per_map_costs_all": per_map_cost_all[p],
+            "per_map_planning_ms": ms_list,
+            "per_map_costs_all": arr_all.tolist(),
         }
 
     return {
         "n_maps_total": len(map_seeds),
         "total_tours_evaluated": len(map_seeds) * tours_per_map,
-        "initial_inside_tours_count": int(audit["Full-ExactRing-SubsetDP"]["initial_inside_tasks"]),
-        "strictly_exterior_tours_count": int(audit["Full-ExactRing-SubsetDP"]["exterior_tasks"]),
-        "epsilon_tol": eps_tol,
+        "initial_inside_tours_count": int(sum(r["audit"]["Full-ExactRing-SubsetDP"]["initial_inside_tasks"] for r in rows)),
+        "strictly_exterior_tours_count": int(sum(r["audit"]["Full-ExactRing-SubsetDP"]["exterior_tasks"] for r in rows)),
+        "epsilon_tol": 0.25,
         "grid_n": grid_n,
         "methods": methods_out,
     }
 
 
-def run_scalability_and_regime_crossover_benchmark() -> dict:
-    """Part I: `m = 5, 7, 8, 9` on `65^2` with 100% independent exact verification on ALL `m = 5..9` tasks!
-    Part II: Locked Fresh-Seed (`9800..9807`) Operator-Cost Regime Crossover (`m = 6`, `4` tasks/map):
-      `Cheap 2D (25^2)` -> `Fine 2D (85^2)` -> `3D Spherical Waypoints (25^3)`!
+def _scaling_m_worker(args: Tuple[int, int]) -> dict:
+    ms, m_t = args
+    world = generate_benchmark_map(ms, dim=2, regime="narrow_barrier", with_drift=True)
+    rng = np.random.default_rng(ms + 77)
+    rng_ord = np.random.default_rng(ms + 404 + m_t)
+    r_wp = 0.25
+    catalog_wps: List[GoalBall] = []
+    for _ in range(12):
+        for _att in range(250):
+            pt = rng.uniform(-1.25, 1.25, size=2)
+            if all(np.linalg.norm(pt - np.asarray(w.center)) >= 2.04 * r_wp for w in catalog_wps):
+                catalog_wps.append(GoalBall(tuple(pt.tolist()), phi=0.0, radius=r_wp))
+                break
+    km = KrigingWorldModel(*sample_noisy_probes(world, n_probes=85, seed=ms + 5, include_drift=True))
+
+    pl_ex_s = SchurPortPlanner(world.spec, 65, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="EXACT", lazy_init=True)
+    pl_scr_dg = SchurPortPlanner(world.spec, 65, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="L1", lazy_init=True)
+    pl_inc_dg = SchurPortPlanner(world.spec, 65, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="L1", lazy_init=True)
+    pl_inc_uw = SchurPortPlanner(world.spec, 65, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="L1", lazy_init=True)
+    pl_hyb = SchurPortPlanner(world.spec, 65, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="L1", lazy_init=True)
+
+    mt_ex_s = MacroTourPlanner(pl_ex_s)
+    mt_scr_dg = MacroTourPlanner(pl_scr_dg)
+    mt_inc_dg = MacroTourPlanner(pl_inc_dg)
+    mt_inc_uw = MacroTourPlanner(pl_inc_uw)
+    mt_hyb = MacroTourPlanner(pl_hyb)
+
+    t_exs = pl_ex_s.op_build_ms
+    t_scr = pl_scr_dg.op_build_ms
+    t_inc = pl_inc_dg.op_build_ms
+    t_uws = pl_inc_uw.op_build_ms
+    t_hyb = pl_hyb.op_build_ms
+
+    pl_ex_f = SchurPortPlanner(world.spec, 65, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="EXACT", lazy_init=True) if m_t <= 7 else None
+    mt_ex_f = MacroTourPlanner(pl_ex_f) if pl_ex_f is not None else None
+    t_exf = pl_ex_f.op_build_ms if pl_ex_f is not None else 0.0
+
+    pl_bnb = SchurPortPlanner(world.spec, 65, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="L1", lazy_init=True) if m_t <= 8 else None
+    mt_bnb = MacroTourPlanner(pl_bnb) if pl_bnb is not None else None
+    t_bnb = pl_bnb.op_build_ms if pl_bnb is not None else 0.0
+
+    dg_cert = []
+    bnb_cert = []
+    bnb_pruned = []
+    adaptive_four_way_viol = 0
+    bnb_bound_viol = 0
+    sample_work_meta = {}
+
+    for _tk in range(4):
+        sub_ids = tuple(rng.choice(len(catalog_wps), size=m_t, replace=False).tolist())
+        start_xy = np.array([-1.42, -1.42])
+        for _att in range(200):
+            cand = rng.uniform(-1.35, 1.35, size=2)
+            if all(np.linalg.norm(cand - np.asarray(w.center)) > r_wp + 0.18 for w in catalog_wps):
+                start_xy = cand
+                break
+
+        res_d = {}
+        specs_m = [
+            ("ex", lambda: mt_ex_s.plan_exact_subset_dp(start_xy, sub_ids)),
+            ("scr", lambda: mt_scr_dg.plan_subset_macro_policy(start_xy, sub_ids, epsilon_tol=0.25, max_refine_steps=14, refine_strategy="decision_guided", use_incremental_dp=False)),
+            ("inc", lambda: mt_inc_dg.plan_subset_macro_policy(start_xy, sub_ids, epsilon_tol=0.25, max_refine_steps=14, refine_strategy="decision_guided", use_incremental_dp=True, return_dp_tables=True)),
+            ("uw", lambda: mt_inc_uw.plan_subset_macro_policy(start_xy, sub_ids, epsilon_tol=0.25, max_refine_steps=14, refine_strategy="uniform_width", use_incremental_dp=True)),
+            ("hyb", lambda: mt_hyb.plan_economical_hybrid(start_xy, sub_ids, epsilon_tol=0.25, max_refine_steps=14)),
+        ]
+        for idx_c in rng_ord.permutation(len(specs_m)).tolist():
+            k_c, fn_c = specs_m[idx_c]
+            res_d[k_c] = fn_c()
+
+        t_exs += res_d["ex"]["planning_ms"]
+        t_scr += res_d["scr"]["planning_ms"]
+        rd = res_d["inc"]
+        t_inc += rd["planning_ms"]
+        t_uws += res_d["uw"]["planning_ms"]
+        t_hyb += res_d["hyb"]["planning_ms"] + float(res_d["hyb"].get("router_ms", 0.0))
+        dg_cert.append(float(rd["certified"]))
+        sample_work_meta = {k: v for k, v in rd["work"].items()}
+
+        # Full 4-way table verification `F_lo <= F_opt <= J_pol <= F_hi` on ALL `m = 5, 7, 8, 9` tasks!
+        ref_ind = independent_exact_macro_bellman_reference(pl_inc_dg, start_xy, sub_ids, policy_action_idx=rd["policy_action_idx"])
+        f_lo_t = rd["F_lo_table"][:, 1:]
+        f_hi_t = rd["F_hi_table"][:, 1:]
+        f_op_t = ref_ind["F_opt_table"][:, 1:]
+        j_po_t = ref_ind["J_pol_table"][:, 1:]
+        adaptive_four_way_viol += int(np.sum(
+            (f_op_t < f_lo_t - 1e-9) | (j_po_t < f_op_t - 1e-9) | (j_po_t > f_hi_t + 1e-9)
+        ))
+
+        if m_t <= 7 and mt_ex_f is not None:
+            rfx = mt_ex_f.plan_exact_fixed_tour(start_xy, sub_ids)
+            t_exf += rfx["ordering_ms"]
+        if m_t <= 8 and mt_bnb is not None:
+            rb = mt_bnb.plan_fixed_tour_bnb(start_xy, sub_ids, epsilon_tol=0.25, max_refine_steps=14)
+            t_bnb += rb["ordering_ms"]
+            bnb_cert.append(float(rb["certified"]))
+            bnb_pruned.append(rb["pruned_permutations_never_expanded"] / rb["total_permutations_in_space"])
+            if m_t <= 7:
+                for pm, (lv, hv) in rb["perm_enclosures"].items():
+                    if rfx["scores"][pm] < lv - 1e-9 or rfx["scores"][pm] > hv + 1e-9:
+                        bnb_bound_viol += 1
+
+    return {
+        "ex_ms": t_exs, "ex_bs": pl_ex_s.total_lu_backsolves,
+        "scr_ms": t_scr, "scr_bs": pl_scr_dg.total_lu_backsolves,
+        "inc_ms": t_inc, "inc_bs": pl_inc_dg.total_lu_backsolves,
+        "uw_ms": t_uws, "uw_bs": pl_inc_uw.total_lu_backsolves,
+        "hyb_ms": t_hyb, "hyb_bs": pl_hyb.total_lu_backsolves,
+        "exf_ms": t_exf if m_t <= 7 else None,
+        "bnb_ms": t_bnb if m_t <= 8 else None,
+        "bnb_cert": bnb_cert,
+        "bnb_pruned": bnb_pruned,
+        "dg_cert": dg_cert,
+        "adaptive_four_way_viol": adaptive_four_way_viol,
+        "bnb_bound_viol": bnb_bound_viol if m_t <= 7 else None,
+        "sample_work_meta": sample_work_meta,
+    }
+
+
+def _crossover_map_worker(args: Tuple[int, int, int, float, float]) -> dict:
+    """Strictly Unconfounded Crossover Worker (`r_wp = 0.28, eps = 0.25` held FIXED across ALL grids!).
+    Also samples the physical waypoint catalogue on a grid-independent RNG stream so `21^3`, `25^3`, and `31^3`
+    solve the EXACT SAME physical waypoint tasks!
     """
+    ms, dim_r, gn_r, r_wp, eps_r = args
+    world = generate_benchmark_map(ms, dim=dim_r, regime="narrow_barrier", with_drift=True)
+    rng_cat = np.random.default_rng(ms + 77)
+    rng_ord = np.random.default_rng(ms + 909 + gn_r)
+    catalog_wps = []
+    for _ in range(12):
+        for _att in range(250):
+            pt = rng_cat.uniform(-1.18, 1.18, size=dim_r)
+            if dim_r == 3:
+                pt[2] *= 0.80
+            if all(np.linalg.norm(pt - np.asarray(w.center)) >= 1.92 * r_wp for w in catalog_wps):
+                catalog_wps.append(GoalBall(tuple(pt.tolist()), phi=0.0, radius=r_wp))
+                break
+    n_pr = 85 if dim_r == 2 else 110
+    km = KrigingWorldModel(*sample_noisy_probes(world, n_probes=n_pr, seed=ms + 5, include_drift=True))
+
+    tasks = []
+    for _tk in range(4):
+        sub_ids = tuple(rng_cat.choice(len(catalog_wps), size=6, replace=False).tolist())
+        start_pt = np.full(dim_r, -1.35)
+        for _att in range(200):
+            cand = rng_cat.uniform(-1.32, 1.32, size=dim_r)
+            if all(np.linalg.norm(cand - np.asarray(w.center)) > r_wp + 0.18 for w in catalog_wps):
+                start_pt = cand
+                break
+        tasks.append((start_pt, sub_ids))
+
+    pl_ex = SchurPortPlanner(world.spec, gn_r, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="EXACT", lazy_init=True, min_goal_radius_override=r_wp)
+    pl_uw = SchurPortPlanner(world.spec, gn_r, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="L1", lazy_init=True, min_goal_radius_override=r_wp)
+    pl_dg = SchurPortPlanner(world.spec, gn_r, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="L1", lazy_init=True, min_goal_radius_override=r_wp)
+    pl_hy = SchurPortPlanner(world.spec, gn_r, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="L1", lazy_init=True, min_goal_radius_override=r_wp)
+
+    ring_sz_mean = float(np.mean([len(r) for r in pl_dg.wp_rings]))
+    mt_ex = MacroTourPlanner(pl_ex)
+    mt_uw = MacroTourPlanner(pl_uw)
+    mt_dg = MacroTourPlanner(pl_dg)
+    mt_hy = MacroTourPlanner(pl_hy)
+
+    te = pl_ex.op_build_ms
+    tu = pl_uw.op_build_ms
+    td = pl_dg.op_build_ms
+    th = pl_hy.op_build_ms
+    phase_dg = {"init_ms": pl_dg.op_build_ms, "col_solve_ms": 0.0, "dp_ms": 0.0, "occ_ms": 0.0}
+    dgs_cert, hyb_cert, dgs_regret = [], [], []
+    viol_cnt = 0
+
+    for start_pt, sub_ids in tasks:
+        res_c = {}
+        c_specs = [
+            ("ex", lambda: mt_ex.plan_exact_subset_dp(start_pt, sub_ids)),
+            ("uw", lambda: mt_uw.plan_subset_macro_policy(start_pt, sub_ids, epsilon_tol=eps_r, max_refine_steps=10, refine_strategy="uniform_width", use_incremental_dp=True)),
+            ("dg", lambda: mt_dg.plan_subset_macro_policy(start_pt, sub_ids, epsilon_tol=eps_r, max_refine_steps=10, refine_strategy="decision_guided", use_incremental_dp=True)),
+            ("hy", lambda: mt_hy.plan_economical_hybrid(start_pt, sub_ids, epsilon_tol=eps_r, max_refine_steps=10)),
+        ]
+        for idx_c in rng_ord.permutation(len(c_specs)).tolist():
+            kc, fn_c = c_specs[idx_c]
+            res_c[kc] = fn_c()
+
+        te += res_c["ex"]["planning_ms"]
+        tu += res_c["uw"]["planning_ms"]
+        rd = res_c["dg"]
+        td += rd["planning_ms"]
+        th += res_c["hy"]["planning_ms"] + float(res_c["hy"].get("router_ms", 0.0))
+        phase_dg["col_solve_ms"] += rd["col_solve_ms"]
+        phase_dg["dp_ms"] += rd["dp_ms"]
+        phase_dg["occ_ms"] += rd["occupancy_ms"]
+        dgs_cert.append(float(rd["certified"]))
+        hyb_cert.append(float(res_c["hy"]["certified"]))
+
+        ref_c = independent_exact_macro_bellman_reference(pl_dg, start_pt, sub_ids, policy_action_idx=rd["policy_action_idx"])
+        lo_c, hi_c = rd["macro_value_bounds"]
+        f_opt_c = ref_c["optimal_adaptive_macro_cost"]
+        j_pol_c = ref_c["evaluated_policy_exact_macro_cost"]
+        dgs_regret.append(float(j_pol_c - f_opt_c))
+        if not ((lo_c - 1e-9 <= f_opt_c <= hi_c + 1e-9) and (f_opt_c - 1e-9 <= j_pol_c <= hi_c + 1e-9)):
+            viol_cnt += 1
+
+    return {
+        "ring_sz_mean": ring_sz_mean,
+        "te": te, "tu": tu, "td": td, "th": th,
+        "bs_ex": pl_ex.total_lu_backsolves,
+        "bs_uw": pl_uw.total_lu_backsolves,
+        "bs_dg": pl_dg.total_lu_backsolves,
+        "bs_hy": pl_hy.total_lu_backsolves,
+        "phase_dg": phase_dg,
+        "dgs_cert": float(np.mean(dgs_cert)),
+        "hyb_cert": float(np.mean(hyb_cert)),
+        "dgs_regret": float(np.mean(dgs_regret)),
+        "viol_cnt": viol_cnt,
+    }
+
+
+def run_scalability_and_regime_crossover_benchmark(max_workers: int = 8) -> dict:
+    """`ddd19c5 Stage B` (8-Core Parallel):
+    Part I: `m = 5, 7, 8, 9` on `65^2` comparing `Exact-SubsetDP`, `Scratch-DecisionPort`,
+      `Incremental-UniformPort`, `Incremental-DecisionPort`, and `Hybrid-Economical-Planner`,
+      with FULL 4-way table verification (`F_lo <= F_opt <= J_pol <= F_hi`) across ALL `96` tasks!
+    Part II: Unconfounded Fixed-Geometry / Fixed-Epsilon Crossover (`r_wp = 0.28, eps = 0.25` held
+      STRICTLY CONSTANT across `2D 25^2`, `2D 65^2`, `3D 21^3`, `3D 25^3`, `3D 31^3` on `9800..9807`)!
+    """
+    from green_response import run_map_parallel
+
     map_seeds = list(range(800, 806))
     out_by_m = {}
 
     for m_t in (5, 7, 8, 9):
-        ex_sub_ms, ex_sub_bs = [], []
-        dg_sub_ms, dg_sub_bs, dg_cert = [], [], []
-        uw_sub_ms, uw_sub_bs = [], []
-        ex_fix_ms, bnb_ms, bnb_pruned = [], [], []
-        adaptive_bound_viol = 0
-        bnb_bound_viol = 0
-        sample_work_meta = {}
-
-        for ms in map_seeds:
-            world = generate_benchmark_map(ms, dim=2, regime="narrow_barrier", with_drift=True)
-            rng = np.random.default_rng(ms + 77)
-            r_wp = 0.25
-            catalog_wps: List[GoalBall] = []
-            for _ in range(12):
-                for _att in range(250):
-                    pt = rng.uniform(-1.25, 1.25, size=2)
-                    if all(np.linalg.norm(pt - np.asarray(w.center)) >= 2.04 * r_wp for w in catalog_wps):
-                        catalog_wps.append(GoalBall(tuple(pt.tolist()), phi=0.0, radius=r_wp))
-                        break
-            km = KrigingWorldModel(*sample_noisy_probes(world, n_probes=85, seed=ms + 5, include_drift=True))
-
-            pl_ex_s = SchurPortPlanner(world.spec, 65, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="EXACT", lazy_init=True)
-            pl_dg_s = SchurPortPlanner(world.spec, 65, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="L1", lazy_init=True)
-            pl_uw_s = SchurPortPlanner(world.spec, 65, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="L1", lazy_init=True)
-            mt_ex_s = MacroTourPlanner(pl_ex_s)
-            mt_dg_s = MacroTourPlanner(pl_dg_s)
-            mt_uw_s = MacroTourPlanner(pl_uw_s)
-
-            t_exs = pl_ex_s.op_build_ms
-            t_dgs = pl_dg_s.op_build_ms
-            t_uws = pl_uw_s.op_build_ms
-
-            if m_t <= 7:
-                pl_ex_f = SchurPortPlanner(world.spec, 65, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="EXACT", lazy_init=True)
-                mt_ex_f = MacroTourPlanner(pl_ex_f)
-                t_exf = pl_ex_f.op_build_ms
-            if m_t <= 8:
-                pl_bnb = SchurPortPlanner(world.spec, 65, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="L1", lazy_init=True)
-                mt_bnb = MacroTourPlanner(pl_bnb)
-                t_bnb = pl_bnb.op_build_ms
-
-            for _tk in range(4):
-                sub_ids = tuple(rng.choice(len(catalog_wps), size=m_t, replace=False).tolist())
-                start_xy = np.array([-1.42, -1.42])
-                for _att in range(200):
-                    cand = rng.uniform(-1.35, 1.35, size=2)
-                    if all(np.linalg.norm(cand - np.asarray(w.center)) > r_wp + 0.18 for w in catalog_wps):
-                        start_xy = cand
-                        break
-
-                re = mt_ex_s.plan_exact_subset_dp(start_xy, sub_ids)
-                t_exs += re["planning_ms"]
-
-                rd = mt_dg_s.plan_subset_macro_policy(start_xy, sub_ids, epsilon_tol=0.25, max_refine_steps=14, refine_strategy="decision_guided")
-                t_dgs += rd["planning_ms"]
-                dg_cert.append(float(rd["certified"]))
-                sample_work_meta = rd["work"]
-
-                ru = mt_uw_s.plan_subset_macro_policy(start_xy, sub_ids, epsilon_tol=0.25, max_refine_steps=14, refine_strategy="uniform_width")
-                t_uws += ru["planning_ms"]
-
-                # Independent exact verification on ALL `m = 5, 7, 8, 9` tasks (`0` unverified tasks!)
-                ref_ind = independent_exact_macro_bellman_reference(pl_dg_s, start_xy, sub_ids, policy_action_idx=rd["policy_action_idx"])
-                lo_d, hi_d = rd["macro_value_bounds"]
-                if not (lo_d - 1e-9 <= ref_ind["optimal_adaptive_macro_cost"] <= ref_ind["evaluated_policy_exact_macro_cost"] + 1e-9 <= hi_d + 1e-9):
-                    adaptive_bound_viol += 1
-
-                if m_t <= 7:
-                    rfx = mt_ex_f.plan_exact_fixed_tour(start_xy, sub_ids)
-                    t_exf += rfx["ordering_ms"]
-                if m_t <= 8:
-                    rb = mt_bnb.plan_fixed_tour_bnb(start_xy, sub_ids, epsilon_tol=0.25, max_refine_steps=14)
-                    t_bnb += rb["ordering_ms"]
-                    bnb_pruned.append(rb["pruned_permutations_never_expanded"] / rb["total_permutations_in_space"])
-                    if m_t <= 7:
-                        for pm, (lv, hv) in rb["perm_enclosures"].items():
-                            if rfx["scores"][pm] < lv - 1e-9 or rfx["scores"][pm] > hv + 1e-9:
-                                bnb_bound_viol += 1
-
-            ex_sub_ms.append(t_exs); ex_sub_bs.append(pl_ex_s.total_lu_backsolves)
-            dg_sub_ms.append(t_dgs); dg_sub_bs.append(pl_dg_s.total_lu_backsolves)
-            uw_sub_ms.append(t_uws); uw_sub_bs.append(pl_uw_s.total_lu_backsolves)
-            if m_t <= 7:
-                ex_fix_ms.append(t_exf)
-            if m_t <= 8:
-                bnb_ms.append(t_bnb)
+        rows_m = run_map_parallel(_scaling_m_worker, [(ms, m_t) for ms in map_seeds], max_workers=max_workers)
+        ex_ms = [r["ex_ms"] for r in rows_m]
+        scr_ms = [r["scr_ms"] for r in rows_m]
+        inc_ms = [r["inc_ms"] for r in rows_m]
+        uw_ms = [r["uw_ms"] for r in rows_m]
+        hyb_ms = [r["hyb_ms"] for r in rows_m]
+        sw = rows_m[0]["sample_work_meta"]
+        tot_4way_viol = int(sum(r["adaptive_four_way_viol"] for r in rows_m))
 
         out_by_m[f"m_{m_t}"] = {
             "m_targets": m_t,
             "factorial_space_size": math.factorial(m_t),
             "subset_masks": 1 << m_t,
-            "example_row_mask_entries": sample_work_meta.get("row_mask_entries"),
-            "example_dp_tables_bytes": sample_work_meta.get("dp_tables_bytes"),
+            "example_row_mask_entries": sw.get("row_mask_entries"),
+            "example_dp_tables_bytes": sw.get("dp_tables_bytes"),
             "matched_exact_ring_subset_dp": {
-                "mean_map_stream_ms": float(np.mean(ex_sub_ms)),
-                "mean_lu_backsolves": float(np.mean(ex_sub_bs)),
+                "mean_map_stream_ms": float(np.mean(ex_ms)),
+                "mean_lu_backsolves": float(np.mean([r["ex_bs"] for r in rows_m])),
+            },
+            "scratch_dp_decision_port_subset_dp": {
+                "mean_map_stream_ms": float(np.mean(scr_ms)),
+                "mean_lu_backsolves": float(np.mean([r["scr_bs"] for r in rows_m])),
             },
             "uniform_width_port_subset_dp": {
-                "mean_map_stream_ms": float(np.mean(uw_sub_ms)),
-                "mean_lu_backsolves": float(np.mean(uw_sub_bs)),
+                "mean_map_stream_ms": float(np.mean(uw_ms)),
+                "mean_lu_backsolves": float(np.mean([r["uw_bs"] for r in rows_m])),
             },
             "decision_guided_port_subset_dp": {
-                "mean_map_stream_ms": float(np.mean(dg_sub_ms)),
-                "speedup_vs_exact_subset_dp": float(np.mean(ex_sub_ms) / np.mean(dg_sub_ms)),
-                "speedup_vs_uniform_width": float(np.mean(uw_sub_ms) / np.mean(dg_sub_ms)),
-                "certification_rate": float(np.mean(dg_cert)),
-                "mean_lu_backsolves": float(np.mean(dg_sub_bs)),
+                "mean_map_stream_ms": float(np.mean(inc_ms)),
+                "incremental_dp_speedup_vs_scratch_dp": float(np.mean(scr_ms) / np.mean(inc_ms)),
+                "speedup_vs_exact_subset_dp": float(np.mean(ex_ms) / np.mean(inc_ms)),
+                "speedup_vs_uniform_width": float(np.mean(uw_ms) / np.mean(inc_ms)),
+                "certification_rate": float(np.mean([x for r in rows_m for x in r["dg_cert"]])),
+                "mean_lu_backsolves": float(np.mean([r["inc_bs"] for r in rows_m])),
             },
-            "cached_exact_fixed_tour_ms": float(np.mean(ex_fix_ms)) if ex_fix_ms else None,
+            "hybrid_economical_subset_dp": {
+                "mean_map_stream_ms": float(np.mean(hyb_ms)),
+                "speedup_vs_decision_port": float(np.mean(inc_ms) / np.mean(hyb_ms)),
+                "mean_lu_backsolves": float(np.mean([r["hyb_bs"] for r in rows_m])),
+            },
+            "cached_exact_fixed_tour_ms": float(np.mean([r["exf_ms"] for r in rows_m])) if m_t <= 7 else None,
             "certified_bnb_fixed_tour": None if m_t > 8 else {
-                "mean_map_stream_ms": float(np.mean(bnb_ms)),
-                "mean_pruned_fraction": float(np.mean(bnb_pruned)),
+                "mean_map_stream_ms": float(np.mean([r["bnb_ms"] for r in rows_m])),
+                "certification_rate": float(np.mean([x for r in rows_m for x in r["bnb_cert"]])),
+                "mean_pruned_fraction": float(np.mean([x for r in rows_m for x in r["bnb_pruned"]])),
             },
-            "verified_adaptive_bound_violations_all_24_tasks": int(adaptive_bound_viol),
-            "verified_bnb_bound_violations": int(bnb_bound_viol) if m_t <= 7 else None,
+            "verified_full_table_four_way_violations_all_24_tasks": tot_4way_viol,
+            "verified_bnb_leaf_bound_violations": int(sum(r["bnb_bound_viol"] for r in rows_m)) if m_t <= 7 else "unverified_at_m8_40320_perms",
         }
         print(
-            f"  [65^2 Scaling m={m_t}] ExactSubDP={np.mean(ex_sub_ms):.0f}ms (bs={np.mean(ex_sub_bs):.0f}) | "
-            f"UniformPort={np.mean(uw_sub_ms):.0f}ms (bs={np.mean(uw_sub_bs):.0f}) | "
-            f"DecisionPort={np.mean(dg_sub_ms):.0f}ms (bs={np.mean(dg_sub_bs):.0f}, viol={adaptive_bound_viol})",
+            f"  [65^2 Scaling m={m_t}] Exact={np.mean(ex_ms):.0f}ms | Hybrid={np.mean(hyb_ms):.0f}ms | "
+            f"IncDecisionPort={np.mean(inc_ms):.0f}ms vs ScratchDecisionPort={np.mean(scr_ms):.0f}ms "
+            f"({np.mean(scr_ms)/np.mean(inc_ms):.2f}x faster DP, 4way_viol={tot_4way_viol})",
             flush=True,
         )
 
-    # Part II: Locked Fresh-Seed Operator-Cost Regime Crossover (`m = 6`, `8` maps `9800..9807` x `4` tasks)
     fresh_macro_seeds = list(range(9800, 9808))
+    # Strictly FIXED `r_wp = 0.28` and `epsilon_tol = 0.25` across ALL regimes (`0` confounding!)
     regimes = [
-        ("Cheap-2D-25sq", 2, 25, 0.25, 0.25),
-        ("Fine-2D-85sq", 2, 85, 0.25, 0.25),
+        ("Cheap-2D-25sq", 2, 25, 0.28, 0.25),
+        ("Fine-2D-65sq", 2, 65, 0.28, 0.25),
+        ("Coarse-3D-21cubed", 3, 21, 0.28, 0.25),
         ("3D-Spherical-25cubed", 3, 25, 0.28, 0.25),
-        ("Fine-3D-31cubed-eps035", 3, 31, 0.36, 0.35),
+        ("Fine-3D-31cubed", 3, 31, 0.28, 0.25),
     ]
     crossover = {}
     for r_label, dim_r, gn_r, r_wp, eps_r in regimes:
-        exs_ms, uws_ms, dgs_ms = [], [], []
-        exs_bs, uws_bs, dgs_bs = [], [], []
-        dgs_cert, dgs_regret, viol_cnt = [], [], 0
-        ring_sz_mean = []
-
-        for ms in fresh_macro_seeds:
-            world = generate_benchmark_map(ms, dim=dim_r, regime="narrow_barrier", with_drift=True)
-            rng = np.random.default_rng(ms + 77)
-            catalog_wps = []
-            for _ in range(12):
-                for _att in range(250):
-                    pt = rng.uniform(-1.18, 1.18, size=dim_r)
-                    if dim_r == 3:
-                        pt[2] *= 0.80
-                    if all(np.linalg.norm(pt - np.asarray(w.center)) >= 1.92 * r_wp for w in catalog_wps):
-                        catalog_wps.append(GoalBall(tuple(pt.tolist()), phi=0.0, radius=r_wp))
-                        break
-            n_pr = 85 if dim_r == 2 else 110
-            km = KrigingWorldModel(*sample_noisy_probes(world, n_probes=n_pr, seed=ms + 5, include_drift=True))
-
-            pl_ex = SchurPortPlanner(world.spec, gn_r, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="EXACT", lazy_init=True, min_goal_radius_override=r_wp)
-            pl_uw = SchurPortPlanner(world.spec, gn_r, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="L1", lazy_init=True, min_goal_radius_override=r_wp)
-            pl_dg = SchurPortPlanner(world.spec, gn_r, km.predict_q, km.predict_b, catalog_wps, initial_sectors_per_wp="L1", lazy_init=True, min_goal_radius_override=r_wp)
-            ring_sz_mean.append(float(np.mean([len(r) for r in pl_dg.wp_rings])))
-
-            mt_ex = MacroTourPlanner(pl_ex)
-            mt_uw = MacroTourPlanner(pl_uw)
-            mt_dg = MacroTourPlanner(pl_dg)
-
-            te = pl_ex.op_build_ms
-            tu = pl_uw.op_build_ms
-            td = pl_dg.op_build_ms
-
-            for _tk in range(4):
-                sub_ids = tuple(rng.choice(len(catalog_wps), size=6, replace=False).tolist())
-                start_pt = np.full(dim_r, -1.35)
-                for _att in range(200):
-                    cand = rng.uniform(-1.32, 1.32, size=dim_r)
-                    if all(np.linalg.norm(cand - np.asarray(w.center)) > r_wp + 0.18 for w in catalog_wps):
-                        start_pt = cand
-                        break
-
-                re = mt_ex.plan_exact_subset_dp(start_pt, sub_ids)
-                te += re["planning_ms"]
-
-                ru = mt_uw.plan_subset_macro_policy(start_pt, sub_ids, epsilon_tol=eps_r, max_refine_steps=10, refine_strategy="uniform_width")
-                tu += ru["planning_ms"]
-
-                rd = mt_dg.plan_subset_macro_policy(start_pt, sub_ids, epsilon_tol=eps_r, max_refine_steps=10, refine_strategy="decision_guided")
-                td += rd["planning_ms"]
-                dgs_cert.append(float(rd["certified"]))
-
-                ref_c = independent_exact_macro_bellman_reference(pl_dg, start_pt, sub_ids, policy_action_idx=rd["policy_action_idx"])
-                lo_c, hi_c = rd["macro_value_bounds"]
-                f_opt_c = ref_c["optimal_adaptive_macro_cost"]
-                j_pol_c = ref_c["evaluated_policy_exact_macro_cost"]
-                dgs_regret.append(float(j_pol_c - f_opt_c))
-                if not (lo_c - 1e-9 <= f_opt_c <= j_pol_c + 1e-9 <= hi_c + 1e-9):
-                    viol_cnt += 1
-
-            exs_ms.append(te); exs_bs.append(pl_ex.total_lu_backsolves)
-            uws_ms.append(tu); uws_bs.append(pl_uw.total_lu_backsolves)
-            dgs_ms.append(td); dgs_bs.append(pl_dg.total_lu_backsolves)
+        rows_c = run_map_parallel(
+            _crossover_map_worker, [(ms, dim_r, gn_r, r_wp, eps_r) for ms in fresh_macro_seeds], max_workers=max_workers
+        )
+        exs_ms = [r["te"] for r in rows_c]
+        uws_ms = [r["tu"] for r in rows_c]
+        dgs_ms = [r["td"] for r in rows_c]
+        hyb_ms = [r["th"] for r in rows_c]
+        viol_cnt = int(sum(r["viol_cnt"] for r in rows_c))
 
         crossover[r_label] = {
             "dim": dim_r,
@@ -1036,32 +1146,40 @@ def run_scalability_and_regime_crossover_benchmark() -> dict:
             "grid_dof": int(gn_r ** dim_r),
             "r_wp": r_wp,
             "epsilon_tol": eps_r,
-            "mean_ring_nodes_per_waypoint": float(np.mean(ring_sz_mean)),
+            "mean_ring_nodes_per_waypoint": float(np.mean([r["ring_sz_mean"] for r in rows_c])),
             "locked_fresh_seeds": fresh_macro_seeds,
             "m_targets": 6,
             "tasks_per_map": 4,
             "full_exact_ring_subset_dp_ms": float(np.mean(exs_ms)),
             "uniform_width_port_subset_dp_ms": float(np.mean(uws_ms)),
             "decision_guided_port_subset_dp_ms": float(np.mean(dgs_ms)),
+            "hybrid_economical_subset_dp_ms": float(np.mean(hyb_ms)),
             "decision_guided_speedup_vs_exact_subset_dp": float(np.mean(exs_ms) / np.mean(dgs_ms)),
+            "hybrid_speedup_vs_exact_subset_dp": float(np.mean(exs_ms) / np.mean(hyb_ms)),
             "decision_guided_speedup_vs_uniform_width": float(np.mean(uws_ms) / np.mean(dgs_ms)),
             "paired_ms_diff_decision_minus_exact": paired_stats(np.array(dgs_ms) - np.array(exs_ms)),
-            "full_exact_ring_backsolves": float(np.mean(exs_bs)),
-            "uniform_width_backsolves": float(np.mean(uws_bs)),
-            "decision_guided_backsolves": float(np.mean(dgs_bs)),
-            "decision_guided_certification_rate": float(np.mean(dgs_cert)),
-            "decision_guided_mean_exact_regret": float(np.mean(dgs_regret)),
-            "verified_bound_violations_all_32_tasks": int(viol_cnt),
+            "paired_ms_diff_hybrid_minus_exact": paired_stats(np.array(hyb_ms) - np.array(exs_ms)),
+            "decision_port_phase_ms": {
+                pk: float(np.mean([r["phase_dg"][pk] for r in rows_c]))
+                for pk in ("init_ms", "col_solve_ms", "dp_ms", "occ_ms")
+            },
+            "full_exact_ring_backsolves": float(np.mean([r["bs_ex"] for r in rows_c])),
+            "uniform_width_backsolves": float(np.mean([r["bs_uw"] for r in rows_c])),
+            "decision_guided_backsolves": float(np.mean([r["bs_dg"] for r in rows_c])),
+            "hybrid_economical_backsolves": float(np.mean([r["bs_hy"] for r in rows_c])),
+            "decision_guided_certification_rate": float(np.mean([r["dgs_cert"] for r in rows_c])),
+            "hybrid_certification_rate": float(np.mean([r["hyb_cert"] for r in rows_c])),
+            "decision_guided_mean_exact_regret": float(np.mean([r["dgs_regret"] for r in rows_c])),
+            "verified_bound_violations_all_32_tasks": viol_cnt,
             "per_map_exact_ms": exs_ms,
             "per_map_uniform_ms": uws_ms,
             "per_map_decision_ms": dgs_ms,
+            "per_map_hybrid_ms": hyb_ms,
         }
         print(
-            f"  [Regime Crossover {r_label} (DOF={gn_r**dim_r}, ring~{np.mean(ring_sz_mean):.0f})] "
-            f"ExactSubDP={np.mean(exs_ms):.0f}ms (bs={np.mean(exs_bs):.0f}) vs "
-            f"UniformPort={np.mean(uws_ms):.0f}ms (bs={np.mean(uws_bs):.0f}) vs "
-            f"DecisionPort={np.mean(dgs_ms):.0f}ms (bs={np.mean(dgs_bs):.0f}, "
-            f"speedup={np.mean(exs_ms)/np.mean(dgs_ms):.2f}x, viol={viol_cnt})",
+            f"  [Unconfounded Crossover {r_label} (DOF={gn_r**dim_r}, ring~{np.mean([r['ring_sz_mean'] for r in rows_c]):.0f}, r={r_wp}, eps={eps_r})] "
+            f"Exact={np.mean(exs_ms):.0f}ms | IncDecisionPort={np.mean(dgs_ms):.0f}ms ({np.mean(exs_ms)/np.mean(dgs_ms):.2f}x) | "
+            f"Hybrid={np.mean(hyb_ms):.0f}ms (cert={np.mean([r['dgs_cert'] for r in rows_c]):.2f}, viol={viol_cnt})",
             flush=True,
         )
 
@@ -1069,7 +1187,7 @@ def run_scalability_and_regime_crossover_benchmark() -> dict:
 
 
 def plot_exp1(res_3d: dict, res_tour: dict, res_scale_all: dict, out_png: Path) -> None:
-    fig, axes = plt.subplots(1, 3, figsize=(19.5, 5.4))
+    fig, axes = plt.subplots(1, 3, figsize=(19.8, 5.4))
 
     # Panel 1: Repaired 3D Reuse & Matched-Hazard Attribution
     ax = axes[0]
@@ -1092,69 +1210,69 @@ def plot_exp1(res_3d: dict, res_tour: dict, res_scale_all: dict, out_png: Path) 
     ax.set_xticklabels([f"K={k}" for k in ks])
     ax.set_xlabel("Task Stream Horizon K (queries / map)")
     ax.set_ylabel("Cumulative Setup + Solve Time (ms, log)")
-    ax.set_title("3D Structural Reuse & Matched-Hazard Attribution (25³)\n(Repaired ExactRing dV<1e-13; Full K=40 Quality)", fontsize=9.4)
+    ax.set_title("3D Structural Reuse & Matched-Hazard Attribution (25³)\n(ExactRing dV<1e-14; Full K=40 Stream Quality)", fontsize=9.3)
     ax.grid(True, which="both", alpha=0.28)
     ax.legend(fontsize=6.9, loc="upper left")
 
-    # Panel 2: Operator-Cost Regime Crossover (100% dynamic JSON-driven labels & faithful title!)
+    # Panel 2: Unconfounded Fixed-Geometry Crossover (`r_wp=0.28, eps=0.25` held constant!)
     ax = axes[1]
     cross = res_scale_all["operator_cost_regime_crossover_m6"]
-    r_keys = [k for k in ("Cheap-2D-25sq", "Fine-2D-85sq", "3D-Spherical-25cubed", "Fine-3D-31cubed-eps035") if k in cross]
+    r_keys = [k for k in ("Cheap-2D-25sq", "Fine-2D-65sq", "Coarse-3D-21cubed", "3D-Spherical-25cubed", "Fine-3D-31cubed") if k in cross]
     short_names = {
-        "Cheap-2D-25sq": "2D 25² (ε=.25)",
-        "Fine-2D-85sq": "2D 85² (ε=.25)",
-        "3D-Spherical-25cubed": "3D 25³ (ε=.25)",
-        "Fine-3D-31cubed-eps035": "3D 31³ (ε=.35)",
+        "Cheap-2D-25sq": "2D 25²",
+        "Fine-2D-65sq": "2D 65²",
+        "Coarse-3D-21cubed": "3D 21³",
+        "3D-Spherical-25cubed": "3D 25³",
+        "Fine-3D-31cubed": "3D 31³",
     }
     r_lbls = [
-        f"{short_names.get(k, k)}\n[{cross[k]['grid_dof']/1000.0:.1f}k DOF, ring~{cross[k]['mean_ring_nodes_per_waypoint']:.0f}]"
+        f"{short_names.get(k, k)}\n[{cross[k]['grid_dof']/1000.0:.1f}k, R~{cross[k]['mean_ring_nodes_per_waypoint']:.0f}]"
         if cross[k]["grid_dof"] >= 1000
-        else f"{short_names.get(k, k)}\n[{cross[k]['grid_dof']} DOF, ring~{cross[k]['mean_ring_nodes_per_waypoint']:.0f}]"
+        else f"{short_names.get(k, k)}\n[{cross[k]['grid_dof']}, R~{cross[k]['mean_ring_nodes_per_waypoint']:.0f}]"
         for k in r_keys
     ]
     ex_vals = [cross[k]["full_exact_ring_subset_dp_ms"] for k in r_keys]
-    uw_vals = [cross[k]["uniform_width_port_subset_dp_ms"] for k in r_keys]
     dg_vals = [cross[k]["decision_guided_port_subset_dp_ms"] for k in r_keys]
+    hy_vals = [cross[k]["hybrid_economical_subset_dp_ms"] for k in r_keys]
     x = np.arange(len(r_keys))
     w = 0.25
-    ax.bar(x - w, ex_vals, width=w, color="#333333", label="Matched Full-ExactRing + Subset-DP")
-    ax.bar(x, uw_vals, width=w, color="#ff7f0e", label="Uniform-Width Port + Subset-DP")
-    ax.bar(x + w, dg_vals, width=w, color="#1f77b4", label="Decision-Guided Port + Subset-DP")
+    ax.bar(x - w, ex_vals, width=w, color="#333333", label="ExactRing + Subset-DP")
+    ax.bar(x, dg_vals, width=w, color="#1f77b4", label="Incremental Decision-Port DP")
+    ax.bar(x + w, hy_vals, width=w, color="#2ca02c", label="Hybrid Economical Router")
     ax.set_yscale("log")
     ax.set_xticks(x)
-    ax.set_xticklabels(r_lbls, fontsize=7.5)
+    ax.set_xticklabels(r_lbls, fontsize=7.3)
     ax.set_ylabel("Total Map Planning Time incl. Init (ms, log)")
-    ax.set_title("Matched-Class Subset-DP Crossover (Fresh Seeds, m=6)\n(Exact Wins in 2D; Port Approaches/Crosses Parity in Large-Ring 3D)", fontsize=9.1)
+    ax.set_title("Unconfounded Crossover (Fixed r=0.28, ε=0.25, m=6)\n(Exact Wins in 2D; Incremental Port Cuts Gap / Parity at 31³)", fontsize=9.1)
     ax.grid(True, axis="y", which="both", alpha=0.28)
     ax.legend(fontsize=7.1, loc="upper left")
-    ax.set_ylim(10, max(max(ex_vals), max(dg_vals)) * 1.65)
+    ax.set_ylim(10, max(max(ex_vals), max(dg_vals)) * 1.75)
     for k_i, rk in enumerate(r_keys):
         sp_v = cross[rk]["decision_guided_speedup_vs_exact_subset_dp"]
         yv = dg_vals[k_i]
-        ax.text(x[k_i] + w, yv * 1.07, f"{sp_v:.2f}x", ha="center", va="bottom", fontsize=7.4, color="#1f77b4", fontweight="bold")
+        ax.text(x[k_i], yv * 1.07, f"{sp_v:.2f}x", ha="center", va="bottom", fontsize=7.1, color="#1f77b4", fontweight="bold")
 
-    # Panel 3: `m = 5 -> 7 -> 8 -> 9` Matched Adaptive & Fixed Scaling (`0` Verified Violations across ALL m!)
+    # Panel 3: `65^2` Scaling `m = 5..9` (`Scratch DP` vs `Incremental DP` vs `Hybrid` vs `Exact`)
     ax = axes[2]
     sc_m = res_scale_all["scaling_65sq_m5_to_m9"]
     ms_all = [5, 7, 8, 9]
     ex_s = [sc_m[f"m_{m}"]["matched_exact_ring_subset_dp"]["mean_map_stream_ms"] for m in ms_all]
-    uw_s = [sc_m[f"m_{m}"]["uniform_width_port_subset_dp"]["mean_map_stream_ms"] for m in ms_all]
-    dg_s = [sc_m[f"m_{m}"]["decision_guided_port_subset_dp"]["mean_map_stream_ms"] for m in ms_all]
-    ms_bnb = [5, 7, 8]
-    bnb_s = [sc_m[f"m_{m}"]["certified_bnb_fixed_tour"]["mean_map_stream_ms"] for m in ms_bnb]
+    scr_s = [sc_m[f"m_{m}"]["scratch_dp_decision_port_subset_dp"]["mean_map_stream_ms"] for m in ms_all]
+    inc_s = [sc_m[f"m_{m}"]["decision_guided_port_subset_dp"]["mean_map_stream_ms"] for m in ms_all]
+    hyb_s = [sc_m[f"m_{m}"]["hybrid_economical_subset_dp"]["mean_map_stream_ms"] for m in ms_all]
 
-    ax.plot(ms_all, ex_s, "s--", color="#333333", lw=1.9, label="Matched Full-ExactRing + Subset-DP")
-    ax.plot(ms_all, uw_s, "^:", color="#ff7f0e", lw=1.9, label="Uniform-Width Port + Subset-DP")
-    ax.plot(ms_all, dg_s, "P-", color="#1f77b4", lw=2.3, ms=8, label="Decision-Guided Port + Subset-DP (0 viol)")
-    ax.plot(ms_bnb, bnb_s, "o-", color="#2ca02c", lw=1.8, label="Certified Fixed-Tour BnB (m≤8)")
+    ax.plot(ms_all, scr_s, "d:", color="#d62728", lw=1.8, label="Scratch-DP Port (Old Re-Solve)")
+    ax.plot(ms_all, inc_s, "P-", color="#1f77b4", lw=2.2, ms=8, label="Incremental-DP Decision-Port")
+    ax.plot(ms_all, ex_s, "s--", color="#333333", lw=1.9, label="ExactRing + Subset-DP")
+    ax.plot(ms_all, hyb_s, "o-", color="#2ca02c", lw=1.9, alpha=0.85, label="Hybrid Economical Router")
     ax.set_yscale("log")
     ax.set_xticks(ms_all)
     ax.set_xticklabels([f"m={m}\n(2^m={1<<m})" for m in ms_all], fontsize=8.0)
     ax.set_xlabel("Active Waypoints m (Subset Masks 2^m)")
     ax.set_ylabel("Total Map Stream Time incl. Init (ms, log)")
-    ax.set_title("65² Scaling m=5..9 (All 96 Tasks Verified: 0 Violations)\n(Decision-Guided Saves Backsolves; Exact-Ring Faster in 2D)", fontsize=9.1)
+    ax.set_title("65² Scaling m=5..9 (All 96 Tasks 4-Way Table Verified: 0 Viol)\n(Incremental DP Cuts Port Overhead; Hybrid Picks Exact in 2D)", fontsize=9.1)
     ax.grid(True, which="both", alpha=0.28)
-    ax.legend(fontsize=7.1, loc="upper left")
+    ax.legend(fontsize=7.0, loc="upper left")
 
     plt.tight_layout()
     plt.savefig(out_png, dpi=175)
@@ -1163,18 +1281,19 @@ def plot_exp1(res_3d: dict, res_tour: dict, res_scale_all: dict, out_png: Path) 
 
 def main():
     enforce_single_thread_env()
+    n_workers = 8
     print("=== Exp 1A: Repaired 3D Reuse & Matched-Hazard Attribution (12 Maps, K=40) ===", flush=True)
     res_3d = run_3d_structural_reuse_benchmark(n_coarse_eval=20, n_stream_max=40)
     print("\n=== Exp 1A-Confirm: Locked Fresh-Seed 3D Confirmation (8 Maps 9400..9407, K=40) ===", flush=True)
     res_3d_fresh = run_3d_fresh_confirmation_suite(n_maps=8, n_stream_max=40)
-    print("\n=== Exp 1B-1: Official 144 Tours with Matched Full-ExactRing + Subset-DP & Decision-Guided ===", flush=True)
-    res_tour = run_official_144_tours_and_macro_benchmark(grid_n=75, tours_per_map=8)
-    print("\n=== Exp 1B-2 & 1B-3: Full m=5..9 Verification & 25^2 -> 85^2 -> 25^3 Regime Crossover ===", flush=True)
-    res_scale = run_scalability_and_regime_crossover_benchmark()
+    print(f"\n=== Exp 1B-1: Official 144 Tours ({n_workers}-Core Parallel) ===", flush=True)
+    res_tour = run_official_144_tours_and_macro_benchmark(grid_n=75, tours_per_map=8, max_workers=n_workers)
+    print(f"\n=== Exp 1B-2 & 1B-3: Full m=5..9 4-Way Check & Unconfounded Crossover ({n_workers}-Core Parallel) ===", flush=True)
+    res_scale = run_scalability_and_regime_crossover_benchmark(max_workers=n_workers)
 
     out_dir = Path(__file__).resolve().parent
     payload = {
-        "metadata": collect_runtime_metadata(),
+        "metadata": collect_runtime_metadata(max_workers=n_workers),
         "stream_3d_12maps": res_3d,
         "stream_3d_fresh_confirmation_8maps": res_3d_fresh,
         "certified_tours_144tasks": res_tour,

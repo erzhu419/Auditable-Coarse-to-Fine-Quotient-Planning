@@ -593,7 +593,9 @@ class SchurPortPlanner:
 
         self.A0, _ = build_upwind_mmatrix_desirability_operator(spec, grid_n, self.q_base, self.b_grid)
         self.lu0: Optional[spla.SuperLU] = spla.splu(self.A0)
+        self.operator_epoch: int = 0
         self._lu_is_current = True
+        self._lu_epoch: int = 0
         self.lu_factorizations = 1
         self.op_factor_ms = 1000.0 * (time.perf_counter() - t0)
 
@@ -608,7 +610,10 @@ class SchurPortPlanner:
 
         self._wp_partitions: Dict[int, Dict[str, List[np.ndarray]]] = {}
         self._wp_tree: Dict[int, Dict[str, Tuple[List[np.ndarray], np.ndarray]]] = {}
+        self._wp_tree_col_epoch: Dict[Tuple[int, str], int] = {}
+        self._wp_verified_epoch: Dict[Tuple[int, str], int] = {}
         self._wp_col_err_bounds: Dict[Tuple[int, str], np.ndarray] = {}
+        self._wp_remembered_level: Dict[int, str] = {}
         self._wp_ring_op_cache: Dict[Tuple[int, str], dict] = {}
         self._node_col_cache: Dict[int, np.ndarray] = {}
         self._adhoc_cache: Dict[Tuple, Tuple[List[np.ndarray], np.ndarray]] = {}
@@ -694,13 +699,29 @@ class SchurPortPlanner:
             for k in range((len(fine8) + 1) // 2)
             if len(fine8[2 * k:2 * k + 2]) > 0
         ]
-        # Order `L1` identically to `concat(g4)` (`== concat(fine8)` as a set, and canonical ring_idx)
         return {
             "L1": [ring_idx.copy()],
             "L4": g4,
             "L8": fine8,
             "EXACT": sec_exact,
         }
+
+    def _mark_exact_level_epoch(self, wp_id: int, lvl: str) -> None:
+        key = (wp_id, lvl)
+        self._wp_tree_col_epoch[key] = self.operator_epoch
+        self._wp_verified_epoch[key] = self.operator_epoch
+        self._wp_col_err_bounds.pop(key, None)
+        self._wp_ring_op_cache.pop(key, None)
+
+    def _is_level_valid_in_current_epoch(self, wp_id: int, lvl: str) -> bool:
+        key = (wp_id, lvl)
+        return (
+            self._wp_tree_col_epoch.get(key) == self.operator_epoch
+            or self._wp_verified_epoch.get(key) == self.operator_epoch
+        )
+
+    def _is_level_exact_in_current_epoch(self, wp_id: int, lvl: str) -> bool:
+        return self._wp_tree_col_epoch.get((wp_id, lvl)) == self.operator_epoch
 
     def _populate_eager_hierarchy(
         self, wp_id: int, init_lvl: str, sec_lists: List[np.ndarray], U_j: np.ndarray
@@ -709,6 +730,7 @@ class SchurPortPlanner:
         parts = self._wp_partitions[wp_id]
         tree = self._wp_tree.setdefault(wp_id, {})
         tree[init_lvl] = (sec_lists, U_j)
+        self._mark_exact_level_epoch(wp_id, init_lvl)
         self.wp_levels[wp_id] = init_lvl
 
         if init_lvl == "EXACT":
@@ -719,6 +741,7 @@ class SchurPortPlanner:
             cols8 = [np.sum(U_j[:, [pos_map[int(nid)] for nid in sl]], axis=1, keepdims=True) for sl in parts["L8"]]
             U8 = np.hstack(cols8)
             tree["L8"] = (parts["L8"], U8)
+            self._mark_exact_level_epoch(wp_id, "L8")
         if init_lvl in ("EXACT", "L8"):
             fine8, U8 = tree["L8"]
             cols4 = [
@@ -727,43 +750,54 @@ class SchurPortPlanner:
             ]
             U4 = np.hstack(cols4)
             tree["L4"] = (parts["L4"], U4)
+            self._mark_exact_level_epoch(wp_id, "L4")
         if init_lvl in ("EXACT", "L8", "L4"):
             tree["L1"] = (parts["L1"], np.sum(U_j, axis=1, keepdims=True))
+            self._mark_exact_level_epoch(wp_id, "L1")
 
     def _ensure_current_lu(self) -> spla.SuperLU:
-        if not self._lu_is_current or self.lu0 is None:
+        if (not self._lu_is_current) or (self._lu_epoch != self.operator_epoch) or (self.lu0 is None):
             t_f = time.perf_counter()
             self.lu0 = spla.splu(self.A0)
             self._lu_is_current = True
+            self._lu_epoch = self.operator_epoch
             self.lu_factorizations += 1
             self.op_factor_ms += 1000.0 * (time.perf_counter() - t_f)
         return self.lu0
 
     def marginal_backsolves_to_refine(self, wp_id: int, target_level: int | str) -> int:
-        """Exact number of NEW `A_0` LU backsolves required to upgrade `wp_id` from its current cached
-        tree state to `target_level`, accounting for nested subtraction and `_node_col_cache`.
+        """Exact number of NEW `A_0` LU backsolves required to upgrade `wp_id` to `target_level` under
+        the current `operator_epoch` (`ddd19c5 P0 Bug 3.1`: stale-epoch coarse columns cannot serve as
+        subtraction parents for exact child levels!).
         """
         tgt = canonicalize_level(target_level)
         tree = self._wp_tree.get(wp_id, {})
-        if tgt in tree or tgt == "NONE":
+        if tgt == "NONE":
+            return 0
+        if tgt in tree and self._is_level_valid_in_current_epoch(wp_id, tgt):
             return 0
         parts = self._wp_partitions[wp_id]
+        has_exact_l1 = ("L1" in tree) and self._is_level_exact_in_current_epoch(wp_id, "L1")
+        has_exact_l4 = ("L4" in tree) and self._is_level_exact_in_current_epoch(wp_id, "L4")
+        has_exact_l8 = ("L8" in tree) and self._is_level_exact_in_current_epoch(wp_id, "L8")
+        has_exact_ex = ("EXACT" in tree) and self._is_level_exact_in_current_epoch(wp_id, "EXACT")
+
         cost = 0
-        if "L1" not in tree:
+        if not has_exact_l1:
             cost += 1
         if tgt == "L1":
             return cost
-        if "L4" not in tree and len(parts["L4"]) > 1:
+        if not has_exact_l4 and len(parts["L4"]) > 1:
             cost += len(parts["L4"]) - 1
         if tgt == "L4":
             return cost
-        if "L8" not in tree:
+        if not has_exact_l8:
             g4 = parts["L4"]
             fine8 = parts["L8"]
             cost += sum(1 for p_i in range(len(g4)) if 2 * p_i + 1 < len(fine8))
         if tgt == "L8":
             return cost
-        if "EXACT" not in tree:
+        if not has_exact_ex:
             s8 = parts["L8"]
             for sl in s8:
                 for nid in sl[:-1]:
@@ -772,14 +806,14 @@ class SchurPortPlanner:
         return cost
 
     def refresh_waypoint_under_current_operator(self, wp_id: int, target_level: Optional[str] = None) -> int:
-        """Evicts stale/approximate columns for `wp_id` (e.g. after continual world-model drift) and
-        recomputes exact columns under the current `A0` up to `target_level`. Returns backsolves used.
-        """
+        """Evicts stale/approximate columns for `wp_id` and recomputes exact columns under current `A0`."""
         lvl = self.wp_levels.get(wp_id, "NONE") if target_level is None else canonicalize_level(target_level)
         if lvl == "NONE":
-            lvl = self.default_lazy_level
+            lvl = self._wp_remembered_level.get(wp_id, self.default_lazy_level)
         for lv_k in list(self._wp_tree.get(wp_id, {}).keys()):
             self._wp_col_err_bounds.pop((wp_id, lv_k), None)
+            self._wp_tree_col_epoch.pop((wp_id, lv_k), None)
+            self._wp_verified_epoch.pop((wp_id, lv_k), None)
             self._wp_ring_op_cache.pop((wp_id, lv_k), None)
         self._wp_tree.pop(wp_id, None)
         for nid in self.wp_rings[wp_id]:
@@ -796,71 +830,163 @@ class SchurPortPlanner:
         mode: str = "selective_residual",
         max_allowable_col_err: Optional[float] = None,
     ) -> dict:
-        """Continual Environment Epoch Transition (`GPT6 85e2323 Stage D`):
-          - `"blind_stale_cache"`: keeps old `A0`, `lu0`, and columns WITHOUT residual accounting
-            (unverified cache baseline);
-          - `"scratch_rebuild"`: immediately factors `splu(A_new)` and discards all cached port trees;
-          - `"selective_residual"`: updates `A0 <- A_new`, avoids `splu(A_new)` unless needed, and uses
-            the exact M-matrix row-sum comparison theorem (`A_new 1 = q_new/lam >= (q_min/lam) 1` =>
-            `|U_new - U_old|_inf <= (lam / q_min) ||B - A_new U_old||_inf`) to attach rigorous residual
-            error bounds `_wp_col_err_bounds[(j, lv)]` to every retained column!
+        """Continual Environment Epoch Transition (`ddd19c5 Stage A + Stage C Orthogonal Attribution`):
+          - `"blind_stale_cache"`: negative control keeping old `A0/lu0` and columns unverified;
+          - `"scratch_rebuild"`: resets all levels to `"NONE"`, discards trees, factors `splu(A_new)`;
+          - `"structure_only_fresh_exact"`: preserves the learned per-waypoint refinement layout
+            `wp_levels` (`L1/L4/L8/EXACT` structure memory!) and batch-solves fresh exact columns
+            under `splu(A_new)` in one vectorized pass;
+          - `"selective_residual"`: increments `operator_epoch`, avoids `splu(A_new)` unless needed,
+            and uses `||U_new - U_old||_inf <= (lam / q_min) ||B - A_new U_old||_inf` (with explicit
+            `q_min > 0` check) to retain valid approximate columns with per-column error bounds!
         """
         t0 = time.perf_counter()
         if mode == "blind_stale_cache":
             return {
                 "mode": mode,
+                "operator_epoch": self.operator_epoch,
                 "update_ms": 1000.0 * (time.perf_counter() - t0),
+                "assemble_ms": 0.0,
+                "residual_audit_ms": 0.0,
+                "factor_ms": 0.0,
+                "batch_refresh_ms": 0.0,
                 "lu_factorized": False,
                 "waypoints_retained": sum(1 for j in range(len(self.waypoints)) if self.wp_levels.get(j, "NONE") != "NONE"),
                 "waypoints_invalidated": 0,
+                "cols_retained": sum(
+                    sum(U.shape[1] for _, U in self._wp_tree.get(j, {}).values()) for j in range(len(self.waypoints))
+                ),
+                "cols_recomputed": 0,
+                "cols_dropped": 0,
                 "max_mmatrix_col_err_bound": 0.0,
             }
 
+        t_asm0 = time.perf_counter()
         q_new = self.spec.q0 + np.asarray(new_q_fn(self.pts), dtype=float)
+        q_min = float(np.min(q_new))
+        if not np.all(np.isfinite(q_new)) or q_min <= 0.0:
+            raise ValueError(
+                f"update_world_with_residual_audit requires finite strictly positive q_new > 0, got min={q_min}."
+            )
         b_new = None if new_b_fn is None else np.asarray(new_b_fn(self.pts), dtype=float)
         A_new, _ = build_upwind_mmatrix_desirability_operator(self.spec, self.grid_n, q_new, b_new)
+        assemble_ms = 1000.0 * (time.perf_counter() - t_asm0)
+
+        prev_levels = {j: self.wp_levels.get(j, "NONE") for j in range(len(self.waypoints))}
+        for j, lv in prev_levels.items():
+            if lv != "NONE":
+                self._wp_remembered_level[j] = lv
+
+        self.operator_epoch += 1
         self.q_base = q_new
         self.b_grid = b_new
         self.A0 = A_new
+        self._lu_is_current = False
         self._wp_ring_op_cache.clear()
         self._adhoc_cache.clear()
         self._node_col_cache.clear()
 
         if mode == "scratch_rebuild":
-            self._lu_is_current = False
+            t_f0 = time.perf_counter()
             self._ensure_current_lu()
+            factor_ms = 1000.0 * (time.perf_counter() - t_f0)
+            cols_dropped = sum(
+                sum(U.shape[1] for _, U in self._wp_tree.get(j, {}).values()) for j in range(len(self.waypoints))
+            )
             self._wp_tree.clear()
+            self._wp_tree_col_epoch.clear()
+            self._wp_verified_epoch.clear()
             self._wp_col_err_bounds.clear()
+            self._wp_remembered_level.clear()
             for j in range(len(self.waypoints)):
                 self.wp_levels[j] = "NONE"
             return {
                 "mode": mode,
+                "operator_epoch": self.operator_epoch,
                 "update_ms": 1000.0 * (time.perf_counter() - t0),
+                "assemble_ms": assemble_ms,
+                "residual_audit_ms": 0.0,
+                "factor_ms": factor_ms,
+                "batch_refresh_ms": 0.0,
                 "lu_factorized": True,
                 "waypoints_retained": 0,
                 "waypoints_invalidated": len(self.waypoints),
+                "cols_retained": 0,
+                "cols_recomputed": 0,
+                "cols_dropped": int(cols_dropped),
+                "max_mmatrix_col_err_bound": 0.0,
+            }
+
+        if mode == "structure_only_fresh_exact":
+            t_f0 = time.perf_counter()
+            lu_cur = self._ensure_current_lu()
+            factor_ms = 1000.0 * (time.perf_counter() - t_f0)
+
+            t_b0 = time.perf_counter()
+            self._wp_tree.clear()
+            self._wp_tree_col_epoch.clear()
+            self._wp_verified_epoch.clear()
+            self._wp_col_err_bounds.clear()
+
+            rhs_cols = []
+            meta = []
+            for j, lv in prev_levels.items():
+                if lv == "NONE":
+                    self.wp_levels[j] = "NONE"
+                    continue
+                sec_lists = self._wp_partitions[j][lv]
+                sc = len(rhs_cols)
+                for sl in sec_lists:
+                    col = np.zeros(len(self.pts), dtype=float)
+                    col[sl] = 1.0
+                    rhs_cols.append(col)
+                meta.append((j, lv, len(sec_lists), sec_lists, sc))
+
+            cols_recomputed = len(rhs_cols)
+            if rhs_cols:
+                U_batch = lu_cur.solve(np.column_stack(rhs_cols))
+                self.total_lu_backsolves += cols_recomputed
+                for j, lv, r_eff, sec_lists, sc in meta:
+                    self._populate_eager_hierarchy(j, lv, sec_lists, U_batch[:, sc:sc + r_eff])
+            batch_refresh_ms = 1000.0 * (time.perf_counter() - t_b0)
+            return {
+                "mode": mode,
+                "operator_epoch": self.operator_epoch,
+                "update_ms": 1000.0 * (time.perf_counter() - t0),
+                "assemble_ms": assemble_ms,
+                "residual_audit_ms": 0.0,
+                "factor_ms": factor_ms,
+                "batch_refresh_ms": batch_refresh_ms,
+                "lu_factorized": True,
+                "waypoints_retained": len(meta),
+                "waypoints_invalidated": len(self.waypoints) - len(meta),
+                "cols_retained": 0,
+                "cols_recomputed": int(cols_recomputed),
+                "cols_dropped": 0,
                 "max_mmatrix_col_err_bound": 0.0,
             }
 
         if mode != "selective_residual":
             raise ValueError(f"Unknown continual update mode: {mode}")
 
-        self._lu_is_current = False
+        t_aud0 = time.perf_counter()
         lam = self.spec.lam
-        q_min = float(np.min(q_new))
-        inv_norm_ub = lam / max(q_min, 1e-12)
+        inv_norm_ub = lam / q_min
         A_csr = A_new.tocsr()
 
         retained = 0
         invalidated = 0
+        cols_retained = 0
+        cols_dropped = 0
         max_err_seen = 0.0
 
         for j in range(len(self.waypoints)):
             tree = self._wp_tree.get(j)
             if not tree:
                 continue
-            ring_j = self.wp_rings[j]
             drop_wp = False
+            wp_cols = sum(U_old.shape[1] for _, U_old in tree.values())
+            new_errs_j: Dict[str, np.ndarray] = {}
             for lv_k, (sec_lists, U_old) in list(tree.items()):
                 RHS = np.zeros((len(self.pts), len(sec_lists)), dtype=float)
                 for c_i, sl in enumerate(sec_lists):
@@ -869,35 +995,54 @@ class SchurPortPlanner:
                 col_res_inf = np.max(np.abs(R_mat), axis=0)
                 err_ub = inv_norm_ub * col_res_inf
                 max_err_seen = max(max_err_seen, float(np.max(err_ub)) if len(err_ub) else 0.0)
-                # Check if residual bound exceeds sector diagonal positivity margin `0.45 * min_{y in S_k} U_old[y, k]`
                 min_sec_diag = np.array([float(np.min(U_old[sl, c_i])) for c_i, sl in enumerate(sec_lists)])
                 if np.any(err_ub >= 0.45 * min_sec_diag) or (
                     max_allowable_col_err is not None and float(np.sum(err_ub)) > max_allowable_col_err
                 ):
                     drop_wp = True
                     break
-                self._wp_col_err_bounds[(j, lv_k)] = err_ub
+                new_errs_j[lv_k] = err_ub
             if drop_wp:
                 for lv_k in list(tree.keys()):
                     self._wp_col_err_bounds.pop((j, lv_k), None)
+                    self._wp_tree_col_epoch.pop((j, lv_k), None)
+                    self._wp_verified_epoch.pop((j, lv_k), None)
                 self._wp_tree.pop(j, None)
                 self.wp_levels[j] = "NONE"
                 invalidated += 1
+                cols_dropped += wp_cols
             else:
+                for lv_k, err_ub in new_errs_j.items():
+                    self._wp_col_err_bounds[(j, lv_k)] = err_ub
+                    self._wp_verified_epoch[(j, lv_k)] = self.operator_epoch
                 retained += 1
+                cols_retained += wp_cols
+        residual_audit_ms = 1000.0 * (time.perf_counter() - t_aud0)
 
         return {
             "mode": mode,
+            "operator_epoch": self.operator_epoch,
             "update_ms": 1000.0 * (time.perf_counter() - t0),
+            "assemble_ms": assemble_ms,
+            "residual_audit_ms": residual_audit_ms,
+            "factor_ms": 0.0,
+            "batch_refresh_ms": 0.0,
             "lu_factorized": bool(self._lu_is_current),
             "waypoints_retained": retained,
             "waypoints_invalidated": invalidated,
+            "cols_retained": int(cols_retained),
+            "cols_recomputed": 0,
+            "cols_dropped": int(cols_dropped),
             "max_mmatrix_col_err_bound": max_err_seen,
         }
 
     def ensure_wp_level(self, wp_id: int, target_level: int | str) -> Tuple[List[np.ndarray], np.ndarray]:
-        """Ensures waypoint `wp_id` has raw-sum sector columns `U_raw` at `target_level` (`L1`, `L4`,
-        `L8`, or `EXACT`) via conservation-preserving group subtraction (`0` wasted LU backsolves!).
+        """Ensures waypoint `wp_id` has sector columns `U_raw` at `target_level` (`L1`, `L4`, `L8`, or `EXACT`).
+        CRITICAL INVARIANT (`ddd19c5 P0 Bug 3.1`):
+          - Returning an already-cached level is allowed if it is valid in `self.operator_epoch` (either
+            built in `self.operator_epoch` OR residual-verified in `self.operator_epoch`).
+          - Refining to a NEW finer level NEVER subtracts current-epoch child columns from a stale-epoch
+            parent column: any level of `wp_id` with `built_epoch != self.operator_epoch` is evicted first!
         """
         tgt = canonicalize_level(target_level)
         if tgt == "NONE":
@@ -906,18 +1051,23 @@ class SchurPortPlanner:
         parts = self._wp_partitions[wp_id]
         ring_j = self.wp_rings[wp_id]
 
-        if tgt in tree:
+        if tgt in tree and self._is_level_valid_in_current_epoch(wp_id, tgt):
             if LEVEL_RANK[tgt] > LEVEL_RANK[self.wp_levels.get(wp_id, "NONE")]:
                 self.wp_levels[wp_id] = tgt
             return tree[tgt]
 
-        # If refining beyond stale residual-bounded levels after an environment update, ensure consistency
-        # by dropping stale coarser levels of `wp_id` before solving under current `lu0`!
-        if not self._lu_is_current and any((wp_id, lv_k) in self._wp_col_err_bounds for lv_k in tree):
-            for lv_k in list(tree.keys()):
+        # Evict ANY level of `wp_id` that was NOT built as an exact solution of `self.operator_epoch`!
+        stale_lvls = [
+            lv_k for lv_k in list(tree.keys())
+            if not self._is_level_exact_in_current_epoch(wp_id, lv_k)
+        ]
+        if stale_lvls:
+            for lv_k in stale_lvls:
+                tree.pop(lv_k, None)
                 self._wp_col_err_bounds.pop((wp_id, lv_k), None)
+                self._wp_tree_col_epoch.pop((wp_id, lv_k), None)
+                self._wp_verified_epoch.pop((wp_id, lv_k), None)
                 self._wp_ring_op_cache.pop((wp_id, lv_k), None)
-            tree.clear()
 
         lu_cur = self._ensure_current_lu()
 
@@ -928,13 +1078,14 @@ class SchurPortPlanner:
             u1 = lu_cur.solve(col)[:, None]
             self.total_lu_backsolves += 1
             tree["L1"] = (parts["L1"], u1)
+            self._mark_exact_level_epoch(wp_id, "L1")
 
         if tgt == "L1":
             if LEVEL_RANK["L1"] > LEVEL_RANK[self.wp_levels.get(wp_id, "NONE")]:
                 self.wp_levels[wp_id] = "L1"
             return tree["L1"]
 
-        # Level L4 (strictly nested inside L1)
+        # Level L4 (strictly nested inside current-epoch exact L1)
         if "L4" not in tree:
             g4 = parts["L4"]
             if len(g4) <= 1:
@@ -947,13 +1098,14 @@ class SchurPortPlanner:
                 self.total_lu_backsolves += (len(g4) - 1)
                 u_last = tree["L1"][1] - np.sum(U_part, axis=1, keepdims=True)
                 tree["L4"] = (g4, np.hstack([U_part, u_last]))
+            self._mark_exact_level_epoch(wp_id, "L4")
 
         if tgt == "L4":
             if LEVEL_RANK["L4"] > LEVEL_RANK[self.wp_levels.get(wp_id, "NONE")]:
                 self.wp_levels[wp_id] = "L4"
             return tree["L4"]
 
-        # Level L8 (each group `g4[p_i]` is either `fine8[2*p_i] U fine8[2*p_i+1]` or singleton `fine8[2*p_i]`)
+        # Level L8 (strictly nested inside current-epoch exact L4)
         if "L8" not in tree:
             g4, U4 = tree["L4"]
             fine8 = parts["L8"]
@@ -980,13 +1132,14 @@ class SchurPortPlanner:
                 else:
                     cols8.append(U4[:, p_i:p_i + 1])
             tree["L8"] = (fine8, np.hstack(cols8))
+            self._mark_exact_level_epoch(wp_id, "L8")
 
         if tgt == "L8":
             if LEVEL_RANK["L8"] > LEVEL_RANK[self.wp_levels.get(wp_id, "NONE")]:
                 self.wp_levels[wp_id] = "L8"
             return tree["L8"]
 
-        # Level EXACT (`n_ring` singleton columns, reusing `L8` sums AND caching into `_node_col_cache`!)
+        # Level EXACT (strictly nested inside current-epoch exact L8)
         if "EXACT" not in tree:
             s8, U8 = tree["L8"]
             rhs_nodes = []
@@ -1015,6 +1168,7 @@ class SchurPortPlanner:
 
             U_ring = np.column_stack([self._node_col_cache[int(nid)] for nid in ring_j])
             tree["EXACT"] = (parts["EXACT"], U_ring)
+            self._mark_exact_level_epoch(wp_id, "EXACT")
 
         self.wp_levels[wp_id] = "EXACT"
         return tree["EXACT"]
@@ -1045,21 +1199,24 @@ class SchurPortPlanner:
         h_idx: np.ndarray,
         dq_vals: np.ndarray,
         level_override: Optional[str] = None,
-    ) -> Tuple[np.ndarray, np.ndarray, int, int, float, float, str, str]:
-        """Repaired Single/Multi-Goal Port & ExactRing Dispatch (`GPT6 85e2323 Audit Finding 2.1`):
-        Ensures `EXACT` resolution (`initial_sectors_per_wp='EXACT'` OR `level_override='EXACT'`)
-        is honored on ALL branches (`disjoint`, `nearby/overlapping union`, and `adhoc`), never
-        silently compressing nearby goals to `L8`!
+        force_current_exact_cols: bool = False,
+    ) -> Tuple[np.ndarray, np.ndarray, int, int, float, float, float, str, str]:
+        """Residual-Aware Single/Multi-Goal Port & ExactRing Dispatch (`ddd19c5 P0 Bug 3.2` + `85e2323 Bug 2.1`):
+          - Honors `EXACT` across ALL branches (`disjoint`, `nearby/overlapping union`, `adhoc`);
+          - Consumes `_wp_col_err_bounds` on retained post-update columns (`delta_z = |coeff| @ col_err`),
+            or refreshes stale columns if local hazards (`mh > 0`) or `force_current_exact_cols=True`!
         """
         lam = self.spec.lam
         ring_all = self._extract_graph_boundary_ring(goal_mask)
         req_level = self.default_lazy_level if level_override is None else canonicalize_level(level_override)
+        mh = len(h_idx)
 
         if req_level == "EXACT":
             U_raw = self._get_node_cols(ring_all)
             sec_lists = [np.array([int(i)], dtype=np.int64) for i in ring_all]
             scales = np.ones(len(ring_all), dtype=float)
             U_g = U_raw
+            col_err_g = np.zeros(U_g.shape[1], dtype=float)
             rhs_g = np.exp(-phi_union[ring_all] / lam)
             eff_level = "EXACT"
         else:
@@ -1071,6 +1228,7 @@ class SchurPortPlanner:
             if disjoint:
                 sec_lists = []
                 U_cols = []
+                err_cols = []
                 rhs_g_list = []
                 scales_list = []
                 used_lvls = []
@@ -1084,14 +1242,18 @@ class SchurPortPlanner:
                     if wp_match is not None:
                         cur_l = self.wp_levels.get(wp_match, "NONE")
                         if cur_l == "NONE":
-                            cur_l = self.default_lazy_level
+                            cur_l = self._wp_remembered_level.get(wp_match, self.default_lazy_level)
                         use_l = cur_l if level_override is None else req_level
+                        if (force_current_exact_cols or mh > 0) and not self._is_level_exact_in_current_epoch(wp_match, use_l):
+                            if use_l in self._wp_tree.get(wp_match, {}):
+                                self.refresh_waypoint_under_current_operator(wp_match, use_l)
                         s_ls, U_w_raw = self.ensure_wp_level(wp_match, use_l)
+                        raw_err = self._wp_col_err_bounds.get((wp_match, use_l), np.zeros(U_w_raw.shape[1], dtype=float))
                     else:
                         m_g, _ = eval_goal_union(self.pts, (g,))
                         r_g = self._extract_graph_boundary_ring(m_g)
                         use_l = req_level
-                        key = ("adhoc", tuple(np.round(gc, 5)), round(g.radius, 5), use_l)
+                        key = ("adhoc", self.operator_epoch, tuple(np.round(gc, 5)), round(g.radius, 5), use_l)
                         if key not in self._adhoc_cache:
                             lu_cur = self._ensure_current_lu()
                             parts_g = self._build_nested_partitions(r_g, gc)
@@ -1103,15 +1265,18 @@ class SchurPortPlanner:
                             self.total_lu_backsolves += len(s_ls)
                             self._adhoc_cache[key] = (s_ls, U_w_raw)
                         s_ls, U_w_raw = self._adhoc_cache[key]
+                        raw_err = np.zeros(U_w_raw.shape[1], dtype=float)
                     used_lvls.append(use_l)
                     w_val = np.exp(-g.phi / lam)
                     sc_w = np.array([1.0 / np.sqrt(float(len(sl))) for sl in s_ls])
                     U_cols.append(U_w_raw * sc_w[None, :])
+                    err_cols.append(raw_err * sc_w)
                     for sl, sc in zip(s_ls, sc_w):
                         sec_lists.append(sl)
                         scales_list.append(sc)
                         rhs_g_list.append(w_val * np.sqrt(float(len(sl))))
                 U_g = np.hstack(U_cols)
+                col_err_g = np.concatenate(err_cols)
                 rhs_g = np.asarray(rhs_g_list, dtype=float)
                 scales = np.asarray(scales_list, dtype=float)
                 eff_level = used_lvls[0] if len(set(used_lvls)) == 1 else "+".join(sorted(set(used_lvls)))
@@ -1123,7 +1288,7 @@ class SchurPortPlanner:
                 for pv in sorted(np.unique(phi_r).tolist()):
                     sub_ring = ring_all[phi_r == pv]
                     sec_lists.extend(self._build_nested_partitions(sub_ring, center_u)[use_l])
-                key = ("union_ov", tuple(int(i) for i in ring_all), tuple(float(phi_r[k]) for k in range(len(ring_all))), use_l)
+                key = ("union_ov", self.operator_epoch, tuple(int(i) for i in ring_all), tuple(float(phi_r[k]) for k in range(len(ring_all))), use_l)
                 if key not in self._adhoc_cache:
                     lu_cur = self._ensure_current_lu()
                     RHS = np.zeros((len(self.pts), len(sec_lists)), dtype=float)
@@ -1133,13 +1298,19 @@ class SchurPortPlanner:
                     self.total_lu_backsolves += len(sec_lists)
                     self._adhoc_cache[key] = (sec_lists, U_g)
                 sec_lists, U_g = self._adhoc_cache[key]
+                col_err_g = np.zeros(U_g.shape[1], dtype=float)
                 scales = np.array([1.0 / np.sqrt(float(len(sl))) for sl in sec_lists], dtype=float)
                 rhs_g = np.array([np.exp(-phi_union[sl[0]] / lam) * np.sqrt(float(len(sl))) for sl in sec_lists], dtype=float)
                 eff_level = f"union_{use_l}"
 
         rg = U_g.shape[1]
-        mh = len(h_idx)
-        U_all = np.hstack([U_g, self._get_node_cols(h_idx)]) if mh > 0 else U_g
+        if mh > 0:
+            U_all = np.hstack([U_g, self._get_node_cols(h_idx)])
+            col_err_all = np.concatenate([col_err_g, np.zeros(mh, dtype=float)])
+        else:
+            U_all = U_g
+            col_err_all = col_err_g
+
         M = np.zeros((rg + mh, rg + mh), dtype=float)
         rhs_tot = np.zeros(rg + mh, dtype=float)
         for k, (sl, sc) in enumerate(zip(sec_lists, scales)):
@@ -1151,21 +1322,28 @@ class SchurPortPlanner:
 
         coeff = np.linalg.solve(M, rhs_tot)
         raw_Z = U_all @ coeff
+        delta_z = float(np.abs(coeff) @ col_err_all)
 
         g_ring_target = np.exp(-phi_union[ring_all] / lam)
-        ratios = raw_Z[ring_all] / g_ring_target
-        gamma_lo = float(np.min(ratios))
-        gamma_hi = float(np.max(ratios))
+        ratios_lo = (raw_Z[ring_all] - delta_z) / g_ring_target
+        ratios_hi = (raw_Z[ring_all] + delta_z) / g_ring_target
+        gamma_lo = float(np.min(ratios_lo))
+        gamma_hi = float(np.max(ratios_hi))
 
         raw_Z[goal_mask] = np.exp(-phi_union[goal_mask] / lam)
-        return raw_Z, ring_all, rg, mh, gamma_lo, gamma_hi, req_level, eff_level
+        return raw_Z, ring_all, rg, mh, gamma_lo, gamma_hi, delta_z, req_level, eff_level
 
     def solve_query(
         self,
         query: QueryTask,
         max_ring_value_err_tol: Optional[float] = None,
         readout_scheme: str = "central_grad",
+        force_exact_operator_columns: bool = False,
     ) -> dict:
+        """Single/Multi-Goal Port Query with Rigorous Post-Update Residual Enclosure (`ddd19c5 P0 Bug 3.2`):
+        Propagates `delta_z = |coeff| @ col_err` through M-matrix comparison bounds on the exterior domain:
+        `gamma_lo * (raw_Z(x) - delta_z) <= Z_exact(x) <= gamma_hi * (raw_Z(x) + delta_z)`.
+        """
         t0 = time.perf_counter()
         lam = self.spec.lam
         eff_min_r = (0.75 * self.h * np.sqrt(self.spec.dim)) if self.min_goal_r is None else self.min_goal_r
@@ -1173,49 +1351,72 @@ class SchurPortPlanner:
         goal_mask, phi_union = eval_goal_union(self.pts, eff_goals)
         h_idx, dq_vals = self._hazard_indices(query.local_hazards, goal_mask)
 
-        raw_Z, ring_all, rg_ports, mh_haz, gamma_lo, gamma_hi, req_lvl, eff_lvl = self._solve_at_level(
-            eff_goals, goal_mask, phi_union, h_idx, dq_vals
+        raw_Z, ring_all, rg_ports, mh_haz, gamma_lo, gamma_hi, delta_z, req_lvl, eff_lvl = self._solve_at_level(
+            eff_goals, goal_mask, phi_union, h_idx, dq_vals, force_current_exact_cols=force_exact_operator_columns
         )
         exact_fallback_used = False
+        ext_mask = ~goal_mask
 
-        def _needs_refine(rz: np.ndarray, glo: float, ghi: float) -> bool:
+        def _compute_shifts(rz: np.ndarray, glo: float, ghi: float, dz: float) -> Tuple[Optional[float], Optional[float]]:
             if np.min(rz) <= 0.0 or glo <= 0.0:
+                return None, None
+            if dz <= 0.0:
+                v_lo_s = float(lam * np.log(glo) - 1e-13 * (1.0 + abs(lam * np.log(glo))))
+                v_hi_s = float(lam * np.log(ghi) + 1e-13 * (1.0 + abs(lam * np.log(ghi))))
+                return v_lo_s, v_hi_s
+            if np.any(rz[ext_mask] - dz <= 0.0):
+                return None, None
+            # Exact pointwise enclosure: `-lam*log(ghi*(rz + dz)) <= V_exact <= -lam*log(glo*(rz - dz))`
+            # Relative to `V_grid = -lam*log(rz)`:
+            # `V_lo - V_grid = -lam*log(ghi*(1 + dz/rz))`, `V_hi - V_grid = -lam*log(glo*(1 - dz/rz))`
+            rz_ext = rz[ext_mask]
+            lo_diff = float(np.min(-lam * np.log(ghi * (1.0 + dz / rz_ext)))) if np.any(ext_mask) else 0.0
+            hi_diff = float(np.max(-lam * np.log(glo * (1.0 - dz / rz_ext)))) if np.any(ext_mask) else 0.0
+            lo_diff = min(0.0, lo_diff)
+            hi_diff = max(0.0, hi_diff)
+            v_lo_s = float(lo_diff - 1e-13 * (1.0 + abs(lo_diff)))
+            v_hi_s = float(hi_diff + 1e-13 * (1.0 + abs(hi_diff)))
+            return v_lo_s, v_hi_s
+
+        v_lo_shift, v_hi_shift = _compute_shifts(raw_Z, gamma_lo, gamma_hi, delta_z)
+
+        def _needs_refine(vlo: Optional[float], vhi: Optional[float]) -> bool:
+            if vlo is None or vhi is None:
                 return True
             if max_ring_value_err_tol is not None:
-                err_v = max(abs(lam * np.log(glo)), abs(lam * np.log(ghi)))
-                if err_v > max_ring_value_err_tol:
+                if max(abs(vlo), abs(vhi)) > max_ring_value_err_tol:
                     return True
             return False
 
-        if eff_lvl != "EXACT" and _needs_refine(raw_Z, gamma_lo, gamma_hi):
+        if _needs_refine(v_lo_shift, v_hi_shift):
             self.positivity_or_tol_refinements += 1
-            raw_Z, ring_all, rg_ports, mh_haz, gamma_lo, gamma_hi, _, eff_lvl = self._solve_at_level(
-                eff_goals, goal_mask, phi_union, h_idx, dq_vals, level_override="L8"
+            raw_Z, ring_all, rg_ports, mh_haz, gamma_lo, gamma_hi, delta_z, _, eff_lvl = self._solve_at_level(
+                eff_goals, goal_mask, phi_union, h_idx, dq_vals, level_override="L8", force_current_exact_cols=True
             )
-            if _needs_refine(raw_Z, gamma_lo, gamma_hi):
-                raw_Z, ring_all, rg_ports, mh_haz, gamma_lo, gamma_hi, _, eff_lvl = self._solve_at_level(
-                    eff_goals, goal_mask, phi_union, h_idx, dq_vals, level_override="EXACT"
+            v_lo_shift, v_hi_shift = _compute_shifts(raw_Z, gamma_lo, gamma_hi, delta_z)
+            if _needs_refine(v_lo_shift, v_hi_shift):
+                raw_Z, ring_all, rg_ports, mh_haz, gamma_lo, gamma_hi, delta_z, _, eff_lvl = self._solve_at_level(
+                    eff_goals, goal_mask, phi_union, h_idx, dq_vals, level_override="EXACT", force_current_exact_cols=True
                 )
+                v_lo_shift, v_hi_shift = _compute_shifts(raw_Z, gamma_lo, gamma_hi, delta_z)
                 exact_fallback_used = True
 
         raw_min_Z = float(np.min(raw_Z))
         neg_count = int(np.sum(raw_Z <= 0.0))
-        if neg_count > 0 or gamma_lo <= 0.0:
+        if neg_count > 0 or v_lo_shift is None or v_hi_shift is None:
             raise RuntimeError(f"Numeric positivity violation after EXACT ring fallback: min_Z={raw_min_Z}")
+        if v_lo_shift > v_hi_shift:
+            raise RuntimeError(f"Inverted single-query value shifts: [{v_lo_shift}, {v_hi_shift}]")
 
         V_grid = -lam * np.log(raw_Z)
         V_grid[goal_mask] = phi_union[goal_mask]
 
-        v_lo_shift = float(lam * np.log(gamma_lo) - 1e-13 * (1.0 + abs(lam * np.log(gamma_lo))))
-        v_hi_shift = float(lam * np.log(gamma_hi) + 1e-13 * (1.0 + abs(lam * np.log(gamma_hi))))
-        if v_lo_shift > v_hi_shift:
-            raise RuntimeError(f"Inverted single-query value shifts: [{v_lo_shift}, {v_hi_shift}]")
-
-        bound_scope = (
-            "exact_discrete_operator"
-            if (len(query.local_hazards) == 0 or self.hazard_mode == "exact")
-            else "lumped_hazard_discrete_operator"
-        )
+        if len(query.local_hazards) > 0 and self.hazard_mode != "exact":
+            bound_scope = "lumped_hazard_discrete_operator"
+        elif delta_z > 0.0:
+            bound_scope = "residual_audited_discrete_operator"
+        else:
+            bound_scope = "exact_discrete_operator"
 
         val_fn, pol_fn = make_consistent_value_and_policy_2d3d(
             self.xs, V_grid, self.spec, query, readout_scheme=readout_scheme
@@ -1226,10 +1427,12 @@ class SchurPortPlanner:
             "negative_node_count": neg_count,
             "Z": raw_Z,
             "V_grid": V_grid,
+            "interior_residual_delta_Z": delta_z,
             "ring_value_lower_shift": v_lo_shift,
             "ring_value_upper_shift": v_hi_shift,
             "max_ring_value_bound_halfwidth": 0.5 * (v_hi_shift - v_lo_shift),
             "value_bound_scope": bound_scope,
+            "operator_epoch": int(self.operator_epoch),
             "requested_level": req_lvl,
             "effective_level": eff_lvl,
             "exact_fallback_used": exact_fallback_used,
@@ -1244,11 +1447,13 @@ class SchurPortPlanner:
         }
 
     def get_wp_ring_operator(self, dst_wp: int) -> dict:
-        """Cached per-`(wp_id, level)` ring projection & barrier structure (`0` repeated `pinv`/`inv` calls!)."""
+        """Cached per-`(wp_id, level)` ring projection & barrier structure with epoch-integrity guard."""
         cur_lvl = self.wp_levels.get(dst_wp, "NONE")
         if cur_lvl == "NONE":
-            cur_lvl = self.default_lazy_level
+            cur_lvl = self._wp_remembered_level.get(dst_wp, self.default_lazy_level)
             self.ensure_wp_level(dst_wp, cur_lvl)
+        elif not self._is_level_valid_in_current_epoch(dst_wp, cur_lvl):
+            self.refresh_waypoint_under_current_operator(dst_wp, cur_lvl)
         key = (dst_wp, cur_lvl)
         if key not in self._wp_ring_op_cache:
             ring_d = self.wp_rings[dst_wp]
@@ -1265,6 +1470,9 @@ class SchurPortPlanner:
             self._wp_ring_op_cache[key] = {
                 "wp_id": dst_wp,
                 "level": cur_lvl,
+                "operator_epoch": self.operator_epoch,
+                "built_epoch": self._wp_tree_col_epoch.get(key, self.operator_epoch),
+                "verified_epoch": self._wp_verified_epoch.get(key, self.operator_epoch),
                 "ring_d": ring_d,
                 "U_raw": U_raw,
                 "U_ring": U_ring,

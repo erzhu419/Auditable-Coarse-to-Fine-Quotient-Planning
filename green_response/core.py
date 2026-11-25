@@ -1,12 +1,16 @@
 """Unified Core Specification, Capability Guards, Reflection Mechanics, Same-GP Kriging,
-and Scale-Equivariant Paired Non-Inferiority Statistics (`green_response.core`).
+8-Core Process-Parallel Map Runner, and Scale-Equivariant Paired Statistics (`green_response.core`).
 """
 from __future__ import annotations
 
+import concurrent.futures
+import math
 import os
 import platform
+import subprocess
 from dataclasses import dataclass
-from typing import Callable, List, Optional, Sequence, Tuple
+from pathlib import Path
+from typing import Callable, Iterable, List, Optional, Sequence, Tuple, TypeVar
 
 import numpy as np
 import scipy
@@ -16,45 +20,86 @@ from scipy.stats import t as student_t
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import ConstantKernel, Matern, WhiteKernel
 
+T_In = TypeVar("T_In")
+T_Out = TypeVar("T_Out")
 
-def enforce_single_thread_env() -> dict:
-    """Pins BLAS/OpenMP thread environment variables to 1 when unset."""
-    keys = (
-        "OMP_NUM_THREADS",
-        "OPENBLAS_NUM_THREADS",
-        "MKL_NUM_THREADS",
-        "VECLIB_MAXIMUM_THREADS",
-        "NUMEXPR_NUM_THREADS",
-    )
-    for k in keys:
-        os.environ.setdefault(k, "1")
-    return {k: os.environ.get(k, "") for k in keys}
+_THREAD_ENV_KEYS = (
+    "OMP_NUM_THREADS",
+    "OPENBLAS_NUM_THREADS",
+    "MKL_NUM_THREADS",
+    "VECLIB_MAXIMUM_THREADS",
+    "NUMEXPR_NUM_THREADS",
+)
 
 
-def collect_runtime_metadata() -> dict:
+def enforce_single_thread_env(force: bool = False) -> dict:
+    """Pins BLAS/OpenMP thread environment variables to 1 (avoiding intra-process lock contention)."""
+    for k in _THREAD_ENV_KEYS:
+        if force:
+            os.environ[k] = "1"
+        else:
+            os.environ.setdefault(k, "1")
+    try:
+        from threadpoolctl import threadpool_limits  # type: ignore
+        threadpool_limits(limits=1)
+    except Exception:
+        pass
+    return {k: os.environ.get(k, "") for k in _THREAD_ENV_KEYS}
+
+
+def _worker_init_single_thread() -> None:
+    """Initializer for each worker process in `run_map_parallel`: strictly pins BLAS/OpenMP to 1 thread."""
+    enforce_single_thread_env(force=True)
+
+
+def run_map_parallel(
+    worker_fn: Callable[[T_In], T_Out],
+    items: Sequence[T_In],
+    max_workers: int = 8,
+) -> List[T_Out]:
+    """Executes independent map/seed tasks across up to `max_workers` OS processes (default 8 cores)
+    while pinning each worker's internal BLAS/OpenMP threadpool to 1 thread for deterministic,
+    contention-free numerical linear algebra. Preserves input order.
+    """
+    item_list = list(items)
+    if not item_list:
+        return []
+    n_eff = min(int(max_workers), len(item_list), os.cpu_count() or 8)
+    if n_eff <= 1:
+        enforce_single_thread_env(force=True)
+        return [worker_fn(it) for it in item_list]
+    with concurrent.futures.ProcessPoolExecutor(
+        max_workers=n_eff, initializer=_worker_init_single_thread
+    ) as ex:
+        return list(ex.map(worker_fn, item_list))
+
+
+def collect_runtime_metadata(max_workers: int = 1) -> dict:
     pool_info = None
     try:
         from threadpoolctl import threadpool_info  # type: ignore
         pool_info = threadpool_info()
     except Exception:
         pool_info = "threadpoolctl_unavailable"
+    git_sha = "unknown"
+    try:
+        repo_dir = Path(__file__).resolve().parents[1]
+        git_sha = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=str(repo_dir), text=True, stderr=subprocess.DEVNULL
+        ).strip()
+    except Exception:
+        pass
     return {
+        "git_head_sha": git_sha,
         "python_version": platform.python_version(),
         "platform": platform.platform(),
         "processor": platform.processor(),
+        "cpu_count": os.cpu_count(),
+        "configured_parallel_workers": int(max_workers),
         "numpy_version": np.__version__,
         "scipy_version": scipy.__version__,
         "sklearn_version": sklearn.__version__,
-        "thread_env": {
-            k: os.environ.get(k, "unset")
-            for k in (
-                "OMP_NUM_THREADS",
-                "OPENBLAS_NUM_THREADS",
-                "MKL_NUM_THREADS",
-                "VECLIB_MAXIMUM_THREADS",
-                "NUMEXPR_NUM_THREADS",
-            )
-        },
+        "thread_env": {k: os.environ.get(k, "unset") for k in _THREAD_ENV_KEYS},
         "active_threadpools": pool_info,
     }
 
@@ -159,10 +204,26 @@ class ProblemSpec:
         )
 
 
+_VALID_CERT_STATUSES = {"epsilon_certified", "unresolved", "numeric_invalid", "heuristic"}
+_PROTECTED_CERT_KEYS = {
+    "status",
+    "certified",
+    "certificate_scope",
+    "epsilon_tol",
+    "lower_bound",
+    "upper_bound",
+    "stop_reason",
+    "operator_epoch",
+    "work",
+}
+
+
 @dataclass
 class IntervalCertificate:
-    """Lightweight typed certificate result (`status`, `scope`, `bounds`, `policy`, `reason`, `work`)
-    supporting both attribute access and dict-style lookup for backward compatibility.
+    """Fail-closed validated certificate contract (`ddd19c5 Audit Stage A`):
+      - Enforces finite ordered `[lower_bound, upper_bound]`, valid `status`, non-negative `operator_epoch`,
+        and non-null policy whenever `certified=True`;
+      - Prevents `extras` from overwriting any validated core certificate field!
     """
     status: str  # "epsilon_certified" | "unresolved" | "numeric_invalid" | "heuristic"
     certified: bool
@@ -171,11 +232,61 @@ class IntervalCertificate:
     lower_bound: Optional[float] = None
     upper_bound: Optional[float] = None
     stop_reason: str = ""
+    operator_epoch: int = 0
     work: Optional[dict] = None
     extras: Optional[dict] = None
 
+    def __post_init__(self) -> None:
+        if self.status not in _VALID_CERT_STATUSES:
+            raise ValueError(f"Invalid certificate status: {self.status!r}")
+        if not math.isfinite(float(self.epsilon_tol)) or float(self.epsilon_tol) < 0.0:
+            raise ValueError(f"Invalid epsilon_tol: {self.epsilon_tol!r}")
+        if int(self.operator_epoch) < 0:
+            raise ValueError(f"Invalid negative operator_epoch: {self.operator_epoch!r}")
+        self.operator_epoch = int(self.operator_epoch)
+        self.certified = bool(self.certified)
+
+        if self.status == "numeric_invalid" and self.certified:
+            raise ValueError("numeric_invalid certificate cannot have certified=True.")
+
+        if self.lower_bound is not None or self.upper_bound is not None:
+            if self.lower_bound is None or self.upper_bound is None:
+                raise ValueError("lower_bound and upper_bound must both be finite floats or both None.")
+            lo = float(self.lower_bound)
+            hi = float(self.upper_bound)
+            if not (math.isfinite(lo) and math.isfinite(hi)):
+                raise ValueError(f"Non-finite certificate bounds: [{lo}, {hi}]")
+            if lo > hi:
+                raise ValueError(f"Inverted certificate bounds: [{lo}, {hi}]")
+            self.lower_bound = lo
+            self.upper_bound = hi
+
+        if self.certified:
+            if self.status != "epsilon_certified":
+                raise ValueError(f"certified=True requires status='epsilon_certified', got {self.status!r}")
+            if self.lower_bound is None or self.upper_bound is None:
+                raise ValueError("certified=True requires finite lower_bound and upper_bound.")
+            gap = self.upper_bound - self.lower_bound
+            if gap > float(self.epsilon_tol) + 1e-12 * (1.0 + abs(self.upper_bound)):
+                raise ValueError(
+                    f"certified=True with gap={gap} exceeding epsilon_tol={self.epsilon_tol}."
+                )
+            if self.extras:
+                if "policy_action_idx" in self.extras and self.extras["policy_action_idx"] is None:
+                    raise ValueError("certified=True cannot have policy_action_idx=None.")
+                if "best_order" in self.extras and self.extras["best_order"] is None:
+                    raise ValueError("certified=True cannot have best_order=None.")
+
+        if self.extras:
+            illegal_overlap = _PROTECTED_CERT_KEYS.intersection(self.extras.keys())
+            if illegal_overlap:
+                raise ValueError(
+                    f"IntervalCertificate.extras cannot override protected core keys: {sorted(illegal_overlap)}"
+                )
+
     def to_dict(self) -> dict:
-        base = {
+        out = {} if self.extras is None else dict(self.extras)
+        out.update({
             "status": self.status,
             "certified": bool(self.certified),
             "certificate_scope": self.certificate_scope,
@@ -183,20 +294,18 @@ class IntervalCertificate:
             "lower_bound": None if self.lower_bound is None else float(self.lower_bound),
             "upper_bound": None if self.upper_bound is None else float(self.upper_bound),
             "stop_reason": self.stop_reason,
+            "operator_epoch": int(self.operator_epoch),
             "work": {} if self.work is None else dict(self.work),
-        }
-        if self.extras:
-            base.update(self.extras)
-        return base
+        })
+        return out
 
     def __getitem__(self, key: str):
-        d = self.to_dict()
-        return d[key]
+        return self.to_dict()[key]
 
     def get(self, key: str, default=None):
         return self.to_dict().get(key, default)
 
-    def keys(self):
+    def keys(self) -> Iterable[str]:
         return self.to_dict().keys()
 
     def __contains__(self, key: str) -> bool:
@@ -345,6 +454,23 @@ def generate_benchmark_map(
     return GroundTruthWorld(spec=spec, hazards=hazards, vortices=vortices)
 
 
+def observe_world_at_points(
+    world: GroundTruthWorld,
+    X: np.ndarray,
+    rng: np.random.Generator,
+    q_noise_std: float = 0.28,
+    b_noise_std: float = 0.08,
+    include_drift: bool = True,
+) -> Tuple[np.ndarray, np.ndarray, Optional[np.ndarray]]:
+    """Evaluates noisy world probes at specified coordinates `X` (used for sequential active sensing)."""
+    X_arr = np.atleast_2d(np.asarray(X, dtype=float))
+    q_obs = np.maximum(0.0, world.q_hidden(X_arr) + rng.normal(0.0, q_noise_std, size=len(X_arr)))
+    if not include_drift:
+        return X_arr, q_obs, None
+    b_obs = world.drift(X_arr) + rng.normal(0.0, b_noise_std, size=(len(X_arr), world.spec.dim))
+    return X_arr, q_obs, b_obs
+
+
 def sample_noisy_probes(
     world: GroundTruthWorld,
     n_probes: int,
@@ -356,11 +482,9 @@ def sample_noisy_probes(
     rng = np.random.default_rng(seed)
     L = world.spec.half_width - 0.12
     X = rng.uniform(-L, L, size=(n_probes, world.spec.dim))
-    q_obs = np.maximum(0.0, world.q_hidden(X) + rng.normal(0.0, q_noise_std, size=n_probes))
-    if not include_drift:
-        return X, q_obs, None
-    b_obs = world.drift(X) + rng.normal(0.0, b_noise_std, size=(n_probes, world.spec.dim))
-    return X, q_obs, b_obs
+    return observe_world_at_points(
+        world, X, rng, q_noise_std=q_noise_std, b_noise_std=b_noise_std, include_drift=include_drift
+    )
 
 
 class KrigingWorldModel:
@@ -452,28 +576,68 @@ class KrigingWorldModel:
         return np.column_stack(cols)
 
 
+def _eval_segment_goal_union_hit_tau(
+    X_prev: np.ndarray, X_next: np.ndarray, goals: Sequence[GoalBall]
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Exact line-segment first-entry interpolation on `[X_prev, X_next]`:
+    Returns `(in_any, phi_at_first_hit, tau_first_hit, X_at_first_hit)` where `tau_first_hit in [0, 1]`
+    solves `||X_prev + tau*(X_next - X_prev) - c_j||_2 = r_j`, charging fractional step cost `tau * dt`
+    and transitioning at the entry point!
+    """
+    X_prev = np.atleast_2d(X_prev)
+    X_next = np.atleast_2d(X_next)
+    n = X_prev.shape[0]
+    dX = X_next - X_prev
+    a = np.sum(dX ** 2, axis=1)
+
+    best_tau = np.full(n, np.inf, dtype=float)
+    best_phi = np.full(n, np.inf, dtype=float)
+
+    for g in goals:
+        c = np.asarray(g.center, dtype=float)[None, :]
+        r2 = float(g.radius ** 2)
+        f = X_prev - c
+        f2 = np.sum(f ** 2, axis=1)
+        inside0 = f2 <= r2
+        if np.any(inside0):
+            earlier0 = inside0 & (0.0 < best_tau - 1e-12)
+            tie0 = inside0 & (np.abs(best_tau) <= 1e-12)
+            best_tau = np.where(earlier0, 0.0, best_tau)
+            best_phi = np.where(earlier0, g.phi, np.where(tie0, np.minimum(best_phi, g.phi), best_phi))
+
+        b_half = np.sum(f * dX, axis=1)
+        c_quad = f2 - r2
+        disc = b_half ** 2 - a * c_quad
+        valid_q = (~inside0) & (a > 1e-24) & (disc >= 0.0)
+        if np.any(valid_q):
+            sqrt_d = np.sqrt(np.maximum(disc, 0.0))
+            t1 = (-b_half - sqrt_d) / np.maximum(a, 1e-24)
+            hit_seg = valid_q & (t1 >= 0.0) & (t1 <= 1.0)
+            if np.any(hit_seg):
+                earlier = hit_seg & (t1 < best_tau - 1e-12)
+                tie = hit_seg & (np.abs(t1 - best_tau) <= 1e-12)
+                best_tau = np.where(earlier, t1, best_tau)
+                best_phi = np.where(earlier, g.phi, np.where(tie, np.minimum(best_phi, g.phi), best_phi))
+
+    # Fallback check on endpoint inclusion for numerical edge tangency
+    hit_end, phi_end = eval_goal_union(X_next, goals)
+    end_only = hit_end & (~np.isfinite(best_tau))
+    if np.any(end_only):
+        best_tau = np.where(end_only, 1.0, best_tau)
+        best_phi = np.where(end_only, phi_end, best_phi)
+
+    in_any = np.isfinite(best_tau)
+    tau_out = np.where(in_any, np.clip(best_tau, 0.0, 1.0), 1.0)
+    phi_out = np.where(in_any, best_phi, 0.0)
+    X_hit = X_prev + tau_out[:, None] * dX
+    return in_any, phi_out, tau_out, X_hit
+
+
 def _eval_segment_goal_union_hit(
     X_prev: np.ndarray, X_next: np.ndarray, goals: Sequence[GoalBall]
 ) -> Tuple[np.ndarray, np.ndarray]:
-    """Checks continuous line-segment sphere intersection `min_{t in [0, 1]} ||X_prev + t*(X_next - X_prev) - c_j|| <= r_j`
-    in addition to endpoint inclusion, reducing finite-`dt` boundary-crossing overshoot bias.
-    """
-    hit_end, phi_end = eval_goal_union(X_next, goals)
-    dX = X_next - X_prev
-    seg_len2 = np.sum(dX ** 2, axis=1)
-    in_any = hit_end.copy()
-    phi_min = np.where(hit_end, phi_end, np.inf)
-    for g in goals:
-        c = np.asarray(g.center, dtype=float)[None, :]
-        rel = c - X_prev
-        t_star = np.where(seg_len2 > 1e-24, np.clip(np.sum(rel * dX, axis=1) / np.maximum(seg_len2, 1e-24), 0.0, 1.0), 0.0)
-        closest = X_prev + t_star[:, None] * dX
-        mask = np.sum((closest - c) ** 2, axis=1) <= (g.radius ** 2)
-        if np.any(mask):
-            in_any |= mask
-            phi_min[mask] = np.minimum(phi_min[mask], g.phi)
-    phi_min[~in_any] = 0.0
-    return in_any, phi_min
+    in_any, phi_out, _, _ = _eval_segment_goal_union_hit_tau(X_prev, X_next, goals)
+    return in_any, phi_out
 
 
 def simulate_closed_loop_crn(
@@ -485,13 +649,19 @@ def simulate_closed_loop_crn(
     u_clip_safety: float = 25.0,
     dt_override: Optional[float] = None,
     substep_segment_hit: bool = False,
+    dW_pregenerated: Optional[np.ndarray] = None,
 ) -> dict:
     """Closed-loop rollout with per-trajectory CRN streams, `t=0` immediate goal absorption,
-    specular reflection, post-step (or segment) union absorption, and explicit cost/clip diagnostics.
+    specular reflection, optional fractional-step segment hitting, and optional pregenerated Brownian
+    increments `dW_pregenerated` of shape `(n_traj, max_steps, dim)` for exact coarse/fine Wiener coupling.
     """
     spec = world.spec
     dt = spec.dt_sim if dt_override is None else float(dt_override)
-    max_steps = spec.max_steps if dt_override is None else int(round(spec.max_steps * spec.dt_sim / dt))
+    max_steps = (
+        dW_pregenerated.shape[1]
+        if dW_pregenerated is not None
+        else (spec.max_steps if dt_override is None else int(round(spec.max_steps * spec.dt_sim / dt)))
+    )
     sqrt_dt = np.sqrt(dt)
     R_vec = spec.R_vec
 
@@ -499,14 +669,16 @@ def simulate_closed_loop_crn(
     n_traj = starts.shape[0]
     X = reflect_into_box(starts.copy(), spec.half_width)
 
-    ss = np.random.SeedSequence([seed, len(query.goals), int(abs(query.goals[0].center[0]) * 1000)])
-    traj_rngs = [np.random.default_rng(s) for s in ss.spawn(n_traj)]
+    traj_rngs = None
+    if dW_pregenerated is None:
+        ss = np.random.SeedSequence([seed, len(query.goals), int(abs(query.goals[0].center[0]) * 1000)])
+        traj_rngs = [np.random.default_rng(s) for s in ss.spawn(n_traj)]
 
     hit0, phi0 = eval_goal_union(X, query.goals)
     alive = ~hit0
     running_cost = np.zeros(n_traj, dtype=float)
     terminal_cost = np.where(hit0, phi0, 0.0)
-    steps_taken = np.zeros(n_traj, dtype=int)
+    steps_taken = np.zeros(n_traj, dtype=float)
     clipped_steps = 0
     total_active_steps = 0
 
@@ -530,18 +702,27 @@ def simulate_closed_loop_crn(
 
         q_val = world.q_total(X_act, query.local_hazards)
         ctrl_quad = 0.5 * np.sum((u ** 2) * R_vec[None, :], axis=1)
-        running_cost[idx] += (q_val + ctrl_quad) * dt
+        step_rate = q_val + ctrl_quad
 
         b_val = world.drift(X_act)
-        dW = np.vstack([traj_rngs[i].normal(0.0, sqrt_dt, size=spec.dim) for i in idx])
+        if dW_pregenerated is not None:
+            dW = dW_pregenerated[idx, _step, :]
+        else:
+            assert traj_rngs is not None
+            dW = np.vstack([traj_rngs[i].normal(0.0, sqrt_dt, size=spec.dim) for i in idx])
         X_next = reflect_into_box(X_act + (b_val + u) * dt + spec.sigma * dW, spec.half_width)
-        X[idx] = X_next
-        steps_taken[idx] += 1
 
         if substep_segment_hit:
-            hit_post, phi_post = _eval_segment_goal_union_hit(X_act, X_next, query.goals)
+            hit_post, phi_post, tau_hit, X_hit = _eval_segment_goal_union_hit_tau(X_act, X_next, query.goals)
+            running_cost[idx] += step_rate * (tau_hit * dt)
+            X[idx] = np.where(hit_post[:, None], X_hit, X_next)
+            steps_taken[idx] += tau_hit
         else:
             hit_post, phi_post = eval_goal_union(X_next, query.goals)
+            running_cost[idx] += step_rate * dt
+            X[idx] = X_next
+            steps_taken[idx] += 1.0
+
         if np.any(hit_post):
             newly_done = idx[hit_post]
             terminal_cost[newly_done] += phi_post[hit_post]

@@ -309,99 +309,193 @@ def run_highd_prior_and_shift_suite(
     }
 
 
-def run_6d_anchor_budget_and_fresh_confirmation(n_maps: int = 8) -> dict:
-    """Locked Fresh-Seed (`9600..9607`) 6D Sample/Compute Efficiency Curve (`GPT6 85e2323 Sec 7.4`):
-    Varies interior anchor count `N_anch in {24, 54, 108}` (`48` paths/anchor) comparing
-    `ZeroMean` vs `MatchedSharpCone` (strongest NNLS cone!) vs `HelmholtzBessel`, plus independent
-    FK seed replication stability `|V^{(seed A)} - V^{(seed B)}|`!
-    """
+def _budget_map_worker(args: Tuple[int, int, Sequence[int]]) -> dict:
+    idx_m, ms, budgets = args
     dim = 6
     spec = ProblemSpec(dim=dim, half_width=1.65, sigma=0.55, q0=0.65, dt_sim=0.020, max_steps=420)
-    fresh_seeds = list(range(9600, 9600 + n_maps))
-    budgets = [24, 54, 108]
     priors = ["zero_mean", "matched_sharp_cone", "helmholtz_bessel"]
+    world = generate_benchmark_map(ms, dim=dim, regime="smooth", with_drift=True, spec=spec)
+    km = KrigingWorldModel(*sample_noisy_probes(world, n_probes=100, seed=ms + 7, include_drift=True))
+    triples = make_highd_queries_three_regimes(ms, dim=dim, n_queries=2)
 
-    out_budgets = {}
+    out_m = {}
     for nb in budgets:
-        tr_c = {p: [] for p in priors}
-        un_c = {p: [] for p in priors}
-        sh_c = {p: [] for p in priors}
-        plan_ms_l = {p: [] for p in priors}
-        rep_grad_rms = {p: [] for p in priors}
+        ctr = {p: [] for p in priors}
+        cun = {p: [] for p in priors}
+        csh = {p: [] for p in priors}
+        reach_un = {p: [] for p in priors}
+        reach_sh = {p: [] for p in priors}
+        timeout_sh = {p: [] for p in priors}
+        clip_sh = {p: [] for p in priors}
+        pms = {p: [] for p in priors}
+        gr_mc_only = {p: [] for p in priors}
+        gr_full_recon = {p: [] for p in priors}
+        counters_list = []
+        ess_list, tail_list = [], []
 
-        for idx_m, ms in enumerate(fresh_seeds):
-            world = generate_benchmark_map(ms, dim=dim, regime="smooth", with_drift=True, spec=spec)
-            km = KrigingWorldModel(*sample_noisy_probes(world, n_probes=100, seed=ms + 7, include_drift=True))
-            triples = make_highd_queries_three_regimes(ms, dim=dim, n_queries=2)
-            ctr = {p: [] for p in priors}; cun = {p: [] for p in priors}; csh = {p: [] for p in priors}
-            pms = {p: [] for p in priors}; gr_s = {p: [] for p in priors}
+        for q_i, (q_tr, q_un, q_sh) in enumerate(triples):
+            d_seed = 28000 + 50 * idx_m + 10 * q_i
+            sims = 29000 + 50 * idx_m + 10 * q_i
+            # Primary construction: `(design_seed = d_seed, mc_seed = d_seed)`
+            s_a = solve_highd_fk_distillation(
+                spec, km, q_tr, n_interior_anchors=nb, n_mc_paths=48, n_steps_fk=75,
+                residual_mode="continuum_collar", prior_mode="helmholtz_bessel", guided_proposal=True,
+                design_seed=d_seed, mc_seed=d_seed,
+            )
+            # Fixed-design MC replica: SAME `design_seed`, independent `mc_seed` (pure FK path variance!)
+            s_mc = solve_highd_fk_distillation(
+                spec, km, q_tr, n_interior_anchors=nb, n_mc_paths=48, n_steps_fk=75,
+                residual_mode="continuum_collar", prior_mode="helmholtz_bessel", guided_proposal=True,
+                design_seed=d_seed, mc_seed=d_seed + 3333,
+            )
+            # Full-reconstruction replica: independent `design_seed` AND `mc_seed`
+            s_full = solve_highd_fk_distillation(
+                spec, km, q_tr, n_interior_anchors=nb, n_mc_paths=48, n_steps_fk=75,
+                residual_mode="continuum_collar", prior_mode="helmholtz_bessel", guided_proposal=True,
+                design_seed=d_seed + 7777, mc_seed=d_seed + 7777,
+            )
+            counters_list.append(s_a["budget_counters"])
+            ess_list.append(s_a["mean_ess"])
+            tail_list.append(s_a["weighted_tail_mass"])
 
-            for q_i, (q_tr, q_un, q_sh) in enumerate(triples):
-                fks = 28000 + 50 * idx_m + 10 * q_i
-                sims = 29000 + 50 * idx_m + 10 * q_i
-                s_a = solve_highd_fk_distillation(
-                    spec, km, q_tr, n_interior_anchors=nb, n_mc_paths=48, n_steps_fk=75,
-                    residual_mode="continuum_collar", prior_mode="helmholtz_bessel", guided_proposal=True, seed=fks,
+            eval_pts = np.vstack([np.asarray(q_un.start_points), np.asarray(q_sh.start_points)])
+            for p_mode in priors:
+                t_r0 = time.perf_counter()
+                fa = s_a if p_mode == "helmholtz_bessel" else fit_gp_value_with_prior(
+                    spec, q_tr, s_a["frozen_X_all"], s_a["frozen_y_total_v"], s_a["frozen_noise_vec"], prior_mode=p_mode
                 )
-                s_b = solve_highd_fk_distillation(
-                    spec, km, q_tr, n_interior_anchors=nb, n_mc_paths=48, n_steps_fk=75,
-                    residual_mode="continuum_collar", prior_mode="helmholtz_bessel", guided_proposal=True, seed=fks + 7777,
+                ref_ms = 0.0 if p_mode == "helmholtz_bessel" else 1000.0 * (time.perf_counter() - t_r0)
+                f_mc = s_mc if p_mode == "helmholtz_bessel" else fit_gp_value_with_prior(
+                    spec, q_tr, s_mc["frozen_X_all"], s_mc["frozen_y_total_v"], s_mc["frozen_noise_vec"], prior_mode=p_mode
                 )
-                eval_pts = np.vstack([np.asarray(q_un.start_points), np.asarray(q_sh.start_points)])
-                for p_mode in priors:
-                    t_r0 = time.perf_counter()
-                    fa = s_a if p_mode == "helmholtz_bessel" else fit_gp_value_with_prior(
-                        spec, q_tr, s_a["frozen_X_all"], s_a["frozen_y_total_v"], s_a["frozen_noise_vec"], prior_mode=p_mode
-                    )
-                    ref_ms = 0.0 if p_mode == "helmholtz_bessel" else 1000.0 * (time.perf_counter() - t_r0)
-                    fb = s_b if p_mode == "helmholtz_bessel" else fit_gp_value_with_prior(
-                        spec, q_tr, s_b["frozen_X_all"], s_b["frozen_y_total_v"], s_b["frozen_noise_vec"], prior_mode=p_mode
-                    )
-                    pms[p_mode].append(s_a["plan_ms"] + ref_ms)
-                    ga = fa["raw_value_and_grad"](eval_pts)[1]
-                    gb = fb["raw_value_and_grad"](eval_pts)[1]
-                    gr_s[p_mode].append(float(np.sqrt(np.mean((ga - gb) ** 2))))
+                f_full = s_full if p_mode == "helmholtz_bessel" else fit_gp_value_with_prior(
+                    spec, q_tr, s_full["frozen_X_all"], s_full["frozen_y_total_v"], s_full["frozen_noise_vec"], prior_mode=p_mode
+                )
+                pms[p_mode].append(s_a["plan_ms"] + ref_ms)
+                ga = fa["raw_value_and_grad"](eval_pts)[1]
+                g_mc = f_mc["raw_value_and_grad"](eval_pts)[1]
+                g_fu = f_full["raw_value_and_grad"](eval_pts)[1]
+                gr_mc_only[p_mode].append(float(np.sqrt(np.mean((ga - g_mc) ** 2))))
+                gr_full_recon[p_mode].append(float(np.sqrt(np.mean((ga - g_fu) ** 2))))
 
-                    ctr[p_mode].append(simulate_closed_loop_crn(world, fa["policy"], q_tr, n_per_start=12, seed=sims)["mean_cost"])
-                    cun[p_mode].append(simulate_closed_loop_crn(world, fa["policy"], q_un, n_per_start=12, seed=sims + 300)["mean_cost"])
-                    csh[p_mode].append(simulate_closed_loop_crn(world, fa["policy"], q_sh, n_per_start=12, seed=sims + 600)["mean_cost"])
+                r_tr = simulate_closed_loop_crn(world, fa["policy"], q_tr, n_per_start=12, seed=sims)
+                r_un = simulate_closed_loop_crn(world, fa["policy"], q_un, n_per_start=12, seed=sims + 300)
+                r_sh = simulate_closed_loop_crn(world, fa["policy"], q_sh, n_per_start=12, seed=sims + 600)
+                ctr[p_mode].append(r_tr["mean_cost"])
+                cun[p_mode].append(r_un["mean_cost"])
+                csh[p_mode].append(r_sh["mean_cost"])
+                reach_un[p_mode].append(r_un["reach_rate"])
+                reach_sh[p_mode].append(r_sh["reach_rate"])
+                timeout_sh[p_mode].append(r_sh["timeout_rate"])
+                clip_sh[p_mode].append(r_sh["clip_fraction"])
 
-            for p in priors:
-                tr_c[p].append(float(np.mean(ctr[p])))
-                un_c[p].append(float(np.mean(cun[p])))
-                sh_c[p].append(float(np.mean(csh[p])))
-                plan_ms_l[p].append(float(np.mean(pms[p])))
-                rep_grad_rms[p].append(float(np.mean(gr_s[p])))
-
-        bes_sh = np.array(sh_c["helmholtz_bessel"])
-        bes_un = np.array(un_c["helmholtz_bessel"])
-        out_budgets[f"anchors_{nb}"] = {
-            "n_interior_anchors": nb,
-            "n_mc_paths_per_anchor": 48,
-            "total_fk_trajectories": nb * 48,
+        out_m[nb] = {
+            "counters_mean": {
+                ck: float(np.mean([c[ck] for c in counters_list])) for ck in counters_list[0].keys()
+            },
+            "mean_ess": float(np.mean(ess_list)),
+            "weighted_tail_mass": float(np.mean(tail_list)),
             "priors": {
                 p: {
-                    "train_mean_cost": float(np.mean(tr_c[p])),
-                    "unseen_in_dist_mean_cost": float(np.mean(un_c[p])),
-                    "wall_corner_shift_mean_cost": float(np.mean(sh_c[p])),
-                    "mean_query_plan_ms": float(np.mean(plan_ms_l[p])),
-                    "independent_fk_seed_grad_rms_diff": float(np.mean(rep_grad_rms[p])),
-                    "bessel_minus_prior_unseen": paired_stats(bes_un - np.array(un_c[p])),
-                    "bessel_minus_prior_wall_corner_shift": paired_stats(bes_sh - np.array(sh_c[p])),
-                    "per_map_unseen_costs": un_c[p],
-                    "per_map_shift_costs": sh_c[p],
+                    "tr": float(np.mean(ctr[p])),
+                    "un": float(np.mean(cun[p])),
+                    "sh": float(np.mean(csh[p])),
+                    "reach_un": float(np.mean(reach_un[p])),
+                    "reach_sh": float(np.mean(reach_sh[p])),
+                    "timeout_sh": float(np.mean(timeout_sh[p])),
+                    "clip_sh": float(np.mean(clip_sh[p])),
+                    "plan_ms": float(np.mean(pms[p])),
+                    "grad_rms_mc_only": float(np.mean(gr_mc_only[p])),
+                    "grad_rms_full_recon": float(np.mean(gr_full_recon[p])),
                 }
                 for p in priors
             },
         }
-        print(
-            f"  [6D Fresh Budget N_anch={nb}] Shift Cost: Zero={np.mean(sh_c['zero_mean']):.3f} | "
-            f"MatchedSharpCone={np.mean(sh_c['matched_sharp_cone']):.3f} | "
-            f"Bessel={np.mean(sh_c['helmholtz_bessel']):.3f} (plan={np.mean(plan_ms_l['helmholtz_bessel']):.0f}ms)",
-            flush=True,
-        )
+    return out_m
 
-    return {"locked_fresh_seeds": fresh_seeds, "dim": dim, "anchor_budgets": out_budgets}
+
+def run_6d_anchor_budget_and_fresh_confirmation(n_maps: int = 16, max_workers: int = 8) -> dict:
+    """`ddd19c5 Stage E`: 16 Locked Fresh 6D Maps (`9600..9615`) with Native Solver Budget Counters,
+    Decoupled Fixed-Design MC Variance vs Full-Reconstruction Sensitivity, Same-Low-Budget (`N=24`)
+    Primary Contrast, and Pre-Declared `+5.0%` Cross-Budget Non-Inferiority (`Bessel-24` vs `SharpCone-108`)!
+    """
+    from green_response import paired_relative_noninferiority, run_map_parallel
+
+    dim = 6
+    fresh_seeds = list(range(9600, 9600 + n_maps))
+    budgets = [24, 54, 108]
+    priors = ["zero_mean", "matched_sharp_cone", "helmholtz_bessel"]
+
+    rows = run_map_parallel(
+        _budget_map_worker, [(i, s, budgets) for i, s in enumerate(fresh_seeds)], max_workers=max_workers
+    )
+
+    out_budgets = {}
+    for nb in budgets:
+        bes_un = np.array([r[nb]["priors"]["helmholtz_bessel"]["un"] for r in rows])
+        bes_sh = np.array([r[nb]["priors"]["helmholtz_bessel"]["sh"] for r in rows])
+        c_keys = list(rows[0][nb]["counters_mean"].keys())
+        mean_cnt = {ck: float(np.mean([r[nb]["counters_mean"][ck] for r in rows])) for ck in c_keys}
+
+        out_budgets[f"anchors_{nb}"] = {
+            "nominal_interior_anchors_param": nb,
+            "world_observation_probes_per_map": 100,
+            "actual_solver_budget_counters_mean": mean_cnt,
+            "mean_fk_ess": float(np.mean([r[nb]["mean_ess"] for r in rows])),
+            "mean_fk_weighted_tail_mass": float(np.mean([r[nb]["weighted_tail_mass"] for r in rows])),
+            "priors": {
+                p: {
+                    "train_mean_cost": float(np.mean([r[nb]["priors"][p]["tr"] for r in rows])),
+                    "unseen_in_dist_mean_cost": float(np.mean([r[nb]["priors"][p]["un"] for r in rows])),
+                    "wall_corner_shift_mean_cost": float(np.mean([r[nb]["priors"][p]["sh"] for r in rows])),
+                    "unseen_reach_rate": float(np.mean([r[nb]["priors"][p]["reach_un"] for r in rows])),
+                    "wall_corner_shift_reach_rate": float(np.mean([r[nb]["priors"][p]["reach_sh"] for r in rows])),
+                    "wall_corner_shift_timeout_rate": float(np.mean([r[nb]["priors"][p]["timeout_sh"] for r in rows])),
+                    "wall_corner_shift_clip_fraction": float(np.mean([r[nb]["priors"][p]["clip_sh"] for r in rows])),
+                    "mean_query_plan_ms": float(np.mean([r[nb]["priors"][p]["plan_ms"] for r in rows])),
+                    "fixed_design_mc_seed_grad_rms_diff": float(np.mean([r[nb]["priors"][p]["grad_rms_mc_only"] for r in rows])),
+                    "full_reconstruction_seed_grad_rms_diff": float(np.mean([r[nb]["priors"][p]["grad_rms_full_recon"] for r in rows])),
+                    "bessel_minus_prior_unseen": paired_stats(bes_un - np.array([r[nb]["priors"][p]["un"] for r in rows])),
+                    "bessel_minus_prior_wall_corner_shift": paired_stats(bes_sh - np.array([r[nb]["priors"][p]["sh"] for r in rows])),
+                    "per_map_unseen_costs": [r[nb]["priors"][p]["un"] for r in rows],
+                    "per_map_shift_costs": [r[nb]["priors"][p]["sh"] for r in rows],
+                }
+                for p in priors
+            },
+        }
+
+    b24_un = np.array(out_budgets["anchors_24"]["priors"]["helmholtz_bessel"]["per_map_unseen_costs"])
+    b24_sh = np.array(out_budgets["anchors_24"]["priors"]["helmholtz_bessel"]["per_map_shift_costs"])
+    c108_un = np.array(out_budgets["anchors_108"]["priors"]["matched_sharp_cone"]["per_map_unseen_costs"])
+    c108_sh = np.array(out_budgets["anchors_108"]["priors"]["matched_sharp_cone"]["per_map_shift_costs"])
+
+    paths_24 = out_budgets["anchors_24"]["actual_solver_budget_counters_mean"]["n_fk_paths_launched_actual"]
+    paths_108 = out_budgets["anchors_108"]["actual_solver_budget_counters_mean"]["n_fk_paths_launched_actual"]
+    gp_24 = out_budgets["anchors_24"]["actual_solver_budget_counters_mean"]["n_gp_rows_total"]
+    gp_108 = out_budgets["anchors_108"]["actual_solver_budget_counters_mean"]["n_gp_rows_total"]
+    ms_24 = out_budgets["anchors_24"]["priors"]["helmholtz_bessel"]["mean_query_plan_ms"]
+    ms_108 = out_budgets["anchors_108"]["priors"]["matched_sharp_cone"]["mean_query_plan_ms"]
+
+    cross_budget = {
+        "actual_launched_fk_paths_ratio_108_over_24": float(paths_108 / paths_24),
+        "actual_gp_training_rows_ratio_108_over_24": float(gp_108 / gp_24),
+        "actual_planning_time_ratio_cone108_over_bessel24": float(ms_108 / ms_24),
+        "nominal_anchor_param_ratio_108_over_24": 108.0 / 24.0,
+        "bessel24_minus_cone108_unseen_paired_diff": paired_stats(b24_un - c108_un),
+        "bessel24_minus_cone108_shift_paired_diff": paired_stats(b24_sh - c108_sh),
+        "predeclared_5pct_relative_NI_bessel24_vs_cone108_unseen": paired_relative_noninferiority(b24_un, c108_un, rel_margin_pct=5.0),
+        "predeclared_5pct_relative_NI_bessel24_vs_cone108_shift": paired_relative_noninferiority(b24_sh, c108_sh, rel_margin_pct=5.0),
+    }
+
+    return {
+        "locked_fresh_seeds": fresh_seeds,
+        "n_maps": n_maps,
+        "dim": dim,
+        "world_probes_per_map": 100,
+        "nnls_cone_protocol": "same_c2_collar_same_asymptotic_slope_36pt_per_goal_positive_mode_weight_nnls",
+        "anchor_budgets": out_budgets,
+        "cross_budget_bessel24_vs_sharpcone108": cross_budget,
+    }
 
 
 def run_scoped_kinetic_factorial(n_probes: int = 45, n_dev: int = 6, n_heldout: int = 4) -> dict:
@@ -598,12 +692,12 @@ def plot_exp3(r4: dict, r6: dict, r_bud: dict, out_png: Path) -> None:
     ax.set_title("6D Frozen-Label Prior Attribution (NNLS-Matched Controls)\n(Helmholtz-Bessel Beats NNLS-Matched Sharp & Smooth Cones)", fontsize=9.3)
     ax.grid(True, axis="y", alpha=0.3); ax.legend(fontsize=7.4)
 
-    # Panel 3: 6D Fresh-Seed Anchor-Budget Efficiency Curve (`9600..9607`)
+    # Panel 3: 6D Fresh-Seed Anchor-Budget Efficiency Curve (`9600..9615`, Native Path Counters!)
     ax = axes[2]
     b_list = [24, 54, 108]
     for p_key, p_lbl, col, mk in [
         ("zero_mean", "ZeroMean (No Physics Prior)", "#d62728", "o"),
-        ("matched_sharp_cone", "NNLS-Matched Sharp Cone", "#ff7f0e", "s"),
+        ("matched_sharp_cone", "NNLS-Mode Sharp Cone", "#ff7f0e", "s"),
         ("helmholtz_bessel", "Helmholtz-Bessel Physics Prior", "#2ca02c", "P"),
     ]:
         ys_sh = [r_bud["anchor_budgets"][f"anchors_{nb}"]["priors"][p_key]["wall_corner_shift_mean_cost"] for nb in b_list]
@@ -611,10 +705,17 @@ def plot_exp3(r4: dict, r6: dict, r_bud: dict, out_png: Path) -> None:
         ax.plot(b_list, ys_sh, marker=mk, color=col, lw=2.1, ls="-", label=f"{p_lbl} [Wall-Shift]")
         ax.plot(b_list, ys_un, marker=mk, color=col, lw=1.5, ls="--", alpha=0.78, label=f"{p_lbl} [Unseen]")
     ax.set_xticks(b_list)
-    ax.set_xticklabels([f"{nb} anchors\n({nb*48} FK paths)" for nb in b_list], fontsize=8.0)
-    ax.set_xlabel("Interior FK Anchor Budget (Locked Fresh 6D Maps 9600..9607)")
+    x_tick_lbls = []
+    for nb in b_list:
+        cnt = r_bud["anchor_budgets"][f"anchors_{nb}"].get("actual_solver_budget_counters_mean", {})
+        act_int = cnt.get("n_interior_actual", nb)
+        act_paths = cnt.get("n_fk_paths_launched_actual", nb * 48)
+        x_tick_lbls.append(f"N={nb} ({act_int:.1f} int)\n[{act_paths:.0f} FK paths]")
+    ax.set_xticklabels(x_tick_lbls, fontsize=7.6)
+    n_m_bud = r_bud.get("n_maps", len(r_bud.get("locked_fresh_seeds", [])))
+    ax.set_xlabel(f"Anchor Budget & Actual Launched FK Paths ({n_m_bud} Fresh 6D Maps)")
     ax.set_ylabel("Closed-Loop Control Cost")
-    ax.set_title("6D Physics-Prior Sample Efficiency (Fresh Confirmation)\n(24-Anchor Bessel Beats 108-Anchor ZeroMean & SharpCone on OOD)", fontsize=9.2)
+    ax.set_title("6D Low-Budget Generalization & Cross-Budget Parity\n(Strong Same-N24 Gain; Bessel-24 Passes +5% NI vs Cone-108)", fontsize=9.1)
     ax.grid(True, alpha=0.3); ax.legend(fontsize=6.8, ncol=1)
 
     plt.tight_layout()
@@ -624,18 +725,19 @@ def plot_exp3(r4: dict, r6: dict, r_bud: dict, out_png: Path) -> None:
 
 def main():
     enforce_single_thread_env()
+    n_workers = 8
     print("=== Exp 3A (4D): Frozen-Label Prior Attribution incl. NNLS-Matched Cones ===", flush=True)
     r4 = run_highd_prior_and_shift_suite(dim=4, n_probes=60)
     print("\n=== Exp 3B (6D): Frozen-Label Prior Attribution incl. NNLS-Matched Cones ===", flush=True)
     r6 = run_highd_prior_and_shift_suite(dim=6, n_probes=100)
-    print("\n=== Exp 3B-Confirm (6D Fresh Maps 9600..9607): Anchor-Budget Efficiency Curve ===", flush=True)
-    r_bud = run_6d_anchor_budget_and_fresh_confirmation(n_maps=8)
+    print(f"\n=== Exp 3B-Confirm (16 Fresh 6D Maps 9600..9615, {n_workers}-Core Parallel): Native Budget Curve ===", flush=True)
+    r_bud = run_6d_anchor_budget_and_fresh_confirmation(n_maps=16, max_workers=n_workers)
     print("\n=== Exp 3C (4D Kinetic): Scoped Empirical Appendix (10 Maps, 6 Rounds) ===", flush=True)
     rua = run_scoped_kinetic_factorial(n_probes=45)
 
     out_dir = Path(__file__).resolve().parent
     payload = {
-        "metadata": collect_runtime_metadata(),
+        "metadata": collect_runtime_metadata(max_workers=n_workers),
         "highd_4d": r4,
         "highd_6d": r6,
         "highd_6d_fresh_anchor_budget_efficiency": r_bud,

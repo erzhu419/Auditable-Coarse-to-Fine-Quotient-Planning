@@ -505,17 +505,24 @@ def solve_highd_fk_distillation(
     prior_mode: str = "helmholtz_bessel",  # "helmholtz_bessel", "eikonal_cone", or "zero_mean"
     guided_proposal: bool = True,
     seed: int = 101,
+    design_seed: Optional[int] = None,
+    mc_seed: Optional[int] = None,
 ) -> dict:
-    """Unified High-D Reflected Girsanov-FK Value Distillation (`green_response`):
+    """Unified High-D Reflected Girsanov-FK Value Distillation (`green_response`, `ddd19c5 Stage E`):
       - Explicit entry guard via `spec.validate_cole_hopf_lmdp`;
-      - Supports `"helmholtz_bessel"`, `"eikonal_cone"`, and `"zero_mean"` GP priors AND exports
-        frozen final FK labels `(X_all, y_total_fk_final, noise_vec)` for zero-drift prior ablations!
+      - Decouples `design_seed` (Sobol/corridor anchors + boundary collocation) from `mc_seed`
+        (Feynman-Kac Brownian trajectories) when supplied;
+      - Exports exact recorder-owned `budget_counters` (`n_interior_actual`, `n_boundary_actual`,
+        `n_gp_rows_total`, `n_fk_paths_launched_actual`, `n_fk_active_steps_total`, etc.)!
     """
     r_sc = spec.validate_cole_hopf_lmdp("solve_highd_fk_distillation", allow_scalar_r=True)
     t0 = time.perf_counter()
     d = spec.dim
     lam = spec.lam
     L = spec.half_width
+    d_seed = int(seed if design_seed is None else design_seed)
+    m_seed = int(seed if mc_seed is None else mc_seed)
+
     base = BoxNeumannBesselBaseGuide(spec, query)
     eik_prior = None
     if prior_mode == "eikonal_cone":
@@ -524,10 +531,11 @@ def solve_highd_fk_distillation(
         eik_prior = EikonalConeMeanGuide(spec, query, smooth_tau=0.035, calibrate_nnls=True)
     elif prior_mode == "matched_sharp_cone":
         eik_prior = EikonalConeMeanGuide(spec, query, smooth_tau=0.0, calibrate_nnls=True)
-    rng = np.random.default_rng(seed)
+    rng_design = np.random.default_rng(d_seed)
+    rng_mc = rng_design if (design_seed is None and mc_seed is None) else np.random.default_rng(m_seed + 4099)
 
     bnd_pts, bnd_phi, bnd_v0 = [], [], []
-    sobol_b = qmc.Sobol(d=d, scramble=True, seed=seed + 11)
+    sobol_b = qmc.Sobol(d=d, scramble=True, seed=d_seed + 11)
     for g in query.goals:
         gc = np.asarray(g.center, dtype=float)
         u_sob = np.clip(sobol_b.random(n_boundary_per_goal), 1e-6, 1.0 - 1e-6)
@@ -544,7 +552,7 @@ def solve_highd_fk_distillation(
     phi_bnd = np.concatenate(bnd_phi)
     v0_bnd = np.concatenate(bnd_v0)
 
-    sobol = qmc.Sobol(d=d, scramble=True, seed=seed)
+    sobol = qmc.Sobol(d=d, scramble=True, seed=d_seed)
     n_sob = n_interior_anchors // 2
     X_sob = (sobol.random(n_sob) * 2.0 - 1.0) * 1.20
     if d > 2:
@@ -555,8 +563,8 @@ def solve_highd_fk_distillation(
     for k in range(n_interior_anchors - n_sob):
         s_pt = starts_arr[k % len(starts_arr)]
         g_pt = g_centers[k % len(g_centers)]
-        al_w = rng.uniform(0.05, 0.94)
-        pt = (1.0 - al_w) * s_pt + al_w * g_pt + rng.normal(0.0, 0.25, size=d)
+        al_w = rng_design.uniform(0.05, 0.94)
+        pt = (1.0 - al_w) * s_pt + al_w * g_pt + rng_design.normal(0.0, 0.25, size=d)
         cor_pts.append(np.clip(pt, -1.22, 1.22))
     X_int_raw = np.vstack([starts_arr, X_sob, np.array(cor_pts)])
     in_g_int, _ = eval_goal_union(X_int_raw, [GoalBall(g.center, g.phi, g.radius + 0.025) for g in query.goals])
@@ -578,7 +586,7 @@ def solve_highd_fk_distillation(
     for _st in range(n_steps_fk):
         if not np.any(alive):
             break
-        z_half = rng.normal(0.0, sqrt_dt, size=(n_int, half_m, d))
+        z_half = rng_mc.normal(0.0, sqrt_dt, size=(n_int, half_m, d))
         dW_step = np.concatenate([z_half, -z_half], axis=1)
 
         ai, aj = np.where(alive)
@@ -653,11 +661,13 @@ def solve_highd_fk_distillation(
 
     gp_model: Optional[MirrorNeumannMatern52GP] = None
     y_tot_final = np.concatenate([v0_int + dv_cur, phi_bnd])
+    n_gp_fits = 0
     for _c_it in range(max(1, n_continuation_rounds + 1)):
         y_tot_final = np.concatenate([v0_int + dv_cur, phi_bnd])
         gp_model = MirrorNeumannMatern52GP(
             X_all, y_tot_final, L, length_scale=ell_gp, noise_vec=noise_vec, prior_val_and_grad_fn=prior_fn
         )
+        n_gp_fits += 1
         if _c_it == n_continuation_rounds or len(ai_s) == 0:
             break
         pred_tot_surv = gp_model.predict_val_and_grad(pos[ai_s, aj_s])[0]
@@ -689,6 +699,21 @@ def solve_highd_fk_distillation(
             u[hit] = 0.0
         return u
 
+    budget_counters = {
+        "n_interior_proposed_nominal": int(n_interior_anchors),
+        "n_start_anchors_added": int(len(starts_arr)),
+        "n_near_goal_filtered": int(np.sum(in_g_int)),
+        "n_interior_actual": int(n_int),
+        "n_boundary_actual": int(len(X_bnd)),
+        "n_gp_rows_total": int(len(X_all)),
+        "mc_paths_per_anchor_effective": int(M_eff),
+        "n_fk_paths_launched_actual": int(n_int * M_eff),
+        "n_fk_active_steps_total": int(total_steps),
+        "n_world_q_queries": int(total_steps),
+        "n_world_b_queries": int(total_steps),
+        "n_continuation_gp_fits": int(n_gp_fits),
+    }
+
     return {
         "value_fn": value_fn,
         "raw_value_and_grad": raw_value_and_grad,
@@ -698,6 +723,7 @@ def solve_highd_fk_distillation(
         "frozen_X_all": X_all,
         "frozen_y_total_v": y_tot_final,
         "frozen_noise_vec": noise_vec,
+        "budget_counters": budget_counters,
         "plan_ms": 1000.0 * (time.perf_counter() - t0),
         "survivor_fraction": survivor_frac,
         "weighted_tail_mass": weighted_tail_mass,

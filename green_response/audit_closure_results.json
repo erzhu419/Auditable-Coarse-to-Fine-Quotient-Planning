@@ -1,8 +1,11 @@
 {
   "metadata": {
+    "git_head_sha": "ddd19c5ddc56786d9b31be5e98c5780d978ffa37",
     "python_version": "3.10.12",
     "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
     "processor": "x86_64",
+    "cpu_count": 32,
+    "configured_parallel_workers": 1,
     "numpy_version": "2.2.6",
     "scipy_version": "1.15.3",
     "sklearn_version": "1.7.2",
@@ -88,14 +91,14 @@
       17.186977410275468
     ],
     "final_certified_bounds": [
-      12.790149714531497,
-      12.90151363623895
+      12.846125475205511,
+      12.846125919144603
     ],
     "exact_optimal_macro_cost": 12.846125697175047,
     "matched_exact_subset_dp_diff_vs_killed_ref": 3.552713678800501e-15,
     "exact_evaluated_policy_cost": 12.846125697175047,
     "exact_macro_regret": 0.0,
-    "decision_guided_backsolves": 162,
+    "decision_guided_backsolves": 198,
     "exact_ring_backsolves": 206,
     "certified": true,
     "pass": true
@@ -180,14 +183,14 @@
     ],
     "all_certified_at_eps_0_1": true,
     "interval_widths": [
-      0.0924581446752768,
-      0.09245814467528124,
-      0.09245814467528213,
-      0.09245814467528035,
-      0.09245814467529101,
-      0.09245814467521996
+      0.06701349371564902,
+      0.06701349371564191,
+      0.06701349371564191,
+      0.06701349371564191,
+      0.06701349371563481,
+      0.06701349371564902
     ],
-    "width_ptp_across_all_shifts": 7.105427357601002e-14,
+    "width_ptp_across_all_shifts": 1.4210854715202004e-14,
     "policies_identical": true,
     "refinement_paths_identical": true,
     "independent_reference_violations": 0,
@@ -225,12 +228,35 @@
   },
   "15_m9_full_table_and_continual_residual_audit": {
     "m9_row_mask_entries": 37376,
+    "m9_nonempty_entries_checked": 37303,
     "m9_certified": true,
-    "m9_all_table_policy_vs_opt_violations": 0,
+    "m9_four_way_table_violations": 0,
+    "m9_incremental_vs_scratch_max_diff": 0.0,
     "m9_root_enclosure_valid": true,
     "continual_epoch2_waypoints_retained": 7,
     "continual_epoch2_certified": true,
-    "continual_epoch2_enclosure_valid": true,
+    "continual_epoch2_four_way_table_violations": 0,
+    "pass": true
+  },
+  "16_cross_waypoint_epoch_contamination_probe": {
+    "max_new_exact_column_residual": 8.881784197001252e-16,
+    "exterior_harmonic_violations": 0,
+    "macro_certificate_violations": 0,
+    "pass": true
+  },
+  "17_single_query_post_update_residual_enclosure": {
+    "gpt6_dq1e3_violations_of_81": 0,
+    "mild_dq1e5_lu_skipped": true,
+    "mild_dq1e5_scope": "residual_audited_discrete_operator",
+    "mild_dq1e5_violations_of_81": 0,
+    "post_update_hazard_query_violations_of_81": 0,
+    "pass": true
+  },
+  "18_exact_baseline_fail_closed_and_cert_guard": {
+    "underflow_all_rejected_as_numeric_invalid": true,
+    "nan_phi_subset_dp_status": "numeric_invalid",
+    "nan_phi_fixed_tour_status": "numeric_invalid",
+    "certificate_constructor_guards_enforced": true,
     "pass": true
   },
   "ALL_PASSED": true

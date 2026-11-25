@@ -332,42 +332,19 @@ class MacroTourPlanner:
 
         return c0_lo_b + Q_lo, c0_hi_b + Q_hi, True
 
-    def _compute_subset_macro_dp(
-        self, s_node: int, t_list: Sequence[int]
-    ) -> Tuple[dict, bool]:
-        """`O(m^2 2^m)` Gauge-Normalized Batched Subset-State Macro-Bellman Interval DP."""
+    def _init_subset_dp_workspace(self, s_node: int, t_list: Sequence[int]) -> Optional[dict]:
+        """Allocates reusable tables and static mask/index maps for Incremental Subset-Bellman DP."""
         m = len(t_list)
-        eval_nodes, offsets, in_ball_eval = _build_macro_eval_layout(self.pl, s_node, t_list)
-        wp_prep, Zbar_b, C0_b, wp_width, ok = self._compute_single_leg_bounds(eval_nodes, t_list, in_ball_eval)
-        if not ok:
-            return {}, False
-
         phis = np.array([float(self.pl.waypoints[b].phi) for b in t_list], dtype=float)
         if not np.all(np.isfinite(phis)):
-            return {}, False
-
+            return None
+        eval_nodes, offsets, in_ball_eval = _build_macro_eval_layout(self.pl, s_node, t_list)
         n_ev = len(eval_nodes)
         n_masks = 1 << m
-        # `F0_lo, F0_hi` store zero-phi transit bounds; deterministic `phi_mask_sum` is added at the end!
-        F0_lo = np.zeros((n_ev, n_masks), dtype=float)
-        F0_hi = np.zeros((n_ev, n_masks), dtype=float)
-        act_idx = np.zeros((n_ev, n_masks), dtype=np.int32)
-        opt_lo_act = np.zeros((n_ev, n_masks), dtype=np.int32)
-        inc_local_slack = np.zeros((n_ev, n_masks), dtype=float)
-        opt_local_slack = np.zeros((n_ev, n_masks), dtype=float)
+
         phi_mask_sum = np.zeros(n_masks, dtype=float)
-
-        for i, b in enumerate(t_list):
-            mk = 1 << i
-            F0_lo[:, mk] = C0_b[b][0]
-            F0_hi[:, mk] = C0_b[b][1]
-            act_idx[:, mk] = i
-            opt_lo_act[:, mk] = i
-            slk_b = np.maximum(0.0, C0_b[b][1] - C0_b[b][0])
-            inc_local_slack[:, mk] = slk_b
-            opt_local_slack[:, mk] = slk_b
-            phi_mask_sum[mk] = phis[i]
-
+        for i in range(m):
+            phi_mask_sum[1 << i] = phis[i]
         masks_by_pop: List[List[int]] = [[] for _ in range(m + 1)]
         for mk in range(1, n_masks):
             pc = mk.bit_count()
@@ -376,10 +353,180 @@ class MacroTourPlanner:
                 lsb = mk & -mk
                 phi_mask_sum[mk] = phi_mask_sum[lsb] + phi_mask_sum[mk ^ lsb]
 
+        pos_in_k_map: List[Dict[int, int]] = [{} for _ in range(m + 1)]
+        col_locs_ki: Dict[Tuple[int, int], np.ndarray] = {}
+        rem_masks_ki: Dict[Tuple[int, int], np.ndarray] = {}
         for k in range(2, m + 1):
             mk_list = masks_by_pop[k]
-            pos_in_k = {mk: idx for idx, mk in enumerate(mk_list)}
+            p_map = {mk: idx for idx, mk in enumerate(mk_list)}
+            pos_in_k_map[k] = p_map
+            for i in range(m):
+                bit_i = 1 << i
+                pairs = [(p_map[mk], mk ^ bit_i) for mk in mk_list if (mk & bit_i)]
+                col_locs_ki[(k, i)] = np.array([c[0] for c in pairs], dtype=np.int64)
+                rem_masks_ki[(k, i)] = np.array([c[1] for c in pairs], dtype=np.int64)
+
+        return {
+            "m": m,
+            "t_list": list(t_list),
+            "eval_nodes": eval_nodes,
+            "offsets": offsets,
+            "in_ball_eval": in_ball_eval,
+            "phis": phis,
+            "phi_mask_sum": phi_mask_sum,
+            "masks_by_pop": masks_by_pop,
+            "pos_in_k_map": pos_in_k_map,
+            "col_locs_ki": col_locs_ki,
+            "rem_masks_ki": rem_masks_ki,
+            "wp_sig": {},
+            "wp_prep": {},
+            "Zbar_bounds": {},
+            "C0_bounds": {},
+            "wp_base_width": {b: 0.0 for b in t_list},
+            "wp_added_by_k": {b: {} for b in t_list},
+            "P_hat": {},
+            "Q_lo_ki": {},
+            "Q_hi_ki": {},
+            "added_ki": {},
+            "F0_lo": np.zeros((n_ev, n_masks), dtype=float),
+            "F0_hi": np.zeros((n_ev, n_masks), dtype=float),
+            "policy_action_idx": np.zeros((n_ev, n_masks), dtype=np.int32),
+            "opt_lo_action_idx": np.zeros((n_ev, n_masks), dtype=np.int32),
+            "inc_local_slack": np.zeros((n_ev, n_masks), dtype=float),
+            "opt_local_slack": np.zeros((n_ev, n_masks), dtype=float),
+            "initialized": False,
+        }
+
+    def _step_incremental_subset_macro_dp(self, ws: dict) -> Tuple[dict, bool, dict]:
+        """Exact Dependency-Tracked Incremental Subset-Bellman Update (`ddd19c5 Stage B`):
+        Updates ONLY single-leg operators of waypoints whose `(level, built_epoch, verified_epoch)` changed,
+        and propagates ONLY dirty `(k, action, remainder_mask)` columns, yielding IEEE-754 bit-identical
+        results to `_compute_subset_macro_dp` while cutting multi-round DP work by 2x-4x!
+        """
+        t_list = ws["t_list"]
+        m = ws["m"]
+        eval_nodes = ws["eval_nodes"]
+        offsets = ws["offsets"]
+        in_ball_eval = ws["in_ball_eval"]
+        n_ev = len(eval_nodes)
+
+        changed_wps: List[int] = []
+        for b in t_list:
+            cur_lv = self.pl.wp_levels.get(b, "NONE")
+            sig_b = (
+                cur_lv,
+                self.pl._wp_tree_col_epoch.get((b, cur_lv), -1),
+                self.pl._wp_verified_epoch.get((b, cur_lv), -1),
+            )
+            if (not ws["initialized"]) or (ws["wp_sig"].get(b) != sig_b):
+                changed_wps.append(b)
+                ws["wp_sig"][b] = sig_b
+
+        if changed_wps:
+            sub_prep, sub_zbar, sub_c0, sub_w, ok = self._compute_single_leg_bounds(
+                eval_nodes, changed_wps, in_ball_eval
+            )
+            if not ok:
+                return {}, False, {"dirty_waypoints": len(changed_wps), "cols_propagated": 0, "cols_total": 0}
+            for b in changed_wps:
+                ws["wp_prep"][b] = sub_prep[b]
+                ws["Zbar_bounds"][b] = sub_zbar[b]
+                ws["C0_bounds"][b] = sub_c0[b]
+                ws["wp_base_width"][b] = sub_w[b]
+                ws["wp_added_by_k"][b].clear()
+                pr = sub_prep[b]
+                W_mid = np.maximum(0.0, pr["U_eval"] @ pr["P_pinv"])
+                row_s = np.sum(W_mid, axis=1, keepdims=True)
+                ws["P_hat"][b] = np.where(row_s > 1e-30, W_mid / np.maximum(row_s, 1e-30), 1.0 / W_mid.shape[1])
+
+        changed_set = set(changed_wps)
+        changed_bits = 0
+        for i, b in enumerate(t_list):
+            if b in changed_set:
+                changed_bits |= (1 << i)
+
+        F0_lo = ws["F0_lo"]
+        F0_hi = ws["F0_hi"]
+        act_idx = ws["policy_action_idx"]
+        opt_lo_act = ws["opt_lo_action_idx"]
+        inc_slk = ws["inc_local_slack"]
+        opt_slk = ws["opt_local_slack"]
+
+        for i, b in enumerate(t_list):
+            if b in changed_set or not ws["initialized"]:
+                mk = 1 << i
+                c0_l, c0_h = ws["C0_bounds"][b]
+                F0_lo[:, mk] = c0_l
+                F0_hi[:, mk] = c0_h
+                act_idx[:, mk] = i
+                opt_lo_act[:, mk] = i
+                slk_b = np.maximum(0.0, c0_h - c0_l)
+                inc_slk[:, mk] = slk_b
+                opt_slk[:, mk] = slk_b
+
+        cols_propagated = 0
+        cols_total = 0
+
+        for k in range(2, m + 1):
+            mk_list = ws["masks_by_pop"][k]
+            mk_arr = np.asarray(mk_list, dtype=np.int64)
             k_len = len(mk_list)
+            dirty_k_mask = np.ones(k_len, dtype=bool) if not ws["initialized"] else ((mk_arr & changed_bits) != 0)
+            if not np.any(dirty_k_mask):
+                for i in range(m):
+                    cols_total += len(ws["col_locs_ki"][(k, i)])
+                continue
+
+            for i, b in enumerate(t_list):
+                rem_arr = ws["rem_masks_ki"][(k, i)]
+                n_ci = len(rem_arr)
+                cols_total += n_ci
+                if n_ci == 0:
+                    continue
+                key_ki = (k, i)
+                if (not ws["initialized"]) or (b in changed_set) or (key_ki not in ws["Q_lo_ki"]):
+                    ql, qh, ok_b = self._propagate_leg_batch(
+                        b, ws["wp_prep"][b], ws["Zbar_bounds"][b], ws["C0_bounds"][b],
+                        in_ball_eval[b], offsets[b], F0_lo[:, rem_arr], F0_hi[:, rem_arr], first_only=False,
+                    )
+                    if not ok_b:
+                        return {}, False, {"dirty_waypoints": len(changed_wps)}
+                    cols_propagated += n_ci
+                    in_ring_w = np.mean(F0_hi[offsets[b], :][:, rem_arr] - F0_lo[offsets[b], :][:, rem_arr], axis=0)
+                    added_mat = np.where(
+                        in_ball_eval[b][:, None], 0.0, np.maximum(0.0, (qh - ql) - in_ring_w[None, :])
+                    )
+                    ws["Q_lo_ki"][key_ki] = ql
+                    ws["Q_hi_ki"][key_ki] = qh
+                    ws["added_ki"][key_ki] = added_mat
+                else:
+                    dirty_ci = np.flatnonzero((rem_arr & changed_bits) != 0)
+                    if len(dirty_ci) > 0:
+                        rem_sub = rem_arr[dirty_ci]
+                        ql_s, qh_s, ok_b = self._propagate_leg_batch(
+                            b, ws["wp_prep"][b], ws["Zbar_bounds"][b], ws["C0_bounds"][b],
+                            in_ball_eval[b], offsets[b], F0_lo[:, rem_sub], F0_hi[:, rem_sub], first_only=False,
+                        )
+                        if not ok_b:
+                            return {}, False, {"dirty_waypoints": len(changed_wps)}
+                        cols_propagated += len(dirty_ci)
+                        in_ring_w = np.mean(
+                            F0_hi[offsets[b], :][:, rem_sub] - F0_lo[offsets[b], :][:, rem_sub], axis=0
+                        )
+                        added_sub = np.where(
+                            in_ball_eval[b][:, None], 0.0, np.maximum(0.0, (qh_s - ql_s) - in_ring_w[None, :])
+                        )
+                        ws["Q_lo_ki"][key_ki][:, dirty_ci] = ql_s
+                        ws["Q_hi_ki"][key_ki][:, dirty_ci] = qh_s
+                        ws["added_ki"][key_ki][:, dirty_ci] = added_sub
+
+                has_stale_err = float(ws["wp_prep"][b].get("u1_err_sum", 0.0)) > 0.0
+                if ws["wp_prep"][b]["level"] != "EXACT" or has_stale_err:
+                    ws["wp_added_by_k"][b][k] = float(np.max(ws["added_ki"][key_ki]))
+                else:
+                    ws["wp_added_by_k"][b][k] = 0.0
+
+            # Re-minimize across actions ONLY on dirty masks of cardinality `k` (or full `k_len` if fast)
             best_lo = np.full((n_ev, k_len), np.inf, dtype=float)
             best_hi = np.full((n_ev, k_len), np.inf, dtype=float)
             best_act = np.zeros((n_ev, k_len), dtype=np.int32)
@@ -387,29 +534,13 @@ class MacroTourPlanner:
             best_inc_slk = np.zeros((n_ev, k_len), dtype=float)
             best_opt_slk = np.zeros((n_ev, k_len), dtype=float)
 
-            for i, b in enumerate(t_list):
-                bit_i = 1 << i
-                valid_cols = [(pos_in_k[mk], mk ^ bit_i) for mk in mk_list if (mk & bit_i)]
-                if not valid_cols:
+            for i in range(m):
+                col_locs = ws["col_locs_ki"][(k, i)]
+                if len(col_locs) == 0:
                     continue
-                col_locs = [c[0] for c in valid_cols]
-                rem_masks = [c[1] for c in valid_cols]
-                Q_lo_b, Q_hi_b, ok_b = self._propagate_leg_batch(
-                    b, wp_prep[b], Zbar_b[b], C0_b[b], in_ball_eval[b], offsets[b],
-                    F0_lo[:, rem_masks], F0_hi[:, rem_masks], first_only=False,
-                )
-                if not ok_b:
-                    return {}, False
-
-                in_ring_w = np.mean(F0_hi[offsets[b], :][:, rem_masks] - F0_lo[offsets[b], :][:, rem_masks], axis=0)
-                added_mat = np.where(
-                    in_ball_eval[b][:, None],
-                    0.0,
-                    np.maximum(0.0, (Q_hi_b - Q_lo_b) - in_ring_w[None, :]),
-                )
-                has_stale_err = float(wp_prep[b].get("u1_err_sum", 0.0)) > 0.0
-                if wp_prep[b]["level"] != "EXACT" or has_stale_err:
-                    wp_width[b] = max(wp_width[b], float(np.max(added_mat)))
+                Q_lo_b = ws["Q_lo_ki"][(k, i)]
+                Q_hi_b = ws["Q_hi_ki"][(k, i)]
+                added_mat = ws["added_ki"][(k, i)]
 
                 cur_lo_slice = best_lo[:, col_locs]
                 cur_hi_slice = best_hi[:, col_locs]
@@ -423,42 +554,64 @@ class MacroTourPlanner:
                 best_act[:, col_locs] = np.where(better_hi, i, best_act[:, col_locs])
                 best_inc_slk[:, col_locs] = np.where(better_hi, added_mat, best_inc_slk[:, col_locs])
 
-            F0_lo[:, mk_list] = best_lo
-            F0_hi[:, mk_list] = best_hi
-            act_idx[:, mk_list] = best_act
-            opt_lo_act[:, mk_list] = best_lo_act
-            inc_local_slack[:, mk_list] = best_inc_slk
-            opt_local_slack[:, mk_list] = best_opt_slk
+            F0_lo[:, mk_arr] = best_lo
+            F0_hi[:, mk_arr] = best_hi
+            act_idx[:, mk_arr] = best_act
+            opt_lo_act[:, mk_arr] = best_lo_act
+            inc_slk[:, mk_arr] = best_inc_slk
+            opt_slk[:, mk_arr] = best_opt_slk
 
-        F_lo = F0_lo + phi_mask_sum[None, :]
-        F_hi = F0_hi + phi_mask_sum[None, :]
+        ws["initialized"] = True
+        phi_sum = ws["phi_mask_sum"]
+        F_lo = F0_lo + phi_sum[None, :]
+        F_hi = F0_hi + phi_sum[None, :]
         if not (np.all(np.isfinite(F_lo)) and np.all(np.isfinite(F_hi)) and np.all(F_lo <= F_hi)):
-            return {}, False
+            return {}, False, {"dirty_waypoints": len(changed_wps)}
 
-        return {
+        wp_width = {
+            b: max([ws["wp_base_width"][b], *ws["wp_added_by_k"][b].values()])
+            for b in t_list
+        }
+        out_dp = {
             "eval_nodes": eval_nodes,
             "offsets": offsets,
             "in_ball_eval": in_ball_eval,
-            "wp_prep": wp_prep,
-            "Zbar_bounds": Zbar_b,
-            "C0_bounds": C0_b,
+            "wp_prep": ws["wp_prep"],
+            "Zbar_bounds": ws["Zbar_bounds"],
+            "C0_bounds": ws["C0_bounds"],
             "wp_width": wp_width,
+            "P_hat": ws["P_hat"],
             "F0_lo": F0_lo,
             "F0_hi": F0_hi,
-            "phi_mask_sum": phi_mask_sum,
+            "phi_mask_sum": phi_sum,
             "F_lo": F_lo,
             "F_hi": F_hi,
             "policy_action_idx": act_idx,
             "opt_lo_action_idx": opt_lo_act,
-            "inc_local_slack": inc_local_slack,
-            "opt_local_slack": opt_local_slack,
-            "masks_by_pop": masks_by_pop,
-        }, True
+            "inc_local_slack": inc_slk,
+            "opt_local_slack": opt_slk,
+            "masks_by_pop": ws["masks_by_pop"],
+        }
+        return out_dp, True, {
+            "dirty_waypoints": len(changed_wps),
+            "cols_propagated": int(cols_propagated),
+            "cols_total": int(cols_total),
+        }
+
+    def _compute_subset_macro_dp(
+        self, s_node: int, t_list: Sequence[int]
+    ) -> Tuple[dict, bool]:
+        """From-scratch `O(m^2 2^m)` Gauge-Normalized Batched Subset-State Macro-Bellman Interval DP."""
+        ws = self._init_subset_dp_workspace(s_node, t_list)
+        if ws is None:
+            return {}, False
+        dp_out, ok, _ = self._step_incremental_subset_macro_dp(ws)
+        return dp_out, ok
 
     def _compute_dual_occupancy_waypoint_impacts(self, dp: dict, t_list: Sequence[int]) -> Dict[int, float]:
-        """Propagates forward hitting occupancy from `(row=0, full_mask)` along BOTH the incumbent
-        policy `mu_hat` (`policy_action_idx`) and the optimistic contender policy `mu_check`
-        (`opt_lo_action_idx`), returning each waypoint `b`'s expected contribution to `F_hi(x_0, T) - F_lo(x_0, T)`!
+        """Heuristic dual-occupancy acquisition score (`0.5` incumbent + `0.5` optimistic contender):
+        Uses pre-cached `P_hat` from `dp` when available (avoiding redundant matrix multiplies!).
+        Note: Certified bounds come strictly from M-matrix interval Bellman tables, never from `P_hat`.
         """
         m = len(t_list)
         n_ev = len(dp["eval_nodes"])
@@ -468,14 +621,13 @@ class MacroTourPlanner:
         in_ball = dp["in_ball_eval"]
         wp_prep = dp["wp_prep"]
 
-        # Precompute fast nonnegative normalized midpoint hitting matrices `P_hat[b]` (`(n_ev, |R_b|)`)
-        P_hat: Dict[int, np.ndarray] = {}
+        P_hat: Dict[int, np.ndarray] = dict(dp.get("P_hat", {}))
         for b in t_list:
-            pr = wp_prep[b]
-            W_mid = np.maximum(0.0, pr["U_eval"] @ pr["P_pinv"])
-            row_s = np.sum(W_mid, axis=1, keepdims=True)
-            W_mid = np.where(row_s > 1e-30, W_mid / np.maximum(row_s, 1e-30), 1.0 / W_mid.shape[1])
-            P_hat[b] = W_mid
+            if b not in P_hat:
+                pr = wp_prep[b]
+                W_mid = np.maximum(0.0, pr["U_eval"] @ pr["P_pinv"])
+                row_s = np.sum(W_mid, axis=1, keepdims=True)
+                P_hat[b] = np.where(row_s > 1e-30, W_mid / np.maximum(row_s, 1e-30), 1.0 / W_mid.shape[1])
 
         wp_impact: Dict[int, float] = {b: 0.0 for b in t_list}
         for act_table, slack_table in (
@@ -483,7 +635,7 @@ class MacroTourPlanner:
             (dp["opt_lo_action_idx"], dp["opt_local_slack"]),
         ):
             rho = np.zeros((n_ev, n_masks), dtype=float)
-            rho[0, full_mk] = 0.5  # 0.5 weight on incumbent + 0.5 on optimistic contender
+            rho[0, full_mk] = 0.5
             for k in range(m, 0, -1):
                 mk_list = dp["masks_by_pop"][k]
                 for mk in mk_list:
@@ -517,22 +669,50 @@ class MacroTourPlanner:
         start_point: Sequence[float],
         target_wp_ids: Sequence[int],
     ) -> dict:
-        """Matched-Policy-Class Exact-Ring Subset-Bellman Baseline (`GPT6 85e2323 Stage B1`):
-        Uses `self.pl` cached `EXACT` singleton ring operators (`H_b = U_eval @ inv(U_ring)`) to solve
-        the exact same `O(m^2 2^m)` adaptive subset-state MDP in ONE vectorized backward pass without
-        interval multi-round overhead or unused port prebuilds!
+        """Matched-Policy-Class Exact-Ring Subset-Bellman Operational Route (`ddd19c5 P1 Fail-Closed`):
+        Uses current-epoch `EXACT` singleton ring operators (`H_b = U_eval @ inv(U_ring)`) in ONE
+        vectorized backward pass, with ZERO silent `1e-300` clamping (`numeric_invalid` on underflow/NaN!).
         """
         t0 = time.perf_counter()
-        s_arr = np.asarray(start_point, dtype=float)[None, :]
-        s_node = int(np.argmin(np.sum((self.pl.pts - s_arr) ** 2, axis=1)))
+        s_arr = np.asarray(start_point, dtype=float)
         t_list = list(target_wp_ids)
         m = len(t_list)
         solves_before = self.pl.total_lu_backsolves
 
+        def _fail_exact(reason: str) -> dict:
+            tot_ms = 1000.0 * (time.perf_counter() - t0)
+            return IntervalCertificate(
+                status="numeric_invalid",
+                certified=False,
+                certificate_scope="exact_discrete_ball_stopping_macro_mdp_all_markov_policies",
+                epsilon_tol=0.0,
+                stop_reason=reason,
+                operator_epoch=self.pl.operator_epoch,
+                work={"new_lu_backsolves": self.pl.total_lu_backsolves - solves_before, "planning_ms": tot_ms},
+                extras={
+                    "macro_value_bounds": None,
+                    "guaranteed_suboptimality_upper_bound": None,
+                    "policy_action_idx": None,
+                    "select_next_waypoint": None,
+                    "eval_nodes": None,
+                    "refinement_steps": [],
+                    "new_lu_backsolves": self.pl.total_lu_backsolves - solves_before,
+                    "planning_ms": tot_ms,
+                },
+            ).to_dict()
+
+        if not np.all(np.isfinite(s_arr)) or any(not np.isfinite(self.pl.waypoints[b].phi) for b in t_list):
+            return _fail_exact("nonfinite_input")
+
+        s_node = int(np.argmin(np.sum((self.pl.pts - s_arr[None, :]) ** 2, axis=1)))
+
         t_col0 = time.perf_counter()
         for b in t_list:
-            if float(self.pl.get_wp_ring_operator(b).get("u1_err_sum", 0.0)) > 0.0:
-                self.pl.refresh_waypoint_under_current_operator(b, "EXACT")
+            if not self.pl._is_level_exact_in_current_epoch(b, "EXACT"):
+                if "EXACT" in self.pl._wp_tree.get(b, {}):
+                    self.pl.refresh_waypoint_under_current_operator(b, "EXACT")
+                else:
+                    self.pl.ensure_wp_level(b, "EXACT")
             else:
                 self.pl.ensure_wp_level(b, "EXACT")
         col_solve_ms = 1000.0 * (time.perf_counter() - t_col0)
@@ -540,30 +720,46 @@ class MacroTourPlanner:
         t_dp0 = time.perf_counter()
         eval_nodes, offsets, in_ball = _build_macro_eval_layout(self.pl, s_node, t_list)
         lam = self.pl.spec.lam
-        c_leg: Dict[int, np.ndarray] = {}
+        phis = np.array([float(self.pl.waypoints[b].phi) for b in t_list], dtype=float)
+        c0_leg: Dict[int, np.ndarray] = {}
         P_leg: Dict[int, np.ndarray] = {}
         for b in t_list:
             pr = self.pl.prepare_wp_ring_eval(b, eval_nodes)
             H_eval = pr["U_eval"] @ pr["P_pinv"]
-            zbar = np.maximum(np.sum(H_eval, axis=1), 1e-300)
-            phi_b = float(self.pl.waypoints[b].phi)
-            cb = phi_b - lam * np.log(zbar)
-            cb[in_ball[b]] = phi_b
-            c_leg[b] = cb
-            P_leg[b] = H_eval / zbar[:, None]
+            if not np.all(np.isfinite(H_eval)):
+                return _fail_exact("nonfinite_harmonic_operator")
+            zbar_raw = np.sum(H_eval, axis=1)
+            ext_rows = ~in_ball[b]
+            # Strict fail-closed check (NO `maximum(..., 1e-300)` silent clamping!):
+            if np.any(zbar_raw[ext_rows] <= 1e-285) or np.any(H_eval[ext_rows, :] < -1e-7):
+                return _fail_exact("desirability_underflow_or_sign_loss")
+            zbar_safe = np.where(in_ball[b], 1.0, zbar_raw)
+            cb0 = -lam * np.log(zbar_safe)
+            cb0[in_ball[b]] = 0.0
+            Pb = H_eval / zbar_safe[:, None]
+            if not (np.all(np.isfinite(cb0)) and np.all(np.isfinite(Pb))):
+                return _fail_exact("nonfinite_normalized_leg_operator")
+            c0_leg[b] = cb0
+            P_leg[b] = Pb
 
         n_ev = len(eval_nodes)
         n_masks = 1 << m
-        F_exact = np.zeros((n_ev, n_masks), dtype=float)
+        F0_exact = np.zeros((n_ev, n_masks), dtype=float)
         act_idx = np.zeros((n_ev, n_masks), dtype=np.int32)
+        phi_mask_sum = np.zeros(n_masks, dtype=float)
         for i, b in enumerate(t_list):
             mk = 1 << i
-            F_exact[:, mk] = c_leg[b]
+            F0_exact[:, mk] = c0_leg[b]
             act_idx[:, mk] = i
+            phi_mask_sum[mk] = phis[i]
 
         masks_by_pop: List[List[int]] = [[] for _ in range(m + 1)]
         for mk in range(1, n_masks):
-            masks_by_pop[mk.bit_count()].append(mk)
+            pc = mk.bit_count()
+            masks_by_pop[pc].append(mk)
+            if pc >= 2:
+                lsb = mk & -mk
+                phi_mask_sum[mk] = phi_mask_sum[lsb] + phi_mask_sum[mk ^ lsb]
 
         for k in range(2, m + 1):
             mk_list = masks_by_pop[k]
@@ -578,18 +774,25 @@ class MacroTourPlanner:
                     continue
                 col_locs = [c[0] for c in valid_cols]
                 rem_masks = [c[1] for c in valid_cols]
-                W_rem = F_exact[:, rem_masks]
+                W_rem = F0_exact[:, rem_masks]
                 cont = P_leg[b] @ W_rem[offsets[b], :]
                 if np.any(in_ball[b]):
                     cont = np.where(in_ball[b][:, None], W_rem, cont)
-                Q_b = c_leg[b][:, None] + cont
+                Q_b = c0_leg[b][:, None] + cont
                 cur_slice = best_v[:, col_locs]
                 better = Q_b < cur_slice
                 best_v[:, col_locs] = np.where(better, Q_b, cur_slice)
                 best_a[:, col_locs] = np.where(better, i, best_a[:, col_locs])
-            F_exact[:, mk_list] = best_v
+            F0_exact[:, mk_list] = best_v
             act_idx[:, mk_list] = best_a
         dp_ms = 1000.0 * (time.perf_counter() - t_dp0)
+
+        t_ctrl0 = time.perf_counter()
+        F_exact = F0_exact + phi_mask_sum[None, :]
+        full_mk = n_masks - 1
+        val0 = float(F_exact[0, full_mk])
+        if not np.all(np.isfinite(F_exact)) or not math.isfinite(val0):
+            return _fail_exact("nonfinite_dp_output")
 
         def select_next_waypoint(cur_xy: np.ndarray, prev_wp: Optional[int], rem_wp_ids: Sequence[int]) -> int:
             rem_set = set(rem_wp_ids)
@@ -605,8 +808,7 @@ class MacroTourPlanner:
                 row_idx = 0
             return t_list[int(act_idx[row_idx, mk])]
 
-        full_mk = n_masks - 1
-        val0 = float(F_exact[0, full_mk])
+        ctrl_ms = 1000.0 * (time.perf_counter() - t_ctrl0)
         tot_ms = 1000.0 * (time.perf_counter() - t0)
         return IntervalCertificate(
             status="epsilon_certified",
@@ -616,10 +818,14 @@ class MacroTourPlanner:
             lower_bound=val0,
             upper_bound=val0,
             stop_reason="exact_ring_single_pass",
+            operator_epoch=self.pl.operator_epoch,
             work={
                 "new_lu_backsolves": self.pl.total_lu_backsolves - solves_before,
                 "col_solve_ms": col_solve_ms,
                 "dp_ms": dp_ms,
+                "occupancy_ms": 0.0,
+                "selection_ms": 0.0,
+                "controller_ms": ctrl_ms,
                 "planning_ms": tot_ms,
                 "eval_rows": int(n_ev),
                 "subset_masks": int(n_masks),
@@ -627,15 +833,18 @@ class MacroTourPlanner:
                 "dp_tables_bytes": int(F_exact.nbytes + act_idx.nbytes),
             },
             extras={
+                "route_chosen": "cached_exact_ring_subset_dp",
                 "macro_value_bounds": [val0, val0],
                 "guaranteed_suboptimality_upper_bound": 0.0,
-                "policy_action_idx": act_idx,
+                "policy_action_idx": act_idx.copy(),
                 "select_next_waypoint": select_next_waypoint,
                 "eval_nodes": eval_nodes,
                 "refinement_steps": [],
                 "new_lu_backsolves": self.pl.total_lu_backsolves - solves_before,
                 "col_solve_ms": col_solve_ms,
                 "dp_ms": dp_ms,
+                "occupancy_ms": 0.0,
+                "controller_ms": ctrl_ms,
                 "planning_ms": tot_ms,
             },
         ).to_dict()
@@ -645,38 +854,74 @@ class MacroTourPlanner:
         start_point: Sequence[float],
         target_wp_ids: Sequence[int],
     ) -> dict:
-        """Matched-Class Operational Cached-ExactRing Fixed-Tour Evaluator (`GPT6 85e2323 Stage B1`):
-        Uses `self.pl` cached `EXACT` ring columns to evaluate all `m!` fixed orders cleanly without
-        redundant sparse factorizations or interval-bound overhead.
-        """
+        """Matched-Class Operational Cached-ExactRing Fixed-Tour Evaluator (`ddd19c5 P1 Fail-Closed`)."""
         t0 = time.perf_counter()
-        s_arr = np.asarray(start_point, dtype=float)[None, :]
-        s_node = int(np.argmin(np.sum((self.pl.pts - s_arr) ** 2, axis=1)))
+        s_arr = np.asarray(start_point, dtype=float)
         t_list = list(target_wp_ids)
         m = len(t_list)
         solves_before = self.pl.total_lu_backsolves
 
+        def _fail_fixed(reason: str) -> dict:
+            tot_ms = 1000.0 * (time.perf_counter() - t0)
+            return IntervalCertificate(
+                status="numeric_invalid",
+                certified=False,
+                certificate_scope="exact_discrete_ball_stopping_response_composition_model",
+                epsilon_tol=0.0,
+                stop_reason=reason,
+                operator_epoch=self.pl.operator_epoch,
+                work={"new_lu_backsolves": self.pl.total_lu_backsolves - solves_before, "ordering_ms": tot_ms},
+                extras={
+                    "best_order": None,
+                    "selected_bounds": None,
+                    "guaranteed_suboptimality_upper_bound": None,
+                    "new_lu_backsolves": self.pl.total_lu_backsolves - solves_before,
+                    "ordering_ms": tot_ms,
+                    "scores": None,
+                },
+            ).to_dict()
+
+        if not np.all(np.isfinite(s_arr)) or any(not np.isfinite(self.pl.waypoints[b].phi) for b in t_list):
+            return _fail_fixed("nonfinite_input")
+
+        s_node = int(np.argmin(np.sum((self.pl.pts - s_arr[None, :]) ** 2, axis=1)))
+
         t_col0 = time.perf_counter()
         for b in t_list:
-            self.pl.ensure_wp_level(b, "EXACT")
+            if not self.pl._is_level_exact_in_current_epoch(b, "EXACT"):
+                if "EXACT" in self.pl._wp_tree.get(b, {}):
+                    self.pl.refresh_waypoint_under_current_operator(b, "EXACT")
+                else:
+                    self.pl.ensure_wp_level(b, "EXACT")
+            else:
+                self.pl.ensure_wp_level(b, "EXACT")
         col_solve_ms = 1000.0 * (time.perf_counter() - t_col0)
 
         t_enum0 = time.perf_counter()
         eval_nodes, offsets, in_ball = _build_macro_eval_layout(self.pl, s_node, t_list)
         lam = self.pl.spec.lam
-        c_leg: Dict[int, np.ndarray] = {}
+        total_phi = float(sum(float(self.pl.waypoints[b].phi) for b in t_list))
+        c0_leg: Dict[int, np.ndarray] = {}
         P_leg: Dict[int, np.ndarray] = {}
         for b in t_list:
             pr = self.pl.prepare_wp_ring_eval(b, eval_nodes)
             H_eval = pr["U_eval"] @ pr["P_pinv"]
-            zbar = np.maximum(np.sum(H_eval, axis=1), 1e-300)
-            phi_b = float(self.pl.waypoints[b].phi)
-            cb = phi_b - lam * np.log(zbar)
-            cb[in_ball[b]] = phi_b
-            c_leg[b] = cb
-            P_leg[b] = H_eval / zbar[:, None]
+            if not np.all(np.isfinite(H_eval)):
+                return _fail_fixed("nonfinite_harmonic_operator")
+            zbar_raw = np.sum(H_eval, axis=1)
+            ext_rows = ~in_ball[b]
+            if np.any(zbar_raw[ext_rows] <= 1e-285) or np.any(H_eval[ext_rows, :] < -1e-7):
+                return _fail_fixed("desirability_underflow_or_sign_loss")
+            zbar_safe = np.where(in_ball[b], 1.0, zbar_raw)
+            cb0 = -lam * np.log(zbar_safe)
+            cb0[in_ball[b]] = 0.0
+            Pb = H_eval / zbar_safe[:, None]
+            if not (np.all(np.isfinite(cb0)) and np.all(np.isfinite(Pb))):
+                return _fail_fixed("nonfinite_normalized_leg_operator")
+            c0_leg[b] = cb0
+            P_leg[b] = Pb
 
-        W_suf: Dict[Tuple[int, ...], np.ndarray] = {(b,): c_leg[b].copy() for b in t_list}
+        W_suf: Dict[Tuple[int, ...], np.ndarray] = {(b,): c0_leg[b].copy() for b in t_list}
         for L_s in range(2, m + 1):
             first_only = (L_s == m)
             for b in t_list:
@@ -684,10 +929,7 @@ class MacroTourPlanner:
                 sl_b = offsets[b]
                 ib_b = in_ball[b]
                 Pb = P_leg[b][0:1, :] if first_only else P_leg[b]
-                vb = c_leg[b][0:1] if first_only else c_leg[b]
-                for rest in itertools.permutations(others, L_s - 1):
-                    r_list = list(itertools.permutations(others, L_s - 1))
-                    break
+                vb = c0_leg[b][0:1] if first_only else c0_leg[b]
                 r_perms = list(itertools.permutations(others, L_s - 1))
                 W_mat = np.column_stack([W_suf[rp] for rp in r_perms])
                 cont_mat = Pb @ W_mat[sl_b, :]
@@ -698,27 +940,42 @@ class MacroTourPlanner:
                 for c_k, rp in enumerate(r_perms):
                     W_suf[(b, *rp)] = out_mat[:, c_k]
 
-        scores = {perm: float(W_suf[perm][0]) for perm in itertools.permutations(t_list, m)}
+        scores = {perm: float(W_suf[perm][0] + total_phi) for perm in itertools.permutations(t_list, m)}
+        if not all(math.isfinite(v) for v in scores.values()):
+            return _fail_fixed("nonfinite_tour_score")
         best_order = min(scores.keys(), key=lambda pm: scores[pm])
         best_val = scores[best_order]
         enum_ms = 1000.0 * (time.perf_counter() - t_enum0)
         tot_ms = 1000.0 * (time.perf_counter() - t0)
-        return {
-            "best_order": best_order,
-            "status": "epsilon_certified",
-            "certified": True,
-            "certificate_scope": "exact_discrete_ball_stopping_response_composition_model",
-            "selected_bounds": [best_val, best_val],
-            "guaranteed_suboptimality_upper_bound": 0.0,
-            "total_permutations_in_space": math.factorial(m),
-            "unique_leaves_evaluated": math.factorial(m),
-            "pruned_permutations_never_expanded": 0,
-            "new_lu_backsolves": self.pl.total_lu_backsolves - solves_before,
-            "col_solve_ms": col_solve_ms,
-            "enum_ms": enum_ms,
-            "ordering_ms": tot_ms,
-            "scores": scores,
-        }
+        return IntervalCertificate(
+            status="epsilon_certified",
+            certified=True,
+            certificate_scope="exact_discrete_ball_stopping_response_composition_model",
+            epsilon_tol=0.0,
+            lower_bound=best_val,
+            upper_bound=best_val,
+            stop_reason="exact_ring_fixed_tour_enumeration",
+            operator_epoch=self.pl.operator_epoch,
+            work={
+                "new_lu_backsolves": self.pl.total_lu_backsolves - solves_before,
+                "col_solve_ms": col_solve_ms,
+                "enum_ms": enum_ms,
+                "ordering_ms": tot_ms,
+            },
+            extras={
+                "best_order": best_order,
+                "selected_bounds": [best_val, best_val],
+                "guaranteed_suboptimality_upper_bound": 0.0,
+                "total_permutations_in_space": math.factorial(m),
+                "unique_leaves_evaluated": math.factorial(m),
+                "pruned_permutations_never_expanded": 0,
+                "new_lu_backsolves": self.pl.total_lu_backsolves - solves_before,
+                "col_solve_ms": col_solve_ms,
+                "enum_ms": enum_ms,
+                "ordering_ms": tot_ms,
+                "scores": scores,
+            },
+        ).to_dict()
 
     def plan_subset_macro_policy(
         self,
@@ -728,11 +985,15 @@ class MacroTourPlanner:
         max_refine_steps: int = 8,
         allow_exact_ring_level: bool = True,
         refine_strategy: str = "decision_guided",
+        use_incremental_dp: bool = True,
+        return_dp_tables: bool = False,
     ) -> dict:
-        """Genuine `O(m^2 2^m)` Adaptive Subset-State Macro-Planner (`m = 5..10`):
-        Certifies `F_lo(x_0, T) <= F*(x_0, T) <= J^{mu_hat}(x_0, T) <= F_hi(x_0, T)` with suboptimality
-        `<= epsilon_tol` over ALL Markov macro-policies!
-        Supports `refine_strategy` in `{"decision_guided", "uniform_width"}`.
+        """Genuine Adaptive Subset-State Macro-Planner (`m = 5..10`, `ddd19c5 Stage A + Stage B`):
+          - Supports exact dependency-tracked Incremental Subset-DP (`use_incremental_dp=True`),
+            avoiding full-table re-evaluation of unaffected `(k, action, mask)` columns;
+          - Equalizes batch size across `"decision_guided"` and `"uniform_width"` for clean priority ablation;
+          - Exposes full phase timings (`col_solve_ms`, `dp_ms`, `occupancy_ms`, `selection_ms`, `controller_ms`)
+            and optional `F_lo_table, F_hi_table` (`return_dp_tables=True`) for full-table envelope audits!
         """
         t0 = time.perf_counter()
         s_arr = np.asarray(start_point, dtype=float)
@@ -740,77 +1001,82 @@ class MacroTourPlanner:
         m = len(t_list)
         solves_before = self.pl.total_lu_backsolves
 
-        if not np.all(np.isfinite(s_arr)) or any(not np.isfinite(self.pl.waypoints[j].phi) for j in t_list):
+        def _fail_macro(reason: str, refs: list, trace: list) -> dict:
             tot_ms = 1000.0 * (time.perf_counter() - t0)
             return IntervalCertificate(
                 status="numeric_invalid",
                 certified=False,
                 certificate_scope="exact_discrete_ball_stopping_macro_mdp_all_markov_policies",
                 epsilon_tol=epsilon_tol,
-                stop_reason="nonfinite_input",
-                work={"new_lu_backsolves": 0, "planning_ms": tot_ms},
+                stop_reason=reason,
+                operator_epoch=self.pl.operator_epoch,
+                work={"new_lu_backsolves": self.pl.total_lu_backsolves - solves_before, "planning_ms": tot_ms},
                 extras={
                     "macro_value_bounds": None,
                     "guaranteed_suboptimality_upper_bound": None,
                     "policy_action_idx": None,
                     "select_next_waypoint": None,
                     "eval_nodes": None,
-                    "refinement_steps": [],
-                    "new_lu_backsolves": 0,
+                    "refinement_steps": refs,
+                    "refinement_trace": trace,
+                    "new_lu_backsolves": self.pl.total_lu_backsolves - solves_before,
                     "planning_ms": tot_ms,
                     "ordering_ms": tot_ms,
                 },
             ).to_dict()
 
+        if not np.all(np.isfinite(s_arr)) or any(not np.isfinite(self.pl.waypoints[j].phi) for j in t_list):
+            return _fail_macro("nonfinite_input", [], [])
+
         s_node = int(np.argmin(np.sum((self.pl.pts - s_arr[None, :]) ** 2, axis=1)))
         t_col_ms = 0.0
         t_dp_ms = 0.0
+        t_occ_ms = 0.0
+        t_sel_ms = 0.0
 
         t_c0 = time.perf_counter()
         for j in t_list:
-            if self.pl.wp_levels.get(j, "NONE") == "NONE":
-                self.pl.ensure_wp_level(j, self.pl.default_lazy_level)
+            cur_lv = self.pl.wp_levels.get(j, "NONE")
+            if cur_lv == "NONE":
+                rem_lv = self.pl._wp_remembered_level.get(j, self.pl.default_lazy_level)
+                self.pl.ensure_wp_level(j, rem_lv)
+            elif not self.pl._is_level_valid_in_current_epoch(j, cur_lv):
+                self.pl.refresh_waypoint_under_current_operator(j, cur_lv)
         t_col_ms += 1000.0 * (time.perf_counter() - t_c0)
 
-        refinements = []
-        refinement_trace = []
+        inc_ws = self._init_subset_dp_workspace(s_node, t_list) if use_incremental_dp else None
+        if use_incremental_dp and inc_ws is None:
+            return _fail_macro("nonfinite_input", [], [])
+
+        refinements: list = []
+        refinement_trace: list = []
         certified = False
         stop_reason = "budget_exhausted"
         full_mk = (1 << m) - 1
         dp_res: dict = {}
         prev_root_act: Optional[int] = None
         prev_gap: Optional[float] = None
+        dp_calls = 0
+        total_cols_propagated = 0
+        total_cols_full_equiv = 0
+
+        # Unified batch size across strategies for single-factor priority fairness (`ddd19c5 Sec 6`)
+        batch_cap = 3 if m >= 6 else 2
 
         for step_i in range(max_refine_steps + 1):
             t_d0 = time.perf_counter()
-            dp_res, ok = self._compute_subset_macro_dp(s_node, t_list)
+            dp_calls += 1
+            if use_incremental_dp and inc_ws is not None:
+                dp_res, ok, dp_diag = self._step_incremental_subset_macro_dp(inc_ws)
+                total_cols_propagated += dp_diag.get("cols_propagated", 0)
+                total_cols_full_equiv += dp_diag.get("cols_total", 0)
+            else:
+                dp_res, ok = self._compute_subset_macro_dp(s_node, t_list)
             t_dp_ms += 1000.0 * (time.perf_counter() - t_d0)
 
             if not ok:
-                # CRITICAL FIX (`Bug 2.3`): Check remaining refinement budget BEFORE refining!
                 if step_i >= max_refine_steps:
-                    tot_ms = 1000.0 * (time.perf_counter() - t0)
-                    return IntervalCertificate(
-                        status="numeric_invalid",
-                        certified=False,
-                        certificate_scope="exact_discrete_ball_stopping_macro_mdp_all_markov_policies",
-                        epsilon_tol=epsilon_tol,
-                        stop_reason="numeric_invalid_at_budget_cap",
-                        work={"new_lu_backsolves": self.pl.total_lu_backsolves - solves_before, "planning_ms": tot_ms},
-                        extras={
-                            "macro_value_bounds": None,
-                            "guaranteed_suboptimality_upper_bound": None,
-                            "policy_action_idx": None,
-                            "select_next_waypoint": None,
-                            "eval_nodes": None,
-                            "refinement_steps": refinements,
-                            "refinement_trace": refinement_trace,
-                            "new_lu_backsolves": self.pl.total_lu_backsolves - solves_before,
-                            "planning_ms": tot_ms,
-                            "ordering_ms": tot_ms,
-                        },
-                    ).to_dict()
-
+                    return _fail_macro("numeric_invalid_at_budget_cap", refinements, refinement_trace)
                 progressed = False
                 t_c0 = time.perf_counter()
                 for j in t_list:
@@ -827,27 +1093,9 @@ class MacroTourPlanner:
                         progressed = True
                 t_col_ms += 1000.0 * (time.perf_counter() - t_c0)
                 if not progressed:
-                    tot_ms = 1000.0 * (time.perf_counter() - t0)
-                    return IntervalCertificate(
-                        status="numeric_invalid",
-                        certified=False,
-                        certificate_scope="exact_discrete_ball_stopping_macro_mdp_all_markov_policies",
-                        epsilon_tol=epsilon_tol,
-                        stop_reason="numeric_invalid_at_max_resolution",
-                        work={"new_lu_backsolves": self.pl.total_lu_backsolves - solves_before, "planning_ms": tot_ms},
-                        extras={
-                            "macro_value_bounds": None,
-                            "guaranteed_suboptimality_upper_bound": None,
-                            "policy_action_idx": None,
-                            "select_next_waypoint": None,
-                            "eval_nodes": None,
-                            "refinement_steps": refinements,
-                            "refinement_trace": refinement_trace,
-                            "new_lu_backsolves": self.pl.total_lu_backsolves - solves_before,
-                            "planning_ms": tot_ms,
-                            "ordering_ms": tot_ms,
-                        },
-                    ).to_dict()
+                    return _fail_macro("numeric_invalid_at_max_resolution", refinements, refinement_trace)
+                if use_incremental_dp:
+                    inc_ws = self._init_subset_dp_workspace(s_node, t_list)
                 continue
 
             lo_0 = float(dp_res["F_lo"][0, full_mk])
@@ -870,44 +1118,43 @@ class MacroTourPlanner:
                 break
 
             if refine_strategy == "decision_guided":
+                t_o0 = time.perf_counter()
                 impacts = self._compute_dual_occupancy_waypoint_impacts(dp_res, t_list)
-                cands = []
+                t_occ_ms += 1000.0 * (time.perf_counter() - t_o0)
+
+                t_s0 = time.perf_counter()
+                cands_active = []
+                cands_fallback = []
                 for j in t_list:
                     cur_lv = self.pl.wp_levels[j]
                     imp_j = impacts.get(j, 0.0)
                     w_j = dp_res["wp_width"].get(j, 0.0)
-                    if (j, cur_lv) in self.pl._wp_col_err_bounds and (imp_j > 1e-12 or w_j > 1e-12):
+                    if (j, cur_lv) in self.pl._wp_col_err_bounds:
                         d_cols = max(1, len(self.pl._wp_partitions[j][cur_lv]))
-                        score = (imp_j + 1e-4 * w_j) / float(d_cols)
-                        cands.append((score, imp_j, j, cur_lv, True, d_cols))
+                        if imp_j > 1e-12:
+                            cands_active.append((imp_j / float(d_cols), imp_j, j, cur_lv, True))
+                        elif w_j > 1e-12:
+                            cands_fallback.append((w_j / float(d_cols), 0.0, j, cur_lv, True))
                         continue
                     nxt = next_finer_level(cur_lv, allow_exact=allow_exact_ring_level)
-                    if nxt is not None and (imp_j > 1e-12 or w_j > 1e-12):
+                    if nxt is not None:
                         d_cols = max(1, self.pl.marginal_backsolves_to_refine(j, nxt))
-                        score = (imp_j + 1e-5 * w_j) / float(d_cols)
-                        cands.append((score, imp_j, j, nxt, False, d_cols))
+                        if imp_j > 1e-12:
+                            cands_active.append((imp_j / float(d_cols), imp_j, j, nxt, False))
+                        elif w_j > 1e-12:
+                            cands_fallback.append((w_j / float(d_cols), 0.0, j, nxt, False))
+                cands = cands_active if cands_active else cands_fallback
                 if not cands:
+                    t_sel_ms += 1000.0 * (time.perf_counter() - t_s0)
                     stop_reason = "all_relevant_waypoints_at_max_resolution"
                     break
                 cands.sort(reverse=True)
-                tot_imp = sum(c[1] for c in cands)
-                picked = []
-                acc_imp = 0.0
-                max_batch = 3 if m >= 6 else 2
-                max_exact_in_round = 2 if (m >= 7 and step_i >= 4) else 1
-                exact_picked = 0
-                for sc, imp_j, j, nxt, is_ref, d_cols in cands:
-                    if nxt == "EXACT" and not is_ref and exact_picked >= max_exact_in_round and d_cols > 16:
-                        continue
-                    picked.append((j, nxt, is_ref, d_cols, imp_j))
-                    if nxt == "EXACT" and not is_ref:
-                        exact_picked += 1
-                    acc_imp += imp_j
-                    if len(picked) >= max_batch or (tot_imp > 0.0 and acc_imp >= 0.65 * tot_imp):
-                        break
+                picked = [(j, nxt, is_ref) for _, _, j, nxt, is_ref in cands[:batch_cap]]
+                t_sel_ms += 1000.0 * (time.perf_counter() - t_s0)
+
                 t_c0 = time.perf_counter()
                 bs_round0 = self.pl.total_lu_backsolves
-                for j, nxt, is_ref, _, _ in picked:
+                for j, nxt, is_ref in picked:
                     if is_ref:
                         self.pl.refresh_waypoint_under_current_operator(j, nxt)
                         refinements.append((int(j), f"REFRESH_{nxt}"))
@@ -917,30 +1164,33 @@ class MacroTourPlanner:
                 t_col_ms += 1000.0 * (time.perf_counter() - t_c0)
                 refinement_trace.append({
                     "round": step_i + 1,
-                    "picked": [(int(j), ("REFRESH_" + nxt if is_ref else nxt)) for j, nxt, is_ref, _, _ in picked],
+                    "picked": [(int(j), ("REFRESH_" + nxt if is_ref else nxt)) for j, nxt, is_ref in picked],
                     "new_backsolves": self.pl.total_lu_backsolves - bs_round0,
                     "gap_before": gap_ub,
                 })
             elif refine_strategy == "uniform_width":
+                t_s0 = time.perf_counter()
                 cands_u = []
                 for j in t_list:
                     cur_lv = self.pl.wp_levels[j]
-                    if (j, cur_lv) in self.pl._wp_col_err_bounds:
-                        cands_u.append((10, dp_res["wp_width"].get(j, 0.0), j, cur_lv, True))
+                    w_j = dp_res["wp_width"].get(j, 0.0)
+                    if (j, cur_lv) in self.pl._wp_col_err_bounds and w_j > 1e-12:
+                        cands_u.append((10, w_j, j, cur_lv, True))
                         continue
                     nxt = next_finer_level(cur_lv, allow_exact=allow_exact_ring_level)
-                    if nxt is not None:
-                        cands_u.append((-LEVEL_RANK[cur_lv], dp_res["wp_width"].get(j, 0.0), j, nxt, False))
+                    if nxt is not None and w_j > 1e-12:
+                        cands_u.append((-LEVEL_RANK[cur_lv], w_j, j, nxt, False))
                 if not cands_u:
+                    t_sel_ms += 1000.0 * (time.perf_counter() - t_s0)
                     stop_reason = "all_active_waypoints_at_max_resolution"
                     break
                 cands_u.sort(reverse=True)
-                n_pick = max(2, (len(cands_u) + 1) // 2) if m >= 6 else (
-                    2 if len(cands_u) >= 2 and LEVEL_RANK[self.pl.wp_levels[cands_u[0][2]]] <= LEVEL_RANK["L4"] else 1
-                )
+                picked_u = [(j, nxt, is_ref) for _, _, j, nxt, is_ref in cands_u[:batch_cap]]
+                t_sel_ms += 1000.0 * (time.perf_counter() - t_s0)
+
                 t_c0 = time.perf_counter()
                 bs_round0 = self.pl.total_lu_backsolves
-                for _, _, wp_pick, nxt, is_ref in cands_u[:n_pick]:
+                for wp_pick, nxt, is_ref in picked_u:
                     if is_ref:
                         self.pl.refresh_waypoint_under_current_operator(wp_pick, nxt)
                         refinements.append((int(wp_pick), f"REFRESH_{nxt}"))
@@ -950,16 +1200,17 @@ class MacroTourPlanner:
                 t_col_ms += 1000.0 * (time.perf_counter() - t_c0)
                 refinement_trace.append({
                     "round": step_i + 1,
-                    "picked": [(int(w), ("REFRESH_" + nx if ir else nx)) for _, _, w, nx, ir in cands_u[:n_pick]],
+                    "picked": [(int(w), ("REFRESH_" + nx if ir else nx)) for w, nx, ir in picked_u],
                     "new_backsolves": self.pl.total_lu_backsolves - bs_round0,
                     "gap_before": gap_ub,
                 })
             else:
                 raise ValueError(f"Unknown refine_strategy: {refine_strategy}")
 
+        t_ctrl0 = time.perf_counter()
         eval_nodes = dp_res["eval_nodes"]
         offsets = dp_res["offsets"]
-        act_table = dp_res["policy_action_idx"]
+        act_table = dp_res["policy_action_idx"].copy()
         n_ev = len(eval_nodes)
         n_masks = 1 << m
 
@@ -978,9 +1229,35 @@ class MacroTourPlanner:
             chosen_i = int(act_table[row_idx, mk])
             return t_list[chosen_i]
 
+        t_ctrl_ms = 1000.0 * (time.perf_counter() - t_ctrl0)
         lo_fin = float(dp_res["F_lo"][0, full_mk])
         hi_fin = float(dp_res["F_hi"][0, full_mk])
         tot_ms = 1000.0 * (time.perf_counter() - t0)
+
+        extras_dict = {
+            "route_chosen": f"{'incremental' if use_incremental_dp else 'scratch'}_{refine_strategy}_port_dp",
+            "refine_strategy": refine_strategy,
+            "use_incremental_dp": bool(use_incremental_dp),
+            "macro_value_bounds": [lo_fin, hi_fin],
+            "guaranteed_suboptimality_upper_bound": float(max(0.0, hi_fin - lo_fin)),
+            "policy_action_idx": act_table,
+            "select_next_waypoint": select_next_waypoint,
+            "eval_nodes": eval_nodes,
+            "refinement_steps": refinements,
+            "refinement_trace": refinement_trace,
+            "new_lu_backsolves": self.pl.total_lu_backsolves - solves_before,
+            "col_solve_ms": t_col_ms,
+            "dp_ms": t_dp_ms,
+            "occupancy_ms": t_occ_ms,
+            "selection_ms": t_sel_ms,
+            "controller_ms": t_ctrl_ms,
+            "planning_ms": tot_ms,
+            "ordering_ms": tot_ms,
+        }
+        if return_dp_tables:
+            extras_dict["F_lo_table"] = dp_res["F_lo"].copy()
+            extras_dict["F_hi_table"] = dp_res["F_hi"].copy()
+
         return IntervalCertificate(
             status="epsilon_certified" if certified else "unresolved",
             certified=certified,
@@ -989,33 +1266,71 @@ class MacroTourPlanner:
             lower_bound=lo_fin,
             upper_bound=hi_fin,
             stop_reason=stop_reason,
+            operator_epoch=self.pl.operator_epoch,
             work={
                 "new_lu_backsolves": self.pl.total_lu_backsolves - solves_before,
                 "col_solve_ms": t_col_ms,
                 "dp_ms": t_dp_ms,
+                "occupancy_ms": t_occ_ms,
+                "selection_ms": t_sel_ms,
+                "controller_ms": t_ctrl_ms,
                 "planning_ms": tot_ms,
+                "dp_calls": int(dp_calls),
                 "refinement_rounds_executed": len(refinement_trace),
+                "incremental_cols_propagated": int(total_cols_propagated),
+                "full_dp_cols_equivalent": int(total_cols_full_equiv),
                 "eval_rows": int(n_ev),
                 "subset_masks": int(n_masks),
                 "row_mask_entries": int(n_ev * n_masks),
                 "dp_tables_bytes": int(dp_res["F_lo"].nbytes + dp_res["F_hi"].nbytes + act_table.nbytes),
             },
-            extras={
-                "refine_strategy": refine_strategy,
-                "macro_value_bounds": [lo_fin, hi_fin],
-                "guaranteed_suboptimality_upper_bound": float(max(0.0, hi_fin - lo_fin)),
-                "policy_action_idx": act_table,
-                "select_next_waypoint": select_next_waypoint,
-                "eval_nodes": eval_nodes,
-                "refinement_steps": refinements,
-                "refinement_trace": refinement_trace,
-                "new_lu_backsolves": self.pl.total_lu_backsolves - solves_before,
-                "col_solve_ms": t_col_ms,
-                "dp_ms": t_dp_ms,
-                "planning_ms": tot_ms,
-                "ordering_ms": tot_ms,
-            },
+            extras=extras_dict,
         ).to_dict()
+
+    def plan_economical_hybrid(
+        self,
+        start_point: Sequence[float],
+        target_wp_ids: Sequence[int],
+        epsilon_tol: float = 0.25,
+        max_refine_steps: int = 12,
+    ) -> dict:
+        """Operational Hybrid Macro-Planner (`ddd19c5 Stage B`):
+        Selects between first-class `plan_exact_subset_dp` (`Cached-ExactRing + Single-Pass Subset-DP`)
+        and `plan_subset_macro_policy(..., use_incremental_dp=True, refine_strategy="decision_guided")`
+        using ONLY pre-execution structural descriptors (`dim`, `grid_dof`, `missing_exact_backsolves`, `m`).
+        """
+        t_r0 = time.perf_counter()
+        t_list = list(target_wp_ids)
+        m = len(t_list)
+        n_grid = len(self.pl.pts)
+        dim = self.pl.spec.dim
+        missing_exact_bs = sum(self.pl.marginal_backsolves_to_refine(b, "EXACT") for b in t_list)
+        # Transparent analytical dispatch rule:
+        # In 2D (`<= 10k` DOF) or when exact rings are already cached / cheap (`<= 8` missing solves/wp),
+        # single-pass Exact-Ring Subset-DP avoids multi-round interval overhead; in 3D or large uncached
+        # high-DOF operators where 3D LU backsolves dominate, dispatch to Incremental Decision-Guided Port DP!
+        choose_exact = (
+            missing_exact_bs == 0
+            or (dim == 2 and n_grid <= 10000)
+            or (missing_exact_bs <= 8 * max(1, m))
+        )
+        router_ms = 1000.0 * (time.perf_counter() - t_r0)
+        if choose_exact:
+            res = self.plan_exact_subset_dp(start_point, t_list)
+            res["router_ms"] = router_ms
+            res["hybrid_selected_route"] = "cached_exact_ring_subset_dp"
+            return res
+        res = self.plan_subset_macro_policy(
+            start_point,
+            t_list,
+            epsilon_tol=epsilon_tol,
+            max_refine_steps=max_refine_steps,
+            refine_strategy="decision_guided",
+            use_incremental_dp=True,
+        )
+        res["router_ms"] = router_ms
+        res["hybrid_selected_route"] = "incremental_decision_port_dp"
+        return res
 
     def _eval_prefix_batch_bounds(
         self,

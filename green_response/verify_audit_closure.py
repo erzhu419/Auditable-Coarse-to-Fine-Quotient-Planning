@@ -776,7 +776,7 @@ def run_all_audit_checks() -> dict:
     }
 
     # ------------------------------------------------------------------
-    # 15. [NEW `85e2323` `macro85_scaling_probe.py` + Stage D Continual Residual Audit]
+    # 15. [UPGRADED `ddd19c5` Sec 4.1] True 4-Way Full-Table `m = 9` Envelope Check + Incremental-DP Identity
     # ------------------------------------------------------------------
     w_m9 = generate_benchmark_map(802, dim=2, regime="narrow_barrier", with_drift=True)
     rng_m9 = np.random.default_rng(909)
@@ -791,30 +791,231 @@ def run_all_audit_checks() -> dict:
     mt_m9 = MacroTourPlanner(pl_m9)
     sub9 = tuple(range(9))
     s9 = np.array([-1.40, -1.40])
-    res_m9 = mt_m9.plan_subset_macro_policy(s9, sub9, epsilon_tol=0.25, max_refine_steps=14, refine_strategy="decision_guided")
+    res_m9 = mt_m9.plan_subset_macro_policy(
+        s9, sub9, epsilon_tol=0.25, max_refine_steps=14, refine_strategy="decision_guided",
+        use_incremental_dp=True, return_dp_tables=True,
+    )
+    # Also run from-scratch DP on an identical clone to verify IEEE-754 exactness of Incremental DP!
+    pl_m9_scr = SchurPortPlanner(w_m9.spec, 25, w_m9.q_hidden, w_m9.drift, cat_m9, initial_sectors_per_wp="L1", lazy_init=True)
+    res_m9_scr = MacroTourPlanner(pl_m9_scr).plan_subset_macro_policy(
+        s9, sub9, epsilon_tol=0.25, max_refine_steps=14, refine_strategy="decision_guided",
+        use_incremental_dp=False, return_dp_tables=True,
+    )
+    inc_vs_scr_max_diff = max(
+        float(np.max(np.abs(res_m9["F_lo_table"] - res_m9_scr["F_lo_table"]))),
+        float(np.max(np.abs(res_m9["F_hi_table"] - res_m9_scr["F_hi_table"]))),
+    )
     ref_m9 = independent_exact_macro_bellman_reference(pl_m9, s9, sub9, policy_action_idx=res_m9["policy_action_idx"])
-    # Check ALL `n_ev * 512` entries of `F_opt_table <= J_pol_table` AND root enclosure!
-    m9_table_viol = int(np.sum(ref_m9["J_pol_table"][:, 1:] < ref_m9["F_opt_table"][:, 1:] - 1e-9))
-    lo9, hi9 = res_m9["macro_value_bounds"]
-    m9_root_ok = bool(lo9 - 1e-9 <= ref_m9["optimal_adaptive_macro_cost"] <= ref_m9["evaluated_policy_exact_macro_cost"] + 1e-9 <= hi9 + 1e-9)
 
-    # Continual Epoch Update Check (`selective_residual`): add localized perturbation and verify `0` bound violations!
+    # TRUE 4-WAY INEQUALITY CHECK across ALL `73 * 511` non-empty subset entries:
+    # `F_lo_table <= F_opt_table <= J_pol_table <= F_hi_table`!
+    F_lo_nz = res_m9["F_lo_table"][:, 1:]
+    F_hi_nz = res_m9["F_hi_table"][:, 1:]
+    F_opt_nz = ref_m9["F_opt_table"][:, 1:]
+    J_pol_nz = ref_m9["J_pol_table"][:, 1:]
+    m9_four_way_viol = int(np.sum(
+        (F_opt_nz < F_lo_nz - 1e-9)
+        | (J_pol_nz < F_opt_nz - 1e-9)
+        | (J_pol_nz > F_hi_nz + 1e-9)
+        | (F_lo_nz > F_hi_nz + 1e-12)
+    ))
+    lo9, hi9 = res_m9["macro_value_bounds"]
+    m9_root_ok = bool(
+        (lo9 - 1e-9 <= ref_m9["optimal_adaptive_macro_cost"] <= hi9 + 1e-9)
+        and (ref_m9["optimal_adaptive_macro_cost"] - 1e-9 <= ref_m9["evaluated_policy_exact_macro_cost"] <= hi9 + 1e-9)
+    )
+
     q_epoch2 = lambda X: w_m9.q_hidden(X) + 3.5 * np.exp(-np.sum((X - np.array([[0.8, 0.8]])) ** 2, axis=1) / 0.06)
     upd_info = pl_m9.update_world_with_residual_audit(q_epoch2, w_m9.drift, mode="selective_residual")
-    res_ep2 = mt_m9.plan_subset_macro_policy(s9, (0, 1, 2, 3, 4), epsilon_tol=0.25, max_refine_steps=10, refine_strategy="decision_guided")
+    res_ep2 = mt_m9.plan_subset_macro_policy(
+        s9, (0, 1, 2, 3, 4), epsilon_tol=0.25, max_refine_steps=10, refine_strategy="decision_guided",
+        return_dp_tables=True,
+    )
     ref_ep2 = independent_exact_macro_bellman_reference(pl_m9, s9, (0, 1, 2, 3, 4), policy_action_idx=res_ep2["policy_action_idx"])
-    lo_e2, hi_e2 = res_ep2["macro_value_bounds"]
-    ep2_ok = bool(lo_e2 - 1e-9 <= ref_ep2["optimal_adaptive_macro_cost"] <= ref_ep2["evaluated_policy_exact_macro_cost"] + 1e-9 <= hi_e2 + 1e-9)
+    ep2_four_way_viol = int(np.sum(
+        (ref_ep2["F_opt_table"][:, 1:] < res_ep2["F_lo_table"][:, 1:] - 1e-9)
+        | (ref_ep2["J_pol_table"][:, 1:] < ref_ep2["F_opt_table"][:, 1:] - 1e-9)
+        | (ref_ep2["J_pol_table"][:, 1:] > res_ep2["F_hi_table"][:, 1:] + 1e-9)
+    ))
 
     report["15_m9_full_table_and_continual_residual_audit"] = {
         "m9_row_mask_entries": res_m9["work"]["row_mask_entries"],
+        "m9_nonempty_entries_checked": int(F_lo_nz.size),
         "m9_certified": res_m9["certified"],
-        "m9_all_table_policy_vs_opt_violations": m9_table_viol,
+        "m9_four_way_table_violations": m9_four_way_viol,
+        "m9_incremental_vs_scratch_max_diff": inc_vs_scr_max_diff,
         "m9_root_enclosure_valid": m9_root_ok,
         "continual_epoch2_waypoints_retained": upd_info["waypoints_retained"],
         "continual_epoch2_certified": res_ep2["certified"],
-        "continual_epoch2_enclosure_valid": ep2_ok,
-        "pass": bool(res_m9["certified"] and m9_table_viol == 0 and m9_root_ok and res_ep2["certified"] and ep2_ok),
+        "continual_epoch2_four_way_table_violations": ep2_four_way_viol,
+        "pass": bool(
+            res_m9["certified"]
+            and m9_four_way_viol == 0
+            and inc_vs_scr_max_diff < 1e-13
+            and m9_root_ok
+            and res_ep2["certified"]
+            and ep2_four_way_viol == 0
+        ),
+    }
+
+    # ------------------------------------------------------------------
+    # 16. [NEW `ddd19c5` P0 Bug 3.1] Cross-Waypoint Interleaved Epoch Contamination Probe (`ddd_continual_probe.py`)
+    # ------------------------------------------------------------------
+    sp_cw = ProblemSpec(dim=2, half_width=1.65, sigma=0.45, q0=0.5)
+    gs_cw = [GoalBall((-0.6, 0.0), 0.0, 0.32), GoalBall((0.6, 0.0), 0.0, 0.32)]
+    q0_cw = lambda X: np.zeros(len(X))
+    q1_cw = lambda X: np.full(len(X), 0.001)
+    q2_cw = lambda X: np.full(len(X), 0.003)
+
+    cw_harmonic_viols = 0
+    cw_macro_viols = 0
+    cw_max_col_res = 0.0
+    for order_ab in ((0, 1), (1, 0)):
+        pl_cw = SchurPortPlanner(sp_cw, 25, q0_cw, None, gs_cw, initial_sectors_per_wp="L1", lazy_init=False)
+        pl_cw.update_world_with_residual_audit(q1_cw, None, mode="selective_residual")
+        pl_cw.ensure_wp_level(order_ab[0], "EXACT")
+        pl_cw.ensure_wp_level(order_ab[1], "EXACT")
+        for wid in (0, 1):
+            ss_w, U_w = pl_cw._wp_tree[wid]["EXACT"]
+            B_w = np.zeros_like(U_w)
+            for j_c, s_c in enumerate(ss_w):
+                B_w[s_c, j_c] = 1.0
+            cw_max_col_res = max(cw_max_col_res, float(np.max(np.abs(pl_cw.A0 @ U_w - B_w))))
+
+        prep_cw = pl_cw.prepare_wp_ring_eval(order_ab[1], np.arange(len(pl_cw.pts)))
+        F_ones = np.ones((len(pl_cw.wp_rings[order_ab[1]]), 1))
+        L_cw, H_cw, ok_cw = pl_cw.bound_harmonic_batch(prep_cw, F_ones, F_ones)
+        ref_cw = SchurPortPlanner(sp_cw, 25, q1_cw, None, gs_cw, initial_sectors_per_wp="EXACT", lazy_init=True)
+        r_ref_cw = ref_cw.solve_query(QueryTask("ref_cw", (gs_cw[order_ab[1]],), ((0.0, 0.0),)))
+        ext_cw = ~pl_cw.wp_masks[order_ab[1]]
+        cw_harmonic_viols += int(np.sum((r_ref_cw["Z"][ext_cw] < L_cw[ext_cw, 0] - 1e-10) | (r_ref_cw["Z"][ext_cw] > H_cw[ext_cw, 0] + 1e-10)))
+
+        res_cw = MacroTourPlanner(pl_cw).plan_subset_macro_policy((0.0, -1.2), (0, 1), epsilon_tol=0.25, max_refine_steps=12)
+        refm_cw = independent_exact_macro_bellman_reference(pl_cw, (0.0, -1.2), (0, 1), res_cw["policy_action_idx"])
+        lo_cw, hi_cw = res_cw["macro_value_bounds"]
+        f_cw = refm_cw["optimal_adaptive_macro_cost"]
+        j_cw = refm_cw["evaluated_policy_exact_macro_cost"]
+        if not ((lo_cw - 1e-9 <= f_cw <= hi_cw + 1e-9) and (f_cw - 1e-9 <= j_cw <= hi_cw + 1e-9)):
+            cw_macro_viols += 1
+
+        # Second consecutive update (`q1 -> q2`) with interleaved L4 -> EXACT
+        pl_cw.update_world_with_residual_audit(q2_cw, None, mode="selective_residual")
+        res_cw2 = MacroTourPlanner(pl_cw).plan_subset_macro_policy((0.0, -1.2), (0, 1), epsilon_tol=0.25, max_refine_steps=12)
+        refm_cw2 = independent_exact_macro_bellman_reference(pl_cw, (0.0, -1.2), (0, 1), res_cw2["policy_action_idx"])
+        lo_cw2, hi_cw2 = res_cw2["macro_value_bounds"]
+        if not (lo_cw2 - 1e-9 <= refm_cw2["optimal_adaptive_macro_cost"] <= refm_cw2["evaluated_policy_exact_macro_cost"] + 1e-9 and refm_cw2["evaluated_policy_exact_macro_cost"] <= hi_cw2 + 1e-9):
+            cw_macro_viols += 1
+
+    report["16_cross_waypoint_epoch_contamination_probe"] = {
+        "max_new_exact_column_residual": cw_max_col_res,
+        "exterior_harmonic_violations": cw_harmonic_viols,
+        "macro_certificate_violations": cw_macro_viols,
+        "pass": bool(cw_max_col_res < 1e-12 and cw_harmonic_viols == 0 and cw_macro_viols == 0),
+    }
+
+    # ------------------------------------------------------------------
+    # 17. [NEW `ddd19c5` P0 Bug 3.2] Single-Query Post-Update Residual Propagation Probe (`9^2`)
+    # ------------------------------------------------------------------
+    sp_sq = ProblemSpec(dim=2, half_width=1.0, sigma=0.45, q0=0.5)
+    go_sq = GoalBall((0.0, 0.0), phi=0.0, radius=0.01)
+    qt_sq = QueryTask("after_update", (go_sq,), ((-0.75, -0.75),))
+
+    # Case A: GPT6's exact `q: 0.5 -> 0.501` counterexample (`80/81` violations in `ddd19c5` -> `0/81` now!)
+    pl_sq = SchurPortPlanner(sp_sq, 9, q0_cw, None, [go_sq], initial_sectors_per_wp="L1", lazy_init=False, min_goal_radius_override=0.01)
+    upd_sq = pl_sq.update_world_with_residual_audit(q1_cw, None, mode="selective_residual")
+    r_sq = pl_sq.solve_query(qt_sq)
+    fd_sq = ClassicalFDSolver(sp_sq, 9, q1_cw, None, min_goal_radius_override=0.01).solve_direct(qt_sq)
+    lo_sq = r_sq["V_grid"] + r_sq["ring_value_lower_shift"]
+    hi_sq = r_sq["V_grid"] + r_sq["ring_value_upper_shift"]
+    sq_viols = int(np.sum((fd_sq["V_grid"] < lo_sq - 1e-10) | (fd_sq["V_grid"] > hi_sq + 1e-10)))
+
+    # Case B: Mild perturbation (`dq = 1e-5`) where `raw_Z - delta_Z > 0` everywhere -> 0 LU refactor + valid residual scope!
+    q_mild = lambda X: np.full(len(X), 1e-5)
+    pl_sq_m = SchurPortPlanner(sp_sq, 9, q0_cw, None, [go_sq], initial_sectors_per_wp="L1", lazy_init=False, min_goal_radius_override=0.01)
+    pl_sq_m.update_world_with_residual_audit(q_mild, None, mode="selective_residual")
+    r_sq_m = pl_sq_m.solve_query(qt_sq)
+    fd_sq_m = ClassicalFDSolver(sp_sq, 9, q_mild, None, min_goal_radius_override=0.01).solve_direct(qt_sq)
+    lo_m_sq = r_sq_m["V_grid"] + r_sq_m["ring_value_lower_shift"]
+    hi_m_sq = r_sq_m["V_grid"] + r_sq_m["ring_value_upper_shift"]
+    sq_m_viols = int(np.sum((fd_sq_m["V_grid"] < lo_m_sq - 1e-10) | (fd_sq_m["V_grid"] > hi_m_sq + 1e-10)))
+
+    # Case C: Post-update query WITH local hazard (`mh > 0`)
+    hz_sq = (HazardFeature((0.25, 0.25), 2.5, (0.2, 0.2)),)
+    qt_sq_hz = QueryTask("after_update_hz", (go_sq,), ((-0.75, -0.75),), local_hazards=hz_sq)
+    pl_sq_hz = SchurPortPlanner(sp_sq, 9, q0_cw, None, [go_sq], initial_sectors_per_wp="L1", lazy_init=False, hazard_mode="exact", min_goal_radius_override=0.01)
+    pl_sq_hz.update_world_with_residual_audit(q1_cw, None, mode="selective_residual")
+    r_sq_hz = pl_sq_hz.solve_query(qt_sq_hz)
+    fd_sq_hz = ClassicalFDSolver(sp_sq, 9, q1_cw, None, min_goal_radius_override=0.01).solve_direct(qt_sq_hz)
+    lo_hz = r_sq_hz["V_grid"] + r_sq_hz["ring_value_lower_shift"]
+    hi_hz = r_sq_hz["V_grid"] + r_sq_hz["ring_value_upper_shift"]
+    sq_hz_viols = int(np.sum((fd_sq_hz["V_grid"] < lo_hz - 1e-10) | (fd_sq_hz["V_grid"] > hi_hz + 1e-10)))
+
+    report["17_single_query_post_update_residual_enclosure"] = {
+        "gpt6_dq1e3_violations_of_81": sq_viols,
+        "mild_dq1e5_lu_skipped": bool(not pl_sq_m._lu_is_current),
+        "mild_dq1e5_scope": r_sq_m["value_bound_scope"],
+        "mild_dq1e5_violations_of_81": sq_m_viols,
+        "post_update_hazard_query_violations_of_81": sq_hz_viols,
+        "pass": bool(
+            sq_viols == 0
+            and (not pl_sq_m._lu_is_current)
+            and r_sq_m["value_bound_scope"] == "residual_audited_discrete_operator"
+            and sq_m_viols == 0
+            and sq_hz_viols == 0
+            and upd_sq["waypoints_retained"] == 1
+        ),
+    }
+
+    # ------------------------------------------------------------------
+    # 18. [NEW `ddd19c5` P1 Bug 3.3] Exact-Baseline Underflow/NaN Fail-Closed & Certificate Guard
+    # ------------------------------------------------------------------
+    uf_rejected_all = True
+    for q_big in (1e8, 1e12, 1e16, 1e20):
+        sp_u = ProblemSpec(dim=2, sigma=0.45, q0=0.5)
+        w_u = [GoalBall((1.35, 1.35), 0.0, 0.2), GoalBall((0.85, 0.85), 0.0, 0.2)]
+        pl_u = SchurPortPlanner(sp_u, 25, lambda X, qb=q_big: qb * np.ones(len(X)), None, w_u, initial_sectors_per_wp="EXACT", lazy_init=True)
+        mt_u = MacroTourPlanner(pl_u)
+        r_ex_s = mt_u.plan_exact_subset_dp((-1.35, -1.35), [0, 1])
+        r_ex_f = mt_u.plan_exact_fixed_tour((-1.35, -1.35), [0, 1])
+        if not (
+            r_ex_s["status"] == "numeric_invalid" and not r_ex_s["certified"]
+            and r_ex_f["status"] == "numeric_invalid" and not r_ex_f["certified"]
+        ):
+            uf_rejected_all = False
+
+    pl_nan = SchurPortPlanner(ProblemSpec(dim=2), 15, lambda X: np.zeros(len(X)), None, [GoalBall((0.8, 0.8), float("nan"), 0.3)], initial_sectors_per_wp="EXACT", lazy_init=True)
+    r_nan_sub = MacroTourPlanner(pl_nan).plan_exact_subset_dp((-0.8, -0.8), [0])
+    r_nan_fix = MacroTourPlanner(pl_nan).plan_exact_fixed_tour((-0.8, -0.8), [0])
+
+    # Verify IntervalCertificate rejects forged `extras` override or NaN certified bounds
+    cert_guard_ok = True
+    try:
+        from .core import IntervalCertificate as _IC
+    except ImportError:
+        from green_response.core import IntervalCertificate as _IC
+    for bad_kwargs in (
+        dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=float("nan"), upper_bound=1.0),
+        dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=2.0, upper_bound=1.0),
+        dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=1.0, upper_bound=1.05, extras={"status": "heuristic"}),
+        dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=1.0, upper_bound=1.05, extras={"policy_action_idx": None}),
+    ):
+        try:
+            _IC(**bad_kwargs)
+            cert_guard_ok = False
+        except ValueError:
+            pass
+
+    report["18_exact_baseline_fail_closed_and_cert_guard"] = {
+        "underflow_all_rejected_as_numeric_invalid": uf_rejected_all,
+        "nan_phi_subset_dp_status": r_nan_sub["status"],
+        "nan_phi_fixed_tour_status": r_nan_fix["status"],
+        "certificate_constructor_guards_enforced": cert_guard_ok,
+        "pass": bool(
+            uf_rejected_all
+            and r_nan_sub["status"] == "numeric_invalid" and not r_nan_sub["certified"]
+            and r_nan_fix["status"] == "numeric_invalid" and not r_nan_fix["certified"]
+            and cert_guard_ok
+        ),
     }
 
     report["ALL_PASSED"] = bool(all(v["pass"] for v in report.values() if isinstance(v, dict) and "pass" in v))

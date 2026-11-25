@@ -29,10 +29,12 @@ from .core import (
     eval_goal_union,
     eval_hazard_features,
     generate_benchmark_map,
+    observe_world_at_points,
     paired_relative_noninferiority,
     paired_stats,
     reflect_into_box,
     reflect_kinetic_into_box,
+    run_map_parallel,
     sample_noisy_probes,
     simulate_closed_loop_crn,
 )
