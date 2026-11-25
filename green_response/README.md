@@ -1,28 +1,35 @@
 # `green_response`: Auditable Coarse-to-Fine Green Response Planning & Physics-Mean Value Distillation
 
-Canonical modular library and benchmark suite closing all findings from the `v4` audit (`7087ec3`) while upgrading multi-waypoint planning from $m!$ suffix enumeration to **Subset-Bellman-Guided Interval Branch-and-Bound (`m = 5..8`)** and **Genuine $O(m^2 2^m)$ Adaptive Subset-State Macro-Planning (`m = 5..9`)**.
-
-Historical snapshots (`green_kriging_mvp/`, `green_kriging_v2/`, `green_kriging_v3/`, `green_kriging_v4/`) remain untouched for reproducibility; all active solvers, regression probes, and benchmarks live in this single canonical package (`green_response/`).
+Canonical modular library and benchmark suite closing all findings from both the `v4` audit (`7087ec3`) and the `green_response` audit (`85e2323`). All active solvers, independent regression probes (`15` suites), and single-threaded benchmarks (`Experiments 1–4`) live in this single package (`green_response/`); historical snapshots (`green_kriging_mvp/`, `green_kriging_v2/`, `green_kriging_v3/`, `green_kriging_v4/`) remain frozen for provenance.
 
 ---
 
 ## 1. Module Architecture
 
-- `core.py`: `ProblemSpec` with explicit capability guards (`validate_cole_hopf_lmdp`), exact box & kinetic specular reflection (`reflect_into_box`, `reflect_kinetic_into_box`), Same-GP Matérn-5/2 world model (`KrigingWorldModel`), closed-loop CRN rollout with immediate $t = 0$ goal absorption (`simulate_closed_loop_crn`), and scale-equivariant paired relative non-inferiority testing (`paired_relative_noninferiority`).
+- `core.py`:
+  - `ProblemSpec`: Explicit capability guards (`validate_cole_hopf_lmdp`) enforced at solver entry and `as_isotropic_unconstrained_surrogate()` for warm-start construction.
+  - `IntervalCertificate`: Standardized machine-auditable certificate record (`status`, `certified`, `certificate_scope`, `epsilon_tol`, `lower_bound`, `upper_bound`, `stop_reason`, `work`, `extras`).
+  - `simulate_closed_loop_crn`: Closed-loop common-random-numbers SDE rollout with immediate $t = 0$ ball absorption, optional fine `dt_override`, and continuous segment-to-union ball hit detection (`substep_segment_hit`).
+  - `paired_relative_noninferiority`: Declares scale-equivariant `primary_estimand = "linearized_contrast_vs_0"` ($E[C_{\text{method}} - (1 + \delta) C_{\text{ref}}] < 0$) alongside secondary per-map `%` excess.
 - `port_solvers.py`:
-  - `SchurPortPlanner`: Canonical string-keyed nested partition tree (`"L1" -> "L4" -> "L8" -> "EXACT"`) unified across 2D and 3D (zero eager/lazy mismatch, zero wasted LU backsolves), repaired single-query value-bound log shifts (`+lam * log(gamma_lo)`, `+lam * log(gamma_hi)`), explicit `value_bound_scope`, and cached `(wp_id, level)` ring operators.
-  - `ClassicalFDSolver`: Multi-resolution fresh FD (`13^3..25^3`), repaired lazy `Cached-Target-FD` (checks `len(active_h) <= 45` *before* factoring base `A0_{II}`), and repaired `Warm-ILU-BiCGSTAB` (genuine non-constant warm-starts + tight `rtol=1e-12, atol=1e-15` resolving $Z \sim 10^{-14}$ dynamic range).
-  - `solve_anisotropic_constrained_kkt_action` & `solve_monotone_anisotropic_constrained_hjb_2d`: Exact anisotropic constrained KKT minimizer $u^*(g) = -(R + \eta I)^{-1} g$ (`56`-step vectorized bisection to float64 precision) shared between HJB policy evaluation and continuous policy readout, plus exact `sweeps_used` linear-solve accounting.
-  - `solve_exact_continuous_ball_robust_hjb_2d`: Closed-form 4-quadrant continuous-disk robust HJB (`< 1e-13` exact residual).
+  - `SchurPortPlanner`:
+    - Unified string-keyed nested partition tree (`"L1" -> "L4" -> "L8" -> "EXACT"`) across 2D and 3D with full `EXACT` dispatch across disjoint, nearby/overlapping union, and ad-hoc target branches (`requested_level`, `effective_level`, `ring_nodes`, `ports_used`, `hazard_rank` logged per query).
+    - Separate positive-column M-matrix interval projections (`C_lo = P_pinv @ F_lo`, `C_hi = P_pinv @ F_hi`) in `bound_harmonic_batch`, eliminating multi-leg midpoint width compounding with `0` midpoint-repair fallbacks.
+    - `update_world_with_residual_audit`: Continual GP world-transition reuse via the exact M-matrix row-sum residual bound $\|U_{\text{new}} - U_{\text{old}}\|_\infty \le (\lambda / q_{\min}) \|B - A_{\text{new}} U_{\text{old}}\|_\infty$.
+  - `ClassicalFDSolver`: Shared `compute_hazard_diagonal_perturbation` supporting matched `solve_warm_ilu_krylov(..., hazard_mode="exact" | "lumped")`, lazy `Cached-Target-FD`, and multi-grid fresh FD (`13^3..25^3`).
+  - `solve_monotone_anisotropic_constrained_hjb_2d`: Exact 56-step KKT action bisection $u^*(g) = -(R + \eta I)^{-1} g$, optional stencil-consistent `upwind_min` readout, and `compute_discrete_fixed_policy_residual_2d` separating grid-value vs. deployed-readout Bellman residuals.
 - `macro_planning.py`:
-  - Unified immediate $t = 0$ and leg-switch ball absorption (`wp_masks[b][x]`) across continuous CRN simulation, port planners, and independent sparse-LU references (`independent_exact_ball_tour_scores`, `independent_exact_macro_bellman_reference`).
-  - Zero silent interval clamping (`numeric_invalid` detection; `0` invalid intervals across all benchmarks).
-  - `MacroTourPlanner.plan_subset_macro_policy`: Genuine $O(m^2 2^m)$ backward interval Bellman solver on `(ring_node, subset_bitmask S)` certifying $\varepsilon$-optimality over **all Markov macro-policies**.
-  - `MacroTourPlanner.plan_fixed_tour_bnb`: Frontier-controlled interval branch-and-bound using `F_lo(., S_rem)` from the $O(m^2 2^m)$ Subset-Macro DP as an exact admissible heuristic over all $m!$ permutations.
+  - **Gauge-Normalized Leg Operators**: Normalizes boundary desirability to $\bar{g}_b = \mathbf{1}$ ($\bar{Z}_b = H_b \mathbf{1}$, $c_{0,b} = -\lambda \log \bar{Z}_b$, $P_b f = H_b f / \bar{Z}_b$) and factors deterministic terminal-cost sums $\Phi(S) = \sum_{b \in S} \phi_b$ out of backward DP, making interval widths machine-invariant to arbitrary signed shifts in $\phi_b$ and preventing exponential underflow.
+  - **Fail-Closed Auditing**: Checks numeric validity *before* any refinement (`status="numeric_invalid", policy_action_idx=None` at `max_refine_steps=0`) and enforces strict fail-closed interval intersections (`0` midpoint repairs).
+  - `MacroTourPlanner`:
+    - `plan_subset_macro_policy`: $O(m^2 2^m)$ interval Bellman solver supporting `"uniform_width"` and dual-occupancy `"decision_guided"` (`0.5` incumbent + `0.5` optimistic contender, cost-normalized by missing ring backsolves).
+    - `plan_exact_subset_dp` & `plan_exact_fixed_tour`: Matched-policy-class operational `Full-ExactRing` baselines without interval multi-round overhead.
+    - `plan_fixed_tour_bnb`: Interval branch-and-bound with admissible `F_lo(., S_rem)` heuristic over $m!$ permutations.
 - `highd_solvers.py`:
-  - `BoxNeumannBesselBaseGuide`: Even-reflected $C^2$ collar Helmholtz/Bessel physics mean prior supporting isotropic scalar $R = r I$ ($r > 0$) consistently across $\lambda = r\sigma^2$, $\kappa = \sqrt{2 q_0 / r}/\sigma^2$, $u = -\nabla V / r$, collar Laplacian residual, and stochastic Girsanov increment; rejects finite `u_max` and anisotropic `R` at entry.
-  - `EikonalConeMeanGuide` & `fit_gp_value_with_prior`: Smooth reflecting geometric distance-cone control prior and zero-drift frozen-label refit API.
-  - `solve_kinetic_underactuated_greenres`: Scoped 4D damped double-integrator empirical extension (`6` continuation rounds) replacing hardcoded `0.0` jump fields with an independent floating-point path-action vs endpoint-telescoping check (`measured_telescoping_discrepancy`).
+  - `BoxNeumannBesselBaseGuide`: Even-reflected $C^2$ collar Helmholtz/Bessel physics mean prior for $R = r I$ ($r > 0$, unconstrained), rejecting anisotropic `R` and finite `u_max` at entry.
+  - `EikonalConeMeanGuide` & `fit_gp_value_with_prior`: Supports raw `"eikonal_cone"`, `"matched_smooth_cone"`, and `"matched_sharp_cone"` (`smooth_tau = 0` exact finite tip slope + 36-point per-goal NNLS slope/offset + $C^2$ collar matching).
+  - `make_antithetic_centered_pimc_policy`: Exact control-weighted Cole-Hopf path-integral drift tilt $\delta u = (\sigma / \Delta t) E_w[\Delta W_0]$ consistent across arbitrary scalar $R = r I$.
+  - `solve_kinetic_underactuated_greenres`: Scoped 4D damped double-integrator empirical extension (`6` continuation rounds) with independent path-vs-endpoint telescoping verification.
 
 ---
 
@@ -30,87 +37,116 @@ Historical snapshots (`green_kriging_mvp/`, `green_kriging_v2/`, `green_kriging_
 
 | Component / Claim | Claim Grade | Scope & Mathematical Guarantee | Empirical / Verification Evidence |
 | :--- | :--- | :--- | :--- |
-| **Sector-Local Positive-Column M-Matrix Barrier (`bound_harmonic_batch`)** | **Model-Exact Theorem (`0` violations)** | Exact upper/lower enclosures of discrete harmonic extension $H_b F$ on $\Omega \setminus \Gamma_b$ for signed $F$ without probability clipping | `0` violations across 32 signed asymmetric-drift probes (`L1..EXACT`), `144` `m=5` tours, and `m=7` (`5,040` perms) |
-| **Single-Query Ring Value Bounds (`solve_query`)** | **Model-Exact Theorem (`0` violations)** | $\hat{V} + \lambda\log\gamma_{\text{lo}} \le V_{\text{op}} \le \hat{V} + \lambda\log\gamma_{\text{hi}}$ w.r.t. solved discrete operator (`exact` or `lumped`) | `0 / 27` violations on GPT6's coarse 1-goal sign probe + `0 / 27` on 2-goal adversarial near-overlap probes |
-| **Adaptive Subset-Macro Planner (`plan_subset_macro_policy`)** | **Model-Scoped $\varepsilon$-Certified ($O(m^2 2^m)$)** | Certifies $F_{\text{lo}}(x_0, T) \le F^*(x_0, T) \le J^{\hat{\mu}}(x_0, T) \le F_{\text{hi}}(x_0, T)$ over all discrete Doob Markov macro-policies | `100%` certified (`eps=0.25`), `0` bound/regret violations across `144` `m=5` tasks and `m = 5, 7, 8, 9` (`362,880` perm scale in `1.87s/map`) |
-| **Fixed-Order Interval Branch-and-Bound (`plan_fixed_tour_bnb`)** | **Model-Scoped $\varepsilon$-Certified** | Admissible `F_lo(., S_rem)` prefix pruning over $m!$ permutations (`LB(P) > U_inc` zero-loss pruning) | `100%` certified, `0` violations; prunes `86.5%` (`m=5`), `97.7%` (`m=7`), and **`99.64%`** (`m=8`, `40,320` perms) |
-| **3D Task-Stream Reuse & Port Compression (`Exp 1A`)** | **Empirical + Scale-Equivariant NI** | Isolates single-LU separator-ring reuse vs. local-hazard lumping vs. `r=1/8` port compression across `K = 1..40` | `SchurPort-r1-LumpedHaz` `+0.38%` excess vs `Fresh-FD-25` (`p_NI = 2.4e-8` at `+3.5%` margin), `16.1x` faster than `FD-25` and `1.44x` faster than repaired `Warm-ILU-BiCGSTAB` at `K=40` |
-| **Non-LMDP Anisotropic Constrained KKT (`Exp 2`)** | **Exact Discrete HJB (`<= 1e-8`)** | Exact KKT readout $u^*(g) = -(R + \eta I)^{-1} g$ + `56`-step inner bisection | `0 / 800` tolerance misses on `35^2` & `51^2`; `1.30x` equal-tol speedup and `2.18x` speedup at `<= +0.5%` cost NI (`p_NI = 2.0e-8`) |
-| **4D/6D Helmholtz-Bessel Physics-Mean GP Distillation (`Exp 3A/3B`)** | **Analytical Collar Identity + Empirical Prior Gain** | Exact $C^2$ even collar PDE residual ($R = r I$, unconstrained); GP with analytical physics mean prior $m(x) = V_0(x)$ | On identical frozen FK labels, `HelmholtzBessel` beats `ZeroMean` (`-3.40` in 4D, `-4.03` in 6D) AND statistically beats smooth `EikonalCone` on unseen starts (`p=0.021` 4D, `p=0.0074` 6D) & wall/corner OOD shift (`p=0.0043` 4D, `p=0.0049` 6D) |
-| **4D Kinetic Double-Integrator (`Exp 3C`)** | **Exploratory Empirical Extension** | Exact discrete path telescoping (`measured_telescoping_discrepancy < 1e-13`), but velocity-cap boundary & specular GP trace remain uncoupled approximations | `92.5%` reach (`93.1%` held-out) at 6 continuation rounds vs `70.6%` Pure-LQR & `28.3%` Kinetic-PIMC; `2.35%` execution `u<=4.5` clipping |
+| **Positive-Column M-Matrix Interval Barrier (`bound_harmonic_batch`)** | **Model-Exact Theorem (`0` violations)** | Exact upper/lower enclosures of discrete harmonic extension $H_b [F_{\text{lo}}, F_{\text{hi}}]$ on $\Omega \setminus \Gamma_b$ with `0` midpoint repairs | `0` violations across 32 signed probes, `144` `75^2` tours, `96` `m=5..9` tasks (`37,376` `m=9` entries), `128` 2D/3D crossover tasks, and `200` continual tasks |
+| **Gauge-Invariant Subset-Macro DP (`plan_subset_macro_policy`)** | **Model-Scoped $\varepsilon$-Certified ($O(m^2 2^m)$)** | Certifies $F_{\text{lo}}(x_0, T) \le F^*(x_0, T) \le J^{\hat{\mu}}(x_0, T) \le F_{\text{hi}}(x_0, T)$ invariant to $\phi_b$ shifts; fail-closed on invalid inputs | `7.1e-14` width ptp across $\phi \in [-50, +200]$; `Full-ExactRing + Subset-DP` fastest in 2D (`14..161 ms`), while `DecisionGuided` cuts backsolves up to `27.4%` and reaches parity (`1.013x`) at `31^3` (`ring ~ 89`) |
+| **M-Matrix Residual-Audited Continual Reuse (`Exp 4B`)** | **Model-Exact Bound (`0 / 200` violations)** | Audits cached columns under $A_{\text{new}}$ via $\|U_{\text{new}} - U_{\text{old}}\|_\infty \le (\lambda / q_{\min}) \|B - A_{\text{new}} U_{\text{old}}\|_\infty$ | `0 / 200` violations (`0.00052` regret) and **`1.37x` cumulative speedup** vs `Scratch-Rebuild`, whereas `Blind-Stale-Cache` suffers **`86 / 200` (`43%`)** violations |
+| **3D Single-Query Stream Reuse & Port Compression (`Exp 1A`)** | **Empirical + Linearized Relative NI** | Separates single-LU reuse, stride-2 local-hazard lumping, and `r=1/8` port compression across full `K = 40` streams + locked fresh maps | `SingleLU-ExactRing-ExactHaz` matches `FD-25` to `7.99e-15`; `SchurPort-r1-LumpedHaz` achieves **`16.19x`** (`12` maps) & **`14.86x`** (`8` fresh maps) vs `FD-25` and **`1.34x–1.64x`** vs `Warm-ILU` (`p_NI <= 3.5e-4`) |
+| **Non-LMDP Anisotropic Constrained KKT Warm-Start (`Exp 2`)** | **Exact Discrete HJB (`<= 1e-8`)** | Isotropic Cole-Hopf surrogate warm-start (`IsoFD` / `SchurPort`) for 2D anisotropic constrained policy iteration | `0 / 800` tol misses; `1.28x` equal-tol speedup (`1.03x` incremental `SchurPort` over `IsoFD`); `1.98x–2.02x` 3-step speedup passing `+0.5%` NI (`p_NI <= 0.0010`) |
+| **4D/6D Helmholtz-Bessel Physics-Mean GP Prior (`Exp 3A/3B`)** | **Analytical Collar Identity + Sample Efficiency** | Exact $C^2$ even collar PDE residual ($R = r I$, unconstrained) used as GP mean prior $m(x) = V_0(x)$ | Beats NNLS-matched sharp cone on `8/8` 4D & `8/8` 6D maps (`p <= 0.0029`, held-out 6D `p = 0.049`); on locked fresh 6D maps, **`24`-anchor `Bessel` beats `108`-anchor `SharpCone` (`4.5x` sample efficiency)** |
+| **4D Kinetic Double-Integrator (`Exp 3C`)** | **Exploratory Empirical Extension** | Exact discrete path telescoping (`6.39e-14`), uncoupled velocity-cap & specular trace approximations | `92.5%` reach (`93.1%` held-out) vs `70.6%` Pure-LQR & `28.3%` Kinetic-PIMC |
 
 ---
 
-## 3. Verification & Benchmark Summary (`ALL_PASSED: true`)
+## 3. Verification & Single-Threaded Benchmark Summary (`ALL_PASSED: true`)
 
-### 3.1 Independent 10-Suite Audit Regression (`verify_audit_closure.py`)
-Reproduces and closes every counterexample from `markdown/green_kriging_v4_audit/checks/`:
-1. **Single-Query Sign Probe (`54` cases)**: `0 / 27` violations on GPT6's 1-goal sign probe (`port_v4_sign_probe.py`) + `0 / 27` on 2-goal near-overlap probes (`worst_raw_min_Z = 1.03e-5`).
-2. **3D Nested Tree Invariance**: Eager vs. lazy initialization across `"L1", "L4", "L8", "EXACT"` in 3D (`17^3` with drift) achieves `max_eager_vs_lazy_column_diff = 2.22e-16` and `0` wasted LU backsolves (`12 == |R_0|`).
-3. **Signed Barrier Probe (`32` cases)**: `0` violations across all levels without interval clamping.
-4. **Tour $t = 0$ Absorption & `m = 7` (`5,040` perms) BnB**: Immediate ball absorption selects initial-inside target first with `0` violations; `m = 7` BnB evaluates only `65 / 5,040` leaves (`98.7%` pruned), `0` violations, `0.0` regret.
-5. **Subset-Macro Bellman `m = 8` Audit**: Coarse `[7.907, 17.187]` -> final `[12.84612567, 12.84612572]` enclosing exact `12.84612570` (`0.0` regret, `478 ms`).
-6. **Anisotropic KKT Readout & `51^2` `6101/q6` Stall**: Matches `brentq`/`SLSQP` to `4.44e-16` Hamiltonian excess; `6101/q6` hits `5.65e-13 <= 1e-8` in `7` linear solves.
-7. **3D Classical Reuse Accounting**: `Cached-Target-FD` performs `0` double factorizations (`18.83` mean across 12 maps vs `24.08` in `v4`); `Warm-ILU-BiCGSTAB` uses genuine warm-start (`ptp(x0) = 0.278`) with `20/20` `info == 0`.
-8. **High-D Capability Guard & Scalar $R = 2 I$**: Rejects anisotropic `R` and finite `u_max` with `ValueError`; supports scalar `R = 2 I` to `1.48e-9` HJB residual (`0.65` error in `v4` eliminated); proves `0.0` algebraic difference between `GP(y; prior=V0)` and `V0 + GP(y - V0)`.
-9. **Collar Trace & Continuous-Disk Robust HJB**: `near4` unclipped raw RMS `0.00267`, gradient-policy mismatch `3.58e-9`, continuous-disk residual `1.02e-14`.
-10. **Kinetic Independent Telescoping, Adjoint, & PIMC**: `seed=14500` measured telescoping discrepancy `4.97e-14`, round-6 continuation diff `0.0130`, killed-adjoint diff `5.36e-10` (`0.0` goal mass), free-world PIMC variance `5.30e-32`.
+All timings were recorded under strict single-thread pinning (`OMP_NUM_THREADS=1`, `OPENBLAS_NUM_THREADS=1`, `MKL_NUM_THREADS=1`, `VECLIB_MAXIMUM_THREADS=1`, `NUMEXPR_NUM_THREADS=1`, verified via `threadpoolctl`).
+
+### 3.1 Independent 15-Suite Audit Closure Regression (`verify_audit_closure.py`)
+1–10. **Full `v4` (`7087ec3`) Regression**: `0 / 54` single-query sign/overlap violations; `2.22e-16` 3D eager-vs-lazy invariance; `0 / 32` signed barrier violations; `t = 0` ball absorption & `m = 7` BnB (`98.7%` pruned); `m = 8` Subset-Macro certified to `[12.790, 12.902]` (`width = 0.111 <= 0.25`, `0.0` regret); `51^2` `6101/q6` KKT residual `5.65e-13`; classical reuse accounting; `R = 2 I` Bessel residual `1.48e-9`; continuous-disk HJB `1.02e-14`; kinetic telescoping `4.97e-14`.
+11. **Full `EXACT` Branch Dispatch (`Bug 2.1`)**: On `map401/q2` (`nearby_union`), `effective_level == "EXACT"` uses all `57 / 57` ring nodes and matches `Fresh-FD-25` to **`1.78e-15`** (`1.07e-14` across all `5` queries).
+12. **Terminal-Cost Gauge Invariance (`Bug 2.2`)**: Across uniform shifts $\Delta\phi \in \{-50, 0, +50, +200\}$, interval width peak-to-peak variation is **`7.11e-14`** (`max_policy_mismatch = 0`).
+13. **Zero-Budget `numeric_invalid` & Fail-Closed Intersections (`Bugs 2.3 & 2.4`)**: Under genuine float64 underflow (`sigma = 0.02, q0 = 1e6`) with `max_refine_steps = 0`, returns `status == "numeric_invalid"`, `policy_action_idx is None`, `refinement_steps == 0`; synthetic `1e-12` reversed bounds trigger `ValueError` (`0` midpoint repairs).
+14. **Scalar-$R$ Centered PIMC Consistency (`Bug 2.5`)**: Across $r \in \{0.5, 1.0, 2.0, 4.0\}$ in an obstacle-free quadratic problem, `PIMC / Analytical` drift ratio stays in **`[0.9992, 0.9997]`** (`0.0` goal-absorption drift).
+15. **Exhaustive `m = 9` Entry Check & Continual Epoch Audit**: `0 / 37,376` row-mask bound violations on `m = 9` (`2^9 = 512` subsets) and `0` single-query / macro-DP violations after localized obstacle shift under `update_world_with_residual_audit`.
 
 ---
 
-### 3.2 Key Quantitative Results Across Experiments 1–3
+### 3.2 Experiment 1: 3D Task-Stream Amortization & Matched-Class Macro-Tours
 
-#### Experiment 1A: 3D Structural Reuse & Amortization (`12` Maps, `25^3`, `r_goal = 0.28`)
-| Method (`25^3` unless noted) | Mean Cost (12 Maps) | Per-Map `%` Excess vs `FD-25` | `+3.5%` Rel. NI `p` | `K=1` ms | `K=5` ms | `K=20` ms | `K=40` ms | LU Facts (`K=20`) |
+#### Exp 1A — 3D `25^3` Full `K = 40` Stream (`12` Maps: `6` Dev + `6` Held-Out) & `8` Locked Fresh Maps (`9400..9407`)
+- `SingleLU-ExactRing-ExactHaz-25` matches `Fresh-FD-25` across all `480` benchmark queries to **`max |ΔV| = 7.99e-15`** and across all `320` fresh confirmation queries to **`1.07e-14`**.
+
+| Method (`25^3` unless noted) | `K=20` Cost (12M) | `K=40` Cost (12M / Held6) | `+3.5%` Lin-NI `p` (12M / Held6) | `K=1` ms | `K=5` ms | `K=20` ms | `K=40` ms (12M) | Fresh-8 `K=40` ms (Cost) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| `Fresh-FD-17` | `3.526` | `+3.73%` | `0.652` (Fail) | `86` | `341` | `1,289` | — | `20.0` |
-| `Fresh-FD-21` | `3.437` | `+1.13%` | `6.0e-8` (Pass) | `316` | `1,414` | `5,353` | — | `20.0` |
-| `Fresh-FD-25` | `3.399` | `0.00%` | — | `1,027` | `4,688` | `18,557` | `38,552` | `20.0` |
-| `Cached-Target-FD-25` (Repaired) | `3.399` | `0.00%` | `0.0` (Pass) | `1,133` | `4,828` | `17,594` | `32,351` | `18.83` |
-| `Warm-ILU-BiCGSTAB-25` (Repaired) | `3.399` | `+0.001%` | `5.4e-36` (Pass) | **`518`** | **`777`** | **`1,744`** | `3,449` | `0.58` |
-| `SingleLU-ExactRing-ExactHaz-25` | `3.398` | `-0.02%` | `4.4e-19` (Pass) | `1,206` | `4,947` | `11,391` | `16,782` | `1.0` |
-| `SingleLU-ExactRing-LumpedHaz-25` | `3.414` | `+0.45%` | `3.0e-12` (Pass) | `1,183` | `2,021` | `2,966` | `3,509` | `1.0` |
-| `SchurPort-Lazy8-LumpedHaz-25` | `3.414` | `+0.44%` | `8.1e-12` (Pass) | `1,106` | `1,581` | `2,302` | `2,844` | `1.0` |
-| **`SchurPort-r1-LumpedHaz-25`** | **`3.412`** | **`+0.38%`** | **`2.4e-8` (Pass)** | `1,095` | `1,331` | `1,873` | **`2,388`** | **`1.0`** |
+| `Fresh-FD-21` (`first_20`) | `3.437` | — | — | `283` | `1,269` | `4,890` | — | — |
+| `Fresh-FD-25` | `3.399` | `3.402` / `3.422` | — | `914` | `4,267` | `17,033` | `35,330` | `30,888` (`3.517`) |
+| `Cached-Target-FD-25` | `3.399` | `3.402` / `3.422` | `2.3e-14` / `5.7e-7` | `931` | `4,267` | `15,937` | `29,498` | — |
+| `Warm-ILU-ExactHaz-25` | `3.399` | `3.402` / `3.422` | `2.2e-14` / `5.5e-7` | **`474`** | **`713`** | **`1,639`** | `3,188` | `2,791` (`3.517`) |
+| `Warm-ILU-LumpedHaz-25` | `3.415` | `3.424` / `3.442` | `4.8e-11` / `3.3e-5` | `479` | `745` | `1,907` | `3,571` | `2,957` (`3.537`) |
+| `SingleLU-ExactRing-ExactHaz-25` | `3.399` | `3.402` / `3.422` | `2.3e-14` / `5.7e-7` | `1,075` | `4,386` | `9,976` | `13,941` | `13,555` (`3.517`) |
+| `SingleLU-ExactRing-LumpedHaz-25` | `3.415` | `3.424` / `3.442` | `4.8e-11` / `3.3e-5` | `1,074` | `1,731` | `2,473` | `2,932` | `2,862` (`3.537`) |
+| `SchurPort-Lazy8-LumpedHaz-25` | `3.414` | `3.422` / `3.442` | `4.5e-10` / `6.0e-5` | `1,025` | `1,459` | `2,133` | `2,623` | — |
+| **`SchurPort-r1-LumpedHaz-25`** | **`3.412`** | **`3.420` / `3.442`** | **`8.1e-9` / `3.5e-4`** | `986` | `1,199` | `1,708` | **`2,183`** | **`2,079` (`3.540`)** |
 
-- **Clean Attribution**: Reusing `splu(A_0)` with exact ring + exact 420-node hazard Woodbury cuts `K=40` time `2.30x` (`38.6s -> 16.8s`); stride-2 local-hazard lumping cuts rank-420 Woodbury overhead `4.78x` (`16.8s -> 3.51s` at only `+0.45%` cost); and `r=1` port compression cuts another `32%` (`3.51s -> 2.39s`), crossing below repaired `Warm-ILU-BiCGSTAB` (`3.45s`) between `K = 20` and `K = 40` while also beating `Fresh-FD-21` in closed-loop cost (`-0.025, p = 0.029`).
+- **Matched-Hazard & Fresh-Confirmation Attribution**:
+  - `SingleLU` + `ExactRing` cuts `FD-25` time `2.53x` (`35.3s -> 13.9s`); stride-2 local-hazard lumping cuts rank-420 Woodbury overhead `4.76x` (`13.9s -> 2.93s` at `+0.64%` cost); and `r=1` port compression cuts another `25.5%` (`2.93s -> 2.18s`), beating `Warm-ILU-ExactHaz` (`1.46x` on 12 maps, `1.34x` on 8 fresh maps) and matched-operator `Warm-ILU-LumpedHaz` (`1.64x` on 12 maps, `1.42x` on 8 fresh maps).
+  - Against coarse `Fresh-FD-21` (`first_20`), `SchurPort-r1-LumpedHaz` improves pooled 12-map cost by `-0.0250` (`p = 0.0291`), while on the `n = 6` held-out subset the difference is `-0.0210` (`95% CI [-0.069, +0.027], p = 0.313`).
 
-#### Experiment 1B: Certified Tours (`144` Official Tasks, $t=0$ Fixed) & Scalability (`m = 5..9`)
-- On the 144 official tours (`113` strictly exterior + `31` initial-inside starts, all evaluated under unified $t=0$ immediate ball absorption):
-  - **`0` bound violations and `0` certified regret violations** across all certified methods;
-  - `Certified-Subset-MacroMDP` ($O(m^2 2^m)$) achieves the **lowest closed-loop cost** (`10.193` all / `10.470` exterior vs `10.845` / `11.108` Euclidean, `p = 0.00028`, and `10.205` / `10.482` fixed-order `Full-ExactRing`) at `100%` certification (`967 ms` vs `901 ms` eager `Full-ExactRing`, `-13.6%` LU backsolves);
-  - `Certified-BnB-FixedTour` prunes `86.5%` of `m=5` permutations and saves `28.8%` of LU backsolves (`274.7` vs `386.1`).
-- **Scalability (`m = 5 -> 7 -> 8 -> 9`, Strictly Exterior Starts)**:
-  - `m = 7` (`5,040` perms): `BnB` prunes **`97.7%`** (`100%` certified, `0` violations vs exact `5,040` oracle); `Subset-Macro` takes `1,049 ms` (`100%` certified).
-  - `m = 8` (`40,320` perms): `BnB` prunes **`99.64%`** (`2,807 ms`, `100%` certified); `Subset-Macro` takes **`1,477 ms`** (`100%` certified).
-  - `m = 9` (`362,880` perms): `Subset-Macro` ($2^9 = 512$ states) certifies `100%` of tasks in **`1,873 ms/map`**.
+#### Exp 1B — `144` Official Tours, Matched-Class `m = 5..9` Scaling, & Operator-Cost Crossover (`9800..9807`)
+- **Zero certified bound violations (`0`)** across all certified methods on all `144` `75^2` tours, all `96` `m = 5..9` `65^2` tasks, and all `128` fresh crossover tasks.
+- **Matched-Class Crossover (`8` Fresh Maps `9800..9807`, `m = 6`, `4` Tasks/Map)**:
 
-#### Experiment 2: Repaired Non-LMDP Anisotropic Constrained KKT (`35^2` & `51^2`)
-- **Zero tolerance misses (`0 / 800`)**: `max_bellman_residual <= 9.81e-9 <= 1e-8` across all 100 queries per grid; exact KKT policy readout lowers converged `51^2` closed-loop cost from `3.671` (`v4` radial clip) to **`3.534`**.
-- **Equal-Tolerance (`<= 1e-8`)**: `SchurPort` reduces `51^2` linear solves from `9.00` to `6.18` (`963.9 ms -> 743.2 ms`, **`1.30x` speedup**).
-- **Equal Control-Cost Margin (`<= +0.5%` Relative NI)**: `SchurPort-3Step` passes on both `35^2` (`+0.18%`, `p_NI = 0.0010`, **`2.08x` speedup**) and `51^2` (`+0.038%`, `p_NI = 2.0e-8`, **`2.18x` speedup**), whereas `Zero-3Step` (`+3.44%`) and `Geodesic-3Step` (`+2.23%`) fail.
+| Regime `[Grid DOF, Mean Ring Nodes]` | `Full-ExactRing + Subset-DP` | `UniformWidth Port + Subset-DP` | `DecisionGuided Port + Subset-DP` | Speedup (`Decision` vs `ExactSubDP`) | Mean Backsolves (`Exact` / `Unif` / `Dec`) |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| `Cheap-2D-25sq` `[625, ring ~ 8.0]` | **`14.3 ms`** | `212.8 ms` | `235.6 ms` | `0.061x` | `92.3` / `86.1` / **`82.1`** |
+| `Fine-2D-85sq` `[7,225, ring ~ 33.9]` | **`161.0 ms`** | `398.2 ms` | `458.9 ms` | `0.351x` | `389.8` / `340.3` / **`282.9`** (`-27.4%`) |
+| `3D-Spherical-25cubed` `[15,625, ring ~ 29.5]` | **`2,266.0 ms`** | `2,356.1 ms` | `2,430.8 ms` | `0.932x` | `320.1` / `301.4` / **`298.5`** |
+| **`Fine-3D-31cubed` `[29,791, ring ~ 89.1, eps=0.35]`** | `14,379.1 ms` | `14,412.7 ms` | **`14,201.2 ms`** | **`1.013x` (`-178 ms`, `p = 0.43`)** | `1024.1` / `972.6` / **`942.3`** (`-8.0%`) |
 
-#### Experiment 3: High-D Frozen-Label Physics-Mean Attribution & Scoped 4D Kinetic
-- **Frozen-Label Prior Attribution (`4D` & `6D`, Identical `(X_all, y_total_v)`)**:
-  - **4D**: `ZeroMean` (`7.715` train / `12.624` wall-corner shift) -> `EikonalCone` (`4.486` / `5.605`) -> **`HelmholtzBessel` (`4.310` / `5.177`)**, beating `EikonalCone` on train (`-0.176, p = 0.0155`), unseen in-dist (`-0.172, p = 0.0206`), and true wall/corner OOD shift (`-0.428, p = 0.0043`).
-  - **6D**: `ZeroMean` (`8.579` train / `13.075` wall-corner shift) -> `EikonalCone` (`4.598` / `5.519`) -> **`HelmholtzBessel` (`4.544` / `5.228`)**, statistically beating `EikonalCone` on unseen in-dist (`-0.127, p = 0.0074`) and true wall/corner OOD shift (`-0.291, p = 0.0049`), while standalone `Pure-Bessel` (`5.504`) outperforms `Pure-Eikonal` (`12.412`) by `-6.908` (`p = 2.9e-6`).
-- **Scoped 4D Kinetic Double-Integrator (`10` Maps, `6` Continuation Rounds)**:
-  - Independent floating-point path-vs-endpoint telescoping discrepancy `<= 6.39e-14`; `FK-AnisoKernel-InwardBnd-BrakingAnch` achieves **`92.5%` all-map (`93.1%` held-out) reach** (`11.78` total score vs `32.35` Pure-LQR and `20.00` Kinetic-PIMC), with `2.35%` execution action-cap fraction and explicit velocity-cap / specular-wall boundary RMS diagnostics reported.
+- **Scientific Takeaway**: On 2D grids (`25^2..85^2`), single-pass `Full-ExactRing + Subset-DP` is the fastest exact solver (`70.7..119.0 ms` across `m = 5..9` on `65^2`), because multi-round Python DP re-solves exceed the saved 2D LU backsolves. As operator factorization/backsolve cost and ring cardinality grow (`25^3 -> 31^3`), `DecisionGuided` port refinement eliminates that overhead and reaches wall-clock parity (`1.013x`) at `100%` certification (`0.0016` regret), while `Certified-BnB-FixedTour` prunes `79.5%` (`m=5`), `97.9%` (`m=7`), and **`99.74%`** (`m=8`, `40,320` permutations).
 
 ---
 
-## 4. Reproduction Commands
+### 3.3 Experiment 2: Non-LMDP Anisotropic Constrained KKT (`35^2` & `51^2`, `10` Maps Each)
+- **Zero tolerance misses (`0 / 800`)**: Discrete Bellman residual `<= 9.81e-9 <= 1e-8` across all queries; grid-value residual (`<= 9.81e-9`) vs. continuous bilinear central-gradient readout residual (`2.97` on `35^2`, `2.52` on `51^2`) explicitly separated.
+- **Equal-Tolerance (`51^2`, `<= 1e-8`)**: `Zero` `9.00` solves (`926.5 ms`) -> `Geodesic` `8.18` (`880.7 ms`, `1.05x`) -> `IsoFD` `6.18` (`747.9 ms`, `1.24x`) -> **`SchurPort` `6.18` (`725.1 ms`, `1.28x` vs `Zero`, `1.031x` incremental over `IsoFD`)**.
+- **Fixed-Budget Empirical Polish (`<= +0.5%` Linearized NI)**: `SchurPort-3Step` passes on both `35^2` (`1.98x` speedup, `p_NI = 0.0010` all-10 / `0.00059` held-5) and `51^2` (`2.02x` speedup, `p_NI = 1.39e-7` all-10 / `0.00042` held-5), matching `IsoFD-3Step` (`1.93x`, `p_NI = 2.90e-9`) while `Zero-3Step` (`p_NI >= 0.996`) and `Geodesic-3Step` (`p_NI >= 0.911`) fail.
+
+---
+
+### 3.4 Experiment 3: NNLS-Matched Sharp Cone Attribution, 6D Anchor-Budget Efficiency, & Scoped 4D Kinetic
+- **Frozen-Label Prior Attribution (Identical `(X_all, y_total_v)` Labels)**:
+  - **4D (`8` Maps: `4` Dev + `4` Held-Out)**: `ZeroMean` (`7.715` train / `8.658` unseen / `12.624` wall-corner shift) -> `MatchedSmoothCone` (`4.495` / `4.217` / `5.662`) -> `MatchedSharpCone` (`4.514` / `4.221` / `5.624`) -> **`HelmholtzBessel` (`4.310` / `4.054` / `5.177`)**, beating `MatchedSharpCone` on unseen (`-0.166, p = 0.0101`) and wall/corner shift (`-0.447, p = 0.00169`, winning `8/8` maps; held-out `n=4`: `-0.445, p = 0.083`).
+  - **6D (`8` Maps: `4` Dev + `4` Held-Out)**: `ZeroMean` (`8.579` / `8.805` / `13.075`) -> `MatchedSmoothCone` (`4.603` / `4.303` / `5.565`) -> `MatchedSharpCone` (`4.604` / `4.306` / `5.529`) -> **`HelmholtzBessel` (`4.544` / `4.180` / `5.228`)**, beating `MatchedSharpCone` on unseen (`-0.126, p = 0.0121`) and wall/corner shift (`-0.301, p = 0.00285` all-8 AND **`-0.321, p = 0.0489` held-out-4**).
+- **Locked Fresh 6D Anchor-Budget Efficiency (`8` Fresh Maps `9600..9607`, `N_anchors in {24, 54, 108}`)**:
+
+| Anchor Budget (`N_fk = 128` paths/anchor) | `ZeroMean` (Unseen / Wall-Shift) | `NNLS-Matched Sharp Cone` (Unseen / Wall-Shift) | `HelmholtzBessel` (Unseen / Wall-Shift) | Plan Time (`Bessel`) | Independent FK-Seed Grad RMS Diff (`Zero` / `Sharp` / `Bessel`) |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| **`N = 24` (`3,072` paths)** | `13.374` / `13.797` | `5.550` / `6.063` | **`4.659` / `5.233`** | **`181.9 ms`** | `0.352` / `0.204` / **`0.090`** |
+| `N = 54` (`6,912` paths) | `12.060` / `13.699` | `5.023` / `5.682` | `4.515` / `5.199` | `343.2 ms` | `0.311` / `0.177` / `0.092` |
+| `N = 108` (`13,824` paths) | `10.156` / `13.093` | `4.773` / `5.430` | **`4.514` / `5.089`** | `719.7 ms` | `0.277` / `0.149` / **`0.083`** |
+
+  - **`4.5x` Sample & Compute Reduction**: `24`-anchor `HelmholtzBessel` (`4.659` unseen / `5.233` OOD, `181.9 ms`) outperforms **`108`-anchor `NNLS-Matched Sharp Cone` (`4.773` / `5.430`, `723.7 ms`)** while cutting independent Monte-Carlo seed policy-gradient sensitivity by more than half.
+- **Scoped 4D Kinetic Double-Integrator (`10` Maps)**: Independent telescoping discrepancy `<= 6.39e-14`; `92.5%` reach (`93.1%` held-out) vs `70.6%` Pure-LQR & `28.3%` Kinetic-PIMC.
+
+---
+
+### 3.5 Experiment 4: Model-to-Execution Fidelity Decomposition & Continual Residual Reuse
+- **Exp 4A — 5-Layer Model-to-Execution Bridge (`72` Fresh Tours on `12` Locked Maps `9900..9911`)**:
+  - `0 / 72` bound violations; **`100%` root-action agreement** between `DecisionGuidedPort` and `ExactMacro` (`mean discrete model regret = 0.00011`).
+  - Mean `|ΔJ|` decomposition: `L1` port compression (`0.0068`) << `L2` discrete-grid to continuous GP SDE rollout (`0.7108` at `dt = 0.015`, dropping **43%** to `0.4080` at `dt = 0.005` and `0.4218` with upwind+segment-hit) < `L3` True-world vs GP-posterior model mismatch (`0.8259`, vs rollout MC SE `0.3364`).
+  - **Real Continuous Policy Regret**: `DecisionGuidedPort` (`9.6534`) matches `ExactMacro` (`9.6552`, difference **`-0.0018`, `95% CI [-0.0085, +0.0049], p = 0.560`**) while beating `Euclidean` (`10.3598`) by **`-0.7064` (`p = 0.00688`)**.
+- **Exp 4B — 4-Epoch Continual GP World Updates (`200` Tasks across `10` Maps `9950..9959`)**:
+  - `Blind-Stale-Cache`: `409.0 ms` cumulative, **`86 / 200` (`43.0%`) certified bound violations**, `0.3143` true-epoch regret.
+  - `Scratch-Rebuild`: `1,055.4 ms` cumulative, `0 / 200` violations, `0.00036` regret.
+  - **`Residual-Audited-Reuse`**: **`770.5 ms` cumulative (`1.370x` speedup over `Scratch-Rebuild`), `0 / 200` certified bound violations, `0.00052` regret**.
+
+---
+
+## 4. Single-Threaded Reproduction Commands
 
 ```bash
-# 1. Run all 10 independent audit & counterexample checks (~18s, single-threaded)
-OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 \
+# 1. Run all 15 independent audit & counterexample suites (~18s)
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 NUMEXPR_NUM_THREADS=1 \
   python3 green_response/verify_audit_closure.py
 
-# 2. Run Experiments 1, 2, and 3 sequentially
-OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 \
+# 2. Run Experiments 1, 2, 3, and 4 sequentially (single-threaded)
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 NUMEXPR_NUM_THREADS=1 \
   python3 green_response/exp1_3d_and_macro_tours.py
-OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 \
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 NUMEXPR_NUM_THREADS=1 \
   python3 green_response/exp2_nonlmdp_kkt.py
-OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1 \
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 NUMEXPR_NUM_THREADS=1 \
   python3 green_response/exp3_highd_and_kinetic.py
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 NUMEXPR_NUM_THREADS=1 \
+  python3 green_response/exp4_fidelity_and_continual.py
 ```

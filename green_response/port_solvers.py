@@ -174,11 +174,43 @@ def solve_anisotropic_constrained_kkt_action(
     return u_out
 
 
+def compute_hazard_diagonal_perturbation(
+    pts: np.ndarray,
+    grid_n: int,
+    spec: ProblemSpec,
+    local_hazards: Sequence[HazardFeature],
+    goal_mask: np.ndarray,
+    hazard_mode: str = "exact",
+) -> Tuple[np.ndarray, np.ndarray]:
+    """Shared local-hazard diagonal perturbation (`h_idx, dq_vals_over_lam`) supporting identical
+    `"exact"` and `"lumped"` operator definitions across `SchurPortPlanner` and `ClassicalFDSolver`.
+    """
+    if not local_hazards:
+        return np.empty(0, dtype=np.int64), np.empty(0, dtype=float)
+    dq = eval_hazard_features(pts, local_hazards)
+    lam = spec.lam
+    if hazard_mode == "exact":
+        keep = (dq > 0.05) & (~goal_mask)
+        h_idx = np.flatnonzero(keep)
+        return h_idx, dq[h_idx] / lam
+    if hazard_mode != "lumped":
+        raise ValueError(f"Unknown hazard_mode: {hazard_mode}")
+    d = spec.dim
+    stride = 3 if (d == 2 and grid_n >= 51) else 2
+    dq_nd = dq.reshape((grid_n,) * d)
+    sub = np.zeros((grid_n,) * d, dtype=bool)
+    sub[tuple(slice(stride // 2, None, stride) for _ in range(d))] = True
+    keep = (dq_nd.ravel() > 0.35) & sub.ravel() & (~goal_mask)
+    h_idx = np.flatnonzero(keep)
+    return h_idx, float(stride ** d) * dq_nd.ravel()[h_idx] / lam
+
+
 def make_consistent_value_and_policy_2d3d(
     xs: Tuple[np.ndarray, ...],
     V_grid: np.ndarray,
     spec: ProblemSpec,
     query: QueryTask,
+    readout_scheme: str = "central_grad",
 ) -> Tuple[Callable[[np.ndarray], np.ndarray], Callable[[np.ndarray], np.ndarray]]:
     d = spec.dim
     n = len(xs[0])
@@ -187,13 +219,35 @@ def make_consistent_value_and_policy_2d3d(
     R_vec = spec.R_vec
 
     grads = []
-    for ax in range(d):
-        g_ax = np.gradient(V_nd, h, axis=ax)
-        sl_lo = [slice(None)] * d; sl_lo[ax] = 0
-        sl_hi = [slice(None)] * d; sl_hi[ax] = -1
-        g_ax[tuple(sl_lo)] = 0.0
-        g_ax[tuple(sl_hi)] = 0.0
-        grads.append(g_ax)
+    if readout_scheme == "central_grad":
+        for ax in range(d):
+            g_ax = np.gradient(V_nd, h, axis=ax)
+            sl_lo = [slice(None)] * d; sl_lo[ax] = 0
+            sl_hi = [slice(None)] * d; sl_hi[ax] = -1
+            g_ax[tuple(sl_lo)] = 0.0
+            g_ax[tuple(sl_hi)] = 0.0
+            grads.append(g_ax)
+    elif readout_scheme == "upwind_min":
+        # One-sided descent gradient matching monotone upwind HJB stencil on interior/boundary nodes!
+        for ax in range(d):
+            gf = np.zeros_like(V_nd)
+            gb = np.zeros_like(V_nd)
+            sl_f_dst = [slice(None)] * d; sl_f_dst[ax] = slice(0, n - 1)
+            sl_f_src = [slice(None)] * d; sl_f_src[ax] = slice(1, n)
+            gf[tuple(sl_f_dst)] = (V_nd[tuple(sl_f_src)] - V_nd[tuple(sl_f_dst)]) / h
+            gb[tuple(sl_f_src)] = gf[tuple(sl_f_dst)]
+            # Pick one-sided slope giving steeper descent `min(-gf^2, -gb^2)` with valid inward direction:
+            # forward step `u_ax > 0` requires `gf < 0`; backward step `u_ax < 0` requires `gb > 0`!
+            gain_f = np.where(gf < 0.0, gf ** 2, 0.0)
+            gain_b = np.where(gb > 0.0, gb ** 2, 0.0)
+            g_ax = np.where(
+                (gain_f == 0.0) & (gain_b == 0.0),
+                0.0,
+                np.where(gain_f >= gain_b, gf, gb),
+            )
+            grads.append(g_ax)
+    else:
+        raise ValueError(f"Unknown readout_scheme: {readout_scheme}")
 
     val_interp = RegularGridInterpolator(xs, V_nd, bounds_error=False, fill_value=None)
     grad_interps = [RegularGridInterpolator(xs, g, bounds_error=False, fill_value=None) for g in grads]
@@ -239,6 +293,7 @@ class ClassicalFDSolver:
         min_goal_radius_override: Optional[float] = None,
         build_ilu: bool = False,
     ):
+        spec.validate_cole_hopf_lmdp("ClassicalFDSolver", allow_scalar_r=True)
         t0 = time.perf_counter()
         self.spec = spec
         self.grid_n = grid_n
@@ -367,11 +422,17 @@ class ClassicalFDSolver:
             "solve_ms": 1000.0 * (time.perf_counter() - t0),
         }
 
-    def solve_warm_ilu_krylov(self, query: QueryTask, rtol: float = 1e-12, atol: float = 1e-15) -> dict:
-        """Repaired Warm-Started Preconditioned BiCGSTAB (`GPT6 Audit Finding 4`):
+    def solve_warm_ilu_krylov(
+        self,
+        query: QueryTask,
+        rtol: float = 1e-12,
+        atol: float = 1e-15,
+        hazard_mode: str = "exact",
+    ) -> dict:
+        """Repaired Warm-Started Preconditioned BiCGSTAB (`GPT6 Audit Finding 4` & `85e2323 Sec 3.3`):
         Uses genuine non-constant warm-start `self._last_z_warm` scaled to goal boundary magnitude,
-        tight `rtol=1e-12, atol=1e-15` to resolve exponential `Z ~ 1e-14` dynamic range, and explicit
-        reason accounting if any fallback occurs.
+        tight `rtol=1e-12, atol=1e-15` to resolve exponential `Z ~ 1e-14` dynamic range, optional
+        matched `"lumped"` hazard diagonal perturbation, and explicit fallback accounting.
         """
         t0 = time.perf_counter()
         if self.ilu0 is None:
@@ -385,9 +446,15 @@ class ClassicalFDSolver:
         int_idx = np.flatnonzero(~goal_mask)
         goal_idx = np.flatnonzero(goal_mask)
 
-        dq = eval_hazard_features(self.pts, query.local_hazards) if query.local_hazards else np.zeros(len(self.pts))
-        dq_eff = np.where(dq > 0.05, dq / lam, 0.0)
-        A_csr = (self.A0 + sp.diags(dq_eff, format="csc")).tocsr() if np.any(dq_eff > 0.0) else self.A0_csr
+        h_idx, dq_vals = compute_hazard_diagonal_perturbation(
+            self.pts, self.grid_n, self.spec, query.local_hazards, goal_mask, hazard_mode=hazard_mode
+        )
+        if len(h_idx) > 0:
+            dq_full_diag = np.zeros(len(self.pts), dtype=float)
+            dq_full_diag[h_idx] = dq_vals
+            A_csr = (self.A0 + sp.diags(dq_full_diag, format="csc")).tocsr()
+        else:
+            A_csr = self.A0_csr
 
         A_II = A_csr[int_idx, :][:, int_idx]
         A_IG = A_csr[int_idx, :][:, goal_idx]
@@ -514,6 +581,7 @@ class SchurPortPlanner:
         hazard_mode: str = "lumped",
         min_goal_radius_override: Optional[float] = None,
     ):
+        spec.validate_cole_hopf_lmdp("SchurPortPlanner", allow_scalar_r=True)
         t0 = time.perf_counter()
         self.spec = spec
         self.grid_n = grid_n
@@ -524,7 +592,9 @@ class SchurPortPlanner:
         self.b_grid = None if b_fn is None else np.asarray(b_fn(self.pts), dtype=float)
 
         self.A0, _ = build_upwind_mmatrix_desirability_operator(spec, grid_n, self.q_base, self.b_grid)
-        self.lu0 = spla.splu(self.A0)
+        self.lu0: Optional[spla.SuperLU] = spla.splu(self.A0)
+        self._lu_is_current = True
+        self.lu_factorizations = 1
         self.op_factor_ms = 1000.0 * (time.perf_counter() - t0)
 
         t_port0 = time.perf_counter()
@@ -538,6 +608,7 @@ class SchurPortPlanner:
 
         self._wp_partitions: Dict[int, Dict[str, List[np.ndarray]]] = {}
         self._wp_tree: Dict[int, Dict[str, Tuple[List[np.ndarray], np.ndarray]]] = {}
+        self._wp_col_err_bounds: Dict[Tuple[int, str], np.ndarray] = {}
         self._wp_ring_op_cache: Dict[Tuple[int, str], dict] = {}
         self._node_col_cache: Dict[int, np.ndarray] = {}
         self._adhoc_cache: Dict[Tuple, Tuple[List[np.ndarray], np.ndarray]] = {}
@@ -659,6 +730,171 @@ class SchurPortPlanner:
         if init_lvl in ("EXACT", "L8", "L4"):
             tree["L1"] = (parts["L1"], np.sum(U_j, axis=1, keepdims=True))
 
+    def _ensure_current_lu(self) -> spla.SuperLU:
+        if not self._lu_is_current or self.lu0 is None:
+            t_f = time.perf_counter()
+            self.lu0 = spla.splu(self.A0)
+            self._lu_is_current = True
+            self.lu_factorizations += 1
+            self.op_factor_ms += 1000.0 * (time.perf_counter() - t_f)
+        return self.lu0
+
+    def marginal_backsolves_to_refine(self, wp_id: int, target_level: int | str) -> int:
+        """Exact number of NEW `A_0` LU backsolves required to upgrade `wp_id` from its current cached
+        tree state to `target_level`, accounting for nested subtraction and `_node_col_cache`.
+        """
+        tgt = canonicalize_level(target_level)
+        tree = self._wp_tree.get(wp_id, {})
+        if tgt in tree or tgt == "NONE":
+            return 0
+        parts = self._wp_partitions[wp_id]
+        cost = 0
+        if "L1" not in tree:
+            cost += 1
+        if tgt == "L1":
+            return cost
+        if "L4" not in tree and len(parts["L4"]) > 1:
+            cost += len(parts["L4"]) - 1
+        if tgt == "L4":
+            return cost
+        if "L8" not in tree:
+            g4 = parts["L4"]
+            fine8 = parts["L8"]
+            cost += sum(1 for p_i in range(len(g4)) if 2 * p_i + 1 < len(fine8))
+        if tgt == "L8":
+            return cost
+        if "EXACT" not in tree:
+            s8 = parts["L8"]
+            for sl in s8:
+                for nid in sl[:-1]:
+                    if int(nid) not in self._node_col_cache:
+                        cost += 1
+        return cost
+
+    def refresh_waypoint_under_current_operator(self, wp_id: int, target_level: Optional[str] = None) -> int:
+        """Evicts stale/approximate columns for `wp_id` (e.g. after continual world-model drift) and
+        recomputes exact columns under the current `A0` up to `target_level`. Returns backsolves used.
+        """
+        lvl = self.wp_levels.get(wp_id, "NONE") if target_level is None else canonicalize_level(target_level)
+        if lvl == "NONE":
+            lvl = self.default_lazy_level
+        for lv_k in list(self._wp_tree.get(wp_id, {}).keys()):
+            self._wp_col_err_bounds.pop((wp_id, lv_k), None)
+            self._wp_ring_op_cache.pop((wp_id, lv_k), None)
+        self._wp_tree.pop(wp_id, None)
+        for nid in self.wp_rings[wp_id]:
+            self._node_col_cache.pop(int(nid), None)
+        self.wp_levels[wp_id] = "NONE"
+        bs0 = self.total_lu_backsolves
+        self.ensure_wp_level(wp_id, lvl)
+        return self.total_lu_backsolves - bs0
+
+    def update_world_with_residual_audit(
+        self,
+        new_q_fn: Callable[[np.ndarray], np.ndarray],
+        new_b_fn: Optional[Callable[[np.ndarray], np.ndarray]],
+        mode: str = "selective_residual",
+        max_allowable_col_err: Optional[float] = None,
+    ) -> dict:
+        """Continual Environment Epoch Transition (`GPT6 85e2323 Stage D`):
+          - `"blind_stale_cache"`: keeps old `A0`, `lu0`, and columns WITHOUT residual accounting
+            (unverified cache baseline);
+          - `"scratch_rebuild"`: immediately factors `splu(A_new)` and discards all cached port trees;
+          - `"selective_residual"`: updates `A0 <- A_new`, avoids `splu(A_new)` unless needed, and uses
+            the exact M-matrix row-sum comparison theorem (`A_new 1 = q_new/lam >= (q_min/lam) 1` =>
+            `|U_new - U_old|_inf <= (lam / q_min) ||B - A_new U_old||_inf`) to attach rigorous residual
+            error bounds `_wp_col_err_bounds[(j, lv)]` to every retained column!
+        """
+        t0 = time.perf_counter()
+        if mode == "blind_stale_cache":
+            return {
+                "mode": mode,
+                "update_ms": 1000.0 * (time.perf_counter() - t0),
+                "lu_factorized": False,
+                "waypoints_retained": sum(1 for j in range(len(self.waypoints)) if self.wp_levels.get(j, "NONE") != "NONE"),
+                "waypoints_invalidated": 0,
+                "max_mmatrix_col_err_bound": 0.0,
+            }
+
+        q_new = self.spec.q0 + np.asarray(new_q_fn(self.pts), dtype=float)
+        b_new = None if new_b_fn is None else np.asarray(new_b_fn(self.pts), dtype=float)
+        A_new, _ = build_upwind_mmatrix_desirability_operator(self.spec, self.grid_n, q_new, b_new)
+        self.q_base = q_new
+        self.b_grid = b_new
+        self.A0 = A_new
+        self._wp_ring_op_cache.clear()
+        self._adhoc_cache.clear()
+        self._node_col_cache.clear()
+
+        if mode == "scratch_rebuild":
+            self._lu_is_current = False
+            self._ensure_current_lu()
+            self._wp_tree.clear()
+            self._wp_col_err_bounds.clear()
+            for j in range(len(self.waypoints)):
+                self.wp_levels[j] = "NONE"
+            return {
+                "mode": mode,
+                "update_ms": 1000.0 * (time.perf_counter() - t0),
+                "lu_factorized": True,
+                "waypoints_retained": 0,
+                "waypoints_invalidated": len(self.waypoints),
+                "max_mmatrix_col_err_bound": 0.0,
+            }
+
+        if mode != "selective_residual":
+            raise ValueError(f"Unknown continual update mode: {mode}")
+
+        self._lu_is_current = False
+        lam = self.spec.lam
+        q_min = float(np.min(q_new))
+        inv_norm_ub = lam / max(q_min, 1e-12)
+        A_csr = A_new.tocsr()
+
+        retained = 0
+        invalidated = 0
+        max_err_seen = 0.0
+
+        for j in range(len(self.waypoints)):
+            tree = self._wp_tree.get(j)
+            if not tree:
+                continue
+            ring_j = self.wp_rings[j]
+            drop_wp = False
+            for lv_k, (sec_lists, U_old) in list(tree.items()):
+                RHS = np.zeros((len(self.pts), len(sec_lists)), dtype=float)
+                for c_i, sl in enumerate(sec_lists):
+                    RHS[sl, c_i] = 1.0
+                R_mat = RHS - (A_csr @ U_old)
+                col_res_inf = np.max(np.abs(R_mat), axis=0)
+                err_ub = inv_norm_ub * col_res_inf
+                max_err_seen = max(max_err_seen, float(np.max(err_ub)) if len(err_ub) else 0.0)
+                # Check if residual bound exceeds sector diagonal positivity margin `0.45 * min_{y in S_k} U_old[y, k]`
+                min_sec_diag = np.array([float(np.min(U_old[sl, c_i])) for c_i, sl in enumerate(sec_lists)])
+                if np.any(err_ub >= 0.45 * min_sec_diag) or (
+                    max_allowable_col_err is not None and float(np.sum(err_ub)) > max_allowable_col_err
+                ):
+                    drop_wp = True
+                    break
+                self._wp_col_err_bounds[(j, lv_k)] = err_ub
+            if drop_wp:
+                for lv_k in list(tree.keys()):
+                    self._wp_col_err_bounds.pop((j, lv_k), None)
+                self._wp_tree.pop(j, None)
+                self.wp_levels[j] = "NONE"
+                invalidated += 1
+            else:
+                retained += 1
+
+        return {
+            "mode": mode,
+            "update_ms": 1000.0 * (time.perf_counter() - t0),
+            "lu_factorized": bool(self._lu_is_current),
+            "waypoints_retained": retained,
+            "waypoints_invalidated": invalidated,
+            "max_mmatrix_col_err_bound": max_err_seen,
+        }
+
     def ensure_wp_level(self, wp_id: int, target_level: int | str) -> Tuple[List[np.ndarray], np.ndarray]:
         """Ensures waypoint `wp_id` has raw-sum sector columns `U_raw` at `target_level` (`L1`, `L4`,
         `L8`, or `EXACT`) via conservation-preserving group subtraction (`0` wasted LU backsolves!).
@@ -675,11 +911,21 @@ class SchurPortPlanner:
                 self.wp_levels[wp_id] = tgt
             return tree[tgt]
 
+        # If refining beyond stale residual-bounded levels after an environment update, ensure consistency
+        # by dropping stale coarser levels of `wp_id` before solving under current `lu0`!
+        if not self._lu_is_current and any((wp_id, lv_k) in self._wp_col_err_bounds for lv_k in tree):
+            for lv_k in list(tree.keys()):
+                self._wp_col_err_bounds.pop((wp_id, lv_k), None)
+                self._wp_ring_op_cache.pop((wp_id, lv_k), None)
+            tree.clear()
+
+        lu_cur = self._ensure_current_lu()
+
         # Level L1
         if "L1" not in tree:
             col = np.zeros(len(self.pts), dtype=float)
             col[ring_j] = 1.0
-            u1 = self.lu0.solve(col)[:, None]
+            u1 = lu_cur.solve(col)[:, None]
             self.total_lu_backsolves += 1
             tree["L1"] = (parts["L1"], u1)
 
@@ -697,7 +943,7 @@ class SchurPortPlanner:
                 RHS = np.zeros((len(self.pts), len(g4) - 1), dtype=float)
                 for k in range(len(g4) - 1):
                     RHS[g4[k], k] = 1.0
-                U_part = self.lu0.solve(RHS)
+                U_part = lu_cur.solve(RHS)
                 self.total_lu_backsolves += (len(g4) - 1)
                 u_last = tree["L1"][1] - np.sum(U_part, axis=1, keepdims=True)
                 tree["L4"] = (g4, np.hstack([U_part, u_last]))
@@ -723,7 +969,7 @@ class SchurPortPlanner:
                     pair_map.append((p_i, True, len(rhs_list) - 1))
                 else:
                     pair_map.append((p_i, False, -1))
-            U_half = self.lu0.solve(np.column_stack(rhs_list)) if rhs_list else np.zeros((len(self.pts), 0))
+            U_half = lu_cur.solve(np.column_stack(rhs_list)) if rhs_list else np.zeros((len(self.pts), 0))
             self.total_lu_backsolves += len(rhs_list)
             cols8 = []
             for p_i, was_split, r_pos in pair_map:
@@ -746,7 +992,6 @@ class SchurPortPlanner:
             rhs_nodes = []
             sec_meta = []
             for s_k, sl in enumerate(s8):
-                st = len(rhs_nodes)
                 for node_i in sl[:-1]:
                     nid = int(node_i)
                     if nid not in self._node_col_cache:
@@ -755,7 +1000,7 @@ class SchurPortPlanner:
                         rhs_nodes.append((nid, col))
                 sec_meta.append((s_k, sl))
             if rhs_nodes:
-                U_sub = self.lu0.solve(np.column_stack([c for _, c in rhs_nodes]))
+                U_sub = lu_cur.solve(np.column_stack([c for _, c in rhs_nodes]))
                 self.total_lu_backsolves += len(rhs_nodes)
                 for k_col, (nid, _) in enumerate(rhs_nodes):
                     self._node_col_cache[nid] = U_sub[:, k_col]
@@ -777,32 +1022,20 @@ class SchurPortPlanner:
     def _get_node_cols(self, node_indices: np.ndarray) -> np.ndarray:
         missing = [int(i) for i in node_indices if int(i) not in self._node_col_cache]
         if missing:
+            lu_cur = self._ensure_current_lu()
             RHS = np.zeros((len(self.pts), len(missing)), dtype=float)
             for k, idx in enumerate(missing):
                 RHS[idx, k] = 1.0
-            sol = self.lu0.solve(RHS)
+            sol = lu_cur.solve(RHS)
             self.total_lu_backsolves += len(missing)
             for k, idx in enumerate(missing):
                 self._node_col_cache[idx] = sol[:, k]
         return np.column_stack([self._node_col_cache[int(i)] for i in node_indices])
 
     def _hazard_indices(self, local_hazards: Sequence[HazardFeature], goal_mask: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
-        if not local_hazards:
-            return np.empty(0, dtype=np.int64), np.empty(0, dtype=float)
-        dq = eval_hazard_features(self.pts, local_hazards)
-        if self.hazard_mode == "exact":
-            keep = (dq > 0.05) & (~goal_mask)
-            h_idx = np.flatnonzero(keep)
-            return h_idx, dq[h_idx] / self.spec.lam
-        d = self.spec.dim
-        n = self.grid_n
-        stride = 3 if (d == 2 and n >= 51) else 2
-        dq_nd = dq.reshape((n,) * d)
-        sub = np.zeros((n,) * d, dtype=bool)
-        sub[tuple(slice(stride // 2, None, stride) for _ in range(d))] = True
-        keep = (dq_nd.ravel() > 0.35) & sub.ravel() & (~goal_mask)
-        h_idx = np.flatnonzero(keep)
-        return h_idx, float(stride ** d) * dq_nd.ravel()[h_idx] / self.spec.lam
+        return compute_hazard_diagonal_perturbation(
+            self.pts, self.grid_n, self.spec, local_hazards, goal_mask, hazard_mode=self.hazard_mode
+        )
 
     def _solve_at_level(
         self,
@@ -812,16 +1045,23 @@ class SchurPortPlanner:
         h_idx: np.ndarray,
         dq_vals: np.ndarray,
         level_override: Optional[str] = None,
-    ) -> Tuple[np.ndarray, np.ndarray, int, float, float]:
+    ) -> Tuple[np.ndarray, np.ndarray, int, int, float, float, str, str]:
+        """Repaired Single/Multi-Goal Port & ExactRing Dispatch (`GPT6 85e2323 Audit Finding 2.1`):
+        Ensures `EXACT` resolution (`initial_sectors_per_wp='EXACT'` OR `level_override='EXACT'`)
+        is honored on ALL branches (`disjoint`, `nearby/overlapping union`, and `adhoc`), never
+        silently compressing nearby goals to `L8`!
+        """
         lam = self.spec.lam
         ring_all = self._extract_graph_boundary_ring(goal_mask)
+        req_level = self.default_lazy_level if level_override is None else canonicalize_level(level_override)
 
-        if level_override == "EXACT":
+        if req_level == "EXACT":
             U_raw = self._get_node_cols(ring_all)
             sec_lists = [np.array([int(i)], dtype=np.int64) for i in ring_all]
             scales = np.ones(len(ring_all), dtype=float)
             U_g = U_raw
             rhs_g = np.exp(-phi_union[ring_all] / lam)
+            eff_level = "EXACT"
         else:
             centers = [np.asarray(g.center, dtype=float) for g in eff_goals]
             disjoint = all(
@@ -833,6 +1073,7 @@ class SchurPortPlanner:
                 U_cols = []
                 rhs_g_list = []
                 scales_list = []
+                used_lvls = []
                 for g in eff_goals:
                     gc = np.asarray(g.center, dtype=float)
                     wp_match = next(
@@ -844,23 +1085,25 @@ class SchurPortPlanner:
                         cur_l = self.wp_levels.get(wp_match, "NONE")
                         if cur_l == "NONE":
                             cur_l = self.default_lazy_level
-                        use_l = cur_l if level_override is None else level_override
+                        use_l = cur_l if level_override is None else req_level
                         s_ls, U_w_raw = self.ensure_wp_level(wp_match, use_l)
                     else:
                         m_g, _ = eval_goal_union(self.pts, (g,))
                         r_g = self._extract_graph_boundary_ring(m_g)
-                        use_l = "L4" if level_override is None else level_override
+                        use_l = req_level
                         key = ("adhoc", tuple(np.round(gc, 5)), round(g.radius, 5), use_l)
                         if key not in self._adhoc_cache:
+                            lu_cur = self._ensure_current_lu()
                             parts_g = self._build_nested_partitions(r_g, gc)
                             s_ls = parts_g[use_l]
                             RHS = np.zeros((len(self.pts), len(s_ls)), dtype=float)
                             for k, sl in enumerate(s_ls):
                                 RHS[sl, k] = 1.0
-                            U_w_raw = self.lu0.solve(RHS)
+                            U_w_raw = lu_cur.solve(RHS)
                             self.total_lu_backsolves += len(s_ls)
                             self._adhoc_cache[key] = (s_ls, U_w_raw)
                         s_ls, U_w_raw = self._adhoc_cache[key]
+                    used_lvls.append(use_l)
                     w_val = np.exp(-g.phi / lam)
                     sc_w = np.array([1.0 / np.sqrt(float(len(sl))) for sl in s_ls])
                     U_cols.append(U_w_raw * sc_w[None, :])
@@ -871,25 +1114,28 @@ class SchurPortPlanner:
                 U_g = np.hstack(U_cols)
                 rhs_g = np.asarray(rhs_g_list, dtype=float)
                 scales = np.asarray(scales_list, dtype=float)
+                eff_level = used_lvls[0] if len(set(used_lvls)) == 1 else "+".join(sorted(set(used_lvls)))
             else:
                 phi_r = np.round(phi_union[ring_all], 9)
                 center_u = np.mean(self.pts[ring_all], axis=0)
-                use_l = "L8" if level_override is None else level_override
+                use_l = "L8" if (level_override is None and LEVEL_RANK[req_level] < LEVEL_RANK["L8"]) else req_level
                 sec_lists = []
                 for pv in sorted(np.unique(phi_r).tolist()):
                     sub_ring = ring_all[phi_r == pv]
                     sec_lists.extend(self._build_nested_partitions(sub_ring, center_u)[use_l])
                 key = ("union_ov", tuple(int(i) for i in ring_all), tuple(float(phi_r[k]) for k in range(len(ring_all))), use_l)
                 if key not in self._adhoc_cache:
+                    lu_cur = self._ensure_current_lu()
                     RHS = np.zeros((len(self.pts), len(sec_lists)), dtype=float)
                     for k, sl in enumerate(sec_lists):
                         RHS[sl, k] = 1.0 / np.sqrt(float(len(sl)))
-                    U_g = self.lu0.solve(RHS)
+                    U_g = lu_cur.solve(RHS)
                     self.total_lu_backsolves += len(sec_lists)
                     self._adhoc_cache[key] = (sec_lists, U_g)
                 sec_lists, U_g = self._adhoc_cache[key]
                 scales = np.array([1.0 / np.sqrt(float(len(sl))) for sl in sec_lists], dtype=float)
                 rhs_g = np.array([np.exp(-phi_union[sl[0]] / lam) * np.sqrt(float(len(sl))) for sl in sec_lists], dtype=float)
+                eff_level = f"union_{use_l}"
 
         rg = U_g.shape[1]
         mh = len(h_idx)
@@ -912,9 +1158,14 @@ class SchurPortPlanner:
         gamma_hi = float(np.max(ratios))
 
         raw_Z[goal_mask] = np.exp(-phi_union[goal_mask] / lam)
-        return raw_Z, ring_all, rg + mh, gamma_lo, gamma_hi
+        return raw_Z, ring_all, rg, mh, gamma_lo, gamma_hi, req_level, eff_level
 
-    def solve_query(self, query: QueryTask, max_ring_value_err_tol: Optional[float] = None) -> dict:
+    def solve_query(
+        self,
+        query: QueryTask,
+        max_ring_value_err_tol: Optional[float] = None,
+        readout_scheme: str = "central_grad",
+    ) -> dict:
         t0 = time.perf_counter()
         lam = self.spec.lam
         eff_min_r = (0.75 * self.h * np.sqrt(self.spec.dim)) if self.min_goal_r is None else self.min_goal_r
@@ -922,9 +1173,10 @@ class SchurPortPlanner:
         goal_mask, phi_union = eval_goal_union(self.pts, eff_goals)
         h_idx, dq_vals = self._hazard_indices(query.local_hazards, goal_mask)
 
-        raw_Z, ring_all, r_dim, gamma_lo, gamma_hi = self._solve_at_level(
+        raw_Z, ring_all, rg_ports, mh_haz, gamma_lo, gamma_hi, req_lvl, eff_lvl = self._solve_at_level(
             eff_goals, goal_mask, phi_union, h_idx, dq_vals
         )
+        exact_fallback_used = False
 
         def _needs_refine(rz: np.ndarray, glo: float, ghi: float) -> bool:
             if np.min(rz) <= 0.0 or glo <= 0.0:
@@ -935,15 +1187,16 @@ class SchurPortPlanner:
                     return True
             return False
 
-        if _needs_refine(raw_Z, gamma_lo, gamma_hi):
+        if eff_lvl != "EXACT" and _needs_refine(raw_Z, gamma_lo, gamma_hi):
             self.positivity_or_tol_refinements += 1
-            raw_Z, ring_all, r_dim, gamma_lo, gamma_hi = self._solve_at_level(
+            raw_Z, ring_all, rg_ports, mh_haz, gamma_lo, gamma_hi, _, eff_lvl = self._solve_at_level(
                 eff_goals, goal_mask, phi_union, h_idx, dq_vals, level_override="L8"
             )
             if _needs_refine(raw_Z, gamma_lo, gamma_hi):
-                raw_Z, ring_all, r_dim, gamma_lo, gamma_hi = self._solve_at_level(
+                raw_Z, ring_all, rg_ports, mh_haz, gamma_lo, gamma_hi, _, eff_lvl = self._solve_at_level(
                     eff_goals, goal_mask, phi_union, h_idx, dq_vals, level_override="EXACT"
                 )
+                exact_fallback_used = True
 
         raw_min_Z = float(np.min(raw_Z))
         neg_count = int(np.sum(raw_Z <= 0.0))
@@ -953,10 +1206,6 @@ class SchurPortPlanner:
         V_grid = -lam * np.log(raw_Z)
         V_grid[goal_mask] = phi_union[goal_mask]
 
-        # REPAIRED SIGN (`GPT6 Audit Finding 1`):
-        # `raw_Z / gamma_hi <= Z_exact <= raw_Z / gamma_lo`  ==>
-        # `V_grid + lam * log(gamma_lo) <= V_exact <= V_grid + lam * log(gamma_hi)`!
-        # Plus tiny IEEE-754 safety margin `1e-13 * (1 + |shift|)` for exact-ring rounding.
         v_lo_shift = float(lam * np.log(gamma_lo) - 1e-13 * (1.0 + abs(lam * np.log(gamma_lo))))
         v_hi_shift = float(lam * np.log(gamma_hi) + 1e-13 * (1.0 + abs(lam * np.log(gamma_hi))))
         if v_lo_shift > v_hi_shift:
@@ -968,7 +1217,9 @@ class SchurPortPlanner:
             else "lumped_hazard_discrete_operator"
         )
 
-        val_fn, pol_fn = make_consistent_value_and_policy_2d3d(self.xs, V_grid, self.spec, query)
+        val_fn, pol_fn = make_consistent_value_and_policy_2d3d(
+            self.xs, V_grid, self.spec, query, readout_scheme=readout_scheme
+        )
         return {
             "raw_Z": raw_Z,
             "raw_min_Z": raw_min_Z,
@@ -979,10 +1230,17 @@ class SchurPortPlanner:
             "ring_value_upper_shift": v_hi_shift,
             "max_ring_value_bound_halfwidth": 0.5 * (v_hi_shift - v_lo_shift),
             "value_bound_scope": bound_scope,
+            "requested_level": req_lvl,
+            "effective_level": eff_lvl,
+            "exact_fallback_used": exact_fallback_used,
+            "ring_nodes": int(len(ring_all)),
+            "ports_used": int(rg_ports),
+            "hazard_rank": int(mh_haz),
+            "num_ports": int(rg_ports + mh_haz),
+            "readout_scheme": readout_scheme,
             "value_fn": val_fn,
             "policy": pol_fn,
             "solve_ms": 1000.0 * (time.perf_counter() - t0),
-            "num_ports": r_dim,
         }
 
     def get_wp_ring_operator(self, dst_wp: int) -> dict:
@@ -1003,7 +1261,9 @@ class SchurPortPlanner:
             pos_in_ring = {int(nid): k for k, nid in enumerate(ring_d)}
             sec_locs = [[pos_in_ring[int(nid)] for nid in sl] for sl in sec_lists]
             sec_denoms = [U_ring[loc, s_k:s_k + 1] for s_k, loc in enumerate(sec_locs)]
+            col_err = self._wp_col_err_bounds.get(key, np.zeros(U_raw.shape[1], dtype=float))
             self._wp_ring_op_cache[key] = {
+                "wp_id": dst_wp,
                 "level": cur_lvl,
                 "ring_d": ring_d,
                 "U_raw": U_raw,
@@ -1012,6 +1272,8 @@ class SchurPortPlanner:
                 "sec_locs": sec_locs,
                 "sec_denoms": sec_denoms,
                 "u1_full": np.sum(U_raw, axis=1),
+                "col_err": col_err,
+                "u1_err_sum": float(np.sum(col_err)),
             }
         return self._wp_ring_op_cache[key]
 
@@ -1029,44 +1291,71 @@ class SchurPortPlanner:
         F_hi: np.ndarray,
         eval_first_only: bool = False,
     ) -> Tuple[np.ndarray, np.ndarray, bool]:
-        """Batched Sector-Local M-Matrix Barrier Comparison Theorem (verified `0` violations by GPT6!).
-        Returns `(Ext_lo, Ext_hi, valid_intervals)` WITHOUT silent clamping!
+        """Batched Sector-Local M-Matrix Barrier Comparison Theorem with Separate Lower/Upper Least-Squares
+        Projections (`C_lo = P_pinv @ F_lo`, `C_hi = P_pinv @ F_hi`), eliminating multi-leg midpoint width
+        compounding while preserving 100% rigorous M-matrix super/sub-harmonicity (`0` midpoint repairs!).
         """
-        if np.any(F_lo > F_hi + 1e-9):
+        if not (np.all(np.isfinite(F_lo)) and np.all(np.isfinite(F_hi))) or np.any(F_lo > F_hi):
             return F_lo, F_hi, False
 
-        F_mid = 0.5 * (F_lo + F_hi)
-        C = prep["P_pinv"] @ F_mid
-        U_hat_ring = prep["U_ring"] @ C
-        eps_lo = np.maximum(0.0, U_hat_ring - F_lo) + 1e-13 * (1.0 + np.abs(F_lo))
-        eps_hi = np.maximum(0.0, F_hi - U_hat_ring) + 1e-13 * (1.0 + np.abs(F_hi))
-
+        P_pinv = prep["P_pinv"]
         U_ring = prep["U_ring"]
-        r_d = C.shape[0]
-        K_b = C.shape[1]
-        beta_lo = np.empty((r_d, K_b), dtype=float)
-        beta_hi = np.empty((r_d, K_b), dtype=float)
-        for s_k, (loc, denom) in enumerate(zip(prep["sec_locs"], prep["sec_denoms"])):
-            beta_lo[s_k, :] = np.max(eps_lo[loc, :] / denom, axis=0)
-            beta_hi[s_k, :] = np.max(eps_hi[loc, :] / denom, axis=0)
+        C_lo = P_pinv @ F_lo
+        C_hi = P_pinv @ F_hi
+        U_hat_lo = U_ring @ C_lo
+        U_hat_hi = U_ring @ C_hi
 
-        if r_d > 1:
-            for _gs in range(2):
-                for s_k, (loc, denom) in enumerate(zip(prep["sec_locs"], prep["sec_denoms"])):
-                    other_lo = (U_ring[loc, :] @ beta_lo) - denom * beta_lo[s_k:s_k + 1, :]
-                    other_hi = (U_ring[loc, :] @ beta_hi) - denom * beta_hi[s_k:s_k + 1, :]
-                    beta_lo[s_k, :] = np.maximum(0.0, np.max((eps_lo[loc, :] - other_lo) / denom, axis=0))
-                    beta_hi[s_k, :] = np.maximum(0.0, np.max((eps_hi[loc, :] - other_hi) / denom, axis=0))
-            def_lo = np.maximum(0.0, eps_lo - (U_ring @ beta_lo))
-            def_hi = np.maximum(0.0, eps_hi - (U_ring @ beta_hi))
+        col_err = prep.get("col_err")
+        has_col_err = col_err is not None and bool(np.any(col_err > 0.0))
+        err_pad_lo = (col_err @ np.abs(C_lo))[None, :] if has_col_err else 0.0
+        err_pad_hi = (col_err @ np.abs(C_hi))[None, :] if has_col_err else 0.0
+
+        eps_lo = np.maximum(0.0, U_hat_lo + err_pad_lo - F_lo) + 1e-13 * (1.0 + np.abs(F_lo))
+        eps_hi = np.maximum(0.0, F_hi - (U_hat_hi - err_pad_hi)) + 1e-13 * (1.0 + np.abs(F_hi))
+
+        r_d = C_lo.shape[0]
+        K_b = C_lo.shape[1]
+
+        if prep["level"] == "EXACT" and r_d == U_ring.shape[0] and not has_col_err:
+            # At EXACT (`P_pinv = inv(U_ring)`), `U_hat_lo == F_lo` and `U_hat_hi == F_hi` to ~1e-15,
+            # so `eps_lo, eps_hi ~ 1e-13` and one diagonal barrier step is both exact and 10x faster!
+            diag_d = np.diag(U_ring)[:, None]
+            if np.any(diag_d <= 0.0):
+                return F_lo, F_hi, False
+            beta_lo = eps_lo / diag_d
+            beta_hi = eps_hi / diag_d
+        else:
+            beta_lo = np.empty((r_d, K_b), dtype=float)
+            beta_hi = np.empty((r_d, K_b), dtype=float)
             for s_k, (loc, denom) in enumerate(zip(prep["sec_locs"], prep["sec_denoms"])):
-                beta_lo[s_k, :] += np.max(def_lo[loc, :] / denom, axis=0)
-                beta_hi[s_k, :] += np.max(def_hi[loc, :] / denom, axis=0)
+                d_eff = denom - float(col_err[s_k]) if has_col_err else denom
+                if np.any(d_eff <= 1e-14):
+                    return F_lo, F_hi, False
+                beta_lo[s_k, :] = np.max(eps_lo[loc, :] / d_eff, axis=0)
+                beta_hi[s_k, :] = np.max(eps_hi[loc, :] / d_eff, axis=0)
+
+            if r_d > 1 and not has_col_err:
+                for _gs in range(2):
+                    for s_k, (loc, denom) in enumerate(zip(prep["sec_locs"], prep["sec_denoms"])):
+                        other_lo = (U_ring[loc, :] @ beta_lo) - denom * beta_lo[s_k:s_k + 1, :]
+                        other_hi = (U_ring[loc, :] @ beta_hi) - denom * beta_hi[s_k:s_k + 1, :]
+                        beta_lo[s_k, :] = np.maximum(0.0, np.max((eps_lo[loc, :] - other_lo) / denom, axis=0))
+                        beta_hi[s_k, :] = np.maximum(0.0, np.max((eps_hi[loc, :] - other_hi) / denom, axis=0))
+                def_lo = np.maximum(0.0, eps_lo - (U_ring @ beta_lo))
+                def_hi = np.maximum(0.0, eps_hi - (U_ring @ beta_hi))
+                for s_k, (loc, denom) in enumerate(zip(prep["sec_locs"], prep["sec_denoms"])):
+                    beta_lo[s_k, :] += np.max(def_lo[loc, :] / denom, axis=0)
+                    beta_hi[s_k, :] += np.max(def_hi[loc, :] / denom, axis=0)
 
         U_ev = prep["U_eval"][0:1, :] if eval_first_only else prep["U_eval"]
-        Ext_lo = U_ev @ (C - beta_lo)
-        Ext_hi = U_ev @ (C + beta_hi)
-        valid = bool(np.all(Ext_lo <= Ext_hi + 1e-12))
+        v_minus = C_lo - beta_lo
+        v_plus = C_hi + beta_hi
+        Ext_lo = U_ev @ v_minus
+        Ext_hi = U_ev @ v_plus
+        if has_col_err:
+            Ext_lo = Ext_lo - (col_err @ np.abs(v_minus))[None, :]
+            Ext_hi = Ext_hi + (col_err @ np.abs(v_plus))[None, :]
+        valid = bool(np.all(np.isfinite(Ext_lo)) and np.all(np.isfinite(Ext_hi)) and np.all(Ext_lo <= Ext_hi))
         return Ext_lo, Ext_hi, valid
 
 
@@ -1137,6 +1426,43 @@ def compute_monotone_anisotropic_bellman_residual(
     return float(np.max(np.abs(res))), best_u
 
 
+def compute_discrete_fixed_policy_residual_2d(
+    V: np.ndarray,
+    u_grid: np.ndarray,
+    A_B: sp.csc_matrix,
+    q_tot: np.ndarray,
+    is_goal: np.ndarray,
+    goal_phi_full: np.ndarray,
+    grid_n: int,
+    h: float,
+    R_vec: np.ndarray,
+) -> float:
+    """Evaluates the exact discrete upwind generator residual `||A_{pi} V - r_{pi}||_inf` of any
+    deployed grid control `u_grid` (`GPT6 85e2323 Audit Sec 6.2`), cleanly distinguishing grid-optimal
+    Bellman residual from central-difference readout residual!
+    """
+    N = grid_n * grid_n
+    idx_all = np.arange(N, dtype=np.int64)
+    ix = idx_all // grid_n
+    iy = idx_all % grid_n
+    ux_p = np.maximum(u_grid[:, 0], 0.0) / h
+    ux_m = np.maximum(-u_grid[:, 0], 0.0) / h
+    uy_p = np.maximum(u_grid[:, 1], 0.0) / h
+    uy_m = np.maximum(-u_grid[:, 1], 0.0) / h
+    hp_x = ix < (grid_n - 1); hm_x = ix > 0
+    hp_y = iy < (grid_n - 1); hm_y = iy > 0
+    diag_u = (
+        np.where(hp_x, ux_p, 0.0) + np.where(hm_x, ux_m, 0.0)
+        + np.where(hp_y, uy_p, 0.0) + np.where(hm_y, uy_m, 0.0)
+    )
+    rows = [idx_all, idx_all[hp_x], idx_all[hm_x], idx_all[hp_y], idx_all[hm_y]]
+    cols = [idx_all, idx_all[hp_x] + grid_n, idx_all[hm_x] - grid_n, idx_all[hp_y] + 1, idx_all[hm_y] - 1]
+    vals = [diag_u, -ux_p[hp_x], -ux_m[hm_x], -uy_p[hp_y], -uy_m[hm_y]]
+    A_ctrl = sp.coo_matrix((np.concatenate(vals), (np.concatenate(rows), np.concatenate(cols))), shape=(N, N)).tocsc()
+    r_pi = q_tot + 0.5 * (R_vec[0] * u_grid[:, 0] ** 2 + R_vec[1] * u_grid[:, 1] ** 2)
+    res = (A_B + A_ctrl) @ V - r_pi
+    res[is_goal] = V[is_goal] - goal_phi_full[is_goal]
+    return float(np.max(np.abs(res)))
 def solve_monotone_anisotropic_constrained_hjb_2d(
     spec: ProblemSpec,
     grid_n: int,
@@ -1146,6 +1472,7 @@ def solve_monotone_anisotropic_constrained_hjb_2d(
     V_init: Optional[np.ndarray] = None,
     max_iters: int = 25,
     tol_bellman: Optional[float] = 1e-8,
+    readout_scheme: str = "central_grad",
 ) -> dict:
     """Monotone Upwind Howard Policy-Iteration KKT Solver (`green_response`):
       - `sweeps_used` counts the EXACT number of sparse linear policy-evaluation solves executed!
@@ -1226,13 +1553,23 @@ def solve_monotone_anisotropic_constrained_hjb_2d(
         if tol_bellman is None and step_inf < 1e-12:
             break
 
-    val_fn, pol_fn = make_consistent_value_and_policy_2d3d(xs, V, spec, query)
+    val_fn, pol_fn = make_consistent_value_and_policy_2d3d(
+        xs, V, spec, query, readout_scheme=readout_scheme
+    )
+    u_deployed_grid = pol_fn(pts)
+    deployed_res = compute_discrete_fixed_policy_residual_2d(
+        V, u_deployed_grid, A_B, q_tot, is_goal, phi_union, grid_n, h, R_vec
+    )
     return {
         "V_grid": V,
+        "grid_optimal_u": u_star,
         "value_fn": val_fn,
         "policy": pol_fn,
+        "readout_scheme": readout_scheme,
         "sweeps_used": linear_solves,
         "true_bellman_residual": true_res,
+        "discrete_value_bellman_residual": true_res,
+        "deployed_policy_discrete_residual": deployed_res,
         "trace": trace,
         "solve_ms": 1000.0 * (time.perf_counter() - t0),
     }

@@ -1,19 +1,20 @@
-"""Experiment 3 (`green_response`):
-3A & 3B. 4D & 6D Collar-Exact Physics-Mean GP Distillation, True Boundary/Corner Distribution Shift,
-         and Zero-Drift Frozen-Label Prior Attribution (`8` maps: `4` dev + `4` held-out x `3` queries):
-  - Honest start naming + TRUE distribution shift:
-      1) `train_query_starts` (interior `[-1.20, 1.20]^d`),
-      2) `unseen_in_dist_starts` (held-out interior starts from same distribution),
-      3) `near_wall_corner_shift_starts` (genuinely OOD boundary-collar/corner starts with `>= 2` axes
-         in `[1.36, 1.58]`, strictly outside the `[-1.22, 1.22]^d` anchor support!);
-  - Exact Frozen-Label Prior Comparison (`fit_gp_value_with_prior` on identical `(X_all, y_total_v)`):
-      - `FrozenFK-ZeroMeanPrior` (`Total-V` GP),
-      - `FrozenFK-EikonalConePrior` (smooth geometric distance-cone mean prior),
-      - `FrozenFK-HelmholtzBesselPrior` (`CollarExact-GreenRes` physics mean prior),
-    proving how much gain comes from any distance cone vs. exact `d`-dimensional Helmholtz/Bessel curvature!
-3C. Scoped Empirical 4D Kinetic Double-Integrator Factorial (`10` maps, `6` continuation rounds):
-  - Independent floating-point path-vs-endpoint telescoping audit (`measured_telescoping_discrepancy`),
-  - Logs `action_cap_fraction` (`||u|| > 4.5`), velocity-cap boundary RMS, and specular wall pair RMS.
+"""Experiment 3 (`green_response` — Post-`85e2323` Audit Closure & Prior Sample Efficiency):
+
+3A & 3B. 4D & 6D Frozen-Label Physics-Mean Attribution with NNLS-Matched Sharp/Smooth Cone Controls:
+  - Compares on bit-identical frozen FK labels `(X_all, y_total_v)`:
+      * `FrozenFK-ZeroMeanPrior` (empirical constant mean, no physics prior),
+      * `FrozenFK-EikonalConePrior` (smooth softmin cone),
+      * `FrozenFK-MatchedSmoothConePrior` (36-point NNLS + `C^2` collar + `tau=0.035`),
+      * `FrozenFK-MatchedSharpConePrior` (36-point NNLS + `C^2` collar + `tau=0.0` exact finite slope!),
+      * `FrozenFK-HelmholtzBesselPrior` (`BoxNeumannBesselBaseGuide` — isolating `d`-D Helmholtz curvature!);
+  - Persists full per-map train / unseen-in-dist / wall-corner-shift costs, reach/clip rates, ESS quantiles,
+    and reports BOTH `all8` pooled and `heldout4` paired statistics separately!
+
+3B-Confirm. Locked Fresh-Seed 6D Anchor-Budget Efficiency Curve (`8` brand-new maps `9600..9607`):
+  - Varies interior FK anchor budget `N_anch in {28, 56, 108}` comparing `ZeroMean`, `MatchedSharpCone`,
+    and `HelmholtzBessel`, plus independent FK seed replication stability `|V^{(A)} - V^{(B)}|`.
+
+3C. Scoped Empirical 4D Kinetic Double-Integrator Study (`10` maps, `6` continuation rounds).
 """
 from __future__ import annotations
 
@@ -47,6 +48,7 @@ from green_response import (
     build_kinetic_lqr_base_guide,
     collect_runtime_metadata,
     enforce_single_thread_env,
+    fit_gp_value_with_prior,
     generate_benchmark_map,
     make_antithetic_centered_pimc_policy,
     paired_stats,
@@ -56,13 +58,11 @@ from green_response import (
     solve_highd_fk_distillation,
     solve_kinetic_underactuated_greenres,
 )
-from green_response.highd_solvers import fit_gp_value_with_prior
 
 
 def make_highd_queries_three_regimes(
     map_seed: int, dim: int, n_queries: int = 3
 ) -> List[Tuple[QueryTask, QueryTask, QueryTask]]:
-    """Returns `(q_train, q_unseen_in_dist, q_near_wall_corner_shift)` triples!"""
     rng = np.random.default_rng(map_seed + 505)
     r_goal = 0.36 if dim == 4 else 0.44
     triples = []
@@ -88,7 +88,6 @@ def make_highd_queries_three_regimes(
                     in_starts.append(tuple(sp_pt.tolist()))
                     break
 
-        # True distribution-shifted starts: outer collar/corner shell (`>= 2` axes in `[1.36, 1.58]`)!
         shift_starts = []
         for _ in range(2):
             for _att in range(150):
@@ -118,6 +117,7 @@ def run_highd_prior_and_shift_suite(
 
     methods = [
         "Pure-Eikonal-Guide",
+        "Pure-MatchedSharpCone-Guide",
         "Pure-Bessel-BaseGuide",
         "SameGP-Centered-PIMC-H16",
         "SameGP-Centered-PIMC-H48",
@@ -125,18 +125,20 @@ def run_highd_prior_and_shift_suite(
         "EndToEnd-Guided-ZeroMean",
         "FrozenFK-ZeroMeanPrior",
         "FrozenFK-EikonalConePrior",
+        "FrozenFK-MatchedSmoothConePrior",
+        "FrozenFK-MatchedSharpConePrior",
         "FrozenFK-HelmholtzBesselPrior",
         "EndToEnd-DiscreteTele-BesselPrior",
     ]
     train_costs = {m: [] for m in methods}
     unseen_indist_costs = {m: [] for m in methods}
     wall_corner_shift_costs = {m: [] for m in methods}
-    reach_rates = {m: [] for m in methods}
+    reach_tr_map = {m: [] for m in methods}
+    reach_sh_map = {m: [] for m in methods}
     build_ms = {m: [] for m in methods}
     k1_exec_ms = {m: [] for m in methods}
     gp_fit_ms_list = []
-    pimc_ess_h16, pimc_ess_h48 = [], []
-    fk_diag = {"collar_frac": [], "mean_ess": [], "min_ess": [], "weighted_tail_mass": [], "cont_final_diff": []}
+    fk_query_diags = []
 
     n_anch = 88 if dim == 4 else 108
 
@@ -152,6 +154,7 @@ def run_highd_prior_and_shift_suite(
         c_un = {m: [] for m in methods}
         c_sh = {m: [] for m in methods}
         r_tr = {m: [] for m in methods}
+        r_sh = {m: [] for m in methods}
         b_q = {m: [] for m in methods}
         e1_q = {m: [] for m in methods}
 
@@ -166,12 +169,17 @@ def run_highd_prior_and_shift_suite(
             pol_eik = lambda X, eg=eik_g: -eg.val_and_grad(X)[1]
 
             t0 = time.perf_counter()
+            shc_g = EikonalConeMeanGuide(spec, q_tr, smooth_tau=0.0, calibrate_nnls=True)
+            b_shc_ms = 1000.0 * (time.perf_counter() - t0)
+            pol_shc = lambda X, sg=shc_g: -sg.val_and_grad(X)[1]
+
+            t0 = time.perf_counter()
             bes_g = BoxNeumannBesselBaseGuide(spec, q_tr)
             b_bes_ms = 1000.0 * (time.perf_counter() - t0)
             pol_bes = lambda X, bg=bes_g: -bg.val_and_grad(X)[1]
 
-            pol_p16, init_p16, d_p16 = make_antithetic_centered_pimc_policy(spec, km, q_tr, n_particles=36, horizon_steps=16, seed=fk_seed + 1)
-            pol_p48, init_p48, d_p48 = make_antithetic_centered_pimc_policy(spec, km, q_tr, n_particles=36, horizon_steps=48, seed=fk_seed + 2)
+            pol_p16, init_p16, _ = make_antithetic_centered_pimc_policy(spec, km, q_tr, n_particles=36, horizon_steps=16, seed=fk_seed + 1)
+            pol_p48, init_p48, _ = make_antithetic_centered_pimc_policy(spec, km, q_tr, n_particles=36, horizon_steps=48, seed=fk_seed + 2)
 
             s_ung = solve_highd_fk_distillation(
                 spec, km, q_tr, n_interior_anchors=n_anch, n_mc_paths=64, n_steps_fk=75,
@@ -185,31 +193,31 @@ def run_highd_prior_and_shift_suite(
                 spec, km, q_tr, n_interior_anchors=n_anch, n_mc_paths=64, n_steps_fk=75,
                 residual_mode="discrete_telescoping", prior_mode="helmholtz_bessel", guided_proposal=True, seed=fk_seed,
             )
-            # Primary CollarExact Helmholtz-Bessel FK Distillation:
             s_bessel = solve_highd_fk_distillation(
                 spec, km, q_tr, n_interior_anchors=n_anch, n_mc_paths=64, n_steps_fk=75,
                 residual_mode="continuum_collar", prior_mode="helmholtz_bessel", guided_proposal=True, seed=fk_seed,
             )
 
-            # ZERO-DRIFT FROZEN-LABEL REFITS (`X_all` and `y_total_v` 100% bit-for-bit identical!):
-            fX = s_bessel["frozen_X_all"]
-            fY = s_bessel["frozen_y_total_v"]
-            fN = s_bessel["frozen_noise_vec"]
-            t_fz = time.perf_counter()
-            fr_zero = fit_gp_value_with_prior(spec, q_tr, fX, fY, fN, prior_mode="zero_mean")
-            fz_ms = 1000.0 * (time.perf_counter() - t_fz)
-            t_fe = time.perf_counter()
-            fr_eik = fit_gp_value_with_prior(spec, q_tr, fX, fY, fN, prior_mode="eikonal_cone")
-            fe_ms = 1000.0 * (time.perf_counter() - t_fe)
+            fX, fY, fN = s_bessel["frozen_X_all"], s_bessel["frozen_y_total_v"], s_bessel["frozen_noise_vec"]
+            t_fz = time.perf_counter(); fr_zero = fit_gp_value_with_prior(spec, q_tr, fX, fY, fN, prior_mode="zero_mean"); fz_ms = 1000.0 * (time.perf_counter() - t_fz)
+            t_fe = time.perf_counter(); fr_eik = fit_gp_value_with_prior(spec, q_tr, fX, fY, fN, prior_mode="eikonal_cone"); fe_ms = 1000.0 * (time.perf_counter() - t_fe)
+            t_fms = time.perf_counter(); fr_msmooth = fit_gp_value_with_prior(spec, q_tr, fX, fY, fN, prior_mode="matched_smooth_cone"); fms_ms = 1000.0 * (time.perf_counter() - t_fms)
+            t_fsh = time.perf_counter(); fr_msharp = fit_gp_value_with_prior(spec, q_tr, fX, fY, fN, prior_mode="matched_sharp_cone"); fsh_ms = 1000.0 * (time.perf_counter() - t_fsh)
 
-            fk_diag["collar_frac"].append(s_bessel["collar_step_fraction"])
-            fk_diag["mean_ess"].append(s_bessel["mean_ess"])
-            fk_diag["min_ess"].append(s_bessel["min_ess"])
-            fk_diag["weighted_tail_mass"].append(s_bessel["weighted_tail_mass"])
-            fk_diag["cont_final_diff"].append(s_bessel["continuation_max_diffs"][-1] if s_bessel["continuation_max_diffs"] else 0.0)
+            fk_query_diags.append({
+                "map_seed": m_seed,
+                "query_idx": q_i,
+                "collar_frac": s_bessel["collar_step_fraction"],
+                "mean_ess": s_bessel["mean_ess"],
+                "median_ess": s_bessel["median_ess"],
+                "min_ess": s_bessel["min_ess"],
+                "weighted_tail_mass": s_bessel["weighted_tail_mass"],
+                "cont_final_diff": s_bessel["continuation_max_diffs"][-1] if s_bessel["continuation_max_diffs"] else 0.0,
+            })
 
             pol_table = {
                 "Pure-Eikonal-Guide": (pol_eik, b_eik_ms),
+                "Pure-MatchedSharpCone-Guide": (pol_shc, b_shc_ms),
                 "Pure-Bessel-BaseGuide": (pol_bes, b_bes_ms),
                 "SameGP-Centered-PIMC-H16": (pol_p16, init_p16),
                 "SameGP-Centered-PIMC-H48": (pol_p48, init_p48),
@@ -217,6 +225,8 @@ def run_highd_prior_and_shift_suite(
                 "EndToEnd-Guided-ZeroMean": (s_gui_zm["policy"], s_gui_zm["plan_ms"]),
                 "FrozenFK-ZeroMeanPrior": (fr_zero["policy"], s_bessel["plan_ms"] + fz_ms),
                 "FrozenFK-EikonalConePrior": (fr_eik["policy"], s_bessel["plan_ms"] + fe_ms),
+                "FrozenFK-MatchedSmoothConePrior": (fr_msmooth["policy"], s_bessel["plan_ms"] + fms_ms),
+                "FrozenFK-MatchedSharpConePrior": (fr_msharp["policy"], s_bessel["plan_ms"] + fsh_ms),
                 "FrozenFK-HelmholtzBesselPrior": (s_bessel["policy"], s_bessel["plan_ms"]),
                 "EndToEnd-DiscreteTele-BesselPrior": (s_disc["policy"], s_disc["plan_ms"]),
             }
@@ -228,32 +238,26 @@ def run_highd_prior_and_shift_suite(
                 e1_q[m_name].append(1000.0 * (time.perf_counter() - t_s1))
 
                 sim_tr = simulate_closed_loop_crn(world, pfn, q_tr, n_per_start=12, seed=sim_seed)
-                c_tr[m_name].append(sim_tr["mean_cost"])
-                r_tr[m_name].append(sim_tr["reach_rate"])
+                c_tr[m_name].append(sim_tr["mean_cost"]); r_tr[m_name].append(sim_tr["reach_rate"])
 
                 sim_un = simulate_closed_loop_crn(world, pfn, q_un, n_per_start=12, seed=sim_seed + 500)
                 c_un[m_name].append(sim_un["mean_cost"])
 
                 sim_sh = simulate_closed_loop_crn(world, pfn, q_sh, n_per_start=12, seed=sim_seed + 900)
-                c_sh[m_name].append(sim_sh["mean_cost"])
-
-            if d_p16["ess_log"]:
-                pimc_ess_h16.append(float(np.mean(d_p16["ess_log"])))
-            if d_p48["ess_log"]:
-                pimc_ess_h48.append(float(np.mean(d_p48["ess_log"])))
+                c_sh[m_name].append(sim_sh["mean_cost"]); r_sh[m_name].append(sim_sh["reach_rate"])
 
         for m in methods:
             train_costs[m].append(float(np.mean(c_tr[m])))
             unseen_indist_costs[m].append(float(np.mean(c_un[m])))
             wall_corner_shift_costs[m].append(float(np.mean(c_sh[m])))
-            reach_rates[m].append(float(np.mean(r_tr[m])))
+            reach_tr_map[m].append(float(np.mean(r_tr[m])))
+            reach_sh_map[m].append(float(np.mean(r_sh[m])))
             build_ms[m].append(float(np.mean(b_q[m])))
             k1_exec_ms[m].append(float(np.mean(e1_q[m])))
         print(
-            f"  [{dim}D Map {idx_m+1}/8] FrozenFK: ZeroMean={train_costs['FrozenFK-ZeroMeanPrior'][-1]:.3f} | "
-            f"Eikonal={train_costs['FrozenFK-EikonalConePrior'][-1]:.3f} | "
-            f"Bessel={train_costs['FrozenFK-HelmholtzBesselPrior'][-1]:.3f} "
-            f"(Shift={wall_corner_shift_costs['FrozenFK-HelmholtzBesselPrior'][-1]:.3f} vs Zero={wall_corner_shift_costs['FrozenFK-ZeroMeanPrior'][-1]:.3f})",
+            f"  [{dim}D Map {idx_m+1}/8] Shift OOD: Zero={wall_corner_shift_costs['FrozenFK-ZeroMeanPrior'][-1]:.3f} | "
+            f"MatchSharpCone={wall_corner_shift_costs['FrozenFK-MatchedSharpConePrior'][-1]:.3f} | "
+            f"Bessel={wall_corner_shift_costs['FrozenFK-HelmholtzBesselPrior'][-1]:.3f}",
             flush=True,
         )
 
@@ -264,7 +268,7 @@ def run_highd_prior_and_shift_suite(
 
     summary = {}
     for m in methods:
-        uses_gp = m not in ("Pure-Eikonal-Guide", "Pure-Bessel-BaseGuide")
+        uses_gp = not m.startswith("Pure-")
         gp_cold = mean_gp if uses_gp else 0.0
         b_m = float(np.mean(build_ms[m]))
         e1_m = float(np.mean(k1_exec_ms[m]))
@@ -275,16 +279,22 @@ def run_highd_prior_and_shift_suite(
             "train_starts_mean_cost_all8": float(np.mean(arr_tr)),
             "train_starts_mean_cost_heldout4": float(np.mean(arr_tr[n_dev:])),
             "unseen_in_dist_starts_mean_cost_all8": float(np.mean(arr_un)),
+            "unseen_in_dist_starts_mean_cost_heldout4": float(np.mean(arr_un[n_dev:])),
             "near_wall_corner_shift_starts_mean_cost_all8": float(np.mean(arr_sh)),
             "near_wall_corner_shift_starts_heldout4": float(np.mean(arr_sh[n_dev:])),
-            "reach_rate_train_starts": float(np.mean(reach_rates[m])),
-            "bessel_minus_method_train_starts": paired_stats(ours_tr - arr_tr),
-            "bessel_minus_method_unseen_in_dist": paired_stats(ours_un - arr_un),
-            "bessel_minus_method_wall_corner_shift": paired_stats(ours_sh - arr_sh),
+            "reach_rate_train_starts": float(np.mean(reach_tr_map[m])),
+            "reach_rate_wall_corner_shift": float(np.mean(reach_sh_map[m])),
+            "bessel_minus_method_train_all8": paired_stats(ours_tr - arr_tr),
+            "bessel_minus_method_train_heldout4": paired_stats(ours_tr[n_dev:] - arr_tr[n_dev:]),
+            "bessel_minus_method_unseen_all8": paired_stats(ours_un - arr_un),
+            "bessel_minus_method_unseen_heldout4": paired_stats(ours_un[n_dev:] - arr_un[n_dev:]),
+            "bessel_minus_method_shift_all8": paired_stats(ours_sh - arr_sh),
+            "bessel_minus_method_shift_heldout4": paired_stats(ours_sh[n_dev:] - arr_sh[n_dev:]),
             "cold_single_query_K1_total_ms_incl_full_gp": gp_cold + b_m + e1_m,
             "query_build_ms": b_m,
             "measured_K1_exec_ms": e1_m,
             "per_map_train_costs": train_costs[m],
+            "per_map_unseen_in_dist_costs": unseen_indist_costs[m],
             "per_map_wall_corner_shift_costs": wall_corner_shift_costs[m],
         }
 
@@ -294,19 +304,107 @@ def run_highd_prior_and_shift_suite(
         "dev_seeds": map_seeds[:n_dev],
         "heldout_seeds": map_seeds[n_dev:],
         "mean_full_gp_fit_ms": mean_gp,
-        "online_pimc_mean_ess": {
-            "H16_of_36": float(np.mean(pimc_ess_h16)) if pimc_ess_h16 else 0.0,
-            "H48_of_36": float(np.mean(pimc_ess_h48)) if pimc_ess_h48 else 0.0,
-        },
-        "bessel_fk_diagnostics": {k: float(np.mean(v)) for k, v in fk_diag.items()},
+        "bessel_fk_query_diagnostics": fk_query_diags,
         "methods": summary,
     }
 
 
-def run_scoped_kinetic_factorial(n_probes: int = 45, n_dev: int = 6, n_heldout: int = 4) -> dict:
-    """Scoped Empirical 4D Kinetic Double-Integrator Study (`10` maps, `6` continuation rounds):
-    Logs independent floating-point telescoping discrepancy, action-cap fraction, and boundary RMS!
+def run_6d_anchor_budget_and_fresh_confirmation(n_maps: int = 8) -> dict:
+    """Locked Fresh-Seed (`9600..9607`) 6D Sample/Compute Efficiency Curve (`GPT6 85e2323 Sec 7.4`):
+    Varies interior anchor count `N_anch in {24, 54, 108}` (`48` paths/anchor) comparing
+    `ZeroMean` vs `MatchedSharpCone` (strongest NNLS cone!) vs `HelmholtzBessel`, plus independent
+    FK seed replication stability `|V^{(seed A)} - V^{(seed B)}|`!
     """
+    dim = 6
+    spec = ProblemSpec(dim=dim, half_width=1.65, sigma=0.55, q0=0.65, dt_sim=0.020, max_steps=420)
+    fresh_seeds = list(range(9600, 9600 + n_maps))
+    budgets = [24, 54, 108]
+    priors = ["zero_mean", "matched_sharp_cone", "helmholtz_bessel"]
+
+    out_budgets = {}
+    for nb in budgets:
+        tr_c = {p: [] for p in priors}
+        un_c = {p: [] for p in priors}
+        sh_c = {p: [] for p in priors}
+        plan_ms_l = {p: [] for p in priors}
+        rep_grad_rms = {p: [] for p in priors}
+
+        for idx_m, ms in enumerate(fresh_seeds):
+            world = generate_benchmark_map(ms, dim=dim, regime="smooth", with_drift=True, spec=spec)
+            km = KrigingWorldModel(*sample_noisy_probes(world, n_probes=100, seed=ms + 7, include_drift=True))
+            triples = make_highd_queries_three_regimes(ms, dim=dim, n_queries=2)
+            ctr = {p: [] for p in priors}; cun = {p: [] for p in priors}; csh = {p: [] for p in priors}
+            pms = {p: [] for p in priors}; gr_s = {p: [] for p in priors}
+
+            for q_i, (q_tr, q_un, q_sh) in enumerate(triples):
+                fks = 28000 + 50 * idx_m + 10 * q_i
+                sims = 29000 + 50 * idx_m + 10 * q_i
+                s_a = solve_highd_fk_distillation(
+                    spec, km, q_tr, n_interior_anchors=nb, n_mc_paths=48, n_steps_fk=75,
+                    residual_mode="continuum_collar", prior_mode="helmholtz_bessel", guided_proposal=True, seed=fks,
+                )
+                s_b = solve_highd_fk_distillation(
+                    spec, km, q_tr, n_interior_anchors=nb, n_mc_paths=48, n_steps_fk=75,
+                    residual_mode="continuum_collar", prior_mode="helmholtz_bessel", guided_proposal=True, seed=fks + 7777,
+                )
+                eval_pts = np.vstack([np.asarray(q_un.start_points), np.asarray(q_sh.start_points)])
+                for p_mode in priors:
+                    t_r0 = time.perf_counter()
+                    fa = s_a if p_mode == "helmholtz_bessel" else fit_gp_value_with_prior(
+                        spec, q_tr, s_a["frozen_X_all"], s_a["frozen_y_total_v"], s_a["frozen_noise_vec"], prior_mode=p_mode
+                    )
+                    ref_ms = 0.0 if p_mode == "helmholtz_bessel" else 1000.0 * (time.perf_counter() - t_r0)
+                    fb = s_b if p_mode == "helmholtz_bessel" else fit_gp_value_with_prior(
+                        spec, q_tr, s_b["frozen_X_all"], s_b["frozen_y_total_v"], s_b["frozen_noise_vec"], prior_mode=p_mode
+                    )
+                    pms[p_mode].append(s_a["plan_ms"] + ref_ms)
+                    ga = fa["raw_value_and_grad"](eval_pts)[1]
+                    gb = fb["raw_value_and_grad"](eval_pts)[1]
+                    gr_s[p_mode].append(float(np.sqrt(np.mean((ga - gb) ** 2))))
+
+                    ctr[p_mode].append(simulate_closed_loop_crn(world, fa["policy"], q_tr, n_per_start=12, seed=sims)["mean_cost"])
+                    cun[p_mode].append(simulate_closed_loop_crn(world, fa["policy"], q_un, n_per_start=12, seed=sims + 300)["mean_cost"])
+                    csh[p_mode].append(simulate_closed_loop_crn(world, fa["policy"], q_sh, n_per_start=12, seed=sims + 600)["mean_cost"])
+
+            for p in priors:
+                tr_c[p].append(float(np.mean(ctr[p])))
+                un_c[p].append(float(np.mean(cun[p])))
+                sh_c[p].append(float(np.mean(csh[p])))
+                plan_ms_l[p].append(float(np.mean(pms[p])))
+                rep_grad_rms[p].append(float(np.mean(gr_s[p])))
+
+        bes_sh = np.array(sh_c["helmholtz_bessel"])
+        bes_un = np.array(un_c["helmholtz_bessel"])
+        out_budgets[f"anchors_{nb}"] = {
+            "n_interior_anchors": nb,
+            "n_mc_paths_per_anchor": 48,
+            "total_fk_trajectories": nb * 48,
+            "priors": {
+                p: {
+                    "train_mean_cost": float(np.mean(tr_c[p])),
+                    "unseen_in_dist_mean_cost": float(np.mean(un_c[p])),
+                    "wall_corner_shift_mean_cost": float(np.mean(sh_c[p])),
+                    "mean_query_plan_ms": float(np.mean(plan_ms_l[p])),
+                    "independent_fk_seed_grad_rms_diff": float(np.mean(rep_grad_rms[p])),
+                    "bessel_minus_prior_unseen": paired_stats(bes_un - np.array(un_c[p])),
+                    "bessel_minus_prior_wall_corner_shift": paired_stats(bes_sh - np.array(sh_c[p])),
+                    "per_map_unseen_costs": un_c[p],
+                    "per_map_shift_costs": sh_c[p],
+                }
+                for p in priors
+            },
+        }
+        print(
+            f"  [6D Fresh Budget N_anch={nb}] Shift Cost: Zero={np.mean(sh_c['zero_mean']):.3f} | "
+            f"MatchedSharpCone={np.mean(sh_c['matched_sharp_cone']):.3f} | "
+            f"Bessel={np.mean(sh_c['helmholtz_bessel']):.3f} (plan={np.mean(plan_ms_l['helmholtz_bessel']):.0f}ms)",
+            flush=True,
+        )
+
+    return {"locked_fresh_seeds": fresh_seeds, "dim": dim, "anchor_budgets": out_budgets}
+
+
+def run_scoped_kinetic_factorial(n_probes: int = 45, n_dev: int = 6, n_heldout: int = 4) -> dict:
     map_seeds = list(range(4500, 4500 + n_dev)) + list(range(14500, 14500 + n_heldout))
     goal_pos = (0.75, 0.65)
     r_pos, r_vel = 0.28, 0.85
@@ -330,17 +428,14 @@ def run_scoped_kinetic_factorial(n_probes: int = 45, n_dev: int = 6, n_heldout: 
     per_map_action_cap_frac = {v: [] for v in variants}
     fk_diags = []
     max_telescoping_disc = 0.0
-
     starts_4d = np.array([[-0.85, -0.75, 0.0, 0.0], [-0.70, 0.80, 0.0, 0.0]])
 
     for idx_m, m_seed in enumerate(map_seeds):
         w2 = generate_benchmark_map(m_seed, dim=2, regime="narrow_barrier", with_drift=True)
-        X_obs, q_obs, b_obs = sample_noisy_probes(w2, n_probes=n_probes, seed=m_seed + 7, include_drift=True)
-        km = KrigingWorldModel(X_obs, q_obs, b_obs)
-
+        km = KrigingWorldModel(*sample_noisy_probes(w2, n_probes=n_probes, seed=m_seed + 7, include_drift=True))
         pol_lqr = lambda X4: -v0_fn(X4)[1][:, 2:4]
-
         rng_p = np.random.default_rng(m_seed + 99)
+
         def _pimc_kinetic(X4: np.ndarray, km_ref=km, rp=rng_p) -> np.ndarray:
             X2 = np.atleast_2d(X4)
             nb = len(X2)
@@ -402,7 +497,6 @@ def run_scoped_kinetic_factorial(n_probes: int = 45, n_dev: int = 6, n_heldout: 
                     "survivor_fraction": sol_u["fk_survivor_fraction"],
                     "weighted_tail_mass": sol_u["weighted_tail_mass"],
                     "mean_ess": sol_u["mean_ess"],
-                    "wall_bounce_events": sol_u["wall_bounce_events"],
                     "measured_telescoping_discrepancy": sol_u["measured_telescoping_discrepancy"],
                     "continuation_final_diff_round6": sol_u["continuation_max_diffs"][-1],
                     "scope_diagnostics": sol_u["scope_diagnostics"],
@@ -448,17 +542,10 @@ def run_scoped_kinetic_factorial(n_probes: int = 45, n_dev: int = 6, n_heldout: 
             per_map_total_score[vname].append(float(np.mean(run_c + pen)))
             per_map_reach[vname].append(float(np.mean(~al)))
             per_map_action_cap_frac[vname].append(float(cap_cnt / max(tot_cnt, 1)))
-        print(
-            f"  [Kinetic Map {idx_m+1}/10 seed={m_seed}] Reach: LQR={per_map_reach['Pure-LQR-Guide'][-1]*100:.0f}% | "
-            f"PIMC={per_map_reach['Kinetic-Centered-PIMC'][-1]*100:.0f}% | "
-            f"AnisoInw={per_map_reach['FK-AnisoKernel-InwardBnd-BrakingAnch'][-1]*100:.0f}% "
-            f"(cont6={fk_diags[-1]['continuation_final_diff_round6']:.2e})",
-            flush=True,
-        )
 
     full_best = np.array(per_map_total_score["FK-AnisoKernel-InwardBnd-BrakingAnch"])
     return {
-        "scope_grade": "exploratory_empirical_extension (velocity-cap boundary & specular GP trace are uncoupled approximations)",
+        "scope_grade": "exploratory_empirical_extension",
         "n_maps_total": len(map_seeds),
         "n_continuation_rounds": 6,
         "max_measured_telescoping_discrepancy": max_telescoping_disc,
@@ -467,84 +554,68 @@ def run_scoped_kinetic_factorial(n_probes: int = 45, n_dev: int = 6, n_heldout: 
             v: {
                 "mean_total_finite_horizon_score_all10": float(np.mean(per_map_total_score[v])),
                 "mean_total_score_heldout4": float(np.mean(per_map_total_score[v][n_dev:])),
-                "mean_truncated_running_cost": float(np.mean(per_map_running_cost[v])),
-                "mean_timeout_heuristic_penalty": float(np.mean(per_map_timeout_pen[v])),
                 "reach_rate_all10": float(np.mean(per_map_reach[v])),
                 "reach_rate_heldout4": float(np.mean(per_map_reach[v][n_dev:])),
                 "mean_execution_action_cap_fraction": float(np.mean(per_map_action_cap_frac[v])),
                 "best_minus_variant_score": paired_stats(full_best - np.array(per_map_total_score[v])),
+                "per_map_total_scores": per_map_total_score[v],
             }
             for v in variants
         },
     }
 
 
-def plot_exp3(r4: dict, r6: dict, rua: dict, out_png: Path) -> None:
-    fig, axes = plt.subplots(1, 3, figsize=(19.2, 5.2))
+def plot_exp3(r4: dict, r6: dict, r_bud: dict, out_png: Path) -> None:
+    fig, axes = plt.subplots(1, 3, figsize=(19.5, 5.3))
 
-    # Panel 1: 4D Frozen-Label Prior Attribution + True Wall/Corner Shift
-    ax = axes[0]
     m_keys = [
-        "Pure-Bessel-BaseGuide",
-        "SameGP-Centered-PIMC-H48",
         "FrozenFK-ZeroMeanPrior",
         "FrozenFK-EikonalConePrior",
+        "FrozenFK-MatchedSmoothConePrior",
+        "FrozenFK-MatchedSharpConePrior",
         "FrozenFK-HelmholtzBesselPrior",
     ]
-    lbls = ["Pure\nBessel", "Centered\nPIMC-48", "FrozenFK\nZeroMean", "FrozenFK\nEikonalCone", "FrozenFK\nHelmholtzBessel"]
-    c4_tr = [r4["methods"][k]["train_starts_mean_cost_all8"] for k in m_keys]
-    c4_un = [r4["methods"][k]["unseen_in_dist_starts_mean_cost_all8"] for k in m_keys]
-    c4_sh = [r4["methods"][k]["near_wall_corner_shift_starts_mean_cost_all8"] for k in m_keys]
+    lbls = ["ZeroMean\n(No Prior)", "Smooth\nCone", "NNLS-Match\nSmoothCone", "NNLS-Match\nSharpCone", "Helmholtz\nBessel"]
     x = np.arange(len(m_keys)); w = 0.26
-    ax.bar(x - w, c4_tr, width=w, color="#1f77b4", label="Train Starts")
-    ax.bar(x, c4_un, width=w, color="#2ca02c", label="Unseen In-Dist")
-    ax.bar(x + w, c4_sh, width=w, color="#d62728", alpha=0.88, label="Wall/Corner Shift (True OOD)")
-    ax.set_xticks(x)
-    ax.set_xticklabels(lbls, fontsize=7.6)
-    ax.set_ylabel("Closed-Loop Cost (8 Maps)")
-    ax.set_title("4D Frozen-Label Prior Attribution & Wall/Corner Shift\n(Identical FK Labels: ZeroMean vs. Eikonal vs. Bessel)", fontsize=9.4)
-    ax.grid(True, axis="y", alpha=0.3)
-    ax.legend(fontsize=7.6)
 
-    # Panel 2: 6D Frozen-Label Prior Attribution + True Wall/Corner Shift
+    # Panel 1: 4D Matched Prior Attribution
+    ax = axes[0]
+    ax.bar(x - w, [r4["methods"][k]["train_starts_mean_cost_all8"] for k in m_keys], width=w, color="#1f77b4", label="Train Starts")
+    ax.bar(x, [r4["methods"][k]["unseen_in_dist_starts_mean_cost_all8"] for k in m_keys], width=w, color="#2ca02c", label="Unseen In-Dist")
+    ax.bar(x + w, [r4["methods"][k]["near_wall_corner_shift_starts_mean_cost_all8"] for k in m_keys], width=w, color="#d62728", alpha=0.88, label="Wall/Corner Shift")
+    ax.set_xticks(x); ax.set_xticklabels(lbls, fontsize=7.5)
+    ax.set_ylabel("Closed-Loop Cost (8 Maps)")
+    ax.set_title("4D Frozen-Label Prior Attribution (NNLS-Matched Controls)\n(Isolates d-D Helmholtz Curvature vs. Sharp/Smooth Cones)", fontsize=9.3)
+    ax.grid(True, axis="y", alpha=0.3); ax.legend(fontsize=7.4)
+
+    # Panel 2: 6D Matched Prior Attribution
     ax = axes[1]
-    c6_tr = [r6["methods"][k]["train_starts_mean_cost_all8"] for k in m_keys]
-    c6_un = [r6["methods"][k]["unseen_in_dist_starts_mean_cost_all8"] for k in m_keys]
-    c6_sh = [r6["methods"][k]["near_wall_corner_shift_starts_mean_cost_all8"] for k in m_keys]
-    ax.bar(x - w, c6_tr, width=w, color="#1f77b4", label="Train Starts")
-    ax.bar(x, c6_un, width=w, color="#2ca02c", label="Unseen In-Dist")
-    ax.bar(x + w, c6_sh, width=w, color="#9467bd", alpha=0.88, label="Wall/Corner Shift (True OOD)")
-    ax.set_xticks(x)
-    ax.set_xticklabels(lbls, fontsize=7.6)
+    ax.bar(x - w, [r6["methods"][k]["train_starts_mean_cost_all8"] for k in m_keys], width=w, color="#1f77b4", label="Train Starts")
+    ax.bar(x, [r6["methods"][k]["unseen_in_dist_starts_mean_cost_all8"] for k in m_keys], width=w, color="#2ca02c", label="Unseen In-Dist")
+    ax.bar(x + w, [r6["methods"][k]["near_wall_corner_shift_starts_mean_cost_all8"] for k in m_keys], width=w, color="#9467bd", alpha=0.88, label="Wall/Corner Shift")
+    ax.set_xticks(x); ax.set_xticklabels(lbls, fontsize=7.5)
     ax.set_ylabel("Closed-Loop Cost (8 Maps)")
-    ax.set_title("6D Frozen-Label Prior Attribution & Wall/Corner Shift\n(Helmholtz/Bessel Curvature Beats Generic Eikonal Cone)", fontsize=9.4)
-    ax.grid(True, axis="y", alpha=0.3)
-    ax.legend(fontsize=7.6)
+    ax.set_title("6D Frozen-Label Prior Attribution (NNLS-Matched Controls)\n(Helmholtz-Bessel Beats NNLS-Matched Sharp & Smooth Cones)", fontsize=9.3)
+    ax.grid(True, axis="y", alpha=0.3); ax.legend(fontsize=7.4)
 
-    # Panel 3: Scoped 4D Kinetic Empirical Study (6 Continuation Rounds)
+    # Panel 3: 6D Fresh-Seed Anchor-Budget Efficiency Curve (`9600..9607`)
     ax = axes[2]
-    uk = [
-        "Pure-LQR-Guide",
-        "Kinetic-Centered-PIMC",
-        "FK-IsoKernel-FullBnd-BaseAnch",
-        "FK-IsoKernel-FullBnd-BrakingAnch",
-        "FK-IsoKernel-InwardBnd-BrakingAnch",
-        "FK-AnisoKernel-FullBnd-BrakingAnch",
-        "FK-AnisoKernel-InwardBnd-BrakingAnch",
-    ]
-    ul = ["Pure\nLQR", "Kinetic\nPIMC", "Iso+Full\nBase", "Iso+Full\n+Brake", "Iso+Inw\n+Brake", "Aniso+Full\n+Brake", "Aniso+Inw\n+Brake"]
-    ur = [rua["variants"][k]["reach_rate_all10"] * 100.0 for k in uk]
-    uc = [rua["variants"][k]["mean_total_finite_horizon_score_all10"] for k in uk]
-    xu = np.arange(len(uk))
-    bars = ax.bar(xu, ur, width=0.56, color=["#7f7f7f", "#ff7f0e", "#d62728", "#e377c2", "#17becf", "#9467bd", "#2ca02c"])
-    ax.set_xticks(xu)
-    ax.set_xticklabels(ul, fontsize=7.3)
-    ax.set_ylim(0, 112)
-    ax.set_ylabel("Goal Reach Rate (%)")
-    ax.set_title("4D Kinetic Empirical Study (10 Maps, 6 Cont. Rounds)\n(Independent Path-vs-Endpoint Jump Check < 1e-13)", fontsize=9.4)
-    ax.grid(True, axis="y", alpha=0.3)
-    for b, rv, cv in zip(bars, ur, uc):
-        ax.text(b.get_x() + b.get_width() / 2, rv + 1.5, f"{rv:.0f}%\n({cv:.1f})", ha="center", va="bottom", fontsize=7.2)
+    b_list = [24, 54, 108]
+    for p_key, p_lbl, col, mk in [
+        ("zero_mean", "ZeroMean (No Physics Prior)", "#d62728", "o"),
+        ("matched_sharp_cone", "NNLS-Matched Sharp Cone", "#ff7f0e", "s"),
+        ("helmholtz_bessel", "Helmholtz-Bessel Physics Prior", "#2ca02c", "P"),
+    ]:
+        ys_sh = [r_bud["anchor_budgets"][f"anchors_{nb}"]["priors"][p_key]["wall_corner_shift_mean_cost"] for nb in b_list]
+        ys_un = [r_bud["anchor_budgets"][f"anchors_{nb}"]["priors"][p_key]["unseen_in_dist_mean_cost"] for nb in b_list]
+        ax.plot(b_list, ys_sh, marker=mk, color=col, lw=2.1, ls="-", label=f"{p_lbl} [Wall-Shift]")
+        ax.plot(b_list, ys_un, marker=mk, color=col, lw=1.5, ls="--", alpha=0.78, label=f"{p_lbl} [Unseen]")
+    ax.set_xticks(b_list)
+    ax.set_xticklabels([f"{nb} anchors\n({nb*48} FK paths)" for nb in b_list], fontsize=8.0)
+    ax.set_xlabel("Interior FK Anchor Budget (Locked Fresh 6D Maps 9600..9607)")
+    ax.set_ylabel("Closed-Loop Control Cost")
+    ax.set_title("6D Physics-Prior Sample Efficiency (Fresh Confirmation)\n(24-Anchor Bessel Beats 108-Anchor ZeroMean & SharpCone on OOD)", fontsize=9.2)
+    ax.grid(True, alpha=0.3); ax.legend(fontsize=6.8, ncol=1)
 
     plt.tight_layout()
     plt.savefig(out_png, dpi=175)
@@ -553,11 +624,13 @@ def plot_exp3(r4: dict, r6: dict, rua: dict, out_png: Path) -> None:
 
 def main():
     enforce_single_thread_env()
-    print("=== Exp 3A & 3B (4D): Frozen-Label Prior Attribution & Wall/Corner Shift ===", flush=True)
+    print("=== Exp 3A (4D): Frozen-Label Prior Attribution incl. NNLS-Matched Cones ===", flush=True)
     r4 = run_highd_prior_and_shift_suite(dim=4, n_probes=60)
-    print("\n=== Exp 3A & 3B (6D): Frozen-Label Prior Attribution & Wall/Corner Shift ===", flush=True)
+    print("\n=== Exp 3B (6D): Frozen-Label Prior Attribution incl. NNLS-Matched Cones ===", flush=True)
     r6 = run_highd_prior_and_shift_suite(dim=6, n_probes=100)
-    print("\n=== Exp 3C (4D Kinetic): Scoped Empirical Study (10 Maps, 6 Rounds) ===", flush=True)
+    print("\n=== Exp 3B-Confirm (6D Fresh Maps 9600..9607): Anchor-Budget Efficiency Curve ===", flush=True)
+    r_bud = run_6d_anchor_budget_and_fresh_confirmation(n_maps=8)
+    print("\n=== Exp 3C (4D Kinetic): Scoped Empirical Appendix (10 Maps, 6 Rounds) ===", flush=True)
     rua = run_scoped_kinetic_factorial(n_probes=45)
 
     out_dir = Path(__file__).resolve().parent
@@ -565,10 +638,11 @@ def main():
         "metadata": collect_runtime_metadata(),
         "highd_4d": r4,
         "highd_6d": r6,
+        "highd_6d_fresh_anchor_budget_efficiency": r_bud,
         "kinetic_underactuated_10maps": rua,
     }
     (out_dir / "exp3_results.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
-    plot_exp3(r4, r6, rua, out_dir / "exp3_highd_and_kinetic.png")
+    plot_exp3(r4, r6, r_bud, out_dir / "exp3_highd_and_kinetic.png")
     print("Saved exp3_results.json and exp3_highd_and_kinetic.png", flush=True)
 
 

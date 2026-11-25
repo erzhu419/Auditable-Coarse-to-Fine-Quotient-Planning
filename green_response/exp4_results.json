@@ -1,0 +1,188 @@
+{
+  "metadata": {
+    "python_version": "3.10.12",
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "processor": "x86_64",
+    "numpy_version": "2.2.6",
+    "scipy_version": "1.15.3",
+    "sklearn_version": "1.7.2",
+    "thread_env": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1"
+    },
+    "active_threadpools": [
+      {
+        "user_api": "blas",
+        "internal_api": "openblas",
+        "num_threads": 1,
+        "prefix": "libscipy_openblas",
+        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/numpy.libs/libscipy_openblas64_-56d6093b.so",
+        "version": "0.3.29",
+        "threading_layer": "pthreads",
+        "architecture": "SkylakeX"
+      },
+      {
+        "user_api": "blas",
+        "internal_api": "openblas",
+        "num_threads": 1,
+        "prefix": "libscipy_openblas",
+        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/scipy.libs/libscipy_openblas-68440149.so",
+        "version": "0.3.28",
+        "threading_layer": "pthreads",
+        "architecture": "SkylakeX"
+      },
+      {
+        "user_api": "openmp",
+        "internal_api": "openmp",
+        "num_threads": 1,
+        "prefix": "libgomp",
+        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/scikit_learn.libs/libgomp-a34b3233.so.1.0.0",
+        "version": null
+      }
+    ]
+  },
+  "model_to_execution_fidelity_72tasks": {
+    "locked_fresh_seeds": [
+      9900,
+      9901,
+      9902,
+      9903,
+      9904,
+      9905,
+      9906,
+      9907,
+      9908,
+      9909,
+      9910,
+      9911
+    ],
+    "total_tasks": 72,
+    "bound_violations": 0,
+    "mean_discrete_model_regret": 0.00011078069667359703,
+    "root_first_action_agreement_with_exact_macro": 1.0,
+    "mean_rollout_mc_standard_error": 0.3364355645155343,
+    "layers_mean_abs_gap": {
+      "L1_compressed_mid_vs_exact_macro": 0.006821242919394368,
+      "L2a_gp_cont_dt015_central_vs_exact_macro": 0.7108106154185004,
+      "L2b_gp_cont_dt005_central_vs_exact_macro": 0.4079703503452391,
+      "L2c_gp_cont_dt005_upwind_seghit_vs_exact_macro": 0.4217966841585523,
+      "L3_true_world_minus_gp_world_abs": 0.8258970597611032,
+      "total_true_cont_default_vs_exact_macro": 1.102332401192913,
+      "total_true_cont_bridged_vs_exact_macro": 0.9255719112896487
+    },
+    "layers_mean_signed_gap": {
+      "L1_compressed_mid_vs_exact_macro": -0.0037114663446115395,
+      "L2a_gp_cont_dt015_central_vs_exact_macro": 0.7108106154185004,
+      "L2b_gp_cont_dt005_central_vs_exact_macro": 0.3522415739571192,
+      "L2c_gp_cont_dt005_upwind_seghit_vs_exact_macro": 0.38435094332687303,
+      "L3_true_world_minus_gp_world_abs": 0.131301009396179,
+      "total_true_cont_default_vs_exact_macro": 0.8351758506227159,
+      "total_true_cont_bridged_vs_exact_macro": 0.5156519527230521
+    },
+    "real_continuous_policy_comparison": {
+      "ExactMacro_mean_cost": 9.6552070332398,
+      "DecisionGuidedPort_mean_cost": 9.653379387852109,
+      "Euclidean_mean_cost": 10.359783732212277,
+      "DecisionPort_minus_ExactMacro_real_regret": {
+        "n": 12,
+        "mean": -0.001827645387690276,
+        "ci95_half": 0.006693640755763003,
+        "ci95": [
+          -0.00852128614345328,
+          0.004865995368072727
+        ],
+        "p_two_sided": 0.5600450732528588
+      },
+      "DecisionPort_minus_Euclidean_real_gain": {
+        "n": 12,
+        "mean": -0.706404344360165,
+        "ci95_half": 0.46889784006471785,
+        "ci95": [
+          -1.1753021844248828,
+          -0.23750650429544712
+        ],
+        "p_two_sided": 0.006881997727956472
+      }
+    }
+  },
+  "continual_residual_stream_200tasks": {
+    "locked_fresh_seeds": [
+      9950,
+      9951,
+      9952,
+      9953,
+      9954,
+      9955,
+      9956,
+      9957,
+      9958,
+      9959
+    ],
+    "grid_n": 61,
+    "epochs": 4,
+    "tasks_per_epoch_per_map": 5,
+    "total_tasks_evaluated": 200,
+    "methods": {
+      "Scratch-Rebuild": {
+        "cumulative_ms_by_epoch": {
+          "epoch_1": 265.27892714366317,
+          "epoch_2": 528.9645134238526,
+          "epoch_3": 792.3163854982704,
+          "epoch_4": 1055.3983486024663
+        },
+        "speedup_at_epoch4_vs_scratch": 1.0,
+        "mean_total_lu_factorizations": 4.0,
+        "mean_total_lu_backsolves": 869.2,
+        "mean_true_epoch_policy_regret": 0.00035722532232698614,
+        "bound_violations_by_epoch": {
+          "epoch_1": 0,
+          "epoch_2": 0,
+          "epoch_3": 0,
+          "epoch_4": 0
+        },
+        "total_bound_violations_of_200": 0
+      },
+      "Blind-Stale-Cache": {
+        "cumulative_ms_by_epoch": {
+          "epoch_1": 265.64502406399697,
+          "epoch_2": 330.084941489622,
+          "epoch_3": 374.0138611989096,
+          "epoch_4": 408.9971110224724
+        },
+        "speedup_at_epoch4_vs_scratch": 2.5804542872296166,
+        "mean_total_lu_factorizations": 1.0,
+        "mean_total_lu_backsolves": 268.0,
+        "mean_true_epoch_policy_regret": 0.31434588219399245,
+        "bound_violations_by_epoch": {
+          "epoch_1": 0,
+          "epoch_2": 0,
+          "epoch_3": 37,
+          "epoch_4": 49
+        },
+        "total_bound_violations_of_200": 86
+      },
+      "Residual-Audited-Reuse": {
+        "cumulative_ms_by_epoch": {
+          "epoch_1": 263.9332128223032,
+          "epoch_2": 373.61087512690574,
+          "epoch_3": 502.52141144592315,
+          "epoch_4": 770.537554519251
+        },
+        "speedup_at_epoch4_vs_scratch": 1.3696909935310602,
+        "mean_total_lu_factorizations": 4.0,
+        "mean_total_lu_backsolves": 921.4,
+        "mean_true_epoch_policy_regret": 0.0005174943761368977,
+        "bound_violations_by_epoch": {
+          "epoch_1": 0,
+          "epoch_2": 0,
+          "epoch_3": 0,
+          "epoch_4": 0
+        },
+        "total_bound_violations_of_200": 0
+      }
+    }
+  }
+}

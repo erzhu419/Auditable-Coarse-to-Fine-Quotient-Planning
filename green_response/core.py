@@ -141,6 +141,67 @@ class ProblemSpec:
             )
         return r_val
 
+    def as_isotropic_unconstrained_surrogate(self) -> "ProblemSpec":
+        """Explicitly constructs the geometric-mean isotropic unconstrained LMDP surrogate (`u_max=None`,
+        `R = r_bar * I` with `r_bar = exp(mean(log(R_vec)))`, preserving `lam`) for warm-start initialization
+        of non-LMDP solvers without misrepresenting surrogate outputs as exact solutions of `self`.
+        """
+        r_bar = float(np.exp(np.mean(np.log(self.R_vec))))
+        return ProblemSpec(
+            dim=self.dim,
+            half_width=self.half_width,
+            sigma=self.sigma,
+            q0=self.q0,
+            r_diag=(r_bar,) * self.dim,
+            u_max=None,
+            dt_sim=self.dt_sim,
+            max_steps=self.max_steps,
+        )
+
+
+@dataclass
+class IntervalCertificate:
+    """Lightweight typed certificate result (`status`, `scope`, `bounds`, `policy`, `reason`, `work`)
+    supporting both attribute access and dict-style lookup for backward compatibility.
+    """
+    status: str  # "epsilon_certified" | "unresolved" | "numeric_invalid" | "heuristic"
+    certified: bool
+    certificate_scope: str
+    epsilon_tol: float
+    lower_bound: Optional[float] = None
+    upper_bound: Optional[float] = None
+    stop_reason: str = ""
+    work: Optional[dict] = None
+    extras: Optional[dict] = None
+
+    def to_dict(self) -> dict:
+        base = {
+            "status": self.status,
+            "certified": bool(self.certified),
+            "certificate_scope": self.certificate_scope,
+            "epsilon_tol": float(self.epsilon_tol),
+            "lower_bound": None if self.lower_bound is None else float(self.lower_bound),
+            "upper_bound": None if self.upper_bound is None else float(self.upper_bound),
+            "stop_reason": self.stop_reason,
+            "work": {} if self.work is None else dict(self.work),
+        }
+        if self.extras:
+            base.update(self.extras)
+        return base
+
+    def __getitem__(self, key: str):
+        d = self.to_dict()
+        return d[key]
+
+    def get(self, key: str, default=None):
+        return self.to_dict().get(key, default)
+
+    def keys(self):
+        return self.to_dict().keys()
+
+    def __contains__(self, key: str) -> bool:
+        return key in self.to_dict()
+
 
 def reflect_into_box(X: np.ndarray, half_width: float) -> np.ndarray:
     """Exact specular reflection on `[-L, L]^d` with period `4L`."""
@@ -391,6 +452,30 @@ class KrigingWorldModel:
         return np.column_stack(cols)
 
 
+def _eval_segment_goal_union_hit(
+    X_prev: np.ndarray, X_next: np.ndarray, goals: Sequence[GoalBall]
+) -> Tuple[np.ndarray, np.ndarray]:
+    """Checks continuous line-segment sphere intersection `min_{t in [0, 1]} ||X_prev + t*(X_next - X_prev) - c_j|| <= r_j`
+    in addition to endpoint inclusion, reducing finite-`dt` boundary-crossing overshoot bias.
+    """
+    hit_end, phi_end = eval_goal_union(X_next, goals)
+    dX = X_next - X_prev
+    seg_len2 = np.sum(dX ** 2, axis=1)
+    in_any = hit_end.copy()
+    phi_min = np.where(hit_end, phi_end, np.inf)
+    for g in goals:
+        c = np.asarray(g.center, dtype=float)[None, :]
+        rel = c - X_prev
+        t_star = np.where(seg_len2 > 1e-24, np.clip(np.sum(rel * dX, axis=1) / np.maximum(seg_len2, 1e-24), 0.0, 1.0), 0.0)
+        closest = X_prev + t_star[:, None] * dX
+        mask = np.sum((closest - c) ** 2, axis=1) <= (g.radius ** 2)
+        if np.any(mask):
+            in_any |= mask
+            phi_min[mask] = np.minimum(phi_min[mask], g.phi)
+    phi_min[~in_any] = 0.0
+    return in_any, phi_min
+
+
 def simulate_closed_loop_crn(
     world: GroundTruthWorld,
     policy_fn: Callable[[np.ndarray], np.ndarray],
@@ -398,12 +483,15 @@ def simulate_closed_loop_crn(
     n_per_start: int = 16,
     seed: int = 2026,
     u_clip_safety: float = 25.0,
+    dt_override: Optional[float] = None,
+    substep_segment_hit: bool = False,
 ) -> dict:
     """Closed-loop rollout with per-trajectory CRN streams, `t=0` immediate goal absorption,
-    specular reflection, post-step union absorption, and explicit cost/clip diagnostics.
+    specular reflection, post-step (or segment) union absorption, and explicit cost/clip diagnostics.
     """
     spec = world.spec
-    dt = spec.dt_sim
+    dt = spec.dt_sim if dt_override is None else float(dt_override)
+    max_steps = spec.max_steps if dt_override is None else int(round(spec.max_steps * spec.dt_sim / dt))
     sqrt_dt = np.sqrt(dt)
     R_vec = spec.R_vec
 
@@ -422,7 +510,7 @@ def simulate_closed_loop_crn(
     clipped_steps = 0
     total_active_steps = 0
 
-    for _step in range(spec.max_steps):
+    for _step in range(max_steps):
         idx = np.flatnonzero(alive)
         if idx.size == 0:
             break
@@ -450,7 +538,10 @@ def simulate_closed_loop_crn(
         X[idx] = X_next
         steps_taken[idx] += 1
 
-        hit_post, phi_post = eval_goal_union(X_next, query.goals)
+        if substep_segment_hit:
+            hit_post, phi_post = _eval_segment_goal_union_hit(X_act, X_next, query.goals)
+        else:
+            hit_post, phi_post = eval_goal_union(X_next, query.goals)
         if np.any(hit_post):
             newly_done = idx[hit_post]
             terminal_cost[newly_done] += phi_post[hit_post]
@@ -533,8 +624,13 @@ def paired_relative_noninferiority(
     delta = float(rel_margin_pct) / 100.0
     contrast = cm - (1.0 + delta) * cr
     pct_excess = 100.0 * (cm / np.maximum(cr, 1e-12) - 1.0)
+    lin_res = paired_stats(contrast, noninferiority_margin=0.0)
+    pct_res = paired_stats(pct_excess, noninferiority_margin=float(rel_margin_pct))
     return {
         "rel_margin_pct": float(rel_margin_pct),
-        "linearized_contrast_vs_0": paired_stats(contrast, noninferiority_margin=0.0),
-        "per_map_pct_excess": paired_stats(pct_excess, noninferiority_margin=float(rel_margin_pct)),
+        "primary_estimand": "linearized_contrast_vs_0",
+        "primary_p_noninferior": float(lin_res["p_noninferior"]),
+        "primary_noninferior_at_alpha_0_05": bool(lin_res["noninferior_at_alpha_0_05"]),
+        "linearized_contrast_vs_0": lin_res,
+        "per_map_pct_excess": pct_res,
     }

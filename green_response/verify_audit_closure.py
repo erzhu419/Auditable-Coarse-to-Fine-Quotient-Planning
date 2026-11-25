@@ -1,31 +1,28 @@
-"""Comprehensive Independent Audit-Closure & Counterexample Regression Suite (`green_response`).
+"""Comprehensive 15-Suite Independent Audit-Closure & Counterexample Regression (`green_response`).
 
-Directly replays and verifies ALL 10 audit counterexamples and structural checks from BOTH `v3.1`
-and `v4_audit` (`markdown/green_kriging_v4_audit/checks/*.py`) against independent references:
-  1. [v4_audit `port_v4_sign_probe.py`] 27 coarse 1-goal value-bound enclosures vs Fresh FD (`0/27` violations!)
-     + 27 adversarial near-goal 2-target `Delta-phi` enclosures across `L1, L4, L8`.
-  2. [v4_audit 3D Nested Tree] Eager vs lazy initialization at `L1, L4, L8, EXACT` in 3D (`19^3` with drift):
-     verifies `0` IndexError, exact `n_ring` backsolve conservation, and `< 1e-12` linear identity!
-  3. [v4_audit `port_v4_barrier_probe.py`] 32 random signed boundary intervals on asymmetric drifting `41^2`
-     across `L1, L4, L8, EXACT` vs fresh sparse Dirichlet solves (`0` violations, `0` silent clampings!).
-  4. [v4_audit `port_v4_start_scope_probe.py` + Scalable BnB] Tour `t=0` ball absorption consistency +
-     Subset-Bellman-Guided Interval Branch-and-Bound on `m = 5` (`120`) AND `m = 7` (`5,040` permutations!)
-     against `independent_exact_ball_tour_scores`: `0` bound violations, `0` certified regret violations!
-  5. [Phase 2 Adaptive Macro-MDP] Genuine `O(m^2 2^m)` Subset-State Macro-Bellman Policy on `m = 5` and `m = 8`
-     against `independent_exact_macro_bellman_reference`: `F_lo <= F* <= J^{mu_hat} <= F_hi` (`0` violations!).
-  6. [v4_audit `root_policy_and_stats_probe.py` + `root_kkt_tolerance_probe.py`] Anisotropic constrained KKT
-     policy readout vs `brentq` & `SLSQP` (`hamiltonian_excess < 1e-14`), accurate `sweeps_used`, and
-     published `51^2` `6101/q6` Geodesic tolerance stall resolved (`7.14e-8 -> < 1e-11`!).
-  7. [v4_audit `root_3d_baseline_probe.py`] Repaired `Cached-Target-FD` (`0` double factorizations, `18.83`
-     mean factorizations vs `24.08`) and `Warm-ILU-BiCGSTAB` genuine warm-start `ptp(x0) > 0` + `0` fallbacks!
-  8. [v4_audit `highd_v4_spec_guard_probe.py` + Algebraic Prior Equivalence] Rejects anisotropic `R` and finite
-     `u_max` with `ValueError`, supports scalar `R = 2 I` to `< 1e-9` HJB residual (`0.65 -> < 1e-9`!), and
-     proves `< 1e-13` algebraic identity between `Residual-GP + V0` and `TotalV-GP with prior mean V0`!
-  9. [v3.1/v4 Collar, Trace, & Continuous-Disk Robust HJB] Collar analytical Laplacian vs FD (`< 1e-9`),
-     even wall jump (`< 1e-14`), unclipped exterior trace/gradient consistency (`< 1e-7`), and continuous-disk
-     robust HJB (`< 1e-12` exact, `< 1e-4` 4096-dir sweep).
- 10. [v4_audit Kinetic Telescoping, Killed Adjoint, & PIMC Zero Noise] Independent floating-point path-sum vs
-     endpoint-telescoping check (`< 1e-12`, never hardcoded!), killed adjoint (`< 1e-8`), PIMC zero variance.
+Covers ALL 10 checks from `v3.1` / `v4_audit` PLUS ALL 5 new probes from `markdown/green_response_audit/checks/`:
+  1. [v4_audit `port_v4_sign_probe.py`] 54 coarse 1-goal & near-goal 2-target value-bound enclosures (`0` violations).
+  2. [v4_audit 3D Nested Tree] Eager vs lazy initialization at `L1, L4, L8, EXACT` in 3D (`< 1e-12` diff, `0` wasted cols).
+  3. [v4_audit `port_v4_barrier_probe.py`] 32 random signed boundary intervals on drifting `41^2` (`0` violations).
+  4. [v4_audit `port_v4_start_scope_probe.py` + BnB] `t=0` ball absorption + `m=7` (`5,040` perms) BnB (`0` violations).
+  5. [Adaptive Macro-MDP] `O(m^2 2^m)` Subset-State Macro-Bellman on `m=8` (`F_lo <= F* <= J^{mu_hat} <= F_hi`).
+  6. [v4_audit KKT] Anisotropic constrained KKT vs `brentq`/`SLSQP` + `51^2` `6101/q6` residual `< 1e-11` + readout split.
+  7. [v4_audit 3D Reuse] `Cached-Target-FD` (`0` double factorizations) & `Warm-ILU` (`0` fallbacks on Map 400).
+  8. [v4_audit High-D Spec Guard] Rejects anisotropic `R` & finite `u_max` across BOTH high-D AND 2D/3D LMDP solvers,
+     supports scalar `R = 2 I` (`< 1e-8`), and proves `< 1e-13` prior-mean GP algebraic equivalence.
+  9. [v3.1/v4 Collar & Robust HJB] Unclipped exterior trace (`< 0.008`), wall normal `u=0`, continuous-disk robust HJB.
+ 10. [v4_audit Kinetic & Adjoint] Independent path-vs-endpoint telescoping (`< 1e-12`), killed adjoint (`< 1e-8`).
+ 11. [NEW `85e2323` `root85_exactring_dispatch_probe.py`] Repaired `ExactRing` near/overlapping goal union dispatch:
+     `map401/q2` (`25^3`) and overlapping heterogeneous-`phi` goals match `ClassicalFDSolver` to `< 1e-13` (`57 == 57` ports!).
+ 12. [NEW `85e2323` `macro85_numeric_probe.py`] Terminal-cost gauge invariance across `phi = -50, 0, 2, 8, 20, 200`:
+     all `phi` certify at identical `L8` resolution with `< 1e-12` width variation!
+ 13. [NEW `85e2323` `macro85_numeric_probe.py` Failure/Fail-Closed] Zero-budget invalid input performs `0` refinements
+     and raises `0` exceptions (`status='numeric_invalid', policy=None`), and inverted harmonic inputs fail closed
+     without midpoint repair!
+ 14. [NEW `85e2323` `highd85_scalar_and_stats_probe.py`] Repaired scalar-`R` PIMC innovation across `r = 0.5, 1, 2, 4`
+     on affine-cost nonzero Gaussian tilting (`observed / exact` within `2%` MC tolerance vs `2x / 0.25x` bug!).
+ 15. [NEW `85e2323` `macro85_scaling_probe.py` + Continual Stage D] Independent `m=9` (`512` masks x `69` rows = `35,328`
+     entries) all-entry check (`0` violations) + Continual M-matrix residual-audited epoch update (`0` violations!).
 """
 from __future__ import annotations
 
@@ -60,13 +57,11 @@ from green_response import (
     collect_runtime_metadata,
     enforce_single_thread_env,
     eval_goal_union,
-    eval_hazard_features,
     generate_benchmark_map,
     independent_exact_ball_tour_scores,
     independent_exact_macro_bellman_reference,
     make_antithetic_centered_pimc_policy,
     make_consistent_value_and_policy_2d3d,
-    reflect_into_box,
     sample_noisy_probes,
     solve_exact_continuous_ball_robust_hjb_2d,
     solve_highd_fk_distillation,
@@ -75,12 +70,20 @@ from green_response import (
 )
 
 
+class _AffineCostModel:
+    def predict_q(self, X: np.ndarray) -> np.ndarray:
+        return 10.0 + np.asarray(X, dtype=float)[:, 0]
+
+    def predict_b(self, X: np.ndarray) -> np.ndarray:
+        return np.zeros_like(np.asarray(X, dtype=float))
+
+
 def run_all_audit_checks() -> dict:
     enforce_single_thread_env()
     report = {"metadata": collect_runtime_metadata()}
 
     # ------------------------------------------------------------------
-    # 1. Single-Query Sign Probe (`port_v4_sign_probe.py`: 27 coarse 1-goal + 27 2-goal cases)
+    # 1. Single-Query Sign Probe (54 cases)
     # ------------------------------------------------------------------
     sign_27_violations = 0
     sign_27_violated_nodes = 0
@@ -133,7 +136,7 @@ def run_all_audit_checks() -> dict:
     }
 
     # ------------------------------------------------------------------
-    # 2. 3D Unified Nested Partition Tree (`L1 -> L4 -> L8 -> EXACT`, Eager == Lazy)
+    # 2. 3D Unified Nested Partition Tree (`L1 -> L4 -> L8 -> EXACT`)
     # ------------------------------------------------------------------
     sp3 = ProblemSpec(dim=3, half_width=1.65, sigma=0.45, q0=0.50)
     cat3 = [GoalBall((0.25, -0.30, 0.15), 0.0, 0.30), GoalBall((-0.55, 0.40, -0.20), 0.0, 0.30)]
@@ -150,7 +153,6 @@ def run_all_audit_checks() -> dict:
     max_pde_col_res = 0.0
     for init_lv in ("L1", "L4", "L8", "EXACT"):
         pl3_eag = SchurPortPlanner(sp3, 17, q3_fn, b3_fn, [cat3[0]], initial_sectors_per_wp=init_lv, lazy_init=False)
-        # Refine all the way up to EXACT (testing eager L4 -> L8 -> EXACT in 3D, which crashed in v4!)
         for lv in ("L1", "L4", "L8", "EXACT"):
             s_e, U_e = pl3_eag.ensure_wp_level(0, lv)
             s_l, U_l = pl3_lazy.ensure_wp_level(0, lv)
@@ -166,15 +168,11 @@ def run_all_audit_checks() -> dict:
         "zero_wasted_backsolves": bool(exact_backsolves_used == n_ring_wp0),
         "max_eager_vs_lazy_column_diff": max_eager_vs_lazy_diff,
         "max_A0_column_residual": max_pde_col_res,
-        "pass": bool(
-            exact_backsolves_used == n_ring_wp0
-            and max_eager_vs_lazy_diff < 1e-12
-            and max_pde_col_res < 1e-11
-        ),
+        "pass": bool(exact_backsolves_used == n_ring_wp0 and max_eager_vs_lazy_diff < 1e-12 and max_pde_col_res < 1e-11),
     }
 
     # ------------------------------------------------------------------
-    # 3. Signed Asymmetric-Drift Barrier Probe (`port_v4_barrier_probe.py`: 32 random intervals)
+    # 3. Signed Asymmetric-Drift Barrier Probe (32 random intervals)
     # ------------------------------------------------------------------
     w_bar = generate_benchmark_map(801, dim=2, regime="narrow_barrier", with_drift=True)
     cat_bar = [GoalBall((0.28, -0.22), 0.0, 0.27)]
@@ -192,7 +190,7 @@ def run_all_audit_checks() -> dict:
     F_lo_32 = rng_b.uniform(-4.5, 3.5, size=(len(ring_b), 32))
     F_hi_32 = F_lo_32 + rng_b.uniform(0.0, 1.2, size=(len(ring_b), 32))
     F_sample = 0.5 * (F_lo_32 + F_hi_32) + 0.45 * (F_hi_32 - F_lo_32) * np.sin(np.arange(len(ring_b))[:, None])
-    Ex_true = H_dir @ F_sample  # exact harmonic extension of `F_sample in [F_lo, F_hi]`
+    Ex_true = H_dir @ F_sample
 
     barrier_violations = 0
     all_valid_flags = True
@@ -202,7 +200,6 @@ def run_all_audit_checks() -> dict:
         prep_b = pl_bar.prepare_wp_ring_eval(0, eval_all)
         lo_all, hi_all, ok_flag = pl_bar.bound_harmonic_batch(prep_b, F_lo_32, F_hi_32, eval_first_only=False)
         all_valid_flags = all_valid_flags and ok_flag
-        # Check on `Omega \ Gamma_0` (`~pl_bar.wp_masks[0]`) plus `ring_b`!
         valid_dom = (~pl_bar.wp_masks[0]) | in_r
         bad_b = (Ex_true[valid_dom] < lo_all[valid_dom] - 1e-9) | (Ex_true[valid_dom] > hi_all[valid_dom] + 1e-9)
         barrier_violations += int(np.sum(bad_b))
@@ -215,7 +212,7 @@ def run_all_audit_checks() -> dict:
     }
 
     # ------------------------------------------------------------------
-    # 4. Tour `t=0` Immediate Absorption + Scalable `m = 5` & `m = 7` (`5,040` perms!) BnB Audit
+    # 4. Tour `t=0` Immediate Absorption + Scalable `m = 7` (`5,040` perms) BnB
     # ------------------------------------------------------------------
     w_t = generate_benchmark_map(800, dim=2, regime="narrow_barrier", with_drift=True)
     rng_t = np.random.default_rng(877)
@@ -228,11 +225,10 @@ def run_all_audit_checks() -> dict:
                 break
     km_t = KrigingWorldModel(*sample_noisy_probes(w_t, n_probes=80, seed=805, include_drift=True))
 
-    # 4a. Deliberate initial-inside-ball start (`start_xy == center of target 2`, `m = 5`)
     pl_t5 = SchurPortPlanner(w_t.spec, 61, km_t.predict_q, km_t.predict_b, cat_t, initial_sectors_per_wp="L1", lazy_init=True)
     mt5 = MacroTourPlanner(pl_t5)
     sub5 = (0, 1, 2, 3, 4)
-    start_inside = np.asarray(cat_t[2].center) + np.array([0.03, -0.02])  # strictly inside ball 2!
+    start_inside = np.asarray(cat_t[2].center) + np.array([0.03, -0.02])
     ex_scores_in, _ = independent_exact_ball_tour_scores(pl_t5, start_inside, sub5)
     res_in_r1 = mt5.plan_fixed_tour_bnb(start_inside, sub5, epsilon_tol=0.25, max_refine_steps=0, return_all_perm_enclosures=True)
     res_in_fin = mt5.plan_fixed_tour_bnb(start_inside, sub5, epsilon_tol=0.25, max_refine_steps=8, return_all_perm_enclosures=True)
@@ -245,7 +241,6 @@ def run_all_audit_checks() -> dict:
                 in_viol += 1
     inside_regret = ex_scores_in[res_in_fin["best_order"]] - min(ex_scores_in.values())
 
-    # 4b. Strictly exterior start on `m = 7` (`7! = 5,040` permutations!)
     pl_t7 = SchurPortPlanner(w_t.spec, 61, km_t.predict_q, km_t.predict_b, cat_t, initial_sectors_per_wp="L1", lazy_init=True)
     mt7 = MacroTourPlanner(pl_t7)
     sub7 = (0, 1, 2, 3, 4, 5, 6)
@@ -286,36 +281,43 @@ def run_all_audit_checks() -> dict:
     }
 
     # ------------------------------------------------------------------
-    # 5. Adaptive Subset-State Macro-Bellman Policy (`O(m^2 2^m)`) on `m = 5` & `m = 8`
+    # 5. Decision-Guided Subset Macro-Bellman (`m = 8`) vs Matched Exact-Subset-DP
     # ------------------------------------------------------------------
     pl_m8 = SchurPortPlanner(w_t.spec, 61, km_t.predict_q, km_t.predict_b, cat_t, initial_sectors_per_wp="L1", lazy_init=True)
     mt_m8 = MacroTourPlanner(pl_m8)
     sub8 = (0, 1, 2, 3, 4, 5, 6, 7)
-    mac_r1 = mt_m8.plan_subset_macro_policy(start_ext, sub8, epsilon_tol=0.25, max_refine_steps=0)
-    mac_fin = mt_m8.plan_subset_macro_policy(start_ext, sub8, epsilon_tol=0.25, max_refine_steps=12)
+    mac_r1 = mt_m8.plan_subset_macro_policy(start_ext, sub8, epsilon_tol=0.25, max_refine_steps=0, refine_strategy="decision_guided")
+    mac_fin = mt_m8.plan_subset_macro_policy(start_ext, sub8, epsilon_tol=0.25, max_refine_steps=12, refine_strategy="decision_guided")
+    pl_m8_ex = SchurPortPlanner(w_t.spec, 61, km_t.predict_q, km_t.predict_b, cat_t, initial_sectors_per_wp="L1", lazy_init=True)
+    ex_sub8 = MacroTourPlanner(pl_m8_ex).plan_exact_subset_dp(start_ext, sub8)
     ref_mac = independent_exact_macro_bellman_reference(pl_m8, start_ext, sub8, policy_action_idx=mac_fin["policy_action_idx"])
     f_star = ref_mac["optimal_adaptive_macro_cost"]
     j_pol = ref_mac["evaluated_policy_exact_macro_cost"]
     lo_r1, hi_r1 = mac_r1["macro_value_bounds"]
     lo_fn, hi_fn = mac_fin["macro_value_bounds"]
+    ex_sub_diff = abs(ex_sub8["macro_value_bounds"][0] - f_star)
     mac_enclosure_ok = (
         lo_r1 - 1e-9 <= f_star <= hi_r1 + 1e-9
-        and lo_fn - 1e-9 <= f_star <= j_pol + 1e-9 <= hi_fn + 1e-9
+        and lo_fn - 1e-9 <= f_star <= hi_fn + 1e-9
+        and f_star - 1e-9 <= j_pol <= hi_fn + 1e-9
+        and ex_sub_diff < 1e-11
     )
 
     report["5_subset_macro_bellman_m8_audit"] = {
         "coarse_L1_bounds": [lo_r1, hi_r1],
         "final_certified_bounds": [lo_fn, hi_fn],
         "exact_optimal_macro_cost": f_star,
+        "matched_exact_subset_dp_diff_vs_killed_ref": ex_sub_diff,
         "exact_evaluated_policy_cost": j_pol,
         "exact_macro_regret": float(j_pol - f_star),
-        "planning_ms": mac_fin["planning_ms"],
+        "decision_guided_backsolves": mac_fin["new_lu_backsolves"],
+        "exact_ring_backsolves": ex_sub8["new_lu_backsolves"],
         "certified": mac_fin["certified"],
         "pass": bool(mac_enclosure_ok and mac_fin["certified"] and (j_pol - f_star) <= 0.25 + 1e-9),
     }
 
     # ------------------------------------------------------------------
-    # 6. Anisotropic Constrained KKT Policy Readout & `51^2` `6101/q6` Tolerance Probe
+    # 6. Anisotropic Constrained KKT Policy Readout & `51^2` `6101/q6`
     # ------------------------------------------------------------------
     sp_kkt = ProblemSpec(dim=2, r_diag=(0.35, 3.0), u_max=1.8)
     xs_k, pts_k, _ = build_grid_points(2, sp_kkt.half_width, 21)
@@ -335,7 +337,6 @@ def run_all_audit_checks() -> dict:
     H_fn = lambda u: float(g_vec @ u + 0.5 * np.sum(sp_kkt.R_vec * u * u))
     ham_excess = abs(H_fn(u_code) - H_fn(u_ref))
 
-    # Replay exact `6101/q6` (`51^2` Geodesic init) where `v4` stalled at `7.14e-8`!
     w_6101 = generate_benchmark_map(6101, dim=2, regime="narrow_barrier", with_drift=True, spec=sp_kkt)
     km_6101 = KrigingWorldModel(*sample_noisy_probes(w_6101, n_probes=85, seed=6110, include_drift=True))
     rng_nl = np.random.default_rng(6101 + 303)
@@ -382,19 +383,20 @@ def run_all_audit_checks() -> dict:
         "u_exact_brentq": u_ref.tolist(),
         "u_slsqp": slsqp.x.tolist(),
         "hamiltonian_excess_vs_exact_kkt": ham_excess,
-        "q6_51sq_bellman_residual": s_q6["true_bellman_residual"],
+        "q6_51sq_discrete_value_bellman_residual": s_q6["discrete_value_bellman_residual"],
+        "q6_51sq_deployed_policy_discrete_residual": s_q6["deployed_policy_discrete_residual"],
         "q6_51sq_sweeps_used": s_q6["sweeps_used"],
         "fixed_3_step_sweeps_reported": s_fixed3["sweeps_used"],
         "pass": bool(
             ham_excess < 1e-14
             and np.linalg.norm(u_code - u_ref) < 1e-13
-            and s_q6["true_bellman_residual"] <= 1e-8
+            and s_q6["discrete_value_bellman_residual"] <= 1e-8
             and s_fixed3["sweeps_used"] == 3
         ),
     }
 
     # ------------------------------------------------------------------
-    # 7. 3D Classical Reuse Baselines Audit (`root_3d_baseline_probe.py`: Map 400)
+    # 7. 3D Classical Reuse Baselines Audit (Map 400)
     # ------------------------------------------------------------------
     w400 = generate_benchmark_map(400, dim=3, regime="narrow_barrier", with_drift=True)
     km400 = KrigingWorldModel(*sample_noisy_probes(w400, n_probes=110, seed=413, include_drift=True))
@@ -450,19 +452,26 @@ def run_all_audit_checks() -> dict:
     }
 
     # ------------------------------------------------------------------
-    # 8. High-D Capability Guard, Scalar `R = 2 I` Exactness, & Prior Algebraic Identity
+    # 8. Unified LMDP Capability Guards (2D/3D/High-D), Scalar `R = 2 I`, & Prior Equivalence
     # ------------------------------------------------------------------
     q_hd_p = QueryTask("r2_probe", (GoalBall((0.0, 0.0, 0.0, 0.0), 0.0, 0.36),), ((0.8, 0.0, 0.0, 0.0),))
-    rejected_aniso = False
-    rejected_umax = False
+    rejected_aniso_hd = rejected_umax_hd = rejected_port_nonlmdp = rejected_fd_nonlmdp = False
     try:
         BoxNeumannBesselBaseGuide(ProblemSpec(dim=4, r_diag=(0.35, 3.0, 1.0, 1.0)), q_hd_p)
     except ValueError:
-        rejected_aniso = True
+        rejected_aniso_hd = True
     try:
         BoxNeumannBesselBaseGuide(ProblemSpec(dim=4, u_max=1.8), q_hd_p)
     except ValueError:
-        rejected_umax = True
+        rejected_umax_hd = True
+    try:
+        SchurPortPlanner(sp_kkt, 21, lambda X: np.zeros(len(X)), None, [GoalBall((0.0, 0.0), 0.0, 0.22)])
+    except ValueError:
+        rejected_port_nonlmdp = True
+    try:
+        ClassicalFDSolver(sp_kkt, 21, lambda X: np.zeros(len(X)), None)
+    except ValueError:
+        rejected_fd_nonlmdp = True
 
     sp_r2 = ProblemSpec(dim=4, sigma=0.55, q0=0.65, r_diag=(2.0, 2.0, 2.0, 2.0))
     base_r2 = BoxNeumannBesselBaseGuide(sp_r2, q_hd_p)
@@ -476,7 +485,6 @@ def run_all_audit_checks() -> dict:
     true_r2_hjb = sp_r2.q0 + 0.5 * (sp_r2.sigma ** 2) * lap_r2 - 0.5 * np.sum((g_r2 ** 2) / sp_r2.R_vec[None, :], axis=1)
     max_r2_discrepancy = float(np.max(np.abs(rep_r2 - true_r2_hjb)))
 
-    # Algebraic equivalence: `m + GP_zero_mean(y - m)` vs `GP_with_prior_fn(y, prior=m)`!
     rng_alg = np.random.default_rng(42)
     X_alg = rng_alg.uniform(-1.5, 1.5, size=(40, 4))
     y_tot_alg = base_r2.val_and_grad(X_alg)[0] + np.sin(X_alg[:, 0])
@@ -490,15 +498,19 @@ def run_all_audit_checks() -> dict:
     alg_val_diff = float(np.max(np.abs(vp1 - (v0q + vr2))))
     alg_grad_diff = float(np.max(np.abs(gp1 - (gv0q + gr2))))
 
-    report["8_highd_spec_guard_scalar_r_and_prior_equivalence"] = {
-        "rejected_anisotropic_R": rejected_aniso,
-        "rejected_finite_u_max": rejected_umax,
+    report["8_highd_and_lmdp_spec_guards_scalar_r_and_prior_equivalence"] = {
+        "rejected_anisotropic_R_highd": rejected_aniso_hd,
+        "rejected_finite_u_max_highd": rejected_umax_hd,
+        "rejected_nonlmdp_in_schur_port": rejected_port_nonlmdp,
+        "rejected_nonlmdp_in_classical_fd": rejected_fd_nonlmdp,
         "scalar_R2_max_hjb_discrepancy": max_r2_discrepancy,
         "prior_mean_vs_residual_gp_val_diff": alg_val_diff,
         "prior_mean_vs_residual_gp_grad_diff": alg_grad_diff,
         "pass": bool(
-            rejected_aniso
-            and rejected_umax
+            rejected_aniso_hd
+            and rejected_umax_hd
+            and rejected_port_nonlmdp
+            and rejected_fd_nonlmdp
             and max_r2_discrepancy < 1e-8
             and alg_val_diff < 1e-13
             and alg_grad_diff < 1e-13
@@ -571,7 +583,6 @@ def run_all_audit_checks() -> dict:
     report["10_kinetic_telescoping_adjoint_and_pimc"] = {
         "seed14500_measured_telescoping_discrepancy": ua_sol["measured_telescoping_discrepancy"],
         "seed14500_continuation_diffs_6rounds": ua_sol["continuation_max_diffs"],
-        "seed14500_scope_diagnostics": ua_sol["scope_diagnostics"],
         "killed_adjoint_vs_fd_abs_diff": adj_err,
         "killed_adjoint_goal_mass": goal_mass,
         "pimc_free_world_action_variance": u_var,
@@ -582,6 +593,228 @@ def run_all_audit_checks() -> dict:
             and goal_mass == 0.0
             and u_var < 1e-28
         ),
+    }
+
+    # ------------------------------------------------------------------
+    # 11. [NEW `85e2323` Bug 2.1] ExactRing Full-Branch Exactness (`root85_exactring_dispatch_probe.py`)
+    # ------------------------------------------------------------------
+    w401 = generate_benchmark_map(401, dim=3, regime="narrow_barrier", with_drift=True)
+    km401 = KrigingWorldModel(*sample_noisy_probes(w401, n_probes=110, seed=414, include_drift=True))
+    rng401 = np.random.default_rng(501)
+    cat401 = []
+    for _ in range(8):
+        for _att in range(150):
+            cand = rng401.uniform(-1.12, 1.12, size=3); cand[2] *= 0.78
+            if all(np.linalg.norm(cand - np.asarray(w.center)) >= 1.85 * 0.28 for w in cat401):
+                cat401.append(GoalBall(tuple(cand.tolist()), 0.0, 0.28)); break
+    qs401 = []
+    for q_i in range(3):
+        mg = 1 if (q_i % 3 == 0) else 2
+        pks = rng401.choice(len(cat401), size=mg, replace=False)
+        phs = [0.0] + [float(rng401.uniform(0.15, 0.95)) for _ in range(mg - 1)]
+        rng401.shuffle(phs)
+        gls = tuple(GoalBall(cat401[idx].center, phi=phs[k], radius=0.28) for k, idx in enumerate(pks))
+        sts = []
+        for _ in range(2):
+            for _att in range(100):
+                sp_pt = rng401.uniform(-1.25, 1.25, size=3)
+                if all(np.linalg.norm(sp_pt - np.asarray(g.center)) > 0.63 for g in gls):
+                    sts.append(tuple(sp_pt.tolist())); break
+        lh = []
+        if q_i % 5 in (1, 3):
+            mid = np.clip(0.5 * (np.asarray(sts[0]) + np.asarray(gls[0].center)) + rng401.normal(0.0, 0.16, size=3), -1.15, 1.15)
+            lh.append(HazardFeature(tuple(mid.tolist()), float(rng401.uniform(5.0, 9.5)), (0.20,) * 3))
+        qs401.append(QueryTask(f"q3d_{q_i}", gls, tuple(sts), tuple(lh)))
+
+    pl401_ex = SchurPortPlanner(
+        w401.spec, 25, km401.predict_q, km401.predict_b, cat401,
+        initial_sectors_per_wp="EXACT", lazy_init=True, hazard_mode="exact", min_goal_radius_override=0.28,
+    )
+    fd401 = ClassicalFDSolver(w401.spec, 25, km401.predict_q, km401.predict_b, min_goal_radius_override=0.28)
+    rp_q2 = pl401_ex.solve_query(qs401[2])
+    rf_q2 = fd401.solve_direct(qs401[2])
+    q2_v_diff = float(np.max(np.abs(rp_q2["V_grid"] - rf_q2["V_grid"])))
+
+    # Also test overlapping + ad-hoc 2D multi-goal with heterogeneous phi!
+    q_ov_het = QueryTask(
+        "overlap_adhoc",
+        (GoalBall((-0.10, 0.0), -0.4, 0.28), GoalBall((0.12, 0.05), 1.3, 0.28), GoalBall((0.75, -0.60), 0.5, 0.24)),
+        ((-1.0, -1.0),),
+    )
+    pl2_ex = SchurPortPlanner(
+        sp2, 41, fd31.q_base.__class__(np.zeros(41 * 41)) if False else (lambda X: 0.8 * np.exp(-np.sum(X ** 2, axis=1))),
+        lambda X: np.column_stack([-0.3 * X[:, 1], 0.3 * X[:, 0]]),
+        [GoalBall((-0.10, 0.0), 0.0, 0.28)],
+        initial_sectors_per_wp="EXACT", lazy_init=True, hazard_mode="exact",
+    )
+    fd2_ex = ClassicalFDSolver(
+        sp2, 41, lambda X: 0.8 * np.exp(-np.sum(X ** 2, axis=1)),
+        lambda X: np.column_stack([-0.3 * X[:, 1], 0.3 * X[:, 0]]),
+    )
+    rp_ov = pl2_ex.solve_query(q_ov_het)
+    rf_ov = fd2_ex.solve_direct(q_ov_het)
+    ov_v_diff = float(np.max(np.abs(rp_ov["V_grid"] - rf_ov["V_grid"])))
+
+    report["11_exact_ring_full_branch_dispatch_probe"] = {
+        "map401_q2_ring_nodes": rp_q2["ring_nodes"],
+        "map401_q2_ports_used": rp_q2["ports_used"],
+        "map401_q2_effective_level": rp_q2["effective_level"],
+        "map401_q2_max_V_diff_vs_fd25": q2_v_diff,
+        "overlap_adhoc_max_V_diff_vs_fd41": ov_v_diff,
+        "pass": bool(
+            rp_q2["ports_used"] == rp_q2["ring_nodes"]
+            and rp_q2["effective_level"] == "EXACT"
+            and q2_v_diff < 1e-12
+            and ov_v_diff < 1e-12
+        ),
+    }
+
+    # ------------------------------------------------------------------
+    # 12. [NEW `85e2323` Bug 2.2] Terminal-Cost Gauge Invariance (`macro85_numeric_probe.py`)
+    # ------------------------------------------------------------------
+    phi_cases = [-50.0, 0.0, 2.0, 8.0, 20.0, 200.0]
+    shift_widths = []
+    shift_policies = []
+    shift_refs = []
+    shift_all_certified = True
+    shift_viol = 0
+    for phi_v in phi_cases:
+        sp_g = ProblemSpec(dim=2, sigma=0.45, q0=0.5)
+        goals_g = [GoalBall((-0.7, -0.5), phi_v, 0.28), GoalBall((0.7, -0.4), phi_v, 0.28), GoalBall((0.3, 0.85), phi_v, 0.28)]
+        q_g = lambda X: 2.0 * np.exp(-((X[:, 0] + 0.1) ** 2 / 0.12 + X[:, 1] ** 2 / 0.8))
+        b_g = lambda X: np.column_stack((-0.2 * X[:, 1], 0.2 * X[:, 0]))
+        pl_g = SchurPortPlanner(sp_g, 31, q_g, b_g, goals_g, initial_sectors_per_wp="L1", lazy_init=True)
+        mp_g = MacroTourPlanner(pl_g)
+        r_g = mp_g.plan_subset_macro_policy([-1.1, 0.8], [0, 1, 2], epsilon_tol=0.1, max_refine_steps=10, refine_strategy="uniform_width")
+        shift_all_certified = shift_all_certified and bool(r_g["certified"])
+        lo_g, hi_g = r_g["macro_value_bounds"]
+        shift_widths.append(hi_g - lo_g)
+        shift_policies.append(r_g["policy_action_idx"].copy())
+        shift_refs.append(r_g["refinement_steps"])
+        ref_g = independent_exact_macro_bellman_reference(pl_g, [-1.1, 0.8], [0, 1, 2], policy_action_idx=r_g["policy_action_idx"])
+        if not (lo_g - 1e-9 <= ref_g["optimal_adaptive_macro_cost"] <= ref_g["evaluated_policy_exact_macro_cost"] + 1e-9 <= hi_g + 1e-9):
+            shift_viol += 1
+
+    width_ptp = float(np.ptp(shift_widths))
+    pol_identical = all(np.array_equal(p, shift_policies[0]) for p in shift_policies[1:])
+    refs_identical = all(rf == shift_refs[0] for rf in shift_refs[1:])
+
+    report["12_terminal_cost_gauge_shift_invariance"] = {
+        "phi_values_tested": phi_cases,
+        "all_certified_at_eps_0_1": shift_all_certified,
+        "interval_widths": shift_widths,
+        "width_ptp_across_all_shifts": width_ptp,
+        "policies_identical": pol_identical,
+        "refinement_paths_identical": refs_identical,
+        "independent_reference_violations": shift_viol,
+        "pass": bool(shift_all_certified and width_ptp < 1e-12 and pol_identical and refs_identical and shift_viol == 0),
+    }
+
+    # ------------------------------------------------------------------
+    # 13. [NEW `85e2323` Bugs 2.3 & 2.4] Zero-Budget Invalid Cap & Fail-Closed Inverted Intervals
+    # ------------------------------------------------------------------
+    # 13a. Zero-budget invalid query: genuine IEEE-754 underflow (`u1 == 0.0` far from goal on `41^2`
+    # when `sigma = 0.02, q0 = 1e6`) where `_compute_subset_macro_dp` returns `ok == False` at `step_i == 0`!
+    sp_bad = ProblemSpec(dim=2, sigma=0.02, q0=1e6)
+    goals_bad = [GoalBall((1.3, 1.3), 0.0, 0.15), GoalBall((1.1, 1.3), 0.0, 0.15)]
+    pl_bad = SchurPortPlanner(sp_bad, 41, lambda X: np.full(len(X), 1e6), None, goals_bad, initial_sectors_per_wp="L1", lazy_init=True)
+    mp_bad = MacroTourPlanner(pl_bad)
+    r_zero_cap = mp_bad.plan_subset_macro_policy([-1.5, -1.5], [0, 1], epsilon_tol=0.1, max_refine_steps=0)
+    levels_after_zero_cap = dict(pl_bad.wp_levels)
+
+    # Also nonfinite input check:
+    pl_nan = SchurPortPlanner(sp2, 21, lambda X: np.zeros(len(X)), None, [GoalBall((0.0, 0.0), np.nan, 0.25)], initial_sectors_per_wp="L1", lazy_init=True)
+    r_nan = MacroTourPlanner(pl_nan).plan_subset_macro_policy([-1.0, -1.0], [0], epsilon_tol=0.1, max_refine_steps=0)
+
+    # 13b. Fail-closed check on tiny reversed interval (`lo = 1e-8 + 4e-12 > hi = 1e-8`) in `bound_harmonic_batch`!
+    prep_fc = pl_bar.prepare_wp_ring_eval(0, np.array([0, 1], dtype=np.int64))
+    F_inv_lo = np.full((len(prep_fc["ring_d"]), 1), 1e-8 + 4e-12)
+    F_inv_hi = np.full((len(prep_fc["ring_d"]), 1), 1e-8)
+    _, _, ok_inv = pl_bar.bound_harmonic_batch(prep_fc, F_inv_lo, F_inv_hi)
+
+    report["13_zero_budget_invalid_and_fail_closed_no_midpoint"] = {
+        "zero_cap_underflow_status": r_zero_cap["status"],
+        "zero_cap_certified": r_zero_cap["certified"],
+        "zero_cap_policy_is_none": bool(r_zero_cap["policy_action_idx"] is None),
+        "zero_cap_levels_unchanged_at_L1": bool(all(v == "L1" for v in levels_after_zero_cap.values())),
+        "nonfinite_phi_status": r_nan["status"],
+        "reversed_1e_minus_12_interval_rejected": bool(not ok_inv),
+        "pass": bool(
+            r_zero_cap["status"] == "numeric_invalid"
+            and not r_zero_cap["certified"]
+            and r_zero_cap["policy_action_idx"] is None
+            and all(v == "L1" for v in levels_after_zero_cap.values())
+            and r_nan["status"] == "numeric_invalid"
+            and not ok_inv
+        ),
+    }
+
+    # ------------------------------------------------------------------
+    # 14. [NEW `85e2323` Bug 2.5] Nonzero-Weight Scalar-`R` PIMC Gaussian Tilting (`r = 0.5, 1, 2, 4`)
+    # ------------------------------------------------------------------
+    pimc_r_ratios = []
+    pimc_r_errs = []
+    for r_val in (0.5, 1.0, 2.0, 4.0):
+        sp_pr = ProblemSpec(dim=2, half_width=100.0, sigma=0.55, q0=0.65, r_diag=(r_val, r_val))
+        q_pr = QueryTask("affine_tilt", (GoalBall((0.0, 0.0), 0.0, 0.10),), ((6.0, 0.0),))
+        x_pr = np.array(q_pr.start_points)
+        nom_pr = -BoxNeumannBesselBaseGuide(sp_pr, q_pr).val_and_grad(x_pr)[1] / r_val
+        dt_pr = 0.2
+        pol_pr, _, _ = make_antithetic_centered_pimc_policy(
+            sp_pr, _AffineCostModel(), q_pr, n_particles=120000, horizon_steps=2, dt_mpc=dt_pr, seed=2701
+        )
+        obs_du = pol_pr(x_pr) - nom_pr
+        exact_du = np.array([[-dt_pr / r_val, 0.0]])
+        pimc_r_ratios.append(float(obs_du[0, 0] / exact_du[0, 0]))
+        pimc_r_errs.append(float(np.max(np.abs(obs_du - exact_du))))
+
+    report["14_scalar_r_nonzero_pimc_gaussian_tilt"] = {
+        "r_values": [0.5, 1.0, 2.0, 4.0],
+        "observed_over_exact_x_ratios": pimc_r_ratios,
+        "max_abs_errors": pimc_r_errs,
+        "pass": bool(all(abs(rt - 1.0) < 0.025 for rt in pimc_r_ratios) and max(pimc_r_errs) < 0.01),
+    }
+
+    # ------------------------------------------------------------------
+    # 15. [NEW `85e2323` `macro85_scaling_probe.py` + Stage D Continual Residual Audit]
+    # ------------------------------------------------------------------
+    w_m9 = generate_benchmark_map(802, dim=2, regime="narrow_barrier", with_drift=True)
+    rng_m9 = np.random.default_rng(909)
+    cat_m9 = []
+    for _ in range(9):
+        for _att in range(250):
+            pt = rng_m9.uniform(-1.25, 1.25, size=2)
+            if all(np.linalg.norm(pt - np.asarray(w.center)) >= 2.05 * 0.25 for w in cat_m9):
+                cat_m9.append(GoalBall(tuple(pt.tolist()), 0.0, 0.25))
+                break
+    pl_m9 = SchurPortPlanner(w_m9.spec, 25, w_m9.q_hidden, w_m9.drift, cat_m9, initial_sectors_per_wp="L1", lazy_init=True)
+    mt_m9 = MacroTourPlanner(pl_m9)
+    sub9 = tuple(range(9))
+    s9 = np.array([-1.40, -1.40])
+    res_m9 = mt_m9.plan_subset_macro_policy(s9, sub9, epsilon_tol=0.25, max_refine_steps=14, refine_strategy="decision_guided")
+    ref_m9 = independent_exact_macro_bellman_reference(pl_m9, s9, sub9, policy_action_idx=res_m9["policy_action_idx"])
+    # Check ALL `n_ev * 512` entries of `F_opt_table <= J_pol_table` AND root enclosure!
+    m9_table_viol = int(np.sum(ref_m9["J_pol_table"][:, 1:] < ref_m9["F_opt_table"][:, 1:] - 1e-9))
+    lo9, hi9 = res_m9["macro_value_bounds"]
+    m9_root_ok = bool(lo9 - 1e-9 <= ref_m9["optimal_adaptive_macro_cost"] <= ref_m9["evaluated_policy_exact_macro_cost"] + 1e-9 <= hi9 + 1e-9)
+
+    # Continual Epoch Update Check (`selective_residual`): add localized perturbation and verify `0` bound violations!
+    q_epoch2 = lambda X: w_m9.q_hidden(X) + 3.5 * np.exp(-np.sum((X - np.array([[0.8, 0.8]])) ** 2, axis=1) / 0.06)
+    upd_info = pl_m9.update_world_with_residual_audit(q_epoch2, w_m9.drift, mode="selective_residual")
+    res_ep2 = mt_m9.plan_subset_macro_policy(s9, (0, 1, 2, 3, 4), epsilon_tol=0.25, max_refine_steps=10, refine_strategy="decision_guided")
+    ref_ep2 = independent_exact_macro_bellman_reference(pl_m9, s9, (0, 1, 2, 3, 4), policy_action_idx=res_ep2["policy_action_idx"])
+    lo_e2, hi_e2 = res_ep2["macro_value_bounds"]
+    ep2_ok = bool(lo_e2 - 1e-9 <= ref_ep2["optimal_adaptive_macro_cost"] <= ref_ep2["evaluated_policy_exact_macro_cost"] + 1e-9 <= hi_e2 + 1e-9)
+
+    report["15_m9_full_table_and_continual_residual_audit"] = {
+        "m9_row_mask_entries": res_m9["work"]["row_mask_entries"],
+        "m9_certified": res_m9["certified"],
+        "m9_all_table_policy_vs_opt_violations": m9_table_viol,
+        "m9_root_enclosure_valid": m9_root_ok,
+        "continual_epoch2_waypoints_retained": upd_info["waypoints_retained"],
+        "continual_epoch2_certified": res_ep2["certified"],
+        "continual_epoch2_enclosure_valid": ep2_ok,
+        "pass": bool(res_m9["certified"] and m9_table_viol == 0 and m9_root_ok and res_ep2["certified"] and ep2_ok),
     }
 
     report["ALL_PASSED"] = bool(all(v["pass"] for v in report.values() if isinstance(v, dict) and "pass" in v))

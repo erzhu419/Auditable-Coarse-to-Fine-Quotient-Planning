@@ -75,8 +75,8 @@
     "inside_start_bound_violations_across_240_intervals": 0,
     "inside_start_exact_regret": 0.0,
     "m7_total_permutations": 5040,
-    "m7_unique_leaves_evaluated": 65,
-    "m7_pruned_permutations": 4975,
+    "m7_unique_leaves_evaluated": 66,
+    "m7_pruned_permutations": 4974,
     "m7_certified": true,
     "m7_bound_and_prefix_violations": 0,
     "m7_exact_regret": 0.0,
@@ -84,17 +84,19 @@
   },
   "5_subset_macro_bellman_m8_audit": {
     "coarse_L1_bounds": [
-      7.906943395669932,
-      17.18697741027466
+      7.906943395669103,
+      17.186977410275468
     ],
     "final_certified_bounds": [
-      12.846125673444515,
-      12.846125720905572
+      12.790149714531497,
+      12.90151363623895
     ],
     "exact_optimal_macro_cost": 12.846125697175047,
+    "matched_exact_subset_dp_diff_vs_killed_ref": 3.552713678800501e-15,
     "exact_evaluated_policy_cost": 12.846125697175047,
     "exact_macro_regret": 0.0,
-    "planning_ms": 478.4754680003971,
+    "decision_guided_backsolves": 162,
+    "exact_ring_backsolves": 206,
     "certified": true,
     "pass": true
   },
@@ -112,7 +114,8 @@
       -0.5247194724579237
     ],
     "hamiltonian_excess_vs_exact_kkt": 4.440892098500626e-16,
-    "q6_51sq_bellman_residual": 5.648814749292796e-13,
+    "q6_51sq_discrete_value_bellman_residual": 5.648814749292796e-13,
+    "q6_51sq_deployed_policy_discrete_residual": 1.5773460636552001,
     "q6_51sq_sweeps_used": 7,
     "fixed_3_step_sweeps_reported": 3,
     "pass": true
@@ -125,9 +128,11 @@
     "warm_ilu_lu_fallbacks_of_20": 1,
     "pass": true
   },
-  "8_highd_spec_guard_scalar_r_and_prior_equivalence": {
-    "rejected_anisotropic_R": true,
-    "rejected_finite_u_max": true,
+  "8_highd_and_lmdp_spec_guards_scalar_r_and_prior_equivalence": {
+    "rejected_anisotropic_R_highd": true,
+    "rejected_finite_u_max_highd": true,
+    "rejected_nonlmdp_in_schur_port": true,
+    "rejected_nonlmdp_in_classical_fd": true,
     "scalar_R2_max_hjb_discrepancy": 1.482464373481207e-09,
     "prior_mean_vs_residual_gp_val_diff": 0.0,
     "prior_mean_vs_residual_gp_grad_diff": 0.0,
@@ -151,14 +156,81 @@
       0.08769668194978308,
       0.013045445749348517
     ],
-    "seed14500_scope_diagnostics": {
-      "incoming_pos_boundary_raw_rms": 0.14691507589115926,
-      "unanchored_vel_cap_boundary_raw_rms": 3.9987715797907266,
-      "specular_wall_pair_raw_rms": 1.4431731058511388
-    },
     "killed_adjoint_vs_fd_abs_diff": 5.36304778364638e-10,
     "killed_adjoint_goal_mass": 0.0,
     "pimc_free_world_action_variance": 5.298714759495383e-32,
+    "pass": true
+  },
+  "11_exact_ring_full_branch_dispatch_probe": {
+    "map401_q2_ring_nodes": 57,
+    "map401_q2_ports_used": 57,
+    "map401_q2_effective_level": "EXACT",
+    "map401_q2_max_V_diff_vs_fd25": 1.7763568394002505e-15,
+    "overlap_adhoc_max_V_diff_vs_fd41": 2.220446049250313e-15,
+    "pass": true
+  },
+  "12_terminal_cost_gauge_shift_invariance": {
+    "phi_values_tested": [
+      -50.0,
+      0.0,
+      2.0,
+      8.0,
+      20.0,
+      200.0
+    ],
+    "all_certified_at_eps_0_1": true,
+    "interval_widths": [
+      0.0924581446752768,
+      0.09245814467528124,
+      0.09245814467528213,
+      0.09245814467528035,
+      0.09245814467529101,
+      0.09245814467521996
+    ],
+    "width_ptp_across_all_shifts": 7.105427357601002e-14,
+    "policies_identical": true,
+    "refinement_paths_identical": true,
+    "independent_reference_violations": 0,
+    "pass": true
+  },
+  "13_zero_budget_invalid_and_fail_closed_no_midpoint": {
+    "zero_cap_underflow_status": "numeric_invalid",
+    "zero_cap_certified": false,
+    "zero_cap_policy_is_none": true,
+    "zero_cap_levels_unchanged_at_L1": true,
+    "nonfinite_phi_status": "numeric_invalid",
+    "reversed_1e_minus_12_interval_rejected": true,
+    "pass": true
+  },
+  "14_scalar_r_nonzero_pimc_gaussian_tilt": {
+    "r_values": [
+      0.5,
+      1.0,
+      2.0,
+      4.0
+    ],
+    "observed_over_exact_x_ratios": [
+      0.9991823526302851,
+      0.999542811817371,
+      0.9996349368768431,
+      0.9996580971873503
+    ],
+    "max_abs_errors": [
+      0.001644575664861806,
+      0.0008419423591142401,
+      0.0004234434135742099,
+      0.00021203118502711302
+    ],
+    "pass": true
+  },
+  "15_m9_full_table_and_continual_residual_audit": {
+    "m9_row_mask_entries": 37376,
+    "m9_certified": true,
+    "m9_all_table_policy_vs_opt_violations": 0,
+    "m9_root_enclosure_valid": true,
+    "continual_epoch2_waypoints_retained": 7,
+    "continual_epoch2_certified": true,
+    "continual_epoch2_enclosure_valid": true,
     "pass": true
   },
   "ALL_PASSED": true

@@ -162,28 +162,95 @@ class MirrorNeumannMatern52GP:
 
 
 class EikonalConeMeanGuide:
-    """Nontrivial Smooth Geometric / Eikonal Distance-Cone Mean Prior (`GPT6 Audit Priority 4`):
-    Shares the EXACT SAME `C^2` even reflecting collar warp `w(x)`, asymptotic free-space slope
-    `sqrt(2 q_0 r)`, and multi-goal softmin `-lam log sum_j exp(-E_j(x) / lam)` as `V_0`,
-    WITHOUT the `d`-dimensional Helmholtz/Bessel radial curvature `(d - 1)/r` (`kv(nu, kappa r)`).
+    """Nontrivial Geometric / Eikonal Distance-Cone Mean Prior (`green_response`):
+    Shares the EXACT SAME `C^2` even reflecting collar warp `w(x)` and asymptotic free-space slope
+    `sqrt(2 q_0 r)` as `V_0`, WITHOUT the `d`-dimensional Helmholtz/Bessel radial curvature `(d - 1)/r`.
+    Supports:
+      - `smooth_tau > 0.0` with softmin (`calibrate_nnls=False`, original smooth cone);
+      - `calibrate_nnls=True` (36-point per-goal boundary NNLS calibration in desirability space, matching
+        `BoxNeumannBesselBaseGuide` point-for-point!) with either `smooth_tau = 0.035` (matched smooth cone)
+        or `smooth_tau = 0.0` (matched sharp cone with exact finite exterior slope!).
     """
 
-    def __init__(self, spec: ProblemSpec, query: QueryTask, collar_delta: float = 0.22, smooth_tau: float = 0.035):
+    def __init__(
+        self,
+        spec: ProblemSpec,
+        query: QueryTask,
+        collar_delta: float = 0.22,
+        smooth_tau: float = 0.035,
+        calibrate_nnls: bool = False,
+    ):
         self.r_scalar = spec.validate_cole_hopf_lmdp("EikonalConeMeanGuide", allow_scalar_r=True)
         self.spec = spec
         self.query = query
         self.d = spec.dim
         self.L = spec.half_width
         self.delta = float(collar_delta)
-        self.tau = float(smooth_tau)
+        self.tau = float(max(0.0, smooth_tau))
+        self.calibrate_nnls = bool(calibrate_nnls)
         self.slope = float(np.sqrt(2.0 * spec.q0 * self.r_scalar))
         self.lam = spec.lam
         self.g_centers = np.array([g.center for g in query.goals], dtype=float)
         self.g_phis = np.array([g.phi for g in query.goals], dtype=float)
         self.g_radii = np.array([g.radius for g in query.goals], dtype=float)
+        self.weights: Optional[np.ndarray] = None
+
+        if self.calibrate_nnls:
+            m_g = len(query.goals)
+            rng = np.random.default_rng(17)
+            coll_pts, coll_rhs = [], []
+            n_per_goal = 36
+            for j in range(m_g):
+                dirs = rng.normal(size=(n_per_goal, self.d))
+                dirs /= np.linalg.norm(dirs, axis=1, keepdims=True)
+                pts_j = reflect_into_box(self.g_centers[j][None, :] + self.g_radii[j] * dirs, self.L)
+                coll_pts.append(pts_j)
+                coll_rhs.append(np.full(n_per_goal, np.exp(-self.g_phis[j] / self.lam)))
+            P_coll = np.vstack(coll_pts)
+            w_coll = np.concatenate(coll_rhs)
+            Psi_coll, _ = self._eval_cone_modes(P_coll)
+            c_nnls, _ = nnls(Psi_coll, w_coll)
+            if np.all(c_nnls <= 1e-14):
+                c_nnls = np.exp(-self.g_phis / self.lam)
+            self.weights = np.maximum(c_nnls, 1e-12)
+
+    def _eval_cone_modes(self, X: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+        Xw, dw, _ = even_collar_warp_c2(X, self.L, self.delta)
+        n_pts = len(Xw)
+        m_g = len(self.g_centers)
+        Psi = np.empty((n_pts, m_g), dtype=float)
+        dPsi = np.empty((n_pts, m_g, self.d), dtype=float)
+        kappa_eff = self.slope / self.lam
+
+        for j in range(m_g):
+            diff = Xw - self.g_centers[j][None, :]
+            r = np.linalg.norm(diff, axis=1)
+            rj = self.g_radii[j]
+            s_pos = np.maximum(0.0, r - rj)
+            if self.tau > 0.0:
+                hyp = np.sqrt(s_pos ** 2 + self.tau ** 2)
+                dist_sm = hyp - self.tau
+                ds_dr = np.where(r > rj + 1e-12, s_pos / hyp, 0.0)
+            else:
+                dist_sm = s_pos
+                ds_dr = np.where(r > rj + 1e-12, 1.0, 0.0)
+            phi_val = np.exp(-kappa_eff * dist_sm)
+            dphi_dr = -kappa_eff * phi_val * ds_dr
+            unit_v = diff / np.maximum(r[:, None], 1e-12)
+            Psi[:, j] = phi_val
+            dPsi[:, j, :] = (dphi_dr[:, None] * unit_v) * dw
+        return Psi, dPsi
 
     def val_and_grad(self, X: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         X2 = np.atleast_2d(np.asarray(X, dtype=float))
+        if self.calibrate_nnls and self.weights is not None:
+            Psi, dPsi = self._eval_cone_modes(X2)
+            Z0 = np.maximum(Psi @ self.weights, 1e-300)
+            grad_Z0 = np.einsum("nmd,m->nd", dPsi, self.weights)
+            val = -self.lam * np.log(Z0)
+            grad = -self.lam * (grad_Z0 / Z0[:, None])
+            return val, grad
+
         Xw, dw, _ = even_collar_warp_c2(X2, self.L, self.delta)
         n_pts = len(Xw)
         m_g = len(self.g_centers)
@@ -195,12 +262,14 @@ class EikonalConeMeanGuide:
             r = np.linalg.norm(diff, axis=1)
             rj = self.g_radii[j]
             s_pos = np.maximum(0.0, r - rj)
-            hyp = np.sqrt(s_pos ** 2 + self.tau ** 2)
-            dist_sm = hyp - self.tau
+            if self.tau > 0.0:
+                hyp = np.sqrt(s_pos ** 2 + self.tau ** 2)
+                dist_sm = hyp - self.tau
+                ds_dr = np.where(r > rj + 1e-12, s_pos / hyp, 0.0)
+            else:
+                dist_sm = s_pos
+                ds_dr = np.where(r > rj + 1e-12, 1.0, 0.0)
             E_mat[:, j] = self.g_phis[j] + self.slope * dist_sm
-
-            outside = r > rj + 1e-12
-            ds_dr = np.where(outside, s_pos / hyp, 0.0)
             unit_v = diff / np.maximum(r[:, None], 1e-12)
             dE_dw = (self.slope * ds_dr)[:, None] * unit_v
             dE_mat[:, j, :] = dE_dw * dw
@@ -375,6 +444,12 @@ def fit_gp_value_with_prior(
     elif prior_mode == "eikonal_cone":
         prior_obj = EikonalConeMeanGuide(spec, query)
         prior_fn = prior_obj.val_and_grad
+    elif prior_mode == "matched_smooth_cone":
+        prior_obj = EikonalConeMeanGuide(spec, query, smooth_tau=0.035, calibrate_nnls=True)
+        prior_fn = prior_obj.val_and_grad
+    elif prior_mode == "matched_sharp_cone":
+        prior_obj = EikonalConeMeanGuide(spec, query, smooth_tau=0.0, calibrate_nnls=True)
+        prior_fn = prior_obj.val_and_grad
     elif prior_mode == "zero_mean":
         prior_obj = None
         prior_fn = None
@@ -442,7 +517,13 @@ def solve_highd_fk_distillation(
     lam = spec.lam
     L = spec.half_width
     base = BoxNeumannBesselBaseGuide(spec, query)
-    eik_prior = EikonalConeMeanGuide(spec, query) if prior_mode == "eikonal_cone" else None
+    eik_prior = None
+    if prior_mode == "eikonal_cone":
+        eik_prior = EikonalConeMeanGuide(spec, query)
+    elif prior_mode == "matched_smooth_cone":
+        eik_prior = EikonalConeMeanGuide(spec, query, smooth_tau=0.035, calibrate_nnls=True)
+    elif prior_mode == "matched_sharp_cone":
+        eik_prior = EikonalConeMeanGuide(spec, query, smooth_tau=0.0, calibrate_nnls=True)
     rng = np.random.default_rng(seed)
 
     bnd_pts, bnd_phi, bnd_v0 = [], [], []
@@ -562,7 +643,7 @@ def solve_highd_fk_distillation(
 
     if prior_mode == "helmholtz_bessel":
         prior_fn = base.val_and_grad
-    elif prior_mode == "eikonal_cone":
+    elif prior_mode in ("eikonal_cone", "matched_smooth_cone", "matched_sharp_cone"):
         assert eik_prior is not None
         prior_fn = eik_prior.val_and_grad
     elif prior_mode == "zero_mean":
@@ -707,7 +788,11 @@ def make_antithetic_centered_pimc_policy(
             ess_step = 1.0 / np.maximum(np.sum(w[active_rows] ** 2, axis=1), 1e-30)
             ess_log.append(float(np.mean(ess_step)))
         w_centered = w - (1.0 / M_eff)
-        du = (spec.sigma / (r_sc * dt_mpc)) * np.einsum("bm,bmd->bd", w_centered, eps0)
+        # Repaired scalar-R innovation (`GPT6 85e2323 Audit Finding 2.5`, Kappen & Ruiz 2016 Eq. 7):
+        # For `dX = (b + u) dt + sigma dW`, `c_u = 0.5 * r ||u||^2`, `lam = r * sigma^2`, and
+        # `eps0 ~ N(0, dt * I)`, `r` cancels identically between `lam = r * sigma^2` and `-grad(V)/r`,
+        # leaving `du = (sigma / dt) * E_w[dW_0]`!
+        du = (spec.sigma / dt_mpc) * np.einsum("bm,bmd->bd", w_centered, eps0)
         u = u_nom0 + du
         if np.any(done0):
             u[done0] = 0.0

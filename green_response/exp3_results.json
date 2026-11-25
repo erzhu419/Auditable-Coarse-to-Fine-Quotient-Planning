@@ -59,27 +59,260 @@
       3202,
       3203
     ],
-    "mean_full_gp_fit_ms": 147.45661287452094,
-    "online_pimc_mean_ess": {
-      "H16_of_36": 15.642459874514763,
-      "H48_of_36": 12.488876158468175
-    },
-    "bessel_fk_diagnostics": {
-      "collar_frac": 0.01188865185921767,
-      "mean_ess": 14.880277041922369,
-      "min_ess": 1.4884043250716477,
-      "weighted_tail_mass": 2.7876330589218834e-05,
-      "cont_final_diff": 6.483010874432556e-08
-    },
+    "mean_full_gp_fit_ms": 135.09097960195504,
+    "bessel_fk_query_diagnostics": [
+      {
+        "map_seed": 2200,
+        "query_idx": 0,
+        "collar_frac": 0.01339662687997809,
+        "mean_ess": 27.97633152477353,
+        "median_ess": 25.10369670043069,
+        "min_ess": 2.1925349752536545,
+        "weighted_tail_mass": 4.1453886709289315e-10,
+        "cont_final_diff": 0.0
+      },
+      {
+        "map_seed": 2200,
+        "query_idx": 1,
+        "collar_frac": 0.007699790218805302,
+        "mean_ess": 22.56300972212056,
+        "median_ess": 19.123896716854485,
+        "min_ess": 3.896684168356486,
+        "weighted_tail_mass": 2.4707810639810916e-07,
+        "cont_final_diff": 1.878941446875615e-12
+      },
+      {
+        "map_seed": 2200,
+        "query_idx": 2,
+        "collar_frac": 0.00981056646256706,
+        "mean_ess": 25.441836127065354,
+        "median_ess": 22.951601884993558,
+        "min_ess": 2.104567062843239,
+        "weighted_tail_mass": 1.77475397445251e-08,
+        "cont_final_diff": 2.220446049250313e-16
+      },
+      {
+        "map_seed": 2201,
+        "query_idx": 0,
+        "collar_frac": 0.006247169733646207,
+        "mean_ess": 8.267146167226455,
+        "median_ess": 5.034501088033625,
+        "min_ess": 1.0507044070114435,
+        "weighted_tail_mass": 5.1042876331552225e-11,
+        "cont_final_diff": 0.0
+      },
+      {
+        "map_seed": 2201,
+        "query_idx": 1,
+        "collar_frac": 0.015343041585347545,
+        "mean_ess": 13.69940883085912,
+        "median_ess": 11.076042144394666,
+        "min_ess": 1.2434502410599728,
+        "weighted_tail_mass": 8.091735126934892e-08,
+        "cont_final_diff": 1.0460521338018225e-12
+      },
+      {
+        "map_seed": 2201,
+        "query_idx": 2,
+        "collar_frac": 0.013114975177633742,
+        "mean_ess": 11.462555252213413,
+        "median_ess": 5.7482550096975205,
+        "min_ess": 1.161813061724273,
+        "weighted_tail_mass": 5.085900763228147e-10,
+        "cont_final_diff": 0.0
+      },
+      {
+        "map_seed": 2202,
+        "query_idx": 0,
+        "collar_frac": 0.005923768873287193,
+        "mean_ess": 10.820289523740616,
+        "median_ess": 6.369845591155049,
+        "min_ess": 1.0241016011852468,
+        "weighted_tail_mass": 4.883064970423292e-10,
+        "cont_final_diff": 0.0
+      },
+      {
+        "map_seed": 2202,
+        "query_idx": 1,
+        "collar_frac": 0.007898803731898574,
+        "mean_ess": 17.647796501808028,
+        "median_ess": 14.971364273744966,
+        "min_ess": 1.459874778482983,
+        "weighted_tail_mass": 6.813822393621569e-10,
+        "cont_final_diff": 0.0
+      },
+      {
+        "map_seed": 2202,
+        "query_idx": 2,
+        "collar_frac": 0.018095576404705684,
+        "mean_ess": 17.314910356656465,
+        "median_ess": 12.989695665039328,
+        "min_ess": 1.0404533293309264,
+        "weighted_tail_mass": 2.8508865259972126e-06,
+        "cont_final_diff": 3.942570714343674e-10
+      },
+      {
+        "map_seed": 2203,
+        "query_idx": 0,
+        "collar_frac": 0.01539327545519496,
+        "mean_ess": 16.91303755296705,
+        "median_ess": 10.271616852278179,
+        "min_ess": 1.1157891988967554,
+        "weighted_tail_mass": 4.184410039127789e-10,
+        "cont_final_diff": 0.0
+      },
+      {
+        "map_seed": 2203,
+        "query_idx": 1,
+        "collar_frac": 0.00921563495179514,
+        "mean_ess": 12.325279994850957,
+        "median_ess": 9.232127827889622,
+        "min_ess": 1.2873594152008496,
+        "weighted_tail_mass": 5.766306187303052e-08,
+        "cont_final_diff": 5.695888205536903e-12
+      },
+      {
+        "map_seed": 2203,
+        "query_idx": 2,
+        "collar_frac": 0.011637522438030698,
+        "mean_ess": 13.342210878855012,
+        "median_ess": 9.766158508117021,
+        "min_ess": 1.3406015579345658,
+        "weighted_tail_mass": 3.556380812729017e-07,
+        "cont_final_diff": 5.102565037162776e-09
+      },
+      {
+        "map_seed": 3200,
+        "query_idx": 0,
+        "collar_frac": 0.010581951334221695,
+        "mean_ess": 9.292480053806528,
+        "median_ess": 7.754357811787487,
+        "min_ess": 1.0261746766685325,
+        "weighted_tail_mass": 2.1798391604288993e-11,
+        "cont_final_diff": 0.0
+      },
+      {
+        "map_seed": 3200,
+        "query_idx": 1,
+        "collar_frac": 0.019826580376553937,
+        "mean_ess": 8.683152120056588,
+        "median_ess": 4.219373692897409,
+        "min_ess": 1.0262232554719786,
+        "weighted_tail_mass": 5.832281306233728e-09,
+        "cont_final_diff": 0.0
+      },
+      {
+        "map_seed": 3200,
+        "query_idx": 2,
+        "collar_frac": 0.017183255002280524,
+        "mean_ess": 13.401969494092816,
+        "median_ess": 8.471882335530005,
+        "min_ess": 1.1348714118641146,
+        "weighted_tail_mass": 3.491849950198904e-05,
+        "cont_final_diff": 1.1977801812612654e-06
+      },
+      {
+        "map_seed": 3201,
+        "query_idx": 0,
+        "collar_frac": 0.014537475142288966,
+        "mean_ess": 12.575480921125628,
+        "median_ess": 8.504510939872384,
+        "min_ess": 1.2388047949261243,
+        "weighted_tail_mass": 2.2051039457884618e-05,
+        "cont_final_diff": 5.504521283228314e-10
+      },
+      {
+        "map_seed": 3201,
+        "query_idx": 1,
+        "collar_frac": 0.012751990419374155,
+        "mean_ess": 18.349543804095585,
+        "median_ess": 15.610733027213813,
+        "min_ess": 1.7898887580492893,
+        "weighted_tail_mass": 3.918734247413751e-07,
+        "cont_final_diff": 4.556355293061642e-13
+      },
+      {
+        "map_seed": 3201,
+        "query_idx": 2,
+        "collar_frac": 0.012829818894494248,
+        "mean_ess": 8.708961804315642,
+        "median_ess": 6.365606394155836,
+        "min_ess": 1.356034801387699,
+        "weighted_tail_mass": 8.352995519056776e-10,
+        "cont_final_diff": 4.440892098500626e-16
+      },
+      {
+        "map_seed": 3202,
+        "query_idx": 0,
+        "collar_frac": 0.00888085767489009,
+        "mean_ess": 11.870372232202994,
+        "median_ess": 9.173233415036366,
+        "min_ess": 2.5458653367314548,
+        "weighted_tail_mass": 1.354669725896639e-07,
+        "cont_final_diff": 3.943068094258706e-12
+      },
+      {
+        "map_seed": 3202,
+        "query_idx": 1,
+        "collar_frac": 0.009764809799753454,
+        "mean_ess": 15.007406924728855,
+        "median_ess": 10.867665772826607,
+        "min_ess": 1.1373107352500922,
+        "weighted_tail_mass": 5.289760359495128e-09,
+        "cont_final_diff": 4.483524662646232e-12
+      },
+      {
+        "map_seed": 3202,
+        "query_idx": 2,
+        "collar_frac": 0.010734387975845064,
+        "mean_ess": 16.04242412656698,
+        "median_ess": 10.046697665716444,
+        "min_ess": 1.5567447396439429,
+        "weighted_tail_mass": 0.00035383253832386004,
+        "cont_final_diff": 3.3027045143185774e-07
+      },
+      {
+        "map_seed": 3203,
+        "query_idx": 0,
+        "collar_frac": 0.018357442618338687,
+        "mean_ess": 22.777135328481585,
+        "median_ess": 17.23527604829554,
+        "min_ess": 1.676251128977333,
+        "weighted_tail_mass": 0.00025276414161919185,
+        "cont_final_diff": 2.1602830413414154e-08
+      },
+      {
+        "map_seed": 3203,
+        "query_idx": 1,
+        "collar_frac": 0.006029346800864406,
+        "mean_ess": 12.90838589654598,
+        "median_ess": 9.38268032323348,
+        "min_ess": 1.2022598825202353,
+        "weighted_tail_mass": 7.29731445763925e-17,
+        "cont_final_diff": 0.0
+      },
+      {
+        "map_seed": 3203,
+        "query_idx": 2,
+        "collar_frac": 0.010072976669428666,
+        "mean_ess": 9.735523866981065,
+        "median_ess": 6.367655986250951,
+        "min_ess": 1.1133404829483464,
+        "weighted_tail_mass": 1.3139027331979786e-06,
+        "cont_final_diff": 2.043687441499742e-10
+      }
+    ],
     "methods": {
       "Pure-Eikonal-Guide": {
         "train_starts_mean_cost_all8": 10.949687274798059,
         "train_starts_mean_cost_heldout4": 11.354359740747396,
         "unseen_in_dist_starts_mean_cost_all8": 10.713571399957358,
+        "unseen_in_dist_starts_mean_cost_heldout4": 10.954553292048992,
         "near_wall_corner_shift_starts_mean_cost_all8": 11.444621828247312,
         "near_wall_corner_shift_starts_heldout4": 11.257692191643665,
         "reach_rate_train_starts": 0.9953703703703705,
-        "bessel_minus_method_train_starts": {
+        "reach_rate_wall_corner_shift": 0.9930555555555556,
+        "bessel_minus_method_train_all8": {
           "n": 8,
           "mean": -6.639377251756245,
           "ci95_half": 1.4515454498453713,
@@ -89,7 +322,17 @@
           ],
           "p_two_sided": 1.2728976618245561e-05
         },
-        "bessel_minus_method_unseen_in_dist": {
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -6.724879366138743,
+          "ci95_half": 1.4104090585147997,
+          "ci95": [
+            -8.135288424653542,
+            -5.314470307623943
+          ],
+          "p_two_sided": 0.0006214702894345256
+        },
+        "bessel_minus_method_unseen_all8": {
           "n": 8,
           "mean": -6.659088416155745,
           "ci95_half": 0.9144778718664703,
@@ -99,7 +342,17 @@
           ],
           "p_two_sided": 5.472836624781759e-07
         },
-        "bessel_minus_method_wall_corner_shift": {
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -6.823599572220238,
+          "ci95_half": 1.773745657442651,
+          "ci95": [
+            -8.597345229662888,
+            -5.049853914777588
+          ],
+          "p_two_sided": 0.0011735111693449444
+        },
+        "bessel_minus_method_shift_all8": {
           "n": 8,
           "mean": -6.267665750301495,
           "ci95_half": 0.9601012781693636,
@@ -109,9 +362,19 @@
           ],
           "p_two_sided": 1.1555473530145414e-06
         },
-        "cold_single_query_K1_total_ms_incl_full_gp": 21.25969390423658,
-        "query_build_ms": 0.02106737035016219,
-        "measured_K1_exec_ms": 21.238626533886418,
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -6.187415794961266,
+          "ci95_half": 2.417045962384972,
+          "ci95": [
+            -8.604461757346238,
+            -3.770369832576294
+          ],
+          "p_two_sided": 0.003867633258766381
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 18.44550686655566,
+        "query_build_ms": 0.019988966717695195,
+        "measured_K1_exec_ms": 18.425517899837967,
         "per_map_train_costs": [
           6.812400655873984,
           13.400197297548809,
@@ -121,6 +384,16 @@
           11.125255303755884,
           12.26594999944808,
           10.143942936536902
+        ],
+        "per_map_unseen_in_dist_costs": [
+          8.959297726577981,
+          11.338815576453,
+          10.936047309867016,
+          10.6561974185649,
+          9.461800729364818,
+          11.1035786067208,
+          13.521537769822586,
+          9.73129606228776
         ],
         "per_map_wall_corner_shift_costs": [
           11.191037256872441,
@@ -133,14 +406,119 @@
           9.743409291075219
         ]
       },
+      "Pure-MatchedSharpCone-Guide": {
+        "train_starts_mean_cost_all8": 10.703524115253156,
+        "train_starts_mean_cost_heldout4": 11.067511244901462,
+        "unseen_in_dist_starts_mean_cost_all8": 10.25337337954211,
+        "unseen_in_dist_starts_mean_cost_heldout4": 10.265290215537021,
+        "near_wall_corner_shift_starts_mean_cost_all8": 11.128139915468868,
+        "near_wall_corner_shift_starts_heldout4": 10.94107030533618,
+        "reach_rate_train_starts": 0.9965277777777779,
+        "reach_rate_wall_corner_shift": 0.9947916666666667,
+        "bessel_minus_method_train_all8": {
+          "n": 8,
+          "mean": -6.393214092211341,
+          "ci95_half": 1.4830810563949597,
+          "ci95": [
+            -7.876295148606301,
+            -4.910133035816381
+          ],
+          "p_two_sided": 1.8854304824224028e-05
+        },
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -6.438030870292811,
+          "ci95_half": 1.635502352701377,
+          "ci95": [
+            -8.073533222994188,
+            -4.802528517591433
+          ],
+          "p_two_sided": 0.0010964988982447668
+        },
+        "bessel_minus_method_unseen_all8": {
+          "n": 8,
+          "mean": -6.198890395740497,
+          "ci95_half": 1.0548852516107858,
+          "ci95": [
+            -7.253775647351283,
+            -5.144005144129711
+          ],
+          "p_two_sided": 2.3634397123274013e-06
+        },
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -6.1343364957082684,
+          "ci95_half": 2.3740052481781997,
+          "ci95": [
+            -8.508341743886469,
+            -3.7603312475300688
+          ],
+          "p_two_sided": 0.003764259465812291
+        },
+        "bessel_minus_method_shift_all8": {
+          "n": 8,
+          "mean": -5.951183837523049,
+          "ci95_half": 0.9334021281704526,
+          "ci95": [
+            -6.884585965693502,
+            -5.017781709352596
+          ],
+          "p_two_sided": 1.3573842586162063e-06
+        },
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -5.87079390865378,
+          "ci95_half": 2.3662185686789625,
+          "ci95": [
+            -8.237012477332742,
+            -3.504575339974817
+          ],
+          "p_two_sided": 0.004233855263058055
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 17.097181756980717,
+        "query_build_ms": 0.32081247384970385,
+        "measured_K1_exec_ms": 16.776369283131014,
+        "per_map_train_costs": [
+          6.671540165186303,
+          13.468336239125483,
+          12.052343906101385,
+          9.165927632006225,
+          11.406464962523225,
+          11.044959734028827,
+          12.228541365064615,
+          9.590078917989183
+        ],
+        "per_map_unseen_in_dist_costs": [
+          8.840985710234358,
+          11.225917337874456,
+          10.582901690532696,
+          10.31602143554728,
+          8.837245967618616,
+          10.027678967337998,
+          13.41802738370125,
+          8.778208543490223
+        ],
+        "per_map_wall_corner_shift_costs": [
+          11.106182677834916,
+          12.210360884762894,
+          11.827411199461231,
+          10.11688334034718,
+          13.67381131033231,
+          9.689202179522445,
+          11.023373445624108,
+          9.377894285865853
+        ]
+      },
       "Pure-Bessel-BaseGuide": {
         "train_starts_mean_cost_all8": 6.313242081393817,
         "train_starts_mean_cost_heldout4": 6.946429717876637,
         "unseen_in_dist_starts_mean_cost_all8": 6.034412803515813,
+        "unseen_in_dist_starts_mean_cost_heldout4": 6.41144221133588,
         "near_wall_corner_shift_starts_mean_cost_all8": 6.9545959367148455,
         "near_wall_corner_shift_starts_heldout4": 7.0657325956003545,
         "reach_rate_train_starts": 1.0,
-        "bessel_minus_method_train_starts": {
+        "reach_rate_wall_corner_shift": 1.0,
+        "bessel_minus_method_train_all8": {
           "n": 8,
           "mean": -2.0029320583520023,
           "ci95_half": 0.6239985687686351,
@@ -150,7 +528,17 @@
           ],
           "p_two_sided": 0.00012733224731243466
         },
-        "bessel_minus_method_unseen_in_dist": {
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -2.316949343267985,
+          "ci95_half": 0.317804632303549,
+          "ci95": [
+            -2.6347539755715337,
+            -1.9991447109644358
+          ],
+          "p_two_sided": 0.0001753968451146448
+        },
+        "bessel_minus_method_unseen_all8": {
           "n": 8,
           "mean": -1.9799298197142,
           "ci95_half": 0.7038005694762172,
@@ -160,7 +548,17 @@
           ],
           "p_two_sided": 0.0002899457063587888
         },
-        "bessel_minus_method_wall_corner_shift": {
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -2.2804884915071284,
+          "ci95_half": 1.6333130862431415,
+          "ci95": [
+            -3.91380157775027,
+            -0.6471754052639869
+          ],
+          "p_two_sided": 0.02119805174234043
+        },
+        "bessel_minus_method_shift_all8": {
           "n": 8,
           "mean": -1.7776398587690276,
           "ci95_half": 0.5625416322000727,
@@ -170,9 +568,19 @@
           ],
           "p_two_sided": 0.00014055221638624264
         },
-        "cold_single_query_K1_total_ms_incl_full_gp": 9.598693432053551,
-        "query_build_ms": 0.6628656798663239,
-        "measured_K1_exec_ms": 8.935827752187228,
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -1.9954561989179551,
+          "ci95_half": 1.000908849808962,
+          "ci95": [
+            -2.996365048726917,
+            -0.9945473491089931
+          ],
+          "p_two_sided": 0.007919676761739039
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 8.12761719377401,
+        "query_build_ms": 0.31589187953310705,
+        "measured_K1_exec_ms": 7.811725314240903,
         "per_map_train_costs": [
           3.511297464822149,
           7.315513227857227,
@@ -182,6 +590,16 @@
           7.138443563112342,
           7.072305677476339,
           6.522155436655353
+        ],
+        "per_map_unseen_in_dist_costs": [
+          4.5720010355316365,
+          5.839719847205617,
+          5.532699206907708,
+          6.685113493138015,
+          4.620867999491555,
+          6.86886544660963,
+          8.735955205693445,
+          5.420080193548896
         ],
         "per_map_wall_corner_shift_costs": [
           6.216504158420947,
@@ -198,10 +616,12 @@
         "train_starts_mean_cost_all8": 6.4869593532611525,
         "train_starts_mean_cost_heldout4": 7.4577259939285145,
         "unseen_in_dist_starts_mean_cost_all8": 5.875141326933981,
+        "unseen_in_dist_starts_mean_cost_heldout4": 6.075149063652621,
         "near_wall_corner_shift_starts_mean_cost_all8": 8.166848148047142,
         "near_wall_corner_shift_starts_heldout4": 8.665523059003384,
         "reach_rate_train_starts": 0.9768518518518519,
-        "bessel_minus_method_train_starts": {
+        "reach_rate_wall_corner_shift": 0.9722222222222223,
+        "bessel_minus_method_train_all8": {
           "n": 8,
           "mean": -2.1766493302193384,
           "ci95_half": 1.054099129030886,
@@ -211,7 +631,17 @@
           ],
           "p_two_sided": 0.0017878839551222563
         },
-        "bessel_minus_method_unseen_in_dist": {
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -2.828245619319863,
+          "ci95_half": 1.5121371178385745,
+          "ci95": [
+            -4.340382737158437,
+            -1.3161085014812883
+          ],
+          "p_two_sided": 0.009483143027644277
+        },
+        "bessel_minus_method_unseen_all8": {
           "n": 8,
           "mean": -1.8206583431323686,
           "ci95_half": 0.9907906643447378,
@@ -221,7 +651,17 @@
           ],
           "p_two_sided": 0.0033746139369385795
         },
-        "bessel_minus_method_wall_corner_shift": {
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -1.9441953438238686,
+          "ci95_half": 1.732358348450007,
+          "ci95": [
+            -3.6765536922738757,
+            -0.2118369953738617
+          ],
+          "p_two_sided": 0.0375092999765056
+        },
+        "bessel_minus_method_shift_all8": {
           "n": 8,
           "mean": -2.989892070101324,
           "ci95_half": 1.3809398530889463,
@@ -231,9 +671,19 @@
           ],
           "p_two_sided": 0.0013692321798109382
         },
-        "cold_single_query_K1_total_ms_incl_full_gp": 699.4917304740133,
-        "query_build_ms": 0.3347963696190467,
-        "measured_K1_exec_ms": 551.7003212298732,
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -3.595246662320985,
+          "ci95_half": 3.1440915504572597,
+          "ci95": [
+            -6.739338212778245,
+            -0.45115511186372537
+          ],
+          "p_two_sided": 0.03576419221221373
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 630.373500433052,
+        "query_build_ms": 0.27596418901036185,
+        "measured_K1_exec_ms": 495.00655664208654,
         "per_map_train_costs": [
           3.144109108909562,
           7.513699693052282,
@@ -243,6 +693,16 @@
           8.441538988222169,
           6.758359899338257,
           8.12588917798321
+        ],
+        "per_map_unseen_in_dist_costs": [
+          4.071446469776679,
+          5.527042295436039,
+          4.543410986112664,
+          8.558634609535982,
+          4.577184890526449,
+          7.669262660583217,
+          7.5792739553043695,
+          4.4748747481964495
         ],
         "per_map_wall_corner_shift_costs": [
           6.796496968518337,
@@ -259,10 +719,12 @@
         "train_starts_mean_cost_all8": 5.250247900554204,
         "train_starts_mean_cost_heldout4": 5.977480332656896,
         "unseen_in_dist_starts_mean_cost_all8": 4.946514880422167,
+        "unseen_in_dist_starts_mean_cost_heldout4": 5.1873406471208865,
         "near_wall_corner_shift_starts_mean_cost_all8": 8.514301212996635,
         "near_wall_corner_shift_starts_heldout4": 9.071437113983421,
         "reach_rate_train_starts": 1.0,
-        "bessel_minus_method_train_starts": {
+        "reach_rate_wall_corner_shift": 1.0,
+        "bessel_minus_method_train_all8": {
           "n": 8,
           "mean": -0.9399378775123894,
           "ci95_half": 0.4162702969455646,
@@ -272,7 +734,17 @@
           ],
           "p_two_sided": 0.001076542769753931
         },
-        "bessel_minus_method_unseen_in_dist": {
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -1.347999958048243,
+          "ci95_half": 0.18210422814839053,
+          "ci95": [
+            -1.5301041861966334,
+            -1.1658957298998525
+          ],
+          "p_two_sided": 0.00016759762156683561
+        },
+        "bessel_minus_method_unseen_all8": {
           "n": 8,
           "mean": -0.8920318966205546,
           "ci95_half": 0.34834366690176993,
@@ -282,7 +754,17 @@
           ],
           "p_two_sided": 0.000513264641357089
         },
-        "bessel_minus_method_wall_corner_shift": {
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -1.0563869272921331,
+          "ci95_half": 0.7486690539187567,
+          "ci95": [
+            -1.8050559812108897,
+            -0.3077178733733764
+          ],
+          "p_two_sided": 0.020607172881354982
+        },
+        "bessel_minus_method_shift_all8": {
           "n": 8,
           "mean": -3.3373451350508176,
           "ci95_half": 1.5764465335716973,
@@ -292,9 +774,19 @@
           ],
           "p_two_sided": 0.0015548767706816983
         },
-        "cold_single_query_K1_total_ms_incl_full_gp": 403.2137436054958,
-        "query_build_ms": 0.2915070314581195,
-        "measured_K1_exec_ms": 255.4656236995167,
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -4.001160717301023,
+          "ci95_half": 2.9771148474647493,
+          "ci95": [
+            -6.978275564765772,
+            -1.0240458698362733
+          ],
+          "p_two_sided": 0.023471054108289643
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 365.4118324241912,
+        "query_build_ms": 0.27245429616111017,
+        "measured_K1_exec_ms": 230.048398526075,
         "per_map_train_costs": [
           3.05316639950788,
           5.2632024628872545,
@@ -304,6 +796,16 @@
           6.1160631719247815,
           6.121524156553221,
           5.678415755049449
+        ],
+        "per_map_unseen_in_dist_costs": [
+          4.077349328193575,
+          4.533201457515253,
+          4.178039577445104,
+          6.034166091739862,
+          4.1223277028190095,
+          5.55389831441034,
+          6.778111533759378,
+          4.295025037494816
         ],
         "per_map_wall_corner_shift_costs": [
           7.084894263514269,
@@ -320,10 +822,12 @@
         "train_starts_mean_cost_all8": 26.164986380323636,
         "train_starts_mean_cost_heldout4": 27.019995888566136,
         "unseen_in_dist_starts_mean_cost_all8": 13.280300849953221,
+        "unseen_in_dist_starts_mean_cost_heldout4": 10.083893071458386,
         "near_wall_corner_shift_starts_mean_cost_all8": 13.20222560776634,
         "near_wall_corner_shift_starts_heldout4": 12.617004757413758,
         "reach_rate_train_starts": 0.7222222222222222,
-        "bessel_minus_method_train_starts": {
+        "reach_rate_wall_corner_shift": 0.40625,
+        "bessel_minus_method_train_all8": {
           "n": 8,
           "mean": -21.85467635728182,
           "ci95_half": 12.234973109285052,
@@ -333,7 +837,17 @@
           ],
           "p_two_sided": 0.003918099492551643
         },
-        "bessel_minus_method_unseen_in_dist": {
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -22.39051551395748,
+          "ci95_half": 27.734448870348366,
+          "ci95": [
+            -50.12496438430585,
+            5.343933356390885
+          ],
+          "p_two_sided": 0.08254724731790374
+        },
+        "bessel_minus_method_unseen_all8": {
           "n": 8,
           "mean": -9.225817866151608,
           "ci95_half": 7.432758279441491,
@@ -343,7 +857,17 @@
           ],
           "p_two_sided": 0.021866313351356668
         },
-        "bessel_minus_method_wall_corner_shift": {
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -5.952939351629633,
+          "ci95_half": 4.724602978092492,
+          "ci95": [
+            -10.677542329722126,
+            -1.2283363735371404
+          ],
+          "p_two_sided": 0.02782883558454548
+        },
+        "bessel_minus_method_shift_all8": {
           "n": 8,
           "mean": -8.025269529820523,
           "ci95_half": 1.0394776420295364,
@@ -353,9 +877,19 @@
           ],
           "p_two_sided": 3.6630151565465507e-07
         },
-        "cold_single_query_K1_total_ms_incl_full_gp": 1804.5093016019869,
-        "query_build_ms": 1615.4257136998544,
-        "measured_K1_exec_ms": 41.62697502761148,
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -7.546728360731359,
+          "ci95_half": 2.689633075082844,
+          "ci95": [
+            -10.236361435814203,
+            -4.857095285648516
+          ],
+          "p_two_sided": 0.0029629340798693303
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 1626.7930444155354,
+        "query_build_ms": 1455.1638329964287,
+        "measured_K1_exec_ms": 36.538231817151726,
         "per_map_train_costs": [
           7.535531460077366,
           32.90901505393404,
@@ -365,6 +899,16 @@
           32.014720171500265,
           9.808036091173927,
           49.09343644441179
+        ],
+        "per_map_unseen_in_dist_costs": [
+          8.087189825696518,
+          11.230253311247589,
+          34.118168687634935,
+          12.4712226892132,
+          5.889454515258123,
+          13.413623990540293,
+          12.975077119001874,
+          8.057416661033251
         ],
         "per_map_wall_corner_shift_costs": [
           14.102479336798526,
@@ -381,10 +925,12 @@
         "train_starts_mean_cost_all8": 7.714907064104669,
         "train_starts_mean_cost_heldout4": 8.494616663377567,
         "unseen_in_dist_starts_mean_cost_all8": 8.658281100982048,
+        "unseen_in_dist_starts_mean_cost_heldout4": 8.91807246785337,
         "near_wall_corner_shift_starts_mean_cost_all8": 12.62430975202971,
         "near_wall_corner_shift_starts_heldout4": 12.216457342903533,
         "reach_rate_train_starts": 0.7280092592592592,
-        "bessel_minus_method_train_starts": {
+        "reach_rate_wall_corner_shift": 0.3125,
+        "bessel_minus_method_train_all8": {
           "n": 8,
           "mean": -3.4045970410628543,
           "ci95_half": 0.9062443727358438,
@@ -394,7 +940,17 @@
           ],
           "p_two_sided": 4.6426945343868025e-05
         },
-        "bessel_minus_method_unseen_in_dist": {
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -3.8651362887689142,
+          "ci95_half": 1.2239112902687468,
+          "ci95": [
+            -5.089047579037661,
+            -2.6412249985001672
+          ],
+          "p_two_sided": 0.0020973785045051057
+        },
+        "bessel_minus_method_unseen_all8": {
           "n": 8,
           "mean": -4.603798117180435,
           "ci95_half": 1.3606114564002887,
@@ -404,7 +960,17 @@
           ],
           "p_two_sided": 9.107647118794109e-05
         },
-        "bessel_minus_method_wall_corner_shift": {
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -4.787118748024618,
+          "ci95_half": 3.134155110691991,
+          "ci95": [
+            -7.921273858716608,
+            -1.6529636373326269
+          ],
+          "p_two_sided": 0.01662721572621705
+        },
+        "bessel_minus_method_shift_all8": {
           "n": 8,
           "mean": -7.4473536740838915,
           "ci95_half": 0.9260278406017691,
@@ -414,9 +980,19 @@
           ],
           "p_two_sided": 2.76622033912809e-07
         },
-        "cold_single_query_K1_total_ms_incl_full_gp": 619.3791841020964,
-        "query_build_ms": 428.55681769045384,
-        "measured_K1_exec_ms": 43.365753537121535,
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -7.146180946221133,
+          "ci95_half": 2.2482299271058195,
+          "ci95": [
+            -9.394410873326953,
+            -4.897951019115313
+          ],
+          "p_two_sided": 0.0020578597812598966
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 560.0870660273358,
+        "query_build_ms": 387.47826928738505,
+        "measured_K1_exec_ms": 37.517817137995735,
         "per_map_train_costs": [
           5.488961983769594,
           6.287196112223536,
@@ -426,6 +1002,16 @@
           8.976291829896425,
           8.561767386139472,
           9.088242452793418
+        ],
+        "per_map_unseen_in_dist_costs": [
+          7.726259594794418,
+          6.41241401753156,
+          8.18867619613073,
+          11.266609127986195,
+          5.573698091836444,
+          10.43770566747012,
+          11.752374678171094,
+          7.908511433935824
         ],
         "per_map_wall_corner_shift_costs": [
           14.083983453084493,
@@ -442,10 +1028,12 @@
         "train_starts_mean_cost_all8": 7.714893462743448,
         "train_starts_mean_cost_heldout4": 8.494589486114215,
         "unseen_in_dist_starts_mean_cost_all8": 8.658275966727317,
+        "unseen_in_dist_starts_mean_cost_heldout4": 8.918062118784897,
         "near_wall_corner_shift_starts_mean_cost_all8": 12.624255037271432,
         "near_wall_corner_shift_starts_heldout4": 12.216347071844748,
         "reach_rate_train_starts": 0.7280092592592592,
-        "bessel_minus_method_train_starts": {
+        "reach_rate_wall_corner_shift": 0.3125,
+        "bessel_minus_method_train_all8": {
           "n": 8,
           "mean": -3.4045834397016335,
           "ci95_half": 0.9062362677901471,
@@ -455,7 +1043,17 @@
           ],
           "p_two_sided": 4.642545384027233e-05
         },
-        "bessel_minus_method_unseen_in_dist": {
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -3.8651091115055625,
+          "ci95_half": 1.2238939164018636,
+          "ci95": [
+            -5.089003027907426,
+            -2.641215195103699
+          ],
+          "p_two_sided": 0.0020973344696686314
+        },
+        "bessel_minus_method_unseen_all8": {
           "n": 8,
           "mean": -4.603792982925704,
           "ci95_half": 1.3606047742039664,
@@ -465,7 +1063,17 @@
           ],
           "p_two_sided": 9.107426364461275e-05
         },
-        "bessel_minus_method_wall_corner_shift": {
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -4.7871083989561445,
+          "ci95_half": 3.13413250567529,
+          "ci95": [
+            -7.921240904631434,
+            -1.6529758932808547
+          ],
+          "p_two_sided": 0.01662698665591888
+        },
+        "bessel_minus_method_shift_all8": {
           "n": 8,
           "mean": -7.447298959325613,
           "ci95_half": 0.9259821863881079,
@@ -475,9 +1083,19 @@
           ],
           "p_two_sided": 2.7654217656088946e-07
         },
-        "cold_single_query_K1_total_ms_incl_full_gp": 620.9955293646392,
-        "query_build_ms": 428.5867042296255,
-        "measured_K1_exec_ms": 44.952212260492765,
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -7.146070675162347,
+          "ci95_half": 2.2480213221738405,
+          "ci95": [
+            -9.394091997336188,
+            -4.898049352988506
+          ],
+          "p_two_sided": 0.0020573931473997194
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 555.7143643284992,
+        "query_build_ms": 382.8948927305949,
+        "measured_K1_exec_ms": 37.7284919959493,
         "per_map_train_costs": [
           5.488962843289971,
           6.287194760752633,
@@ -487,6 +1105,16 @@
           8.97624659918417,
           8.561718269971236,
           9.088228087008266
+        ],
+        "per_map_unseen_in_dist_costs": [
+          7.7262595717697335,
+          6.4124142782338795,
+          8.188675732628768,
+          11.266609676046565,
+          5.5736981319199215,
+          10.437716251402582,
+          11.752323840221543,
+          7.908510251595543
         ],
         "per_map_wall_corner_shift_costs": [
           14.083983401288991,
@@ -503,10 +1131,12 @@
         "train_starts_mean_cost_all8": 4.485984546291048,
         "train_starts_mean_cost_heldout4": 4.8569829085039435,
         "unseen_in_dist_starts_mean_cost_all8": 4.226636482331352,
+        "unseen_in_dist_starts_mean_cost_heldout4": 4.255797793553973,
         "near_wall_corner_shift_starts_mean_cost_all8": 5.605257443046128,
         "near_wall_corner_shift_starts_heldout4": 5.462080052892972,
         "reach_rate_train_starts": 0.9976851851851851,
-        "bessel_minus_method_train_starts": {
+        "reach_rate_wall_corner_shift": 0.9895833333333334,
+        "bessel_minus_method_train_all8": {
           "n": 8,
           "mean": -0.17567452324923327,
           "ci95_half": 0.13055572591862155,
@@ -516,7 +1146,17 @@
           ],
           "p_two_sided": 0.015451559004260543
         },
-        "bessel_minus_method_unseen_in_dist": {
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -0.2275025338952914,
+          "ci95_half": 0.2259458559475025,
+          "ci95": [
+            -0.4534483898427939,
+            -0.0015566779477889092
+          ],
+          "p_two_sided": 0.04916718243575518
+        },
+        "bessel_minus_method_unseen_all8": {
           "n": 8,
           "mean": -0.1721534985297387,
           "ci95_half": 0.13673569415042688,
@@ -526,7 +1166,17 @@
           ],
           "p_two_sided": 0.02059881291817782
         },
-        "bessel_minus_method_wall_corner_shift": {
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -0.12484407372522088,
+          "ci95_half": 0.30213457611257,
+          "ci95": [
+            -0.4269786498377909,
+            0.1772905023873491
+          ],
+          "p_two_sided": 0.2799906462131757
+        },
+        "bessel_minus_method_shift_all8": {
           "n": 8,
           "mean": -0.4283013651003098,
           "ci95_half": 0.24450254178608288,
@@ -536,9 +1186,19 @@
           ],
           "p_two_sided": 0.004337355123818228
         },
-        "cold_single_query_K1_total_ms_incl_full_gp": 593.244364426937,
-        "query_build_ms": 428.11024339365156,
-        "measured_K1_exec_ms": 17.67750815876449,
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -0.391803656210572,
+          "ci95_half": 0.6053260539764762,
+          "ci95": [
+            -0.9971297101870482,
+            0.2135223977659042
+          ],
+          "p_two_sided": 0.13151208915558282
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 533.3244670376492,
+        "query_build_ms": 383.01274660625495,
+        "measured_K1_exec_ms": 15.220740829439212,
         "per_map_train_costs": [
           2.931489919334538,
           4.391499365824101,
@@ -548,6 +1208,16 @@
           4.845507672027106,
           5.026412008810419,
           4.8564045629953965
+        ],
+        "per_map_unseen_in_dist_costs": [
+          3.8774016749868436,
+          3.871856768872272,
+          3.682136242949218,
+          5.358505997626583,
+          3.2892982810520817,
+          4.897241527045253,
+          5.127168341364519,
+          3.7094830247540407
         ],
         "per_map_wall_corner_shift_costs": [
           5.9617789108010015,
@@ -560,14 +1230,222 @@
           5.627287957174537
         ]
       },
+      "FrozenFK-MatchedSmoothConePrior": {
+        "train_starts_mean_cost_all8": 4.495297541079056,
+        "train_starts_mean_cost_heldout4": 4.873654891070529,
+        "unseen_in_dist_starts_mean_cost_all8": 4.216984170993556,
+        "unseen_in_dist_starts_mean_cost_heldout4": 4.254180491506088,
+        "near_wall_corner_shift_starts_mean_cost_all8": 5.661731843381901,
+        "near_wall_corner_shift_starts_heldout4": 5.539148910070777,
+        "reach_rate_train_starts": 0.9976851851851851,
+        "reach_rate_wall_corner_shift": 0.9895833333333334,
+        "bessel_minus_method_train_all8": {
+          "n": 8,
+          "mean": -0.18498751803724156,
+          "ci95_half": 0.12992710662533777,
+          "ci95": [
+            -0.31491462466257936,
+            -0.05506041141190379
+          ],
+          "p_two_sided": 0.011974123162964732
+        },
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -0.2441745164618765,
+          "ci95_half": 0.21452297819801758,
+          "ci95": [
+            -0.45869749465989407,
+            -0.029651538263858912
+          ],
+          "p_two_sided": 0.036188107971625985
+        },
+        "bessel_minus_method_unseen_all8": {
+          "n": 8,
+          "mean": -0.16250118719194362,
+          "ci95_half": 0.12412430914390947,
+          "ci95": [
+            -0.2866254963358531,
+            -0.03837687804803415
+          ],
+          "p_two_sided": 0.017426547722783674
+        },
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -0.12322677167733564,
+          "ci95_half": 0.24920774252412095,
+          "ci95": [
+            -0.37243451420145657,
+            0.1259809708467853
+          ],
+          "p_two_sided": 0.21363320344474662
+        },
+        "bessel_minus_method_shift_all8": {
+          "n": 8,
+          "mean": -0.48477576543608236,
+          "ci95_half": 0.2289456556703656,
+          "ci95": [
+            -0.713721421106448,
+            -0.25583010976571674
+          ],
+          "p_two_sided": 0.0015531303922448263
+        },
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -0.46887251338837777,
+          "ci95_half": 0.6042402880012351,
+          "ci95": [
+            -1.073112801389613,
+            0.13536777461285732
+          ],
+          "p_two_sided": 0.09010566152422719
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 533.4251642149562,
+        "query_build_ms": 383.3182208763901,
+        "measured_K1_exec_ms": 15.015963736611107,
+        "per_map_train_costs": [
+          2.939151462000425,
+          4.403428561320794,
+          4.750745431817783,
+          4.374435309211333,
+          4.717767459662473,
+          4.878735086917202,
+          5.010135240513317,
+          4.887981777189123
+        ],
+        "per_map_unseen_in_dist_costs": [
+          3.8894925586743034,
+          3.791473439927684,
+          3.6740178228924876,
+          5.364167580429622,
+          3.306124361252094,
+          4.84370188493269,
+          5.126875831279482,
+          3.7400198885600875
+        ],
+        "per_map_wall_corner_shift_costs": [
+          5.91451900112924,
+          5.774563264929815,
+          5.980394464449546,
+          5.467782376263499,
+          7.148976480002935,
+          4.30813310153239,
+          5.02919309295008,
+          5.670292965797703
+        ]
+      },
+      "FrozenFK-MatchedSharpConePrior": {
+        "train_starts_mean_cost_all8": 4.513580902518816,
+        "train_starts_mean_cost_heldout4": 4.898020103307174,
+        "unseen_in_dist_starts_mean_cost_all8": 4.220544903023044,
+        "unseen_in_dist_starts_mean_cost_heldout4": 4.269029052313622,
+        "near_wall_corner_shift_starts_mean_cost_all8": 5.623818431543439,
+        "near_wall_corner_shift_starts_heldout4": 5.515482143232918,
+        "reach_rate_train_starts": 0.9965277777777778,
+        "reach_rate_wall_corner_shift": 0.9895833333333334,
+        "bessel_minus_method_train_all8": {
+          "n": 8,
+          "mean": -0.2032708794770013,
+          "ci95_half": 0.1282544795833932,
+          "ci95": [
+            -0.3315253590603945,
+            -0.07501639989360809
+          ],
+          "p_two_sided": 0.007189800136343215
+        },
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -0.2685397286985227,
+          "ci95_half": 0.21721710880595507,
+          "ci95": [
+            -0.4857568375044778,
+            -0.051322619892567645
+          ],
+          "p_two_sided": 0.029245156568003246
+        },
+        "bessel_minus_method_unseen_all8": {
+          "n": 8,
+          "mean": -0.1660619192214311,
+          "ci95_half": 0.11237641498145405,
+          "ci95": [
+            -0.27843833420288516,
+            -0.05368550423997705
+          ],
+          "p_two_sided": 0.010070446685800502
+        },
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -0.13807533248486825,
+          "ci95_half": 0.22846212655475698,
+          "ci95": [
+            -0.3665374590396252,
+            0.09038679406988873
+          ],
+          "p_two_sided": 0.15013982765172124
+        },
+        "bessel_minus_method_shift_all8": {
+          "n": 8,
+          "mean": -0.4468623535976213,
+          "ci95_half": 0.21425745019291054,
+          "ci95": [
+            -0.6611198037905318,
+            -0.23260490340471074
+          ],
+          "p_two_sided": 0.0016909280351577675
+        },
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -0.44520574655051925,
+          "ci95_half": 0.5517996264346894,
+          "ci95": [
+            -0.9970053729852086,
+            0.10659387988417013
+          ],
+          "p_two_sided": 0.08265990814805707
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 532.8262019708442,
+        "query_build_ms": 383.2172461261507,
+        "measured_K1_exec_ms": 14.517976242738465,
+        "per_map_train_costs": [
+          2.9548093904100896,
+          4.388959399996723,
+          4.750768508484932,
+          4.422029508030083,
+          4.761893959693914,
+          4.893156978271986,
+          5.0158465347216366,
+          4.921182940541162
+        ],
+        "per_map_unseen_in_dist_costs": [
+          3.8984099704325175,
+          3.7759362843930417,
+          3.6749782847179886,
+          5.338918475386318,
+          3.3116065095133735,
+          4.831760245348328,
+          5.177477533009784,
+          3.7552719213829975
+        ],
+        "per_map_wall_corner_shift_costs": [
+          5.853929513515232,
+          5.687405715706295,
+          5.978674263832315,
+          5.408609386362003,
+          7.062027520486392,
+          4.274602268052129,
+          4.938483187607688,
+          5.786815596785465
+        ]
+      },
       "FrozenFK-HelmholtzBesselPrior": {
         "train_starts_mean_cost_all8": 4.310310023041815,
         "train_starts_mean_cost_heldout4": 4.629480374608653,
         "unseen_in_dist_starts_mean_cost_all8": 4.054482983801613,
+        "unseen_in_dist_starts_mean_cost_heldout4": 4.130953719828753,
         "near_wall_corner_shift_starts_mean_cost_all8": 5.176956077945819,
         "near_wall_corner_shift_starts_heldout4": 5.0702763966824,
         "reach_rate_train_starts": 1.0,
-        "bessel_minus_method_train_starts": {
+        "reach_rate_wall_corner_shift": 0.9982638888888888,
+        "bessel_minus_method_train_all8": {
           "n": 8,
           "mean": 0.0,
           "ci95_half": 0.0,
@@ -577,7 +1455,17 @@
           ],
           "p_two_sided": 1.0
         },
-        "bessel_minus_method_unseen_in_dist": {
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": 0.0,
+          "ci95_half": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "p_two_sided": 1.0
+        },
+        "bessel_minus_method_unseen_all8": {
           "n": 8,
           "mean": 0.0,
           "ci95_half": 0.0,
@@ -587,7 +1475,17 @@
           ],
           "p_two_sided": 1.0
         },
-        "bessel_minus_method_wall_corner_shift": {
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": 0.0,
+          "ci95_half": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "p_two_sided": 1.0
+        },
+        "bessel_minus_method_shift_all8": {
           "n": 8,
           "mean": 0.0,
           "ci95_half": 0.0,
@@ -597,9 +1495,19 @@
           ],
           "p_two_sided": 1.0
         },
-        "cold_single_query_K1_total_ms_incl_full_gp": 582.2740082997674,
-        "query_build_ms": 425.60837034640525,
-        "measured_K1_exec_ms": 9.209025078841174,
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": 0.0,
+          "ci95_half": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "p_two_sided": 1.0
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 523.9796578728904,
+        "query_build_ms": 380.759005221383,
+        "measured_K1_exec_ms": 8.129673049552366,
         "per_map_train_costs": [
           2.9187377492919286,
           4.300684436551834,
@@ -609,6 +1517,16 @@
           4.779164960842455,
           4.7046863648317645,
           4.487273925199633
+        ],
+        "per_map_unseen_in_dist_costs": [
+          3.7501423327364063,
+          3.651776325618272,
+          3.5725928580133357,
+          4.937537474729877,
+          3.318291765796521,
+          4.495135257797432,
+          5.06326842689861,
+          3.647119428822448
         ],
         "per_map_wall_corner_shift_costs": [
           5.194840669088879,
@@ -625,10 +1543,12 @@
         "train_starts_mean_cost_all8": 4.435796847602035,
         "train_starts_mean_cost_heldout4": 4.763941153546872,
         "unseen_in_dist_starts_mean_cost_all8": 4.121024189519661,
+        "unseen_in_dist_starts_mean_cost_heldout4": 4.181045156867631,
         "near_wall_corner_shift_starts_mean_cost_all8": 5.342236063383692,
         "near_wall_corner_shift_starts_heldout4": 5.276630920435552,
         "reach_rate_train_starts": 1.0,
-        "bessel_minus_method_train_starts": {
+        "reach_rate_wall_corner_shift": 0.9982638888888888,
+        "bessel_minus_method_train_all8": {
           "n": 8,
           "mean": -0.12548682456021948,
           "ci95_half": 0.06651249257234713,
@@ -638,7 +1558,17 @@
           ],
           "p_two_sided": 0.002931621179134062
         },
-        "bessel_minus_method_unseen_in_dist": {
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -0.13446077893821973,
+          "ci95_half": 0.17519261800968638,
+          "ci95": [
+            -0.3096533969479061,
+            0.04073183907146666
+          ],
+          "p_two_sided": 0.09229127115315355
+        },
+        "bessel_minus_method_unseen_all8": {
           "n": 8,
           "mean": -0.06654120571804806,
           "ci95_half": 0.05957507335601057,
@@ -648,7 +1578,17 @@
           ],
           "p_two_sided": 0.033369134021777706
         },
-        "bessel_minus_method_wall_corner_shift": {
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -0.05009143703887886,
+          "ci95_half": 0.07191450529844351,
+          "ci95": [
+            -0.12200594233732237,
+            0.02182306825956465
+          ],
+          "p_two_sided": 0.11339052966127507
+        },
+        "bessel_minus_method_shift_all8": {
           "n": 8,
           "mean": -0.16527998543787326,
           "ci95_half": 0.09693953003823659,
@@ -658,9 +1598,19 @@
           ],
           "p_two_sided": 0.004985432316985254
         },
-        "cold_single_query_K1_total_ms_incl_full_gp": 720.0137675293565,
-        "query_build_ms": 563.2469925136926,
-        "measured_K1_exec_ms": 9.310162141143035,
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -0.20635452375315233,
+          "ci95_half": 0.2332727598752017,
+          "ci95": [
+            -0.439627283628354,
+            0.026918236122049383
+          ],
+          "p_two_sided": 0.06700312505347417
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 647.5688886518279,
+        "query_build_ms": 504.49526779508835,
+        "measured_K1_exec_ms": 7.982641254784539,
         "per_map_train_costs": [
           2.9618068025378825,
           4.450041000235563,
@@ -670,6 +1620,16 @@
           5.062583680890355,
           4.848504716498382,
           4.514669418768971
+        ],
+        "per_map_unseen_in_dist_costs": [
+          3.750619716265941,
+          3.7537133627693557,
+          3.782409520951331,
+          4.957270288700132,
+          3.308275764262412,
+          4.579911153508857,
+          5.103839128748262,
+          3.7321545809509953
         ],
         "per_map_wall_corner_shift_costs": [
           5.340211407143099,
@@ -699,27 +1659,260 @@
       4202,
       4203
     ],
-    "mean_full_gp_fit_ms": 467.3963091627229,
-    "online_pimc_mean_ess": {
-      "H16_of_36": 25.686319595874078,
-      "H48_of_36": 21.82152871336866
-    },
-    "bessel_fk_diagnostics": {
-      "collar_frac": 0.014057847559689,
-      "mean_ess": 31.439971680849386,
-      "min_ess": 6.764500857356441,
-      "weighted_tail_mass": 0.00032046061093910606,
-      "cont_final_diff": 4.805719810185764e-06
-    },
+    "mean_full_gp_fit_ms": 439.62103698868304,
+    "bessel_fk_query_diagnostics": [
+      {
+        "map_seed": 3200,
+        "query_idx": 0,
+        "collar_frac": 0.009609715835396769,
+        "mean_ess": 32.282830212457185,
+        "median_ess": 32.5578797531592,
+        "min_ess": 7.526951954784022,
+        "weighted_tail_mass": 0.00024383416452419102,
+        "cont_final_diff": 1.8416664926412807e-07
+      },
+      {
+        "map_seed": 3200,
+        "query_idx": 1,
+        "collar_frac": 0.01859597511771425,
+        "mean_ess": 41.70982740733694,
+        "median_ess": 43.229737798070104,
+        "min_ess": 10.21602557784637,
+        "weighted_tail_mass": 0.0018083306464173855,
+        "cont_final_diff": 5.3535948364852315e-05
+      },
+      {
+        "map_seed": 3200,
+        "query_idx": 2,
+        "collar_frac": 0.016782471077107966,
+        "mean_ess": 33.9270691874635,
+        "median_ess": 32.995524908024414,
+        "min_ess": 9.163531783301348,
+        "weighted_tail_mass": 4.6489867974554835e-05,
+        "cont_final_diff": 1.6999527124861302e-07
+      },
+      {
+        "map_seed": 3201,
+        "query_idx": 0,
+        "collar_frac": 0.011790667845733451,
+        "mean_ess": 35.783574931156714,
+        "median_ess": 36.509707408675965,
+        "min_ess": 8.609267484060535,
+        "weighted_tail_mass": 0.0002599079974646312,
+        "cont_final_diff": 2.1987271936474428e-07
+      },
+      {
+        "map_seed": 3201,
+        "query_idx": 1,
+        "collar_frac": 0.010523948006876718,
+        "mean_ess": 33.82672563708242,
+        "median_ess": 32.862810489681685,
+        "min_ess": 14.949193735768889,
+        "weighted_tail_mass": 0.00036543951820545794,
+        "cont_final_diff": 1.2432496643288715e-07
+      },
+      {
+        "map_seed": 3201,
+        "query_idx": 2,
+        "collar_frac": 0.014748633361772049,
+        "mean_ess": 44.32832976232704,
+        "median_ess": 44.63450149198873,
+        "min_ess": 16.800008247377537,
+        "weighted_tail_mass": 0.00012177013224986532,
+        "cont_final_diff": 7.278799801779812e-07
+      },
+      {
+        "map_seed": 3202,
+        "query_idx": 0,
+        "collar_frac": 0.00886527514231499,
+        "mean_ess": 23.00756986475006,
+        "median_ess": 21.27401793030258,
+        "min_ess": 3.7577601987665044,
+        "weighted_tail_mass": 0.00020225174669412043,
+        "cont_final_diff": 5.167749785872644e-07
+      },
+      {
+        "map_seed": 3202,
+        "query_idx": 1,
+        "collar_frac": 0.017116418998997174,
+        "mean_ess": 30.474847147667916,
+        "median_ess": 30.40561552196687,
+        "min_ess": 4.57763876119953,
+        "weighted_tail_mass": 0.0002700398437921179,
+        "cont_final_diff": 4.659988055699671e-05
+      },
+      {
+        "map_seed": 3202,
+        "query_idx": 2,
+        "collar_frac": 0.01966273003419013,
+        "mean_ess": 26.537437286118507,
+        "median_ess": 25.463522307188505,
+        "min_ess": 3.2010081692979955,
+        "weighted_tail_mass": 9.521844802263247e-06,
+        "cont_final_diff": 2.441904900507552e-09
+      },
+      {
+        "map_seed": 3203,
+        "query_idx": 0,
+        "collar_frac": 0.01593918948779518,
+        "mean_ess": 27.478434361846674,
+        "median_ess": 24.036117588359918,
+        "min_ess": 4.495935166413605,
+        "weighted_tail_mass": 0.00039986133916723504,
+        "cont_final_diff": 2.2645452868452765e-07
+      },
+      {
+        "map_seed": 3203,
+        "query_idx": 1,
+        "collar_frac": 0.016437203610218755,
+        "mean_ess": 29.69581810884667,
+        "median_ess": 27.32027528926783,
+        "min_ess": 2.2729323617600765,
+        "weighted_tail_mass": 0.0002961872844260843,
+        "cont_final_diff": 2.8356109588179024e-07
+      },
+      {
+        "map_seed": 3203,
+        "query_idx": 2,
+        "collar_frac": 0.008725248049974961,
+        "mean_ess": 27.8028791667661,
+        "median_ess": 25.339642300973033,
+        "min_ess": 3.1034109017500895,
+        "weighted_tail_mass": 0.000744249100470006,
+        "cont_final_diff": 7.3757396146234555e-06
+      },
+      {
+        "map_seed": 4200,
+        "query_idx": 0,
+        "collar_frac": 0.01057911082324415,
+        "mean_ess": 37.200294579932,
+        "median_ess": 38.62373345427319,
+        "min_ess": 6.719672020434664,
+        "weighted_tail_mass": 0.000257814012629996,
+        "cont_final_diff": 5.933440248018229e-07
+      },
+      {
+        "map_seed": 4200,
+        "query_idx": 1,
+        "collar_frac": 0.026633104870504035,
+        "mean_ess": 31.532014992171895,
+        "median_ess": 30.036102968164453,
+        "min_ess": 2.737520801879833,
+        "weighted_tail_mass": 0.0013735726326977954,
+        "cont_final_diff": 2.2226614566633884e-06
+      },
+      {
+        "map_seed": 4200,
+        "query_idx": 2,
+        "collar_frac": 0.024768095137466938,
+        "mean_ess": 32.515453119907406,
+        "median_ess": 31.670755275876175,
+        "min_ess": 6.700988351606482,
+        "weighted_tail_mass": 0.0005267023720502722,
+        "cont_final_diff": 2.065614527139341e-06
+      },
+      {
+        "map_seed": 4201,
+        "query_idx": 0,
+        "collar_frac": 0.010326107304653862,
+        "mean_ess": 37.05710935747379,
+        "median_ess": 35.97750013704001,
+        "min_ess": 15.656830233433897,
+        "weighted_tail_mass": 0.00012758758592322755,
+        "cont_final_diff": 9.050863880588622e-08
+      },
+      {
+        "map_seed": 4201,
+        "query_idx": 1,
+        "collar_frac": 0.007597733455578435,
+        "mean_ess": 31.273708860790716,
+        "median_ess": 31.052914460142382,
+        "min_ess": 7.513132281606365,
+        "weighted_tail_mass": 1.594993722769253e-05,
+        "cont_final_diff": 1.6503598487815907e-10
+      },
+      {
+        "map_seed": 4201,
+        "query_idx": 2,
+        "collar_frac": 0.01625705573733948,
+        "mean_ess": 35.44175781030796,
+        "median_ess": 34.89972290977035,
+        "min_ess": 12.764828405412485,
+        "weighted_tail_mass": 0.00028940974026478,
+        "cont_final_diff": 2.413942017387427e-07
+      },
+      {
+        "map_seed": 4202,
+        "query_idx": 0,
+        "collar_frac": 0.006956554001409862,
+        "mean_ess": 34.57298357316666,
+        "median_ess": 36.40969780093887,
+        "min_ess": 5.153380509065047,
+        "weighted_tail_mass": 6.75089968260675e-05,
+        "cont_final_diff": 1.3956487077138036e-09
+      },
+      {
+        "map_seed": 4202,
+        "query_idx": 1,
+        "collar_frac": 0.0161924882979597,
+        "mean_ess": 29.69515628883324,
+        "median_ess": 28.98446937628071,
+        "min_ess": 3.2211308565502086,
+        "weighted_tail_mass": 0.00018565636592818876,
+        "cont_final_diff": 1.197922671059004e-07
+      },
+      {
+        "map_seed": 4202,
+        "query_idx": 2,
+        "collar_frac": 0.010491813562511762,
+        "mean_ess": 29.958036421118155,
+        "median_ess": 30.688141484039384,
+        "min_ess": 4.380243072354061,
+        "weighted_tail_mass": 4.9907917372375535e-06,
+        "cont_final_diff": 6.443745537154655e-11
+      },
+      {
+        "map_seed": 4203,
+        "query_idx": 0,
+        "collar_frac": 0.01065287387819415,
+        "mean_ess": 19.57318263986444,
+        "median_ess": 16.230027041187114,
+        "min_ess": 2.3063721527553622,
+        "weighted_tail_mass": 2.1775268857766034e-05,
+        "cont_final_diff": 1.3956743982745934e-08
+      },
+      {
+        "map_seed": 4203,
+        "query_idx": 1,
+        "collar_frac": 0.015480695852606332,
+        "mean_ess": 24.75028173291625,
+        "median_ess": 22.945442932442745,
+        "min_ess": 2.2199787794663806,
+        "weighted_tail_mass": 1.888616331447904e-05,
+        "cont_final_diff": 1.931302207047736e-08
+      },
+      {
+        "map_seed": 4203,
+        "query_idx": 2,
+        "collar_frac": 0.012655231942974885,
+        "mean_ess": 24.133997890082988,
+        "median_ess": 23.67024650236674,
+        "min_ess": 4.300278769663273,
+        "weighted_tail_mass": 3.331730889313032e-05,
+        "cont_final_diff": 2.024808987144411e-09
+      }
+    ],
     "methods": {
       "Pure-Eikonal-Guide": {
         "train_starts_mean_cost_all8": 12.412445912217404,
         "train_starts_mean_cost_heldout4": 11.563774042234778,
         "unseen_in_dist_starts_mean_cost_all8": 11.523098875049342,
+        "unseen_in_dist_starts_mean_cost_heldout4": 11.304737883884926,
         "near_wall_corner_shift_starts_mean_cost_all8": 12.521941813886187,
         "near_wall_corner_shift_starts_heldout4": 11.47107606654861,
         "reach_rate_train_starts": 0.9305555555555556,
-        "bessel_minus_method_train_starts": {
+        "reach_rate_wall_corner_shift": 0.8819444444444445,
+        "bessel_minus_method_train_all8": {
           "n": 8,
           "mean": -7.868498709600173,
           "ci95_half": 1.3792955906765625,
@@ -729,7 +1922,17 @@
           ],
           "p_two_sided": 2.8891999335521264e-06
         },
-        "bessel_minus_method_unseen_in_dist": {
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -6.934569287044475,
+          "ci95_half": 2.4287874829980964,
+          "ci95": [
+            -9.363356770042571,
+            -4.505781804046379
+          ],
+          "p_two_sided": 0.002816292731485084
+        },
+        "bessel_minus_method_unseen_all8": {
           "n": 8,
           "mean": -7.343204541446832,
           "ci95_half": 0.9731879968833285,
@@ -739,7 +1942,17 @@
           ],
           "p_two_sided": 4.287695880307822e-07
         },
-        "bessel_minus_method_wall_corner_shift": {
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -7.138854897262551,
+          "ci95_half": 2.6475894088914944,
+          "ci95": [
+            -9.786444306154046,
+            -4.491265488371056
+          ],
+          "p_two_sided": 0.0033267351472430497
+        },
+        "bessel_minus_method_shift_all8": {
           "n": 8,
           "mean": -7.294121897684765,
           "ci95_half": 1.144014483262876,
@@ -749,9 +1962,19 @@
           ],
           "p_two_sided": 1.3572370034196635e-06
         },
-        "cold_single_query_K1_total_ms_incl_full_gp": 37.69666041868429,
-        "query_build_ms": 0.021836516680195928,
-        "measured_K1_exec_ms": 37.67482390200409,
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -6.15707398469582,
+          "ci95_half": 1.188107956737705,
+          "ci95": [
+            -7.345181941433525,
+            -4.968966027958114
+          ],
+          "p_two_sided": 0.0004851919867787862
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 33.10548894417783,
+        "query_build_ms": 0.02039773971773684,
+        "measured_K1_exec_ms": 33.08509120446009,
         "per_map_train_costs": [
           12.91612179308857,
           11.353756815219873,
@@ -761,6 +1984,16 @@
           11.498132503631645,
           8.951261564170794,
           13.9172196828845
+        ],
+        "per_map_unseen_in_dist_costs": [
+          12.321609050833713,
+          11.263838463476347,
+          12.28587370119657,
+          11.094518249348406,
+          11.12814167269017,
+          11.422409371700587,
+          9.542763107639423,
+          13.125637383509522
         ],
         "per_map_wall_corner_shift_costs": [
           13.972873880662723,
@@ -773,14 +2006,119 @@
           11.281111452919617
         ]
       },
+      "Pure-MatchedSharpCone-Guide": {
+        "train_starts_mean_cost_all8": 12.039981927484291,
+        "train_starts_mean_cost_heldout4": 11.08058156380135,
+        "unseen_in_dist_starts_mean_cost_all8": 10.99962570394421,
+        "unseen_in_dist_starts_mean_cost_heldout4": 10.570813011854312,
+        "near_wall_corner_shift_starts_mean_cost_all8": 12.004273369925205,
+        "near_wall_corner_shift_starts_heldout4": 11.26284089597106,
+        "reach_rate_train_starts": 0.9363425925925926,
+        "reach_rate_wall_corner_shift": 0.8975694444444444,
+        "bessel_minus_method_train_all8": {
+          "n": 8,
+          "mean": -7.496034724867059,
+          "ci95_half": 1.4600873413410647,
+          "ci95": [
+            -8.956122066208124,
+            -6.035947383525994
+          ],
+          "p_two_sided": 5.882251236035064e-06
+        },
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -6.451376808611044,
+          "ci95_half": 2.177561684437697,
+          "ci95": [
+            -8.628938493048741,
+            -4.273815124173346
+          ],
+          "p_two_sided": 0.002528297258132409
+        },
+        "bessel_minus_method_unseen_all8": {
+          "n": 8,
+          "mean": -6.8197313703416995,
+          "ci95_half": 0.9902622278442426,
+          "ci95": [
+            -7.809993598185942,
+            -5.829469142497457
+          ],
+          "p_two_sided": 8.018799698478563e-07
+        },
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -6.404930025231938,
+          "ci95_half": 2.47514298191525,
+          "ci95": [
+            -8.880073007147187,
+            -3.9297870433166877
+          ],
+          "p_two_sided": 0.0037485139653398018
+        },
+        "bessel_minus_method_shift_all8": {
+          "n": 8,
+          "mean": -6.776453453723785,
+          "ci95_half": 0.8414758050028492,
+          "ci95": [
+            -7.617929258726634,
+            -5.934977648720936
+          ],
+          "p_two_sided": 2.7407873248657637e-07
+        },
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -5.948838814118269,
+          "ci95_half": 0.755329122459312,
+          "ci95": [
+            -6.704167936577581,
+            -5.193509691658957
+          ],
+          "p_two_sided": 0.00013925681552824987
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 32.94149171172952,
+        "query_build_ms": 0.30557672531964875,
+        "measured_K1_exec_ms": 32.63591498640987,
+        "per_map_train_costs": [
+          12.247719740552,
+          11.029369896616801,
+          14.939631643821812,
+          13.780807883678326,
+          11.62585370217448,
+          11.042771481107302,
+          8.56300121746465,
+          13.09069985445896
+        ],
+        "per_map_unseen_in_dist_costs": [
+          12.136130954791012,
+          10.435043146166892,
+          11.99567562506033,
+          11.146903858118195,
+          10.539533741877156,
+          11.2070235893405,
+          8.469884497734506,
+          12.066810218465086
+        ],
+        "per_map_wall_corner_shift_costs": [
+          12.972264446316702,
+          12.81990579950879,
+          12.99835209534409,
+          12.192301034347823,
+          9.824254801209984,
+          11.78724539416748,
+          12.082226033578932,
+          11.357637354927848
+        ]
+      },
       "Pure-Bessel-BaseGuide": {
         "train_starts_mean_cost_all8": 5.504410550003193,
         "train_starts_mean_cost_heldout4": 5.4333906689182925,
         "unseen_in_dist_starts_mean_cost_all8": 5.026832565406657,
+        "unseen_in_dist_starts_mean_cost_heldout4": 4.945695513190086,
         "near_wall_corner_shift_starts_mean_cost_all8": 6.078134233526285,
         "near_wall_corner_shift_starts_heldout4": 6.159406594346063,
         "reach_rate_train_starts": 1.0,
-        "bessel_minus_method_train_starts": {
+        "reach_rate_wall_corner_shift": 1.0,
+        "bessel_minus_method_train_all8": {
           "n": 8,
           "mean": -0.9604633473859618,
           "ci95_half": 0.312962692843813,
@@ -790,7 +2128,17 @@
           ],
           "p_two_sided": 0.00016892154764840708
         },
-        "bessel_minus_method_unseen_in_dist": {
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -0.8041859137279886,
+          "ci95_half": 0.36108055803009903,
+          "ci95": [
+            -1.1652664717580876,
+            -0.4431053556978896
+          ],
+          "p_two_sided": 0.005776338407605899
+        },
+        "bessel_minus_method_unseen_all8": {
           "n": 8,
           "mean": -0.8469382318041483,
           "ci95_half": 0.29893990760517225,
@@ -800,7 +2148,17 @@
           ],
           "p_two_sided": 0.00027761444372842377
         },
-        "bessel_minus_method_wall_corner_shift": {
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -0.7798125265677112,
+          "ci95_half": 0.5659317776748423,
+          "ci95": [
+            -1.3457443042425534,
+            -0.2138807488928689
+          ],
+          "p_two_sided": 0.021960500644845705
+        },
+        "bessel_minus_method_shift_all8": {
           "n": 8,
           "mean": -0.8503143173248631,
           "ci95_half": 0.3225372584489542,
@@ -810,9 +2168,19 @@
           ],
           "p_two_sided": 0.00043081050720001864
         },
-        "cold_single_query_K1_total_ms_incl_full_gp": 11.570723863163343,
-        "query_build_ms": 0.4851175181102007,
-        "measured_K1_exec_ms": 11.085606345053142,
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -0.8454045124932721,
+          "ci95_half": 0.7393494359325202,
+          "ci95": [
+            -1.5847539484257922,
+            -0.10605507656075186
+          ],
+          "p_two_sided": 0.03576812006857888
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 10.3576951175152,
+        "query_build_ms": 0.31573803668531275,
+        "measured_K1_exec_ms": 10.041957080829889,
         "per_map_train_costs": [
           4.77833311134841,
           5.128414722280495,
@@ -822,6 +2190,16 @@
           5.823448525009632,
           4.471490558046266,
           6.1836596645365915
+        ],
+        "per_map_unseen_in_dist_costs": [
+          4.882989500759002,
+          4.559076773100856,
+          5.354936970072228,
+          5.634875226560836,
+          5.72972694217473,
+          5.512695149296829,
+          3.8786194033904398,
+          4.6617405578983435
         ],
         "per_map_wall_corner_shift_costs": [
           6.3931045825771795,
@@ -838,10 +2216,12 @@
         "train_starts_mean_cost_all8": 5.117652235649801,
         "train_starts_mean_cost_heldout4": 5.217917800740279,
         "unseen_in_dist_starts_mean_cost_all8": 4.600401432112731,
+        "unseen_in_dist_starts_mean_cost_heldout4": 4.559873947476265,
         "near_wall_corner_shift_starts_mean_cost_all8": 5.947884694859085,
         "near_wall_corner_shift_starts_heldout4": 6.087209365896045,
         "reach_rate_train_starts": 1.0,
-        "bessel_minus_method_train_starts": {
+        "reach_rate_wall_corner_shift": 1.0,
+        "bessel_minus_method_train_all8": {
           "n": 8,
           "mean": -0.5737050330325684,
           "ci95_half": 0.23328196196663337,
@@ -851,7 +2231,17 @@
           ],
           "p_two_sided": 0.0006532833481149566
         },
-        "bessel_minus_method_unseen_in_dist": {
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -0.5887130455499753,
+          "ci95_half": 0.5968702520530764,
+          "ci95": [
+            -1.1855832976030518,
+            0.008157206503101144
+          ],
+          "p_two_sided": 0.05170542614506633
+        },
+        "bessel_minus_method_unseen_all8": {
           "n": 8,
           "mean": -0.42050709851022083,
           "ci95_half": 0.07446307401218578,
@@ -861,7 +2251,17 @@
           ],
           "p_two_sided": 3.0943347055724462e-06
         },
-        "bessel_minus_method_wall_corner_shift": {
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -0.3939909608538906,
+          "ci95_half": 0.13132974942104966,
+          "ci95": [
+            -0.5253207102749403,
+            -0.26266121143284094
+          ],
+          "p_two_sided": 0.002437398323234065
+        },
+        "bessel_minus_method_shift_all8": {
           "n": 8,
           "mean": -0.7200647786576635,
           "ci95_half": 0.38446305377538004,
@@ -871,9 +2271,19 @@
           ],
           "p_two_sided": 0.0030489297859753613
         },
-        "cold_single_query_K1_total_ms_incl_full_gp": 963.0363048345316,
-        "query_build_ms": 0.33282904769293964,
-        "measured_K1_exec_ms": 495.3071666241158,
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -0.7732072840432536,
+          "ci95_half": 0.9037555220008423,
+          "ci95": [
+            -1.676962806044096,
+            0.13054823795758874
+          ],
+          "p_two_sided": 0.07238202231957086
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 887.864611907086,
+        "query_build_ms": 0.30577662982977927,
+        "measured_K1_exec_ms": 447.93779828857316,
         "per_map_train_costs": [
           4.669778401613493,
           4.660811775001446,
@@ -883,6 +2293,16 @@
           5.54689688083258,
           4.155055943484016,
           6.199325636754082
+        ],
+        "per_map_unseen_in_dist_costs": [
+          4.7156923581975585,
+          4.2882456930366635,
+          4.800579558146854,
+          4.759198057615708,
+          5.251206550436585,
+          5.073788092950483,
+          3.9330127159215102,
+          3.9814884305964813
         ],
         "per_map_wall_corner_shift_costs": [
           7.011244566257006,
@@ -899,10 +2319,12 @@
         "train_starts_mean_cost_all8": 5.263742161174067,
         "train_starts_mean_cost_heldout4": 5.491036787019747,
         "unseen_in_dist_starts_mean_cost_all8": 4.693544612130043,
+        "unseen_in_dist_starts_mean_cost_heldout4": 4.694253859656556,
         "near_wall_corner_shift_starts_mean_cost_all8": 7.078114037118656,
         "near_wall_corner_shift_starts_heldout4": 7.600892054253864,
         "reach_rate_train_starts": 1.0,
-        "bessel_minus_method_train_starts": {
+        "reach_rate_wall_corner_shift": 1.0,
+        "bessel_minus_method_train_all8": {
           "n": 8,
           "mean": -0.7197949585568351,
           "ci95_half": 0.2900014279906965,
@@ -912,7 +2334,17 @@
           ],
           "p_two_sided": 0.0006185103474027905
         },
-        "bessel_minus_method_unseen_in_dist": {
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -0.8618320318294433,
+          "ci95_half": 0.6657686898090811,
+          "ci95": [
+            -1.5276007216385246,
+            -0.19606334202036224
+          ],
+          "p_two_sided": 0.025921816647676614
+        },
+        "bessel_minus_method_unseen_all8": {
           "n": 8,
           "mean": -0.5136502785275332,
           "ci95_half": 0.16036176333845156,
@@ -922,7 +2354,17 @@
           ],
           "p_two_sided": 0.00012904160545987667
         },
-        "bessel_minus_method_wall_corner_shift": {
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -0.5283708730341825,
+          "ci95_half": 0.32916485552914626,
+          "ci95": [
+            -0.8575357285633287,
+            -0.19920601750503625
+          ],
+          "p_two_sided": 0.01451186438115964
+        },
+        "bessel_minus_method_shift_all8": {
           "n": 8,
           "mean": -1.8502941209172346,
           "ci95_half": 0.7893070063007489,
@@ -932,9 +2374,19 @@
           ],
           "p_two_sided": 0.0008661371598887822
         },
-        "cold_single_query_K1_total_ms_incl_full_gp": 1127.1696325857192,
-        "query_build_ms": 0.31400446702415746,
-        "measured_K1_exec_ms": 659.4593189559721,
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -2.286889972401073,
+          "ci95_half": 1.842239875030738,
+          "ci95": [
+            -4.129129847431811,
+            -0.4446500973703349
+          ],
+          "p_two_sided": 0.02893344697576262
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 1051.6464022512082,
+        "query_build_ms": 0.2859602973330766,
+        "measured_K1_exec_ms": 611.7394049651921,
         "per_map_train_costs": [
           4.606002362375982,
           4.632659326226709,
@@ -944,6 +2396,16 @@
           5.79648276821765,
           4.1915478057174544,
           6.50457571107318
+        ],
+        "per_map_unseen_in_dist_costs": [
+          4.775781024237477,
+          4.171866491480192,
+          4.926188512416558,
+          4.897505430279889,
+          5.599217766180473,
+          5.156902422978807,
+          4.120058489508268,
+          3.900836759958679
         ],
         "per_map_wall_corner_shift_costs": [
           7.864675126988305,
@@ -960,10 +2422,12 @@
         "train_starts_mean_cost_all8": 14.922523082380593,
         "train_starts_mean_cost_heldout4": 15.817910384060726,
         "unseen_in_dist_starts_mean_cost_all8": 9.858508815184168,
+        "unseen_in_dist_starts_mean_cost_heldout4": 10.227933576024407,
         "near_wall_corner_shift_starts_mean_cost_all8": 14.215993812151973,
         "near_wall_corner_shift_starts_heldout4": 15.112226383434487,
         "reach_rate_train_starts": 0.6979166666666666,
-        "bessel_minus_method_train_starts": {
+        "reach_rate_wall_corner_shift": 0.2934027777777778,
+        "bessel_minus_method_train_all8": {
           "n": 8,
           "mean": -10.37857587976336,
           "ci95_half": 4.748855397559682,
@@ -973,7 +2437,17 @@
           ],
           "p_two_sided": 0.0012981426973139758
         },
-        "bessel_minus_method_unseen_in_dist": {
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -11.188705628870421,
+          "ci95_half": 8.382731180665102,
+          "ci95": [
+            -19.571436809535523,
+            -2.805974448205319
+          ],
+          "p_two_sided": 0.023905226620557857
+        },
+        "bessel_minus_method_unseen_all8": {
           "n": 8,
           "mean": -5.678614481581658,
           "ci95_half": 1.4969266262724974,
@@ -983,7 +2457,17 @@
           ],
           "p_two_sided": 4.358574907833714e-05
         },
-        "bessel_minus_method_wall_corner_shift": {
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -6.062050589402032,
+          "ci95_half": 3.6463655000665276,
+          "ci95": [
+            -9.70841608946856,
+            -2.4156850893355046
+          ],
+          "p_two_sided": 0.013173365814655395
+        },
+        "bessel_minus_method_shift_all8": {
           "n": 8,
           "mean": -8.988173895950553,
           "ci95_half": 1.133191314755291,
@@ -993,9 +2477,19 @@
           ],
           "p_two_sided": 3.0425284810017223e-07
         },
-        "cold_single_query_K1_total_ms_incl_full_gp": 5510.692789578267,
-        "query_build_ms": 4994.340930182565,
-        "measured_K1_exec_ms": 48.95555023297978,
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -9.798224301581698,
+          "ci95_half": 0.9094114337306808,
+          "ci95": [
+            -10.707635735312378,
+            -8.888812867851017
+          ],
+          "p_two_sided": 5.453789531217661e-05
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 5059.473677402518,
+        "query_build_ms": 4576.1511638799375,
+        "measured_K1_exec_ms": 43.70147653389722,
         "per_map_train_costs": [
           11.22183079588171,
           9.729185880987572,
@@ -1005,6 +2499,16 @@
           23.944661263467,
           11.680466773147778,
           12.743823465111928
+        ],
+        "per_map_unseen_in_dist_costs": [
+          11.538205735437586,
+          8.732799785405609,
+          9.318933408145185,
+          8.366397288387335,
+          8.442640618225303,
+          12.700203425672273,
+          11.692233197144446,
+          8.076657063055608
         ],
         "per_map_wall_corner_shift_costs": [
           15.902612428530565,
@@ -1021,10 +2525,12 @@
         "train_starts_mean_cost_all8": 8.56595787733088,
         "train_starts_mean_cost_heldout4": 9.077351245209002,
         "unseen_in_dist_starts_mean_cost_all8": 8.802816558830166,
+        "unseen_in_dist_starts_mean_cost_heldout4": 8.975992825126472,
         "near_wall_corner_shift_starts_mean_cost_all8": 13.074563657846063,
         "near_wall_corner_shift_starts_heldout4": 13.490334406079857,
         "reach_rate_train_starts": 0.6388888888888888,
-        "bessel_minus_method_train_starts": {
+        "reach_rate_wall_corner_shift": 0.18576388888888887,
+        "bessel_minus_method_train_all8": {
           "n": 8,
           "mean": -4.0220106747136475,
           "ci95_half": 0.7562203843865477,
@@ -1034,7 +2540,17 @@
           ],
           "p_two_sided": 4.638082533862526e-06
         },
-        "bessel_minus_method_unseen_in_dist": {
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -4.448146490018697,
+          "ci95_half": 1.6446820007194383,
+          "ci95": [
+            -6.092828490738135,
+            -2.803464489299259
+          ],
+          "p_two_sided": 0.003297497123880451
+        },
+        "bessel_minus_method_unseen_all8": {
           "n": 8,
           "mean": -4.622922225227657,
           "ci95_half": 1.285994804234452,
@@ -1044,7 +2560,17 @@
           ],
           "p_two_sided": 6.175121886226793e-05
         },
-        "bessel_minus_method_wall_corner_shift": {
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -4.810109838504098,
+          "ci95_half": 3.6963637921099113,
+          "ci95": [
+            -8.506473630614009,
+            -1.1137460463941866
+          ],
+          "p_two_sided": 0.025565168588099846
+        },
+        "bessel_minus_method_shift_all8": {
           "n": 8,
           "mean": -7.846743741644641,
           "ci95_half": 0.7800109059942817,
@@ -1054,9 +2580,19 @@
           ],
           "p_two_sided": 5.8979968682079275e-08
         },
-        "cold_single_query_K1_total_ms_incl_full_gp": 1609.8037943690238,
-        "query_build_ms": 1087.4881981677995,
-        "measured_K1_exec_ms": 54.91928703850135,
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -8.176332324227065,
+          "ci95_half": 1.953808456308193,
+          "ci95": [
+            -10.130140780535259,
+            -6.222523867918872
+          ],
+          "p_two_sided": 0.0009149820752253442
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 1474.7168040873173,
+        "query_build_ms": 986.6035231098067,
+        "measured_K1_exec_ms": 48.49224398882749,
         "per_map_train_costs": [
           7.940353619010409,
           7.938157833896001,
@@ -1066,6 +2602,16 @@
           9.712042746527901,
           7.824138444866787,
           10.81054652574013
+        ],
+        "per_map_unseen_in_dist_costs": [
+          8.485713512211937,
+          8.571403454808745,
+          8.75128801867528,
+          8.710156184439484,
+          8.016907272632443,
+          11.53771334040818,
+          10.415933745706127,
+          5.933416941759138
         ],
         "per_map_wall_corner_shift_costs": [
           13.804794404581132,
@@ -1082,10 +2628,12 @@
         "train_starts_mean_cost_all8": 8.57891637853485,
         "train_starts_mean_cost_heldout4": 9.095878284455141,
         "unseen_in_dist_starts_mean_cost_all8": 8.804818871819304,
+        "unseen_in_dist_starts_mean_cost_heldout4": 8.979516821424774,
         "near_wall_corner_shift_starts_mean_cost_all8": 13.074655944556937,
         "near_wall_corner_shift_starts_heldout4": 13.49087847444975,
         "reach_rate_train_starts": 0.6388888888888888,
-        "bessel_minus_method_train_starts": {
+        "reach_rate_wall_corner_shift": 0.18576388888888887,
+        "bessel_minus_method_train_all8": {
           "n": 8,
           "mean": -4.034969175917617,
           "ci95_half": 0.7497032282317351,
@@ -1095,7 +2643,17 @@
           ],
           "p_two_sided": 4.281460691582108e-06
         },
-        "bessel_minus_method_unseen_in_dist": {
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -4.4666735292648365,
+          "ci95_half": 1.602121379721014,
+          "ci95": [
+            -6.068794908985851,
+            -2.8645521495438224
+          ],
+          "p_two_sided": 0.0030186237239224886
+        },
+        "bessel_minus_method_unseen_all8": {
           "n": 8,
           "mean": -4.624924538216796,
           "ci95_half": 1.2841549470139422,
@@ -1105,7 +2663,17 @@
           ],
           "p_two_sided": 6.1012908552320676e-05
         },
-        "bessel_minus_method_wall_corner_shift": {
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -4.8136338348024,
+          "ci95_half": 3.6904928348311796,
+          "ci95": [
+            -8.50412666963358,
+            -1.1231409999712203
+          ],
+          "p_two_sided": 0.025408930361792665
+        },
+        "bessel_minus_method_shift_all8": {
           "n": 8,
           "mean": -7.846836028355518,
           "ci95_half": 0.7799647834386461,
@@ -1115,9 +2683,19 @@
           ],
           "p_two_sided": 5.8951024692449e-08
         },
-        "cold_single_query_K1_total_ms_incl_full_gp": 1602.6837009218677,
-        "query_build_ms": 1080.6054773080784,
-        "measured_K1_exec_ms": 54.681914451066405,
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -8.17687639259696,
+          "ci95_half": 1.952925607916981,
+          "ci95": [
+            -10.12980200051394,
+            -6.223950784679978
+          ],
+          "p_two_sided": 0.0009135788387440534
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 1489.976306911558,
+        "query_build_ms": 1002.0180815384567,
+        "measured_K1_exec_ms": 48.33718838441807,
         "per_map_train_costs": [
           7.967833253075703,
           7.942127376823631,
@@ -1127,6 +2705,16 @@
           9.712660308098767,
           7.825685607982472,
           10.810370900893913
+        ],
+        "per_map_unseen_in_dist_costs": [
+          8.486289289403034,
+          8.569657945217307,
+          8.752073788531929,
+          8.71246266570307,
+          8.031941498300885,
+          11.536741185547447,
+          10.415918783774094,
+          5.933465818076673
         ],
         "per_map_wall_corner_shift_costs": [
           13.803323688438214,
@@ -1143,10 +2731,12 @@
         "train_starts_mean_cost_all8": 4.598017514842766,
         "train_starts_mean_cost_heldout4": 4.685076534338185,
         "unseen_in_dist_starts_mean_cost_all8": 4.306556358617832,
+        "unseen_in_dist_starts_mean_cost_heldout4": 4.260210017504722,
         "near_wall_corner_shift_starts_mean_cost_all8": 5.518773049558765,
         "near_wall_corner_shift_starts_heldout4": 5.644661808954348,
         "reach_rate_train_starts": 1.0,
-        "bessel_minus_method_train_starts": {
+        "reach_rate_wall_corner_shift": 0.9965277777777778,
+        "bessel_minus_method_train_all8": {
           "n": 8,
           "mean": -0.05407031222553432,
           "ci95_half": 0.1163709555970321,
@@ -1156,7 +2746,17 @@
           ],
           "p_two_sided": 0.3082484013751461
         },
-        "bessel_minus_method_unseen_in_dist": {
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -0.05587177914788122,
+          "ci95_half": 0.254129296425259,
+          "ci95": [
+            -0.3100010755731402,
+            0.19825751727737778
+          ],
+          "p_two_sided": 0.5345013695250328
+        },
+        "bessel_minus_method_unseen_all8": {
           "n": 8,
           "mean": -0.12666202501532275,
           "ci95_half": 0.08046525717670103,
@@ -1166,7 +2766,17 @@
           ],
           "p_two_sided": 0.007434502915613512
         },
-        "bessel_minus_method_wall_corner_shift": {
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -0.09432703088234817,
+          "ci95_half": 0.15939804512346195,
+          "ci95": [
+            -0.2537250760058101,
+            0.06507101424111378
+          ],
+          "p_two_sided": 0.15618824429959902
+        },
+        "bessel_minus_method_shift_all8": {
           "n": 8,
           "mean": -0.2909531333573432,
           "ci95_half": 0.17024190079362816,
@@ -1176,9 +2786,19 @@
           ],
           "p_two_sided": 0.004924889356899153
         },
-        "cold_single_query_K1_total_ms_incl_full_gp": 1569.9581703811418,
-        "query_build_ms": 1080.5061990880251,
-        "measured_K1_exec_ms": 22.055662130393706,
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -0.3306597271015568,
+          "ci95_half": 0.2798984545171172,
+          "ci95": [
+            -0.610558181618674,
+            -0.050761272584439576
+          ],
+          "p_two_sided": 0.03289901304605139
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 1462.6718524862856,
+        "query_build_ms": 1002.1059718759109,
+        "measured_K1_exec_ms": 20.94484362169169,
         "per_map_train_costs": [
           4.358356608728785,
           4.188990314593499,
@@ -1188,6 +2808,16 @@
           5.149501644964142,
           3.870591311960503,
           5.233253168470239
+        ],
+        "per_map_unseen_in_dist_costs": [
+          4.376679688798762,
+          4.240581442045296,
+          4.45032328939751,
+          4.344026378682201,
+          4.9087949459111035,
+          4.802414074311131,
+          3.7945264974126034,
+          3.535104552384052
         ],
         "per_map_wall_corner_shift_costs": [
           6.380716250920337,
@@ -1200,14 +2830,222 @@
           5.801359708940445
         ]
       },
+      "FrozenFK-MatchedSmoothConePrior": {
+        "train_starts_mean_cost_all8": 4.602986459944947,
+        "train_starts_mean_cost_heldout4": 4.695256279638976,
+        "unseen_in_dist_starts_mean_cost_all8": 4.303342350554686,
+        "unseen_in_dist_starts_mean_cost_heldout4": 4.245720780171158,
+        "near_wall_corner_shift_starts_mean_cost_all8": 5.565309771474359,
+        "near_wall_corner_shift_starts_heldout4": 5.689088034677781,
+        "reach_rate_train_starts": 1.0,
+        "reach_rate_wall_corner_shift": 0.9965277777777778,
+        "bessel_minus_method_train_all8": {
+          "n": 8,
+          "mean": -0.05903925732771487,
+          "ci95_half": 0.1252371874738327,
+          "ci95": [
+            -0.18427644480154756,
+            0.06619793014611783
+          ],
+          "p_two_sided": 0.30176962426933496
+        },
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -0.06605152444867168,
+          "ci95_half": 0.2677806500240009,
+          "ci95": [
+            -0.3338321744726726,
+            0.20172912557532924
+          ],
+          "p_two_sided": 0.48974282505323197
+        },
+        "bessel_minus_method_unseen_all8": {
+          "n": 8,
+          "mean": -0.12344801695217672,
+          "ci95_half": 0.08259019194924692,
+          "ci95": [
+            -0.20603820890142366,
+            -0.040857825002929796
+          ],
+          "p_two_sided": 0.00954107346811794
+        },
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -0.0798377935487844,
+          "ci95_half": 0.17965517294772768,
+          "ci95": [
+            -0.2594929664965121,
+            0.09981737939894328
+          ],
+          "p_two_sided": 0.2522026681159407
+        },
+        "bessel_minus_method_shift_all8": {
+          "n": 8,
+          "mean": -0.33748985527293807,
+          "ci95_half": 0.17271107914442865,
+          "ci95": [
+            -0.5102009344173667,
+            -0.1647787761285094
+          ],
+          "p_two_sided": 0.0024242944611699386
+        },
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -0.3750859528249897,
+          "ci95_half": 0.36875569124901486,
+          "ci95": [
+            -0.7438416440740045,
+            -0.006330261575974827
+          ],
+          "p_two_sided": 0.047957208953643596
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 1461.3081423158292,
+        "query_build_ms": 1002.3920229868963,
+        "measured_K1_exec_ms": 19.29508234024979,
+        "per_map_train_costs": [
+          4.378745112427031,
+          4.172305395460074,
+          4.608391196802818,
+          4.8834248563137495,
+          4.489437728640783,
+          5.139154939534625,
+          3.888080802868027,
+          5.264351647512467
+        ],
+        "per_map_unseen_in_dist_costs": [
+          4.404273740525362,
+          4.200233394738805,
+          4.4611029423889965,
+          4.378245606099693,
+          4.89385944526864,
+          4.772635852729631,
+          3.798677773037005,
+          3.517710049649359
+        ],
+        "per_map_wall_corner_shift_costs": [
+          6.386778157826772,
+          5.180337269126201,
+          4.788935171679722,
+          5.410075434451059,
+          4.660231821944351,
+          5.810711799224933,
+          6.449662985901611,
+          5.835745531640228
+        ]
+      },
+      "FrozenFK-MatchedSharpConePrior": {
+        "train_starts_mean_cost_all8": 4.603861723730441,
+        "train_starts_mean_cost_heldout4": 4.697895099722146,
+        "unseen_in_dist_starts_mean_cost_all8": 4.306047068655506,
+        "unseen_in_dist_starts_mean_cost_heldout4": 4.263971049394813,
+        "near_wall_corner_shift_starts_mean_cost_all8": 5.529311285586894,
+        "near_wall_corner_shift_starts_heldout4": 5.635356902263663,
+        "reach_rate_train_starts": 1.0,
+        "reach_rate_wall_corner_shift": 0.9965277777777778,
+        "bessel_minus_method_train_all8": {
+          "n": 8,
+          "mean": -0.059914521113209274,
+          "ci95_half": 0.12921603843867974,
+          "ci95": [
+            -0.189130559551889,
+            0.06930151732547046
+          ],
+          "p_two_sided": 0.30917490923652013
+        },
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -0.06869034453184208,
+          "ci95_half": 0.25712312099576057,
+          "ci95": [
+            -0.32581346552760265,
+            0.18843277646391848
+          ],
+          "p_two_sided": 0.4576897710075403
+        },
+        "bessel_minus_method_unseen_all8": {
+          "n": 8,
+          "mean": -0.126152735052996,
+          "ci95_half": 0.08875789316180335,
+          "ci95": [
+            -0.21491062821479937,
+            -0.03739484189119266
+          ],
+          "p_two_sided": 0.012069944945683614
+        },
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": -0.09808806277243876,
+          "ci95_half": 0.21405029887974852,
+          "ci95": [
+            -0.3121383616521873,
+            0.11596223610730977
+          ],
+          "p_two_sided": 0.240823017843732
+        },
+        "bessel_minus_method_shift_all8": {
+          "n": 8,
+          "mean": -0.30149136938547294,
+          "ci95_half": 0.15896228372530255,
+          "ci95": [
+            -0.46045365311077546,
+            -0.1425290856601704
+          ],
+          "p_two_sided": 0.0028498132975288133
+        },
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -0.32135482041087093,
+          "ci95_half": 0.31833966029099,
+          "ci95": [
+            -0.639694480701861,
+            -0.0030151601198809552
+          ],
+          "p_two_sided": 0.048859599688934274
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 1460.9806571291604,
+        "query_build_ms": 1002.3301190522034,
+        "measured_K1_exec_ms": 19.02950108827402,
+        "per_map_train_costs": [
+          4.3884397628448975,
+          4.142095511139996,
+          4.615520419948994,
+          4.893257697021058,
+          4.496286968835416,
+          5.164317323146313,
+          3.888085620182102,
+          5.242890486724753
+        ],
+        "per_map_unseen_in_dist_costs": [
+          4.354781589540731,
+          4.196655707627941,
+          4.466332411094837,
+          4.3747226434012845,
+          4.914828347789379,
+          4.782335983144183,
+          3.8464262460445404,
+          3.5122936206011506
+        ],
+        "per_map_wall_corner_shift_costs": [
+          6.389203248506028,
+          5.117621940362418,
+          4.812958970788174,
+          5.373278515983888,
+          4.636910510067135,
+          5.696200582508591,
+          6.357537163350905,
+          5.850779353128018
+        ]
+      },
       "FrozenFK-HelmholtzBesselPrior": {
         "train_starts_mean_cost_all8": 4.5439472026172325,
         "train_starts_mean_cost_heldout4": 4.629204755190304,
         "unseen_in_dist_starts_mean_cost_all8": 4.17989433360251,
+        "unseen_in_dist_starts_mean_cost_heldout4": 4.165882986622375,
         "near_wall_corner_shift_starts_mean_cost_all8": 5.227819916201421,
         "near_wall_corner_shift_starts_heldout4": 5.314002081852791,
         "reach_rate_train_starts": 1.0,
-        "bessel_minus_method_train_starts": {
+        "reach_rate_wall_corner_shift": 1.0,
+        "bessel_minus_method_train_all8": {
           "n": 8,
           "mean": 0.0,
           "ci95_half": 0.0,
@@ -1217,7 +3055,17 @@
           ],
           "p_two_sided": 1.0
         },
-        "bessel_minus_method_unseen_in_dist": {
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": 0.0,
+          "ci95_half": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "p_two_sided": 1.0
+        },
+        "bessel_minus_method_unseen_all8": {
           "n": 8,
           "mean": 0.0,
           "ci95_half": 0.0,
@@ -1227,7 +3075,17 @@
           ],
           "p_two_sided": 1.0
         },
-        "bessel_minus_method_wall_corner_shift": {
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": 0.0,
+          "ci95_half": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "p_two_sided": 1.0
+        },
+        "bessel_minus_method_shift_all8": {
           "n": 8,
           "mean": 0.0,
           "ci95_half": 0.0,
@@ -1237,9 +3095,19 @@
           ],
           "p_two_sided": 1.0
         },
-        "cold_single_query_K1_total_ms_incl_full_gp": 1559.0189184489038,
-        "query_build_ms": 1076.8610646773595,
-        "measured_K1_exec_ms": 14.761544608821472,
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": 0.0,
+          "ci95_half": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "p_two_sided": 1.0
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 1451.868213286313,
+        "query_build_ms": 998.8131055724807,
+        "measured_K1_exec_ms": 13.434070725149164,
         "per_map_train_costs": [
           4.145076172209183,
           4.3111756068190985,
@@ -1249,6 +3117,16 @@
           5.043881273749156,
           3.744484775320053,
           5.061428436840779
+        ],
+        "per_map_unseen_in_dist_costs": [
+          4.269838400064974,
+          3.9511879980206177,
+          4.372831057521771,
+          4.181765266723217,
+          4.785948757336308,
+          4.781937181026158,
+          3.5707411279084957,
+          3.524904880218536
         ],
         "per_map_wall_corner_shift_costs": [
           5.848904807742243,
@@ -1265,10 +3143,12 @@
         "train_starts_mean_cost_all8": 4.547931699002084,
         "train_starts_mean_cost_heldout4": 4.647586106196297,
         "unseen_in_dist_starts_mean_cost_all8": 4.1731646482916585,
+        "unseen_in_dist_starts_mean_cost_heldout4": 4.144167553773598,
         "near_wall_corner_shift_starts_mean_cost_all8": 5.260533698798694,
         "near_wall_corner_shift_starts_heldout4": 5.3508074305815425,
         "reach_rate_train_starts": 1.0,
-        "bessel_minus_method_train_starts": {
+        "reach_rate_wall_corner_shift": 1.0,
+        "bessel_minus_method_train_all8": {
           "n": 8,
           "mean": -0.003984496384851877,
           "ci95_half": 0.04512055765309562,
@@ -1278,7 +3158,17 @@
           ],
           "p_two_sided": 0.8405392467043405
         },
-        "bessel_minus_method_unseen_in_dist": {
+        "bessel_minus_method_train_heldout4": {
+          "n": 4,
+          "mean": -0.018381351005992697,
+          "ci95_half": 0.09009530160461482,
+          "ci95": [
+            -0.10847665261060752,
+            0.07171395059862212
+          ],
+          "p_two_sided": 0.562431257768125
+        },
+        "bessel_minus_method_unseen_all8": {
           "n": 8,
           "mean": 0.006729685310851052,
           "ci95_half": 0.07050144326999574,
@@ -1288,7 +3178,17 @@
           ],
           "p_two_sided": 0.8278722470567612
         },
-        "bessel_minus_method_wall_corner_shift": {
+        "bessel_minus_method_unseen_heldout4": {
+          "n": 4,
+          "mean": 0.021715432848776972,
+          "ci95_half": 0.1444263337909488,
+          "ci95": [
+            -0.12271090094217182,
+            0.16614176663972577
+          ],
+          "p_two_sided": 0.6650022579223791
+        },
+        "bessel_minus_method_shift_all8": {
           "n": 8,
           "mean": -0.03271378259727209,
           "ci95_half": 0.08167341303277002,
@@ -1298,9 +3198,19 @@
           ],
           "p_two_sided": 0.37511014042496243
         },
-        "cold_single_query_K1_total_ms_incl_full_gp": 1781.7998871905727,
-        "query_build_ms": 1299.7691930601527,
-        "measured_K1_exec_ms": 14.634384967697162,
+        "bessel_minus_method_shift_heldout4": {
+          "n": 4,
+          "mean": -0.03680534872875141,
+          "ci95_half": 0.1916776919362323,
+          "ci95": [
+            -0.2284830406649837,
+            0.1548723432074809
+          ],
+          "p_two_sided": 0.5843318935743671
+        },
+        "cold_single_query_K1_total_ms_incl_full_gp": 1633.681643201271,
+        "query_build_ms": 1180.8506030938588,
+        "measured_K1_exec_ms": 13.210003118729219,
         "per_map_train_costs": [
           4.1077771433334425,
           4.350662160044311,
@@ -1310,6 +3220,16 @@
           4.986762492852004,
           3.783073974158835,
           5.138922423964677
+        ],
+        "per_map_unseen_in_dist_costs": [
+          4.268534249651653,
+          3.8386012772146976,
+          4.452314793851903,
+          4.249196650520626,
+          4.632078945487048,
+          4.833306859769824,
+          3.5876073897382077,
+          3.5236770200993104
         ],
         "per_map_wall_corner_shift_costs": [
           5.958533343060516,
@@ -1324,8 +3244,467 @@
       }
     }
   },
+  "highd_6d_fresh_anchor_budget_efficiency": {
+    "locked_fresh_seeds": [
+      9600,
+      9601,
+      9602,
+      9603,
+      9604,
+      9605,
+      9606,
+      9607
+    ],
+    "dim": 6,
+    "anchor_budgets": {
+      "anchors_24": {
+        "n_interior_anchors": 24,
+        "n_mc_paths_per_anchor": 48,
+        "total_fk_trajectories": 1152,
+        "priors": {
+          "zero_mean": {
+            "train_mean_cost": 12.118834991481075,
+            "unseen_in_dist_mean_cost": 13.374180458007439,
+            "wall_corner_shift_mean_cost": 13.797093342156034,
+            "mean_query_plan_ms": 183.21311866748147,
+            "independent_fk_seed_grad_rms_diff": 0.3519461131224508,
+            "bessel_minus_prior_unseen": {
+              "n": 8,
+              "mean": -8.7154792989038,
+              "ci95_half": 1.1165873912189046,
+              "ci95": [
+                -9.832066690122705,
+                -7.598891907684895
+              ],
+              "p_two_sided": 3.397523181883087e-07
+            },
+            "bessel_minus_prior_wall_corner_shift": {
+              "n": 8,
+              "mean": -8.563647748057768,
+              "ci95_half": 0.7988166948762458,
+              "ci95": [
+                -9.362464442934014,
+                -7.764831053181522
+              ],
+              "p_two_sided": 3.7959328565829895e-08
+            },
+            "per_map_unseen_costs": [
+              14.352949661373671,
+              14.032823355512043,
+              14.528965440276316,
+              11.558487236883703,
+              11.95807276816047,
+              14.481661825929768,
+              11.842386101405365,
+              14.238097274518168
+            ],
+            "per_map_shift_costs": [
+              14.525464133385578,
+              14.51824769959104,
+              14.361240944759313,
+              13.302001094198175,
+              14.12505086326896,
+              13.105966944658118,
+              12.996643936486466,
+              13.442131120900626
+            ]
+          },
+          "matched_sharp_cone": {
+            "train_mean_cost": 5.171237957182596,
+            "unseen_in_dist_mean_cost": 5.549576686879767,
+            "wall_corner_shift_mean_cost": 6.063010345595186,
+            "mean_query_plan_ms": 183.97751965676434,
+            "independent_fk_seed_grad_rms_diff": 0.2044572264308685,
+            "bessel_minus_prior_unseen": {
+              "n": 8,
+              "mean": -0.8908755277761286,
+              "ci95_half": 0.4043756286026539,
+              "ci95": [
+                -1.2952511563787825,
+                -0.48649989917347464
+              ],
+              "p_two_sided": 0.0012400347121041687
+            },
+            "bessel_minus_prior_wall_corner_shift": {
+              "n": 8,
+              "mean": -0.8295647514969187,
+              "ci95_half": 0.4448430933496246,
+              "ci95": [
+                -1.2744078448465432,
+                -0.3847216581472941
+              ],
+              "p_two_sided": 0.003120083740952505
+            },
+            "per_map_unseen_costs": [
+              5.7160576444157165,
+              5.6535651496221355,
+              4.8066535885301285,
+              5.049554775013375,
+              4.802351818727066,
+              6.333505981000015,
+              5.830956217239443,
+              6.203968320490258
+            ],
+            "per_map_shift_costs": [
+              5.231464424342235,
+              8.018035665684096,
+              5.7172155722116,
+              6.480666880859037,
+              5.7676808856047845,
+              5.762742229575474,
+              5.848060280080384,
+              5.678216826403874
+            ]
+          },
+          "helmholtz_bessel": {
+            "train_mean_cost": 4.5502355581955145,
+            "unseen_in_dist_mean_cost": 4.6587011591036385,
+            "wall_corner_shift_mean_cost": 5.233445594098267,
+            "mean_query_plan_ms": 181.86016907566227,
+            "independent_fk_seed_grad_rms_diff": 0.09049929004917316,
+            "bessel_minus_prior_unseen": {
+              "n": 8,
+              "mean": 0.0,
+              "ci95_half": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "p_two_sided": 1.0
+            },
+            "bessel_minus_prior_wall_corner_shift": {
+              "n": 8,
+              "mean": 0.0,
+              "ci95_half": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "p_two_sided": 1.0
+            },
+            "per_map_unseen_costs": [
+              4.304113223299041,
+              4.835345084913076,
+              4.097263362232299,
+              4.3260184278593545,
+              4.015753086081521,
+              6.219350696646329,
+              4.985552823890213,
+              4.486212567907277
+            ],
+            "per_map_shift_costs": [
+              4.605990823280197,
+              6.3132249557685824,
+              5.018128913220094,
+              6.0927418641038855,
+              5.017944000173166,
+              5.73676662924108,
+              4.660565822628897,
+              4.422201744370233
+            ]
+          }
+        }
+      },
+      "anchors_54": {
+        "n_interior_anchors": 54,
+        "n_mc_paths_per_anchor": 48,
+        "total_fk_trajectories": 2592,
+        "priors": {
+          "zero_mean": {
+            "train_mean_cost": 10.420911442051464,
+            "unseen_in_dist_mean_cost": 12.059924444809525,
+            "wall_corner_shift_mean_cost": 13.699436982810344,
+            "mean_query_plan_ms": 345.07122698414605,
+            "independent_fk_seed_grad_rms_diff": 0.311444999806966,
+            "bessel_minus_prior_unseen": {
+              "n": 8,
+              "mean": -7.5454165106121485,
+              "ci95_half": 1.2882688459101863,
+              "ci95": [
+                -8.833685356522334,
+                -6.257147664701963
+              ],
+              "p_two_sided": 2.416883610501194e-06
+            },
+            "bessel_minus_prior_wall_corner_shift": {
+              "n": 8,
+              "mean": -8.499948584636558,
+              "ci95_half": 0.7529864646958015,
+              "ci95": [
+                -9.25293504933236,
+                -7.746962119940756
+              ],
+              "p_two_sided": 2.653538460717271e-08
+            },
+            "per_map_unseen_costs": [
+              14.380555940024458,
+              12.352551230544021,
+              13.127896563284859,
+              10.02122784673687,
+              11.118542513896632,
+              13.126742703584783,
+              10.589569016496704,
+              11.76230974390787
+            ],
+            "per_map_shift_costs": [
+              14.20758296941486,
+              14.827044341269268,
+              13.905811939345629,
+              13.493136438278414,
+              14.324116652356043,
+              12.460158110269578,
+              13.406805237656503,
+              12.970840173892448
+            ]
+          },
+          "matched_sharp_cone": {
+            "train_mean_cost": 4.748821926994784,
+            "unseen_in_dist_mean_cost": 5.023449522089381,
+            "wall_corner_shift_mean_cost": 5.681748935301341,
+            "mean_query_plan_ms": 345.8730857819319,
+            "independent_fk_seed_grad_rms_diff": 0.17651389225057207,
+            "bessel_minus_prior_unseen": {
+              "n": 8,
+              "mean": -0.5089415878920053,
+              "ci95_half": 0.18883100818630622,
+              "ci95": [
+                -0.6977725960783114,
+                -0.32011057970569906
+              ],
+              "p_two_sided": 0.0003767860136234279
+            },
+            "bessel_minus_prior_wall_corner_shift": {
+              "n": 8,
+              "mean": -0.4822605371275567,
+              "ci95_half": 0.20484313599471074,
+              "ci95": [
+                -0.6871036731222674,
+                -0.27741740113284596
+              ],
+              "p_two_sided": 0.0008446630910920234
+            },
+            "per_map_unseen_costs": [
+              4.692415102943006,
+              5.1727014578462525,
+              4.48379721595991,
+              4.590490834312779,
+              4.57438965837734,
+              6.098642935137225,
+              5.453048030782971,
+              5.122110941355569
+            ],
+            "per_map_shift_costs": [
+              4.945613451043986,
+              6.89260600558096,
+              5.528196366456501,
+              6.265936333717964,
+              5.3367645704025275,
+              5.666882087799134,
+              5.640451247479403,
+              5.177541419930252
+            ]
+          },
+          "helmholtz_bessel": {
+            "train_mean_cost": 4.486223921113846,
+            "unseen_in_dist_mean_cost": 4.514507934197376,
+            "wall_corner_shift_mean_cost": 5.199488398173784,
+            "mean_query_plan_ms": 343.2365373446373,
+            "independent_fk_seed_grad_rms_diff": 0.09230354391060269,
+            "bessel_minus_prior_unseen": {
+              "n": 8,
+              "mean": 0.0,
+              "ci95_half": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "p_two_sided": 1.0
+            },
+            "bessel_minus_prior_wall_corner_shift": {
+              "n": 8,
+              "mean": 0.0,
+              "ci95_half": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "p_two_sided": 1.0
+            },
+            "per_map_unseen_costs": [
+              4.327127255764944,
+              4.472749365002929,
+              3.7891727334806173,
+              4.381854942206598,
+              4.063795153927045,
+              5.90746059677933,
+              4.773312316205943,
+              4.400591110211604
+            ],
+            "per_map_shift_costs": [
+              4.507401503938194,
+              6.381346944079196,
+              4.887110832080534,
+              5.866302902294404,
+              5.080753431005187,
+              5.583671904497556,
+              4.787088314977253,
+              4.502231352517952
+            ]
+          }
+        }
+      },
+      "anchors_108": {
+        "n_interior_anchors": 108,
+        "n_mc_paths_per_anchor": 48,
+        "total_fk_trajectories": 5184,
+        "priors": {
+          "zero_mean": {
+            "train_mean_cost": 8.622674116058302,
+            "unseen_in_dist_mean_cost": 10.155958927378208,
+            "wall_corner_shift_mean_cost": 13.092881635094688,
+            "mean_query_plan_ms": 723.0016150570009,
+            "independent_fk_seed_grad_rms_diff": 0.2765456308001171,
+            "bessel_minus_prior_unseen": {
+              "n": 8,
+              "mean": -5.641559038212783,
+              "ci95_half": 1.154582030454091,
+              "ci95": [
+                -6.796141068666874,
+                -4.486977007758692
+              ],
+              "p_two_sided": 8.194668969405436e-06
+            },
+            "bessel_minus_prior_wall_corner_shift": {
+              "n": 8,
+              "mean": -8.00416361894413,
+              "ci95_half": 1.1248445115788732,
+              "ci95": [
+                -9.129008130523003,
+                -6.879319107365257
+              ],
+              "p_two_sided": 6.410146253588911e-07
+            },
+            "per_map_unseen_costs": [
+              12.734644335538752,
+              9.059145542871688,
+              10.416709387719425,
+              8.244649268303576,
+              9.907534687648411,
+              12.058626098680108,
+              9.413035797515573,
+              9.41332630074812
+            ],
+            "per_map_shift_costs": [
+              14.215801885186014,
+              14.626281756689192,
+              13.63145832083191,
+              13.166525023593412,
+              13.82696126197197,
+              11.039191198511745,
+              12.810680753199552,
+              11.42615288077371
+            ]
+          },
+          "matched_sharp_cone": {
+            "train_mean_cost": 4.51992952450531,
+            "unseen_in_dist_mean_cost": 4.7725919905058385,
+            "wall_corner_shift_mean_cost": 5.429809442185794,
+            "mean_query_plan_ms": 723.7256436928874,
+            "independent_fk_seed_grad_rms_diff": 0.1487516744377638,
+            "bessel_minus_prior_unseen": {
+              "n": 8,
+              "mean": -0.2581921013404147,
+              "ci95_half": 0.2934774582742048,
+              "ci95": [
+                -0.5516695596146195,
+                0.03528535693379009
+              ],
+              "p_two_sided": 0.07604909339886533
+            },
+            "bessel_minus_prior_wall_corner_shift": {
+              "n": 8,
+              "mean": -0.3410914260352359,
+              "ci95_half": 0.190103746123277,
+              "ci95": [
+                -0.5311951721585129,
+                -0.1509876799119589
+              ],
+              "p_two_sided": 0.0038275095398150796
+            },
+            "per_map_unseen_costs": [
+              4.376205970027633,
+              4.910417694936086,
+              3.863612183712007,
+              4.645000818564114,
+              4.038053545562802,
+              5.93056798566644,
+              5.143451641972516,
+              5.2734260836051075
+            ],
+            "per_map_shift_costs": [
+              4.628826764358921,
+              6.5092652246769,
+              5.28951023752029,
+              6.09710890633599,
+              5.090568416158655,
+              5.664792324513636,
+              5.0979743759851885,
+              5.060429287936776
+            ]
+          },
+          "helmholtz_bessel": {
+            "train_mean_cost": 4.456964064616141,
+            "unseen_in_dist_mean_cost": 4.514399889165423,
+            "wall_corner_shift_mean_cost": 5.088718016150558,
+            "mean_query_plan_ms": 719.6526967309183,
+            "independent_fk_seed_grad_rms_diff": 0.08266465887438101,
+            "bessel_minus_prior_unseen": {
+              "n": 8,
+              "mean": 0.0,
+              "ci95_half": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "p_two_sided": 1.0
+            },
+            "bessel_minus_prior_wall_corner_shift": {
+              "n": 8,
+              "mean": 0.0,
+              "ci95_half": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "p_two_sided": 1.0
+            },
+            "per_map_unseen_costs": [
+              4.282545161029867,
+              4.327636540868218,
+              3.9918780193954326,
+              4.205647719555344,
+              4.1381710436431085,
+              6.03013056235374,
+              4.534974195644573,
+              4.604215870833105
+            ],
+            "per_map_shift_costs": [
+              4.577247764479082,
+              5.917222987521423,
+              4.868105170907448,
+              5.919766951738669,
+              4.904233717465677,
+              5.525269169422167,
+              4.479553810248159,
+              4.518344557421845
+            ]
+          }
+        }
+      }
+    }
+  },
   "kinetic_underactuated_10maps": {
-    "scope_grade": "exploratory_empirical_extension (velocity-cap boundary & specular GP trace are uncoupled approximations)",
+    "scope_grade": "exploratory_empirical_extension",
     "n_maps_total": 10,
     "n_continuation_rounds": 6,
     "max_measured_telescoping_discrepancy": 6.394884621840902e-14,
@@ -1335,7 +3714,6 @@
         "survivor_fraction": 0.6502808988764045,
         "weighted_tail_mass": 0.2129961266494712,
         "mean_ess": 3.4059728670375837,
-        "wall_bounce_events": 203,
         "measured_telescoping_discrepancy": 5.684341886080802e-14,
         "continuation_final_diff_round6": 1.1581638071689326e-05,
         "scope_diagnostics": {
@@ -1349,7 +3727,6 @@
         "survivor_fraction": 0.56062734082397,
         "weighted_tail_mass": 0.08792431143642591,
         "mean_ess": 5.753306427196818,
-        "wall_bounce_events": 370,
         "measured_telescoping_discrepancy": 3.552713678800501e-14,
         "continuation_final_diff_round6": 1.8696155734687636e-11,
         "scope_diagnostics": {
@@ -1363,7 +3740,6 @@
         "survivor_fraction": 0.712312734082397,
         "weighted_tail_mass": 0.2954507012194118,
         "mean_ess": 3.2111444970873686,
-        "wall_bounce_events": 312,
         "measured_telescoping_discrepancy": 4.263256414560601e-14,
         "continuation_final_diff_round6": 8.568253773866275e-05,
         "scope_diagnostics": {
@@ -1377,7 +3753,6 @@
         "survivor_fraction": 0.665496254681648,
         "weighted_tail_mass": 0.3513585653058573,
         "mean_ess": 4.906079854792308,
-        "wall_bounce_events": 288,
         "measured_telescoping_discrepancy": 5.684341886080802e-14,
         "continuation_final_diff_round6": 0.00025071947640142866,
         "scope_diagnostics": {
@@ -1391,7 +3766,6 @@
         "survivor_fraction": 0.6521535580524345,
         "weighted_tail_mass": 0.17937708701601074,
         "mean_ess": 4.719615520125039,
-        "wall_bounce_events": 223,
         "measured_telescoping_discrepancy": 4.973799150320701e-14,
         "continuation_final_diff_round6": 2.3284187022909464e-08,
         "scope_diagnostics": {
@@ -1405,7 +3779,6 @@
         "survivor_fraction": 0.6486423220973783,
         "weighted_tail_mass": 0.14518203724581594,
         "mean_ess": 4.321094045073534,
-        "wall_bounce_events": 480,
         "measured_telescoping_discrepancy": 4.263256414560601e-14,
         "continuation_final_diff_round6": 8.702727427589707e-11,
         "scope_diagnostics": {
@@ -1419,7 +3792,6 @@
         "survivor_fraction": 0.6988425925925926,
         "weighted_tail_mass": 0.3791448804847565,
         "mean_ess": 2.7846756663733934,
-        "wall_bounce_events": 364,
         "measured_telescoping_discrepancy": 4.973799150320701e-14,
         "continuation_final_diff_round6": 0.013045445749348517,
         "scope_diagnostics": {
@@ -1433,7 +3805,6 @@
         "survivor_fraction": 0.6786048689138576,
         "weighted_tail_mass": 0.23534884025198127,
         "mean_ess": 3.450309258002995,
-        "wall_bounce_events": 271,
         "measured_telescoping_discrepancy": 2.842170943040401e-14,
         "continuation_final_diff_round6": 5.188301763325853e-06,
         "scope_diagnostics": {
@@ -1447,7 +3818,6 @@
         "survivor_fraction": 0.6418539325842697,
         "weighted_tail_mass": 0.17180435063905153,
         "mean_ess": 3.6374873088883724,
-        "wall_bounce_events": 259,
         "measured_telescoping_discrepancy": 4.263256414560601e-14,
         "continuation_final_diff_round6": 5.88498139109106e-10,
         "scope_diagnostics": {
@@ -1461,7 +3831,6 @@
         "survivor_fraction": 0.5993055555555555,
         "weighted_tail_mass": 0.10810712961063423,
         "mean_ess": 2.764540549227334,
-        "wall_bounce_events": 350,
         "measured_telescoping_discrepancy": 2.4868995751603507e-14,
         "continuation_final_diff_round6": 3.91361609786145e-10,
         "scope_diagnostics": {
@@ -1475,8 +3844,6 @@
       "Pure-LQR-Guide": {
         "mean_total_finite_horizon_score_all10": 32.3451024344958,
         "mean_total_score_heldout4": 30.747678471183164,
-        "mean_truncated_running_cost": 31.66634213027158,
-        "mean_timeout_heuristic_penalty": 0.6787603042242263,
         "reach_rate_all10": 0.7055555555555555,
         "reach_rate_heldout4": 0.6805555555555555,
         "mean_execution_action_cap_fraction": 0.0,
@@ -1489,13 +3856,23 @@
             -11.336326228441493
           ],
           "p_two_sided": 0.0006997276594192633
-        }
+        },
+        "per_map_total_scores": [
+          24.394271348311484,
+          24.877099829908,
+          41.18583018670045,
+          61.07318748158553,
+          26.239193709947806,
+          22.6907279037721,
+          29.71036356348166,
+          35.01703635650258,
+          32.74848775557249,
+          25.514826209175933
+        ]
       },
       "Kinetic-Centered-PIMC": {
         "mean_total_finite_horizon_score_all10": 19.99723910455781,
         "mean_total_score_heldout4": 16.183228125279303,
-        "mean_truncated_running_cost": 18.08858145192834,
-        "mean_timeout_heuristic_penalty": 1.9086576526294685,
         "reach_rate_all10": 0.2833333333333333,
         "reach_rate_heldout4": 0.28472222222222227,
         "mean_execution_action_cap_fraction": 0.004252717011503035,
@@ -1508,13 +3885,23 @@
             -4.544332155377598
           ],
           "p_two_sided": 0.000682089830350597
-        }
+        },
+        "per_map_total_scores": [
+          24.22044015466291,
+          30.84767853776778,
+          20.04164811100314,
+          12.13372552749238,
+          18.70881115193505,
+          29.28717506159963,
+          18.093422860594785,
+          11.32009611206265,
+          14.822674375593278,
+          20.496719152866493
+        ]
       },
       "FK-IsoKernel-FullBnd-BaseAnch": {
         "mean_total_finite_horizon_score_all10": 18.770290047859866,
         "mean_total_score_heldout4": 16.219295730125474,
-        "mean_truncated_running_cost": 17.85267301479834,
-        "mean_timeout_heuristic_penalty": 0.9176170330615261,
         "reach_rate_all10": 0.6222222222222223,
         "reach_rate_heldout4": 0.7013888888888888,
         "mean_execution_action_cap_fraction": 0.02485541297673308,
@@ -1527,13 +3914,23 @@
             -2.987336082399115
           ],
           "p_two_sided": 0.0033589392941205383
-        }
+        },
+        "per_map_total_scores": [
+          29.94136899494187,
+          23.471692862403206,
+          17.379505142285662,
+          17.734589719346957,
+          18.177334233641215,
+          16.121226605477858,
+          20.0093162023031,
+          21.790496271396197,
+          10.257693250828563,
+          12.819677195974032
+        ]
       },
       "FK-IsoKernel-FullBnd-BrakingAnch": {
         "mean_total_finite_horizon_score_all10": 16.935725778141475,
         "mean_total_score_heldout4": 16.71330107084287,
-        "mean_truncated_running_cost": 16.357879736073436,
-        "mean_timeout_heuristic_penalty": 0.5778460420680396,
         "reach_rate_all10": 0.788888888888889,
         "reach_rate_heldout4": 0.625,
         "mean_execution_action_cap_fraction": 0.04164301756848621,
@@ -1546,13 +3943,23 @@
             -1.6499049407475859
           ],
           "p_two_sided": 0.008856587338344374
-        }
+        },
+        "per_map_total_scores": [
+          10.369872728599624,
+          17.249070569594,
+          20.638928135757126,
+          25.065541252629156,
+          13.151342448978314,
+          16.029298362485054,
+          21.51123345655585,
+          17.905626216448574,
+          12.922124867407089,
+          14.51421974295997
+        ]
       },
       "FK-IsoKernel-InwardBnd-BrakingAnch": {
         "mean_total_finite_horizon_score_all10": 15.352704223557817,
         "mean_total_score_heldout4": 13.520233418552941,
-        "mean_truncated_running_cost": 15.026028947547434,
-        "mean_timeout_heuristic_penalty": 0.32667527601038115,
         "reach_rate_all10": 0.8694444444444445,
         "reach_rate_heldout4": 0.8194444444444444,
         "mean_execution_action_cap_fraction": 0.040303232112520085,
@@ -1565,13 +3972,23 @@
             -0.46890135345227746
           ],
           "p_two_sided": 0.028569244155323484
-        }
+        },
+        "per_map_total_scores": [
+          17.71175104058108,
+          17.074617704895793,
+          13.64448777864468,
+          24.323965071834817,
+          12.401037040266079,
+          14.290249925143955,
+          18.812771823858668,
+          12.882140986271924,
+          10.095344969577702,
+          12.290675894503464
+        ]
       },
       "FK-AnisoKernel-FullBnd-BrakingAnch": {
         "mean_total_finite_horizon_score_all10": 12.371141973677203,
         "mean_total_score_heldout4": 12.37151844485874,
-        "mean_truncated_running_cost": 12.187329692852604,
-        "mean_timeout_heuristic_penalty": 0.1838122808245985,
         "reach_rate_all10": 0.9166666666666666,
         "reach_rate_heldout4": 0.8194444444444443,
         "mean_execution_action_cap_fraction": 0.02421088215022931,
@@ -1584,13 +4001,23 @@
             0.15402069089380266
           ],
           "p_two_sided": 0.10599962121766282
-        }
+        },
+        "per_map_total_scores": [
+          12.412785274945357,
+          15.655276919267768,
+          9.859377321472861,
+          10.66482646112714,
+          12.077506425962799,
+          13.55557355456114,
+          15.905036462260922,
+          11.521749157412753,
+          10.601699366913106,
+          11.457588792848185
+        ]
       },
       "FK-AnisoKernel-InwardBnd-BrakingAnch": {
         "mean_total_finite_horizon_score_all10": 11.777158293845378,
         "mean_total_score_heldout4": 11.079594906779578,
-        "mean_truncated_running_cost": 11.612293380699404,
-        "mean_timeout_heuristic_penalty": 0.1648649131459728,
         "reach_rate_all10": 0.925,
         "reach_rate_heldout4": 0.9305555555555556,
         "mean_execution_action_cap_fraction": 0.023458536771257577,
@@ -1603,7 +4030,19 @@
             0.0
           ],
           "p_two_sided": 1.0
-        }
+        },
+        "per_map_total_scores": [
+          10.5658242786204,
+          15.732103770308433,
+          9.89338710813813,
+          10.279630285714392,
+          11.845374762582365,
+          15.136883105971744,
+          14.584218563168427,
+          9.657911227228485,
+          9.787096042275827,
+          10.289153794445575
+        ]
       }
     }
   }
