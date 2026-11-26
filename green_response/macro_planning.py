@@ -1354,43 +1354,58 @@ class MacroTourPlanner:
         target_wp_ids: Sequence[int],
         max_alt_branches: int = 3,
         include_drift_grad: bool = True,
+        zero_drift_mode: str = "clarke_midpoint",
     ) -> dict:
-        """Target-Permutation-Invariant Active-Branch Discrete Green Adjoint Sensitivity (`29fa7c6` Closure):
+        """Target-Permutation-Invariant Active-Branch Discrete Green Adjoint Sensitivity (`57e5912` Refined):
         Canonicalizes `target_wp_ids` as an unordered set (`sorted(unique)`) so all outputs are 100%
         invariant (`0.0` difference) under arbitrary input list permutations, and computes via Reverse-Mode AD
         through the Subset-DP DAG + ONE batched SuperLU transpose solve `A_0^{-T}`:
-          - Uses `np.add.at` scatter-accumulation on `eval_nodes` so start-on-ring and overlapping-ring
-            geometries sum repeated physical-node contributions exactly (`< 1e-9` vs killed-domain FD);
-          - Extracts BOTH `grad_q` (`dF / dq_grid`) AND upwind drift `grad_b` (`dF / db_grid`, zero extra solves!)
-            for the incumbent branch AND up to `max_alt_branches` competing root actions;
-          - Explicitly declares `derivative_kind = "active_branch"` alongside `active_action_margin` and
-            `tie_detected` (reflecting the piecewise-smooth cusp at Bellman action ties).
+          - Uses `np.add.at` scatter-accumulation on `eval_nodes` and `wp_rings` (`< 1e-9` vs killed-domain FD);
+          - Supports true `max_alt_branches = 0` (`n_alt = 0`), running ZERO extra `_accumulate_theta` passes
+            and ZERO extra SuperLU transpose RHS columns while still reporting exact `runner_up_wp` & `action_gap`
+            from `Q_root`;
+          - Separates Bellman action ties (`action_tie_detected`) from upwind operator sign kinks at exact
+            `b == 0` (`upwind_drift_kink_detected`, `n_zero_drift_kink_components`), returning exact right/left
+            directional slope arrays (`grad_b_plus_optimal`, `grad_b_minus_optimal`) and either the Clarke
+            generalized subdifferential midpoint `0.5 * (g_b_+ + g_b_-)` (`zero_drift_mode="clarke_midpoint"`)
+            or a fail-closed `ValueError` (`zero_drift_mode="strict_smooth"`).
         """
+        if zero_drift_mode not in ("clarke_midpoint", "strict_smooth"):
+            raise ValueError(f"Unsupported zero_drift_mode={zero_drift_mode!r}; expected 'clarke_midpoint' or 'strict_smooth'.")
         t0 = time.perf_counter()
         s_arr = np.asarray(start_point, dtype=float)
         t_canon = sorted(dict.fromkeys(int(w) for w in target_wp_ids))
         m = len(t_canon)
         n_grid = len(self.pl.pts)
         dim = self.pl.spec.dim
+        n_alt = max(0, int(max_alt_branches))
         if m == 0:
             z = np.zeros(n_grid, dtype=float)
             zb = np.zeros((n_grid, dim), dtype=float)
             return {
                 "derivative_kind": "active_branch",
                 "tie_detected": False,
+                "action_tie_detected": False,
+                "upwind_drift_kink_detected": False,
+                "n_zero_drift_kink_components": 0,
+                "zero_drift_mode": zero_drift_mode,
                 "active_action_margin": float("inf"),
                 "canonical_wp_ids": (),
                 "optimal_value": 0.0,
+                "runner_up_value": 0.0,
                 "incumbent_wp": None,
                 "runner_up_wp": None,
                 "action_gap": 0.0,
                 "grad_q_optimal": z,
-                "grad_q_runner_up": z.copy(),
-                "grad_q_top_gap": z.copy(),
+                "grad_q_runner_up": None if n_alt == 0 else z.copy(),
+                "grad_q_top_gap": None if n_alt == 0 else z.copy(),
                 "grad_b_optimal": zb,
-                "grad_b_runner_up": zb.copy(),
-                "grad_b_top_gap": zb.copy(),
+                "grad_b_plus_optimal": zb.copy(),
+                "grad_b_minus_optimal": zb.copy(),
+                "grad_b_runner_up": None if n_alt == 0 else zb.copy(),
+                "grad_b_top_gap": None if n_alt == 0 else zb.copy(),
                 "alt_branches": [],
+                "n_transpose_rhs_cols": 0,
                 "sensitivity_ms": 1000.0 * (time.perf_counter() - t0),
             }
 
@@ -1492,8 +1507,8 @@ class MacroTourPlanner:
 
         order_i = np.argsort(Q_root, kind="mergesort")
         inc_i = int(order_i[0])
-        alt_is = [int(x) for x in order_i[1 : 1 + max(1, int(max_alt_branches))]]
-        run_i = alt_is[0] if alt_is else inc_i
+        run_i = int(order_i[1]) if m >= 2 else inc_i
+        alt_is = [int(x) for x in order_i[1 : 1 + n_alt]]
 
         def _accumulate_theta(forced_root_i: int) -> Tuple[float, Dict[int, np.ndarray], float]:
             if forced_root_i == int(act_idx[0, full_mk]):
@@ -1538,7 +1553,7 @@ class MacroTourPlanner:
             v_a, Th_a, _ = _accumulate_theta(ai)
             alt_vals.append(v_a)
             modes_theta.append(Th_a)
-        val_run = alt_vals[0] if alt_vals else val_inc
+        val_run = float(alt_vals[0]) if alt_vals else float(Q_root[run_i])
 
         # Batch ALL transpose solves into ONE SuperLU call (`A_0^T Psi = W_stacked`) with exact scatter-add!
         rhs_blocks = []
@@ -1576,9 +1591,13 @@ class MacroTourPlanner:
 
         grads_q_out = []
         grads_b_out = []
+        grads_b_plus_out = []
+        grads_b_minus_out = []
         for mode_sl in block_slices:
             g_q = np.zeros(n_grid, dtype=float)
             g_b = np.zeros((n_grid, dim), dtype=float)
+            g_b_plus = np.zeros((n_grid, dim), dtype=float)
+            g_b_minus = np.zeros((n_grid, dim), dtype=float)
             for b in t_canon:
                 sl_b = mode_sl[b]
                 if sl_b is None:
@@ -1594,18 +1613,50 @@ class MacroTourPlanner:
                         mask_p = (b_col > 0.0) & (c_ax < (gn - 1))
                         if np.any(mask_p):
                             ip = idx_all[mask_p]
-                            g_b[ip, ax] += (1.0 / h_grid) * np.einsum("ij,ij->i", Psi_b[ip, :], U_b[ip + st, :] - U_b[ip, :])
+                            vp = (1.0 / h_grid) * np.einsum("ij,ij->i", Psi_b[ip, :], U_b[ip + st, :] - U_b[ip, :])
+                            g_b[ip, ax] += vp
+                            g_b_plus[ip, ax] += vp
+                            g_b_minus[ip, ax] += vp
                         mask_m = (b_col < 0.0) & (c_ax > 0)
                         if np.any(mask_m):
                             im = idx_all[mask_m]
-                            g_b[im, ax] += (1.0 / h_grid) * np.einsum("ij,ij->i", Psi_b[im, :], U_b[im, :] - U_b[im - st, :])
+                            vm = (1.0 / h_grid) * np.einsum("ij,ij->i", Psi_b[im, :], U_b[im, :] - U_b[im - st, :])
+                            g_b[im, ax] += vm
+                            g_b_plus[im, ax] += vm
+                            g_b_minus[im, ax] += vm
+                        mask_z = b_col == 0.0
+                        if np.any(mask_z):
+                            mz_p = mask_z & (c_ax < (gn - 1))
+                            if np.any(mz_p):
+                                izp = idx_all[mz_p]
+                                vzp = (1.0 / h_grid) * np.einsum("ij,ij->i", Psi_b[izp, :], U_b[izp + st, :] - U_b[izp, :])
+                                g_b_plus[izp, ax] += vzp
+                                g_b[izp, ax] += 0.5 * vzp
+                            mz_m = mask_z & (c_ax > 0)
+                            if np.any(mz_m):
+                                izm = idx_all[mz_m]
+                                vzm = (1.0 / h_grid) * np.einsum("ij,ij->i", Psi_b[izm, :], U_b[izm, :] - U_b[izm - st, :])
+                                g_b_minus[izm, ax] += vzm
+                                g_b[izm, ax] += 0.5 * vzm
             grads_q_out.append(g_q)
             grads_b_out.append(g_b)
+            grads_b_plus_out.append(g_b_plus)
+            grads_b_minus_out.append(g_b_minus)
 
         g_q_opt = grads_q_out[0]
         g_b_opt = grads_b_out[0]
-        g_q_run = grads_q_out[1] if len(grads_q_out) > 1 else g_q_opt.copy()
-        g_b_run = grads_b_out[1] if len(grads_b_out) > 1 else g_b_opt.copy()
+        g_b_plus_opt = grads_b_plus_out[0]
+        g_b_minus_opt = grads_b_minus_out[0]
+        kink_jump = np.abs(g_b_plus_opt - g_b_minus_opt) > 1e-15
+        n_kink = int(np.sum((b_cur == 0.0) & kink_jump)) if include_drift_grad else 0
+        if zero_drift_mode == "strict_smooth" and n_kink > 0:
+            raise ValueError(
+                f"Upwind drift kink encountered at {n_kink} exact zero-drift components under zero_drift_mode='strict_smooth'."
+            )
+
+        has_run_grad = len(grads_q_out) > 1
+        g_q_run = grads_q_out[1] if has_run_grad else (g_q_opt.copy() if m == 1 and n_alt >= 1 else None)
+        g_b_run = grads_b_out[1] if has_run_grad else (g_b_opt.copy() if m == 1 and n_alt >= 1 else None)
 
         alt_branches_out = []
         for idx_alt, ai in enumerate(alt_is):
@@ -1621,9 +1672,14 @@ class MacroTourPlanner:
             })
 
         eff_margin = float(min(min_act_margin, val_run - val_inc)) if m >= 2 else float("inf")
+        act_tie = bool(m >= 2 and eff_margin <= 1e-11)
         return {
             "derivative_kind": "active_branch",
-            "tie_detected": bool(m >= 2 and eff_margin <= 1e-11),
+            "tie_detected": act_tie,
+            "action_tie_detected": act_tie,
+            "upwind_drift_kink_detected": bool(n_kink > 0),
+            "n_zero_drift_kink_components": n_kink,
+            "zero_drift_mode": zero_drift_mode,
             "active_action_margin": eff_margin,
             "canonical_wp_ids": tuple(t_canon),
             "Q_root_canonical": Q_root,
@@ -1634,11 +1690,14 @@ class MacroTourPlanner:
             "action_gap": float(val_run - val_inc),
             "grad_q_optimal": g_q_opt,
             "grad_q_runner_up": g_q_run,
-            "grad_q_top_gap": g_q_run - g_q_opt,
+            "grad_q_top_gap": (g_q_run - g_q_opt) if g_q_run is not None else None,
             "grad_b_optimal": g_b_opt,
+            "grad_b_plus_optimal": g_b_plus_opt,
+            "grad_b_minus_optimal": g_b_minus_opt,
             "grad_b_runner_up": g_b_run,
-            "grad_b_top_gap": g_b_run - g_b_opt,
+            "grad_b_top_gap": (g_b_run - g_b_opt) if g_b_run is not None else None,
             "alt_branches": alt_branches_out,
+            "n_transpose_rhs_cols": int(Psi_all.shape[1]),
             "sensitivity_ms": 1000.0 * (time.perf_counter() - t0),
         }
 

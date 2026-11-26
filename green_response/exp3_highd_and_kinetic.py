@@ -648,12 +648,104 @@ def _indep_6d_cone_teacher_worker(args: Tuple[int, int]) -> dict:
     }
 
 
+LOCKED_6D_METHOD_CONFIGS = {
+    "M1_EndToEnd_Bessel24": {
+        "teacher_mode": "bessel_guided",
+        "teacher_prior_mode": "helmholtz_bessel",
+        "student_refit_prior_mode": None,
+        "n_interior_anchors": 24,
+        "n_mc_paths": 48,
+        "n_steps_fk": 75,
+        "dt_fk": 0.045,
+        "n_continuation_rounds": 3,
+        "design_seed_base": 46000,
+        "mc_seed_base": 46500,
+    },
+    "M2_FrozenBesselTeacher_SharpCone108": {
+        "teacher_mode": "bessel_guided",
+        "teacher_prior_mode": "helmholtz_bessel",
+        "student_refit_prior_mode": "matched_sharp_cone",
+        "n_interior_anchors": 108,
+        "n_mc_paths": 48,
+        "n_steps_fk": 75,
+        "dt_fk": 0.045,
+        "n_continuation_rounds": 3,
+        "design_seed_base": 47000,
+        "mc_seed_base": 47500,
+    },
+    "M3_EndToEnd_IndepConeGirsanov_SharpCone108": {
+        "teacher_mode": "cone_girsanov_independent",
+        "teacher_prior_mode": "matched_sharp_cone",
+        "student_refit_prior_mode": None,
+        "n_interior_anchors": 108,
+        "n_mc_paths": 48,
+        "n_steps_fk": 75,
+        "dt_fk": 0.045,
+        "n_continuation_rounds": 3,
+        "design_seed_base": 47000,
+        "mc_seed_base": 47500,
+    },
+}
+
+
+def execute_locked_6d_method(
+    method_id: str,
+    spec: ProblemSpec,
+    km: KrigingWorldModel,
+    query_train: QueryTask,
+    map_idx: int,
+) -> dict:
+    """Single canonical dispatch factory shared across quality, serial latency, and batch makespan workers."""
+    if method_id not in LOCKED_6D_METHOD_CONFIGS:
+        raise KeyError(f"Unknown locked 6D method_config_id: {method_id}")
+    cfg = LOCKED_6D_METHOD_CONFIGS[method_id]
+    t0 = time.perf_counter()
+    s_t = solve_highd_fk_distillation(
+        spec,
+        km,
+        query_train,
+        n_interior_anchors=cfg["n_interior_anchors"],
+        n_mc_paths=cfg["n_mc_paths"],
+        n_steps_fk=cfg["n_steps_fk"],
+        dt_fk=cfg["dt_fk"],
+        n_continuation_rounds=cfg["n_continuation_rounds"],
+        prior_mode=cfg["teacher_prior_mode"],
+        teacher_mode=cfg["teacher_mode"],
+        design_seed=cfg["design_seed_base"] + map_idx,
+        mc_seed=cfg["mc_seed_base"] + map_idx,
+    )
+    t_ms = 1000.0 * (time.perf_counter() - t0)
+    if cfg["student_refit_prior_mode"] is not None:
+        t_r0 = time.perf_counter()
+        fit_c = fit_gp_value_with_prior(
+            spec,
+            query_train,
+            s_t["frozen_X_all"],
+            s_t["frozen_y_total_v"],
+            s_t["frozen_noise_vec"],
+            prior_mode=cfg["student_refit_prior_mode"],
+        )
+        r_ms = 1000.0 * (time.perf_counter() - t_r0)
+        pol = fit_c["policy"]
+        student_refits = 1
+    else:
+        r_ms = 0.0
+        pol = s_t["policy"]
+        student_refits = 0
+    return {
+        "policy": pol,
+        "total_query_ms": t_ms + r_ms,
+        "teacher_ms": t_ms,
+        "student_refit_ms": r_ms,
+        "student_refits": student_refits,
+        "teacher_diag": s_t,
+        "config": dict(cfg),
+    }
+
+
 def _matched_6d_method_worker(args: Tuple[int, int]) -> dict:
-    """Locked `method_config_id` 6D Quality + Concurrent Worker Timing (`29fa7c6` Stage B1):
-    Evaluates THREE pinned configurations on the EXACT SAME world GP, held-out starts, and CRN seeds:
-      - `M1_EndToEnd_Bessel24`: `teacher_mode="bessel_guided", prior_mode="helmholtz_bessel", N=24, 48x75, dt=0.045, cont=3`
-      - `M2_FrozenBesselTeacher_SharpCone108`: `teacher_mode="bessel_guided" (N=108, 48x75, dt=0.045, cont=3) -> SharpCone refit`
-      - `M3_EndToEnd_IndepConeGirsanov_SharpCone108`: `teacher_mode="cone_girsanov_independent", prior_mode="matched_sharp_cone", N=108, 48x75, dt=0.045, cont=3`
+    """Locked `method_config_id` 6D Quality + Concurrent Worker Timing (`29fa7c6` Stage B1 / `57e5912` Unified Factory):
+    Evaluates THREE pinned configurations via `execute_locked_6d_method` on the EXACT SAME world GP, held-out starts, and CRN seeds.
     """
     idx_m, ms = args
     dim = 6
@@ -665,56 +757,19 @@ def _matched_6d_method_worker(args: Tuple[int, int]) -> dict:
     q_tr, q_un, q_sh = make_highd_queries_three_regimes(ms, dim=dim, n_queries=1)[0]
     rng_ord = np.random.default_rng(ms + 515)
 
-    def _run_m1():
-        t0 = time.perf_counter()
-        s = solve_highd_fk_distillation(
-            spec, km, q_tr, n_interior_anchors=24, n_mc_paths=48, n_steps_fk=75, dt_fk=0.045,
-            n_continuation_rounds=3, prior_mode="helmholtz_bessel", teacher_mode="bessel_guided",
-            design_seed=46000 + idx_m, mc_seed=46500 + idx_m,
-        )
-        tot_ms = 1000.0 * (time.perf_counter() - t0)
-        return s["policy"], tot_ms, tot_ms, 0.0, s
-
-    def _run_m2():
-        t0 = time.perf_counter()
-        s_t = solve_highd_fk_distillation(
-            spec, km, q_tr, n_interior_anchors=108, n_mc_paths=48, n_steps_fk=75, dt_fk=0.045,
-            n_continuation_rounds=3, prior_mode="helmholtz_bessel", teacher_mode="bessel_guided",
-            design_seed=47000 + idx_m, mc_seed=47500 + idx_m,
-        )
-        t_ms = 1000.0 * (time.perf_counter() - t0)
-        t_r0 = time.perf_counter()
-        fit_c = fit_gp_value_with_prior(
-            spec, q_tr, s_t["frozen_X_all"], s_t["frozen_y_total_v"], s_t["frozen_noise_vec"], prior_mode="matched_sharp_cone"
-        )
-        r_ms = 1000.0 * (time.perf_counter() - t_r0)
-        return fit_c["policy"], t_ms + r_ms, t_ms, r_ms, s_t
-
-    def _run_m3():
-        t0 = time.perf_counter()
-        s_c = solve_highd_fk_distillation(
-            spec, km, q_tr, n_interior_anchors=108, n_mc_paths=48, n_steps_fk=75, dt_fk=0.045,
-            n_continuation_rounds=3, prior_mode="matched_sharp_cone", teacher_mode="cone_girsanov_independent",
-            design_seed=47000 + idx_m, mc_seed=47500 + idx_m,
-        )
-        tot_ms = 1000.0 * (time.perf_counter() - t0)
-        return s_c["policy"], tot_ms, tot_ms, 0.0, s_c
-
-    call_map = {
-        "M1_EndToEnd_Bessel24": _run_m1,
-        "M2_FrozenBesselTeacher_SharpCone108": _run_m2,
-        "M3_EndToEnd_IndepConeGirsanov_SharpCone108": _run_m3,
-    }
-    m_keys = list(call_map.keys())
+    m_keys = list(LOCKED_6D_METHOD_CONFIGS.keys())
     out_m = {}
     for mk in rng_ord.permutation(m_keys).tolist():
-        pol, tot_ms, teach_ms, refit_ms, s_diag = call_map[mk]()
+        ex = execute_locked_6d_method(mk, spec, km, q_tr, idx_m)
+        pol = ex["policy"]
+        s_diag = ex["teacher_diag"]
         r_un = simulate_closed_loop_crn(world, pol, q_un, n_per_start=16, seed=48000 + idx_m)
         r_sh = simulate_closed_loop_crn(world, pol, q_sh, n_per_start=16, seed=48500 + idx_m)
         out_m[mk] = {
-            "concurrent_query_ms": tot_ms,
-            "concurrent_teacher_ms": teach_ms,
-            "concurrent_refit_ms": refit_ms,
+            "concurrent_query_ms": ex["total_query_ms"],
+            "concurrent_teacher_ms": ex["teacher_ms"],
+            "concurrent_refit_ms": ex["student_refit_ms"],
+            "student_refits": ex["student_refits"],
             "unseen_cost": r_un["mean_cost"],
             "shift_cost": r_sh["mean_cost"],
             "unseen_reach_rate": r_un["reach_rate"],
@@ -734,29 +789,8 @@ def _batch_only_6d_method_worker(args: Tuple[int, int, str]) -> float:
     w6 = generate_benchmark_map(ms, dim=6, regime="smooth", with_drift=True, spec=spec6)
     km6 = KrigingWorldModel(*sample_noisy_probes(w6, n_probes=100, seed=ms + 7, include_drift=True))
     q_tr, _, _ = make_highd_queries_three_regimes(ms, dim=6, n_queries=1)[0]
-    t0 = time.perf_counter()
-    if mk == "M1_EndToEnd_Bessel24":
-        solve_highd_fk_distillation(
-            spec6, km6, q_tr, n_interior_anchors=24, n_mc_paths=48, n_steps_fk=75, dt_fk=0.045,
-            n_continuation_rounds=3, prior_mode="helmholtz_bessel", teacher_mode="bessel_guided",
-            design_seed=46000 + idx_i, mc_seed=46500 + idx_i,
-        )
-    elif mk == "M2_FrozenBesselTeacher_SharpCone108":
-        s_t = solve_highd_fk_distillation(
-            spec6, km6, q_tr, n_interior_anchors=108, n_mc_paths=48, n_steps_fk=75, dt_fk=0.045,
-            n_continuation_rounds=3, prior_mode="helmholtz_bessel", teacher_mode="bessel_guided",
-            design_seed=47000 + idx_i, mc_seed=47500 + idx_i,
-        )
-        fit_gp_value_with_prior(
-            spec6, q_tr, s_t["frozen_X_all"], s_t["frozen_y_total_v"], s_t["frozen_noise_vec"], prior_mode="matched_sharp_cone"
-        )
-    elif mk == "M3_EndToEnd_IndepConeGirsanov_SharpCone108":
-        solve_highd_fk_distillation(
-            spec6, km6, q_tr, n_interior_anchors=108, n_mc_paths=48, n_steps_fk=75, dt_fk=0.045,
-            n_continuation_rounds=3, prior_mode="matched_sharp_cone", teacher_mode="cone_girsanov_independent",
-            design_seed=47000 + idx_i, mc_seed=47500 + idx_i,
-        )
-    return 1000.0 * (time.perf_counter() - t0)
+    ex = execute_locked_6d_method(mk, spec6, km6, q_tr, idx_i)
+    return float(ex["total_query_ms"])
 
 
 def run_independent_teacher_and_isolated_latency_suite(max_workers: int = 8) -> dict:
@@ -808,11 +842,7 @@ def run_independent_teacher_and_isolated_latency_suite(max_workers: int = 8) -> 
     rows_m = run_map_parallel(_matched_6d_method_worker, [(i, s) for i, s in enumerate(seeds_6d)], max_workers=max_workers)
 
     spec6 = ProblemSpec(dim=6, half_width=1.65, sigma=0.55, q0=0.65, dt_sim=0.020, max_steps=420)
-    m_ids = [
-        "M1_EndToEnd_Bessel24",
-        "M2_FrozenBesselTeacher_SharpCone108",
-        "M3_EndToEnd_IndepConeGirsanov_SharpCone108",
-    ]
+    m_ids = list(LOCKED_6D_METHOD_CONFIGS.keys())
     serial_ms = {mk: [] for mk in m_ids}
     serial_world_gp_ms = []
     for idx_i, ms in enumerate(seeds_6d):
@@ -824,29 +854,8 @@ def run_independent_teacher_and_isolated_latency_suite(max_workers: int = 8) -> 
         rng_s = np.random.default_rng(49000 + ms)
         ms_map = {}
         for mk in rng_s.permutation(m_ids).tolist():
-            t0 = time.perf_counter()
-            if mk == "M1_EndToEnd_Bessel24":
-                solve_highd_fk_distillation(
-                    spec6, km6, q_tr, n_interior_anchors=24, n_mc_paths=48, n_steps_fk=75, dt_fk=0.045,
-                    n_continuation_rounds=3, prior_mode="helmholtz_bessel", teacher_mode="bessel_guided",
-                    design_seed=46000 + idx_i, mc_seed=46500 + idx_i,
-                )
-            elif mk == "M2_FrozenBesselTeacher_SharpCone108":
-                s_t = solve_highd_fk_distillation(
-                    spec6, km6, q_tr, n_interior_anchors=108, n_mc_paths=48, n_steps_fk=75, dt_fk=0.045,
-                    n_continuation_rounds=3, prior_mode="helmholtz_bessel", teacher_mode="bessel_guided",
-                    design_seed=47000 + idx_i, mc_seed=47500 + idx_i,
-                )
-                fit_gp_value_with_prior(
-                    spec6, q_tr, s_t["frozen_X_all"], s_t["frozen_y_total_v"], s_t["frozen_noise_vec"], prior_mode="matched_sharp_cone"
-                )
-            elif mk == "M3_EndToEnd_IndepConeGirsanov_SharpCone108":
-                solve_highd_fk_distillation(
-                    spec6, km6, q_tr, n_interior_anchors=108, n_mc_paths=48, n_steps_fk=75, dt_fk=0.045,
-                    n_continuation_rounds=3, prior_mode="matched_sharp_cone", teacher_mode="cone_girsanov_independent",
-                    design_seed=47000 + idx_i, mc_seed=47500 + idx_i,
-                )
-            ms_map[mk] = 1000.0 * (time.perf_counter() - t0)
+            ex_s = execute_locked_6d_method(mk, spec6, km6, q_tr, idx_i)
+            ms_map[mk] = float(ex_s["total_query_ms"])
         for mk in m_ids:
             serial_ms[mk].append(ms_map[mk])
 

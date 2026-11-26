@@ -791,11 +791,12 @@ def _real_gp_update_lifecycle_worker(args: Tuple[int, int]) -> dict:
                     break
             post_tasks.append((s_xy, sub_ids))
 
-        warmup_cold = [
+        warmup_zero: List[Tuple[np.ndarray, Tuple[int, ...]]] = []
+        warmup_partial2 = [
             (np.full(dim, -1.25), (0, 1, 2, 3, 4)),
             (np.full(dim, 1.25), (0, 1, 2, 3, 4)),
         ]
-        warmup_warm = [
+        warmup_broad6 = [
             (np.full(dim, -1.25), (0, 1, 2, 3, 4)),
             (np.full(dim, 1.25), (3, 4, 5, 6, 7)),
             (np.array([-1.20, 1.20] + ([0.0] if dim == 3 else [])), (7, 8, 9, 10, 11)),
@@ -804,11 +805,16 @@ def _real_gp_update_lifecycle_worker(args: Tuple[int, int]) -> dict:
             (np.full(dim, -0.95), (2, 3, 6, 7, 11)),
         ]
 
-        for prefix_name, warm_tasks in [("ColdPrefix", warmup_cold), ("WarmPrefix", warmup_warm)]:
+        for prefix_name, warm_tasks in [
+            ("ZeroWarm0", warmup_zero),
+            ("PartialWarm2", warmup_partial2),
+            ("BroadWarm6", warmup_broad6),
+        ]:
             reg_key = f"{dim_label}-{prefix_name}"
             planners = {}
             st_m = {
                 m: {
+                    "n_warmup_tasks": len(warm_tasks),
                     "gp1_ms": t_gp1_ms,
                     "init_ms": 0.0,
                     "warmup_ms": 0.0,
@@ -822,6 +828,9 @@ def _real_gp_update_lifecycle_worker(args: Tuple[int, int]) -> dict:
                     "post_update_lus": 0,
                     "post_update_backsolves": 0,
                     "cols_retained": 0,
+                    "cols_recomputed": 0,
+                    "cols_dropped": 0,
+                    "waypoints_retained": 0,
                     "cert_of_12": 0,
                     "viols_of_12": 0,
                 }
@@ -852,8 +861,14 @@ def _real_gp_update_lifecycle_worker(args: Tuple[int, int]) -> dict:
                     else ("structure_only_fresh_exact" if m == "Structure-Memory-Fresh-Exact" else "selective_residual")
                 )
                 u_inf = planners[m].update_world_with_residual_audit(km2.predict_q, km2.predict_b, mode=mode_u)
+                for req_key in ("update_ms", "cols_retained", "cols_recomputed", "cols_dropped", "waypoints_retained"):
+                    if req_key not in u_inf:
+                        raise KeyError(f"update_world_with_residual_audit missing mandatory field {req_key!r}")
                 st_m[m]["update_ms"] = float(u_inf["update_ms"])
-                st_m[m]["cols_retained"] = int(u_inf.get("columns_retained", 0))
+                st_m[m]["cols_retained"] = int(u_inf["cols_retained"])
+                st_m[m]["cols_recomputed"] = int(u_inf["cols_recomputed"])
+                st_m[m]["cols_dropped"] = int(u_inf["cols_dropped"])
+                st_m[m]["waypoints_retained"] = int(u_inf["waypoints_retained"])
 
             cum_q = {m: 0.0 for m in methods}
             cum_col = {m: 0.0 for m in methods}
@@ -890,6 +905,7 @@ def _real_gp_update_lifecycle_worker(args: Tuple[int, int]) -> dict:
                 st_m[m]["post_update_backsolves"] = int(planners[m].total_lu_backsolves - bs_before[m])
 
             out_dims[reg_key] = {
+                "n_warmup_tasks": len(warm_tasks),
                 "n_obs_old": int(len(X_old)),
                 "n_obs_added_real": 16,
                 "n_obs_new": int(len(X_new)),
@@ -912,11 +928,13 @@ def run_real_gp_update_lifecycle_benchmark(n_maps: int = 12, max_workers: int = 
         ex_m12 = np.array([r["regimes"][rk]["methods"]["ExactRing-Rebuild"]["post_update_marginal_ms_by_K"]["K_12"] for r in rows])
         str_z12 = np.array([r["regimes"][rk]["methods"]["Structure-Memory-Fresh-Exact"]["from_zero_full_lifecycle_ms_by_K"]["K_12"] for r in rows])
         ex_z12 = np.array([r["regimes"][rk]["methods"]["ExactRing-Rebuild"]["from_zero_full_lifecycle_ms_by_K"]["K_12"] for r in rows])
+        ex_m1 = np.array([r["regimes"][rk]["methods"]["ExactRing-Rebuild"]["post_update_marginal_ms_by_K"]["K_1"] for r in rows])
 
         m_sum = {}
         for m in methods:
             m_marg12 = np.array([r["regimes"][rk]["methods"][m]["post_update_marginal_ms_by_K"]["K_12"] for r in rows])
             m_zero12 = np.array([r["regimes"][rk]["methods"][m]["from_zero_full_lifecycle_ms_by_K"]["K_12"] for r in rows])
+            m_marg1 = np.array([r["regimes"][rk]["methods"][m]["post_update_marginal_ms_by_K"]["K_1"] for r in rows])
             m_sum[m] = {
                 "mean_gp1_ms": float(np.mean([r["regimes"][rk]["methods"][m]["gp1_ms"] for r in rows])),
                 "mean_init_ms": float(np.mean([r["regimes"][rk]["methods"][m]["init_ms"] for r in rows])),
@@ -935,15 +953,20 @@ def run_real_gp_update_lifecycle_benchmark(n_maps: int = 12, max_workers: int = 
                 "dp_ms_at_K12": float(np.mean([r["regimes"][rk]["methods"][m]["dp_ms_by_K"]["K_12"] for r in rows])),
                 "mean_post_update_lus": float(np.mean([r["regimes"][rk]["methods"][m]["post_update_lus"] for r in rows])),
                 "mean_post_update_backsolves": float(np.mean([r["regimes"][rk]["methods"][m]["post_update_backsolves"] for r in rows])),
-                "mean_cols_retained": float(np.mean([r["regimes"][rk]["methods"][m]["cols_retained"] for r in rows])),
+                "mean_cached_level_cols_retained": float(np.mean([r["regimes"][rk]["methods"][m]["cols_retained"] for r in rows])),
+                "mean_cached_level_cols_recomputed": float(np.mean([r["regimes"][rk]["methods"][m]["cols_recomputed"] for r in rows])),
+                "mean_cached_level_cols_dropped": float(np.mean([r["regimes"][rk]["methods"][m]["cols_dropped"] for r in rows])),
+                "mean_waypoints_with_any_retained_level": float(np.mean([r["regimes"][rk]["methods"][m]["waypoints_retained"] for r in rows])),
                 "certified_tasks_of_144": int(sum(r["regimes"][rk]["methods"][m]["cert_of_12"] for r in rows)),
                 "bound_violations_of_144": int(sum(r["regimes"][rk]["methods"][m]["viols_of_12"] for r in rows)),
+                "paired_marginal_K1_diff_vs_exact_rebuild": paired_stats(m_marg1 - ex_m1),
                 "paired_marginal_K12_diff_vs_structure_only": paired_stats(m_marg12 - str_m12),
                 "paired_marginal_K12_diff_vs_exact_rebuild": paired_stats(m_marg12 - ex_m12),
                 "paired_from_zero_K12_diff_vs_structure_only": paired_stats(m_zero12 - str_z12),
                 "paired_from_zero_K12_diff_vs_exact_rebuild": paired_stats(m_zero12 - ex_z12),
             }
         regimes_out[rk] = {
+            "n_warmup_tasks": int(rows[0]["regimes"][rk]["n_warmup_tasks"]),
             "mean_dq_linf_after_16_real_obs": float(np.mean([r["regimes"][rk]["dq_linf_grid"] for r in rows])),
             "mean_db_linf_after_16_real_obs": float(np.mean([r["regimes"][rk]["db_linf_grid"] for r in rows])),
             "methods": m_sum,
@@ -951,10 +974,15 @@ def run_real_gp_update_lifecycle_benchmark(n_maps: int = 12, max_workers: int = 
 
     return {
         "block_provenance": "fresh_computed_in_current_run",
-        "experiment_scope": "genuine_16_real_world_observations_and_gp_refit_single_factor_warm_vs_cold_lifecycle",
+        "experiment_scope": "genuine_16_real_world_observations_and_gp_refit_zero_partial2_broad6_warmup_lifecycle",
+        "column_counter_definition": (
+            "mean_cached_level_cols_retained counts total cached level-column entries (`L1/L4/L8/EXACT`) "
+            "retained across the 12-waypoint partition tree inside update_world_with_residual_audit."
+        ),
         "fresh_seeds": seeds,
         "n_maps": n_maps,
         "catalog_waypoints_fixed": 12,
+        "warmup_regimes": {"ZeroWarm0": 0, "PartialWarm2": 2, "BroadWarm6": 6},
         "post_update_horizons": [1, 4, 12],
         "regimes": regimes_out,
         "per_map_records": rows,
@@ -1633,11 +1661,667 @@ def run_decisive_isolated_online_voi_study(n_maps_per_regime: int = 16, grid_n: 
     }
 
 
-def plot_exp4(fid: dict, real_gp_lc: dict, voi_study: dict, out_png: Path) -> None:
-    fig, axes = plt.subplots(1, 3, figsize=(20.4, 5.6))
+def _select_active_probes_diverse_with_indices(
+    cand_pts: np.ndarray, scores: np.ndarray, existing_X: np.ndarray, n_select: int, min_repel: float = 0.24
+) -> Tuple[np.ndarray, List[int]]:
+    """Greedy diversity-regularized coordinate selection returning `(selected_points, selected_row_indices)`."""
+    chosen = []
+    chosen_idx: List[int] = []
+    cur_X = np.atleast_2d(np.asarray(existing_X, dtype=float)).copy()
+    rem_mask = np.ones(len(cand_pts), dtype=bool)
+    for _ in range(n_select):
+        if not np.any(rem_mask):
+            break
+        d_min = np.min(np.linalg.norm(cand_pts[:, None, :] - cur_X[None, :, :], axis=2), axis=1)
+        eff_score = np.where(rem_mask, scores * np.minimum(1.0, (d_min / max(min_repel, 1e-9)) ** 2), -np.inf)
+        best_i = int(np.argmax(eff_score))
+        rem_mask[best_i] = False
+        pt = cand_pts[best_i]
+        chosen.append(pt)
+        chosen_idx.append(best_i)
+        cur_X = np.vstack([cur_X, pt[None, :]])
+    return (np.array(chosen, dtype=float) if chosen else np.empty((0, cand_pts.shape[1]), dtype=float)), chosen_idx
 
-    # Panel 1: Coupled-Wiener Fidelity Bridge (Piecewise-Reflected Polyline Hit)
-    ax = axes[0]
+
+_STABLE_ARM_RNG_CODES = {
+    "Frozen-GP-28": 11,
+    "Global-CondMaxVar-qb-14": 22,
+    "True-OnPolicy-14": 33,
+    "True-OnPolicy-11+CondSentinel-qb-3": 44,
+    "FactA-GreenVal-qOnly-Uncond": 55,
+    "FactB-GreenVal-qOnly-Cond": 66,
+    "FactC-GreenVal-qb-Uncond": 77,
+    "FactD-GreenVal-qb-Cond": 88,
+    "Green-ValueOnly-qb-Cond-11+3": 88,
+}
+
+
+def _deferred_eval_active_sensing_worker(args: Tuple[int, int, str, int, Tuple[str, ...]]) -> dict:
+    """`v5` Chronologically-Deferred Evaluation + Compact Replayable Acquisition-Tape Worker:
+      1. Phase 1 runs ALL 6 operational episodes (`ep = 0..5`) to completion WITHOUT constructing `pl_eval`
+         or touching `heldout_bank` (`heldout_bank` is only evaluated in Phase 2 after Episode 6 ends!);
+      2. Separates `operational_total_ms` (`gp_and_ctrl + online_plan + acquisition`) from `online_rollout_sim_ms`
+         and `deferred_eval_ms`;
+      3. Conditions `True-OnPolicy-11+CondSentinel-qb-3`'s 3 sentinels on the 11 off-grid `pending_X = X_onp`
+         trajectory coordinates across BOTH `q` and `b` (`include_drift_channels=True, drift_std_weight=0.25`);
+      4. Uses true `max_alt_branches = 0` (`n_alt = 0`, zero extra runner-up transpose RHS columns) for all
+         `Green-ValueOnly` arms, and records exact `upwind_drift_kink_detected` counts + compact acquisition tapes!
+    """
+    import hashlib
+    idx_m, ms, regime_name, grid_n, arms_tuple = args
+    arms = list(arms_tuple)
+    world = generate_benchmark_map(ms, dim=2, regime=regime_name, with_drift=True)
+    rng = np.random.default_rng(ms + 211)
+    r_wp = 0.25
+    catalog_wps: List[GoalBall] = []
+    if regime_name == "competing_corridor":
+        for side_idx in range(10):
+            for _att in range(250):
+                pt = rng.uniform(-1.24, 1.24, size=2)
+                if side_idx < 5:
+                    pt[0] = rng.uniform(-1.24, -0.42)
+                else:
+                    pt[0] = rng.uniform(0.42, 1.24)
+                if all(np.linalg.norm(pt - np.asarray(w.center)) >= 2.04 * r_wp for w in catalog_wps):
+                    catalog_wps.append(GoalBall(tuple(pt.tolist()), phi=0.0, radius=r_wp))
+                    break
+    else:
+        for _ in range(10):
+            for _att in range(250):
+                pt = rng.uniform(-1.22, 1.22, size=2)
+                if all(np.linalg.norm(pt - np.asarray(w.center)) >= 2.05 * r_wp for w in catalog_wps):
+                    catalog_wps.append(GoalBall(tuple(pt.tolist()), phi=0.0, radius=r_wp))
+                    break
+
+    def _sample_tour_task(seed_val: int) -> Tuple[np.ndarray, Tuple[int, ...], int]:
+        sub_ids = tuple(rng.choice(len(catalog_wps), size=5, replace=False).tolist())
+        start_xy = np.array([-1.30, -1.30])
+        for _att in range(150):
+            cand = rng.uniform(-1.25, 1.25, size=2)
+            if all(np.linalg.norm(cand - np.asarray(catalog_wps[j].center)) > r_wp + 0.15 for j in sub_ids):
+                start_xy = cand
+                break
+        return start_xy, sub_ids, seed_val
+
+    online_stream = [
+        [_sample_tour_task(71000 + 200 * idx_m + 20 * ep + tk) for tk in range(3)]
+        for ep in range(6)
+    ]
+    online_dW_bank = [
+        [
+            _generate_coupled_wiener_bank(sd_o, n_tr=10, m_legs=5, fine_steps_per_leg=1260, dt_fine=0.005)[1]
+            for (_, _, sd_o) in online_stream[ep]
+        ]
+        for ep in range(6)
+    ]
+    heldout_bank = []
+    for hk in range(6):
+        s_h, sub_h, sd_h = _sample_tour_task(81000 + 200 * idx_m + hk)
+        _, dW_c_h = _generate_coupled_wiener_bank(sd_h, n_tr=14, m_legs=5, fine_steps_per_leg=1260, dt_fine=0.005)
+        heldout_bank.append((s_h, sub_h, dW_c_h))
+
+    X_init, q_init, b_init = sample_noisy_probes(world, n_probes=28, seed=ms + 7, include_drift=True)
+    gx = np.linspace(-1.48, 1.48, 25)
+    gxx, gyy = np.meshgrid(gx, gx, indexing="ij")
+    cand_pool = np.column_stack([gxx.ravel(), gyy.ravel()])
+    min_repel = 0.24
+
+    rng_arm_ord = np.random.default_rng(ms + 606)
+    arm_out = {}
+    arm_tapes = {}
+
+    for arm in rng_arm_ord.permutation(arms).tolist():
+        X_cur = X_init.copy()
+        q_cur = q_init.copy()
+        b_cur = b_init.copy()
+        rng_acq = np.random.default_rng(np.random.SeedSequence([ms, 900, _STABLE_ARM_RNG_CODES[arm]]))
+
+        online_cost_ep, online_comp_ep = [], []
+        op_gp_fit_ms_ep, op_online_plan_ms_ep, op_acq_ms_ep = [], [], []
+        online_rollout_sim_ms_ep = []
+        probe_sha_ep = []
+        tape_ep_list = []
+        root_gaps_logged = []
+        relu_fracs_logged = []
+        zero_drift_kinks_total = 0
+        transpose_rhs_cols_logged = []
+        all_onpolicy_verified = True
+
+        # ======================================================================
+        # PHASE 1: PURE OPERATIONAL LOOP (`ep = 0..5`) — NO HELD-OUT EVALUATION!
+        # ======================================================================
+        operational_snapshots = []
+        cached_frozen_models = None
+
+        for ep in range(6):
+            if arm == "Frozen-GP-28" and cached_frozen_models is not None:
+                km_t, leg_pols = cached_frozen_models
+                op_gp_fit_ms_ep.append(0.0)
+            else:
+                t_gp0 = time.perf_counter()
+                km_t = KrigingWorldModel(X_cur, q_cur, b_cur)
+                exec_fd = ClassicalFDSolver(world.spec, grid_n, km_t.predict_q, km_t.predict_b)
+                leg_pols = {
+                    j: exec_fd.solve_direct(QueryTask(f"l_{j}", (w,), ((0.0, 0.0),)))["policy"]
+                    for j, w in enumerate(catalog_wps)
+                }
+                op_gp_fit_ms_ep.append(1000.0 * (time.perf_counter() - t_gp0))
+                if arm == "Frozen-GP-28":
+                    cached_frozen_models = (km_t, leg_pols)
+
+            operational_snapshots.append((km_t, leg_pols))
+
+            t_op0 = time.perf_counter()
+            pl_op = SchurPortPlanner(
+                world.spec, grid_n, km_t.predict_q, km_t.predict_b, catalog_wps,
+                initial_sectors_per_wp="EXACT", lazy_init=True,
+            )
+            mt_op = MacroTourPlanner(pl_op)
+            op_online_plan_ms_ep.append(1000.0 * (time.perf_counter() - t_op0))
+
+            o_costs, o_comps = [], []
+            realized_states_ep: List[np.ndarray] = []
+            sim_ms_this_ep = 0.0
+            need_states = (arm in ("True-OnPolicy-14", "True-OnPolicy-11+CondSentinel-qb-3")) and (ep < 5)
+            for tk_i, (s_o, sub_o, _) in enumerate(online_stream[ep]):
+                t_po = time.perf_counter()
+                res_o = mt_op.plan_exact_subset_dp(s_o, sub_o)
+                op_online_plan_ms_ep[-1] += 1000.0 * (time.perf_counter() - t_po)
+
+                t_s0 = time.perf_counter()
+                sim_o = _simulate_adaptive_tour_coupled(
+                    world, catalog_wps, leg_pols, s_o, sub_o, res_o["select_next_waypoint"],
+                    online_dW_bank[ep][tk_i], dt_sim=0.015, fractional_segment_hit=True, record_visited_states=need_states,
+                )
+                sim_ms_this_ep += 1000.0 * (time.perf_counter() - t_s0)
+                o_costs.append(sim_o["mean_cost"])
+                o_comps.append(sim_o["completion_rate"])
+                if need_states and len(sim_o["visited_states"]) > 0:
+                    realized_states_ep.append(sim_o["visited_states"])
+            online_rollout_sim_ms_ep.append(sim_ms_this_ep)
+            online_cost_ep.append(float(np.mean(o_costs)))
+            online_comp_ep.append(float(np.mean(o_comps)))
+
+            if ep < 5:
+                t_acq0 = time.perf_counter()
+                sel_traj_orig_idx: Optional[List[int]] = None
+                ep_kinks = 0
+                if arm == "Frozen-GP-28":
+                    op_acq_ms_ep.append(0.0)
+                    X_new = None
+                elif arm == "Global-CondMaxVar-qb-14":
+                    X_new = km_t.select_sequential_conditional_maxvar_probes(
+                        cand_pool, X_cur, 14, min_repel=min_repel, pending_X=None, include_drift_channels=True, drift_std_weight=0.25
+                    )
+                elif arm == "True-OnPolicy-14":
+                    traj_cloud = np.vstack(realized_states_ep)
+                    perm_idx = rng_acq.permutation(len(traj_cloud))
+                    traj_perm = traj_cloud[perm_idx]
+                    _, lat_std_tr, _ = km_t.predict_q_latent_std(traj_perm)
+                    X_new, chosen_perm_pos = _select_active_probes_diverse_with_indices(
+                        traj_perm, 1.0 + lat_std_tr, X_cur, 14, min_repel=min_repel
+                    )
+                    sel_traj_orig_idx = [int(perm_idx[pos]) for pos in chosen_perm_pos]
+                    if not np.allclose(traj_cloud[sel_traj_orig_idx], X_new, atol=0.0):
+                        all_onpolicy_verified = False
+                elif arm == "True-OnPolicy-11+CondSentinel-qb-3":
+                    traj_cloud = np.vstack(realized_states_ep)
+                    perm_idx = rng_acq.permutation(len(traj_cloud))
+                    traj_perm = traj_cloud[perm_idx]
+                    _, lat_std_tr, _ = km_t.predict_q_latent_std(traj_perm)
+                    X_onp, chosen_perm_pos = _select_active_probes_diverse_with_indices(
+                        traj_perm, 1.0 + lat_std_tr, X_cur, 11, min_repel=min_repel
+                    )
+                    sel_traj_orig_idx = [int(perm_idx[pos]) for pos in chosen_perm_pos]
+                    if not np.allclose(traj_cloud[sel_traj_orig_idx], X_onp, atol=0.0):
+                        all_onpolicy_verified = False
+                    # Condition the 3 `(q, b)` sentinels on the 11 off-grid pending trajectory coordinates `X_onp`!
+                    X_sen = km_t.select_sequential_conditional_maxvar_probes(
+                        cand_pool,
+                        X_cur,
+                        3,
+                        min_repel=min_repel,
+                        pending_X=X_onp,
+                        include_drift_channels=True,
+                        drift_std_weight=0.25,
+                    )
+                    X_new = np.vstack([X_onp, X_sen])
+                elif arm in (
+                    "FactA-GreenVal-qOnly-Uncond",
+                    "FactB-GreenVal-qOnly-Cond",
+                    "FactC-GreenVal-qb-Uncond",
+                    "FactD-GreenVal-qb-Cond",
+                    "Green-ValueOnly-qb-Cond-11+3",
+                ):
+                    use_b = arm in ("FactC-GreenVal-qb-Uncond", "FactD-GreenVal-qb-Cond", "Green-ValueOnly-qb-Cond-11+3")
+                    use_cond = arm in ("FactB-GreenVal-qOnly-Cond", "FactD-GreenVal-qb-Cond", "Green-ValueOnly-qb-Cond-11+3")
+                    sens_list = []
+                    for s_o, sub_o, _ in online_stream[ep]:
+                        s_dict = mt_op.compute_exact_macro_q_sensitivities(
+                            s_o, sub_o, max_alt_branches=0, include_drift_grad=use_b
+                        )
+                        root_gaps_logged.append(float(s_dict["action_gap"]))
+                        ep_kinks += int(s_dict["n_zero_drift_kink_components"])
+                        transpose_rhs_cols_logged.append(int(s_dict["n_transpose_rhs_cols"]))
+                        sens_list.append(s_dict)
+                    zero_drift_kinks_total += ep_kinks
+                    X_new, v_diag = km_t.select_sequential_kg_voi_probes(
+                        cand_pool,
+                        pl_op.pts,
+                        sens_list,
+                        X_cur,
+                        n_decision=11,
+                        n_sentinel=3,
+                        min_repel=min_repel,
+                        val_reg_weight=1.0,
+                        include_drift_sensitivity=use_b,
+                        condition_decision_probes=use_cond,
+                        sentinel_drift_weight=0.25,
+                    )
+                    relu_fracs_logged.append(float(v_diag["active_q_relu_fraction"]))
+                else:
+                    raise ValueError(f"Unsupported active sensing arm: {arm}")
+
+                if X_new is not None:
+                    op_acq_ms_ep.append(1000.0 * (time.perf_counter() - t_acq0))
+                    probe_sha_ep.append(hashlib.sha256(np.round(X_new, 10).tobytes()).hexdigest()[:12])
+                    obs_rng = np.random.default_rng(np.random.SeedSequence([ms, ep, 9109]))
+                    Xn, qn, bn = observe_world_at_points(world, X_new, obs_rng, include_drift=True)
+                    X_cur = np.vstack([X_cur, Xn])
+                    q_cur = np.concatenate([q_cur, qn])
+                    b_cur = np.vstack([b_cur, bn])
+                    tape_ep_list.append({
+                        "after_episode": int(ep + 1),
+                        "selected_X": np.round(Xn, 5).tolist(),
+                        "observed_q": np.round(qn, 5).tolist(),
+                        "observed_b": np.round(bn, 5).tolist(),
+                        "onpolicy_traj_indices": sel_traj_orig_idx,
+                        "zero_drift_kink_components": int(ep_kinks),
+                    })
+
+        # ======================================================================
+        # PHASE 2: DEFERRED POST-OPERATIONAL HELD-OUT EVALUATION (runs ONLY AFTER all 6 operational episodes end!)
+        # ======================================================================
+        heldout_cost_ep, heldout_comp_ep, heldout_to_ep, heldout_clip_ep = [], [], [], []
+        deferred_eval_ms_ep = []
+        frozen_eval_cache = None
+
+        for ep_ev, (km_ev, leg_pols_ev) in enumerate(operational_snapshots):
+            if arm == "Frozen-GP-28" and frozen_eval_cache is not None:
+                c_ev, cp_ev, to_ev, cl_ev = frozen_eval_cache
+                heldout_cost_ep.append(c_ev)
+                heldout_comp_ep.append(cp_ev)
+                heldout_to_ep.append(to_ev)
+                heldout_clip_ep.append(cl_ev)
+                deferred_eval_ms_ep.append(0.0)
+                continue
+            t_ev0 = time.perf_counter()
+            pl_eval = SchurPortPlanner(
+                world.spec, grid_n, km_ev.predict_q, km_ev.predict_b, catalog_wps,
+                initial_sectors_per_wp="EXACT", lazy_init=True,
+            )
+            mt_eval = MacroTourPlanner(pl_eval)
+            h_costs, h_comps, h_tos, h_clips = [], [], [], []
+            for s_h, sub_h, dW_c_h in heldout_bank:
+                res_h = mt_eval.plan_exact_subset_dp(s_h, sub_h)
+                sim_h = _simulate_adaptive_tour_coupled(
+                    world, catalog_wps, leg_pols_ev, s_h, sub_h, res_h["select_next_waypoint"],
+                    dW_c_h, dt_sim=0.015, fractional_segment_hit=True, record_visited_states=False,
+                )
+                h_costs.append(sim_h["mean_cost"])
+                h_comps.append(sim_h["completion_rate"])
+                h_tos.append(sim_h["timeout_frac"])
+                h_clips.append(sim_h["clip_frac"])
+            deferred_eval_ms_ep.append(1000.0 * (time.perf_counter() - t_ev0))
+            c_ev = float(np.mean(h_costs))
+            cp_ev = float(np.mean(h_comps))
+            to_ev = float(np.mean(h_tos))
+            cl_ev = float(np.mean(h_clips))
+            if arm == "Frozen-GP-28":
+                frozen_eval_cache = (c_ev, cp_ev, to_ev, cl_ev)
+            heldout_cost_ep.append(c_ev)
+            heldout_comp_ep.append(cp_ev)
+            heldout_to_ep.append(to_ev)
+            heldout_clip_ep.append(cl_ev)
+
+        arm_out[arm] = {
+            "heldout_cost_by_ep": heldout_cost_ep,
+            "heldout_post_acq_ep2_6_mean_cost": float(np.mean(heldout_cost_ep[1:])),
+            "heldout_final_ep6_cost": float(heldout_cost_ep[-1]),
+            "heldout_completion_by_ep": heldout_comp_ep,
+            "heldout_post_acq_completion_rate": float(np.mean(heldout_comp_ep[1:])),
+            "heldout_mean_timeout_frac": float(np.mean(heldout_to_ep)),
+            "heldout_mean_clip_frac": float(np.mean(heldout_clip_ep)),
+            "online_stream_cost_by_ep": online_cost_ep,
+            "online_post_acq_ep2_6_mean_cost": float(np.mean(online_cost_ep[1:])),
+            "online_completion_rate": float(np.mean(online_comp_ep)),
+            "operational_gp_and_ctrl_ms": float(np.sum(op_gp_fit_ms_ep)),
+            "operational_online_plan_ms": float(np.sum(op_online_plan_ms_ep)),
+            "operational_acquisition_ms": float(np.sum(op_acq_ms_ep)),
+            "operational_total_ms": float(np.sum(op_gp_fit_ms_ep) + np.sum(op_online_plan_ms_ep) + np.sum(op_acq_ms_ep)),
+            "online_rollout_sim_ms_excluded_from_alg_timer": float(np.sum(online_rollout_sim_ms_ep)),
+            "deferred_post_episode6_eval_ms": float(np.sum(deferred_eval_ms_ep)),
+            "selected_probe_sha256_by_ep": probe_sha_ep,
+            "all_onpolicy_probes_verified_visited_states": bool(all_onpolicy_verified),
+            "total_zero_drift_kink_components_across_all_episodes": int(zero_drift_kinks_total),
+            "mean_transpose_rhs_cols_per_task": float(np.mean(transpose_rhs_cols_logged)) if transpose_rhs_cols_logged else None,
+            "mean_online_root_action_gap": float(np.mean(root_gaps_logged)) if root_gaps_logged else None,
+            "near_tie_online_task_fraction_lt_0_35": float(np.mean(np.array(root_gaps_logged) < 0.35)) if root_gaps_logged else None,
+            "mean_active_q_relu_fraction": float(np.mean(relu_fracs_logged)) if relu_fracs_logged else None,
+        }
+        arm_tapes[arm] = tape_ep_list
+
+    return {
+        "map_seed": ms,
+        "regime": regime_name,
+        "arms": arm_out,
+        "_compact_tape": {
+            "map_seed": ms,
+            "regime": regime_name,
+            "grid_n": grid_n,
+            "init_seed": ms + 7,
+            "arms": arm_tapes,
+        },
+    }
+
+
+def _compute_budget_attainment_curves(rows: List[dict], arms: Sequence[str], budgets: Sequence[int] = (28, 42, 56, 70, 84, 98)) -> dict:
+    """Computes pre-declared relative cost-reduction attainment across natural probe checkpoints `[28..98]`
+    without dropping or hiding unattained maps (right-censored maps explicitly retained and counted).
+    """
+    ep1_anchor = np.array([r["arms"][arms[0]]["heldout_cost_by_ep"][0] for r in rows], dtype=float)
+    thresholds_rel = (0.06, 0.09, 0.12)
+    out_thr = {}
+    for rel_pct in thresholds_rel:
+        key = f"rel_reduction_ge_{int(round(rel_pct * 100))}pct_vs_ep1_28obs"
+        target_vec = ep1_anchor * (1.0 - rel_pct)
+        arm_stats = {}
+        for a in arms:
+            c_mat = np.array([r["arms"][a]["heldout_cost_by_ep"] for r in rows], dtype=float)
+            hit_by_ep = c_mat <= target_vec[:, None]
+            cum_hit = np.maximum.accumulate(hit_by_ep, axis=1)
+            first_b = []
+            attained_flags = []
+            for i_m in range(len(rows)):
+                hits = np.flatnonzero(hit_by_ep[i_m])
+                if len(hits) > 0:
+                    first_b.append(int(budgets[int(hits[0])]))
+                    attained_flags.append(True)
+                else:
+                    first_b.append(112)  # right-censored at `>98` (next +14 step)
+                    attained_flags.append(False)
+            arm_stats[a] = {
+                "fraction_attained_by_checkpoint": [float(np.mean(cum_hit[:, j])) for j in range(len(budgets))],
+                "fraction_attained_by_98_probes": float(np.mean(attained_flags)),
+                "n_unattained_censored_of_total": int(len(rows) - sum(attained_flags)),
+                "mean_first_budget_censored_at_112": float(np.mean(first_b)),
+            }
+        out_thr[key] = arm_stats
+    return {"probe_checkpoints": list(budgets), "relative_ep1_reduction_targets": out_thr}
+
+
+def _summarize_factorial_cohort(rows: List[dict], regime_label: str, seeds: List[int], grid_n: int) -> dict:
+    arms = [
+        "Global-CondMaxVar-qb-14",
+        "True-OnPolicy-14",
+        "True-OnPolicy-11+CondSentinel-qb-3",
+        "FactA-GreenVal-qOnly-Uncond",
+        "FactB-GreenVal-qOnly-Cond",
+        "FactC-GreenVal-qb-Uncond",
+        "FactD-GreenVal-qb-Cond",
+    ]
+    cA = np.array([r["arms"]["FactA-GreenVal-qOnly-Uncond"]["heldout_post_acq_ep2_6_mean_cost"] for r in rows])
+    cB = np.array([r["arms"]["FactB-GreenVal-qOnly-Cond"]["heldout_post_acq_ep2_6_mean_cost"] for r in rows])
+    cC = np.array([r["arms"]["FactC-GreenVal-qb-Uncond"]["heldout_post_acq_ep2_6_mean_cost"] for r in rows])
+    cD = np.array([r["arms"]["FactD-GreenVal-qb-Cond"]["heldout_post_acq_ep2_6_mean_cost"] for r in rows])
+    cGlob = np.array([r["arms"]["Global-CondMaxVar-qb-14"]["heldout_post_acq_ep2_6_mean_cost"] for r in rows])
+    cOnp14 = np.array([r["arms"]["True-OnPolicy-14"]["heldout_post_acq_ep2_6_mean_cost"] for r in rows])
+    cOnpS = np.array([r["arms"]["True-OnPolicy-11+CondSentinel-qb-3"]["heldout_post_acq_ep2_6_mean_cost"] for r in rows])
+
+    ep1_vals = [float(np.mean([r["arms"][a]["heldout_cost_by_ep"][0] for r in rows])) for a in arms]
+    summary_arms = {}
+    for a in arms:
+        ap = np.array([r["arms"][a]["heldout_post_acq_ep2_6_mean_cost"] for r in rows])
+        ae6 = np.array([r["arms"][a]["heldout_final_ep6_cost"] for r in rows])
+        summary_arms[a] = {
+            "heldout_mean_cost_by_episode": [
+                float(np.mean([r["arms"][a]["heldout_cost_by_ep"][ep] for r in rows])) for ep in range(6)
+            ],
+            "primary_heldout_post_acq_ep2_6_mean_cost": float(np.mean(ap)),
+            "heldout_final_ep6_mean_cost": float(np.mean(ae6)),
+            "heldout_post_acq_completion_rate": float(np.mean([r["arms"][a]["heldout_post_acq_completion_rate"] for r in rows])),
+            "heldout_mean_timeout_frac": float(np.mean([r["arms"][a]["heldout_mean_timeout_frac"] for r in rows])),
+            "mean_operational_gp_and_ctrl_ms": float(np.mean([r["arms"][a]["operational_gp_and_ctrl_ms"] for r in rows])),
+            "mean_operational_online_plan_ms": float(np.mean([r["arms"][a]["operational_online_plan_ms"] for r in rows])),
+            "mean_operational_acquisition_ms": float(np.mean([r["arms"][a]["operational_acquisition_ms"] for r in rows])),
+            "mean_operational_total_ms": float(np.mean([r["arms"][a]["operational_total_ms"] for r in rows])),
+            "mean_online_rollout_sim_ms_excluded": float(np.mean([r["arms"][a]["online_rollout_sim_ms_excluded_from_alg_timer"] for r in rows])),
+            "mean_deferred_eval_ms": float(np.mean([r["arms"][a]["deferred_post_episode6_eval_ms"] for r in rows])),
+            "factD_minus_arm_heldout_ep2_6": paired_stats(cD - ap),
+            "per_map_heldout_post_acq_ep2_6_cost": ap.tolist(),
+        }
+
+    factorial_effects = {
+        "main_effect_conditioning_half_BminusA_plus_DminusC": paired_stats(0.5 * ((cB - cA) + (cD - cC))),
+        "main_effect_drift_b_adjoint_half_CminusA_plus_DminusB": paired_stats(0.5 * ((cC - cA) + (cD - cB))),
+        "interaction_cond_x_drift_b_DminusC_minus_BminusA": paired_stats((cD - cC) - (cB - cA)),
+        "simple_effect_cond_under_qOnly_BminusA": paired_stats(cB - cA),
+        "simple_effect_cond_under_qb_DminusC": paired_stats(cD - cC),
+        "simple_effect_b_under_uncond_CminusA": paired_stats(cC - cA),
+        "simple_effect_b_under_cond_DminusB": paired_stats(cD - cB),
+        "FactD_minus_GlobalCondMaxVar_qb_14": paired_stats(cD - cGlob),
+        "FactD_minus_OnPolicy11CondSentinel_qb_3": paired_stats(cD - cOnpS),
+        "FactD_minus_TrueOnPolicy14": paired_stats(cD - cOnp14),
+    }
+
+    return {
+        "cohort_role": "development_mechanism_diagnosis_on_revealed_seeds_not_fresh_confirmation",
+        "regime": regime_label,
+        "seeds": seeds,
+        "n_maps": len(rows),
+        "grid_n": grid_n,
+        "episode1_max_cost_spread_across_all_7_arms": float(max(ep1_vals) - min(ep1_vals)),
+        "total_zero_drift_kink_components_observed": int(
+            sum(r["arms"]["FactD-GreenVal-qb-Cond"]["total_zero_drift_kink_components_across_all_episodes"] for r in rows)
+        ),
+        "mean_transpose_rhs_cols_per_task_FactD": float(
+            np.mean([r["arms"]["FactD-GreenVal-qb-Cond"]["mean_transpose_rhs_cols_per_task"] for r in rows])
+        ),
+        "factorial_2x2_and_control_effects_ep2_6": factorial_effects,
+        "budget_attainment_curves": _compute_budget_attainment_curves(rows, arms),
+        "arms": summary_arms,
+        "per_map_records": [{k: v for k, v in r.items() if k != "_compact_tape"} for r in rows],
+    }
+
+
+def run_factorial_mechanism_diagnosis_32maps(grid_n: int = 51, max_workers: int = 8) -> Tuple[dict, List[dict]]:
+    """Batch B (`v5` §6 & §10): 2x2 Factorial (`q-only vs q+b` x `Uncond vs Cond`) + Repaired `(q, b)` Controls
+    on the revealed 32-map cohort (`10300..10315` + `10400..10415`, explicitly labeled development diagnosis).
+    """
+    arms_b = (
+        "Global-CondMaxVar-qb-14",
+        "True-OnPolicy-14",
+        "True-OnPolicy-11+CondSentinel-qb-3",
+        "FactA-GreenVal-qOnly-Uncond",
+        "FactB-GreenVal-qOnly-Cond",
+        "FactC-GreenVal-qb-Uncond",
+        "FactD-GreenVal-qb-Cond",
+    )
+    std_seeds = list(range(10300, 10316))
+    comp_seeds = list(range(10400, 10416))
+    rows_std = run_map_parallel(
+        _deferred_eval_active_sensing_worker,
+        [(i, s, "narrow_barrier", grid_n, arms_b) for i, s in enumerate(std_seeds)],
+        max_workers=max_workers,
+    )
+    rows_comp = run_map_parallel(
+        _deferred_eval_active_sensing_worker,
+        [(i, s, "competing_corridor", grid_n, arms_b) for i, s in enumerate(comp_seeds)],
+        max_workers=max_workers,
+    )
+    all_rows = rows_std + rows_comp
+    tapes = [r["_compact_tape"] for r in all_rows]
+    summary = {
+        "block_provenance": "fresh_computed_in_current_run",
+        "experiment_scope": "batch_B_development_2x2_factorial_q_vs_qb_and_uncond_vs_cond_with_pending_qb_sentinels",
+        "evaluation_chronology": "strictly_deferred_until_after_all_6_operational_episodes_complete",
+        "standard_narrow_barrier_16maps": _summarize_factorial_cohort(rows_std, "narrow_barrier", std_seeds, grid_n),
+        "competing_corridor_16maps": _summarize_factorial_cohort(rows_comp, "competing_corridor", comp_seeds, grid_n),
+        "pooled_32maps": _summarize_factorial_cohort(all_rows, "pooled_revealed_32maps", std_seeds + comp_seeds, grid_n),
+    }
+    return summary, tapes
+
+
+def _summarize_locked_confirmation_cohort(rows: List[dict], regime_label: str, seeds: List[int], grid_n: int) -> dict:
+    arms = [
+        "Frozen-GP-28",
+        "Global-CondMaxVar-qb-14",
+        "True-OnPolicy-14",
+        "True-OnPolicy-11+CondSentinel-qb-3",
+        "Green-ValueOnly-qb-Cond-11+3",
+    ]
+    cand_key = "Green-ValueOnly-qb-Cond-11+3"
+    gv_post = np.array([r["arms"][cand_key]["heldout_post_acq_ep2_6_mean_cost"] for r in rows])
+    gv_ep6 = np.array([r["arms"][cand_key]["heldout_final_ep6_cost"] for r in rows])
+    frz_post = np.array([r["arms"]["Frozen-GP-28"]["heldout_post_acq_ep2_6_mean_cost"] for r in rows])
+
+    ep1_vals = [float(np.mean([r["arms"][a]["heldout_cost_by_ep"][0] for r in rows])) for a in arms]
+    summary_arms = {}
+    for a in arms:
+        ap = np.array([r["arms"][a]["heldout_post_acq_ep2_6_mean_cost"] for r in rows])
+        ae6 = np.array([r["arms"][a]["heldout_final_ep6_cost"] for r in rows])
+        by_ep_diff = [
+            paired_stats(
+                np.array([r["arms"][cand_key]["heldout_cost_by_ep"][ep] - r["arms"][a]["heldout_cost_by_ep"][ep] for r in rows])
+            )
+            for ep in range(1, 6)
+        ]
+        summary_arms[a] = {
+            "heldout_mean_cost_by_episode": [
+                float(np.mean([r["arms"][a]["heldout_cost_by_ep"][ep] for r in rows])) for ep in range(6)
+            ],
+            "primary_heldout_post_acq_ep2_6_mean_cost": float(np.mean(ap)),
+            "heldout_final_ep6_mean_cost": float(np.mean(ae6)),
+            "heldout_post_acq_completion_rate": float(np.mean([r["arms"][a]["heldout_post_acq_completion_rate"] for r in rows])),
+            "heldout_mean_timeout_frac": float(np.mean([r["arms"][a]["heldout_mean_timeout_frac"] for r in rows])),
+            "heldout_mean_clip_frac": float(np.mean([r["arms"][a]["heldout_mean_clip_frac"] for r in rows])),
+            "online_post_acq_ep2_6_mean_cost": float(np.mean([r["arms"][a]["online_post_acq_ep2_6_mean_cost"] for r in rows])),
+            "mean_operational_gp_and_ctrl_ms": float(np.mean([r["arms"][a]["operational_gp_and_ctrl_ms"] for r in rows])),
+            "mean_operational_online_plan_ms": float(np.mean([r["arms"][a]["operational_online_plan_ms"] for r in rows])),
+            "mean_operational_acquisition_ms": float(np.mean([r["arms"][a]["operational_acquisition_ms"] for r in rows])),
+            "mean_operational_total_ms": float(np.mean([r["arms"][a]["operational_total_ms"] for r in rows])),
+            "mean_online_rollout_sim_ms_excluded": float(np.mean([r["arms"][a]["online_rollout_sim_ms_excluded_from_alg_timer"] for r in rows])),
+            "mean_deferred_eval_ms": float(np.mean([r["arms"][a]["deferred_post_episode6_eval_ms"] for r in rows])),
+            "method_minus_frozen_gp_heldout_ep2_6": paired_stats(ap - frz_post),
+            "green_val_cond_minus_method_heldout_ep2_6": paired_stats(gv_post - ap),
+            "green_val_cond_minus_method_heldout_ep6": paired_stats(gv_ep6 - ae6),
+            "green_val_cond_minus_method_by_checkpoint_42_to_98": {
+                str(42 + 14 * j): by_ep_diff[j] for j in range(5)
+            },
+            "win_count_green_val_cond_lower_cost": int(np.sum(gv_post < ap)),
+            "per_map_heldout_post_acq_ep2_6_cost": ap.tolist(),
+        }
+
+    fam_contrasts = {
+        "GreenValCond_minus_GlobalCondMaxVar_qb_14": summary_arms["Global-CondMaxVar-qb-14"]["green_val_cond_minus_method_heldout_ep2_6"],
+        "GreenValCond_minus_OnPolicy11CondSentinel_qb_3": summary_arms["True-OnPolicy-11+CondSentinel-qb-3"]["green_val_cond_minus_method_heldout_ep2_6"],
+        "GreenValCond_minus_TrueOnPolicy14": summary_arms["True-OnPolicy-14"]["green_val_cond_minus_method_heldout_ep2_6"],
+    }
+    holm_res = holm_bonferroni_adjust({k: v["p_two_sided"] for k, v in fam_contrasts.items()})
+
+    return {
+        "regime": regime_label,
+        "untouched_confirmation_seeds": seeds,
+        "n_maps": len(rows),
+        "grid_n": grid_n,
+        "locked_primary_candidate": cand_key,
+        "episode1_max_cost_spread_across_all_5_arms": float(max(ep1_vals) - min(ep1_vals)),
+        "all_onpolicy_probes_verified_visited_states": bool(
+            all(
+                r["arms"]["True-OnPolicy-14"]["all_onpolicy_probes_verified_visited_states"]
+                and r["arms"]["True-OnPolicy-11+CondSentinel-qb-3"]["all_onpolicy_probes_verified_visited_states"]
+                for r in rows
+            )
+        ),
+        "total_zero_drift_kink_components_observed": int(
+            sum(r["arms"][cand_key]["total_zero_drift_kink_components_across_all_episodes"] for r in rows)
+        ),
+        "mean_transpose_rhs_cols_per_task": float(
+            np.mean([r["arms"][cand_key]["mean_transpose_rhs_cols_per_task"] for r in rows])
+        ),
+        "mean_online_root_action_gap": float(np.mean([r["arms"][cand_key]["mean_online_root_action_gap"] for r in rows])),
+        "near_tie_online_task_fraction_lt_0_35": float(np.mean([r["arms"][cand_key]["near_tie_online_task_fraction_lt_0_35"] for r in rows])),
+        "mean_active_q_relu_fraction": float(np.mean([r["arms"][cand_key]["mean_active_q_relu_fraction"] for r in rows])),
+        "predeclared_family_contrasts_ep2_6": fam_contrasts,
+        "holm_bonferroni_family_adjustment": holm_res,
+        "budget_attainment_curves": _compute_budget_attainment_curves(rows, arms),
+        "arms": summary_arms,
+        "per_map_records": [{k: v for k, v in r.items() if k != "_compact_tape"} for r in rows],
+    }
+
+
+def run_locked_fresh_confirmation_64maps(n_maps_per_regime: int = 32, grid_n: int = 51, max_workers: int = 8) -> Tuple[dict, List[dict]]:
+    """Batch C (`v5` §10): Single Frozen Confirmation on `64` Brand-New Untouched Maps
+    (`32` Standard `20300..20331` + `32` Competing-Corridor `20400..20431`) with locked primary candidate
+    `Green-ValueOnly-qb-Cond-11+3` (`max_alt_branches=0`) vs repaired fair `(q, b)` baselines.
+    """
+    arms_c = (
+        "Frozen-GP-28",
+        "Global-CondMaxVar-qb-14",
+        "True-OnPolicy-14",
+        "True-OnPolicy-11+CondSentinel-qb-3",
+        "Green-ValueOnly-qb-Cond-11+3",
+    )
+    std_seeds = list(range(20300, 20300 + n_maps_per_regime))
+    comp_seeds = list(range(20400, 20400 + n_maps_per_regime))
+    rows_std = run_map_parallel(
+        _deferred_eval_active_sensing_worker,
+        [(i, s, "narrow_barrier", grid_n, arms_c) for i, s in enumerate(std_seeds)],
+        max_workers=max_workers,
+    )
+    rows_comp = run_map_parallel(
+        _deferred_eval_active_sensing_worker,
+        [(i, s, "competing_corridor", grid_n, arms_c) for i, s in enumerate(comp_seeds)],
+        max_workers=max_workers,
+    )
+    all_rows = rows_std + rows_comp
+    tapes = [r["_compact_tape"] for r in all_rows]
+
+    # Shared-simulation-noise-index paired sensitivity check (`n = 32` paired averages across the two regimes)
+    cand_k = "Green-ValueOnly-qb-Cond-11+3"
+    pair_avg_diffs = {}
+    for base_k, lbl_k in [
+        ("Global-CondMaxVar-qb-14", "GreenValCond_minus_GlobalCondMaxVar_qb_14"),
+        ("True-OnPolicy-11+CondSentinel-qb-3", "GreenValCond_minus_OnPolicy11CondSentinel_qb_3"),
+        ("True-OnPolicy-14", "GreenValCond_minus_TrueOnPolicy14"),
+    ]:
+        d_std = np.array([r["arms"][cand_k]["heldout_post_acq_ep2_6_mean_cost"] - r["arms"][base_k]["heldout_post_acq_ep2_6_mean_cost"] for r in rows_std])
+        d_cmp = np.array([r["arms"][cand_k]["heldout_post_acq_ep2_6_mean_cost"] - r["arms"][base_k]["heldout_post_acq_ep2_6_mean_cost"] for r in rows_comp])
+        pair_avg_diffs[lbl_k] = paired_stats(0.5 * (d_std + d_cmp))
+    pair_avg_holm = holm_bonferroni_adjust({k: v["p_two_sided"] for k, v in pair_avg_diffs.items()})
+
+    summary = {
+        "block_provenance": "fresh_computed_in_current_run",
+        "experiment_scope": "batch_C_single_locked_fresh_confirmation_64maps_coordinate_oracle_active_sensing",
+        "evaluation_chronology": "strictly_deferred_until_after_all_6_operational_episodes_complete",
+        "power_rationale": "Sized a priori at n=32 per regime (N=64 total) from dev SD ~0.28 for ~80%+ power at delta ~0.10-0.14.",
+        "standard_narrow_barrier_32maps": _summarize_locked_confirmation_cohort(rows_std, "narrow_barrier", std_seeds, grid_n),
+        "competing_corridor_32maps": _summarize_locked_confirmation_cohort(rows_comp, "competing_corridor", comp_seeds, grid_n),
+        "pooled_64maps": _summarize_locked_confirmation_cohort(all_rows, "pooled_fresh_confirmation_64maps", std_seeds + comp_seeds, grid_n),
+        "shared_noise_index_32pair_sensitivity_check": {
+            "n_independent_index_pairs": n_maps_per_regime,
+            "contrasts_ep2_6": pair_avg_diffs,
+            "holm_bonferroni_adjustment": pair_avg_holm,
+        },
+    }
+    return summary, tapes
+
+
+def plot_exp4(fid: dict, real_gp_lc: dict, fact_study: dict, conf_study: dict, out_png: Path) -> None:
+    fig, axes = plt.subplots(2, 2, figsize=(16.8, 10.6))
+
+    # Panel A (Top-Left): Coupled-Wiener Fidelity Bridge (72 Tours)
+    ax = axes[0, 0]
     gaps = fid["layers_mean_abs_gap"]
     labels = [
         "L1: Port vs\nExactMacro",
@@ -1659,25 +2343,31 @@ def plot_exp4(fid: dict, real_gp_lc: dict, voi_study: dict, out_png: Path) -> No
     bars = ax.bar(np.arange(len(labels)), vals, width=0.56, color=cols)
     ax.axhline(fid["mean_rollout_mc_standard_error"], color="#555555", ls="--", lw=1.2, label=f"Mean Rollout MC SE ({fid['mean_rollout_mc_standard_error']:.2f})")
     ax.set_xticks(np.arange(len(labels)))
-    ax.set_xticklabels(labels, fontsize=7.4)
+    ax.set_xticklabels(labels, fontsize=7.8)
     ax.set_ylabel("Mean Absolute Discrepancy")
-    ax.set_title("Coupled-Wiener Fidelity Bridge (72 Tours)\n(Exact 3x Brownian Coupling + Piecewise-Reflected Hit)", fontsize=9.0)
+    ax.set_title("A. Coupled-Wiener Fidelity Bridge (72 Tours, 29fa7c6)\n(Exact 3x Brownian Coupling + Piecewise-Reflected Polyline Hit)", fontsize=9.5)
     ax.grid(True, axis="y", alpha=0.3)
-    ax.legend(fontsize=7.2, loc="upper right")
+    ax.legend(fontsize=7.6, loc="upper right")
     for b, v in zip(bars, vals):
-        ax.text(b.get_x() + b.get_width() / 2, v + 0.015, f"{v:.3f}", ha="center", va="bottom", fontsize=7.4, fontweight="bold")
+        ax.text(b.get_x() + b.get_width() / 2, v + 0.015, f"{v:.3f}", ha="center", va="bottom", fontsize=7.6, fontweight="bold")
     ax.set_ylim(0, max(vals) * 1.20)
 
-    # Panel 2: Genuine `+16` Physical-Observation GP Refit Lifecycle (`12` Maps `10250..10261`, `K = 12` Post-Update Tasks)
-    ax = axes[1]
+    # Panel B (Top-Right): Genuine `+16` GP-Obs Refit Lifecycle (`ZeroWarm0 / PartialWarm2 / BroadWarm6`, K=12)
+    ax = axes[0, 1]
     reg_r = real_gp_lc["regimes"]
-    reg_keys = ["2D-61sq-ColdPrefix", "2D-61sq-WarmPrefix", "3D-21cubed-ColdPrefix", "3D-21cubed-WarmPrefix"]
-    reg_lbls = ["2D 61²\nCold-Prefix", "2D 61²\nWarm-Prefix", "3D 21³\nCold-Prefix", "3D 21³\nWarm-Prefix"]
+    reg_keys = [
+        "2D-61sq-ZeroWarm0", "2D-61sq-BroadWarm6",
+        "3D-21cubed-ZeroWarm0", "3D-21cubed-PartialWarm2", "3D-21cubed-BroadWarm6",
+    ]
+    reg_lbls = [
+        "2D 61²\nZeroWarm-0", "2D 61²\nBroadWarm-6",
+        "3D 21³\nZeroWarm-0", "3D 21³\nPartialWarm-2", "3D 21³\nBroadWarm-6",
+    ]
     x = np.arange(len(reg_keys))
-    w = 0.20
+    w = 0.19
     for off, m_key, lbl, col in [
         (-1.5 * w, "Scratch-Rebuild", "Scratch Port Rebuild", "#d62728"),
-        (-0.5 * w, "Structure-Memory-Fresh-Exact", "Structure-Only Fresh", "#ff7f0e"),
+        (-0.5 * w, "Structure-Memory-Fresh-Exact", "Structure-Memory Fresh", "#ff7f0e"),
         (0.5 * w, "Residual-Audited-Reuse", "Residual-Audited Reuse", "#1f77b4"),
         (1.5 * w, "ExactRing-Rebuild", "ExactRing Rebuild (Default)", "#333333"),
     ]:
@@ -1685,49 +2375,75 @@ def plot_exp4(fid: dict, real_gp_lc: dict, voi_study: dict, out_png: Path) -> No
         ax.bar(x + off, ys, width=w, color=col, label=lbl)
     ax.set_yscale("log")
     ax.set_xticks(x)
-    ax.set_xticklabels(reg_lbls, fontsize=7.7)
-    ax.set_ylabel("Post-Update Lifecycle: GP2 + Update + 12 Tasks (ms, log)")
-    p_3dw_str_ex = reg_r["3D-21cubed-WarmPrefix"]["methods"]["Structure-Memory-Fresh-Exact"]["paired_marginal_K12_diff_vs_exact_rebuild"]["p_two_sided"]
-    p_3dw_res_str = reg_r["3D-21cubed-WarmPrefix"]["methods"]["Residual-Audited-Reuse"]["paired_marginal_K12_diff_vs_structure_only"]["p_two_sided"]
+    ax.set_xticklabels(reg_lbls, fontsize=7.8)
+    ax.set_ylabel("Post-Update Marginal: GP2 + Update + 12 Tasks (ms, log)")
+    ret_3dw = reg_r["3D-21cubed-BroadWarm6"]["methods"]["Residual-Audited-Reuse"]["mean_cached_level_cols_retained"]
+    p_3dw = reg_r["3D-21cubed-BroadWarm6"]["methods"]["Structure-Memory-Fresh-Exact"]["paired_marginal_K12_diff_vs_exact_rebuild"]["p_two_sided"]
     ax.set_title(
-        f"Real +16 GP-Obs Refit Lifecycle (12 Maps, Fixed 12-WP Cat, K=12)\n(3D Warm: Struct vs Exact p={p_3dw_str_ex:.3g}; Resid vs Struct p={p_3dw_res_str:.3g})",
-        fontsize=8.6,
+        f"B. Real +16 GP-Obs Lifecycle (12 Maps, K=12 Marginal)\n(3D BroadWarm-6: Struct vs Exact p={p_3dw:.3g}; Resid Retained Cols={ret_3dw:.1f})",
+        fontsize=9.3,
     )
     ax.grid(True, axis="y", which="both", alpha=0.3)
-    ax.legend(fontsize=6.8, loc="upper left")
+    ax.legend(fontsize=7.2, loc="upper left")
 
-    # Panel 3: Decisive Isolated VoI Study (`16` Standard + `16` Competing-Corridor Maps)
-    ax = axes[2]
-    std_s = voi_study["standard_narrow_barrier_16maps"]
-    cmp_s = voi_study["competing_corridor_bifurcation_16maps"]
-    arm_order = [
-        ("Frozen-GP-28", "Frozen-GP\n(28 obs)", "#aa3333"),
-        ("Global-CondMaxVar-14", "Global\nCondMaxVar", "#9467bd"),
+    # Panel C (Bottom-Left): Batch B 2x2 Factorial Mechanism Diagnosis (`32` Dev Maps `10300..10415`)
+    ax = axes[1, 0]
+    fp = fact_study["pooled_32maps"]
+    f_arms = [
+        ("Global-CondMaxVar-qb-14", "Global\nCond-(q,b)", "#9467bd"),
         ("True-OnPolicy-14", "True\nOnPolicy-14", "#ff7f0e"),
-        ("True-OnPolicy-11+Sentinel-3", "OnPolicy-11\n+Sentinel-3", "#1f77b4"),
-        ("Green-ValueOnly-Cond-11+3", "Green-Val\nCond-11+3", "#17becf"),
-        ("Green-KG-VoI-11+3", "Green-KG-VoI\nCond-11+3", "#2ca02c"),
+        ("True-OnPolicy-11+CondSentinel-qb-3", "OnPolicy-11+\nCondSent-(q,b)", "#1f77b4"),
+        ("FactA-GreenVal-qOnly-Uncond", "Fact A:\nqOnly Uncond", "#bbbbbb"),
+        ("FactB-GreenVal-qOnly-Cond", "Fact B:\nqOnly Cond", "#6baed6"),
+        ("FactC-GreenVal-qb-Uncond", "Fact C:\n(q,b) Uncond", "#74c476"),
+        ("FactD-GreenVal-qb-Cond", "Fact D:\n(q,b) Cond", "#2ca02c"),
     ]
-    xa = np.arange(len(arm_order))
-    wb = 0.36
-    y_std = [std_s["arms"][ak]["primary_heldout_post_acq_ep2_6_mean_cost"] for ak, _, _ in arm_order]
-    y_cmp = [cmp_s["arms"][ak]["primary_heldout_post_acq_ep2_6_mean_cost"] for ak, _, _ in arm_order]
-    ax.bar(xa - wb / 2, y_std, width=wb, color="#4c78a8", alpha=0.90, label="Standard Barrier (16 Maps)")
-    ax.bar(xa + wb / 2, y_cmp, width=wb, color="#f58518", alpha=0.90, label="Competing Corridor (16 Maps)")
-    ax.set_xticks(xa)
-    ax.set_xticklabels([lbl for _, lbl, _ in arm_order], fontsize=7.1)
-    ymin = min(min(y_std), min(y_cmp))
-    ymax = max(max(y_std), max(y_cmp))
-    ax.set_ylim(max(0.0, ymin - 0.8), ymax + 0.65)
-    ax.set_ylabel("Held-Out Future Tour Bank Cost (Ep 2–6 Mean)")
-    p_std_hm = std_s["holm_bonferroni_family_adjustment"]["KGVoI_minus_OnPolicy11Sentinel3"]["p_holm"]
-    p_cmp_hm = cmp_s["holm_bonferroni_family_adjustment"]["KGVoI_minus_OnPolicy11Sentinel3"]["p_holm"]
+    xf = np.arange(len(f_arms))
+    yf = [fp["arms"][ak]["primary_heldout_post_acq_ep2_6_mean_cost"] for ak, _, _ in f_arms]
+    bars_f = ax.bar(xf, yf, width=0.58, color=[c for _, _, c in f_arms])
+    ax.set_xticks(xf)
+    ax.set_xticklabels([lbl for _, lbl, _ in f_arms], fontsize=7.3)
+    ax.set_ylim(max(0.0, min(yf) - 0.35), max(yf) + 0.28)
+    ax.set_ylabel("Pooled 32-Map Held-Out Cost (Ep 2–6 Mean)")
+    me_cond = fp["factorial_2x2_and_control_effects_ep2_6"]["main_effect_conditioning_half_BminusA_plus_DminusC"]
+    me_b = fp["factorial_2x2_and_control_effects_ep2_6"]["main_effect_drift_b_adjoint_half_CminusA_plus_DminusB"]
     ax.set_title(
-        f"Eval-Isolated Active Sensing (32 Fresh Maps, Holm-Adjusted)\n(KG-VoI vs OnPolicy+Sent Holm p: Std={p_std_hm:.3f}, Comp={p_cmp_hm:.3f})",
-        fontsize=8.6,
+        f"C. Dev 2x2 Mechanism Factorial (32 Maps 10300..10415, Pending-(q,b) Sentinels)\n"
+        f"(Cond Effect={me_cond['mean']:+.3f} [p={me_cond['p_two_sided']:.3g}], Drift-b Effect={me_b['mean']:+.3f} [p={me_b['p_two_sided']:.3g}])",
+        fontsize=9.1,
     )
     ax.grid(True, axis="y", alpha=0.3)
-    ax.legend(fontsize=7.2, loc="upper right")
+    for b, v in zip(bars_f, yf):
+        ax.text(b.get_x() + b.get_width() / 2, v + 0.015, f"{v:.3f}", ha="center", va="bottom", fontsize=7.2, fontweight="bold")
+
+    # Panel D (Bottom-Right): Batch C Locked Fresh Confirmation (`64` Untouched Maps `20300..20431`) Budget Curves
+    ax = axes[1, 1]
+    cp_pool = conf_study["pooled_64maps"]
+    budgets = [28, 42, 56, 70, 84, 98]
+    curve_specs = [
+        ("Frozen-GP-28", "Frozen-GP (28 obs)", "#aa3333", "--", "s"),
+        ("Global-CondMaxVar-qb-14", "Global-CondMaxVar-(q,b)-14", "#9467bd", "-.", "^"),
+        ("True-OnPolicy-11+CondSentinel-qb-3", "OnPolicy-11 + CondSentinel-(q,b)-3", "#1f77b4", "-", "D"),
+        ("True-OnPolicy-14", "True-OnPolicy-14", "#ff7f0e", "-", "o"),
+        ("Green-ValueOnly-qb-Cond-11+3", "Green-ValueOnly-(q,b)-Cond-11+3 (Locked)", "#2ca02c", "-", "*"),
+    ]
+    for ak, lbl, col, ls, mk in curve_specs:
+        yc = cp_pool["arms"][ak]["heldout_mean_cost_by_episode"]
+        ax.plot(budgets, yc, color=col, ls=ls, marker=mk, lw=2.1 if "Green" in ak else 1.6, ms=6.5 if "Green" in ak else 5.0, label=lbl)
+    hm_c = cp_pool["holm_bonferroni_family_adjustment"]
+    p_onp14_hm = hm_c["GreenValCond_minus_TrueOnPolicy14"]["p_holm"]
+    p_onps_hm = hm_c["GreenValCond_minus_OnPolicy11CondSentinel_qb_3"]["p_holm"]
+    p_glob_hm = hm_c["GreenValCond_minus_GlobalCondMaxVar_qb_14"]["p_holm"]
+    ax.set_xticks(budgets)
+    ax.set_xlabel("Cumulative Physical World Observations (N_phys)")
+    ax.set_ylabel("Held-Out Future Tour Cost (Pooled 64 Fresh Maps)")
+    ax.set_title(
+        f"D. Locked Fresh Confirmation (64 Untouched Maps 20300..20431, Deferred Eval)\n"
+        f"(Holm p vs Global={p_glob_hm:.3g}, vs OnPol+Sent={p_onps_hm:.3g}, vs OnPol14={p_onp14_hm:.3g})",
+        fontsize=9.1,
+    )
+    ax.grid(True, alpha=0.3)
+    ax.legend(fontsize=7.3, loc="upper right")
 
     plt.tight_layout()
     plt.savefig(out_png, dpi=175)
@@ -1735,6 +2451,7 @@ def plot_exp4(fid: dict, real_gp_lc: dict, voi_study: dict, out_png: Path) -> No
 
 
 def main():
+    import hashlib
     enforce_single_thread_env()
     n_workers = 8
     out_dir = Path(__file__).resolve().parent
@@ -1744,6 +2461,7 @@ def main():
     if "model_to_execution_fidelity_72tasks" in old_data:
         fid = old_data["model_to_execution_fidelity_72tasks"]
         fid["block_provenance"] = "inherited_from_commit_29fa7c6"
+        fid["generating_commit"] = "29fa7c6"
         print("Reusing verified Exp 4A (72-tour fidelity bridge) from 29fa7c6.", flush=True)
     else:
         fid = run_model_to_execution_fidelity_study(n_maps=12, tasks_per_map=6, grid_n=75, max_workers=n_workers)
@@ -1751,47 +2469,72 @@ def main():
     if "continual_orthogonal_transition_200tasks" in old_data:
         cont = old_data["continual_orthogonal_transition_200tasks"]
         cont["block_provenance"] = "inherited_from_commit_29fa7c6_relabeled_synthetic_bump"
-        if "warm_vs_cold_net_benefit_crossover_8maps" in cont:
-            syn_blk = cont.pop("warm_vs_cold_net_benefit_crossover_8maps")
-            syn_blk["perturbation_type"] = "deterministic_corner_gaussian_bump_no_gp_refit"
-            syn_blk["scope_note"] = "Controlled synthetic operator perturbation stress test (not real GP observation refit)."
-            cont["synthetic_local_bump_crossover_8maps"] = syn_blk
-        print("Retained & honestly relabeled Exp 4B synthetic perturbation block from 29fa7c6.", flush=True)
+        cont["generating_commit"] = "29fa7c6"
+        print("Retained Exp 4B historical stream & synthetic perturbation blocks from 29fa7c6.", flush=True)
     else:
         cont = run_orthogonal_operator_transition_stream(n_maps=10, grid_n=61, max_workers=n_workers)
 
-    prev_learn = old_data.get("unconfounded_online_learning_and_transfer_16maps")
-    if prev_learn is not None:
-        prev_learn["block_provenance"] = "inherited_from_commit_29fa7c6_dev_baseline"
+    prev_learn_v29 = old_data.get("historical_v29_online_baseline_16maps")
+    prev_voi_v57 = old_data.get("decisive_isolated_voi_dual_regime_32maps")
+    if prev_voi_v57 is not None:
+        prev_voi_v57["block_provenance"] = "inherited_from_commit_57e5912"
+        prev_voi_v57["generating_commit"] = "57e5912"
 
-    print(f"\n=== Stage B2: Genuine +16 GP-Obs Refit Lifecycle (12 Maps 10250..10261, {n_workers}-Core Parallel) ===", flush=True)
+    print(f"\n=== Stage B2 Refresh: Genuine +16 GP-Obs Lifecycle (12 Maps 10250..10261, Zero/Partial2/Broad6, {n_workers} Workers) ===", flush=True)
     t0 = time.perf_counter()
     real_gp_lc = run_real_gp_update_lifecycle_benchmark(n_maps=12, max_workers=n_workers)
     print(f"  -> Stage B2 done in {time.perf_counter()-t0:.1f}s", flush=True)
 
-    print(f"\n=== Stage C/D: Eval-Isolated KG-VoI Dual-Regime Decisive Study (32 Fresh Maps, {n_workers}-Core Parallel) ===", flush=True)
+    print(f"\n=== Batch B: Dev 2x2 Mechanism Factorial + Pending-(q,b) Controls (32 Revealed Maps 10300..10415, {n_workers} Workers) ===", flush=True)
     t0 = time.perf_counter()
-    voi_study = run_decisive_isolated_online_voi_study(n_maps_per_regime=16, grid_n=51, max_workers=n_workers)
-    print(
-        f"  -> Stage C/D done in {time.perf_counter()-t0:.1f}s "
-        f"(Std Ep1 spread={voi_study['standard_narrow_barrier_16maps']['episode1_max_cost_spread_across_all_6_arms']:.2e}, "
-        f"Comp Ep1 spread={voi_study['competing_corridor_bifurcation_16maps']['episode1_max_cost_spread_across_all_6_arms']:.2e})",
-        flush=True,
-    )
+    fact_study, tapes_b = run_factorial_mechanism_diagnosis_32maps(grid_n=51, max_workers=n_workers)
+    print(f"  -> Batch B done in {time.perf_counter()-t0:.1f}s", flush=True)
+
+    print(f"\n=== Batch C: Locked Single-Candidate Fresh Confirmation (64 Untouched Maps 20300..20431, {n_workers} Workers) ===", flush=True)
+    t0 = time.perf_counter()
+    conf_study, tapes_c = run_locked_fresh_confirmation_64maps(n_maps_per_regime=32, grid_n=51, max_workers=n_workers)
+    print(f"  -> Batch C done in {time.perf_counter()-t0:.1f}s", flush=True)
+
+    meta = collect_runtime_metadata(max_workers=n_workers)
+    tape_payload = {
+        "schema": "compact_replayable_acquisition_tape_v1",
+        "source_manifest": meta["source_manifest"],
+        "batch_B_factorial_diagnosis_32maps_tapes": tapes_b,
+        "batch_C_locked_fresh_confirmation_64maps_tapes": tapes_c,
+    }
+    tape_bytes = (json.dumps(tape_payload, separators=(",", ":")) + "\n").encode("utf-8")
+    tape_path = out_dir / "exp4_acquisition_tapes.json"
+    tape_path.write_bytes(tape_bytes)
+    tape_sha256 = hashlib.sha256(tape_bytes).hexdigest()
+
+    fact_study["acquisition_tape_file"] = "exp4_acquisition_tapes.json"
+    fact_study["acquisition_tape_sha256"] = tape_sha256
+    conf_study["acquisition_tape_file"] = "exp4_acquisition_tapes.json"
+    conf_study["acquisition_tape_sha256"] = tape_sha256
 
     payload = {
-        "metadata": collect_runtime_metadata(max_workers=n_workers),
+        "metadata": meta,
+        "source_manifest": meta["source_manifest"],
+        "acquisition_tape_manifest": {
+            "file": "exp4_acquisition_tapes.json",
+            "sha256": tape_sha256,
+            "size_bytes": len(tape_bytes),
+            "n_map_tapes_total": len(tapes_b) + len(tapes_c),
+        },
         "model_to_execution_fidelity_72tasks": fid,
         "continual_orthogonal_transition_200tasks": cont,
         "real_gp_update_lifecycle_12maps": real_gp_lc,
-        "decisive_isolated_voi_dual_regime_32maps": voi_study,
+        "batch_B_factorial_mechanism_diagnosis_32maps": fact_study,
+        "batch_C_locked_fresh_confirmation_64maps": conf_study,
     }
-    if prev_learn is not None:
-        payload["historical_v29_online_baseline_16maps"] = prev_learn
+    if prev_voi_v57 is not None:
+        payload["historical_v57_voi_dual_regime_32maps"] = prev_voi_v57
+    if prev_learn_v29 is not None:
+        payload["historical_v29_online_baseline_16maps"] = prev_learn_v29
 
     (out_dir / "exp4_results.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
-    plot_exp4(fid, real_gp_lc, voi_study, out_dir / "exp4_fidelity_and_continual.png")
-    print("Saved exp4_results.json and exp4_fidelity_and_continual.png", flush=True)
+    plot_exp4(fid, real_gp_lc, fact_study, conf_study, out_dir / "exp4_fidelity_and_continual.png")
+    print("Saved exp4_results.json, exp4_acquisition_tapes.json, and exp4_fidelity_and_continual.png", flush=True)
 
 
 if __name__ == "__main__":

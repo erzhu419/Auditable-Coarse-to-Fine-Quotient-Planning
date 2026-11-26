@@ -4643,7 +4643,7 @@
     "cohort_initial_reveal_commit": "d1b926a"
   },
   "independent_teacher_and_isolated_latency": {
-    "block_provenance": "fresh_computed_in_current_run",
+    "block_provenance": "inherited_from_commit_57e5912_verified_exact_factory_match",
     "exact_fd_3d_independent_teacher_8maps": {
       "fresh_seeds": [
         9700,
@@ -6765,7 +6765,8 @@
           }
         }
       ]
-    }
+    },
+    "generating_commit": "57e5912"
   },
   "kinetic_underactuated_10maps": {
     "scope_grade": "exploratory_empirical_extension",
@@ -7111,5 +7112,26 @@
     },
     "block_provenance": "inherited_from_commit_85e2323_ddd19c5",
     "generating_commit": "ddd19c5"
+  },
+  "source_manifest": {
+    "git_head_sha": "57e59129bb21146df352e9c365150c34b775d564",
+    "git_dirty_green_response": true,
+    "package_py_sha256": "2b38a2d5d6c544e33f58640eafc2d7a15f45ce573d8423506ce56188b4692939",
+    "per_file_sha256": {
+      "__init__.py": "028706b1e52a4b5e29c4dc42b8995b35397720ff6cf81c48b635ec51f9b5ee05",
+      "core.py": "9d8cc7a42aa73c966428a50c94725b2481dfd5c08262c8b6672f39035bd7185a",
+      "exp1_3d_and_macro_tours.py": "ae079e2d1b0ba44f283c85ebb54c290b7f18253fc11de38e72a8d0de80599bf2",
+      "exp2_nonlmdp_kkt.py": "3187b5ff1be8a3e637974029fb56d401b74c0c86f468c68bc662bfbf69ad9405",
+      "exp3_highd_and_kinetic.py": "4d6588d5fec9408c4dfe9ae9d2df6a1a7bd375d1b373d7f4e7e063c16fe6d401",
+      "exp4_fidelity_and_continual.py": "285fbf3d8b1aeda37667b34cf68a1c2175a43b70663dfbcbf1e7fde4e8a2acf2",
+      "highd_solvers.py": "b2860c83e59dc4b6060c0e8726f64755a97f4cb9edbca2d4acbdf6242dee4542",
+      "macro_planning.py": "69a21fec2d593ad6e7ba89abde85dffab16e74c5e0db55a741d87781903936ce",
+      "port_solvers.py": "35e598894f1013db0732561bcd85a9b81097fc7eddbbc5d929192296d194f914",
+      "verify_audit_closure.py": "8a95348c187a3eb8c27e9aa640770f625dfd5b331fb9c0695ba96c2b7bc8878e"
+    }
+  },
+  "last_manifest_sync": {
+    "synced_package_py_sha256": "2b38a2d5d6c544e33f58640eafc2d7a15f45ce573d8423506ce56188b4692939",
+    "note": "Synchronized package_py_sha256 across suite; inherited blocks preserve original generating_commit."
   }
 }

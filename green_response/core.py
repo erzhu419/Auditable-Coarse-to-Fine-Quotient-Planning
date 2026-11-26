@@ -665,7 +665,12 @@ class KrigingWorldModel:
         return mean, lat_std, float(st["obs_noise_std"])
 
     def _build_channel_posterior_cov_and_proj(
-        self, st: dict, cand_pts: np.ndarray, grid_pts: Optional[np.ndarray] = None, W: Optional[np.ndarray] = None
+        self,
+        st: dict,
+        cand_pts: np.ndarray,
+        grid_pts: Optional[np.ndarray] = None,
+        W: Optional[np.ndarray] = None,
+        pending_X: Optional[np.ndarray] = None,
     ) -> Tuple[np.ndarray, Optional[np.ndarray], float]:
         from scipy.linalg import solve_triangular
         K_cc = self._eval_matern25_kernel_pair(cand_pts, cand_pts, st)
@@ -673,15 +678,44 @@ class KrigingWorldModel:
         V_c = solve_triangular(st["L"], K_co.T, lower=True, check_finite=False)
         y2 = float(st["y_std"] ** 2)
         C_cc = y2 * (K_cc - (V_c.T @ V_c))
+        noise_var = float(st["obs_noise_std"] ** 2)
+
+        has_proj = grid_pts is not None and W is not None and W.size > 0
+        if has_proj:
+            K_cg = self._eval_matern25_kernel_pair(cand_pts, grid_pts, st)
+            K_go = self._eval_matern25_kernel(grid_pts, st)
+            V_g = solve_triangular(st["L"], K_go.T, lower=True, check_finite=False)
+            VW = V_g @ W
+            G_cf: Optional[np.ndarray] = y2 * ((K_cg @ W) - (V_c.T @ VW))
+        else:
+            V_g = None
+            VW = None
+            G_cf = None
+
+        if pending_X is not None and len(pending_X) > 0:
+            pend_arr = np.atleast_2d(np.asarray(pending_X, dtype=float))
+            K_pp = self._eval_matern25_kernel_pair(pend_arr, pend_arr, st)
+            K_po = self._eval_matern25_kernel(pend_arr, st)
+            V_p = solve_triangular(st["L"], K_po.T, lower=True, check_finite=False)
+            S_pp = y2 * (K_pp - (V_p.T @ V_p))
+            S_pp = 0.5 * (S_pp + S_pp.T)
+            idx_p = np.arange(len(pend_arr))
+            S_pp[idx_p, idx_p] = np.maximum(np.diag(S_pp), 0.0) + max(noise_var, 1e-12)
+            L_p = np.linalg.cholesky(S_pp)
+
+            K_cp = self._eval_matern25_kernel_pair(cand_pts, pend_arr, st)
+            C_cp = y2 * (K_cp - (V_c.T @ V_p))
+            U_cp_T = solve_triangular(L_p, C_cp.T, lower=True, check_finite=False)
+            C_cc = C_cc - (U_cp_T.T @ U_cp_T)
+
+            if has_proj and G_cf is not None and VW is not None:
+                K_gp = self._eval_matern25_kernel_pair(grid_pts, pend_arr, st)
+                G_pf = y2 * ((K_gp.T @ W) - (V_p.T @ VW))
+                U_pf = solve_triangular(L_p, G_pf, lower=True, check_finite=False)
+                G_cf = G_cf - (U_cp_T.T @ U_pf)
+
         idx_d = np.arange(len(cand_pts))
         C_cc[idx_d, idx_d] = np.maximum(C_cc[idx_d, idx_d], 0.0)
-        noise_var = float(st["obs_noise_std"] ** 2)
-        if grid_pts is None or W is None or W.size == 0:
-            return C_cc, None, noise_var
-        K_cg = self._eval_matern25_kernel_pair(cand_pts, grid_pts, st)
-        K_go = self._eval_matern25_kernel(grid_pts, st)
-        V_g = solve_triangular(st["L"], K_go.T, lower=True, check_finite=False)
-        G_cf = y2 * ((K_cg @ W) - (V_c.T @ (V_g @ W)))
         return C_cc, G_cf, noise_var
 
     def select_sequential_conditional_maxvar_probes(
@@ -690,19 +724,60 @@ class KrigingWorldModel:
         existing_X: np.ndarray,
         n_select: int,
         min_repel: float = 0.24,
+        pending_X: Optional[np.ndarray] = None,
+        include_drift_channels: bool = False,
+        drift_std_weight: float = 0.25,
     ) -> np.ndarray:
-        """Batch Kriging-Believer / sequential Schur-complement conditional variance probe selection."""
+        """Sequential Schur-complement conditional uncertainty selector with explicit distinction between:
+          - `existing_X`: already-observed training points (used for geometric repulsion; already conditioned in `self.gp_*`),
+          - `pending_X`: newly chosen but not-yet-fitted pending observation coordinates (arbitrary off-grid or on-grid
+            points conditioned into `C_q` and `C_b` via exact block-Cholesky Schur complement BEFORE selecting probes,
+            and also included in geometric repulsion),
+          - `include_drift_channels`: when True, scores `std_cond(q) + drift_std_weight * sum_d std_cond(b_d)` to match
+            the multi-channel sentinel objective used by Green active acquisition.
+        """
         cand_arr = np.atleast_2d(np.asarray(cand_pts, dtype=float))
         if n_select <= 0 or len(cand_arr) == 0:
             return np.empty((0, self.dim), dtype=float)
-        C_q, _, nz_q = self._build_channel_posterior_cov_and_proj(self._q_fast, cand_arr)
-        cur_X = np.atleast_2d(np.asarray(existing_X, dtype=float)).copy()
+        pend_arr = (
+            np.atleast_2d(np.asarray(pending_X, dtype=float))
+            if (pending_X is not None and len(pending_X) > 0)
+            else None
+        )
+        try:
+            C_q, _, nz_q = self._build_channel_posterior_cov_and_proj(self._q_fast, cand_arr, pending_X=pend_arr)
+        except TypeError:
+            # Backward-compatible fallback for unit-test stubs with 3-arg `_build_channel_posterior_cov_and_proj`
+            C_q, _, nz_q = self._build_channel_posterior_cov_and_proj(self._q_fast, cand_arr)
+            if pend_arr is not None:
+                for p_pt in pend_arr:
+                    d_p = np.linalg.norm(cand_arr - p_pt[None, :], axis=1)
+                    j_p = int(np.argmin(d_p))
+                    if d_p[j_p] <= 1e-10:
+                        denom_p = max(float(C_q[j_p, j_p] + nz_q), 1e-12)
+                        col_p = C_q[:, j_p]
+                        C_q = C_q - np.outer(col_p, col_p) / denom_p
+
+        b_covs = []
+        if include_drift_channels and getattr(self, "_b_fast", None):
+            for st_b in self._b_fast:
+                C_b, _, nz_b = self._build_channel_posterior_cov_and_proj(st_b, cand_arr, pending_X=pend_arr)
+                b_covs.append([C_b, nz_b])
+
+        base_X = np.atleast_2d(np.asarray(existing_X, dtype=float)).copy()
+        cur_X = np.vstack([base_X, pend_arr]) if pend_arr is not None else base_X
         rem_mask = np.ones(len(cand_arr), dtype=bool)
+        if pend_arr is not None:
+            d_to_pend = np.min(np.linalg.norm(cand_arr[:, None, :] - pend_arr[None, :, :], axis=2), axis=1)
+            rem_mask &= d_to_pend > 1e-12
+        idx_diag = np.arange(len(cand_arr))
         chosen = []
         for _ in range(n_select):
             if not np.any(rem_mask):
                 break
             lat_std = np.sqrt(np.maximum(np.diag(C_q), 0.0))
+            for C_b, _ in b_covs:
+                lat_std = lat_std + drift_std_weight * np.sqrt(np.maximum(np.diag(C_b), 0.0))
             d_min = np.min(np.linalg.norm(cand_arr[:, None, :] - cur_X[None, :, :], axis=2), axis=1)
             rep_w = np.minimum(1.0, (d_min / max(min_repel, 1e-9)) ** 2)
             eff = np.where(rem_mask, lat_std * rep_w, -np.inf)
@@ -713,8 +788,15 @@ class KrigingWorldModel:
             denom = max(float(C_q[best_i, best_i] + nz_q), 1e-12)
             col = C_q[:, best_i]
             C_q = C_q - np.outer(col, col) / denom
-            C_q[np.arange(len(cand_arr)), np.arange(len(cand_arr))] = np.maximum(np.diag(C_q), 0.0)
-        return np.array(chosen, dtype=float)
+            C_q[idx_diag, idx_diag] = np.maximum(np.diag(C_q), 0.0)
+            for ch in b_covs:
+                C_b, nz_b = ch
+                denom_b = max(float(C_b[best_i, best_i] + nz_b), 1e-12)
+                col_b = C_b[:, best_i]
+                C_b_new = C_b - np.outer(col_b, col_b) / denom_b
+                C_b_new[idx_diag, idx_diag] = np.maximum(np.diag(C_b_new), 0.0)
+                ch[0] = C_b_new
+        return np.array(chosen, dtype=float) if chosen else np.empty((0, self.dim), dtype=float)
 
     def select_sequential_kg_voi_probes(
         self,
@@ -726,15 +808,19 @@ class KrigingWorldModel:
         n_sentinel: int = 3,
         min_repel: float = 0.24,
         val_reg_weight: float = 0.15,
+        include_drift_sensitivity: bool = True,
+        condition_decision_probes: bool = True,
+        sentinel_drift_weight: float = 0.25,
     ) -> Tuple[np.ndarray, dict]:
-        """Local-linearized `(q, b)` Dual-Channel Knowledge-Gradient VoI + Batch Conditional Covariance Selector
-        (`29fa7c6` Section 6 Closure — scoped as a fixed-hyperparameter local-linear decision-uncertainty proxy):
-          1. Applies exact smooth-region ReLU chain rule `1[mu_{q,raw}(X_grid) > 0]` to all `dF/dq` weights;
-          2. Incorporates BOTH `q` AND drift `b` Green-adjoint sensitivities (`grad_q`, `grad_b`);
-          3. Evaluates closed-form Gaussian 1-step Knowledge-Gradient opportunity-loss reduction
-             `KG(mu, s) = s * phi(mu / s) - mu * Phi(-mu / s)` across multiple competing root branches;
-          4. Updates candidate & functional covariances sequentially after EVERY selected probe via exact
-             rank-1 Gaussian Schur complements, followed by `n_sentinel` conditioned max-variance sentinels!
+        """Goal-Oriented Local-Linearized `(q, b)` Green Response Acquisition Selector (`57e5912` Refined):
+          - When `alt_branches` are empty (`max_alt_branches=0`, `Green-ValueOnly-Cond`), acts as a pure
+            goal-oriented linear-functional posterior std-reduction rule (`acquisition_proxy_kind="value_only_linear_functional_std"`);
+          - When `alt_branches` are non-empty, adds the **pairwise local-linear Knowledge-Gradient acquisition proxy**
+            `sum_j [s_j phi(mu_j / s_j) - mu_j Phi(-mu_j)]` (`acquisition_proxy_kind="pairwise_local_linear_kg_proxy"`,
+            explicitly scoped as a sum-of-pairwise Gaussian opportunity proxy under frozen batch means/branches,
+            NOT exact correlated joint multi-alternative KG);
+          - Supports clean 2x2 factorial toggles (`include_drift_sensitivity` x `condition_decision_probes`) while
+            keeping the `n_sentinel` `(q, b)` sentinels strictly conditioned on all `n_decision` pending probes!
         """
         cand_arr = np.atleast_2d(np.asarray(cand_pts, dtype=float))
         mu_q_raw = self.predict_q_raw_latent_mean(grid_pts)
@@ -748,7 +834,7 @@ class KrigingWorldModel:
         for sens in task_sens_list:
             gq_opt = np.asarray(sens["grad_q_optimal"], dtype=float) * q_chain_mask
             wq_cols.append(gq_opt)
-            gb_opt = sens.get("grad_b_optimal")
+            gb_opt = sens.get("grad_b_optimal") if include_drift_sensitivity else None
             for ax in range(self.dim):
                 wb_cols_by_ax[ax].append(
                     np.zeros(len(grid_pts), dtype=float) if gb_opt is None else np.asarray(gb_opt[:, ax], dtype=float)
@@ -757,7 +843,10 @@ class KrigingWorldModel:
 
             alt_list = sens.get("alt_branches")
             if alt_list is None:
-                if sens.get("runner_up_wp") != sens.get("incumbent_wp"):
+                if (
+                    sens.get("runner_up_wp") != sens.get("incumbent_wp")
+                    and sens.get("grad_q_top_gap") is not None
+                ):
                     alt_list = [{
                         "gap": float(max(0.0, sens["action_gap"])),
                         "grad_q_gap": sens["grad_q_top_gap"],
@@ -768,7 +857,7 @@ class KrigingWorldModel:
             for br in alt_list:
                 mu_gap = float(max(0.0, br["gap"]))
                 wq_cols.append(np.asarray(br["grad_q_gap"], dtype=float) * q_chain_mask)
-                gb_g = br.get("grad_b_gap")
+                gb_g = br.get("grad_b_gap") if include_drift_sensitivity else None
                 for ax in range(self.dim):
                     wb_cols_by_ax[ax].append(
                         np.zeros(len(grid_pts), dtype=float) if gb_g is None else np.asarray(gb_g[:, ax], dtype=float)
@@ -779,10 +868,13 @@ class KrigingWorldModel:
         C_q, G_q, nz_q = self._build_channel_posterior_cov_and_proj(self._q_fast, cand_arr, grid_pts, W_q)
 
         b_channels = []
-        if self._b_fast and wq_cols:
+        if self._b_fast:
             for ax, st_b in enumerate(self._b_fast):
-                W_b_ax = np.column_stack(wb_cols_by_ax[ax])
-                C_b, G_b, nz_b = self._build_channel_posterior_cov_and_proj(st_b, cand_arr, grid_pts, W_b_ax)
+                if include_drift_sensitivity and wq_cols:
+                    W_b_ax = np.column_stack(wb_cols_by_ax[ax])
+                    C_b, G_b, nz_b = self._build_channel_posterior_cov_and_proj(st_b, cand_arr, grid_pts, W_b_ax)
+                else:
+                    C_b, G_b, nz_b = self._build_channel_posterior_cov_and_proj(st_b, cand_arr)
                 b_channels.append([C_b, G_b, nz_b])
 
         opt_indices = [idx for idx, (kind, _) in enumerate(func_meta) if kind == "opt"]
@@ -791,6 +883,7 @@ class KrigingWorldModel:
         cur_X = np.atleast_2d(np.asarray(existing_X, dtype=float)).copy()
         rem_mask = np.ones(len(cand_arr), dtype=bool)
         chosen_dec = []
+        chosen_dec_idx: List[int] = []
         chosen_sen = []
         idx_diag = np.arange(len(cand_arr))
 
@@ -820,9 +913,11 @@ class KrigingWorldModel:
             else:
                 denom_q = np.maximum(np.diag(C_q) + nz_q, 1e-12)[:, None]
                 var_red = (G_q ** 2) / denom_q
-                for C_b, G_b, nz_b in b_channels:
-                    denom_b = np.maximum(np.diag(C_b) + nz_b, 1e-12)[:, None]
-                    var_red = var_red + (G_b ** 2) / denom_b
+                if include_drift_sensitivity:
+                    for C_b, G_b, nz_b in b_channels:
+                        if G_b is not None:
+                            denom_b = np.maximum(np.diag(C_b) + nz_b, 1e-12)[:, None]
+                            var_red = var_red + (G_b ** 2) / denom_b
 
                 score_raw = np.zeros(len(cand_arr), dtype=float)
                 if opt_indices:
@@ -843,15 +938,23 @@ class KrigingWorldModel:
             best_i = int(np.argmax(eff))
             rem_mask[best_i] = False
             chosen_dec.append(cand_arr[best_i])
+            chosen_dec_idx.append(best_i)
             cur_X = np.vstack([cur_X, cand_arr[best_i : best_i + 1]])
-            _downdate_all_channels(best_i)
+            if condition_decision_probes:
+                _downdate_all_channels(best_i)
+
+        # Even when decision probes are unconditioned (`condition_decision_probes=False`),
+        # always condition the sentinel stage on ALL pending decision probes so sentinel behavior is unconfounded!
+        if (not condition_decision_probes) and chosen_dec_idx:
+            for sel_i in chosen_dec_idx:
+                _downdate_all_channels(sel_i)
 
         for _ in range(n_sentinel):
             if not np.any(rem_mask):
                 break
             cond_std = np.sqrt(np.maximum(np.diag(C_q), 0.0))
             for C_b, _, _ in b_channels:
-                cond_std = cond_std + 0.25 * np.sqrt(np.maximum(np.diag(C_b), 0.0))
+                cond_std = cond_std + sentinel_drift_weight * np.sqrt(np.maximum(np.diag(C_b), 0.0))
             d_min = np.min(np.linalg.norm(cand_arr[:, None, :] - cur_X[None, :, :], axis=2), axis=1)
             rep_w = np.minimum(1.0, (d_min / max(min_repel, 1e-9)) ** 2)
             eff = np.where(rem_mask, cond_std * rep_w, -np.inf)
@@ -865,11 +968,16 @@ class KrigingWorldModel:
         return (
             np.array(all_pts, dtype=float) if all_pts else np.empty((0, self.dim), dtype=float),
             {
+                "acquisition_proxy_kind": (
+                    "pairwise_local_linear_kg_proxy" if gap_entries else "value_only_linear_functional_std"
+                ),
                 "active_q_relu_fraction": active_q_frac,
                 "n_decision_selected": len(chosen_dec),
                 "n_sentinel_selected": len(chosen_sen),
                 "n_functionals_tracked": len(func_meta),
-                "drift_channels_included": len(b_channels),
+                "drift_sensitivity_included": bool(include_drift_sensitivity and len(b_channels) > 0),
+                "decision_probes_conditioned": bool(condition_decision_probes),
+                "drift_channels_in_sentinel": len(b_channels),
             },
         )
 

@@ -22830,71 +22830,25 @@
   },
   "block_provenance": "inherited_from_commit_85e2323_supporting_nonlmdp_benchmark",
   "last_manifest_sync": {
-    "git_head_sha": "29fa7c680db1acc5e8127e781e83ec1979eca2e3",
-    "git_dirty_green_response": true,
-    "package_py_sha256": "3e82939ad86b71657f4ada18873e54cc1900c9ca4404b5d013b8b9ccecb0503d",
-    "source_manifest": {
-      "git_head_sha": "29fa7c680db1acc5e8127e781e83ec1979eca2e3",
-      "git_dirty_green_response": true,
-      "package_py_sha256": "3e82939ad86b71657f4ada18873e54cc1900c9ca4404b5d013b8b9ccecb0503d",
-      "per_file_sha256": {
-        "__init__.py": "028706b1e52a4b5e29c4dc42b8995b35397720ff6cf81c48b635ec51f9b5ee05",
-        "core.py": "2f02470c892f702096f810b09a5678d7f1e77a49d04eaa0b611f9f348a4e8848",
-        "exp1_3d_and_macro_tours.py": "ae079e2d1b0ba44f283c85ebb54c290b7f18253fc11de38e72a8d0de80599bf2",
-        "exp2_nonlmdp_kkt.py": "3187b5ff1be8a3e637974029fb56d401b74c0c86f468c68bc662bfbf69ad9405",
-        "exp3_highd_and_kinetic.py": "a677f05c4155dfb5d2fdf6c672d177d8690c53b7501e31c3197bed60aafc5435",
-        "exp4_fidelity_and_continual.py": "9fce3e23a57319b75dea5cd37841ac9221df9086e5c115a179528daca3e6f7dd",
-        "highd_solvers.py": "b2860c83e59dc4b6060c0e8726f64755a97f4cb9edbca2d4acbdf6242dee4542",
-        "macro_planning.py": "961a0250cf080dfd26da8771443477121c6e486ee85042eebe6cb2bf99afdfec",
-        "port_solvers.py": "35e598894f1013db0732561bcd85a9b81097fc7eddbbc5d929192296d194f914",
-        "verify_audit_closure.py": "98f12fd2089b8e9cc99fb2af29aa3e7473b29b5985cad9b1ede8899c8192883a"
-      }
-    },
-    "python_version": "3.10.12",
-    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
-    "processor": "x86_64",
-    "cpu_count": 32,
-    "configured_parallel_workers": 8,
-    "numpy_version": "2.2.6",
-    "scipy_version": "1.15.3",
-    "sklearn_version": "1.7.2",
-    "thread_env": {
-      "OMP_NUM_THREADS": "1",
-      "OPENBLAS_NUM_THREADS": "1",
-      "MKL_NUM_THREADS": "1",
-      "VECLIB_MAXIMUM_THREADS": "1",
-      "NUMEXPR_NUM_THREADS": "1"
-    },
-    "active_threadpools": [
-      {
-        "user_api": "blas",
-        "internal_api": "openblas",
-        "num_threads": 1,
-        "prefix": "libscipy_openblas",
-        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/numpy.libs/libscipy_openblas64_-56d6093b.so",
-        "version": "0.3.29",
-        "threading_layer": "pthreads",
-        "architecture": "SkylakeX"
-      },
-      {
-        "user_api": "blas",
-        "internal_api": "openblas",
-        "num_threads": 1,
-        "prefix": "libscipy_openblas",
-        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/scipy.libs/libscipy_openblas-68440149.so",
-        "version": "0.3.28",
-        "threading_layer": "pthreads",
-        "architecture": "SkylakeX"
-      },
-      {
-        "user_api": "openmp",
-        "internal_api": "openmp",
-        "num_threads": 1,
-        "prefix": "libgomp",
-        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/scikit_learn.libs/libgomp-a34b3233.so.1.0.0",
-        "version": null
-      }
-    ]
+    "synced_package_py_sha256": "2b38a2d5d6c544e33f58640eafc2d7a15f45ce573d8423506ce56188b4692939",
+    "note": "Synchronized package_py_sha256 across suite; inherited blocks preserve original generating_commit."
   },
-  "generating_commit": "85e2323"
+  "generating_commit": "85e2323",
+  "source_manifest": {
+    "git_head_sha": "57e59129bb21146df352e9c365150c34b775d564",
+    "git_dirty_green_response": true,
+    "package_py_sha256": "2b38a2d5d6c544e33f58640eafc2d7a15f45ce573d8423506ce56188b4692939",
+    "per_file_sha256": {
+      "__init__.py": "028706b1e52a4b5e29c4dc42b8995b35397720ff6cf81c48b635ec51f9b5ee05",
+      "core.py": "9d8cc7a42aa73c966428a50c94725b2481dfd5c08262c8b6672f39035bd7185a",
+      "exp1_3d_and_macro_tours.py": "ae079e2d1b0ba44f283c85ebb54c290b7f18253fc11de38e72a8d0de80599bf2",
+      "exp2_nonlmdp_kkt.py": "3187b5ff1be8a3e637974029fb56d401b74c0c86f468c68bc662bfbf69ad9405",
+      "exp3_highd_and_kinetic.py": "4d6588d5fec9408c4dfe9ae9d2df6a1a7bd375d1b373d7f4e7e063c16fe6d401",
+      "exp4_fidelity_and_continual.py": "285fbf3d8b1aeda37667b34cf68a1c2175a43b70663dfbcbf1e7fde4e8a2acf2",
+      "highd_solvers.py": "b2860c83e59dc4b6060c0e8726f64755a97f4cb9edbca2d4acbdf6242dee4542",
+      "macro_planning.py": "69a21fec2d593ad6e7ba89abde85dffab16e74c5e0db55a741d87781903936ce",
+      "port_solvers.py": "35e598894f1013db0732561bcd85a9b81097fc7eddbbc5d929192296d194f914",
+      "verify_audit_closure.py": "8a95348c187a3eb8c27e9aa640770f625dfd5b331fb9c0695ba96c2b7bc8878e"
+    }
+  }
 }

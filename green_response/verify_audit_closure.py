@@ -1317,6 +1317,131 @@ def run_all_audit_checks() -> dict:
         ),
     }
 
+    # ------------------------------------------------------------------
+    # 22. [NEW `57e5912` v5 Audit Closure] Zero-Drift Upwind Kink, True `max_alt_branches=0`,
+    #     Off-Grid Pending Sentinel Conditioning, & Mandatory `cols_retained` Contract
+    # ------------------------------------------------------------------
+    # (A) Single-goal exact zero-drift counterexample (`v57_core_grad_probes.py`): no Bellman tie, upwind kink active
+    gs_zd = [GoalBall((0.55, 0.40), 0.0, 0.24)]
+    bv_zero = np.zeros((17 * 17, 2), dtype=float)
+    pl_zd = SchurPortPlanner(sp_gf, 17, lambda X: q_gf_base, lambda X: bv_zero, gs_zd, initial_sectors_per_wp="EXACT", lazy_init=True)
+    sens_zd = MacroTourPlanner(pl_zd).compute_exact_macro_q_sensitivities((-0.85, 0.05), [0], max_alt_branches=0)
+    v0_zd = float(_indep_killed_root_q(pl_zd, (-0.85, 0.05), [0])[0])
+    eps_zd = 1e-5
+    zd_right_raw_errs = []
+    zd_right_rich_errs = []
+    zd_left_rich_errs = []
+    zd_mid_rich_errs = []
+    for ax_z in range(2):
+        db_z = np.zeros_like(bv_zero)
+        db_z[:, ax_z] = 1.0
+        pl_zp1 = SchurPortPlanner(sp_gf, 17, lambda X: q_gf_base, lambda X, v=eps_zd * db_z: v, gs_zd, initial_sectors_per_wp="EXACT", lazy_init=True)
+        pl_zp2 = SchurPortPlanner(sp_gf, 17, lambda X: q_gf_base, lambda X, v=0.5 * eps_zd * db_z: v, gs_zd, initial_sectors_per_wp="EXACT", lazy_init=True)
+        pl_zm1 = SchurPortPlanner(sp_gf, 17, lambda X: q_gf_base, lambda X, v=-eps_zd * db_z: v, gs_zd, initial_sectors_per_wp="EXACT", lazy_init=True)
+        pl_zm2 = SchurPortPlanner(sp_gf, 17, lambda X: q_gf_base, lambda X, v=-0.5 * eps_zd * db_z: v, gs_zd, initial_sectors_per_wp="EXACT", lazy_init=True)
+        d_r1 = (float(_indep_killed_root_q(pl_zp1, (-0.85, 0.05), [0])[0]) - v0_zd) / eps_zd
+        d_r2 = (float(_indep_killed_root_q(pl_zp2, (-0.85, 0.05), [0])[0]) - v0_zd) / (0.5 * eps_zd)
+        d_l1 = (v0_zd - float(_indep_killed_root_q(pl_zm1, (-0.85, 0.05), [0])[0])) / eps_zd
+        d_l2 = (v0_zd - float(_indep_killed_root_q(pl_zm2, (-0.85, 0.05), [0])[0])) / (0.5 * eps_zd)
+        rich_r = 2.0 * d_r2 - d_r1
+        rich_l = 2.0 * d_l2 - d_l1
+        rich_m = 0.5 * (rich_r + rich_l)
+        zd_right_raw_errs.append(abs(d_r2 - float(np.sum(sens_zd["grad_b_plus_optimal"] * db_z))))
+        zd_right_rich_errs.append(abs(rich_r - float(np.sum(sens_zd["grad_b_plus_optimal"] * db_z))))
+        zd_left_rich_errs.append(abs(rich_l - float(np.sum(sens_zd["grad_b_minus_optimal"] * db_z))))
+        zd_mid_rich_errs.append(abs(rich_m - float(np.sum(sens_zd["grad_b_optimal"] * db_z))))
+    # Also test mixed-sign directional derivative at `b == 0` via half-ray Richardson extrapolation
+    db_mix = np.column_stack([np.sin(0.23 * np.arange(17 * 17)), np.cos(0.19 * np.arange(17 * 17))])
+    pl_zmix1 = SchurPortPlanner(sp_gf, 17, lambda X: q_gf_base, lambda X, v=eps_zd * db_mix: v, gs_zd, initial_sectors_per_wp="EXACT", lazy_init=True)
+    pl_zmix2 = SchurPortPlanner(sp_gf, 17, lambda X: q_gf_base, lambda X, v=0.5 * eps_zd * db_mix: v, gs_zd, initial_sectors_per_wp="EXACT", lazy_init=True)
+    dm1 = (float(_indep_killed_root_q(pl_zmix1, (-0.85, 0.05), [0])[0]) - v0_zd) / eps_zd
+    dm2 = (float(_indep_killed_root_q(pl_zmix2, (-0.85, 0.05), [0])[0]) - v0_zd) / (0.5 * eps_zd)
+    fd_mix_rich = 2.0 * dm2 - dm1
+    ad_mix = float(np.sum(np.where(db_mix >= 0.0, sens_zd["grad_b_plus_optimal"], sens_zd["grad_b_minus_optimal"]) * db_mix))
+    zd_mix_err = abs(fd_mix_rich - ad_mix)
+    strict_smooth_rejected = False
+    try:
+        MacroTourPlanner(pl_zd).compute_exact_macro_q_sensitivities((-0.85, 0.05), [0], zero_drift_mode="strict_smooth")
+    except ValueError:
+        strict_smooth_rejected = True
+
+    # (B) True `max_alt_branches = 0` eliminates redundant transpose RHS columns while keeping ValueOnly selection identical
+    sens_alt0 = MacroTourPlanner(pl_gf).compute_exact_macro_q_sensitivities((-0.85, 0.05), [0, 1, 2, 3], max_alt_branches=0)
+    sens_alt1 = MacroTourPlanner(pl_gf).compute_exact_macro_q_sensitivities((-0.85, 0.05), [0, 1, 2, 3], max_alt_branches=1)
+    alt0_grad_diff = float(
+        max(
+            np.max(np.abs(sens_alt0["grad_q_optimal"] - sens_alt1["grad_q_optimal"])),
+            np.max(np.abs(sens_alt0["grad_b_optimal"] - sens_alt1["grad_b_optimal"])),
+            abs(sens_alt0["action_gap"] - sens_alt1["action_gap"]),
+        )
+    )
+    alt0_rhs_reduced = bool(sens_alt0["n_transpose_rhs_cols"] < sens_alt1["n_transpose_rhs_cols"])
+
+    # (C) Off-grid `pending_X` sentinel conditioning vs exact augmented Cholesky + GPT6 3-candidate SPD counterexample
+    from types import SimpleNamespace
+    C_spd = np.array([[1.0, 0.99, 0.10], [0.99, 1.0, 0.10], [0.10, 0.10, 0.80]], dtype=float)
+    cand_spd = np.array([[0.0, 0.0], [0.1, 0.0], [1.0, 0.0]], dtype=float)
+    stub_spd = SimpleNamespace(dim=2, _q_fast={}, _b_fast=None, _build_channel_posterior_cov_and_proj=lambda *a: (C_spd.copy(), None, 0.01))
+    sel_spd = KrigingWorldModel.select_sequential_conditional_maxvar_probes(
+        stub_spd, cand_spd, np.array([[-2.0, -2.0]]), 1, min_repel=1e-6, pending_X=cand_spd[[0]]
+    )
+    spd_selected_idx = int(np.argmin(np.sum((cand_spd - sel_spd[0]) ** 2, axis=1)))
+
+    # Off-grid pending_X block-Cholesky exactness on real `km_cc` across BOTH `q` and `b` channels
+    X_pend_offgrid = np.array([[-0.37, 0.29], [0.44, -0.51], [0.12, 0.63]], dtype=float)
+    Cp_q, Gp_q, nzp_q = km_cc._build_channel_posterior_cov_and_proj(km_cc._q_fast, cand_cc, grid_cc, w_func, pending_X=X_pend_offgrid)
+    X_aug_p = np.vstack([km_cc.X_obs, X_pend_offgrid])
+    K_aap = km_cc._eval_matern25_kernel_pair(X_aug_p, X_aug_p, st_q) + (nzp_q / (st_q["y_std"] ** 2)) * np.eye(len(X_aug_p))
+    K_aap[:n0_obs, :n0_obs] += 1e-10 * np.eye(n0_obs)
+    L_aug_p = np.linalg.cholesky(K_aap)
+    V_cap = _st_tri(L_aug_p, km_cc._eval_matern25_kernel_pair(cand_cc, X_aug_p, st_q).T, lower=True, check_finite=False)
+    V_gap = _st_tri(L_aug_p, km_cc._eval_matern25_kernel_pair(grid_cc, X_aug_p, st_q).T, lower=True, check_finite=False)
+    Cp_exact = (st_q["y_std"] ** 2) * (K_cc_raw - (V_cap.T @ V_cap))
+    Gp_exact = (st_q["y_std"] ** 2) * ((K_cg_raw @ w_func) - (V_cap.T @ (V_gap @ w_func)))
+    pend_offgrid_cov_err = float(np.max(np.abs(Cp_q - Cp_exact)))
+    pend_offgrid_proj_err = float(np.max(np.abs(Gp_q - Gp_exact)))
+
+    # (D) Positive control on `cols_retained`: no-op / micro update MUST retain >0 native columns
+    pl_pos = SchurPortPlanner(sp_gf, 17, lambda X: np.full(len(X), 0.4), None, [GoalBall((0.4, 0.2), 0.0, 0.28)], initial_sectors_per_wp="L1", lazy_init=False)
+    upd_pos = pl_pos.update_world_with_residual_audit(lambda X: np.full(len(X), 0.4), None, mode="selective_residual")
+    pos_cols_retained = int(upd_pos["cols_retained"])
+
+    report["22_zero_drift_kink_pending_sentinel_and_retained_cols_audit"] = {
+        "zero_drift_action_tie_detected": bool(sens_zd["action_tie_detected"]),
+        "zero_drift_upwind_kink_detected": bool(sens_zd["upwind_drift_kink_detected"]),
+        "zero_drift_kink_components": int(sens_zd["n_zero_drift_kink_components"]),
+        "zero_drift_right_onesided_raw_fd_err_5e6": float(max(zd_right_raw_errs)),
+        "zero_drift_right_richardson_fd_max_err": float(max(zd_right_rich_errs)),
+        "zero_drift_left_richardson_fd_max_err": float(max(zd_left_rich_errs)),
+        "zero_drift_clarke_midpoint_richardson_fd_max_err": float(max(zd_mid_rich_errs)),
+        "zero_drift_mixed_dir_richardson_fd_err": float(zd_mix_err),
+        "strict_smooth_mode_rejects_kink": bool(strict_smooth_rejected),
+        "alt0_grad_and_gap_max_diff": alt0_grad_diff,
+        "alt0_rhs_cols": int(sens_alt0["n_transpose_rhs_cols"]),
+        "alt1_rhs_cols": int(sens_alt1["n_transpose_rhs_cols"]),
+        "alt0_rhs_reduced": alt0_rhs_reduced,
+        "spd_pending_counterexample_selected_idx": spd_selected_idx,
+        "offgrid_pending_cov_max_abs_err": pend_offgrid_cov_err,
+        "offgrid_pending_proj_max_abs_err": pend_offgrid_proj_err,
+        "positive_control_cols_retained": pos_cols_retained,
+        "pass": bool(
+            (not sens_zd["action_tie_detected"])
+            and bool(sens_zd["upwind_drift_kink_detected"])
+            and int(sens_zd["n_zero_drift_kink_components"]) > 0
+            and max(zd_right_rich_errs) < 1e-9
+            and max(zd_left_rich_errs) < 1e-9
+            and max(zd_mid_rich_errs) < 1e-9
+            and zd_mix_err < 1e-9
+            and strict_smooth_rejected
+            and alt0_grad_diff == 0.0
+            and alt0_rhs_reduced
+            and spd_selected_idx == 2
+            and pend_offgrid_cov_max_err < 1e-12 if (pend_offgrid_cov_max_err := pend_offgrid_cov_err) is not None else False
+            and pend_offgrid_proj_err < 1e-12
+            and pos_cols_retained >= 1
+        ),
+    }
+
     report["ALL_PASSED"] = bool(all(v["pass"] for v in report.values() if isinstance(v, dict) and "pass" in v))
     return report
 
