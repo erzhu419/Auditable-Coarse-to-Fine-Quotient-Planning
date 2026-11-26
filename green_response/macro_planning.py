@@ -1334,18 +1334,40 @@ class MacroTourPlanner:
             )
             selected_route = "incremental_decision_port_dp"
             if res.get("status") == "unresolved":
+                port_stage_work = dict(res.get("work") or {})
                 bs_port = int(res.get("new_lu_backsolves", 0))
                 ms_port = float(res.get("planning_ms", 0.0))
                 res_ex = self.plan_exact_subset_dp(start_point, t_list)
+                exact_stage_work = dict(res_ex.get("work") or {})
                 ms_ex = float(res_ex.get("planning_ms", 0.0))
                 bs_ex = int(res_ex.get("new_lu_backsolves", 0))
+                add_col_ms = float(port_stage_work.get("col_solve_ms", 0.0)) + float(exact_stage_work.get("col_solve_ms", 0.0))
+                add_dp_ms = float(port_stage_work.get("dp_ms", 0.0)) + float(exact_stage_work.get("dp_ms", 0.0))
+                add_occ_ms = float(port_stage_work.get("occupancy_ms", 0.0)) + float(exact_stage_work.get("occupancy_ms", 0.0))
+                add_sel_ms = float(port_stage_work.get("selection_ms", 0.0)) + float(exact_stage_work.get("selection_ms", 0.0))
+                add_ctrl_ms = float(port_stage_work.get("controller_ms", 0.0)) + float(exact_stage_work.get("controller_ms", 0.0))
+                add_dp_calls = int(port_stage_work.get("dp_calls", 0)) + 1
                 res_ex["new_lu_backsolves"] = bs_port + bs_ex
                 res_ex["planning_ms"] = ms_port + ms_ex
+                res_ex["col_solve_ms"] = add_col_ms
+                res_ex["dp_ms"] = add_dp_ms
+                res_ex["occupancy_ms"] = add_occ_ms
+                res_ex["controller_ms"] = add_ctrl_ms
+                res_ex["port_stage_work"] = port_stage_work
+                res_ex["exact_stage_work"] = exact_stage_work
                 if isinstance(res_ex.get("work"), dict):
                     res_ex["work"]["new_lu_backsolves"] = bs_port + bs_ex
                     res_ex["work"]["planning_ms"] = ms_port + ms_ex
+                    res_ex["work"]["col_solve_ms"] = add_col_ms
+                    res_ex["work"]["dp_ms"] = add_dp_ms
+                    res_ex["work"]["occupancy_ms"] = add_occ_ms
+                    res_ex["work"]["selection_ms"] = add_sel_ms
+                    res_ex["work"]["controller_ms"] = add_ctrl_ms
+                    res_ex["work"]["dp_calls"] = add_dp_calls
                     res_ex["work"]["port_pre_fallback_ms"] = ms_port
                     res_ex["work"]["exact_dp_fallback_ms"] = ms_ex
+                    res_ex["work"]["port_stage_work"] = port_stage_work
+                    res_ex["work"]["exact_stage_work"] = exact_stage_work
                 res = res_ex
                 selected_route = "incremental_decision_port_dp_then_exact_dp_fallback"
 

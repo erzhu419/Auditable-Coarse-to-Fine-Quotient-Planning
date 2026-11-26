@@ -13,8 +13,9 @@ incorporating all `v7` (`efde60ce` -> `A1–A3`) audit closures:
     ring conditioning / retained rank / negative-mass / `Z <= 0` / `Z > 1` validity diagnostics, separation of
     `strict_unclipped` fail-closed evaluation from `clipped_heuristic` readout, both root-action and full-policy
     Bellman regret, explicit `targets_requested / targets_realized` & near-tie denominators (`macro_map_mean` vs
-    `task_pooled_rate`), AND an idealized `LocalExactSelf_CrossPortalSVD` ceiling control retaining exact `m_b x m_b`
-    self-ring diagonal blocks while compressing only off-ring cross-target transfers.
+    `task_pooled_rate`), AND an oracle-assisted `LocalExactSelf_CrossPortalSVD` ablation of global portal SVD
+    retaining exact `m_b x m_b` self-ring diagonal blocks (not a mathematical ceiling across all rank-`r`
+    off-diagonal approximations; cf. `G = 100 I_4 + 1 1^T`).
   - `A3` (`EF-03`, `EF-04`, `EF-06`): Honest method naming (`POD-SharedRank-Galerkin` vs `Colwise-RegIRLS-Galerkin`,
     recording actual ring node counts `18..20` in 2D / `26..34` in 3D, shared rank vs per-column snapshot capacity,
     and 4-snapshot dense memory footprint), calibration epochs (`ep < n_calib_epochs`) executing only exact solves
@@ -77,13 +78,13 @@ EFDE60CE_PRE_PATCH_REFERENCE = {
             "certified_of_360": 358,
         },
         "2D-51sq_LowDimParametricStream": {
-            "best_classical_from_zero_ms": 419.109702399382,
+            "best_classical_from_zero_ms": 419.10998496071744,
             "colwise_irls_from_zero_ms": 844.9927012232515,
             "net_from_zero_savings_pct": -101.61598525700603,
             "certified_of_360": 358,
         },
         "3D-21cubed_RealisticGPStream": {
-            "best_classical_from_zero_ms": 9418.126489350356,
+            "best_classical_from_zero_ms": 9418.12639972583,
             "colwise_irls_from_zero_ms": 11395.150532422122,
             "net_from_zero_savings_pct": -20.991692495800905,
             "certified_of_360": 360,
@@ -255,7 +256,8 @@ def _eval_lowrank_portal_macro_dp(
     ext_abs_mass = 0.0
     ext_total_rows = 0
     ext_z_le0_rows = 0
-    ext_z_gt1_rows = 0
+    ext_z_gt1_raw_rows = 0
+    ext_z_gt1_clipped_rows = 0
     physically_valid = True
 
     for b in t_canon:
@@ -269,7 +271,7 @@ def _eval_lowrank_portal_macro_dp(
             U_ring_sub = G_portal_approx[np.ix_(ring_p_rows, ring_b)]
         U_eval_sub = G_portal_approx[np.ix_(p_rows, ring_b)].copy()
         if G_portal_exact_for_local_self is not None:
-            # Self-ring rows on `eval_arr` are already known locally when self-block is retained
+            # Self-ring rows on `eval_arr` are already known locally in the oracle exact-self ablation
             ring_set_b = {int(nd): k_r for k_r, nd in enumerate(ring_b)}
             for r_i, nd in enumerate(eval_arr):
                 if int(nd) in ring_set_b:
@@ -305,7 +307,7 @@ def _eval_lowrank_portal_macro_dp(
         z_ext_raw = z_raw_unclipped[ext_mask]
         ext_total_rows += int(len(z_ext_raw))
         ext_z_le0_rows += int(np.sum(z_ext_raw <= 1e-285))
-        ext_z_gt1_rows += int(np.sum(z_ext_raw > 1.0 + 1e-9))
+        ext_z_gt1_raw_rows += int(np.sum(z_ext_raw > 1.0 + 1e-9))
 
         if np.any(neg_m) or np.any(z_ext_raw <= 1e-285) or np.any(z_ext_raw > 1.0 + 1e-9) or (r_ret < m_b):
             physically_valid = False
@@ -323,12 +325,13 @@ def _eval_lowrank_portal_macro_dp(
         else:
             he_pos = np.maximum(he_b, 1e-15)
             zb_clip = np.maximum(np.sum(he_pos, axis=1), 1e-15)
-            ext_z_gt1_clip = int(np.sum(zb_clip[ext_mask] > 1.0 + 1e-9))
-            ext_z_gt1_rows = max(ext_z_gt1_rows, ext_z_gt1_clip)
+            ext_z_gt1_clipped_rows += int(np.sum(zb_clip[ext_mask] > 1.0 + 1e-9))
             zb_s = np.where(ib, 1.0, zb_clip)
             c0_leg[b] = np.where(ib, 0.0, -lam * np.log(zb_s))
             P_leg[b] = he_pos / np.sum(he_pos, axis=1, keepdims=True)
 
+    raw_z_gt1_frac = float(ext_z_gt1_raw_rows / max(ext_total_rows, 1))
+    clip_z_gt1_frac = float(ext_z_gt1_clipped_rows / max(ext_total_rows, 1)) if readout_mode == "clipped_heuristic" else None
     diag_info = {
         "physically_valid": bool(physically_valid),
         "median_ring_cond": float(np.median(ring_conds)) if ring_conds else float("inf"),
@@ -338,7 +341,9 @@ def _eval_lowrank_portal_macro_dp(
         "neg_exterior_H_entry_frac": float(ext_neg_entries / max(ext_total_entries, 1)),
         "neg_exterior_H_mass_frac": float(ext_neg_mass / max(ext_abs_mass, 1e-30)),
         "exterior_Z_le0_row_frac": float(ext_z_le0_rows / max(ext_total_rows, 1)),
-        "exterior_Z_gt1_row_frac": float(ext_z_gt1_rows / max(ext_total_rows, 1)),
+        "exterior_raw_Z_gt1_row_frac": raw_z_gt1_frac,
+        "exterior_clipped_Z_gt1_row_frac": clip_z_gt1_frac,
+        "exterior_Z_gt1_row_frac": raw_z_gt1_frac if readout_mode == "strict_unclipped" else float(clip_z_gt1_frac),
     }
 
     if readout_mode == "strict_unclipped" and not physically_valid:
@@ -587,6 +592,7 @@ def _exp5a_fixed_world_worker(args: Tuple[int, int, str]) -> dict:
             med_conds = []
             max_conds = []
             neg_h_fracs = []
+            raw_z_gt1_fracs = []
             z_gt1_fracs = []
 
             for idx_t, (s_pt, s_nd, sub_u) in enumerate(unseen_tasks):
@@ -602,6 +608,7 @@ def _exp5a_fixed_world_worker(args: Tuple[int, int, str]) -> dict:
                 med_conds.append(st_out["median_ring_cond"])
                 max_conds.append(st_out["max_ring_cond"])
                 neg_h_fracs.append(st_out["neg_exterior_H_entry_frac"])
+                raw_z_gt1_fracs.append(st_out["exterior_raw_Z_gt1_row_frac"])
                 if st_out["physically_valid"]:
                     strict_valid_tasks += 1
                     strict_root_regrets_valid_only.append(float(max(0.0, Q_true[st_out["root_action_pos"]] - np.min(Q_true))))
@@ -611,7 +618,7 @@ def _exp5a_fixed_world_worker(args: Tuple[int, int, str]) -> dict:
                     readout_mode="clipped_heuristic",
                     G_portal_exact_for_local_self=local_self_ref,
                 )
-                z_gt1_fracs.append(cl_out["exterior_Z_gt1_row_frac"])
+                z_gt1_fracs.append(cl_out["exterior_clipped_Z_gt1_row_frac"])
                 Q_hat = cl_out["Q_root"]
                 act_pos = cl_out["root_action_pos"]
                 q_max_errs_clip.append(float(np.max(np.abs(Q_hat - Q_true))))
@@ -632,6 +639,7 @@ def _exp5a_fixed_world_worker(args: Tuple[int, int, str]) -> dict:
                 "median_ring_cond": float(np.median(med_conds)),
                 "max_ring_cond": float(np.max(max_conds)),
                 "mean_neg_exterior_H_entry_frac": float(np.mean(neg_h_fracs)),
+                "mean_raw_Z_gt1_row_frac": float(np.mean(raw_z_gt1_fracs)),
                 "mean_clipped_Z_gt1_row_frac": float(np.mean(z_gt1_fracs)),
                 "clipped_heuristic_mean_root_Q_linf_err": float(np.mean(q_max_errs_clip)),
                 "clipped_heuristic_top1_action_agreement_rate": float(np.mean(top1_agree_clip)),
@@ -1079,12 +1087,7 @@ def _exp5b_continual_subspace_worker(args: Tuple[int, int]) -> dict:
     return {"map_seed": ms, "streams": out_regimes, "geometry_and_memory": out_geom}
 
 
-def run_exp5_diagnostic_suite(max_workers: int = 8) -> dict:
-    tasks_5a = [(i, 30100 + i, "narrow_barrier") for i in range(8)] + [
-        (8 + i, 30200 + i, "competing_corridor") for i in range(8)
-    ]
-    rows_5a = run_map_parallel(_exp5a_fixed_world_worker, tasks_5a, max_workers=max_workers)
-
+def summarize_exp5a_rows(rows_5a: List[dict]) -> dict:
     def _sum_5a(sub_rows: List[dict]) -> dict:
         ranks_eval = (4, 8, 16, 32, 64)
         rc_out = {}
@@ -1104,6 +1107,7 @@ def run_exp5_diagnostic_suite(max_workers: int = 8) -> dict:
                     "median_of_map_median_ring_cond": float(np.median([r["rank_curves"][bk][ks]["median_ring_cond"] for r in sub_rows])),
                     "max_ring_cond": float(np.max([r["rank_curves"][bk][ks]["max_ring_cond"] for r in sub_rows])),
                     "mean_neg_exterior_H_entry_frac": float(np.mean([r["rank_curves"][bk][ks]["mean_neg_exterior_H_entry_frac"] for r in sub_rows])),
+                    "mean_raw_Z_gt1_row_frac": float(np.mean([r["rank_curves"][bk][ks].get("mean_raw_Z_gt1_row_frac", 0.0) for r in sub_rows])),
                     "mean_clipped_Z_gt1_row_frac": float(np.mean([r["rank_curves"][bk][ks]["mean_clipped_Z_gt1_row_frac"] for r in sub_rows])),
                     "clipped_heuristic_mean_root_Q_linf_err": float(np.mean([r["rank_curves"][bk][ks]["clipped_heuristic_mean_root_Q_linf_err"] for r in sub_rows])),
                     "clipped_heuristic_top1_action_agreement_rate": float(np.mean([r["rank_curves"][bk][ks]["clipped_heuristic_top1_action_agreement_rate"] for r in sub_rows])),
@@ -1116,6 +1120,11 @@ def run_exp5_diagnostic_suite(max_workers: int = 8) -> dict:
                 }
         return {
             "diagnostic_scope": "known_evaluation_geometry_portal_compression_and_source_support_audit",
+            "exact_self_ablation_scope_note": (
+                "LocalExactSelf_CrossPortalSVD is an oracle-assisted exact-self-block ablation of the tested global "
+                "portal-SVD construction, not a mathematical ceiling across all rank-r off-diagonal approximations "
+                "(cf. M-matrix counterexample G = 100 I_4 + 1 1^T)."
+            ),
             "n_maps": len(sub_rows),
             "total_unseen_targets_requested": int(sum(r["unseen_targets_requested"] for r in sub_rows)),
             "total_unseen_targets_realized": int(sum(r["unseen_targets_realized"] for r in sub_rows)),
@@ -1145,12 +1154,20 @@ def run_exp5_diagnostic_suite(max_workers: int = 8) -> dict:
             "rank_curves": rc_out,
         }
 
-    sum_5a = {
+    return {
         "standard_narrow_barrier_8maps": _sum_5a([r for r in rows_5a if r["regime"] == "narrow_barrier"]),
         "competing_corridor_8maps": _sum_5a([r for r in rows_5a if r["regime"] == "competing_corridor"]),
         "pooled_16maps": _sum_5a(rows_5a),
         "per_map_records": rows_5a,
     }
+
+
+def run_exp5_diagnostic_suite(max_workers: int = 8) -> dict:
+    tasks_5a = [(i, 30100 + i, "narrow_barrier") for i in range(8)] + [
+        (8 + i, 30200 + i, "competing_corridor") for i in range(8)
+    ]
+    rows_5a = run_map_parallel(_exp5a_fixed_world_worker, tasks_5a, max_workers=max_workers)
+    sum_5a = summarize_exp5a_rows(rows_5a)
 
     seeds_5b = list(range(30300, 30312))
     rows_5b = run_map_parallel(_exp5b_continual_subspace_worker, [(i, s) for i, s in enumerate(seeds_5b)], max_workers=max_workers)
@@ -1285,14 +1302,14 @@ def plot_exp5(res: dict, out_png: Path) -> None:
     s5a = res["exp5a_fixed_world_compressibility_and_obstruction"]["pooled_16maps"]
     ranks = [4, 8, 16, 32, 64]
 
-    # Panel A: Clipped-Heuristic Full-Policy Regret vs Idealized LocalExactSelf Control
+    # Panel A: Clipped-Heuristic Full-Policy Regret vs Oracle Exact-Self Block Ablation
     ax = axes[0, 0]
     y_pod = [max(s5a["rank_curves"]["Standard_POD_SVD"][f"r_{r}"]["clipped_heuristic_mean_full_policy_bellman_regret"], 1e-5) for r in ranks]
     y_sw = [max(s5a["rank_curves"]["Start4x_Weighted_Portal_SVD"][f"r_{r}"]["clipped_heuristic_mean_full_policy_bellman_regret"], 1e-5) for r in ranks]
     y_loc = [max(s5a["rank_curves"]["LocalExactSelf_CrossPortalSVD"][f"r_{r}"]["clipped_heuristic_mean_full_policy_bellman_regret"], 1e-5) for r in ranks]
     ax.plot(ranks, y_pod, "o--", color="#d62728", lw=1.9, label="Global Portal POD (Clipped Heur.)")
-    ax.plot(ranks, y_sw, "s-", color="#2ca02c", lw=2.0, label="Start4x-Weighted Portal SVD (Clipped Heur.)")
-    ax.plot(ranks, y_loc, "^-.", color="#1f77b4", lw=2.1, label="Idealized Exact-Self + Cross-SVD")
+    ax.plot(ranks, y_sw, "s-", color="#2ca02c", lw=2.0, label="Start4x-Weighted SVD (Clipped Heur.)")
+    ax.plot(ranks, y_loc, "^-.", color="#1f77b4", lw=2.1, label="Oracle Exact-Self Ablation (Clipped Heur.)")
     ax.set_yscale("log")
     ax.set_xticks(ranks)
     ax.set_xlabel(f"Subspace Rank r (Mean Full Portal Rank = {s5a['mean_portals_full_rank']:.1f})")
@@ -1304,9 +1321,9 @@ def plot_exp5(res: dict, out_png: Path) -> None:
         fontsize=9.1,
     )
     ax.grid(True, which="both", alpha=0.3)
-    ax.legend(fontsize=7.6, loc="upper right")
+    ax.legend(fontsize=7.4, loc="upper right")
 
-    # Panel B: Top-1 Action Agreement (All 192 Tasks vs Pooled 31 Near-Tie Tasks + ExactSelf Control)
+    # Panel B: Clipped-Heuristic Top-1 Action Agreement (All 192 Tasks vs Pooled 31 Near-Tie Tasks)
     ax = axes[0, 1]
     ag_pod = [100.0 * s5a["rank_curves"]["Standard_POD_SVD"][f"r_{r}"]["clipped_heuristic_top1_action_agreement_rate"] for r in ranks]
     ag_sw = [100.0 * s5a["rank_curves"]["Start4x_Weighted_Portal_SVD"][f"r_{r}"]["clipped_heuristic_top1_action_agreement_rate"] for r in ranks]
@@ -1314,11 +1331,11 @@ def plot_exp5(res: dict, out_png: Path) -> None:
     nt_pod = [100.0 * (s5a["rank_curves"]["Standard_POD_SVD"][f"r_{r}"]["clipped_heuristic_neartie_task_pooled_rate"] or 0.0) for r in ranks]
     nt_sw = [100.0 * (s5a["rank_curves"]["Start4x_Weighted_Portal_SVD"][f"r_{r}"]["clipped_heuristic_neartie_task_pooled_rate"] or 0.0) for r in ranks]
     n_nt = s5a["total_neartie_tour_tasks"]
-    ax.plot(ranks, ag_pod, "o--", color="#d62728", lw=1.7, label="Global POD (All 192 Tours)")
-    ax.plot(ranks, ag_sw, "s-", color="#2ca02c", lw=1.9, label="Start4x-SVD (All 192 Tours)")
-    ax.plot(ranks, ag_loc, "^-.", color="#1f77b4", lw=2.0, label="Exact-Self + Cross-SVD (All 192)")
-    ax.plot(ranks, nt_pod, "v:", color="#ff7f0e", lw=1.6, label=f"Global POD (Pooled n={n_nt} Near-Tie)")
-    ax.plot(ranks, nt_sw, "D:", color="#9467bd", lw=1.6, label=f"Start4x-SVD (Pooled n={n_nt} Near-Tie)")
+    ax.plot(ranks, ag_pod, "o--", color="#d62728", lw=1.7, label="Global POD (All 192, Clipped Heur.)")
+    ax.plot(ranks, ag_sw, "s-", color="#2ca02c", lw=1.9, label="Start4x-SVD (All 192, Clipped Heur.)")
+    ax.plot(ranks, ag_loc, "^-.", color="#1f77b4", lw=2.0, label="Oracle Exact-Self Abl. (All 192, Clipped Heur.)")
+    ax.plot(ranks, nt_pod, "v:", color="#ff7f0e", lw=1.6, label=f"Global POD (n={n_nt} Near-Tie, Clipped)")
+    ax.plot(ranks, nt_sw, "D:", color="#9467bd", lw=1.6, label=f"Start4x-SVD (n={n_nt} Near-Tie, Clipped)")
     ax.set_xticks(ranks)
     ax.set_ylim(10, 104)
     ax.set_xlabel("Subspace Rank r")

@@ -1622,6 +1622,24 @@ def run_all_audit_checks() -> dict:
         except ValueError:
             row_mismatch_load_rejected = True
 
+        # (f) Mutated `onpolicy_index_row_convention = "trailing_rows"` (`R314-05`) -> rejected!
+        tp_bad_conv = Path(tmp_d) / "bad_conv.npz"
+        man_bad_conv = dict(man_o)
+        man_bad_conv["onpolicy_index_row_convention"] = "trailing_rows"
+        np.savez_compressed(
+            tp_bad_conv,
+            X_selected=np.ascontiguousarray(X_o_test, dtype="<f8"),
+            q_observed=np.ascontiguousarray(q_o_test, dtype="<f8"),
+            b_observed=np.ascontiguousarray(b_o_test, dtype="<f8"),
+            onpolicy_traj_indices=np.asarray(idx_o_test, dtype="<i8"),
+            manifest_json=np.array(json.dumps(man_bad_conv, sort_keys=True)),
+        )
+        bad_conv_rejected = False
+        try:
+            load_and_verify_lossless_acquisition_tape_npz(tp_bad_conv)
+        except ValueError:
+            bad_conv_rejected = True
+
     # Symmetric nonzero-drift Bellman tie scope check (`c2_core_audit_notes.md` §2):
     # `strict_smooth` allows nonzero drift while `action_tie_detected` explicitly flags the Bellman cusp!
     b_sym_nz = np.full((17 * 17, 2), 0.12, dtype=float)
@@ -1644,6 +1662,7 @@ def run_all_audit_checks() -> dict:
         "unknown_schema_rejected": bool(bad_schema_rejected),
         "row_mismatch_save_rejected": bool(row_mismatch_save_rejected),
         "row_mismatch_load_rejected": bool(row_mismatch_load_rejected),
+        "bad_index_convention_rejected": bool(bad_conv_rejected),
         "nonzero_drift_bellman_tie_upwind_kink": bool(sens_sym_nz["upwind_drift_kink_detected"]),
         "nonzero_drift_bellman_tie_action_tie": bool(sens_sym_nz["action_tie_detected"]),
         "nonzero_drift_bellman_tie_derivative_kind": sens_sym_nz["derivative_kind"],
@@ -1658,6 +1677,7 @@ def run_all_audit_checks() -> dict:
             and bad_schema_rejected
             and row_mismatch_save_rejected
             and row_mismatch_load_rejected
+            and bad_conv_rejected
             and (not sens_sym_nz["upwind_drift_kink_detected"])
             and bool(sens_sym_nz["action_tie_detected"])
             and sens_sym_nz["derivative_kind"] == "active_branch"
@@ -1665,7 +1685,7 @@ def run_all_audit_checks() -> dict:
     }
 
     # ------------------------------------------------------------------
-    # 24. [NEW `v7` A1 + A2 Closure] Same-Cache Exact-DP Terminal Fallback (`seed=30309`) & Exact-Portal Unclipped Control
+    # 24. [NEW `v7/v8` Closure] Same-Cache Exact-DP Fallback, Natural Hybrid Additive Accounting, & Multi-Leg Clipped Count
     # ------------------------------------------------------------------
     from green_response.exp5_response_subspace_diagnostic import (
         _eval_lowrank_portal_macro_dp,
@@ -1699,7 +1719,31 @@ def run_all_audit_checks() -> dict:
         abs(res_fb_ex["macro_value_bounds"][1] - ref_30309["evaluated_policy_exact_macro_cost"]),
     )
 
-    # Exact-portal unclipped sanity control (`A2`) + invalid negative-H / Z>1 low-rank rejection check
+    # Natural micro-update `plan_economical_hybrid` integration + additive sub-stage work check (`R314-02`)
+    pl_30309.update_world_with_residual_audit(lambda X: qmod_30309(X) + 1e-12, km_30309.predict_b, mode="selective_residual")
+    res_hyb_fb = mt_30309.plan_economical_hybrid(s_30309, t_30309, epsilon_tol=0.25, max_refine_steps=12)
+    pw_hyb = res_hyb_fb["work"].get("port_stage_work", {})
+    ew_hyb = res_hyb_fb["work"].get("exact_stage_work", {})
+    hyb_additive_ok = (
+        res_hyb_fb["hybrid_selected_route"] == "incremental_decision_port_dp_then_exact_dp_fallback"
+        and bool(res_hyb_fb["certified"])
+        and bool(pw_hyb) and bool(ew_hyb)
+        and abs(res_hyb_fb["dp_ms"] - (float(pw_hyb["dp_ms"]) + float(ew_hyb["dp_ms"]))) <= 1e-12
+        and abs(res_hyb_fb["col_solve_ms"] - (float(pw_hyb["col_solve_ms"]) + float(ew_hyb["col_solve_ms"]))) <= 1e-12
+        and int(res_hyb_fb["new_lu_backsolves"]) == int(pw_hyb["new_lu_backsolves"]) + int(ew_hyb["new_lu_backsolves"])
+    )
+    # `numeric_invalid` dispatch negative control on `plan_economical_hybrid` (`phi = NaN` must NOT be converted to success)
+    old_phi_0 = pl_30309.waypoints[0].phi
+    object.__setattr__(pl_30309.waypoints[0], "phi", float("nan"))
+    res_hyb_nan = mt_30309.plan_economical_hybrid(s_30309, t_30309, epsilon_tol=0.25, max_refine_steps=4)
+    object.__setattr__(pl_30309.waypoints[0], "phi", old_phi_0)
+    hyb_nan_fail_closed = (
+        res_hyb_nan["status"] == "numeric_invalid"
+        and (not res_hyb_nan["certified"])
+        and (res_hyb_nan.get("policy_action_idx") is None)
+    )
+
+    # Exact-portal unclipped sanity control (`A2`) + 2-leg hand-calculated raw vs clipped `Z>1` counter check (`R314-01`)
     s_nd_30309 = int(np.argmin(np.sum((pl_30309.pts - s_30309[None, :]) ** 2, axis=1)))
     p_nodes_24 = sorted({s_nd_30309}.union(*(set(int(x) for x in pl_30309.wp_rings[w]) for w in t_30309)))
     p_row_of_24 = {nd: idx for idx, nd in enumerate(p_nodes_24)}
@@ -1714,6 +1758,22 @@ def run_all_audit_checks() -> dict:
     G_p24_r4 = (Up24[:, :4] * sp24[:4][None, :]) @ Vtp24[:4, :]
     p24_r4_strict = _eval_lowrank_portal_macro_dp(pl_30309, s_nd_30309, t_30309, G_p24_r4, p_row_of_24, readout_mode="strict_unclipped")
 
+    # Synthetic 2-leg exact hand-calculated `Z>1` counter probe (`raw Z == 0.0 <= 1` on both legs, `clipped Z == 2.0 > 1` on both legs):
+    G_2leg_synth = np.zeros_like(G_p24_exact)
+    for w_syn in (0, 2):
+        rb_syn = pl_30309.wp_rings[w_syn]
+        rp_syn = np.asarray([p_row_of_24[int(nd)] for nd in rb_syn], dtype=np.int64)
+        G_2leg_synth[np.ix_(rp_syn, rb_syn)] = np.eye(len(rb_syn))
+        # Off-ring rows have `+2.0` in col 0 and `-2.0` in col 1 -> raw row sum `0.0 <= 1`, clipped row sum `> 2.0 > 1`!
+        ext_rp = [r_i for r_i in range(len(p_nodes_24)) if not pl_30309.wp_masks[w_syn][p_nodes_24[r_i]]]
+        G_2leg_synth[ext_rp, rb_syn[0]] = 2.0
+        G_2leg_synth[ext_rp, rb_syn[1]] = -2.0
+    synth_clip_out = _eval_lowrank_portal_macro_dp(pl_30309, s_nd_30309, (0, 2), G_2leg_synth, p_row_of_24, readout_mode="clipped_heuristic")
+    two_leg_zgt1_counter_ok = (
+        synth_clip_out["exterior_raw_Z_gt1_row_frac"] == 0.0
+        and abs(synth_clip_out["exterior_clipped_Z_gt1_row_frac"] - 1.0) <= 1e-12
+    )
+
     report["24_same_cache_exact_dp_fallback_and_exact_portal_control"] = {
         "seed30309_interval_status": res_unres["status"],
         "seed30309_interval_width": float(res_unres["macro_value_bounds"][1] - res_unres["macro_value_bounds"][0]),
@@ -1722,9 +1782,12 @@ def run_all_audit_checks() -> dict:
         "same_cache_fallback_added_lu": int(fb_added_lu),
         "same_cache_fallback_added_backsolves": int(fb_added_bs),
         "same_cache_fallback_vs_killed_ref_err": float(fb_ref_err),
+        "natural_hybrid_fallback_additive_accounting_ok": bool(hyb_additive_ok),
+        "hybrid_numeric_invalid_fail_closed_ok": bool(hyb_nan_fail_closed),
         "exact_portal_unclipped_physically_valid": bool(p24_exact_out["physically_valid"]),
         "exact_portal_unclipped_max_Q_err": exact_portal_q_err,
         "lowrank_r4_unphysical_flagged_invalid": bool(not p24_r4_strict["physically_valid"]),
+        "two_leg_raw_vs_clipped_Z_gt1_counter_ok": bool(two_leg_zgt1_counter_ok),
         "pass": bool(
             res_unres["status"] == "unresolved"
             and all_curr_ex
@@ -1732,9 +1795,12 @@ def run_all_audit_checks() -> dict:
             and fb_added_lu == 0
             and fb_added_bs == 0
             and fb_ref_err <= 1e-12
+            and hyb_additive_ok
+            and hyb_nan_fail_closed
             and bool(p24_exact_out["physically_valid"])
             and exact_portal_q_err <= 1e-12
             and (not p24_r4_strict["physically_valid"])
+            and two_leg_zgt1_counter_ok
         ),
     }
 

@@ -1528,6 +1528,13 @@ def load_and_verify_lossless_acquisition_tape_npz(path: Path) -> dict:
     if not isinstance(manifest, dict) or manifest.get("schema") not in SUPPORTED_LOSSLESS_TAPE_SCHEMAS:
         raise ValueError(f"Unsupported or missing lossless tape schema: {manifest.get('schema') if isinstance(manifest, dict) else type(manifest)}")
     has_idx = bool(manifest.get("has_onpolicy_indices", False))
+    expected_conv = (
+        "ordered_step_indices_for_leading_onpolicy_rows_0_to_k_minus_1" if has_idx else "none"
+    )
+    if manifest.get("onpolicy_index_row_convention") != expected_conv:
+        raise ValueError(
+            f"Unsupported or inconsistent onpolicy_index_row_convention: {manifest.get('onpolicy_index_row_convention')!r}"
+        )
     _validate_lossless_tape_arrays(X_f8, q_f8, b_f8, idx_i8, has_idx)
     if "n_observations" in manifest and int(manifest["n_observations"]) != X_f8.shape[0]:
         raise ValueError("Lossless tape n_observations manifest mismatch!")
