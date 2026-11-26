@@ -1294,12 +1294,11 @@ class MacroTourPlanner:
         epsilon_tol: float = 0.25,
         max_refine_steps: int = 12,
     ) -> dict:
-        """Operational Hybrid Macro-Planner (`ddd19c5 Stage B` + `d1b926a P1 Work-Descriptor Closure`):
-        Selects between `plan_exact_subset_dp` (`Cached-ExactRing + Single-Pass Subset-DP`)
-        and `plan_subset_macro_policy(..., use_incremental_dp=True, refine_strategy="decision_guided")`
-        using explicit current-epoch exactness & LU availability descriptors (`estimate_current_exact_route_work`),
-        defaulting to the exact single-pass route whenever port savings are ambiguous, and charging `router_ms`
-        inside total `planning_ms`.
+        """Conditional Heuristic Macro-Router (`ddd19c5` + `d1b926a` + `29fa7c6` Scope Note):
+        Note: `plan_exact_subset_dp` (`ExactRing + Subset-DP`) is the recommended default production
+        macro-planner in 2D and moderate 3D (`<= 31^3`), where single-pass exact DP avoids multi-round
+        port overhead. This router is retained as a transparent heuristic option (primarily useful when
+        residual-valid columns are already warm after micro-updates and a fresh `splu` can be avoided).
         """
         t_r0 = time.perf_counter()
         t_list = list(target_wp_ids)
@@ -1353,23 +1352,33 @@ class MacroTourPlanner:
         self,
         start_point: Sequence[float],
         target_wp_ids: Sequence[int],
+        max_alt_branches: int = 3,
+        include_drift_grad: bool = True,
     ) -> dict:
-        """Exact Target-Permutation-Invariant Discrete Green Adjoint Sensitivity (`d1b926a Work Package B`):
+        """Target-Permutation-Invariant Active-Branch Discrete Green Adjoint Sensitivity (`29fa7c6` Closure):
         Canonicalizes `target_wp_ids` as an unordered set (`sorted(unique)`) so all outputs are 100%
         invariant (`0.0` difference) under arbitrary input list permutations, and computes via Reverse-Mode AD
-        through the exact Subset-DP DAG + SuperLU transpose solves `A_0^{-T}`:
-          - `grad_q_optimal`: exact `d F*(s_0, S) / d q_grid` (`shape = (N_grid,)`);
-          - `grad_q_runner_up`: exact `d Q(s_0, b_runner_up) / d q_grid` (`shape = (N_grid,)`);
-          - `grad_q_top_gap`: exact `d (Q(s_0, b_runner_up) - Q(s_0, b_incumbent)) / d q_grid`.
+        through the Subset-DP DAG + ONE batched SuperLU transpose solve `A_0^{-T}`:
+          - Uses `np.add.at` scatter-accumulation on `eval_nodes` so start-on-ring and overlapping-ring
+            geometries sum repeated physical-node contributions exactly (`< 1e-9` vs killed-domain FD);
+          - Extracts BOTH `grad_q` (`dF / dq_grid`) AND upwind drift `grad_b` (`dF / db_grid`, zero extra solves!)
+            for the incumbent branch AND up to `max_alt_branches` competing root actions;
+          - Explicitly declares `derivative_kind = "active_branch"` alongside `active_action_margin` and
+            `tie_detected` (reflecting the piecewise-smooth cusp at Bellman action ties).
         """
         t0 = time.perf_counter()
         s_arr = np.asarray(start_point, dtype=float)
         t_canon = sorted(dict.fromkeys(int(w) for w in target_wp_ids))
         m = len(t_canon)
         n_grid = len(self.pl.pts)
+        dim = self.pl.spec.dim
         if m == 0:
             z = np.zeros(n_grid, dtype=float)
+            zb = np.zeros((n_grid, dim), dtype=float)
             return {
+                "derivative_kind": "active_branch",
+                "tie_detected": False,
+                "active_action_margin": float("inf"),
                 "canonical_wp_ids": (),
                 "optimal_value": 0.0,
                 "incumbent_wp": None,
@@ -1378,6 +1387,10 @@ class MacroTourPlanner:
                 "grad_q_optimal": z,
                 "grad_q_runner_up": z.copy(),
                 "grad_q_top_gap": z.copy(),
+                "grad_b_optimal": zb,
+                "grad_b_runner_up": zb.copy(),
+                "grad_b_top_gap": zb.copy(),
+                "alt_branches": [],
                 "sensitivity_ms": 1000.0 * (time.perf_counter() - t0),
             }
 
@@ -1422,6 +1435,7 @@ class MacroTourPlanner:
         n_masks = 1 << m
         F0_exact = np.zeros((n_ev, n_masks), dtype=float)
         act_idx = np.zeros((n_ev, n_masks), dtype=np.int32)
+        step_margin = np.full((n_ev, n_masks), np.inf, dtype=float)
         phi_mask_sum = np.zeros(n_masks, dtype=float)
         for i, b in enumerate(t_canon):
             mk = 1 << i
@@ -1442,6 +1456,7 @@ class MacroTourPlanner:
             pos_in_k = {mk: idx for idx, mk in enumerate(mk_list)}
             k_len = len(mk_list)
             best_v = np.full((n_ev, k_len), np.inf, dtype=float)
+            second_v = np.full((n_ev, k_len), np.inf, dtype=float)
             best_a = np.zeros((n_ev, k_len), dtype=np.int32)
             for i, b in enumerate(t_canon):
                 bit_i = 1 << i
@@ -1455,12 +1470,15 @@ class MacroTourPlanner:
                 if np.any(in_ball[b]):
                     cont = np.where(in_ball[b][:, None], W_rem, cont)
                 Q_b = c0_leg[b][:, None] + cont
-                cur_slice = best_v[:, col_locs]
-                better = Q_b < cur_slice
-                best_v[:, col_locs] = np.where(better, Q_b, cur_slice)
+                cur_best = best_v[:, col_locs]
+                cur_sec = second_v[:, col_locs]
+                better = Q_b < cur_best
+                second_v[:, col_locs] = np.where(better, cur_best, np.minimum(cur_sec, Q_b))
+                best_v[:, col_locs] = np.where(better, Q_b, cur_best)
                 best_a[:, col_locs] = np.where(better, i, best_a[:, col_locs])
             F0_exact[:, mk_list] = best_v
             act_idx[:, mk_list] = best_a
+            step_margin[:, mk_list] = np.maximum(0.0, second_v - best_v)
 
         full_mk = n_masks - 1
         Q_root = np.zeros(m, dtype=float)
@@ -1474,9 +1492,10 @@ class MacroTourPlanner:
 
         order_i = np.argsort(Q_root, kind="mergesort")
         inc_i = int(order_i[0])
-        run_i = int(order_i[1]) if m >= 2 else inc_i
+        alt_is = [int(x) for x in order_i[1 : 1 + max(1, int(max_alt_branches))]]
+        run_i = alt_is[0] if alt_is else inc_i
 
-        def _accumulate_theta(forced_root_i: int) -> Tuple[float, Dict[int, np.ndarray]]:
+        def _accumulate_theta(forced_root_i: int) -> Tuple[float, Dict[int, np.ndarray], float]:
             if forced_root_i == int(act_idx[0, full_mk]):
                 V0_pi = F0_exact
             else:
@@ -1489,12 +1508,15 @@ class MacroTourPlanner:
             rho = np.zeros((n_ev, n_masks), dtype=float)
             rho[0, full_mk] = 1.0
             Theta: Dict[int, np.ndarray] = {b: np.zeros((n_ev, len(self.pl.wp_rings[b])), dtype=float) for b in t_canon}
+            min_active_margin = float("inf")
 
             for k in range(m, 0, -1):
                 for mk in masks_by_pop[k]:
                     nz_rows = np.flatnonzero(rho[:, mk] > 0.0)
                     for r in nz_rows:
                         m_val = float(rho[r, mk])
+                        if k >= 2 and not (r == 0 and mk == full_mk and forced_root_i != int(act_idx[0, full_mk])):
+                            min_active_margin = min(min_active_margin, float(step_margin[r, mk]))
                         i_act = forced_root_i if (r == 0 and mk == full_mk) else int(act_idx[r, mk])
                         b = t_canon[i_act]
                         rem = mk ^ (1 << i_act)
@@ -1507,17 +1529,18 @@ class MacroTourPlanner:
                             Theta[b][r, :] += m_val * (((-lam - v_bar) + v_rem) / zbar_safe[b][r])
                             if k > 1:
                                 rho[offsets[b], rem] += m_val * P_leg[b][r, :]
-            return float(V0_pi[0, full_mk] + phi_mask_sum[full_mk]), Theta
+            return float(V0_pi[0, full_mk] + phi_mask_sum[full_mk]), Theta, min_active_margin
 
-        val_inc, Theta_inc = _accumulate_theta(inc_i)
-        if run_i != inc_i:
-            val_run, Theta_run = _accumulate_theta(run_i)
-            modes_theta = [Theta_inc, Theta_run]
-        else:
-            val_run = val_inc
-            modes_theta = [Theta_inc]
+        val_inc, Theta_inc, min_act_margin = _accumulate_theta(inc_i)
+        modes_theta = [Theta_inc]
+        alt_vals: List[float] = []
+        for ai in alt_is:
+            v_a, Th_a, _ = _accumulate_theta(ai)
+            alt_vals.append(v_a)
+            modes_theta.append(Th_a)
+        val_run = alt_vals[0] if alt_vals else val_inc
 
-        # Batch ALL transpose solves into ONE SuperLU call (`A_0^T Psi = W_stacked`)!
+        # Batch ALL transpose solves into ONE SuperLU call (`A_0^T Psi = W_stacked`) with exact scatter-add!
         rhs_blocks = []
         block_slices = []
         col_cursor = 0
@@ -1531,8 +1554,8 @@ class MacroTourPlanner:
                     continue
                 W_b = np.zeros((n_grid, rb_len), dtype=float)
                 pinv_T = P_pinv[b].T
-                W_b[eval_nodes, :] += th_b @ pinv_T
-                W_b[self.pl.wp_rings[b], :] -= (H_eval[b].T @ th_b) @ pinv_T
+                np.add.at(W_b, eval_nodes, th_b @ pinv_T)
+                np.add.at(W_b, self.pl.wp_rings[b], -((H_eval[b].T @ th_b) @ pinv_T))
                 rhs_blocks.append(W_b)
                 mode_sl[b] = slice(col_cursor, col_cursor + rb_len)
                 col_cursor += rb_len
@@ -1543,18 +1566,65 @@ class MacroTourPlanner:
         else:
             Psi_all = np.zeros((n_grid, 0), dtype=float)
 
-        grads_out = []
+        # Precompute upwind grid geometry once for zero-extra-solve drift sensitivity `dF / db_grid`
+        gn = self.pl.grid_n
+        h_grid = self.pl.h
+        b_cur = np.zeros((n_grid, dim), dtype=float) if self.pl.b_grid is None else self.pl.b_grid
+        strides = [gn ** (dim - 1 - ax) for ax in range(dim)]
+        idx_all = np.arange(n_grid, dtype=np.int64)
+        coords_ax = [(idx_all // strides[ax]) % gn for ax in range(dim)]
+
+        grads_q_out = []
+        grads_b_out = []
         for mode_sl in block_slices:
-            g_tot = np.zeros(n_grid, dtype=float)
+            g_q = np.zeros(n_grid, dtype=float)
+            g_b = np.zeros((n_grid, dim), dtype=float)
             for b in t_canon:
                 sl_b = mode_sl[b]
-                if sl_b is not None:
-                    g_tot += -(1.0 / lam) * np.einsum("ij,ij->i", Psi_all[:, sl_b], U_full[b])
-            grads_out.append(g_tot)
+                if sl_b is None:
+                    continue
+                Psi_b = Psi_all[:, sl_b]
+                U_b = U_full[b]
+                g_q += -(1.0 / lam) * np.einsum("ij,ij->i", Psi_b, U_b)
+                if include_drift_grad:
+                    for ax in range(dim):
+                        st = strides[ax]
+                        c_ax = coords_ax[ax]
+                        b_col = b_cur[:, ax]
+                        mask_p = (b_col > 0.0) & (c_ax < (gn - 1))
+                        if np.any(mask_p):
+                            ip = idx_all[mask_p]
+                            g_b[ip, ax] += (1.0 / h_grid) * np.einsum("ij,ij->i", Psi_b[ip, :], U_b[ip + st, :] - U_b[ip, :])
+                        mask_m = (b_col < 0.0) & (c_ax > 0)
+                        if np.any(mask_m):
+                            im = idx_all[mask_m]
+                            g_b[im, ax] += (1.0 / h_grid) * np.einsum("ij,ij->i", Psi_b[im, :], U_b[im, :] - U_b[im - st, :])
+            grads_q_out.append(g_q)
+            grads_b_out.append(g_b)
 
-        g_opt = grads_out[0]
-        g_run = grads_out[1] if len(grads_out) > 1 else g_opt.copy()
+        g_q_opt = grads_q_out[0]
+        g_b_opt = grads_b_out[0]
+        g_q_run = grads_q_out[1] if len(grads_q_out) > 1 else g_q_opt.copy()
+        g_b_run = grads_b_out[1] if len(grads_b_out) > 1 else g_b_opt.copy()
+
+        alt_branches_out = []
+        for idx_alt, ai in enumerate(alt_is):
+            gq_a = grads_q_out[1 + idx_alt]
+            gb_a = grads_b_out[1 + idx_alt]
+            alt_branches_out.append({
+                "wp_id": int(t_canon[ai]),
+                "value": float(alt_vals[idx_alt]),
+                "gap": float(alt_vals[idx_alt] - val_inc),
+                "grad_q_branch": gq_a,
+                "grad_q_gap": gq_a - g_q_opt,
+                "grad_b_gap": gb_a - g_b_opt,
+            })
+
+        eff_margin = float(min(min_act_margin, val_run - val_inc)) if m >= 2 else float("inf")
         return {
+            "derivative_kind": "active_branch",
+            "tie_detected": bool(m >= 2 and eff_margin <= 1e-11),
+            "active_action_margin": eff_margin,
             "canonical_wp_ids": tuple(t_canon),
             "Q_root_canonical": Q_root,
             "optimal_value": val_inc,
@@ -1562,9 +1632,13 @@ class MacroTourPlanner:
             "incumbent_wp": int(t_canon[inc_i]),
             "runner_up_wp": int(t_canon[run_i]),
             "action_gap": float(val_run - val_inc),
-            "grad_q_optimal": g_opt,
-            "grad_q_runner_up": g_run,
-            "grad_q_top_gap": g_run - g_opt,
+            "grad_q_optimal": g_q_opt,
+            "grad_q_runner_up": g_q_run,
+            "grad_q_top_gap": g_q_run - g_q_opt,
+            "grad_b_optimal": g_b_opt,
+            "grad_b_runner_up": g_b_run,
+            "grad_b_top_gap": g_b_run - g_b_opt,
+            "alt_branches": alt_branches_out,
             "sensitivity_ms": 1000.0 * (time.perf_counter() - t0),
         }
 

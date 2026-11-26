@@ -10,9 +10,13 @@
   - Persists full per-map train / unseen-in-dist / wall-corner-shift costs, reach/clip rates, ESS quantiles,
     and reports BOTH `all8` pooled and `heldout4` paired statistics separately!
 
-3B-Confirm. Locked Fresh-Seed 6D Anchor-Budget Efficiency Curve (`8` brand-new maps `9600..9607`):
-  - Varies interior FK anchor budget `N_anch in {28, 56, 108}` comparing `ZeroMean`, `MatchedSharpCone`,
-    and `HelmholtzBessel`, plus independent FK seed replication stability `|V^{(A)} - V^{(B)}|`.
+3B-Confirm. 6D Anchor-Budget Efficiency Curve (`16` maps `9600..9615` from `d1b926a` confirmation cohort,
+  split into `9600..9607` vs `9608..9615`):
+  - Varies nominal interior FK anchor budget `N_anch in {24, 54, 108}` comparing `ZeroMean`, `MatchedSharpCone`,
+    and `HelmholtzBessel`, plus decoupled fixed-design vs full-reconstruction seed sensitivity.
+
+3D. Independent Non-Bessel Teachers (`3D 25^3` discrete FD reference on `9700..9707`; `6D` Cone-Girsanov
+  teacher on `9608..9615`) & Locked `method_config_id` Quality–Cost + Serial/Batch-Makespan Table (`29fa7c6` Stage B1).
 
 3C. Scoped Empirical 4D Kinetic Double-Integrator Study (`10` maps, `6` continuation rounds).
 """
@@ -51,6 +55,7 @@ from green_response import (
     fit_gp_value_with_prior,
     generate_benchmark_map,
     make_antithetic_centered_pimc_policy,
+    paired_relative_noninferiority,
     paired_stats,
     reflect_kinetic_into_box,
     sample_noisy_probes,
@@ -624,15 +629,142 @@ def _indep_6d_cone_teacher_worker(args: Tuple[int, int]) -> dict:
         )
         r_un = simulate_closed_loop_crn(world, fit_p["policy"], q_un, n_per_start=14, seed=43000 + idx_m)
         r_sh = simulate_closed_loop_crn(world, fit_p["policy"], q_sh, n_per_start=14, seed=44000 + idx_m)
-        out_p[p_mode] = {"unseen_cost": r_un["mean_cost"], "shift_cost": r_sh["mean_cost"]}
-    return {"map_seed": ms, "survivor_frac": t_sol["survivor_fraction"], "priors": out_p}
+        out_p[p_mode] = {
+            "unseen_cost": r_un["mean_cost"],
+            "shift_cost": r_sh["mean_cost"],
+            "unseen_reach_rate": r_un["reach_rate"],
+            "shift_reach_rate": r_sh["reach_rate"],
+        }
+    return {
+        "map_seed": ms,
+        "survivor_frac": t_sol["survivor_fraction"],
+        "weighted_tail_mass": t_sol["weighted_tail_mass"],
+        "mean_ess": t_sol["mean_ess"],
+        "min_ess": t_sol["min_ess"],
+        "median_ess": t_sol["median_ess"],
+        "continuation_max_diffs": t_sol["continuation_max_diffs"],
+        "budget_counters": t_sol["budget_counters"],
+        "priors": out_p,
+    }
+
+
+def _matched_6d_method_worker(args: Tuple[int, int]) -> dict:
+    """Locked `method_config_id` 6D Quality + Concurrent Worker Timing (`29fa7c6` Stage B1):
+    Evaluates THREE pinned configurations on the EXACT SAME world GP, held-out starts, and CRN seeds:
+      - `M1_EndToEnd_Bessel24`: `teacher_mode="bessel_guided", prior_mode="helmholtz_bessel", N=24, 48x75, dt=0.045, cont=3`
+      - `M2_FrozenBesselTeacher_SharpCone108`: `teacher_mode="bessel_guided" (N=108, 48x75, dt=0.045, cont=3) -> SharpCone refit`
+      - `M3_EndToEnd_IndepConeGirsanov_SharpCone108`: `teacher_mode="cone_girsanov_independent", prior_mode="matched_sharp_cone", N=108, 48x75, dt=0.045, cont=3`
+    """
+    idx_m, ms = args
+    dim = 6
+    spec = ProblemSpec(dim=dim, half_width=1.65, sigma=0.55, q0=0.65, dt_sim=0.020, max_steps=420)
+    world = generate_benchmark_map(ms, dim=dim, regime="smooth", with_drift=True, spec=spec)
+    t_w0 = time.perf_counter()
+    km = KrigingWorldModel(*sample_noisy_probes(world, n_probes=100, seed=ms + 7, include_drift=True))
+    world_gp_ms = 1000.0 * (time.perf_counter() - t_w0)
+    q_tr, q_un, q_sh = make_highd_queries_three_regimes(ms, dim=dim, n_queries=1)[0]
+    rng_ord = np.random.default_rng(ms + 515)
+
+    def _run_m1():
+        t0 = time.perf_counter()
+        s = solve_highd_fk_distillation(
+            spec, km, q_tr, n_interior_anchors=24, n_mc_paths=48, n_steps_fk=75, dt_fk=0.045,
+            n_continuation_rounds=3, prior_mode="helmholtz_bessel", teacher_mode="bessel_guided",
+            design_seed=46000 + idx_m, mc_seed=46500 + idx_m,
+        )
+        tot_ms = 1000.0 * (time.perf_counter() - t0)
+        return s["policy"], tot_ms, tot_ms, 0.0, s
+
+    def _run_m2():
+        t0 = time.perf_counter()
+        s_t = solve_highd_fk_distillation(
+            spec, km, q_tr, n_interior_anchors=108, n_mc_paths=48, n_steps_fk=75, dt_fk=0.045,
+            n_continuation_rounds=3, prior_mode="helmholtz_bessel", teacher_mode="bessel_guided",
+            design_seed=47000 + idx_m, mc_seed=47500 + idx_m,
+        )
+        t_ms = 1000.0 * (time.perf_counter() - t0)
+        t_r0 = time.perf_counter()
+        fit_c = fit_gp_value_with_prior(
+            spec, q_tr, s_t["frozen_X_all"], s_t["frozen_y_total_v"], s_t["frozen_noise_vec"], prior_mode="matched_sharp_cone"
+        )
+        r_ms = 1000.0 * (time.perf_counter() - t_r0)
+        return fit_c["policy"], t_ms + r_ms, t_ms, r_ms, s_t
+
+    def _run_m3():
+        t0 = time.perf_counter()
+        s_c = solve_highd_fk_distillation(
+            spec, km, q_tr, n_interior_anchors=108, n_mc_paths=48, n_steps_fk=75, dt_fk=0.045,
+            n_continuation_rounds=3, prior_mode="matched_sharp_cone", teacher_mode="cone_girsanov_independent",
+            design_seed=47000 + idx_m, mc_seed=47500 + idx_m,
+        )
+        tot_ms = 1000.0 * (time.perf_counter() - t0)
+        return s_c["policy"], tot_ms, tot_ms, 0.0, s_c
+
+    call_map = {
+        "M1_EndToEnd_Bessel24": _run_m1,
+        "M2_FrozenBesselTeacher_SharpCone108": _run_m2,
+        "M3_EndToEnd_IndepConeGirsanov_SharpCone108": _run_m3,
+    }
+    m_keys = list(call_map.keys())
+    out_m = {}
+    for mk in rng_ord.permutation(m_keys).tolist():
+        pol, tot_ms, teach_ms, refit_ms, s_diag = call_map[mk]()
+        r_un = simulate_closed_loop_crn(world, pol, q_un, n_per_start=16, seed=48000 + idx_m)
+        r_sh = simulate_closed_loop_crn(world, pol, q_sh, n_per_start=16, seed=48500 + idx_m)
+        out_m[mk] = {
+            "concurrent_query_ms": tot_ms,
+            "concurrent_teacher_ms": teach_ms,
+            "concurrent_refit_ms": refit_ms,
+            "unseen_cost": r_un["mean_cost"],
+            "shift_cost": r_sh["mean_cost"],
+            "unseen_reach_rate": r_un["reach_rate"],
+            "shift_reach_rate": r_sh["reach_rate"],
+            "survivor_fraction": s_diag["survivor_fraction"],
+            "weighted_tail_mass": s_diag["weighted_tail_mass"],
+            "mean_ess": s_diag["mean_ess"],
+            "min_ess": s_diag["min_ess"],
+            "budget_counters": s_diag["budget_counters"],
+        }
+    return {"map_seed": ms, "world_gp_fit_ms": world_gp_ms, "methods": out_m}
+
+
+def _batch_only_6d_method_worker(args: Tuple[int, int, str]) -> float:
+    idx_i, ms, mk = args
+    spec6 = ProblemSpec(dim=6, half_width=1.65, sigma=0.55, q0=0.65, dt_sim=0.020, max_steps=420)
+    w6 = generate_benchmark_map(ms, dim=6, regime="smooth", with_drift=True, spec=spec6)
+    km6 = KrigingWorldModel(*sample_noisy_probes(w6, n_probes=100, seed=ms + 7, include_drift=True))
+    q_tr, _, _ = make_highd_queries_three_regimes(ms, dim=6, n_queries=1)[0]
+    t0 = time.perf_counter()
+    if mk == "M1_EndToEnd_Bessel24":
+        solve_highd_fk_distillation(
+            spec6, km6, q_tr, n_interior_anchors=24, n_mc_paths=48, n_steps_fk=75, dt_fk=0.045,
+            n_continuation_rounds=3, prior_mode="helmholtz_bessel", teacher_mode="bessel_guided",
+            design_seed=46000 + idx_i, mc_seed=46500 + idx_i,
+        )
+    elif mk == "M2_FrozenBesselTeacher_SharpCone108":
+        s_t = solve_highd_fk_distillation(
+            spec6, km6, q_tr, n_interior_anchors=108, n_mc_paths=48, n_steps_fk=75, dt_fk=0.045,
+            n_continuation_rounds=3, prior_mode="helmholtz_bessel", teacher_mode="bessel_guided",
+            design_seed=47000 + idx_i, mc_seed=47500 + idx_i,
+        )
+        fit_gp_value_with_prior(
+            spec6, q_tr, s_t["frozen_X_all"], s_t["frozen_y_total_v"], s_t["frozen_noise_vec"], prior_mode="matched_sharp_cone"
+        )
+    elif mk == "M3_EndToEnd_IndepConeGirsanov_SharpCone108":
+        solve_highd_fk_distillation(
+            spec6, km6, q_tr, n_interior_anchors=108, n_mc_paths=48, n_steps_fk=75, dt_fk=0.045,
+            n_continuation_rounds=3, prior_mode="matched_sharp_cone", teacher_mode="cone_girsanov_independent",
+            design_seed=47000 + idx_i, mc_seed=47500 + idx_i,
+        )
+    return 1000.0 * (time.perf_counter() - t0)
 
 
 def run_independent_teacher_and_isolated_latency_suite(max_workers: int = 8) -> dict:
-    """`d1b926a Work Package D`:
-      1. 3D (`25^3`) Exact FD Teacher Verification (`8` fresh maps `9700..9707`);
-      2. 6D Cone-Girsanov Bessel-Free Teacher Verification (`8` confirmation maps `9608..9615`);
-      3. Isolated single-process (`max_workers=1`) cold query latency vs 8-worker throughput (`9608..9613`).
+    """`d1b926a Work Package D` + `29fa7c6 Stage B1`:
+      1. 3D (`25^3`) Discrete FD Reference Teacher Verification (`8` maps `9700..9707`);
+      2. 6D Cone-Girsanov Bessel-Free Teacher Verification (`8` maps `9608..9615`, full ESS/tail/cont diagnostics);
+      3. Locked `method_config_id` 6D Quality–Cost Table (`8` maps `9608..9615`) binding exact closed-loop
+         quality & `+5%` NI to BOTH isolated 1-worker serial latency AND 8-worker batch makespan throughput!
     """
     from green_response import run_map_parallel
 
@@ -665,65 +797,142 @@ def run_independent_teacher_and_isolated_latency_suite(max_workers: int = 8) -> 
         p: {
             "mean_unseen_cost": float(np.mean([r["priors"][p]["unseen_cost"] for r in rows_6d])),
             "mean_shift_cost": float(np.mean([r["priors"][p]["shift_cost"] for r in rows_6d])),
+            "mean_unseen_reach_rate": float(np.mean([r["priors"][p]["unseen_reach_rate"] for r in rows_6d])),
+            "mean_shift_reach_rate": float(np.mean([r["priors"][p]["shift_reach_rate"] for r in rows_6d])),
             "bessel_minus_prior_unseen_cost": paired_stats(b6_un - np.array([r["priors"][p]["unseen_cost"] for r in rows_6d])),
             "bessel_minus_prior_shift_cost": paired_stats(b6_sh - np.array([r["priors"][p]["shift_cost"] for r in rows_6d])),
         }
         for p in ("zero_mean", "matched_sharp_cone", "helmholtz_bessel")
     }
 
-    # Isolated single-process latency (`max_workers = 1`, zero inter-process contention, randomized order!)
-    iso_seeds = list(range(9608, 9614))
-    iso_b24_ms, iso_c108_ms = [], []
-    spec6 = ProblemSpec(dim=6, half_width=1.65, sigma=0.55, q0=0.65, dt_sim=0.020, max_steps=420)
-    for idx_i, ms in enumerate(iso_seeds):
-        w6 = generate_benchmark_map(ms, dim=6, regime="smooth", with_drift=True, spec=spec6)
-        km6 = KrigingWorldModel(*sample_noisy_probes(w6, n_probes=100, seed=ms + 7, include_drift=True))
-        q_tr, _, _ = make_highd_queries_three_regimes(ms, dim=6, n_queries=1)[0]
-        if idx_i % 2 == 0:
-            t0 = time.perf_counter()
-            solve_highd_fk_distillation(spec6, km6, q_tr, n_interior_anchors=24, n_mc_paths=48, n_steps_fk=75, prior_mode="helmholtz_bessel", seed=45000 + idx_i)
-            ms24 = 1000.0 * (time.perf_counter() - t0)
-            t0 = time.perf_counter()
-            solve_highd_fk_distillation(spec6, km6, q_tr, n_interior_anchors=108, n_mc_paths=48, n_steps_fk=75, prior_mode="matched_sharp_cone", teacher_mode="cone_girsanov_independent", seed=45500 + idx_i)
-            ms108 = 1000.0 * (time.perf_counter() - t0)
-        else:
-            t0 = time.perf_counter()
-            solve_highd_fk_distillation(spec6, km6, q_tr, n_interior_anchors=108, n_mc_paths=48, n_steps_fk=75, prior_mode="matched_sharp_cone", teacher_mode="cone_girsanov_independent", seed=45500 + idx_i)
-            ms108 = 1000.0 * (time.perf_counter() - t0)
-            t0 = time.perf_counter()
-            solve_highd_fk_distillation(spec6, km6, q_tr, n_interior_anchors=24, n_mc_paths=48, n_steps_fk=75, prior_mode="helmholtz_bessel", seed=45000 + idx_i)
-            ms24 = 1000.0 * (time.perf_counter() - t0)
-        iso_b24_ms.append(ms24)
-        iso_c108_ms.append(ms108)
+    rows_m = run_map_parallel(_matched_6d_method_worker, [(i, s) for i, s in enumerate(seeds_6d)], max_workers=max_workers)
 
-    iso24_arr = np.array(iso_b24_ms)
-    iso108_arr = np.array(iso_c108_ms)
+    spec6 = ProblemSpec(dim=6, half_width=1.65, sigma=0.55, q0=0.65, dt_sim=0.020, max_steps=420)
+    m_ids = [
+        "M1_EndToEnd_Bessel24",
+        "M2_FrozenBesselTeacher_SharpCone108",
+        "M3_EndToEnd_IndepConeGirsanov_SharpCone108",
+    ]
+    serial_ms = {mk: [] for mk in m_ids}
+    serial_world_gp_ms = []
+    for idx_i, ms in enumerate(seeds_6d):
+        w6 = generate_benchmark_map(ms, dim=6, regime="smooth", with_drift=True, spec=spec6)
+        t_gp0 = time.perf_counter()
+        km6 = KrigingWorldModel(*sample_noisy_probes(w6, n_probes=100, seed=ms + 7, include_drift=True))
+        serial_world_gp_ms.append(1000.0 * (time.perf_counter() - t_gp0))
+        q_tr, _, _ = make_highd_queries_three_regimes(ms, dim=6, n_queries=1)[0]
+        rng_s = np.random.default_rng(49000 + ms)
+        ms_map = {}
+        for mk in rng_s.permutation(m_ids).tolist():
+            t0 = time.perf_counter()
+            if mk == "M1_EndToEnd_Bessel24":
+                solve_highd_fk_distillation(
+                    spec6, km6, q_tr, n_interior_anchors=24, n_mc_paths=48, n_steps_fk=75, dt_fk=0.045,
+                    n_continuation_rounds=3, prior_mode="helmholtz_bessel", teacher_mode="bessel_guided",
+                    design_seed=46000 + idx_i, mc_seed=46500 + idx_i,
+                )
+            elif mk == "M2_FrozenBesselTeacher_SharpCone108":
+                s_t = solve_highd_fk_distillation(
+                    spec6, km6, q_tr, n_interior_anchors=108, n_mc_paths=48, n_steps_fk=75, dt_fk=0.045,
+                    n_continuation_rounds=3, prior_mode="helmholtz_bessel", teacher_mode="bessel_guided",
+                    design_seed=47000 + idx_i, mc_seed=47500 + idx_i,
+                )
+                fit_gp_value_with_prior(
+                    spec6, q_tr, s_t["frozen_X_all"], s_t["frozen_y_total_v"], s_t["frozen_noise_vec"], prior_mode="matched_sharp_cone"
+                )
+            elif mk == "M3_EndToEnd_IndepConeGirsanov_SharpCone108":
+                solve_highd_fk_distillation(
+                    spec6, km6, q_tr, n_interior_anchors=108, n_mc_paths=48, n_steps_fk=75, dt_fk=0.045,
+                    n_continuation_rounds=3, prior_mode="matched_sharp_cone", teacher_mode="cone_girsanov_independent",
+                    design_seed=47000 + idx_i, mc_seed=47500 + idx_i,
+                )
+            ms_map[mk] = 1000.0 * (time.perf_counter() - t0)
+        for mk in m_ids:
+            serial_ms[mk].append(ms_map[mk])
+
+    batch_makespan_ms = {}
+    for mk in m_ids:
+        t_b0 = time.perf_counter()
+        run_map_parallel(_batch_only_6d_method_worker, [(i, s, mk) for i, s in enumerate(seeds_6d)], max_workers=max_workers)
+        batch_makespan_ms[mk] = 1000.0 * (time.perf_counter() - t_b0)
+
+    m1_un = np.array([r["methods"]["M1_EndToEnd_Bessel24"]["unseen_cost"] for r in rows_m])
+    m1_sh = np.array([r["methods"]["M1_EndToEnd_Bessel24"]["shift_cost"] for r in rows_m])
+    m1_ser = np.array(serial_ms["M1_EndToEnd_Bessel24"])
+
+    matched_summary = {}
+    for mk in m_ids:
+        mk_un = np.array([r["methods"][mk]["unseen_cost"] for r in rows_m])
+        mk_sh = np.array([r["methods"][mk]["shift_cost"] for r in rows_m])
+        mk_ser = np.array(serial_ms[mk])
+        mk_con = np.array([r["methods"][mk]["concurrent_query_ms"] for r in rows_m])
+        cnt_keys = rows_m[0]["methods"][mk]["budget_counters"].keys()
+        matched_summary[mk] = {
+            "method_config_id": mk,
+            "unseen_mean_cost": float(np.mean(mk_un)),
+            "shift_mean_cost": float(np.mean(mk_sh)),
+            "unseen_reach_rate": float(np.mean([r["methods"][mk]["unseen_reach_rate"] for r in rows_m])),
+            "shift_reach_rate": float(np.mean([r["methods"][mk]["shift_reach_rate"] for r in rows_m])),
+            "serial_1worker_query_cold_ms": float(np.mean(mk_ser)),
+            "concurrent_8worker_per_call_ms": float(np.mean(mk_con)),
+            "concurrent_teacher_ms": float(np.mean([r["methods"][mk]["concurrent_teacher_ms"] for r in rows_m])),
+            "concurrent_refit_ms": float(np.mean([r["methods"][mk]["concurrent_refit_ms"] for r in rows_m])),
+            "batch_8map_makespan_ms_incl_world_gp": float(batch_makespan_ms[mk]),
+            "batch_throughput_queries_per_sec": float(len(seeds_6d) / (batch_makespan_ms[mk] / 1000.0)),
+            "serial_speedup_of_M1_over_method": float(np.mean(mk_ser) / np.mean(m1_ser)),
+            "batch_makespan_speedup_of_M1_over_method": float(batch_makespan_ms[mk] / batch_makespan_ms["M1_EndToEnd_Bessel24"]),
+            "M1_minus_method_serial_ms": paired_stats(m1_ser - mk_ser),
+            "M1_minus_method_unseen_cost": paired_stats(m1_un - mk_un),
+            "M1_minus_method_shift_cost": paired_stats(m1_sh - mk_sh),
+            "declared_5pct_relative_NI_M1_vs_method_unseen": paired_relative_noninferiority(m1_un, mk_un, rel_margin_pct=5.0),
+            "declared_5pct_relative_NI_M1_vs_method_shift": paired_relative_noninferiority(m1_sh, mk_sh, rel_margin_pct=5.0),
+            "mean_survivor_fraction": float(np.mean([r["methods"][mk]["survivor_fraction"] for r in rows_m])),
+            "mean_weighted_tail_mass": float(np.mean([r["methods"][mk]["weighted_tail_mass"] for r in rows_m])),
+            "mean_ess": float(np.mean([r["methods"][mk]["mean_ess"] for r in rows_m])),
+            "min_ess_worst_across_maps": float(np.min([r["methods"][mk]["min_ess"] for r in rows_m])),
+            "actual_budget_counters_mean": {
+                ck: (
+                    rows_m[0]["methods"][mk]["budget_counters"][ck]
+                    if isinstance(rows_m[0]["methods"][mk]["budget_counters"][ck], str)
+                    else float(np.mean([r["methods"][mk]["budget_counters"][ck] for r in rows_m]))
+                )
+                for ck in cnt_keys
+            },
+            "per_map_serial_ms": mk_ser.tolist(),
+            "per_map_unseen_cost": mk_un.tolist(),
+            "per_map_shift_cost": mk_sh.tolist(),
+        }
+
     return {
         "block_provenance": "fresh_computed_in_current_run",
         "exact_fd_3d_independent_teacher_8maps": {
             "fresh_seeds": seeds_3d,
             "grid_n": 25,
             "interior_anchors_nominal": 24,
-            "teacher": "ClassicalFDSolver_exact_discrete_HJB (0% Bessel/FK involvement)",
+            "teacher": "ClassicalFDSolver_discrete_25cubed_HJB_plus_known_goal_boundary (0% Bessel/FK involvement)",
             "priors": summary_3d,
             "per_map_records": rows_3d,
         },
         "cone_girsanov_6d_independent_teacher_8maps": {
-            "confirmation_seeds": seeds_6d,
+            "cohort_seeds": seeds_6d,
+            "cohort_origin": "d1b926a_confirmation_cohort_new_cone_teacher_intervention",
             "interior_anchors_nominal": 24,
-            "teacher": "Cone_Girsanov_FK_192paths_150steps (0% Bessel involvement)",
+            "teacher": "Cone_Girsanov_FK_192paths_150steps_dt020 (0% Bessel involvement, endpoint-in-goal stopping)",
             "mean_teacher_survivor_fraction": float(np.mean([r["survivor_frac"] for r in rows_6d])),
+            "mean_teacher_weighted_tail_mass": float(np.mean([r["weighted_tail_mass"] for r in rows_6d])),
+            "mean_teacher_ess": float(np.mean([r["mean_ess"] for r in rows_6d])),
+            "worst_min_teacher_ess": float(np.min([r["min_ess"] for r in rows_6d])),
+            "mean_continuation_final_diff": float(np.mean([r["continuation_max_diffs"][-1] for r in rows_6d if r["continuation_max_diffs"]])),
             "priors": summary_6d,
             "per_map_records": rows_6d,
         },
-        "isolated_single_process_query_latency_6maps": {
-            "seeds": iso_seeds,
-            "bessel24_mean_isolated_ms": float(np.mean(iso24_arr)),
-            "cone108_independent_mean_isolated_ms": float(np.mean(iso108_arr)),
-            "isolated_latency_speedup_ratio": float(np.mean(iso108_arr) / np.mean(iso24_arr)),
-            "paired_isolated_ms_diff_bessel24_minus_cone108": paired_stats(iso24_arr - iso108_arr),
-            "per_map_bessel24_isolated_ms": iso24_arr.tolist(),
-            "per_map_cone108_isolated_ms": iso108_arr.tolist(),
+        "matched_method_id_quality_and_latency_8maps": {
+            "cohort_seeds": seeds_6d,
+            "timing_scope": "query_cold_given_fitted_world_gp_for_serial_and_concurrent_per_call; includes_world_gp_in_batch_makespan",
+            "serial_order_protocol": "per_map_rng_permutation_across_all_3_locked_method_ids",
+            "mean_serial_world_gp_fit_ms": float(np.mean(serial_world_gp_ms)),
+            "methods": matched_summary,
+            "per_map_records": rows_m,
         },
     }
 

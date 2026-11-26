@@ -58,6 +58,7 @@ from green_response import (
     enforce_single_thread_env,
     eval_goal_union,
     generate_benchmark_map,
+    independent_exact_ball_operators,
     independent_exact_ball_tour_scores,
     independent_exact_macro_bellman_reference,
     make_antithetic_centered_pimc_policy,
@@ -1042,10 +1043,13 @@ def run_all_audit_checks() -> dict:
     except ImportError:
         from green_response.core import IntervalCertificate as _IC, _eval_reflected_step_goal_union_hit_tau
     for bad_kwargs in (
-        dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=float("nan"), upper_bound=1.0, extras={"policy": 1}),
-        dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=2.0, upper_bound=1.0, extras={"policy": 1}),
-        dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=1.0, upper_bound=1.05, extras={"status": "heuristic", "policy": 1}),
+        dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=float("nan"), upper_bound=1.0, extras={"policy": lambda x: x}),
+        dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=2.0, upper_bound=1.0, extras={"policy": lambda x: x}),
+        dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=1.0, upper_bound=1.05, extras={"status": "heuristic", "policy": lambda x: x}),
         dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=1.0, upper_bound=1.05, extras={"policy_action_idx": None}),
+        dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=1.0, upper_bound=1.05, extras={"policy": {}}),
+        dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=1.0, upper_bound=1.05, extras={"best_order": ()}),
+        dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=1.0, upper_bound=1.05, extras={"policy_action_idx": np.array([], dtype=int)}),
         dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=1.0, upper_bound=1.05),
         dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=1.0, upper_bound=1.05, extras={"other_field": 42}),
     ):
@@ -1054,17 +1058,22 @@ def run_all_audit_checks() -> dict:
             cert_guard_ok = False
         except ValueError:
             pass
+    v_only_cert = _IC(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=1.0, upper_bound=1.05, allow_value_only=True).to_dict()
+    p_val_cert = _IC(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=1.0, upper_bound=1.05, extras={"best_order": (0, 1)}).to_dict()
+    cert_kind_ok = (v_only_cert["certificate_kind"] == "value_only_enclosure") and (p_val_cert["certificate_kind"] == "policy_and_value_enclosure")
 
     report["18_exact_baseline_fail_closed_and_cert_guard"] = {
         "underflow_all_rejected_as_numeric_invalid": uf_rejected_all,
         "nan_phi_subset_dp_status": r_nan_sub["status"],
         "nan_phi_fixed_tour_status": r_nan_fix["status"],
         "certificate_constructor_guards_enforced": cert_guard_ok,
+        "certificate_kind_role_serialized": cert_kind_ok,
         "pass": bool(
             uf_rejected_all
             and r_nan_sub["status"] == "numeric_invalid" and not r_nan_sub["certified"]
             and r_nan_fix["status"] == "numeric_invalid" and not r_nan_fix["certified"]
             and cert_guard_ok
+            and cert_kind_ok
         ),
     }
 
@@ -1133,19 +1142,77 @@ def run_all_audit_checks() -> dict:
     perm_grad_diff = float(np.max(np.abs(sens_a["grad_q_optimal"] - sens_b["grad_q_optimal"])))
     perm_gap_diff = float(np.max(np.abs(sens_a["grad_q_top_gap"] - sens_b["grad_q_top_gap"])))
 
-    # Finite-difference verification at 6 interior grid nodes
+    # Finite-difference verification on BOTH `grad_q_optimal`, `grad_q_top_gap`, AND `grad_b_optimal`/`grad_b_top_gap`
     fd_errs = []
+    fd_gap_errs = []
     eps_fd = 1e-6
+
+    def _indep_killed_root_q(pl_obj, s_pt, ids_seq):
+        ref_k = independent_exact_macro_bellman_reference(pl_obj, s_pt, ids_seq)
+        s_nd = int(np.argmin(np.sum((pl_obj.pts - np.asarray(s_pt)) ** 2, axis=1)))
+        _, off_k, val_k, P_k, _ = independent_exact_ball_operators(pl_obj, s_nd, ids_seq)
+        F_k = ref_k["F_opt_table"]
+        full_k = (1 << len(ids_seq)) - 1
+        out_q = []
+        for ii, bb in enumerate(ids_seq):
+            rem_k = full_k ^ (1 << ii)
+            cont_k = F_k[0, rem_k] if pl_obj.wp_masks[bb][s_nd] else P_k[bb][0] @ F_k[off_k[bb], rem_k]
+            out_q.append(float(val_k[bb][0] + cont_k))
+        return np.asarray(out_q, dtype=float)
+
+    qr0 = _indep_killed_root_q(pl_gf, (-0.85, 0.05), [0, 1, 2, 3])
+    ord0 = np.argsort(qr0, kind="mergesort")
+    ia0, ib0 = int(ord0[0]), int(ord0[1])
     for nid_test in (40, 72, 110, 144, 185, 222):
         dq_vec = np.zeros_like(q_gf_base)
         dq_vec[nid_test] = eps_fd
         pl_p = SchurPortPlanner(sp_gf, 17, lambda X, v=q_gf_base + dq_vec: v, b_gf, gs_gf, initial_sectors_per_wp="EXACT", lazy_init=True)
         pl_m = SchurPortPlanner(sp_gf, 17, lambda X, v=q_gf_base - dq_vec: v, b_gf, gs_gf, initial_sectors_per_wp="EXACT", lazy_init=True)
-        vp = MacroTourPlanner(pl_p).plan_exact_subset_dp((-0.85, 0.05), [0, 1, 2, 3])["lower_bound"]
-        vm = MacroTourPlanner(pl_m).plan_exact_subset_dp((-0.85, 0.05), [0, 1, 2, 3])["lower_bound"]
-        fd_grad = (vp - vm) / (2.0 * eps_fd)
-        fd_errs.append(abs(fd_grad - float(sens_a["grad_q_optimal"][nid_test])))
+        qp_v = _indep_killed_root_q(pl_p, (-0.85, 0.05), [0, 1, 2, 3])
+        qm_v = _indep_killed_root_q(pl_m, (-0.85, 0.05), [0, 1, 2, 3])
+        fd_errs.append(abs(float((np.min(qp_v) - np.min(qm_v)) / (2.0 * eps_fd)) - float(sens_a["grad_q_optimal"][nid_test])))
+        fd_gap_errs.append(abs(float(((qp_v[ib0] - qp_v[ia0]) - (qm_v[ib0] - qm_v[ia0])) / (2.0 * eps_fd)) - float(sens_a["grad_q_top_gap"][nid_test])))
     max_frechet_fd_err = float(max(fd_errs))
+    max_frechet_gap_fd_err = float(max(fd_gap_errs))
+
+    # Drift sensitivity (`grad_b_optimal` and `grad_b_top_gap`) FD check along smooth interior drift perturbation
+    b_base_arr = b_gf(pl_gf.pts)
+    db_dir = np.column_stack([np.cos(0.17 * np.arange(len(pl_gf.pts))), np.sin(0.11 * np.arange(len(pl_gf.pts)))])
+    # Mask out near-zero upwind kink nodes (`|b| <= 1e-4`) so directional derivative is strictly smooth
+    db_dir[np.abs(b_base_arr) <= 1e-4] = 0.0
+    pl_bp = SchurPortPlanner(sp_gf, 17, lambda X: q_gf_base, lambda X, v=b_base_arr + eps_fd * db_dir: v, gs_gf, initial_sectors_per_wp="EXACT", lazy_init=True)
+    pl_bm = SchurPortPlanner(sp_gf, 17, lambda X: q_gf_base, lambda X, v=b_base_arr - eps_fd * db_dir: v, gs_gf, initial_sectors_per_wp="EXACT", lazy_init=True)
+    qbp = _indep_killed_root_q(pl_bp, (-0.85, 0.05), [0, 1, 2, 3])
+    qbm = _indep_killed_root_q(pl_bm, (-0.85, 0.05), [0, 1, 2, 3])
+    fd_b_opt = float((np.min(qbp) - np.min(qbm)) / (2.0 * eps_fd))
+    fd_b_gap = float(((qbp[ib0] - qbp[ia0]) - (qbm[ib0] - qbm[ia0])) / (2.0 * eps_fd))
+    ad_b_opt = float(np.sum(sens_a["grad_b_optimal"] * db_dir))
+    ad_b_gap = float(np.sum(sens_a["grad_b_top_gap"] * db_dir))
+    drift_fd_max_err = float(max(abs(fd_b_opt - ad_b_opt), abs(fd_b_gap - ad_b_gap)))
+
+    # GPT6 `v29_core_frechet_overlap.py` duplicate-eval-node composition regressions (`start_on_ring` & `overlapping_rings`)
+    gs_dis3 = [GoalBall((-0.45, 0.55), 0.1, 0.24), GoalBall((0.55, 0.40), -0.2, 0.24), GoalBall((0.40, -0.55), 0.0, 0.24)]
+    gs_ovl3 = [GoalBall((-0.15, 0.45), 0.1, 0.35), GoalBall((0.15, 0.45), -0.2, 0.35), GoalBall((0.40, -0.55), 0.0, 0.24)]
+    dup_errs = []
+    for gs_case, ring_start in ((gs_dis3, True), (gs_ovl3, False)):
+        pl_c = SchurPortPlanner(sp_gf, 17, lambda X: q_gf_base, b_gf, gs_case, initial_sectors_per_wp="EXACT", lazy_init=True)
+        st_c = pl_c.pts[pl_c.wp_rings[0][2]].copy() if ring_start else np.array([-0.85, 0.05])
+        sens_c = MacroTourPlanner(pl_c).compute_exact_macro_q_sensitivities(st_c, [0, 1, 2])
+        qrc = _indep_killed_root_q(pl_c, st_c, [0, 1, 2])
+        oc = np.argsort(qrc, kind="mergesort")
+        ca, cb = int(oc[0]), int(oc[1])
+        for dir_c in (np.ones(17 * 17), np.sin(np.arange(17 * 17) * 0.13)):
+            pl_cp = SchurPortPlanner(sp_gf, 17, lambda X, v=q_gf_base + eps_fd * dir_c: v, b_gf, gs_case, initial_sectors_per_wp="EXACT", lazy_init=True)
+            pl_cm = SchurPortPlanner(sp_gf, 17, lambda X, v=q_gf_base - eps_fd * dir_c: v, b_gf, gs_case, initial_sectors_per_wp="EXACT", lazy_init=True)
+            qcp = _indep_killed_root_q(pl_cp, st_c, [0, 1, 2])
+            qcm = _indep_killed_root_q(pl_cm, st_c, [0, 1, 2])
+            dup_errs.append(abs(float((np.min(qcp) - np.min(qcm)) / (2.0 * eps_fd)) - float(sens_c["grad_q_optimal"] @ dir_c)))
+            dup_errs.append(abs(float(((qcp[cb] - qcp[ca]) - (qcm[cb] - qcm[ca])) / (2.0 * eps_fd)) - float(sens_c["grad_q_top_gap"] @ dir_c)))
+    max_duplicate_node_fd_err = float(max(dup_errs))
+
+    # Symmetric Bellman tie / active-branch metadata check (`v29_core_contract_checks.py`)
+    pl_tie = SchurPortPlanner(sp_gf, 17, lambda X: np.full(len(X), 0.3), None, [GoalBall((-0.6, 0.0), 0.0, 0.24), GoalBall((0.6, 0.0), 0.0, 0.24)], initial_sectors_per_wp="EXACT", lazy_init=True)
+    sens_tie = MacroTourPlanner(pl_tie).compute_exact_macro_q_sensitivities((0.0, 0.75), [0, 1])
 
     # GPT6 `reflection_segment_probe` (`false_chord_hit` & `missed_pre_reflection_hit`)
     st_ref = np.array([[0.9, 0.0]])
@@ -1157,6 +1224,11 @@ def run_all_audit_checks() -> dict:
         "target_permutation_grad_max_diff": perm_grad_diff,
         "target_permutation_gap_grad_max_diff": perm_gap_diff,
         "max_frechet_vs_central_fd_abs_err": max_frechet_fd_err,
+        "max_gap_frechet_vs_central_fd_abs_err": max_frechet_gap_fd_err,
+        "max_drift_b_frechet_vs_central_fd_abs_err": drift_fd_max_err,
+        "max_duplicate_eval_node_fd_abs_err": max_duplicate_node_fd_err,
+        "tie_derivative_kind": sens_tie["derivative_kind"],
+        "symmetric_tie_detected": bool(sens_tie["tie_detected"]),
         "false_chord_hit_eliminated": bool(not h_false[0]),
         "pre_reflection_hit_detected": bool(h_pre[0]),
         "pre_reflection_hit_tau": float(tau_pre[0]),
@@ -1164,9 +1236,84 @@ def run_all_audit_checks() -> dict:
             perm_grad_diff == 0.0
             and perm_gap_diff == 0.0
             and max_frechet_fd_err < 1e-8
+            and max_frechet_gap_fd_err < 1e-8
+            and drift_fd_max_err < 1e-8
+            and max_duplicate_node_fd_err < 1e-8
+            and sens_tie["derivative_kind"] == "active_branch"
+            and bool(sens_tie["tie_detected"]) is True
             and (not h_false[0])
             and bool(h_pre[0])
             and abs(float(tau_pre[0]) - (0.06 - 0.01) / np.hypot(0.6, 0.4)) < 0.03
+        ),
+    }
+
+    # ------------------------------------------------------------------
+    # 21. [NEW `29fa7c6` Closure] Sequential Rank-1 Schur Conditional Covariance Exactness & Eval-vs-Operational Isolation
+    # ------------------------------------------------------------------
+    w_cc = generate_benchmark_map(10300, dim=2, regime="competing_corridor", with_drift=True)
+    X_cc, q_cc, b_cc = sample_noisy_probes(w_cc, n_probes=24, seed=10307, include_drift=True)
+    km_cc = KrigingWorldModel(X_cc, q_cc, b_cc)
+    gx_cc = np.linspace(-1.3, 1.3, 13)
+    gxx_c, gyy_c = np.meshgrid(gx_cc, gx_cc, indexing="ij")
+    cand_cc = np.column_stack([gxx_c.ravel(), gyy_c.ravel()])
+    grid_cc = build_grid_points(2, w_cc.spec.half_width, 15)[1]
+    w_func = np.column_stack([np.sin(0.2 * np.arange(len(grid_cc))), np.cos(0.15 * np.arange(len(grid_cc)))])
+    C0_q, G0_q, nz0_q = km_cc._build_channel_posterior_cov_and_proj(km_cc._q_fast, cand_cc, grid_cc, w_func)
+    sel_idx = 42
+    dq0 = C0_q[sel_idx, sel_idx] + nz0_q
+    C1_downdate = C0_q - np.outer(C0_q[:, sel_idx], C0_q[:, sel_idx]) / dq0
+    G1_downdate = G0_q - np.outer(C0_q[:, sel_idx], G0_q[sel_idx, :]) / dq0
+
+    # Exact fixed-hyperparameter block Cholesky reference with `cand_cc[sel_idx]` appended to `X_obs`
+    # (including sklearn's default `alpha=1e-10` diagonal jitter on the original `X_obs` block!)
+    st_q = km_cc._q_fast
+    n0_obs = len(km_cc.X_obs)
+    X_aug = np.vstack([km_cc.X_obs, cand_cc[sel_idx : sel_idx + 1]])
+    K_aa = km_cc._eval_matern25_kernel_pair(X_aug, X_aug, st_q) + (nz0_q / (st_q["y_std"] ** 2)) * np.eye(len(X_aug))
+    K_aa[:n0_obs, :n0_obs] += 1e-10 * np.eye(n0_obs)
+    L_aug = np.linalg.cholesky(K_aa)
+    from scipy.linalg import solve_triangular as _st_tri
+    K_ca = km_cc._eval_matern25_kernel_pair(cand_cc, X_aug, st_q)
+    K_ga = km_cc._eval_matern25_kernel_pair(grid_cc, X_aug, st_q)
+    K_cc_raw = km_cc._eval_matern25_kernel_pair(cand_cc, cand_cc, st_q)
+    K_cg_raw = km_cc._eval_matern25_kernel_pair(cand_cc, grid_cc, st_q)
+    V_ca = _st_tri(L_aug, K_ca.T, lower=True, check_finite=False)
+    V_ga = _st_tri(L_aug, K_ga.T, lower=True, check_finite=False)
+    C1_exact = (st_q["y_std"] ** 2) * (K_cc_raw - (V_ca.T @ V_ca))
+    G1_exact = (st_q["y_std"] ** 2) * ((K_cg_raw @ w_func) - (V_ca.T @ (V_ga @ w_func)))
+    schur_cov_err = float(np.max(np.abs(C1_downdate - C1_exact)))
+    schur_proj_err = float(np.max(np.abs(G1_downdate - G1_exact)))
+
+    # Eval-vs-Operational isolation check: held-out evaluation on `pl_eval` must leave `pl_operational` state/counters untouched
+    wps_iso = [GoalBall((-0.6, 0.5), 0.0, 0.26), GoalBall((0.6, 0.5), 0.0, 0.26), GoalBall((0.5, -0.6), 0.0, 0.26), GoalBall((-0.5, -0.6), 0.0, 0.26)]
+    def _run_one_isolated_step(run_heldout_eval: bool):
+        km_i = KrigingWorldModel(X_cc, q_cc, b_cc)
+        pl_op = SchurPortPlanner(w_cc.spec, 21, km_i.predict_q, km_i.predict_b, wps_iso, initial_sectors_per_wp="EXACT", lazy_init=True)
+        mt_op = MacroTourPlanner(pl_op)
+        if run_heldout_eval:
+            pl_ev = SchurPortPlanner(w_cc.spec, 21, km_i.predict_q, km_i.predict_b, wps_iso, initial_sectors_per_wp="EXACT", lazy_init=True)
+            MacroTourPlanner(pl_ev).plan_exact_subset_dp((0.0, 0.9), (0, 1, 2, 3))
+        mt_op.plan_exact_subset_dp((-0.9, 0.0), (0, 1, 2))
+        sens_op = mt_op.compute_exact_macro_q_sensitivities((-0.9, 0.0), (0, 1, 2))
+        X_sel, _ = km_i.select_sequential_kg_voi_probes(cand_cc, pl_op.pts, [sens_op], X_cc, n_decision=6, n_sentinel=2, min_repel=0.22)
+        return X_sel, pl_op.lu_factorizations, pl_op.total_lu_backsolves
+
+    X_with_ev, lu_w, bs_w = _run_one_isolated_step(True)
+    X_no_ev, lu_n, bs_n = _run_one_isolated_step(False)
+    eval_iso_probe_diff = float(np.max(np.abs(X_with_ev - X_no_ev)))
+
+    report["21_conditional_cov_downdate_and_eval_isolation_audit"] = {
+        "schur_rank1_cov_max_abs_err": schur_cov_err,
+        "schur_rank1_proj_max_abs_err": schur_proj_err,
+        "eval_deleted_probe_max_diff": eval_iso_probe_diff,
+        "eval_deleted_lu_identical": bool(lu_w == lu_n),
+        "eval_deleted_backsolves_identical": bool(bs_w == bs_n),
+        "pass": bool(
+            schur_cov_err < 1e-12
+            and schur_proj_err < 1e-12
+            and eval_iso_probe_diff == 0.0
+            and lu_w == lu_n
+            and bs_w == bs_n
         ),
     }
 

@@ -30,6 +30,7 @@ from .core import (
     eval_goal_union,
     eval_hazard_features,
     generate_benchmark_map,
+    holm_bonferroni_adjust,
     observe_world_at_points,
     paired_relative_noninferiority,
     paired_stats,

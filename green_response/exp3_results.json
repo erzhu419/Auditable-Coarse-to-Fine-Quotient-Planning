@@ -1,23 +1,23 @@
 {
   "metadata": {
-    "git_head_sha": "d1b926aa74f54bbd9ce454b8f4a1b6e2cdffe943",
+    "git_head_sha": "29fa7c680db1acc5e8127e781e83ec1979eca2e3",
     "git_dirty_green_response": true,
-    "package_py_sha256": "849bc319f431fc8563d5748a4352558d45d778cdb4a0a4812b0a63682faca559",
+    "package_py_sha256": "3e82939ad86b71657f4ada18873e54cc1900c9ca4404b5d013b8b9ccecb0503d",
     "source_manifest": {
-      "git_head_sha": "d1b926aa74f54bbd9ce454b8f4a1b6e2cdffe943",
+      "git_head_sha": "29fa7c680db1acc5e8127e781e83ec1979eca2e3",
       "git_dirty_green_response": true,
-      "package_py_sha256": "849bc319f431fc8563d5748a4352558d45d778cdb4a0a4812b0a63682faca559",
+      "package_py_sha256": "3e82939ad86b71657f4ada18873e54cc1900c9ca4404b5d013b8b9ccecb0503d",
       "per_file_sha256": {
-        "__init__.py": "aa9636147a3df265603b70ffb3036393cac60e0056f0dec4c6c524b11b2ecd9f",
-        "core.py": "e57340bbdee7cf185e48e32d14a3d233419efad76ec8158bbb66fcbd3fd219f7",
+        "__init__.py": "028706b1e52a4b5e29c4dc42b8995b35397720ff6cf81c48b635ec51f9b5ee05",
+        "core.py": "2f02470c892f702096f810b09a5678d7f1e77a49d04eaa0b611f9f348a4e8848",
         "exp1_3d_and_macro_tours.py": "ae079e2d1b0ba44f283c85ebb54c290b7f18253fc11de38e72a8d0de80599bf2",
         "exp2_nonlmdp_kkt.py": "3187b5ff1be8a3e637974029fb56d401b74c0c86f468c68bc662bfbf69ad9405",
-        "exp3_highd_and_kinetic.py": "aad29f917018952ae9bffc10baabd6486b0ed2a6ba8472973c23a00fabd851e5",
-        "exp4_fidelity_and_continual.py": "bbd7896f060fdcd988015fb9173facdf030fba32fc5fde7d5110478adf15381e",
+        "exp3_highd_and_kinetic.py": "a677f05c4155dfb5d2fdf6c672d177d8690c53b7501e31c3197bed60aafc5435",
+        "exp4_fidelity_and_continual.py": "9fce3e23a57319b75dea5cd37841ac9221df9086e5c115a179528daca3e6f7dd",
         "highd_solvers.py": "b2860c83e59dc4b6060c0e8726f64755a97f4cb9edbca2d4acbdf6242dee4542",
-        "macro_planning.py": "cf2f18968ef8980998418d05bf7e804b231a3692c771d49685a90dfcd3fe0824",
+        "macro_planning.py": "961a0250cf080dfd26da8771443477121c6e486ee85042eebe6cb2bf99afdfec",
         "port_solvers.py": "35e598894f1013db0732561bcd85a9b81097fc7eddbbc5d929192296d194f914",
-        "verify_audit_closure.py": "8b7849e2d3f751011442e8fd4d1e058fe9474842405baa0ad7829473f424853b"
+        "verify_audit_closure.py": "98f12fd2089b8e9cc99fb2af29aa3e7473b29b5985cad9b1ede8899c8192883a"
       }
     },
     "python_version": "3.10.12",
@@ -1665,7 +1665,8 @@
         ]
       }
     },
-    "block_provenance": "inherited_from_commit_ddd19c5"
+    "block_provenance": "inherited_from_commit_ddd19c5",
+    "generating_commit": "ddd19c5"
   },
   "highd_6d": {
     "dim": 6,
@@ -3266,10 +3267,11 @@
         ]
       }
     },
-    "block_provenance": "inherited_from_commit_ddd19c5"
+    "block_provenance": "inherited_from_commit_ddd19c5",
+    "generating_commit": "ddd19c5"
   },
   "highd_6d_fresh_anchor_budget_efficiency": {
-    "block_provenance": "fresh_computed_in_current_run",
+    "block_provenance": "inherited_from_commit_29fa7c6_d1_confirmation_cohort_reanalyzed",
     "replication_seeds_9600_9607": [
       9600,
       9601,
@@ -4636,7 +4638,9 @@
           }
         }
       }
-    }
+    },
+    "generating_commit": "29fa7c6",
+    "cohort_initial_reveal_commit": "d1b926a"
   },
   "independent_teacher_and_isolated_latency": {
     "block_provenance": "fresh_computed_in_current_run",
@@ -4653,7 +4657,7 @@
       ],
       "grid_n": 25,
       "interior_anchors_nominal": 24,
-      "teacher": "ClassicalFDSolver_exact_discrete_HJB (0% Bessel/FK involvement)",
+      "teacher": "ClassicalFDSolver_discrete_25cubed_HJB_plus_known_goal_boundary (0% Bessel/FK involvement)",
       "priors": {
         "zero_mean": {
           "mean_val_rmse_vs_exact_fd": 1.021025616436737,
@@ -4982,7 +4986,7 @@
       ]
     },
     "cone_girsanov_6d_independent_teacher_8maps": {
-      "confirmation_seeds": [
+      "cohort_seeds": [
         9608,
         9609,
         9610,
@@ -4992,13 +4996,20 @@
         9614,
         9615
       ],
+      "cohort_origin": "d1b926a_confirmation_cohort_new_cone_teacher_intervention",
       "interior_anchors_nominal": 24,
-      "teacher": "Cone_Girsanov_FK_192paths_150steps (0% Bessel involvement)",
+      "teacher": "Cone_Girsanov_FK_192paths_150steps_dt020 (0% Bessel involvement, endpoint-in-goal stopping)",
       "mean_teacher_survivor_fraction": 0.38789563301282054,
+      "mean_teacher_weighted_tail_mass": 0.002246029205264115,
+      "mean_teacher_ess": 17.314429383059423,
+      "worst_min_teacher_ess": 1.3099674313062843,
+      "mean_continuation_final_diff": 1.25973557141279e-07,
       "priors": {
         "zero_mean": {
           "mean_unseen_cost": 12.921990634129507,
           "mean_shift_cost": 14.238033955836132,
+          "mean_unseen_reach_rate": 0.22767857142857145,
+          "mean_shift_reach_rate": 0.04464285714285714,
           "bessel_minus_prior_unseen_cost": {
             "n": 8,
             "mean": -8.519553621687038,
@@ -5023,6 +5034,8 @@
         "matched_sharp_cone": {
           "mean_unseen_cost": 5.787680486121364,
           "mean_shift_cost": 6.343943327664127,
+          "mean_unseen_reach_rate": 0.9866071428571429,
+          "mean_shift_reach_rate": 1.0,
           "bessel_minus_prior_unseen_cost": {
             "n": 8,
             "mean": -1.3852434736788966,
@@ -5047,6 +5060,8 @@
         "helmholtz_bessel": {
           "mean_unseen_cost": 4.402437012442467,
           "mean_shift_cost": 5.3870739101779535,
+          "mean_unseen_reach_rate": 1.0,
+          "mean_shift_reach_rate": 1.0,
           "bessel_minus_prior_unseen_cost": {
             "n": 8,
             "mean": 0.0,
@@ -5073,186 +5088,1682 @@
         {
           "map_seed": 9608,
           "survivor_frac": 0.34595352564102566,
+          "weighted_tail_mass": 0.0009388461124451208,
+          "mean_ess": 25.12968674783258,
+          "min_ess": 2.890339844828316,
+          "median_ess": 15.51246229700346,
+          "continuation_max_diffs": [
+            0.022622332372611353,
+            1.8534620034760252e-05,
+            1.4258924707633014e-08
+          ],
+          "budget_counters": {
+            "teacher_mode": "cone_girsanov_independent",
+            "n_physical_world_observations": 100,
+            "n_interior_proposed_nominal": 24,
+            "n_start_anchors_added": 3,
+            "n_near_goal_filtered": 1,
+            "n_interior_actual": 26,
+            "n_boundary_actual": 128,
+            "n_gp_rows_total": 154,
+            "mc_independent_streams_per_anchor": 96,
+            "mc_paths_per_anchor_effective": 192,
+            "n_fk_paths_launched_actual": 4992,
+            "n_fk_active_steps_total": 475587,
+            "n_model_q_evals": 475587,
+            "n_model_b_evals": 475587,
+            "n_continuation_gp_fits": 4
+          },
           "priors": {
             "zero_mean": {
               "unseen_cost": 10.147926816354365,
-              "shift_cost": 14.098241965357607
+              "shift_cost": 14.098241965357607,
+              "unseen_reach_rate": 0.4642857142857143,
+              "shift_reach_rate": 0.03571428571428571
             },
             "matched_sharp_cone": {
               "unseen_cost": 4.649906441256582,
-              "shift_cost": 5.835478117490014
+              "shift_cost": 5.835478117490014,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0
             },
             "helmholtz_bessel": {
               "unseen_cost": 3.768774754600806,
-              "shift_cost": 4.855796394609834
+              "shift_cost": 4.855796394609834,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0
             }
           }
         },
         {
           "map_seed": 9609,
           "survivor_frac": 0.3974358974358974,
+          "weighted_tail_mass": 0.004812311171138461,
+          "mean_ess": 15.912146630399887,
+          "min_ess": 2.1767086347096125,
+          "median_ess": 10.906159511192655,
+          "continuation_max_diffs": [
+            0.496770698676118,
+            0.00044987825929965197,
+            5.798896101083528e-07
+          ],
+          "budget_counters": {
+            "teacher_mode": "cone_girsanov_independent",
+            "n_physical_world_observations": 100,
+            "n_interior_proposed_nominal": 24,
+            "n_start_anchors_added": 3,
+            "n_near_goal_filtered": 1,
+            "n_interior_actual": 26,
+            "n_boundary_actual": 128,
+            "n_gp_rows_total": 154,
+            "mc_independent_streams_per_anchor": 96,
+            "mc_paths_per_anchor_effective": 192,
+            "n_fk_paths_launched_actual": 4992,
+            "n_fk_active_steps_total": 493050,
+            "n_model_q_evals": 493050,
+            "n_model_b_evals": 493050,
+            "n_continuation_gp_fits": 4
+          },
           "priors": {
             "zero_mean": {
               "unseen_cost": 10.559026571916828,
-              "shift_cost": 14.383139999214766
+              "shift_cost": 14.383139999214766,
+              "unseen_reach_rate": 0.4642857142857143,
+              "shift_reach_rate": 0.07142857142857142
             },
             "matched_sharp_cone": {
               "unseen_cost": 4.802803586275481,
-              "shift_cost": 7.858366499748125
+              "shift_cost": 7.858366499748125,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0
             },
             "helmholtz_bessel": {
               "unseen_cost": 3.8496164142500753,
-              "shift_cost": 5.573956654596278
+              "shift_cost": 5.573956654596278,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0
             }
           }
         },
         {
           "map_seed": 9610,
           "survivor_frac": 0.44811698717948717,
+          "weighted_tail_mass": 0.0020472736548582645,
+          "mean_ess": 14.422814984741391,
+          "min_ess": 2.3112484218506686,
+          "median_ess": 10.117859250286138,
+          "continuation_max_diffs": [
+            0.15885044558712735,
+            0.00022330584832719325,
+            2.828190259762664e-07
+          ],
+          "budget_counters": {
+            "teacher_mode": "cone_girsanov_independent",
+            "n_physical_world_observations": 100,
+            "n_interior_proposed_nominal": 24,
+            "n_start_anchors_added": 3,
+            "n_near_goal_filtered": 1,
+            "n_interior_actual": 26,
+            "n_boundary_actual": 128,
+            "n_gp_rows_total": 154,
+            "mc_independent_streams_per_anchor": 96,
+            "mc_paths_per_anchor_effective": 192,
+            "n_fk_paths_launched_actual": 4992,
+            "n_fk_active_steps_total": 526831,
+            "n_model_q_evals": 526831,
+            "n_model_b_evals": 526831,
+            "n_continuation_gp_fits": 4
+          },
           "priors": {
             "zero_mean": {
               "unseen_cost": 15.616260749284418,
-              "shift_cost": 12.985558291170701
+              "shift_cost": 12.985558291170701,
+              "unseen_reach_rate": 0.03571428571428571,
+              "shift_reach_rate": 0.17857142857142858
             },
             "matched_sharp_cone": {
               "unseen_cost": 8.058615493325357,
-              "shift_cost": 5.626959462802787
+              "shift_cost": 5.626959462802787,
+              "unseen_reach_rate": 0.9642857142857143,
+              "shift_reach_rate": 1.0
             },
             "helmholtz_bessel": {
               "unseen_cost": 5.9983518153978475,
-              "shift_cost": 4.632858643525425
+              "shift_cost": 4.632858643525425,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0
             }
           }
         },
         {
           "map_seed": 9611,
           "survivor_frac": 0.3687900641025641,
+          "weighted_tail_mass": 0.0004915987681741264,
+          "mean_ess": 22.43499849990797,
+          "min_ess": 4.4354355956502145,
+          "median_ess": 12.851592238613707,
+          "continuation_max_diffs": [
+            0.035339972023242794,
+            2.303058187358431e-05,
+            1.4446246865418289e-08
+          ],
+          "budget_counters": {
+            "teacher_mode": "cone_girsanov_independent",
+            "n_physical_world_observations": 100,
+            "n_interior_proposed_nominal": 24,
+            "n_start_anchors_added": 3,
+            "n_near_goal_filtered": 1,
+            "n_interior_actual": 26,
+            "n_boundary_actual": 128,
+            "n_gp_rows_total": 154,
+            "mc_independent_streams_per_anchor": 96,
+            "mc_paths_per_anchor_effective": 192,
+            "n_fk_paths_launched_actual": 4992,
+            "n_fk_active_steps_total": 480189,
+            "n_model_q_evals": 480189,
+            "n_model_b_evals": 480189,
+            "n_continuation_gp_fits": 4
+          },
           "priors": {
             "zero_mean": {
               "unseen_cost": 10.835219484746375,
-              "shift_cost": 13.875816224127856
+              "shift_cost": 13.875816224127856,
+              "unseen_reach_rate": 0.32142857142857145,
+              "shift_reach_rate": 0.0
             },
             "matched_sharp_cone": {
               "unseen_cost": 5.988729373490509,
-              "shift_cost": 6.949663770961114
+              "shift_cost": 6.949663770961114,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0
             },
             "helmholtz_bessel": {
               "unseen_cost": 3.8321917266315064,
-              "shift_cost": 5.454092828082438
+              "shift_cost": 5.454092828082438,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0
             }
           }
         },
         {
           "map_seed": 9612,
           "survivor_frac": 0.47716346153846156,
+          "weighted_tail_mass": 0.004230435862868209,
+          "mean_ess": 10.030554371836773,
+          "min_ess": 1.3099674313062843,
+          "median_ess": 8.08602419166867,
+          "continuation_max_diffs": [
+            0.1461012823971899,
+            0.00010532324744616517,
+            9.345111884329071e-08
+          ],
+          "budget_counters": {
+            "teacher_mode": "cone_girsanov_independent",
+            "n_physical_world_observations": 100,
+            "n_interior_proposed_nominal": 24,
+            "n_start_anchors_added": 3,
+            "n_near_goal_filtered": 1,
+            "n_interior_actual": 26,
+            "n_boundary_actual": 128,
+            "n_gp_rows_total": 154,
+            "mc_independent_streams_per_anchor": 96,
+            "mc_paths_per_anchor_effective": 192,
+            "n_fk_paths_launched_actual": 4992,
+            "n_fk_active_steps_total": 559171,
+            "n_model_q_evals": 559171,
+            "n_model_b_evals": 559171,
+            "n_continuation_gp_fits": 4
+          },
           "priors": {
             "zero_mean": {
               "unseen_cost": 13.112668560443556,
-              "shift_cost": 14.627964536558782
+              "shift_cost": 14.627964536558782,
+              "unseen_reach_rate": 0.17857142857142858,
+              "shift_reach_rate": 0.03571428571428571
             },
             "matched_sharp_cone": {
               "unseen_cost": 4.368762811300772,
-              "shift_cost": 6.031071269951125
+              "shift_cost": 6.031071269951125,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0
             },
             "helmholtz_bessel": {
               "unseen_cost": 3.7585592421314473,
-              "shift_cost": 5.708704016708121
+              "shift_cost": 5.708704016708121,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0
             }
           }
         },
         {
           "map_seed": 9613,
           "survivor_frac": 0.39783653846153844,
+          "weighted_tail_mass": 0.000954370747127069,
+          "mean_ess": 12.256674755792194,
+          "min_ess": 2.179402640918891,
+          "median_ess": 9.281270802676413,
+          "continuation_max_diffs": [
+            0.027153444387789882,
+            1.4470349988471298e-05,
+            1.803085680762706e-09
+          ],
+          "budget_counters": {
+            "teacher_mode": "cone_girsanov_independent",
+            "n_physical_world_observations": 100,
+            "n_interior_proposed_nominal": 24,
+            "n_start_anchors_added": 3,
+            "n_near_goal_filtered": 1,
+            "n_interior_actual": 26,
+            "n_boundary_actual": 128,
+            "n_gp_rows_total": 154,
+            "mc_independent_streams_per_anchor": 96,
+            "mc_paths_per_anchor_effective": 192,
+            "n_fk_paths_launched_actual": 4992,
+            "n_fk_active_steps_total": 525743,
+            "n_model_q_evals": 525743,
+            "n_model_b_evals": 525743,
+            "n_continuation_gp_fits": 4
+          },
           "priors": {
             "zero_mean": {
               "unseen_cost": 16.40602919763118,
-              "shift_cost": 14.928367422519567
+              "shift_cost": 14.928367422519567,
+              "unseen_reach_rate": 0.03571428571428571,
+              "shift_reach_rate": 0.03571428571428571
             },
             "matched_sharp_cone": {
               "unseen_cost": 8.744285060146941,
-              "shift_cost": 6.250945202541735
+              "shift_cost": 6.250945202541735,
+              "unseen_reach_rate": 0.9285714285714286,
+              "shift_reach_rate": 1.0
             },
             "helmholtz_bessel": {
               "unseen_cost": 6.436474266917001,
-              "shift_cost": 5.977077656121591
+              "shift_cost": 5.977077656121591,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0
             }
           }
         },
         {
           "map_seed": 9614,
           "survivor_frac": 0.33313301282051283,
+          "weighted_tail_mass": 0.0010202476705832193,
+          "mean_ess": 20.304125657489482,
+          "min_ess": 1.8552287328978452,
+          "median_ess": 13.533702620339266,
+          "continuation_max_diffs": [
+            0.03740841267863715,
+            1.1312622940629069e-05,
+            3.5327047953614965e-09
+          ],
+          "budget_counters": {
+            "teacher_mode": "cone_girsanov_independent",
+            "n_physical_world_observations": 100,
+            "n_interior_proposed_nominal": 24,
+            "n_start_anchors_added": 3,
+            "n_near_goal_filtered": 1,
+            "n_interior_actual": 26,
+            "n_boundary_actual": 128,
+            "n_gp_rows_total": 154,
+            "mc_independent_streams_per_anchor": 96,
+            "mc_paths_per_anchor_effective": 192,
+            "n_fk_paths_launched_actual": 4992,
+            "n_fk_active_steps_total": 465093,
+            "n_model_q_evals": 465093,
+            "n_model_b_evals": 465093,
+            "n_continuation_gp_fits": 4
+          },
           "priors": {
             "zero_mean": {
               "unseen_cost": 12.430016167446288,
-              "shift_cost": 15.006719755745747
+              "shift_cost": 15.006719755745747,
+              "unseen_reach_rate": 0.2857142857142857,
+              "shift_reach_rate": 0.0
             },
             "matched_sharp_cone": {
               "unseen_cost": 5.366990296879896,
-              "shift_cost": 7.608677784920703
+              "shift_cost": 7.608677784920703,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0
             },
             "helmholtz_bessel": {
               "unseen_cost": 3.827300097446845,
-              "shift_cost": 6.774675605744283
+              "shift_cost": 6.774675605744283,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0
             }
           }
         },
         {
           "map_seed": 9615,
           "survivor_frac": 0.3347355769230769,
+          "weighted_tail_mass": 0.0034731496549184494,
+          "mean_ess": 18.024433416475095,
+          "min_ess": 2.0949671784497923,
+          "median_ess": 11.547887427255779,
+          "continuation_max_diffs": [
+            0.08354502415638976,
+            3.055825586883998e-05,
+            1.758774015314657e-08
+          ],
+          "budget_counters": {
+            "teacher_mode": "cone_girsanov_independent",
+            "n_physical_world_observations": 100,
+            "n_interior_proposed_nominal": 24,
+            "n_start_anchors_added": 3,
+            "n_near_goal_filtered": 1,
+            "n_interior_actual": 26,
+            "n_boundary_actual": 128,
+            "n_gp_rows_total": 154,
+            "mc_independent_streams_per_anchor": 96,
+            "mc_paths_per_anchor_effective": 192,
+            "n_fk_paths_launched_actual": 4992,
+            "n_fk_active_steps_total": 482365,
+            "n_model_q_evals": 482365,
+            "n_model_b_evals": 482365,
+            "n_continuation_gp_fits": 4
+          },
           "priors": {
             "zero_mean": {
               "unseen_cost": 14.26877752521304,
-              "shift_cost": 13.99846345199403
+              "shift_cost": 13.99846345199403,
+              "unseen_reach_rate": 0.03571428571428571,
+              "shift_reach_rate": 0.0
             },
             "matched_sharp_cone": {
               "unseen_cost": 4.321350826295378,
-              "shift_cost": 4.590384512897416
+              "shift_cost": 4.590384512897416,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0
             },
             "helmholtz_bessel": {
               "unseen_cost": 3.748227782164217,
-              "shift_cost": 4.119429482035654
+              "shift_cost": 4.119429482035654,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0
             }
           }
         }
       ]
     },
-    "isolated_single_process_query_latency_6maps": {
-      "seeds": [
+    "matched_method_id_quality_and_latency_8maps": {
+      "cohort_seeds": [
         9608,
         9609,
         9610,
         9611,
         9612,
-        9613
+        9613,
+        9614,
+        9615
       ],
-      "bessel24_mean_isolated_ms": 199.31136700324714,
-      "cone108_independent_mean_isolated_ms": 1701.7953271279112,
-      "isolated_latency_speedup_ratio": 8.538375671770822,
-      "paired_isolated_ms_diff_bessel24_minus_cone108": {
-        "n": 6,
-        "mean": -1502.483960124664,
-        "ci95_half": 205.7401917442539,
-        "ci95": [
-          -1708.224151868918,
-          -1296.74376838041
-        ],
-        "p_two_sided": 7.899126998339247e-06
+      "timing_scope": "query_cold_given_fitted_world_gp_for_serial_and_concurrent_per_call; includes_world_gp_in_batch_makespan",
+      "serial_order_protocol": "per_map_rng_permutation_across_all_3_locked_method_ids",
+      "mean_serial_world_gp_fit_ms": 449.5191648893524,
+      "methods": {
+        "M1_EndToEnd_Bessel24": {
+          "method_config_id": "M1_EndToEnd_Bessel24",
+          "unseen_mean_cost": 4.3742196115973515,
+          "shift_mean_cost": 5.297106588295866,
+          "unseen_reach_rate": 1.0,
+          "shift_reach_rate": 1.0,
+          "serial_1worker_query_cold_ms": 187.1456868830137,
+          "concurrent_8worker_per_call_ms": 234.5378613390494,
+          "concurrent_teacher_ms": 234.5378613390494,
+          "concurrent_refit_ms": 0.0,
+          "batch_8map_makespan_ms_incl_world_gp": 914.8305831477046,
+          "batch_throughput_queries_per_sec": 8.744788540490184,
+          "serial_speedup_of_M1_over_method": 1.0,
+          "batch_makespan_speedup_of_M1_over_method": 1.0,
+          "M1_minus_method_serial_ms": {
+            "n": 8,
+            "mean": 0.0,
+            "ci95_half": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "p_two_sided": 1.0
+          },
+          "M1_minus_method_unseen_cost": {
+            "n": 8,
+            "mean": 0.0,
+            "ci95_half": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "p_two_sided": 1.0
+          },
+          "M1_minus_method_shift_cost": {
+            "n": 8,
+            "mean": 0.0,
+            "ci95_half": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "p_two_sided": 1.0
+          },
+          "declared_5pct_relative_NI_M1_vs_method_unseen": {
+            "rel_margin_pct": 5.0,
+            "primary_estimand": "linearized_contrast_vs_0",
+            "primary_p_noninferior": 4.3381589062457065e-06,
+            "primary_noninferior_at_alpha_0_05": true,
+            "linearized_contrast_vs_0": {
+              "n": 8,
+              "mean": -0.21871098057986782,
+              "ci95_half": 0.04514456393680555,
+              "ci95": [
+                -0.26385554451667337,
+                -0.17356641664306227
+              ],
+              "p_two_sided": 8.676317812491413e-06,
+              "noninferiority_margin": 0.0,
+              "upper_95_one_sided": -0.18254036069728735,
+              "p_noninferior": 4.3381589062457065e-06,
+              "noninferior_at_alpha_0_05": true
+            },
+            "per_map_pct_excess": {
+              "n": 8,
+              "mean": 0.0,
+              "ci95_half": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "p_two_sided": 1.0,
+              "noninferiority_margin": 5.0,
+              "upper_95_one_sided": 0.0,
+              "p_noninferior": 0.0,
+              "noninferior_at_alpha_0_05": true
+            }
+          },
+          "declared_5pct_relative_NI_M1_vs_method_shift": {
+            "rel_margin_pct": 5.0,
+            "primary_estimand": "linearized_contrast_vs_0",
+            "primary_p_noninferior": 3.273159781250744e-08,
+            "primary_noninferior_at_alpha_0_05": true,
+            "linearized_contrast_vs_0": {
+              "n": 8,
+              "mean": -0.2648553294147935,
+              "ci95_half": 0.026727753190450163,
+              "ci95": [
+                -0.2915830826052437,
+                -0.23812757622434333
+              ],
+              "p_two_sided": 6.546319562501488e-08,
+              "noninferiority_margin": 0.0,
+              "upper_95_one_sided": -0.24344058272855917,
+              "p_noninferior": 3.273159781250744e-08,
+              "noninferior_at_alpha_0_05": true
+            },
+            "per_map_pct_excess": {
+              "n": 8,
+              "mean": 0.0,
+              "ci95_half": 0.0,
+              "ci95": [
+                0.0,
+                0.0
+              ],
+              "p_two_sided": 1.0,
+              "noninferiority_margin": 5.0,
+              "upper_95_one_sided": 0.0,
+              "p_noninferior": 0.0,
+              "noninferior_at_alpha_0_05": true
+            }
+          },
+          "mean_survivor_fraction": 0.0035835113960113957,
+          "mean_weighted_tail_mass": 0.0007840632888743398,
+          "mean_ess": 23.839164237161988,
+          "min_ess_worst_across_maps": 2.9373580339698107,
+          "actual_budget_counters_mean": {
+            "teacher_mode": "bessel_guided",
+            "n_physical_world_observations": 100.0,
+            "n_interior_proposed_nominal": 24.0,
+            "n_start_anchors_added": 3.0,
+            "n_near_goal_filtered": 0.625,
+            "n_interior_actual": 26.375,
+            "n_boundary_actual": 128.0,
+            "n_gp_rows_total": 154.375,
+            "mc_independent_streams_per_anchor": 24.0,
+            "mc_paths_per_anchor_effective": 48.0,
+            "n_fk_paths_launched_actual": 1266.0,
+            "n_fk_active_steps_total": 22647.25,
+            "n_model_q_evals": 22647.25,
+            "n_model_b_evals": 22647.25,
+            "n_continuation_gp_fits": 3.625
+          },
+          "per_map_serial_ms": [
+            211.06138709001243,
+            166.15212615579367,
+            204.46154498495162,
+            176.43438396044075,
+            196.74062100239098,
+            183.7200338486582,
+            180.65986689180136,
+            177.93553113006055
+          ],
+          "per_map_unseen_cost": [
+            3.6912067981406587,
+            3.557905577389992,
+            6.395268917329694,
+            4.00919152805125,
+            3.3659104658915524,
+            5.675946153925852,
+            4.175190646597928,
+            4.1231368054518835
+          ],
+          "per_map_shift_cost": [
+            4.923219597633844,
+            5.972946036276844,
+            4.76814193573414,
+            5.2277808235950864,
+            5.456642469473402,
+            5.323157386446036,
+            6.339507643435995,
+            4.365456813771578
+          ]
+        },
+        "M2_FrozenBesselTeacher_SharpCone108": {
+          "method_config_id": "M2_FrozenBesselTeacher_SharpCone108",
+          "unseen_mean_cost": 4.479561556345246,
+          "shift_mean_cost": 5.367230226884585,
+          "unseen_reach_rate": 1.0,
+          "shift_reach_rate": 1.0,
+          "serial_1worker_query_cold_ms": 1067.400897416519,
+          "concurrent_8worker_per_call_ms": 2055.0566423044074,
+          "concurrent_teacher_ms": 2046.2675051821861,
+          "concurrent_refit_ms": 8.789137122221291,
+          "batch_8map_makespan_ms_incl_world_gp": 2583.0851518549025,
+          "batch_throughput_queries_per_sec": 3.0970717300028743,
+          "serial_speedup_of_M1_over_method": 5.703582675051229,
+          "batch_makespan_speedup_of_M1_over_method": 2.8235666793813876,
+          "M1_minus_method_serial_ms": {
+            "n": 8,
+            "mean": -880.2552105335053,
+            "ci95_half": 58.36067531083424,
+            "ci95": [
+              -938.6158858443396,
+              -821.894535222671
+            ],
+            "p_two_sided": 3.536770276617329e-09
+          },
+          "M1_minus_method_unseen_cost": {
+            "n": 8,
+            "mean": -0.10534194474789432,
+            "ci95_half": 0.21646429026964606,
+            "ci95": [
+              -0.32180623501754035,
+              0.11112234552175174
+            ],
+            "p_two_sided": 0.2876267193006074
+          },
+          "M1_minus_method_shift_cost": {
+            "n": 8,
+            "mean": -0.07012363858872017,
+            "ci95_half": 0.16598982647036115,
+            "ci95": [
+              -0.23611346505908132,
+              0.09586618788164097
+            ],
+            "p_two_sided": 0.35108941554756473
+          },
+          "declared_5pct_relative_NI_M1_vs_method_unseen": {
+            "rel_margin_pct": 5.0,
+            "primary_estimand": "linearized_contrast_vs_0",
+            "primary_p_noninferior": 0.01071569924783527,
+            "primary_noninferior_at_alpha_0_05": true,
+            "linearized_contrast_vs_0": {
+              "n": 8,
+              "mean": -0.3293200225651569,
+              "ci95_half": 0.2640443896297904,
+              "ci95": [
+                -0.5933644121949473,
+                -0.06527563293536653
+              ],
+              "p_two_sided": 0.02143139849567054,
+              "noninferiority_margin": 0.0,
+              "upper_95_one_sided": -0.11776300624761421,
+              "p_noninferior": 0.01071569924783527,
+              "noninferior_at_alpha_0_05": true
+            },
+            "per_map_pct_excess": {
+              "n": 8,
+              "mean": -1.4998312710840167,
+              "ci95_half": 3.816851644235605,
+              "ci95": [
+                -5.316682915319622,
+                2.317020373151588
+              ],
+              "p_two_sided": 0.38371949951960604,
+              "noninferiority_margin": 5.0,
+              "upper_95_one_sided": 1.5582975030714972,
+              "p_noninferior": 0.002508093182133471,
+              "noninferior_at_alpha_0_05": true
+            }
+          },
+          "declared_5pct_relative_NI_M1_vs_method_shift": {
+            "rel_margin_pct": 5.0,
+            "primary_estimand": "linearized_contrast_vs_0",
+            "primary_p_noninferior": 0.0015294877930974063,
+            "primary_noninferior_at_alpha_0_05": true,
+            "linearized_contrast_vs_0": {
+              "n": 8,
+              "mean": -0.33848514993294965,
+              "ci95_half": 0.1808379529686892,
+              "ci95": [
+                -0.5193231029016389,
+                -0.15764719696426044
+              ],
+              "p_two_sided": 0.0030589755861948125,
+              "noninferiority_margin": 0.0,
+              "upper_95_one_sided": -0.19359459641402094,
+              "p_noninferior": 0.0015294877930974063,
+              "noninferior_at_alpha_0_05": true
+            },
+            "per_map_pct_excess": {
+              "n": 8,
+              "mean": -1.1213130795196036,
+              "ci95_half": 3.037953045524057,
+              "ci95": [
+                -4.1592661250436604,
+                1.9166399660044533
+              ],
+              "p_two_sided": 0.41171562609622536,
+              "noninferiority_margin": 5.0,
+              "upper_95_one_sided": 1.312748416446944,
+              "p_noninferior": 0.001024261578766393,
+              "noninferior_at_alpha_0_05": true
+            }
+          },
+          "mean_survivor_fraction": 0.002762612219870215,
+          "mean_weighted_tail_mass": 5.9485476810874465e-05,
+          "mean_ess": 23.538253945569803,
+          "min_ess_worst_across_maps": 2.3481721440696566,
+          "actual_budget_counters_mean": {
+            "teacher_mode": "bessel_guided",
+            "n_physical_world_observations": 100.0,
+            "n_interior_proposed_nominal": 108.0,
+            "n_start_anchors_added": 3.0,
+            "n_near_goal_filtered": 3.75,
+            "n_interior_actual": 107.25,
+            "n_boundary_actual": 128.0,
+            "n_gp_rows_total": 235.25,
+            "mc_independent_streams_per_anchor": 24.0,
+            "mc_paths_per_anchor_effective": 48.0,
+            "n_fk_paths_launched_actual": 5148.0,
+            "n_fk_active_steps_total": 93632.375,
+            "n_model_q_evals": 93632.375,
+            "n_model_b_evals": 93632.375,
+            "n_continuation_gp_fits": 4.0
+          },
+          "per_map_serial_ms": [
+            1027.5706259999424,
+            1165.5123860109597,
+            1143.2846919633448,
+            946.1222740355879,
+            1085.358357988298,
+            1054.4125069864094,
+            1064.4814101979136,
+            1052.464926149696
+          ],
+          "per_map_unseen_cost": [
+            3.627636288598274,
+            3.346274390722199,
+            7.07635110607017,
+            4.100229710420202,
+            3.51262243822878,
+            5.781659348588916,
+            4.224055981005369,
+            4.1676631871280545
+          ],
+          "per_map_shift_cost": [
+            5.00526210732561,
+            6.121386980876392,
+            4.6477885261430245,
+            5.632064272102655,
+            5.729366679422278,
+            5.141036683220171,
+            6.323610519975001,
+            4.337326046011556
+          ]
+        },
+        "M3_EndToEnd_IndepConeGirsanov_SharpCone108": {
+          "method_config_id": "M3_EndToEnd_IndepConeGirsanov_SharpCone108",
+          "unseen_mean_cost": 4.589344476551954,
+          "shift_mean_cost": 5.491735870492899,
+          "unseen_reach_rate": 1.0,
+          "shift_reach_rate": 0.99609375,
+          "serial_1worker_query_cold_ms": 2791.7992353613954,
+          "concurrent_8worker_per_call_ms": 5942.903188697528,
+          "concurrent_teacher_ms": 5942.903188697528,
+          "concurrent_refit_ms": 0.0,
+          "batch_8map_makespan_ms_incl_world_gp": 6639.11539898254,
+          "batch_throughput_queries_per_sec": 1.2049798081874008,
+          "serial_speedup_of_M1_over_method": 14.917785613229611,
+          "batch_makespan_speedup_of_M1_over_method": 7.257207532501804,
+          "M1_minus_method_serial_ms": {
+            "n": 8,
+            "mean": -2604.6535484783817,
+            "ci95_half": 87.29642737889498,
+            "ci95": [
+              -2691.9499758572765,
+              -2517.357121099487
+            ],
+            "p_two_sided": 3.0218090376882896e-11
+          },
+          "M1_minus_method_unseen_cost": {
+            "n": 8,
+            "mean": -0.2151248649546028,
+            "ci95_half": 0.3410440877421836,
+            "ci95": [
+              -0.5561689526967863,
+              0.12591922278758078
+            ],
+            "p_two_sided": 0.1794401944379069
+          },
+          "M1_minus_method_shift_cost": {
+            "n": 8,
+            "mean": -0.19462928219703346,
+            "ci95_half": 0.50191221876472,
+            "ci95": [
+              -0.6965415009617535,
+              0.30728293656768657
+            ],
+            "p_two_sided": 0.3896700527359642
+          },
+          "declared_5pct_relative_NI_M1_vs_method_unseen": {
+            "rel_margin_pct": 5.0,
+            "primary_estimand": "linearized_contrast_vs_0",
+            "primary_p_noninferior": 0.01662343566072497,
+            "primary_noninferior_at_alpha_0_05": true,
+            "linearized_contrast_vs_0": {
+              "n": 8,
+              "mean": -0.44459208878220075,
+              "ci95_half": 0.3976676001323943,
+              "ci95": [
+                -0.842259688914595,
+                -0.04692448864980642
+              ],
+              "p_two_sided": 0.03324687132144994,
+              "noninferiority_margin": 0.0,
+              "upper_95_one_sided": -0.1259738023337647,
+              "p_noninferior": 0.01662343566072497,
+              "noninferior_at_alpha_0_05": true
+            },
+            "per_map_pct_excess": {
+              "n": 8,
+              "mean": -2.9775276515233844,
+              "ci95_half": 6.584371173722864,
+              "ci95": [
+                -9.561898825246248,
+                3.6068435221994792
+              ],
+              "p_two_sided": 0.32041065992387935,
+              "noninferiority_margin": 5.0,
+              "upper_95_one_sided": 2.2979865216544364,
+              "p_noninferior": 0.012083042207086713,
+              "noninferior_at_alpha_0_05": true
+            }
+          },
+          "declared_5pct_relative_NI_M1_vs_method_shift": {
+            "rel_margin_pct": 5.0,
+            "primary_estimand": "linearized_contrast_vs_0",
+            "primary_p_noninferior": 0.041235164107439506,
+            "primary_noninferior_at_alpha_0_05": true,
+            "linearized_contrast_vs_0": {
+              "n": 8,
+              "mean": -0.46921607572167867,
+              "ci95_half": 0.5478020606067986,
+              "ci95": [
+                -1.0170181363284772,
+                0.07858598488511992
+              ],
+              "p_two_sided": 0.08247032821487901,
+              "noninferiority_margin": 0.0,
+              "upper_95_one_sided": -0.030307414806503674,
+              "p_noninferior": 0.041235164107439506,
+              "noninferior_at_alpha_0_05": true
+            },
+            "per_map_pct_excess": {
+              "n": 8,
+              "mean": -2.059209204128609,
+              "ci95_half": 7.169350294155874,
+              "ci95": [
+                -9.228559498284483,
+                5.110141090027265
+              ],
+              "p_two_sided": 0.5188443501319706,
+              "noninferiority_margin": 5.0,
+              "upper_95_one_sided": 3.685000545199811,
+              "p_noninferior": 0.02637299903482631,
+              "noninferior_at_alpha_0_05": true
+            }
+          },
+          "mean_survivor_fraction": 0.3982776238796881,
+          "mean_weighted_tail_mass": 0.0022312728967824875,
+          "mean_ess": 4.452859617995694,
+          "min_ess_worst_across_maps": 1.01118567667933,
+          "actual_budget_counters_mean": {
+            "teacher_mode": "cone_girsanov_independent",
+            "n_physical_world_observations": 100.0,
+            "n_interior_proposed_nominal": 108.0,
+            "n_start_anchors_added": 3.0,
+            "n_near_goal_filtered": 3.75,
+            "n_interior_actual": 107.25,
+            "n_boundary_actual": 128.0,
+            "n_gp_rows_total": 235.25,
+            "mc_independent_streams_per_anchor": 24.0,
+            "mc_paths_per_anchor_effective": 48.0,
+            "n_fk_paths_launched_actual": 5148.0,
+            "n_fk_active_steps_total": 262091.125,
+            "n_model_q_evals": 262091.125,
+            "n_model_b_evals": 262091.125,
+            "n_continuation_gp_fits": 4.0
+          },
+          "per_map_serial_ms": [
+            2766.0812218673527,
+            2795.264692977071,
+            2930.7573810219765,
+            2621.3152681011707,
+            2936.567781958729,
+            2691.2091160193086,
+            2847.4817799869925,
+            2745.7166409585625
+          ],
+          "per_map_unseen_cost": [
+            3.680663731424437,
+            3.1739117516939626,
+            7.161986242172176,
+            4.28318330488384,
+            3.487511579382966,
+            6.472301934714238,
+            4.431609468954836,
+            4.023587799189177
+          ],
+          "per_map_shift_cost": [
+            4.62012006053001,
+            6.118095573872612,
+            4.516513653367282,
+            5.455044456704122,
+            5.899521658355771,
+            5.1506210559936605,
+            7.878141522763752,
+            4.295828982355985
+          ]
+        }
       },
-      "per_map_bessel24_isolated_ms": [
-        235.0267288275063,
-        169.7324039414525,
-        212.77480013668537,
-        196.88217295333743,
-        196.73533807508647,
-        184.71675808541477
-      ],
-      "per_map_cone108_isolated_ms": [
-        2093.8586548436433,
-        1518.886683974415,
-        1709.4218619167805,
-        1535.9216888900846,
-        1767.0968919992447,
-        1585.5861811432987
+      "per_map_records": [
+        {
+          "map_seed": 9608,
+          "world_gp_fit_ms": 616.5533040184528,
+          "methods": {
+            "M1_EndToEnd_Bessel24": {
+              "concurrent_query_ms": 223.78820087760687,
+              "concurrent_teacher_ms": 223.78820087760687,
+              "concurrent_refit_ms": 0.0,
+              "unseen_cost": 3.6912067981406587,
+              "shift_cost": 4.923219597633844,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.0015432098765432098,
+              "weighted_tail_mass": 2.8057179939713387e-05,
+              "mean_ess": 28.555378768259082,
+              "min_ess": 13.888424997380126,
+              "budget_counters": {
+                "teacher_mode": "bessel_guided",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 24,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 0,
+                "n_interior_actual": 27,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 155,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 1296,
+                "n_fk_active_steps_total": 23374,
+                "n_model_q_evals": 23374,
+                "n_model_b_evals": 23374,
+                "n_continuation_gp_fits": 4
+              }
+            },
+            "M3_EndToEnd_IndepConeGirsanov_SharpCone108": {
+              "concurrent_query_ms": 5939.339789794758,
+              "concurrent_teacher_ms": 5939.339789794758,
+              "concurrent_refit_ms": 0.0,
+              "unseen_cost": 3.680663731424437,
+              "shift_cost": 4.62012006053001,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.3707165109034268,
+              "weighted_tail_mass": 0.00014534255605136494,
+              "mean_ess": 5.266758177684395,
+              "min_ess": 1.01118567667933,
+              "budget_counters": {
+                "teacher_mode": "cone_girsanov_independent",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 108,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 4,
+                "n_interior_actual": 107,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 235,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 5136,
+                "n_fk_active_steps_total": 254220,
+                "n_model_q_evals": 254220,
+                "n_model_b_evals": 254220,
+                "n_continuation_gp_fits": 4
+              }
+            },
+            "M2_FrozenBesselTeacher_SharpCone108": {
+              "concurrent_query_ms": 1831.4107998739928,
+              "concurrent_teacher_ms": 1819.1616609692574,
+              "concurrent_refit_ms": 12.249138904735446,
+              "unseen_cost": 3.627636288598274,
+              "shift_cost": 5.00526210732561,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.001557632398753894,
+              "weighted_tail_mass": 1.0330412437799697e-05,
+              "mean_ess": 30.257590817305253,
+              "min_ess": 3.438613171964161,
+              "budget_counters": {
+                "teacher_mode": "bessel_guided",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 108,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 4,
+                "n_interior_actual": 107,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 235,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 5136,
+                "n_fk_active_steps_total": 87012,
+                "n_model_q_evals": 87012,
+                "n_model_b_evals": 87012,
+                "n_continuation_gp_fits": 4
+              }
+            }
+          }
+        },
+        {
+          "map_seed": 9609,
+          "world_gp_fit_ms": 538.2870859466493,
+          "methods": {
+            "M1_EndToEnd_Bessel24": {
+              "concurrent_query_ms": 207.15602091513574,
+              "concurrent_teacher_ms": 207.15602091513574,
+              "concurrent_refit_ms": 0.0,
+              "unseen_cost": 3.557905577389992,
+              "shift_cost": 5.972946036276844,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.0,
+              "weighted_tail_mass": 0.0,
+              "mean_ess": 20.393334679163747,
+              "min_ess": 5.506580342896803,
+              "budget_counters": {
+                "teacher_mode": "bessel_guided",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 24,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 1,
+                "n_interior_actual": 26,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 154,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 1248,
+                "n_fk_active_steps_total": 20340,
+                "n_model_q_evals": 20340,
+                "n_model_b_evals": 20340,
+                "n_continuation_gp_fits": 1
+              }
+            },
+            "M3_EndToEnd_IndepConeGirsanov_SharpCone108": {
+              "concurrent_query_ms": 6208.584086038172,
+              "concurrent_teacher_ms": 6208.584086038172,
+              "concurrent_refit_ms": 0.0,
+              "unseen_cost": 3.1739117516939626,
+              "shift_cost": 6.118095573872612,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.42738095238095236,
+              "weighted_tail_mass": 0.0009319695333540152,
+              "mean_ess": 4.102517927953279,
+              "min_ess": 1.057516308114297,
+              "budget_counters": {
+                "teacher_mode": "cone_girsanov_independent",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 108,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 6,
+                "n_interior_actual": 105,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 233,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 5040,
+                "n_fk_active_steps_total": 259610,
+                "n_model_q_evals": 259610,
+                "n_model_b_evals": 259610,
+                "n_continuation_gp_fits": 4
+              }
+            },
+            "M2_FrozenBesselTeacher_SharpCone108": {
+              "concurrent_query_ms": 2003.0218702740967,
+              "concurrent_teacher_ms": 1991.878752131015,
+              "concurrent_refit_ms": 11.143118143081665,
+              "unseen_cost": 3.346274390722199,
+              "shift_cost": 6.121386980876392,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.0021825396825396826,
+              "weighted_tail_mass": 2.7157832424053106e-07,
+              "mean_ess": 18.814326711192773,
+              "min_ess": 2.8747183295306393,
+              "budget_counters": {
+                "teacher_mode": "bessel_guided",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 108,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 6,
+                "n_interior_actual": 105,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 233,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 5040,
+                "n_fk_active_steps_total": 91121,
+                "n_model_q_evals": 91121,
+                "n_model_b_evals": 91121,
+                "n_continuation_gp_fits": 4
+              }
+            }
+          }
+        },
+        {
+          "map_seed": 9610,
+          "world_gp_fit_ms": 552.5530779268593,
+          "methods": {
+            "M1_EndToEnd_Bessel24": {
+              "concurrent_query_ms": 239.1046481207013,
+              "concurrent_teacher_ms": 239.1046481207013,
+              "concurrent_refit_ms": 0.0,
+              "unseen_cost": 6.395268917329694,
+              "shift_cost": 4.76814193573414,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.008814102564102564,
+              "weighted_tail_mass": 8.624009634655466e-07,
+              "mean_ess": 21.43299385857777,
+              "min_ess": 3.5190023422676346,
+              "budget_counters": {
+                "teacher_mode": "bessel_guided",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 24,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 1,
+                "n_interior_actual": 26,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 154,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 1248,
+                "n_fk_active_steps_total": 25096,
+                "n_model_q_evals": 25096,
+                "n_model_b_evals": 25096,
+                "n_continuation_gp_fits": 4
+              }
+            },
+            "M3_EndToEnd_IndepConeGirsanov_SharpCone108": {
+              "concurrent_query_ms": 6359.044922981411,
+              "concurrent_teacher_ms": 6359.044922981411,
+              "concurrent_refit_ms": 0.0,
+              "unseen_cost": 7.161986242172176,
+              "shift_cost": 4.516513653367282,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.45355504587155965,
+              "weighted_tail_mass": 0.013223586354565744,
+              "mean_ess": 4.402326910538508,
+              "min_ess": 1.1224979658754606,
+              "budget_counters": {
+                "teacher_mode": "cone_girsanov_independent",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 108,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 2,
+                "n_interior_actual": 109,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 237,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 5232,
+                "n_fk_active_steps_total": 273293,
+                "n_model_q_evals": 273293,
+                "n_model_b_evals": 273293,
+                "n_continuation_gp_fits": 4
+              }
+            },
+            "M2_FrozenBesselTeacher_SharpCone108": {
+              "concurrent_query_ms": 2011.872700881213,
+              "concurrent_teacher_ms": 2005.9863349888474,
+              "concurrent_refit_ms": 5.886365892365575,
+              "unseen_cost": 7.07635110607017,
+              "shift_cost": 4.6477885261430245,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.00764525993883792,
+              "weighted_tail_mass": 8.268957331182276e-05,
+              "mean_ess": 21.575715752320875,
+              "min_ess": 3.058272755833581,
+              "budget_counters": {
+                "teacher_mode": "bessel_guided",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 108,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 2,
+                "n_interior_actual": 109,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 237,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 5232,
+                "n_fk_active_steps_total": 103210,
+                "n_model_q_evals": 103210,
+                "n_model_b_evals": 103210,
+                "n_continuation_gp_fits": 4
+              }
+            }
+          }
+        },
+        {
+          "map_seed": 9611,
+          "world_gp_fit_ms": 552.2842679638416,
+          "methods": {
+            "M3_EndToEnd_IndepConeGirsanov_SharpCone108": {
+              "concurrent_query_ms": 5881.991813890636,
+              "concurrent_teacher_ms": 5881.991813890636,
+              "concurrent_refit_ms": 0.0,
+              "unseen_cost": 4.28318330488384,
+              "shift_cost": 5.455044456704122,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.37424242424242427,
+              "weighted_tail_mass": 9.503869252422367e-05,
+              "mean_ess": 5.098610082481354,
+              "min_ess": 1.10623426475522,
+              "budget_counters": {
+                "teacher_mode": "cone_girsanov_independent",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 108,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 1,
+                "n_interior_actual": 110,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 238,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 5280,
+                "n_fk_active_steps_total": 261795,
+                "n_model_q_evals": 261795,
+                "n_model_b_evals": 261795,
+                "n_continuation_gp_fits": 4
+              }
+            },
+            "M1_EndToEnd_Bessel24": {
+              "concurrent_query_ms": 297.9142880067229,
+              "concurrent_teacher_ms": 297.9142880067229,
+              "concurrent_refit_ms": 0.0,
+              "unseen_cost": 4.00919152805125,
+              "shift_cost": 5.2277808235950864,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.0023148148148148147,
+              "weighted_tail_mass": 3.927500973940406e-08,
+              "mean_ess": 27.59909382239103,
+              "min_ess": 12.154145780980022,
+              "budget_counters": {
+                "teacher_mode": "bessel_guided",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 24,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 0,
+                "n_interior_actual": 27,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 155,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 1296,
+                "n_fk_active_steps_total": 21542,
+                "n_model_q_evals": 21542,
+                "n_model_b_evals": 21542,
+                "n_continuation_gp_fits": 4
+              }
+            },
+            "M2_FrozenBesselTeacher_SharpCone108": {
+              "concurrent_query_ms": 1989.3818472046405,
+              "concurrent_teacher_ms": 1983.9058960787952,
+              "concurrent_refit_ms": 5.475951125845313,
+              "unseen_cost": 4.100229710420202,
+              "shift_cost": 5.632064272102655,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.0013257575757575758,
+              "weighted_tail_mass": 0.0001625638157134335,
+              "mean_ess": 26.289630666246772,
+              "min_ess": 10.017898867906537,
+              "budget_counters": {
+                "teacher_mode": "bessel_guided",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 108,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 1,
+                "n_interior_actual": 110,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 238,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 5280,
+                "n_fk_active_steps_total": 89176,
+                "n_model_q_evals": 89176,
+                "n_model_b_evals": 89176,
+                "n_continuation_gp_fits": 4
+              }
+            }
+          }
+        },
+        {
+          "map_seed": 9612,
+          "world_gp_fit_ms": 487.7595528960228,
+          "methods": {
+            "M1_EndToEnd_Bessel24": {
+              "concurrent_query_ms": 257.9130190424621,
+              "concurrent_teacher_ms": 257.9130190424621,
+              "concurrent_refit_ms": 0.0,
+              "unseen_cost": 3.3659104658915524,
+              "shift_cost": 5.456642469473402,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.00641025641025641,
+              "weighted_tail_mass": 0.006156135842476986,
+              "mean_ess": 18.526200431515537,
+              "min_ess": 2.9373580339698107,
+              "budget_counters": {
+                "teacher_mode": "bessel_guided",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 24,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 1,
+                "n_interior_actual": 26,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 154,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 1248,
+                "n_fk_active_steps_total": 26350,
+                "n_model_q_evals": 26350,
+                "n_model_b_evals": 26350,
+                "n_continuation_gp_fits": 4
+              }
+            },
+            "M2_FrozenBesselTeacher_SharpCone108": {
+              "concurrent_query_ms": 2159.4833058770746,
+              "concurrent_teacher_ms": 2151.603277074173,
+              "concurrent_refit_ms": 7.880028802901506,
+              "unseen_cost": 3.51262243822878,
+              "shift_cost": 5.729366679422278,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.004672897196261682,
+              "weighted_tail_mass": 7.0769666150443e-07,
+              "mean_ess": 21.193074907331955,
+              "min_ess": 2.3481721440696566,
+              "budget_counters": {
+                "teacher_mode": "bessel_guided",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 108,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 4,
+                "n_interior_actual": 107,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 235,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 5136,
+                "n_fk_active_steps_total": 98053,
+                "n_model_q_evals": 98053,
+                "n_model_b_evals": 98053,
+                "n_continuation_gp_fits": 4
+              }
+            },
+            "M3_EndToEnd_IndepConeGirsanov_SharpCone108": {
+              "concurrent_query_ms": 6192.940382985398,
+              "concurrent_teacher_ms": 6192.940382985398,
+              "concurrent_refit_ms": 0.0,
+              "unseen_cost": 3.487511579382966,
+              "shift_cost": 5.899521658355771,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.46261682242990654,
+              "weighted_tail_mass": 0.0016457392445725304,
+              "mean_ess": 3.9478612217671163,
+              "min_ess": 1.095453727991109,
+              "budget_counters": {
+                "teacher_mode": "cone_girsanov_independent",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 108,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 4,
+                "n_interior_actual": 107,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 235,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 5136,
+                "n_fk_active_steps_total": 275115,
+                "n_model_q_evals": 275115,
+                "n_model_b_evals": 275115,
+                "n_continuation_gp_fits": 4
+              }
+            }
+          }
+        },
+        {
+          "map_seed": 9613,
+          "world_gp_fit_ms": 491.0997389815748,
+          "methods": {
+            "M1_EndToEnd_Bessel24": {
+              "concurrent_query_ms": 231.9511289242655,
+              "concurrent_teacher_ms": 231.9511289242655,
+              "concurrent_refit_ms": 0.0,
+              "unseen_cost": 5.675946153925852,
+              "shift_cost": 5.323157386446036,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.004006410256410256,
+              "weighted_tail_mass": 1.2564166708153027e-05,
+              "mean_ess": 22.522584874888803,
+              "min_ess": 6.397274405294149,
+              "budget_counters": {
+                "teacher_mode": "bessel_guided",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 24,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 1,
+                "n_interior_actual": 26,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 154,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 1248,
+                "n_fk_active_steps_total": 22727,
+                "n_model_q_evals": 22727,
+                "n_model_b_evals": 22727,
+                "n_continuation_gp_fits": 4
+              }
+            },
+            "M2_FrozenBesselTeacher_SharpCone108": {
+              "concurrent_query_ms": 2252.227534307167,
+              "concurrent_teacher_ms": 2242.703840136528,
+              "concurrent_refit_ms": 9.523694170638919,
+              "unseen_cost": 5.781659348588916,
+              "shift_cost": 5.141036683220171,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.002777777777777778,
+              "weighted_tail_mass": 0.00011940850610087253,
+              "mean_ess": 21.920841355120718,
+              "min_ess": 5.655309979299247,
+              "budget_counters": {
+                "teacher_mode": "bessel_guided",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 108,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 6,
+                "n_interior_actual": 105,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 233,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 5040,
+                "n_fk_active_steps_total": 97062,
+                "n_model_q_evals": 97062,
+                "n_model_b_evals": 97062,
+                "n_continuation_gp_fits": 4
+              }
+            },
+            "M3_EndToEnd_IndepConeGirsanov_SharpCone108": {
+              "concurrent_query_ms": 5797.859507845715,
+              "concurrent_teacher_ms": 5797.859507845715,
+              "concurrent_refit_ms": 0.0,
+              "unseen_cost": 6.472301934714238,
+              "shift_cost": 5.1506210559936605,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.39166666666666666,
+              "weighted_tail_mass": 0.0011959581797360023,
+              "mean_ess": 3.981209356714418,
+              "min_ess": 1.0208702367084757,
+              "budget_counters": {
+                "teacher_mode": "cone_girsanov_independent",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 108,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 6,
+                "n_interior_actual": 105,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 233,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 5040,
+                "n_fk_active_steps_total": 261567,
+                "n_model_q_evals": 261567,
+                "n_model_b_evals": 261567,
+                "n_continuation_gp_fits": 4
+              }
+            }
+          }
+        },
+        {
+          "map_seed": 9614,
+          "world_gp_fit_ms": 513.0881229415536,
+          "methods": {
+            "M1_EndToEnd_Bessel24": {
+              "concurrent_query_ms": 217.94045297428966,
+              "concurrent_teacher_ms": 217.94045297428966,
+              "concurrent_refit_ms": 0.0,
+              "unseen_cost": 4.175190646597928,
+              "shift_cost": 6.339507643435995,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.0007716049382716049,
+              "weighted_tail_mass": 1.211217095764974e-06,
+              "mean_ess": 24.9485322441064,
+              "min_ess": 9.864296418812382,
+              "budget_counters": {
+                "teacher_mode": "bessel_guided",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 24,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 0,
+                "n_interior_actual": 27,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 155,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 1296,
+                "n_fk_active_steps_total": 20896,
+                "n_model_q_evals": 20896,
+                "n_model_b_evals": 20896,
+                "n_continuation_gp_fits": 4
+              }
+            },
+            "M2_FrozenBesselTeacher_SharpCone108": {
+              "concurrent_query_ms": 2057.6392030343413,
+              "concurrent_teacher_ms": 2049.152923049405,
+              "concurrent_refit_ms": 8.486279984936118,
+              "unseen_cost": 4.224055981005369,
+              "shift_cost": 6.323610519975001,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.000946969696969697,
+              "weighted_tail_mass": 4.621643933232463e-06,
+              "mean_ess": 23.92378924007943,
+              "min_ess": 4.016317398206251,
+              "budget_counters": {
+                "teacher_mode": "bessel_guided",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 108,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 1,
+                "n_interior_actual": 110,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 238,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 5280,
+                "n_fk_active_steps_total": 89597,
+                "n_model_q_evals": 89597,
+                "n_model_b_evals": 89597,
+                "n_continuation_gp_fits": 4
+              }
+            },
+            "M3_EndToEnd_IndepConeGirsanov_SharpCone108": {
+              "concurrent_query_ms": 5394.183801021427,
+              "concurrent_teacher_ms": 5394.183801021427,
+              "concurrent_refit_ms": 0.0,
+              "unseen_cost": 4.431609468954836,
+              "shift_cost": 7.878141522763752,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 0.96875,
+              "survivor_fraction": 0.3397727272727273,
+              "weighted_tail_mass": 7.759322828820914e-05,
+              "mean_ess": 4.554273617907734,
+              "min_ess": 1.0346793558386695,
+              "budget_counters": {
+                "teacher_mode": "cone_girsanov_independent",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 108,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 1,
+                "n_interior_actual": 110,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 238,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 5280,
+                "n_fk_active_steps_total": 254823,
+                "n_model_q_evals": 254823,
+                "n_model_b_evals": 254823,
+                "n_continuation_gp_fits": 4
+              }
+            }
+          }
+        },
+        {
+          "map_seed": 9615,
+          "world_gp_fit_ms": 619.2087749950588,
+          "methods": {
+            "M1_EndToEnd_Bessel24": {
+              "concurrent_query_ms": 200.5351318512112,
+              "concurrent_teacher_ms": 200.5351318512112,
+              "concurrent_refit_ms": 0.0,
+              "unseen_cost": 4.1231368054518835,
+              "shift_cost": 4.365456813771578,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.004807692307692308,
+              "weighted_tail_mass": 7.363622880089614e-05,
+              "mean_ess": 26.735195218393553,
+              "min_ess": 6.7830629236172,
+              "budget_counters": {
+                "teacher_mode": "bessel_guided",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 24,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 1,
+                "n_interior_actual": 26,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 154,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 1248,
+                "n_fk_active_steps_total": 20853,
+                "n_model_q_evals": 20853,
+                "n_model_b_evals": 20853,
+                "n_continuation_gp_fits": 4
+              }
+            },
+            "M2_FrozenBesselTeacher_SharpCone108": {
+              "concurrent_query_ms": 2135.4158769827336,
+              "concurrent_teacher_ms": 2125.747357029468,
+              "concurrent_refit_ms": 9.668519953265786,
+              "unseen_cost": 4.1676631871280545,
+              "shift_cost": 4.337326046011556,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.000992063492063492,
+              "weighted_tail_mass": 9.52905880040898e-05,
+              "mean_ess": 24.331062114960652,
+              "min_ess": 7.4819050568631775,
+              "budget_counters": {
+                "teacher_mode": "bessel_guided",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 108,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 6,
+                "n_interior_actual": 105,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 233,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 5040,
+                "n_fk_active_steps_total": 93828,
+                "n_model_q_evals": 93828,
+                "n_model_b_evals": 93828,
+                "n_continuation_gp_fits": 4
+              }
+            },
+            "M3_EndToEnd_IndepConeGirsanov_SharpCone108": {
+              "concurrent_query_ms": 5769.281205022708,
+              "concurrent_teacher_ms": 5769.281205022708,
+              "concurrent_refit_ms": 0.0,
+              "unseen_cost": 4.023587799189177,
+              "shift_cost": 4.295828982355985,
+              "unseen_reach_rate": 1.0,
+              "shift_reach_rate": 1.0,
+              "survivor_fraction": 0.36626984126984125,
+              "weighted_tail_mass": 0.0005349553851678105,
+              "mean_ess": 4.269319648918743,
+              "min_ess": 1.0935159376450176,
+              "budget_counters": {
+                "teacher_mode": "cone_girsanov_independent",
+                "n_physical_world_observations": 100,
+                "n_interior_proposed_nominal": 108,
+                "n_start_anchors_added": 3,
+                "n_near_goal_filtered": 6,
+                "n_interior_actual": 105,
+                "n_boundary_actual": 128,
+                "n_gp_rows_total": 233,
+                "mc_independent_streams_per_anchor": 24,
+                "mc_paths_per_anchor_effective": 48,
+                "n_fk_paths_launched_actual": 5040,
+                "n_fk_active_steps_total": 256306,
+                "n_model_q_evals": 256306,
+                "n_model_b_evals": 256306,
+                "n_continuation_gp_fits": 4
+              }
+            }
+          }
+        }
       ]
     }
   },
@@ -5598,6 +7109,7 @@
         ]
       }
     },
-    "block_provenance": "inherited_from_commit_85e2323_ddd19c5"
+    "block_provenance": "inherited_from_commit_85e2323_ddd19c5",
+    "generating_commit": "ddd19c5"
   }
 }

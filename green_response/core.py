@@ -17,7 +17,7 @@ import numpy as np
 import scipy
 import sklearn
 from scipy.spatial.distance import cdist
-from scipy.stats import t as student_t
+from scipy.stats import norm, t as student_t
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import ConstantKernel, Matern, WhiteKernel
 
@@ -240,6 +240,7 @@ _VALID_CERT_STATUSES = {"epsilon_certified", "unresolved", "numeric_invalid", "h
 _PROTECTED_CERT_KEYS = {
     "status",
     "certified",
+    "certificate_kind",
     "certificate_scope",
     "epsilon_tol",
     "lower_bound",
@@ -250,11 +251,26 @@ _PROTECTED_CERT_KEYS = {
 }
 
 
+def _validate_typed_policy_entry(key: str, val: object) -> None:
+    if val is None:
+        raise ValueError(f"certified=True cannot have {key}=None.")
+    if key == "policy_action_idx":
+        if not (isinstance(val, np.ndarray) and val.size > 0 and np.issubdtype(val.dtype, np.integer)):
+            raise ValueError(f"certified=True requires non-empty integer ndarray for policy_action_idx, got {type(val).__name__}.")
+    elif key in ("select_next_waypoint", "policy"):
+        if not callable(val):
+            raise ValueError(f"certified=True requires callable for {key}, got {type(val).__name__}.")
+    elif key == "best_order":
+        if not (isinstance(val, (tuple, list)) and len(val) > 0 and all(isinstance(x, (int, np.integer)) for x in val)):
+            raise ValueError(f"certified=True requires non-empty integer sequence for best_order, got {val!r}.")
+
+
 @dataclass
 class IntervalCertificate:
-    """Fail-closed validated certificate contract (`ddd19c5 Audit Stage A`):
+    """Fail-closed validated certificate contract (`ddd19c5` + `29fa7c6` Audit Closure):
       - Enforces finite ordered `[lower_bound, upper_bound]`, valid `status`, non-negative `operator_epoch`,
-        and non-null policy whenever `certified=True`;
+        explicit `certificate_kind` (`"policy_and_value_enclosure"` vs `"value_only_enclosure"`), and
+        strictly typed actionable policy references whenever `certified=True` (unless `allow_value_only=True`);
       - Prevents `extras` from overwriting any validated core certificate field!
     """
     status: str  # "epsilon_certified" | "unresolved" | "numeric_invalid" | "heuristic"
@@ -278,6 +294,7 @@ class IntervalCertificate:
             raise ValueError(f"Invalid negative operator_epoch: {self.operator_epoch!r}")
         self.operator_epoch = int(self.operator_epoch)
         self.certified = bool(self.certified)
+        self.allow_value_only = bool(self.allow_value_only)
 
         if self.status == "numeric_invalid" and self.certified:
             raise ValueError("numeric_invalid certificate cannot have certified=True.")
@@ -308,13 +325,13 @@ class IntervalCertificate:
             if not self.allow_value_only:
                 if not self.extras or not any(k in self.extras for k in policy_keys):
                     raise ValueError(
-                        "certified=True requires a non-null actionable policy reference in extras "
+                        "certified=True requires a non-null typed actionable policy reference in extras "
                         f"({policy_keys}) unless allow_value_only=True."
                     )
             if self.extras:
                 for pk in policy_keys:
-                    if pk in self.extras and self.extras[pk] is None:
-                        raise ValueError(f"certified=True cannot have {pk}=None.")
+                    if pk in self.extras:
+                        _validate_typed_policy_entry(pk, self.extras[pk])
 
         if self.extras:
             illegal_overlap = _PROTECTED_CERT_KEYS.intersection(self.extras.keys())
@@ -323,11 +340,16 @@ class IntervalCertificate:
                     f"IntervalCertificate.extras cannot override protected core keys: {sorted(illegal_overlap)}"
                 )
 
+    @property
+    def certificate_kind(self) -> str:
+        return "value_only_enclosure" if self.allow_value_only else "policy_and_value_enclosure"
+
     def to_dict(self) -> dict:
         out = {} if self.extras is None else dict(self.extras)
         out.update({
             "status": self.status,
             "certified": bool(self.certified),
+            "certificate_kind": self.certificate_kind,
             "certificate_scope": self.certificate_scope,
             "epsilon_tol": float(self.epsilon_tol),
             "lower_bound": None if self.lower_bound is None else float(self.lower_bound),
@@ -480,6 +502,34 @@ def generate_benchmark_map(
             center = rng.uniform(-1.0, 1.0, size=dim)
             sig = rng.uniform(0.20, 0.34, size=dim)
             hazards.append(HazardFeature(tuple(center.tolist()), float(rng.uniform(5.0, 9.0)), tuple(sig.tolist())))
+    elif regime == "competing_corridor":
+        # Twin-gate / competing-pass ridge (`29fa7c6` bifurcation regime):
+        # A central dividing barrier splits the domain into two competing passes (`pass_a` vs `pass_b`),
+        # one genuinely clear and one holding a localized choke hazard (`sigma ~ 0.14`) that sparse
+        # initial probes may miss or mis-smooth across passes!
+        axis_cut = int(rng.integers(0, min(dim, 2)))
+        other_ax = 1 - axis_cut
+        ridge_pos = float(rng.uniform(-0.18, 0.18))
+        for seg_pos in (-1.28, -0.02, 1.28):
+            c_seg = np.zeros(dim, dtype=float)
+            c_seg[axis_cut] = ridge_pos
+            c_seg[other_ax] = seg_pos
+            sig_seg = np.full(dim, 0.36, dtype=float)
+            sig_seg[axis_cut] = 0.095
+            sig_seg[other_ax] = 0.28
+            hazards.append(HazardFeature(tuple(c_seg.tolist()), float(rng.uniform(16.0, 22.0)), tuple(sig_seg.tolist())))
+        blocked_side = float(rng.choice([-1.0, 1.0]))
+        c_choke = np.zeros(dim, dtype=float)
+        c_choke[axis_cut] = ridge_pos + float(rng.uniform(-0.08, 0.08))
+        c_choke[other_ax] = blocked_side * float(rng.uniform(0.58, 0.72))
+        sig_choke = np.full(dim, 0.15, dtype=float)
+        hazards.append(HazardFeature(tuple(c_choke.tolist()), float(rng.uniform(17.0, 24.0)), tuple(sig_choke.tolist())))
+        for _ in range(2):
+            c_bg = rng.uniform(-1.05, 1.05, size=dim)
+            if abs(c_bg[other_ax] + blocked_side * 0.65) < 0.32 and abs(c_bg[axis_cut] - ridge_pos) < 0.35:
+                c_bg[other_ax] *= -1.0  # keep the alternative pass genuinely clear
+            sig_bg = rng.uniform(0.18, 0.28, size=dim)
+            hazards.append(HazardFeature(tuple(c_bg.tolist()), float(rng.uniform(4.5, 8.5)), tuple(sig_bg.tolist())))
     else:
         raise ValueError(f"Unknown regime: {regime}")
 
@@ -597,10 +647,12 @@ class KrigingWorldModel:
         s = np.sqrt(5.0) * d
         return st["c_val"] * (1.0 + s + (s ** 2) / 3.0) * np.exp(-s)
 
-    def predict_q(self, X: np.ndarray) -> np.ndarray:
+    def predict_q_raw_latent_mean(self, X: np.ndarray) -> np.ndarray:
         K_star = self._eval_matern25_kernel(X, self._q_fast)
-        mean = self._q_fast["y_mean"] + K_star @ self._q_fast["alpha_scaled"]
-        return np.maximum(0.0, mean)
+        return self._q_fast["y_mean"] + K_star @ self._q_fast["alpha_scaled"]
+
+    def predict_q(self, X: np.ndarray) -> np.ndarray:
+        return np.maximum(0.0, self.predict_q_raw_latent_mean(X))
 
     def predict_q_latent_std(self, X: np.ndarray) -> Tuple[np.ndarray, np.ndarray, float]:
         from scipy.linalg import solve_triangular
@@ -612,11 +664,221 @@ class KrigingWorldModel:
         lat_std = np.sqrt(lat_var) * st["y_std"]
         return mean, lat_std, float(st["obs_noise_std"])
 
+    def _build_channel_posterior_cov_and_proj(
+        self, st: dict, cand_pts: np.ndarray, grid_pts: Optional[np.ndarray] = None, W: Optional[np.ndarray] = None
+    ) -> Tuple[np.ndarray, Optional[np.ndarray], float]:
+        from scipy.linalg import solve_triangular
+        K_cc = self._eval_matern25_kernel_pair(cand_pts, cand_pts, st)
+        K_co = self._eval_matern25_kernel(cand_pts, st)
+        V_c = solve_triangular(st["L"], K_co.T, lower=True, check_finite=False)
+        y2 = float(st["y_std"] ** 2)
+        C_cc = y2 * (K_cc - (V_c.T @ V_c))
+        idx_d = np.arange(len(cand_pts))
+        C_cc[idx_d, idx_d] = np.maximum(C_cc[idx_d, idx_d], 0.0)
+        noise_var = float(st["obs_noise_std"] ** 2)
+        if grid_pts is None or W is None or W.size == 0:
+            return C_cc, None, noise_var
+        K_cg = self._eval_matern25_kernel_pair(cand_pts, grid_pts, st)
+        K_go = self._eval_matern25_kernel(grid_pts, st)
+        V_g = solve_triangular(st["L"], K_go.T, lower=True, check_finite=False)
+        G_cf = y2 * ((K_cg @ W) - (V_c.T @ (V_g @ W)))
+        return C_cc, G_cf, noise_var
+
+    def select_sequential_conditional_maxvar_probes(
+        self,
+        cand_pts: np.ndarray,
+        existing_X: np.ndarray,
+        n_select: int,
+        min_repel: float = 0.24,
+    ) -> np.ndarray:
+        """Batch Kriging-Believer / sequential Schur-complement conditional variance probe selection."""
+        cand_arr = np.atleast_2d(np.asarray(cand_pts, dtype=float))
+        if n_select <= 0 or len(cand_arr) == 0:
+            return np.empty((0, self.dim), dtype=float)
+        C_q, _, nz_q = self._build_channel_posterior_cov_and_proj(self._q_fast, cand_arr)
+        cur_X = np.atleast_2d(np.asarray(existing_X, dtype=float)).copy()
+        rem_mask = np.ones(len(cand_arr), dtype=bool)
+        chosen = []
+        for _ in range(n_select):
+            if not np.any(rem_mask):
+                break
+            lat_std = np.sqrt(np.maximum(np.diag(C_q), 0.0))
+            d_min = np.min(np.linalg.norm(cand_arr[:, None, :] - cur_X[None, :, :], axis=2), axis=1)
+            rep_w = np.minimum(1.0, (d_min / max(min_repel, 1e-9)) ** 2)
+            eff = np.where(rem_mask, lat_std * rep_w, -np.inf)
+            best_i = int(np.argmax(eff))
+            rem_mask[best_i] = False
+            chosen.append(cand_arr[best_i])
+            cur_X = np.vstack([cur_X, cand_arr[best_i : best_i + 1]])
+            denom = max(float(C_q[best_i, best_i] + nz_q), 1e-12)
+            col = C_q[:, best_i]
+            C_q = C_q - np.outer(col, col) / denom
+            C_q[np.arange(len(cand_arr)), np.arange(len(cand_arr))] = np.maximum(np.diag(C_q), 0.0)
+        return np.array(chosen, dtype=float)
+
+    def select_sequential_kg_voi_probes(
+        self,
+        cand_pts: np.ndarray,
+        grid_pts: np.ndarray,
+        task_sens_list: Sequence[dict],
+        existing_X: np.ndarray,
+        n_decision: int = 11,
+        n_sentinel: int = 3,
+        min_repel: float = 0.24,
+        val_reg_weight: float = 0.15,
+    ) -> Tuple[np.ndarray, dict]:
+        """Local-linearized `(q, b)` Dual-Channel Knowledge-Gradient VoI + Batch Conditional Covariance Selector
+        (`29fa7c6` Section 6 Closure — scoped as a fixed-hyperparameter local-linear decision-uncertainty proxy):
+          1. Applies exact smooth-region ReLU chain rule `1[mu_{q,raw}(X_grid) > 0]` to all `dF/dq` weights;
+          2. Incorporates BOTH `q` AND drift `b` Green-adjoint sensitivities (`grad_q`, `grad_b`);
+          3. Evaluates closed-form Gaussian 1-step Knowledge-Gradient opportunity-loss reduction
+             `KG(mu, s) = s * phi(mu / s) - mu * Phi(-mu / s)` across multiple competing root branches;
+          4. Updates candidate & functional covariances sequentially after EVERY selected probe via exact
+             rank-1 Gaussian Schur complements, followed by `n_sentinel` conditioned max-variance sentinels!
+        """
+        cand_arr = np.atleast_2d(np.asarray(cand_pts, dtype=float))
+        mu_q_raw = self.predict_q_raw_latent_mean(grid_pts)
+        q_chain_mask = (mu_q_raw > 0.0).astype(float)
+        active_q_frac = float(np.mean(q_chain_mask))
+
+        wq_cols: List[np.ndarray] = []
+        wb_cols_by_ax: List[List[np.ndarray]] = [[] for _ in range(self.dim)]
+        func_meta: List[Tuple[str, float]] = []  # ("opt", 0.0) or ("gap", gap_mu)
+
+        for sens in task_sens_list:
+            gq_opt = np.asarray(sens["grad_q_optimal"], dtype=float) * q_chain_mask
+            wq_cols.append(gq_opt)
+            gb_opt = sens.get("grad_b_optimal")
+            for ax in range(self.dim):
+                wb_cols_by_ax[ax].append(
+                    np.zeros(len(grid_pts), dtype=float) if gb_opt is None else np.asarray(gb_opt[:, ax], dtype=float)
+                )
+            func_meta.append(("opt", 0.0))
+
+            alt_list = sens.get("alt_branches")
+            if alt_list is None:
+                if sens.get("runner_up_wp") != sens.get("incumbent_wp"):
+                    alt_list = [{
+                        "gap": float(max(0.0, sens["action_gap"])),
+                        "grad_q_gap": sens["grad_q_top_gap"],
+                        "grad_b_gap": sens.get("grad_b_top_gap"),
+                    }]
+                else:
+                    alt_list = []
+            for br in alt_list:
+                mu_gap = float(max(0.0, br["gap"]))
+                wq_cols.append(np.asarray(br["grad_q_gap"], dtype=float) * q_chain_mask)
+                gb_g = br.get("grad_b_gap")
+                for ax in range(self.dim):
+                    wb_cols_by_ax[ax].append(
+                        np.zeros(len(grid_pts), dtype=float) if gb_g is None else np.asarray(gb_g[:, ax], dtype=float)
+                    )
+                func_meta.append(("gap", mu_gap))
+
+        W_q = np.column_stack(wq_cols) if wq_cols else np.zeros((len(grid_pts), 0), dtype=float)
+        C_q, G_q, nz_q = self._build_channel_posterior_cov_and_proj(self._q_fast, cand_arr, grid_pts, W_q)
+
+        b_channels = []
+        if self._b_fast and wq_cols:
+            for ax, st_b in enumerate(self._b_fast):
+                W_b_ax = np.column_stack(wb_cols_by_ax[ax])
+                C_b, G_b, nz_b = self._build_channel_posterior_cov_and_proj(st_b, cand_arr, grid_pts, W_b_ax)
+                b_channels.append([C_b, G_b, nz_b])
+
+        opt_indices = [idx for idx, (kind, _) in enumerate(func_meta) if kind == "opt"]
+        gap_entries = [(idx, mu_g) for idx, (kind, mu_g) in enumerate(func_meta) if kind == "gap"]
+
+        cur_X = np.atleast_2d(np.asarray(existing_X, dtype=float)).copy()
+        rem_mask = np.ones(len(cand_arr), dtype=bool)
+        chosen_dec = []
+        chosen_sen = []
+        idx_diag = np.arange(len(cand_arr))
+
+        def _downdate_all_channels(sel_i: int) -> None:
+            nonlocal C_q, G_q
+            dq = max(float(C_q[sel_i, sel_i] + nz_q), 1e-12)
+            col_q = C_q[:, sel_i]
+            if G_q is not None:
+                G_q = G_q - np.outer(col_q, G_q[sel_i, :]) / dq
+            C_q = C_q - np.outer(col_q, col_q) / dq
+            C_q[idx_diag, idx_diag] = np.maximum(np.diag(C_q), 0.0)
+            for ch in b_channels:
+                C_b, G_b, nz_b = ch
+                db = max(float(C_b[sel_i, sel_i] + nz_b), 1e-12)
+                col_b = C_b[:, sel_i]
+                if G_b is not None:
+                    ch[1] = G_b - np.outer(col_b, G_b[sel_i, :]) / db
+                C_b_new = C_b - np.outer(col_b, col_b) / db
+                C_b_new[idx_diag, idx_diag] = np.maximum(np.diag(C_b_new), 0.0)
+                ch[0] = C_b_new
+
+        for _ in range(n_decision):
+            if not np.any(rem_mask):
+                break
+            if G_q is None or G_q.shape[1] == 0:
+                score_raw = np.sqrt(np.maximum(np.diag(C_q), 0.0))
+            else:
+                denom_q = np.maximum(np.diag(C_q) + nz_q, 1e-12)[:, None]
+                var_red = (G_q ** 2) / denom_q
+                for C_b, G_b, nz_b in b_channels:
+                    denom_b = np.maximum(np.diag(C_b) + nz_b, 1e-12)[:, None]
+                    var_red = var_red + (G_b ** 2) / denom_b
+
+                score_raw = np.zeros(len(cand_arr), dtype=float)
+                if opt_indices:
+                    score_raw += val_reg_weight * np.sum(np.sqrt(np.maximum(var_red[:, opt_indices], 0.0)), axis=1)
+                for g_idx, mu_g in gap_entries:
+                    s_shift = np.sqrt(np.maximum(var_red[:, g_idx], 0.0))
+                    pos_s = s_shift > 1e-12
+                    if np.any(pos_s):
+                        z = np.zeros_like(s_shift)
+                        z[pos_s] = mu_g / s_shift[pos_s]
+                        kg_vec = np.zeros_like(s_shift)
+                        kg_vec[pos_s] = s_shift[pos_s] * norm.pdf(z[pos_s]) - mu_g * norm.cdf(-z[pos_s])
+                        score_raw += np.maximum(kg_vec, 0.0)
+
+            d_min = np.min(np.linalg.norm(cand_arr[:, None, :] - cur_X[None, :, :], axis=2), axis=1)
+            rep_w = np.minimum(1.0, (d_min / max(min_repel, 1e-9)) ** 2)
+            eff = np.where(rem_mask, score_raw * rep_w, -np.inf)
+            best_i = int(np.argmax(eff))
+            rem_mask[best_i] = False
+            chosen_dec.append(cand_arr[best_i])
+            cur_X = np.vstack([cur_X, cand_arr[best_i : best_i + 1]])
+            _downdate_all_channels(best_i)
+
+        for _ in range(n_sentinel):
+            if not np.any(rem_mask):
+                break
+            cond_std = np.sqrt(np.maximum(np.diag(C_q), 0.0))
+            for C_b, _, _ in b_channels:
+                cond_std = cond_std + 0.25 * np.sqrt(np.maximum(np.diag(C_b), 0.0))
+            d_min = np.min(np.linalg.norm(cand_arr[:, None, :] - cur_X[None, :, :], axis=2), axis=1)
+            rep_w = np.minimum(1.0, (d_min / max(min_repel, 1e-9)) ** 2)
+            eff = np.where(rem_mask, cond_std * rep_w, -np.inf)
+            best_i = int(np.argmax(eff))
+            rem_mask[best_i] = False
+            chosen_sen.append(cand_arr[best_i])
+            cur_X = np.vstack([cur_X, cand_arr[best_i : best_i + 1]])
+            _downdate_all_channels(best_i)
+
+        all_pts = chosen_dec + chosen_sen
+        return (
+            np.array(all_pts, dtype=float) if all_pts else np.empty((0, self.dim), dtype=float),
+            {
+                "active_q_relu_fraction": active_q_frac,
+                "n_decision_selected": len(chosen_dec),
+                "n_sentinel_selected": len(chosen_sen),
+                "n_functionals_tracked": len(func_meta),
+                "drift_channels_included": len(b_channels),
+            },
+        )
+
     def project_q_linear_functional_variance_reduction(
         self,
         cand_pts: np.ndarray,
         grid_pts: np.ndarray,
         weights_mat: np.ndarray,
+        apply_q_relu_mask: bool = False,
     ) -> np.ndarray:
         """Exact closed-form 1-step Gaussian posterior variance reduction on `K` linear functionals
         `L_k = <w_k, q_latent(grid_pts)>` from observing a noisy probe `y(x) = q_latent(x) + eps`
@@ -628,6 +890,8 @@ class KrigingWorldModel:
         W = np.atleast_2d(np.asarray(weights_mat, dtype=float))
         if W.shape[0] != len(grid_pts) and W.shape[1] == len(grid_pts):
             W = W.T
+        if apply_q_relu_mask:
+            W = W * (self.predict_q_raw_latent_mean(grid_pts) > 0.0)[:, None]
         K_cg = self._eval_matern25_kernel_pair(cand_pts, grid_pts, st)
         K_co = self._eval_matern25_kernel(cand_pts, st)
         K_go = self._eval_matern25_kernel(grid_pts, st)
@@ -972,3 +1236,23 @@ def paired_relative_noninferiority(
         "linearized_contrast_vs_0": lin_res,
         "per_map_pct_excess": pct_res,
     }
+
+
+def holm_bonferroni_adjust(p_values: Dict[str, float], alpha: float = 0.05) -> Dict[str, dict]:
+    """Step-down Holm-Bonferroni family-wise error rate adjustment across a pre-declared contrast family."""
+    items = sorted(((k, float(v)) for k, v in p_values.items()), key=lambda kv: kv[1])
+    m = len(items)
+    out: Dict[str, dict] = {}
+    running_max = 0.0
+    rejected_so_far = True
+    for idx, (k, p_raw) in enumerate(items):
+        p_adj = min(1.0, max(running_max, (m - idx) * p_raw))
+        running_max = p_adj
+        if p_adj >= alpha:
+            rejected_so_far = False
+        out[k] = {
+            "p_nominal": p_raw,
+            "p_holm": p_adj,
+            "significant_familywise_0_05": bool(rejected_so_far and p_adj < alpha),
+        }
+    return out
