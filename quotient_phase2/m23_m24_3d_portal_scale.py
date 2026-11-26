@@ -39,6 +39,7 @@ import sys
 import time
 import warnings
 from concurrent.futures import ProcessPoolExecutor
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple
 
@@ -67,7 +68,7 @@ from green_response import (
 from green_response.port_solvers import build_grid_points
 
 from quotient_phase2 import compute_phase2_manifest, verify_phase1_readonly_freeze
-from quotient_phase2.m20_contracts import Phase2DecisionCertificate
+from quotient_phase2.m20_contracts import Phase2DecisionCertificate, check_directed_goal_reachability
 
 
 # ==============================================================================
@@ -82,7 +83,9 @@ def build_3d_reflecting_obstacle_mmatrix(
 ) -> sp.csc_matrix:
     """Builds the 3D Cole-Hopf desirability M-matrix `A` on `Omega_free` (`gn^3` ambient grid)
     with zero-flux reflecting internal room walls and absorbing outer domain boundary.
+    Enforces `spec.validate_cole_hopf_lmdp` (`EC-02 / C-MATH-03`: rejects finite `u_max` or anisotropic `r_diag`).
     """
+    spec.validate_cole_hopf_lmdp("build_3d_reflecting_obstacle_mmatrix")
     L = float(spec.half_width)
     h = 2.0 * L / float(gn - 1)
     lam = float(spec.lam)
@@ -144,45 +147,109 @@ def evaluate_3d_deployed_policy_exact(
     s_f: int,
 ) -> float:
     """Independently evaluates the true full-horizon cost `V^{mu(z_guide)}(s_f)` of the deployed
-    primitive Markov policy `pi_{ij}^{mu} propto (-A_{ij}) z_guide_j` on the 3D grid `(I - P^mu) V^mu = c^mu`.
+    discrete KL-LMDP Markov policy `pi_{ij}^{mu} propto (-A_{ij}) z_guide_j` on the 3D grid `(I - P^mu) V^mu = c^mu`.
+    Uses scale-invariant per-row max rescaling (NO `1e-300` floor distorting row sums) and explicit graph
+    reachability / properness verification (`EC-03`).
     """
-    ext = np.flatnonzero(~goal_mask)
+    n_tot = A_csr.shape[0]
+    gm = np.asarray(goal_mask, dtype=bool)
+    if gm.ndim != 1 or gm.shape[0] != n_tot:
+        raise ValueError("Invalid goal_mask shape")
+    if s_f < 0 or s_f >= n_tot:
+        raise ValueError("s_f out of range")
+    if bool(gm[s_f]):
+        return float(phi_goal)
+
+    ext = np.flatnonzero(~gm)
     if len(ext) == 0:
         return float(phi_goal)
 
-    z_pos = np.maximum(np.asarray(z_guide_full, dtype=float), 1e-300)
+    z_arr = np.asarray(z_guide_full, dtype=float)
+    if z_arr.shape != (n_tot,) or (not np.all(np.isfinite(z_arr))) or np.any(z_arr < 0.0):
+        raise ValueError("z_guide_full must be finite and non-negative")
+
+    can_reach_op = check_directed_goal_reachability(A_csr, gm)
+    if not bool(can_reach_op[s_f]):
+        return float("inf")
+
     diag_all = A_csr.diagonal()
     A_zero_diag = A_csr - sp.diags(diag_all, offsets=0, format="csr")
     A_off_neg = (-A_zero_diag)[ext, :].tocsr()
     A_off_neg.data = np.maximum(A_off_neg.data, 0.0)
 
     d_ext = diag_all[ext]
-    M_ext = sp.diags(1.0 / d_ext) @ A_off_neg
-    W_ext = M_ext @ sp.diags(z_pos)
-    w_sum = np.asarray(W_ext.sum(axis=1)).ravel()
-    pos_w = w_sum > 1e-300
-    if not np.all(pos_w):
-        # Fallback uniform over positive passive neighbors on underflowed states
-        m_row = np.maximum(np.asarray(M_ext.sum(axis=1)).ravel(), 1e-300)
-        Pi_passive = sp.diags(1.0 / m_row) @ M_ext
-        W_safe = sp.diags(np.where(pos_w, 1.0 / np.maximum(w_sum, 1e-300), 0.0)) @ W_ext
-        Pi_all = W_safe + sp.diags((~pos_w).astype(float)) @ Pi_passive
-        c_mu = np.empty(len(ext), dtype=float)
-        log_z = np.log(z_pos)
-        c_mu[pos_w] = -float(lam) * np.log(w_sum[pos_w]) + float(lam) * np.asarray((Pi_all[pos_w, :] @ log_z)).ravel()
-        c_mu[~pos_w] = -float(lam) * np.log(m_row[~pos_w])
-    else:
-        Pi_all = sp.diags(1.0 / w_sum) @ W_ext
-        c_mu = -float(lam) * np.log(w_sum) + float(lam) * np.asarray(Pi_all @ np.log(z_pos)).ravel()
+    M_ext = (sp.diags(1.0 / d_ext) @ A_off_neg).tocsr()
+    m_row = np.asarray(M_ext.sum(axis=1)).ravel()
+    if np.any(m_row <= 0.0):
+        # Any state with zero outgoing weight cannot reach goal unless already in goal
+        pass
 
-    P_ii = Pi_all[:, ext]
-    p_goal = np.asarray(Pi_all[:, goal_mask].sum(axis=1)).ravel()
-    rhs = c_mu + p_goal * float(phi_goal)
-    Sys = sp.eye(len(ext), format="csr") - P_ii
-    v_ext, info = spla.bicgstab(Sys, rhs, rtol=1e-12, atol=1e-14, maxiter=2000)
-    if info != 0 or not np.all(np.isfinite(v_ext)):
-        v_ext = spla.spsolve(Sys.tocsc(), rhs)
-    return float(v_ext[int(np.searchsorted(ext, s_f))])
+    # Vectorized per-row max rescaling (`z_nb / max_nb_z`): exact unit row sums, zero `1e-300` floor distortion!
+    row_of_nnz = np.repeat(np.arange(len(ext), dtype=np.int64), np.diff(M_ext.indptr))
+    z_nb_all = z_arr[M_ext.indices]
+    row_z_max = np.zeros(len(ext), dtype=float)
+    np.maximum.at(row_z_max, row_of_nnz, z_nb_all)
+
+    has_pos_z = row_z_max > 0.0
+    scale_per_nnz = np.where(has_pos_z[row_of_nnz], z_nb_all / np.maximum(row_z_max[row_of_nnz], 1e-300), 1.0)
+    w_data = M_ext.data * scale_per_nnz
+    W_scaled = sp.csr_matrix((w_data, M_ext.indices.copy(), M_ext.indptr.copy()), shape=M_ext.shape)
+    w_sum = np.asarray(W_scaled.sum(axis=1)).ravel()
+
+    valid_w = w_sum > 0.0
+    # Construct `Pi_all` directly in `M_ext`'s exact `(indices, indptr)` layout (avoiding `sp.diags @ CSR` column re-sorting!)
+    pi_data = np.where(valid_w[row_of_nnz], w_data / np.maximum(w_sum[row_of_nnz], 1e-300), 0.0)
+    Pi_all = sp.csr_matrix((pi_data, M_ext.indices.copy(), M_ext.indptr.copy()), shape=M_ext.shape)
+    if np.any(valid_w):
+        r_sums = np.asarray(Pi_all[valid_w, :].sum(axis=1)).ravel()
+        if float(np.max(np.abs(r_sums - 1.0))) > 1e-11:
+            raise RuntimeError("Policy row-sum normalization violated")
+
+    # Exact step KL cost `c^mu_i = -lam * log(m_i) + lam * sum_j pi_{ij} log(pi_{ij} / (M_{ij}/m_i))`
+    p_pas_data = M_ext.data / np.maximum(m_row[row_of_nnz], 1e-300)
+    pos_pi = pi_data > 0.0
+    kl_nnz = np.zeros_like(pi_data)
+    kl_nnz[pos_pi] = pi_data[pos_pi] * np.log(pi_data[pos_pi] / p_pas_data[pos_pi])
+    kl_row = np.zeros(len(ext), dtype=float)
+    np.add.at(kl_row, row_of_nnz, kl_nnz)
+    c_mu = np.where(m_row > 0.0, -float(lam) * np.log(np.maximum(m_row, 1e-300)) + float(lam) * np.maximum(kl_row, 0.0), float("inf"))
+
+    # Verify properness of deployed policy from `s_f`
+    A_pi_graph = sp.eye(n_tot, format="csr") - sp.csr_matrix(
+        (Pi_all.data, (ext[row_of_nnz], Pi_all.indices)), shape=(n_tot, n_tot)
+    )
+    can_reach_pi = can_reach_op & check_directed_goal_reachability(A_pi_graph, gm)
+    if not bool(can_reach_pi[s_f]):
+        return float("inf")
+    bad_mask = ~can_reach_pi
+    while np.any(bad_mask):
+        leak = (Pi_all[:, bad_mask].sum(axis=1).A1 > 0.0) & can_reach_pi[ext]
+        if not np.any(leak):
+            break
+        can_reach_pi[ext[leak]] = False
+        if not bool(can_reach_pi[s_f]):
+            return float("inf")
+        bad_mask = ~can_reach_pi
+
+    proper_mask = can_reach_pi[ext]
+    ext_prop = ext[proper_mask]
+    Pi_prop = Pi_all[proper_mask, :]
+    P_ii = Pi_prop[:, ext_prop]
+    p_goal = np.asarray(Pi_prop[:, gm].sum(axis=1)).ravel()
+    # Solve in zero-terminal gauge and add `phi_goal` (since `Pi_prop` is proper stochastic, `(I - P_ii)^{-1} p_goal == 1`!)
+    Sys = sp.eye(len(ext_prop), format="csr") - P_ii
+    rhs_pi = c_mu[proper_mask]
+    rhs_pi_scale = max(1.0, float(np.max(np.abs(rhs_pi))))
+    v0_ext, info = spla.bicgstab(Sys, rhs_pi, rtol=1e-12, atol=1e-14, maxiter=2000)
+    if (
+        info != 0
+        or (not np.all(np.isfinite(v0_ext)))
+        or (float(np.max(np.abs(rhs_pi - (Sys @ v0_ext)))) / rhs_pi_scale > 1e-9)
+    ):
+        v0_ext = spla.spsolve(Sys.tocsc(), rhs_pi)
+        if (not np.all(np.isfinite(v0_ext))) or (float(np.max(np.abs(rhs_pi - (Sys @ v0_ext)))) / rhs_pi_scale > 1e-8):
+            raise RuntimeError("evaluate_3d_deployed_policy_exact failed linear residual verification")
+    return float(phi_goal) + float(v0_ext[int(np.searchsorted(ext_prop, s_f))])
 
 
 # ==============================================================================
@@ -410,39 +477,287 @@ def discover_3d_bottleneck_planes_zero_hint(free_3d: np.ndarray) -> Tuple[List[i
     return cuts_per_axis[0], cuts_per_axis[1], cuts_per_axis[2]
 
 
+def _dyadic_split_2d_block(b_idx: np.ndarray, pts_b: np.ndarray, ax1: int, ax2: int) -> List[np.ndarray]:
+    """Splits a single portal block `b_idx` into `<= 4` strictly disjoint child blocks (`2x2` median split)."""
+    if len(b_idx) <= 1:
+        return [b_idx]
+    u1 = np.unique(pts_b[:, ax1])
+    if len(u1) >= 2:
+        mid1 = 0.5 * float(u1[len(u1) // 2 - 1] + u1[len(u1) // 2])
+        g1 = [b_idx[pts_b[:, ax1] <= mid1], b_idx[pts_b[:, ax1] > mid1]]
+        p1 = [pts_b[pts_b[:, ax1] <= mid1], pts_b[pts_b[:, ax1] > mid1]]
+    else:
+        g1 = [b_idx]
+        p1 = [pts_b]
+    children: List[np.ndarray] = []
+    for sub_b, sub_p in zip(g1, p1):
+        if len(sub_b) == 0:
+            continue
+        u2 = np.unique(sub_p[:, ax2])
+        if len(u2) >= 2:
+            mid2 = 0.5 * float(u2[len(u2) // 2 - 1] + u2[len(u2) // 2])
+            c_lo = sub_b[sub_p[:, ax2] <= mid2]
+            c_hi = sub_b[sub_p[:, ax2] > mid2]
+            if len(c_lo) > 0:
+                children.append(c_lo)
+            if len(c_hi) > 0:
+                children.append(c_hi)
+        else:
+            children.append(sub_b)
+    return children
+
+
 def build_portal_level_blocks(p_idx: np.ndarray, pts_p: np.ndarray, level: int) -> List[np.ndarray]:
-    """Nested hierarchical partition of a 2D planar portal `p_idx`:
-      `L0 = 1` (single portal aggregate), `L1 = 4` (`2x2`), `L2 = 16` (`4x4`), `L3 = 36` (`6x6`).
+    """Strictly nested recursive dyadic partition tree of a 2D planar portal `p_idx` (`Closes 7.3`):
+      `L0 = 1` -> `L1 <= 4` (`2x2`) -> `L2 <= 16` (`4x4`) -> `L3 <= 64` (`8x8`) -> `L4 = singletons`.
+      Every block at `level` is a strict subset of a unique parent block at `level - 1` (`0` cross-parent blocks!).
     """
     if level <= 0 or len(p_idx) <= 1:
         return [p_idx]
-    if level >= 4 or len(p_idx) <= 4:
+    if level >= 4:
         return [np.array([x], dtype=np.int64) for x in p_idx]
     spans = np.ptp(pts_p, axis=0)
     ax1, ax2 = int(np.argsort(spans)[-2]), int(np.argsort(spans)[-1])
-    n_div = 2 if level == 1 else (4 if level == 2 else 6)
-    if len(p_idx) <= n_div * n_div:
-        return [np.array([x], dtype=np.int64) for x in p_idx]
-    q1 = np.linspace(0.0, 1.0, n_div + 1)
-    edges1 = np.quantile(pts_p[:, ax1], q1)
-    edges1[0] -= 1e-9
-    edges1[-1] += 1e-9
-    out: List[np.ndarray] = []
-    for i in range(n_div):
-        m1 = (pts_p[:, ax1] > edges1[i] if i > 0 else pts_p[:, ax1] >= edges1[i]) & (pts_p[:, ax1] <= edges1[i + 1])
-        sub1 = p_idx[m1]
-        if len(sub1) == 0:
-            continue
-        pts_s = pts_p[m1]
-        edges2 = np.quantile(pts_s[:, ax2], q1)
-        edges2[0] -= 1e-9
-        edges2[-1] += 1e-9
-        for j in range(n_div):
-            m2 = (pts_s[:, ax2] > edges2[j] if j > 0 else pts_s[:, ax2] >= edges2[j]) & (pts_s[:, ax2] <= edges2[j + 1])
-            sub2 = sub1[m2]
-            if len(sub2) > 0:
-                out.append(sub2)
-    return out
+    pos_map = {int(nid): k for k, nid in enumerate(p_idx)}
+    cur_blocks = [p_idx]
+    for _ in range(level):
+        nxt_blocks: List[np.ndarray] = []
+        for b in cur_blocks:
+            if len(b) <= 1:
+                nxt_blocks.append(b)
+            else:
+                pts_b = pts_p[[pos_map[int(nid)] for nid in b]]
+                nxt_blocks.extend(_dyadic_split_2d_block(b, pts_b, ax1, ax2))
+        cur_blocks = nxt_blocks
+    return cur_blocks
+
+
+def solve_and_verify_portal_howard_bounds(
+    K_cur: np.ndarray,
+    r_hat: np.ndarray,
+    blks_all: Sequence[np.ndarray],
+    k_neg_roundoff_ub: float = 0.0,
+    max_iters: int = 30,
+    rel_tol: float = 1e-11,
+) -> dict:
+    """Solves Adversarial (`min`) & Cooperative (`max`) Row-Coupled Howard portal systems and **explicitly
+    verifies** post-/pre-fixed-point inequalities (`W_lo >= L v_lo`, `W_hi <= L v_hi`) and unclipped
+    Lyapunov positivity (`s_0_raw = (I - K) w_lyap > 0`) at runtime (`Closes EC-04 / C-MATH-04`!).
+    """
+    n_g, m_cur = K_cur.shape
+    I_m = np.eye(m_cur, dtype=float)
+    Sys_bar = np.eye(m_cur, dtype=float)
+    for j, b_arr in enumerate(blks_all):
+        Sys_bar[j, :] -= np.mean(K_cur[b_arr, :], axis=0)
+    rhs_bar = np.array([float(np.mean(r_hat[b_arr])) for b_arr in blks_all], dtype=float)
+
+    v_lo = np.linalg.solve(Sys_bar, rhs_bar)
+    v_hi = v_lo.copy()
+
+    iters_lo = 0
+    for it in range(1, max_iters + 1):
+        iters_lo = it
+        W_lo = (K_cur @ v_lo) + r_hat
+        x_min = np.array([b_arr[int(np.argmin(W_lo[b_arr]))] for b_arr in blks_all], dtype=np.int64)
+        vn = np.linalg.solve(I_m - K_cur[x_min, :], r_hat[x_min])
+        W_nxt = (K_cur @ vn) + r_hat
+        b_mins = np.array([float(np.min(W_nxt[b_arr])) for b_arr in blks_all], dtype=float)
+        if np.max(np.abs(vn - v_lo) / np.maximum(np.abs(vn), 1e-30)) < rel_tol and np.max(vn - b_mins) <= 1e-12 * max(1.0, float(np.max(vn))):
+            v_lo = vn
+            W_lo = W_nxt
+            break
+        v_lo = vn
+    else:
+        W_lo = (K_cur @ v_lo) + r_hat
+
+    iters_hi = 0
+    for it in range(1, max_iters + 1):
+        iters_hi = it
+        W_hi = (K_cur @ v_hi) + r_hat
+        x_max = np.array([b_arr[int(np.argmax(W_hi[b_arr]))] for b_arr in blks_all], dtype=np.int64)
+        vn = np.linalg.solve(I_m - K_cur[x_max, :], r_hat[x_max])
+        W_nxt = (K_cur @ vn) + r_hat
+        b_maxs = np.array([float(np.max(W_nxt[b_arr])) for b_arr in blks_all], dtype=float)
+        if np.max(np.abs(vn - v_hi) / np.maximum(np.abs(vn), 1e-30)) < rel_tol and np.max(b_maxs - vn) <= 1e-12 * max(1.0, float(np.max(vn))):
+            v_hi = vn
+            W_hi = W_nxt
+            break
+        v_hi = vn
+    else:
+        W_hi = (K_cur @ v_hi) + r_hat
+
+    # Construct & verify unclipped cooperative Lyapunov super-harmonic witness `w_lyap = L v_lyap > 0`
+    src_lyap = 0.5 * np.maximum(W_hi, 0.0)
+    if float(np.max(src_lyap)) <= 0.0:
+        src_lyap = np.ones(n_g, dtype=float)
+    rhs_lyap = np.array([float(np.max(src_lyap[b_arr])) for b_arr in blks_all], dtype=float)
+    v_lyap = np.linalg.solve(Sys_bar, rhs_lyap)
+    for _ in range(max_iters):
+        W_ly = (K_cur @ v_lyap) + src_lyap
+        x_mx = np.array([b_arr[int(np.argmax(W_ly[b_arr]))] for b_arr in blks_all], dtype=np.int64)
+        vn = np.linalg.solve(I_m - K_cur[x_mx, :], src_lyap[x_mx])
+        W_ly_n = (K_cur @ vn) + src_lyap
+        b_mx_n = np.array([float(np.max(W_ly_n[b_arr])) for b_arr in blks_all], dtype=float)
+        if np.max(np.abs(vn - v_lyap) / np.maximum(np.abs(vn), 1e-30)) < rel_tol and np.all(vn >= b_mx_n - 1e-13 * np.maximum(vn, 1e-30)):
+            v_lyap = vn
+            break
+        v_lyap = vn
+
+    w_lyap = np.empty(n_g, dtype=float)
+    Lv_lo = np.empty(n_g, dtype=float)
+    Lv_hi = np.empty(n_g, dtype=float)
+    for j, b_arr in enumerate(blks_all):
+        w_lyap[b_arr] = float(v_lyap[j])
+        Lv_lo[b_arr] = float(v_lo[j])
+        Lv_hi[b_arr] = float(v_hi[j])
+
+    # Account for any tiny negative roundoff clipped in `K_cur` (`|(K_exact - K_cur) v| <= k_neg_roundoff_ub * sum(|v|)`)
+    s_0_raw = w_lyap - (K_cur @ v_lyap) - float(k_neg_roundoff_ub) * float(np.sum(np.abs(v_lyap)))
+    lyap_valid = bool(
+        np.all(np.isfinite(w_lyap))
+        and np.all(w_lyap > 0.0)
+        and np.all(np.isfinite(s_0_raw))
+        and np.all(s_0_raw > 0.0)
+    )
+    if not lyap_valid:
+        return {
+            "verified": False,
+            "reason": "lyapunov_positivity_failed",
+            "Sys_bar": Sys_bar,
+            "v_lo": v_lo,
+            "v_hi": v_hi,
+            "W_lo": W_lo,
+            "W_hi": W_hi,
+            "w_lyap": w_lyap,
+            "s_0_raw": s_0_raw,
+            "min_beta_s_over_w": None,
+            "iters_lo": iters_lo,
+            "iters_hi": iters_hi,
+        }
+
+    # Outward shift using verified `s_0_raw > 0` so `W_lo_cert >= L v_lo_cert` and `W_hi_cert <= L v_hi_cert` hold strictly!
+    round_lo = float(k_neg_roundoff_ub) * float(np.sum(np.abs(v_lo))) + 1e-13 * np.maximum(W_lo, 0.0)
+    round_hi = float(k_neg_roundoff_ub) * float(np.sum(np.abs(v_hi))) + 1e-13 * np.maximum(W_hi, 0.0)
+    def_lo = np.maximum(0.0, Lv_lo - (W_lo - round_lo))
+    def_hi = np.maximum(0.0, (W_hi + round_hi) - Lv_hi)
+    theta_lo = float(np.max(def_lo / s_0_raw)) * (1.0 + 1e-11) if float(np.max(def_lo)) > 0.0 else 0.0
+    theta_hi = float(np.max(def_hi / s_0_raw)) * (1.0 + 1e-11) if float(np.max(def_hi)) > 0.0 else 0.0
+
+    v_lo_cert = v_lo - theta_lo * v_lyap
+    v_hi_cert = v_hi + theta_hi * v_lyap
+    W_lo_cert = (K_cur @ v_lo_cert) + r_hat - float(k_neg_roundoff_ub) * float(np.sum(np.abs(v_lo_cert)))
+    W_hi_cert = (K_cur @ v_hi_cert) + r_hat + float(k_neg_roundoff_ub) * float(np.sum(np.abs(v_hi_cert)))
+
+    Lv_lo_cert = np.empty(n_g, dtype=float)
+    Lv_hi_cert = np.empty(n_g, dtype=float)
+    for j, b_arr in enumerate(blks_all):
+        Lv_lo_cert[b_arr] = float(v_lo_cert[j])
+        Lv_hi_cert[b_arr] = float(v_hi_cert[j])
+
+    post_fp_slack = float(np.min(W_lo_cert - Lv_lo_cert))
+    pre_fp_slack = float(np.min(Lv_hi_cert - W_hi_cert))
+    bounds_ordered = bool(np.all(W_lo_cert <= W_hi_cert))
+    strictly_pos = bool(np.all(np.isfinite(W_lo_cert)) and np.all(np.isfinite(W_hi_cert)) and np.all(v_lo_cert > 0.0) and np.all(W_lo_cert > 0.0))
+    verified = bool(strictly_pos and bounds_ordered and post_fp_slack >= -1e-15 * float(np.max(W_lo_cert)) and pre_fp_slack >= -1e-15 * float(np.max(W_hi_cert)))
+
+    return {
+        "verified": verified,
+        "reason": "ok" if verified else "fixed_point_or_positivity_unverified",
+        "Sys_bar": Sys_bar,
+        "v_lo": v_lo_cert if verified else v_lo,
+        "v_hi": v_hi_cert if verified else v_hi,
+        "W_lo": W_lo_cert if verified else W_lo,
+        "W_hi": W_hi_cert if verified else W_hi,
+        "w_lyap": w_lyap,
+        "s_0_raw": s_0_raw,
+        "min_beta_s_over_w": float(np.min(s_0_raw / w_lyap)),
+        "post_fp_min_slack": post_fp_slack,
+        "pre_fp_min_slack": pre_fp_slack,
+        "iters_lo": iters_lo,
+        "iters_hi": iters_hi,
+    }
+
+
+@dataclass
+class LazyRoomPortalPolicy:
+    """Executable discrete KL-LMDP controller handle delivered inside `query_ms` (`Closes EC-6.4`).
+    Bound to `(operator_epoch, goal_signature)` so stale controllers after world updates fail closed,
+    and lazily materializes room desirability fields upon visiting any 3D room.
+    """
+    planner: "SeamFreePortal3DPlanner"
+    operator_epoch: int
+    goal_signature: Tuple[int, ...]
+    phi_goal: float
+    c_goal: int
+    in_g_loc: np.ndarray
+    ring_r: np.ndarray
+    U_rg: np.ndarray
+    K_inv: np.ndarray
+    h_goal_r: np.ndarray
+    W_lo_unit: np.ndarray
+    trivial_start_in_goal: bool = False
+    _room_z_cache: Dict[int, np.ndarray] = field(default_factory=dict)
+
+    def _check_epoch(self) -> None:
+        if self.planner.operator_epoch != self.operator_epoch:
+            raise RuntimeError(
+                f"Stale LazyRoomPortalPolicy: policy epoch={self.operator_epoch} != planner epoch={self.planner.operator_epoch}"
+            )
+
+    def room_desirability_unit(self, room_c: int) -> np.ndarray:
+        self._check_epoch()
+        c = int(room_c)
+        if c in self._room_z_cache:
+            return self._room_z_cache[c]
+        tl_c = self.planner.room_tl[c]
+        yc = self.planner.hq_lus[c].solve(self.planner.room_Arg[c] @ self.W_lo_unit[tl_c])
+        if c == self.c_goal:
+            yc = self.h_goal_r + yc - self.U_rg @ (self.K_inv @ yc[self.ring_r])
+            yc[self.in_g_loc] = 1.0
+        if np.any(~np.isfinite(yc)) or np.any(yc <= 0.0):
+            raise RuntimeError(f"Non-positive harmonic room extension in room {c}")
+        self._room_z_cache[c] = yc
+        return yc
+
+    def materialize_full_grid_unit(self) -> np.ndarray:
+        self._check_epoch()
+        if self.trivial_start_in_goal:
+            return np.ones(self.planner.n_f, dtype=float)
+        z_full = np.ones(self.planner.n_f, dtype=float)
+        z_full[self.planner.gamma_f] = self.W_lo_unit
+        for c in range(self.planner.n_rooms):
+            z_full[self.planner.room_nodes[c]] = self.room_desirability_unit(c)
+        z_full[np.asarray(self.goal_signature, dtype=np.int64)] = 1.0
+        return z_full
+
+    def action_distribution(self, state_f: int) -> Tuple[np.ndarray, np.ndarray]:
+        """Returns `(neighbor_indices, transition_probabilities)` summing to `1.0` at `state_f`."""
+        self._check_epoch()
+        s = int(state_f)
+        if s in self.goal_signature:
+            return np.array([s], dtype=np.int64), np.array([1.0], dtype=float)
+        A_row = self.planner.A_csr.getrow(s)
+        cols = A_row.indices
+        vals = A_row.data
+        off_mask = (cols != s) & (vals < 0.0)
+        nb_cols = cols[off_mask]
+        m_weights = -vals[off_mask]
+        z_nb = np.empty(len(nb_cols), dtype=float)
+        for idx_k, nb in enumerate(nb_cols):
+            nb_i = int(nb)
+            if nb_i in self.goal_signature:
+                z_nb[idx_k] = 1.0
+            else:
+                rc = int(self.planner.room_of_f[nb_i])
+                if rc >= 0:
+                    z_r = self.room_desirability_unit(rc)
+                    z_nb[idx_k] = float(z_r[int(np.searchsorted(self.planner.room_nodes[rc], nb_i))])
+                else:
+                    z_nb[idx_k] = float(self.W_lo_unit[int(np.searchsorted(self.planner.gamma_f, nb_i))])
+        z_mx = float(np.max(z_nb))
+        w = m_weights * (z_nb / z_mx) if z_mx > 0.0 else m_weights
+        probs = w / float(np.sum(w))
+        return nb_cols, probs
 
 
 # ==============================================================================
@@ -468,7 +783,11 @@ class SeamFreePortal3DPlanner:
         A_csr: sp.csr_matrix,
         eps_tol: float = 0.25,
         coarse_l0_only: bool = False,
+        use_portal_cache: bool = True,
     ) -> None:
+        spec.validate_cole_hopf_lmdp("SeamFreePortal3DPlanner")
+        if (not np.isfinite(eps_tol)) or float(eps_tol) < 0.0:
+            raise ValueError(f"Invalid eps_tol={eps_tol}")
         self.spec = spec
         self.lam = float(spec.lam)
         self.gn = gn
@@ -476,6 +795,10 @@ class SeamFreePortal3DPlanner:
         self.pts_f = pts_f
         self.eps_tol = float(eps_tol)
         self.coarse_l0_only = bool(coarse_l0_only)
+        self.use_portal_cache = bool(use_portal_cache)
+        self.operator_epoch = 0
+        self.max_k_neg_roundoff = 0.0
+        self.local_lu_solve_calls = 0
 
         t_disc0 = time.perf_counter()
         self.x_cuts, self.y_cuts, self.z_cuts = discover_3d_bottleneck_planes_zero_hint(free_3d)
@@ -546,7 +869,7 @@ class SeamFreePortal3DPlanner:
 
     def _ensure_portal_level(self, p_id: int, lv: int) -> Tuple[List[np.ndarray], np.ndarray, Dict[int, np.ndarray]]:
         key = (p_id, lv)
-        if key in self.portal_cache:
+        if self.use_portal_cache and key in self.portal_cache:
             return self.portal_cache[key]
         blks_p = build_portal_level_blocks(self.portal_nodes_loc[p_id], self.portal_pts[p_id], lv)
         m_p = len(blks_p)
@@ -560,11 +883,22 @@ class SeamFreePortal3DPlanner:
                 loc_in_tl = mp[b_arr]
                 L_sub[loc_in_tl[loc_in_tl >= 0], j] = 1.0
             Yc = self.hq_lus[c].solve(self.room_Arg[c] @ L_sub)
+            self.local_lu_solve_calls += int(m_p)
             y_by_c[c] = Yc
             NegM_L[tl, :] += self.room_NegAgr[c] @ Yc
-        K_mat = np.maximum(self.lu_Agg.solve(NegM_L), 0.0)
-        self.portal_cache[key] = (blks_p, K_mat, y_by_c)
-        return self.portal_cache[key]
+        K_raw = self.lu_Agg.solve(NegM_L)
+        if not np.all(np.isfinite(K_raw)):
+            raise RuntimeError("Non-finite portal response matrix K_raw")
+        neg_mag = max(0.0, float(-np.min(K_raw)))
+        scale_k = max(1.0, float(np.max(K_raw)))
+        if neg_mag > 1e-9 * scale_k:
+            raise RuntimeError(f"Portal operator violated non-negativity beyond roundoff: min(K_raw)={float(np.min(K_raw))}")
+        self.max_k_neg_roundoff = max(self.max_k_neg_roundoff, neg_mag)
+        K_mat = np.maximum(K_raw, 0.0)
+        entry = (blks_p, K_mat, y_by_c)
+        if self.use_portal_cache or lv == 0:
+            self.portal_cache[key] = entry
+        return entry
 
     def update_world_operator(self, A_new_csr: sp.csr_matrix, modified_rooms: Sequence[int], portal_diag_changed: bool) -> dict:
         """Continual `M2.4` surgical world-model update:
@@ -575,6 +909,7 @@ class SeamFreePortal3DPlanner:
             and refreshes modified rooms + portal cache cleanly.
         """
         t0 = time.perf_counter()
+        self.operator_epoch += 1
         self.A_csr = A_new_csr
         mod_set = sorted(set(int(c) for c in modified_rooms))
         for c in mod_set:
@@ -610,22 +945,44 @@ class SeamFreePortal3DPlanner:
             "cached_entries_before": n_cached_before,
         }
 
+    def _validate_query_inputs(self, s_f: int, goal_mask: np.ndarray, phi_goal: float) -> Tuple[int, np.ndarray, np.ndarray, float]:
+        if not isinstance(s_f, (int, np.integer)) or isinstance(s_f, bool) or int(s_f) < 0 or int(s_f) >= self.n_f:
+            raise ValueError(f"Start state s_f={s_f!r} out of range [0, {self.n_f})")
+        if not np.isfinite(phi_goal):
+            raise ValueError(f"phi_goal must be finite, got {phi_goal!r}")
+        gm = np.asarray(goal_mask, dtype=bool)
+        if gm.ndim != 1 or gm.shape[0] != self.n_f:
+            raise ValueError(f"goal_mask shape {gm.shape} != ({self.n_f},)")
+        g_f = np.flatnonzero(gm)
+        if len(g_f) == 0:
+            raise ValueError("goal_mask must contain at least one goal node")
+        g_rooms = self.room_of_f[g_f]
+        if np.any(g_rooms < 0):
+            raise ValueError("Unsupported goal_mask: goal nodes on separator portals are not supported in single-room Woodbury mode")
+        uniq_rooms = np.unique(g_rooms)
+        if len(uniq_rooms) != 1:
+            raise ValueError(
+                f"Unsupported multi-room goal_mask spanning rooms {uniq_rooms.tolist()}: single-room Woodbury mode requires goal inside one room"
+            )
+        return int(s_f), gm, g_f, float(phi_goal)
+
     def solve_exact_reference_value(self, s_f: int, goal_mask: np.ndarray, phi_goal: float = 0.0) -> float:
-        """Computes exact ground-truth `V^*(s_f)` to `< 1e-12` without global `splu` or `exp(-V/lam)` underflow
-        by solving the Lyapunov-gauge scaled portal integral equation `(I - P_tilde) u_hat = r_hat / w_lyap` to `1e-12`.
-        Used strictly outside planner wall-clock timing for reference soundness auditing on `59^3`.
+        """Computes high-accuracy same-model portal reference `V^*(s_f)` in unit terminal gauge (`+ phi_goal`)
+        with mandatory `info == 0`, strict positivity, and scaled-residual verification (`Closes EC-05`).
         """
-        g_goal = float(np.exp(-float(phi_goal) / self.lam))
-        g_f = np.flatnonzero(goal_mask)
+        s_i, gm, g_f, phi_f = self._validate_query_inputs(s_f, goal_mask, phi_goal)
+        if bool(gm[s_i]):
+            return phi_f
+        can_reach = check_directed_goal_reachability(self.A_csr, gm)
+        if not bool(can_reach[s_i]):
+            return float("inf")
+
         c_g = int(self.room_of_f[g_f[0]])
         rn_g = self.room_nodes[c_g]
         tl_g = self.room_tl[c_g]
-        c_s = int(self.room_of_f[s_f])
-        rn_s = self.room_nodes[c_s]
-        tl_s = self.room_tl[c_s]
-        pos_s = int(np.searchsorted(rn_s, s_f))
+        c_s = int(self.room_of_f[s_i])
 
-        in_g_loc = goal_mask[rn_g]
+        in_g_loc = gm[rn_g]
         A_rr = self.A_csr[rn_g, :][:, rn_g]
         ext_r = np.flatnonzero(~in_g_loc)
         g_r = np.flatnonzero(in_g_loc)
@@ -640,22 +997,31 @@ class SeamFreePortal3DPlanner:
         NegAgr_U_full[tl_g, :] = self.room_NegAgr[c_g] @ U_rg
         Smooth_U = self.lu_Agg.solve(NegAgr_U_full)
 
-        h_goal_r = U_rg @ (K_inv @ np.full(len(ring_r), g_goal, dtype=float))
+        # Unit terminal gauge (`g_unit = 1.0`)
+        h_goal_r = U_rg @ (K_inv @ np.ones(len(ring_r), dtype=float))
         r_gam = np.zeros(self.n_g, dtype=float)
         r_gam[tl_g] = np.maximum(self.room_NegAgr[c_g] @ h_goal_r, 0.0)
         r_hat = np.maximum(self.lu_Agg.solve(r_gam), 0.0)
 
-        e_s = np.zeros(len(rn_s), dtype=float)
-        e_s[pos_s] = 1.0
-        lam_s = self.hq_lus[c_s].solve(e_s, trans="T")
-        if c_s == c_g:
-            RHS_adj = np.zeros(len(rn_s), dtype=float)
-            RHS_adj[ring_r] = K_inv.T @ U_rg[pos_s, :]
-            lam_s = lam_s - self.hq_lus[c_s].solve(RHS_adj, trans="T")
-        h_s_tl = np.maximum(np.asarray(self.room_Arg[c_s].T @ lam_s).ravel(), 0.0)
-        z_dir = float(h_goal_r[pos_s]) if c_s == c_g else 0.0
+        if c_s >= 0:
+            rn_s = self.room_nodes[c_s]
+            tl_s = self.room_tl[c_s]
+            pos_s = int(np.searchsorted(rn_s, s_i))
+            e_s = np.zeros(len(rn_s), dtype=float)
+            e_s[pos_s] = 1.0
+            lam_s = self.hq_lus[c_s].solve(e_s, trans="T")
+            if c_s == c_g:
+                RHS_adj = np.zeros(len(rn_s), dtype=float)
+                RHS_adj[ring_r] = K_inv.T @ U_rg[pos_s, :]
+                lam_s = lam_s - self.hq_lus[c_s].solve(RHS_adj, trans="T")
+            h_s_tl = np.maximum(np.asarray(self.room_Arg[c_s].T @ lam_s).ravel(), 0.0)
+            z_dir = float(h_goal_r[pos_s]) if c_s == c_g else 0.0
+        else:
+            g_idx_s = int(np.searchsorted(self.gamma_f, s_i))
+            tl_s = np.array([g_idx_s], dtype=np.int64)
+            h_s_tl = np.array([1.0], dtype=float)
+            z_dir = 0.0
 
-        # Build L0 Lyapunov scale `w_lyap` so all rooms are O(1)
         blks_0, K_0_list = [], []
         for p_id in range(self.n_portals):
             bp, Kp, y_by_c = self._ensure_portal_level(p_id, 0)
@@ -664,18 +1030,10 @@ class SeamFreePortal3DPlanner:
             blks_0.extend(bp)
             K_0_list.append(Kp)
         K0 = np.hstack(K_0_list)
-        m0 = len(blks_0)
-        Sys0 = np.eye(m0)
-        for j, b_arr in enumerate(blks_0):
-            Sys0[j, :] -= np.mean(K0[b_arr, :], axis=0)
-        v0 = np.linalg.solve(Sys0, np.array([float(np.mean(r_hat[b_arr]) + 1e-30) for b_arr in blks_0]))
-        for _ in range(6):
-            W0 = (K0 @ v0) + r_hat
-            x_mx = np.array([b_arr[int(np.argmax(W0[b_arr]))] for b_arr in blks_0], dtype=np.int64)
-            v0 = np.linalg.solve(np.eye(m0) - K0[x_mx, :], r_hat[x_mx] + 1e-30)
-        w_sc = np.empty(self.n_g, dtype=float)
-        for j, b_arr in enumerate(blks_0):
-            w_sc[b_arr] = max(float(v0[j]), 1e-300)
+        hw0 = solve_and_verify_portal_howard_bounds(K0, r_hat, blks_0, k_neg_roundoff_ub=self.max_k_neg_roundoff, max_iters=30)
+        if not hw0["verified"]:
+            raise RuntimeError(f"Reference solver L0 Lyapunov construction failed: {hw0['reason']}")
+        w_sc = hw0["w_lyap"]
 
         def _apply_K_lin(vec_g: np.ndarray) -> np.ndarray:
             NegM_v = np.zeros(self.n_g, dtype=float)
@@ -690,15 +1048,24 @@ class SeamFreePortal3DPlanner:
                 NegM_v[tl_c] += self.room_NegAgr[c] @ yc
             return self.lu_Agg.solve(NegM_v)
 
+        rhs_sc = r_hat / w_sc
         Lin_ref = spla.LinearOperator(
             (self.n_g, self.n_g),
             matvec=lambda u: np.asarray(u, dtype=float) - (_apply_K_lin(w_sc * np.asarray(u, dtype=float)) / w_sc),
             dtype=float,
         )
-        u_ex, _ = spla.bicgstab(Lin_ref, r_hat / w_sc, x0=np.ones(self.n_g, dtype=float), rtol=1e-12, atol=1e-15, maxiter=80)
-        z_ex_gam = np.maximum(u_ex * w_sc, 1e-300)
+        u_ex, info = spla.bicgstab(Lin_ref, rhs_sc, x0=np.ones(self.n_g, dtype=float), rtol=1e-12, atol=1e-15, maxiter=120)
+        if info != 0 or (not np.all(np.isfinite(u_ex))):
+            raise RuntimeError(f"Reference BiCGSTAB failed to converge: info={info}")
+        res_vec = Lin_ref.matvec(u_ex) - rhs_sc
+        rel_res = float(np.linalg.norm(res_vec) / max(float(np.linalg.norm(rhs_sc)), 1e-300))
+        if rel_res > 1e-9 or np.any(u_ex <= 0.0):
+            raise RuntimeError(f"Reference solution failed residual/positivity gate: rel_res={rel_res:.3e}, min_u={float(np.min(u_ex)):.3e}")
+        z_ex_gam = u_ex * w_sc
         z_ex_s = z_dir + float(h_s_tl @ z_ex_gam[tl_s])
-        return float(-self.lam * np.log(max(z_ex_s, 1e-300)))
+        if (not np.isfinite(z_ex_s)) or z_ex_s <= 0.0:
+            raise RuntimeError("Reference start desirability non-positive")
+        return phi_f + float(-self.lam * np.log(z_ex_s))
 
     def solve_unseen_goal(
         self,
@@ -707,21 +1074,94 @@ class SeamFreePortal3DPlanner:
         phi_goal: float = 0.0,
         materialize_full_z_sub: bool = False,
     ) -> dict:
-        """Plans & certifies an unseen 3D goal `goal_mask` from start node `s_f` (`0` global `splu`s)."""
+        """Plans & certifies an unseen 3D goal `goal_mask` from start node `s_f` (`0` global `splu`s):
+          - Unit terminal gauge (`phi_goal` added after `log`: exact gauge-shift invariance, `EC-01`);
+          - Explicit domain, capability, and directed reachability guards (`EC-02, EC-03`);
+          - Runtime-verified Howard post-/pre-fixed-point & unclipped Lyapunov slack (`EC-04`);
+          - Executable `LazyRoomPortalPolicy` handle + `Phase2DecisionCertificate` constructed inside `query_ms` (`EC-6.4`).
+        """
         t0 = time.perf_counter()
-        g_goal = float(np.exp(-float(phi_goal) / self.lam))
-        g_f = np.flatnonzero(goal_mask)
+        s_i, gm, g_f, phi_f = self._validate_query_inputs(s_f, goal_mask, phi_goal)
+        goal_sig = tuple(int(x) for x in g_f)
+        solves_before = self.local_lu_solve_calls
+
+        if bool(gm[s_i]):
+            cert_triv = Phase2DecisionCertificate(
+                certificate_mode="full_policy_enclosure",
+                certified=True,
+                epsilon_tol=self.eps_tol,
+                lower_bound_opt=phi_f,
+                incumbent_policy_upper_bound=phi_f,
+                chosen_root_action=0,
+                horizon_steps=1,
+                state_id=s_i,
+                operator_epoch=self.operator_epoch,
+                model_semantics="discrete_upwind_kl_lmdp",
+            )
+            pol_triv = LazyRoomPortalPolicy(
+                planner=self,
+                operator_epoch=self.operator_epoch,
+                goal_signature=goal_sig,
+                phi_goal=phi_f,
+                c_goal=int(self.room_of_f[g_f[0]]),
+                in_g_loc=np.zeros(0, dtype=bool),
+                ring_r=np.zeros(0, dtype=np.int64),
+                U_rg=np.zeros((0, 0), dtype=float),
+                K_inv=np.zeros((0, 0), dtype=float),
+                h_goal_r=np.zeros(0, dtype=float),
+                W_lo_unit=np.ones(self.n_g, dtype=float),
+                trivial_start_in_goal=True,
+            )
+            q_ms = 1000.0 * (time.perf_counter() - t0)
+            z_full_triv = np.full(self.n_f, float(np.exp(-phi_f / self.lam)) if phi_f > -500.0 * self.lam else 1.0, dtype=float) if materialize_full_z_sub else None
+            return {
+                "query_ms": q_ms,
+                "eager_materialize_ms": 0.0,
+                "status": "start_in_goal",
+                "lo": phi_f,
+                "hi": phi_f,
+                "width": 0.0,
+                "certified": True,
+                "certificate": cert_triv,
+                "policy": pol_triv,
+                "active_dofs": 0,
+                "full_interface_dofs": self.n_g,
+                "rounds": 0,
+                "used_defect_closure": False,
+                "local_lu_solves": 0,
+                "min_beta_s_over_w": 1.0,
+                "z_guide_full": z_full_triv,
+            }
+
+        can_reach = check_directed_goal_reachability(self.A_csr, gm)
+        if not bool(can_reach[s_i]):
+            q_ms = 1000.0 * (time.perf_counter() - t0)
+            return {
+                "query_ms": q_ms,
+                "eager_materialize_ms": 0.0,
+                "status": "unreachable",
+                "lo": float("inf"),
+                "hi": float("inf"),
+                "width": float("inf"),
+                "certified": False,
+                "certificate": None,
+                "policy": None,
+                "active_dofs": 0,
+                "full_interface_dofs": self.n_g,
+                "rounds": 0,
+                "used_defect_closure": False,
+                "local_lu_solves": 0,
+                "min_beta_s_over_w": None,
+                "z_guide_full": None,
+            }
+
         c_g = int(self.room_of_f[g_f[0]])
         rn_g = self.room_nodes[c_g]
         tl_g = self.room_tl[c_g]
+        c_s = int(self.room_of_f[s_i])
 
-        c_s = int(self.room_of_f[s_f])
-        rn_s = self.room_nodes[c_s]
-        tl_s = self.room_tl[c_s]
-        pos_s = int(np.searchsorted(rn_s, s_f))
-
-        # Exact goal-room separator-ring Woodbury elimination (`0` query-time `splu`s!)
-        in_g_loc = goal_mask[rn_g]
+        # Exact goal-room separator-ring Woodbury elimination in UNIT terminal gauge (`g_unit = 1.0`)
+        in_g_loc = gm[rn_g]
         A_rr = self.A_csr[rn_g, :][:, rn_g]
         ext_r = np.flatnonzero(~in_g_loc)
         g_r = np.flatnonzero(in_g_loc)
@@ -730,27 +1170,39 @@ class SeamFreePortal3DPlanner:
         RHS_rg = np.zeros((len(rn_g), len(ring_r)), dtype=float)
         RHS_rg[ring_r, np.arange(len(ring_r))] = 1.0
         U_rg = self.hq_lus[c_g].solve(RHS_rg)
+        self.local_lu_solve_calls += int(len(ring_r))
         K_inv = np.linalg.inv(U_rg[ring_r, :])
 
         NegAgr_U_full = np.zeros((self.n_g, len(ring_r)), dtype=float)
         NegAgr_U_full[tl_g, :] = self.room_NegAgr[c_g] @ U_rg
         Smooth_U = self.lu_Agg.solve(NegAgr_U_full)
 
-        h_goal_r = U_rg @ (K_inv @ np.full(len(ring_r), g_goal, dtype=float))
+        h_goal_r = U_rg @ (K_inv @ np.ones(len(ring_r), dtype=float))
         r_gam = np.zeros(self.n_g, dtype=float)
         r_gam[tl_g] = np.maximum(self.room_NegAgr[c_g] @ h_goal_r, 0.0)
         r_hat = np.maximum(self.lu_Agg.solve(r_gam), 0.0)
 
-        # Exact 1-step smooth readout row `h_s_tl` in start room `c_s` (`1` transpose room solve)
-        e_s = np.zeros(len(rn_s), dtype=float)
-        e_s[pos_s] = 1.0
-        lam_s = self.hq_lus[c_s].solve(e_s, trans="T")
-        if c_s == c_g:
-            RHS_adj = np.zeros(len(rn_s), dtype=float)
-            RHS_adj[ring_r] = K_inv.T @ U_rg[pos_s, :]
-            lam_s = lam_s - self.hq_lus[c_s].solve(RHS_adj, trans="T")
-        h_s_tl = np.maximum(np.asarray(self.room_Arg[c_s].T @ lam_s).ravel(), 0.0)
-        z_dir = float(h_goal_r[pos_s]) if c_s == c_g else 0.0
+        # Readout functional at `s_i` (supports both interior start `c_s >= 0` and portal start `c_s < 0`!)
+        if c_s >= 0:
+            rn_s = self.room_nodes[c_s]
+            tl_s = self.room_tl[c_s]
+            pos_s = int(np.searchsorted(rn_s, s_i))
+            e_s = np.zeros(len(rn_s), dtype=float)
+            e_s[pos_s] = 1.0
+            lam_s = self.hq_lus[c_s].solve(e_s, trans="T")
+            self.local_lu_solve_calls += 1
+            if c_s == c_g:
+                RHS_adj = np.zeros(len(rn_s), dtype=float)
+                RHS_adj[ring_r] = K_inv.T @ U_rg[pos_s, :]
+                lam_s = lam_s - self.hq_lus[c_s].solve(RHS_adj, trans="T")
+                self.local_lu_solve_calls += 1
+            h_s_tl = np.maximum(np.asarray(self.room_Arg[c_s].T @ lam_s).ravel(), 0.0)
+            z_dir = float(h_goal_r[pos_s]) if c_s == c_g else 0.0
+        else:
+            g_idx_s = int(np.searchsorted(self.gamma_f, s_i))
+            tl_s = np.array([g_idx_s], dtype=np.int64)
+            h_s_tl = np.array([1.0], dtype=float)
+            z_dir = 0.0
 
         def _apply_K_goal_linear(vec_g: np.ndarray) -> np.ndarray:
             NegM_v = np.zeros(self.n_g, dtype=float)
@@ -760,6 +1212,7 @@ class SeamFreePortal3DPlanner:
                 if not np.any(v_sub):
                     continue
                 yc = self.hq_lus[c].solve(self.room_Arg[c] @ v_sub)
+                self.local_lu_solve_calls += 1
                 if c == c_g:
                     yc = yc - U_rg @ (K_inv @ yc[ring_r])
                 NegM_v[tl_c] += self.room_NegAgr[c] @ yc
@@ -769,6 +1222,8 @@ class SeamFreePortal3DPlanner:
         max_rounds = 1 if self.coarse_l0_only else 7
         used_defect_closure = False
         rounds_run = 0
+        hw_verified = False
+        min_beta = None
 
         for _rd in range(max_rounds):
             rounds_run = _rd + 1
@@ -778,7 +1233,10 @@ class SeamFreePortal3DPlanner:
             for p_id in range(self.n_portals):
                 blks_p, K_p, y_by_c = self._ensure_portal_level(p_id, p_levels[p_id])
                 if c_g in y_by_c:
-                    K_p = np.maximum(K_p - Smooth_U @ (K_inv @ y_by_c[c_g][ring_r, :]), 0.0)
+                    K_p_mod = K_p - Smooth_U @ (K_inv @ y_by_c[c_g][ring_r, :])
+                    neg_mod = max(0.0, float(-np.min(K_p_mod)))
+                    self.max_k_neg_roundoff = max(self.max_k_neg_roundoff, neg_mod)
+                    K_p = np.maximum(K_p_mod, 0.0)
                 K_list.append(K_p)
                 blks_all.extend(blks_p)
                 p_of_blk.extend([p_id] * len(blks_p))
@@ -786,51 +1244,29 @@ class SeamFreePortal3DPlanner:
             K_cur = np.hstack(K_list)
             m_cur = len(blks_all)
 
-            Sys_bar = np.eye(m_cur)
-            for j, b_arr in enumerate(blks_all):
-                Sys_bar[j, :] -= np.mean(K_cur[b_arr, :], axis=0)
-            rhs_bar = np.array([float(np.mean(r_hat[b_arr])) for b_arr in blks_all], dtype=float)
-
-            v_lo = np.linalg.solve(Sys_bar, rhs_bar)
-            v_hi = v_lo.copy()
-            I_m = np.eye(m_cur)
-            for _ in range(6):
-                W_lo = (K_cur @ v_lo) + r_hat
-                x_min = np.array([b_arr[int(np.argmin(W_lo[b_arr]))] for b_arr in blks_all], dtype=np.int64)
-                vn = np.linalg.solve(I_m - K_cur[x_min, :], r_hat[x_min])
-                if np.max(np.abs(vn - v_lo) / np.maximum(vn, 1e-30)) < 1e-10:
-                    v_lo = vn
-                    W_lo = (K_cur @ v_lo) + r_hat
-                    break
-                v_lo = vn
-            else:
-                W_lo = (K_cur @ v_lo) + r_hat
-
-            for _ in range(6):
-                W_hi = (K_cur @ v_hi) + r_hat
-                x_max = np.array([b_arr[int(np.argmax(W_hi[b_arr]))] for b_arr in blks_all], dtype=np.int64)
-                vn = np.linalg.solve(I_m - K_cur[x_max, :], r_hat[x_max])
-                if np.max(np.abs(vn - v_hi) / np.maximum(vn, 1e-30)) < 1e-10:
-                    v_hi = vn
-                    W_hi = (K_cur @ v_hi) + r_hat
-                    break
-                v_hi = vn
-            else:
-                W_hi = (K_cur @ v_hi) + r_hat
-
-            # Outward tiny IEEE float64 safety pad (`1e-12` relative) so `A z_sub <= 0` holds strictly
-            W_lo = W_lo * (1.0 - 1e-12)
-            W_hi = W_hi * (1.0 + 1e-12)
+            hw = solve_and_verify_portal_howard_bounds(
+                K_cur, r_hat, blks_all, k_neg_roundoff_ub=self.max_k_neg_roundoff, max_iters=30
+            )
+            hw_verified = bool(hw["verified"])
+            Sys_bar = hw["Sys_bar"]
+            W_lo = hw["W_lo"] * (1.0 - 1e-12)
+            W_hi = hw["W_hi"] * (1.0 + 1e-12)
+            w_lyap = hw["w_lyap"]
+            s_0_raw = hw["s_0_raw"]
+            min_beta = hw["min_beta_s_over_w"]
 
             z_lo_s = z_dir + float(h_s_tl @ W_lo[tl_s])
             z_hi_s = z_dir + float(h_s_tl @ W_hi[tl_s])
-            lo_c = float(-self.lam * np.log(max(z_hi_s, 1e-300)))
-            hi_c = float(-self.lam * np.log(max(z_lo_s, 1e-300)))
+            if hw_verified and np.isfinite(z_lo_s) and np.isfinite(z_hi_s) and z_lo_s > 0.0 and z_hi_s >= z_lo_s:
+                lo_c = phi_f + float(-self.lam * np.log(z_hi_s))
+                hi_c = phi_f + float(-self.lam * np.log(z_lo_s))
+            else:
+                lo_c = -float("inf")
+                hi_c = float("inf")
 
-            if self.coarse_l0_only or hi_c - lo_c <= self.eps_tol or _rd == max_rounds - 1 or m_cur >= 380:
+            if self.coarse_l0_only or (hw_verified and hi_c - lo_c <= self.eps_tol) or _rd == max_rounds - 1 or m_cur >= 480:
                 break
 
-            # Goal-oriented DWR adjoint sensitivity `psi_j * loc_osc_j`
             w_s_full = np.zeros(self.n_g, dtype=float)
             w_s_full[tl_s] = h_s_tl
             c_s_blk = w_s_full @ K_cur
@@ -848,7 +1284,7 @@ class SeamFreePortal3DPlanner:
             for pid in range(self.n_portals):
                 if p_levels[pid] < 3 and p_scores[pid] > 0.0:
                     lv = p_levels[pid]
-                    cost_m = (3.0 if lv == 0 else (12.0 if lv == 1 else 20.0)) ** 0.35
+                    cost_m = (3.0 if lv == 0 else (12.0 if lv == 1 else 48.0)) ** 0.35
                     cand_ps.append((p_scores[pid] / cost_m, p_scores[pid], pid))
             if not cand_ps:
                 break
@@ -858,28 +1294,14 @@ class SeamFreePortal3DPlanner:
             if not picked:
                 picked = cand_ps[:4]
             for _, raw_sc, pid in picked:
-                if p_levels[pid] == 0 and raw_sc >= 0.28 * top_raw and hi_c - lo_c > 0.38:
+                if p_levels[pid] == 0 and raw_sc >= 0.28 * top_raw and (hi_c - lo_c) > 0.38:
                     p_levels[pid] = 2
                 else:
                     p_levels[pid] = min(3, p_levels[pid] + 1)
 
-        # Adaptive Doob/Lyapunov Sub-Stochastic Defect Closure for ultra-long multi-room detours
-        if (not self.coarse_l0_only) and (hi_c - lo_c > self.eps_tol):
+        # Verified Doob/Lyapunov Sub-Stochastic Defect Closure (ONLY when `s_0_raw > 0` is verified!)
+        if (not self.coarse_l0_only) and hw_verified and (hi_c - lo_c > self.eps_tol):
             used_defect_closure = True
-            rhs_lyap = np.array([0.5 * float(np.max(W_hi[b_arr])) for b_arr in blks_all], dtype=float)
-            v_lyap = np.linalg.solve(Sys_bar, rhs_lyap)
-            for _ in range(8):
-                W_ly = (K_cur @ v_lyap) + 0.5 * W_hi
-                x_mx = np.array([b_arr[int(np.argmax(W_ly[b_arr]))] for b_arr in blks_all], dtype=np.int64)
-                vn = np.linalg.solve(I_m - K_cur[x_mx, :], 0.5 * W_hi[x_mx])
-                if np.max(np.abs(vn - v_lyap) / np.maximum(vn, 1e-30)) < 1e-10:
-                    v_lyap = vn
-                    break
-                v_lyap = vn
-            w_lyap = np.empty(self.n_g, dtype=float)
-            for j, b_arr in enumerate(blks_all):
-                w_lyap[b_arr] = max(float(v_lyap[j]), 1e-300)
-            s_0 = np.maximum(w_lyap - (K_cur @ v_lyap), 1e-300)
 
             def _matvec_scaled(u_hat: np.ndarray) -> np.ndarray:
                 u_f = np.asarray(u_hat, dtype=float)
@@ -890,61 +1312,121 @@ class SeamFreePortal3DPlanner:
             rhs_sc = r_hat / w_lyap
             W_lo_orig, W_hi_orig = W_lo, W_hi
 
-            for rtol_step, maxit_step in ((2.5e-3, 5), (1.0e-4, 8), (2.0e-6, 12)):
+            for rtol_step, maxit_step in ((2.5e-3, 5), (1.0e-4, 8), (2.0e-6, 14)):
                 u_cur_sc, _ = spla.bicgstab(Lin_sc, rhs_sc, x0=u_cur_sc, rtol=rtol_step, atol=1e-14, maxiter=maxit_step)
-                z_til = np.maximum(u_cur_sc * w_lyap, 1e-300)
-                y_til = np.maximum(_apply_K_goal_linear(z_til), 0.0) + r_hat
+                if not np.all(np.isfinite(u_cur_sc)):
+                    hw_verified = False
+                    break
+                z_til = np.maximum(u_cur_sc * w_lyap, 0.0)
+                Kz_raw = _apply_K_goal_linear(z_til)
+                y_til = Kz_raw + r_hat
                 d_til = y_til - z_til
-                eta_minus = float(np.max(np.maximum(-d_til, 0.0) / s_0)) * (1.0 + 1e-10)
-                eta_plus = float(np.max(np.maximum(d_til, 0.0) / s_0)) * (1.0 + 1e-10)
+                # Rigorous unclipped defect bound using verified `s_0_raw > 0`
+                eta_minus = float(np.max(np.maximum(-d_til, 0.0) / s_0_raw)) * (1.0 + 1e-10)
+                eta_plus = float(np.max(np.maximum(d_til, 0.0) / s_0_raw)) * (1.0 + 1e-10)
                 u_lo_base = np.maximum(W_lo_orig, z_til - eta_minus * w_lyap)
                 u_hi_base = np.minimum(W_hi_orig, z_til + eta_plus * w_lyap)
-                W_lo = (np.maximum(_apply_K_goal_linear(u_lo_base), 0.0) + r_hat) * (1.0 - 1e-12)
-                W_hi = np.maximum(W_lo, (np.maximum(_apply_K_goal_linear(u_hi_base), 0.0) + r_hat) * (1.0 + 1e-12))
-
-                z_lo_s = z_dir + float(h_s_tl @ W_lo[tl_s])
-                z_hi_s = z_dir + float(h_s_tl @ W_hi[tl_s])
-                lo_c = float(-self.lam * np.log(max(z_hi_s, 1e-300)))
-                hi_c = float(-self.lam * np.log(max(z_lo_s, 1e-300)))
-                if hi_c - lo_c <= self.eps_tol:
+                if np.any(u_lo_base <= 0.0) or np.any(u_lo_base > u_hi_base):
+                    hw_verified = False
                     break
 
-        query_ms = 1000.0 * (time.perf_counter() - t0)
-        is_cert = bool((not self.coarse_l0_only) and np.isfinite(lo_c) and np.isfinite(hi_c) and (hi_c - lo_c <= self.eps_tol + 1e-12))
-        cert = Phase2DecisionCertificate(
-            certificate_mode="full_policy_enclosure",
-            certified=is_cert,
-            epsilon_tol=self.eps_tol,
-            lower_bound_opt=lo_c,
-            incumbent_policy_upper_bound=hi_c,
-            chosen_root_action=0,
-            horizon_steps=1,
-        )
+                W_lo_cand = (_apply_K_goal_linear(u_lo_base) + r_hat) * (1.0 - 1e-12)
+                W_hi_cand = (_apply_K_goal_linear(u_hi_base) + r_hat) * (1.0 + 1e-12)
+                # Explicitly verify post-fixed-point `W_lo_cand >= u_lo_base` & ordering `W_lo_cand <= W_hi_cand`!
+                if (
+                    np.all(np.isfinite(W_lo_cand))
+                    and np.all(np.isfinite(W_hi_cand))
+                    and np.all(W_lo_cand > 0.0)
+                    and np.all(W_lo_cand <= W_hi_cand)
+                    and np.all(W_lo_cand >= u_lo_base * (1.0 - 2e-12))
+                ):
+                    W_lo, W_hi = W_lo_cand, W_hi_cand
+                    z_lo_s = z_dir + float(h_s_tl @ W_lo[tl_s])
+                    z_hi_s = z_dir + float(h_s_tl @ W_hi[tl_s])
+                    if z_lo_s > 0.0 and z_hi_s >= z_lo_s:
+                        lo_c = phi_f + float(-self.lam * np.log(z_hi_s))
+                        hi_c = phi_f + float(-self.lam * np.log(z_lo_s))
+                        if hi_c - lo_c <= self.eps_tol:
+                            break
+                else:
+                    hw_verified = False
+                    break
 
+        is_cert = bool(
+            (not self.coarse_l0_only)
+            and hw_verified
+            and np.isfinite(lo_c)
+            and np.isfinite(hi_c)
+            and (hi_c >= lo_c)
+            and (hi_c - lo_c <= self.eps_tol + 1e-12)
+        )
+        cert_obj = (
+            Phase2DecisionCertificate(
+                certificate_mode="full_policy_enclosure",
+                certified=is_cert,
+                epsilon_tol=self.eps_tol,
+                lower_bound_opt=lo_c if np.isfinite(lo_c) else 0.0,
+                incumbent_policy_upper_bound=hi_c if np.isfinite(hi_c) else None,
+                chosen_root_action=0,
+                horizon_steps=1,
+                state_id=s_i,
+                operator_epoch=self.operator_epoch,
+                model_semantics="discrete_upwind_kl_lmdp",
+            )
+            if np.isfinite(lo_c) and (np.isfinite(hi_c) or not is_cert)
+            else None
+        )
+        policy_handle = (
+            LazyRoomPortalPolicy(
+                planner=self,
+                operator_epoch=self.operator_epoch,
+                goal_signature=goal_sig,
+                phi_goal=phi_f,
+                c_goal=c_g,
+                in_g_loc=in_g_loc,
+                ring_r=ring_r,
+                U_rg=U_rg,
+                K_inv=K_inv,
+                h_goal_r=h_goal_r,
+                W_lo_unit=W_lo,
+            )
+            if np.all(np.isfinite(W_lo)) and np.all(W_lo > 0.0)
+            else None
+        )
+        # Prime the start room inside `query_ms` so immediate root execution at `s_i` requires ZERO hidden backsolve!
+        if policy_handle is not None and c_s >= 0:
+            _ = policy_handle.room_desirability_unit(c_s)
+        query_ms = 1000.0 * (time.perf_counter() - t0)
+
+        t_mat0 = time.perf_counter()
         z_guide_full = None
-        if materialize_full_z_sub:
-            # For coarse uncertified L0, deploy the midpoint coarse field `v_lo` smoothed once (`W_lo`)
-            z_guide_full = np.full(self.n_f, g_goal, dtype=float)
-            z_guide_full[self.gamma_f] = W_lo
-            for c in range(self.n_rooms):
-                rn_c = self.room_nodes[c]
-                tl_c = self.room_tl[c]
-                yc = self.hq_lus[c].solve(self.room_Arg[c] @ W_lo[tl_c])
-                if c == c_g:
-                    yc = h_goal_r + yc - U_rg @ (K_inv @ yc[ring_r])
-                    yc[in_g_loc] = g_goal
-                z_guide_full[rn_c] = np.maximum(yc, 1e-300)
-            z_guide_full[goal_mask] = g_goal
+        if materialize_full_z_sub and policy_handle is not None:
+            # Return unit-gauge guide field (or scaled by `exp(-phi/lam)` when representable; policy is scale-invariant!)
+            z_unit = policy_handle.materialize_full_grid_unit()
+            exp_arg = -phi_f / self.lam
+            if -660.0 <= exp_arg <= 660.0:
+                scale_phi = float(np.exp(exp_arg))
+                z_guide_full = (z_unit * scale_phi) if (scale_phi > 1e-290 and np.isfinite(scale_phi)) else z_unit
+            else:
+                z_guide_full = z_unit
+        eager_mat_ms = 1000.0 * (time.perf_counter() - t_mat0)
 
         return {
             "query_ms": query_ms,
+            "eager_materialize_ms": eager_mat_ms,
+            "status": "ok" if is_cert else ("uncertified_coarse_l0" if self.coarse_l0_only else "numeric_or_width_unclosed"),
             "lo": lo_c,
             "hi": hi_c,
-            "width": float(hi_c - lo_c),
-            "certified": bool(cert.certified),
+            "width": float(hi_c - lo_c) if (np.isfinite(lo_c) and np.isfinite(hi_c)) else float("inf"),
+            "certified": bool(cert_obj.certified) if cert_obj is not None else False,
+            "certificate": cert_obj,
+            "policy": policy_handle,
             "active_dofs": int(m_cur),
+            "full_interface_dofs": int(self.n_g),
             "rounds": int(rounds_run),
             "used_defect_closure": bool(used_defect_closure),
+            "local_lu_solves": int(self.local_lu_solve_calls - solves_before),
+            "min_beta_s_over_w": min_beta,
             "z_guide_full": z_guide_full,
         }
 
@@ -957,6 +1439,7 @@ class LocalSchurUncompressed3DPlanner:
 
     def __init__(self, lam: float, gamma_f: np.ndarray, room_nodes: List[np.ndarray], A_csr: sp.csr_matrix) -> None:
         self.lam = float(lam)
+        self.operator_epoch = 0
         self.gamma_f = gamma_f
         self.n_g = len(gamma_f)
         self.room_nodes = room_nodes
@@ -989,6 +1472,7 @@ class LocalSchurUncompressed3DPlanner:
 
     def update_world_operator(self, A_new_csr: sp.csr_matrix, modified_rooms: Sequence[int], portal_diag_changed: bool) -> float:
         t0 = time.perf_counter()
+        self.operator_epoch += 1
         self.A_csr = A_new_csr
         if portal_diag_changed:
             S_dense = A_new_csr[self.gamma_f, :][:, self.gamma_f].toarray()

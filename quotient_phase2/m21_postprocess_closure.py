@@ -126,7 +126,24 @@ def run_v10_online_and_contract_probes() -> dict:
     c_root = Phase2DecisionCertificate(
         "receding_horizon_root_action_enclosure", True, 0.1, 0.0, None, {0: (0.0, 0.0), 1: (1.0, 1.0)}, 0, 4
     )
-    chain_ok = RecedingHorizonCertificateChain(4, (c_root, c_root, c_root, c_root))
+    chain_steps = tuple(
+        Phase2DecisionCertificate(
+            "receding_horizon_root_action_enclosure",
+            True,
+            0.1,
+            0.0,
+            None,
+            {0: (0.0, 0.0), 1: (1.0, 1.0)},
+            0,
+            4,
+            step_index=idx_t,
+            state_id=idx_t,
+            next_state_id=idx_t + 1,
+            operator_epoch=0,
+        )
+        for idx_t in range(4)
+    )
+    chain_ok = RecedingHorizonCertificateChain(4, chain_steps)
 
     # 2. NaN / inf checks
     rejected = {}

@@ -1,0 +1,233 @@
+{
+  "milestone": "M2.3.1_WP_A_Audit_Counterexample_Closure",
+  "ALL_EC75871_AUDIT_ISSUES_CLOSED": true,
+  "elapsed_ms": 296.06242617592216,
+  "runtime_metadata": {
+    "git_head_sha": "ec7587180af4b694f5d05808368861d0a71cfbab",
+    "git_dirty_green_response": false,
+    "package_py_sha256": "271ac8df9caaa8af8aaa5af9d35d76578632b554d5071fe8fe74065ca0dc0c2d",
+    "source_manifest": {
+      "git_head_sha": "ec7587180af4b694f5d05808368861d0a71cfbab",
+      "git_dirty_green_response": false,
+      "package_py_sha256": "271ac8df9caaa8af8aaa5af9d35d76578632b554d5071fe8fe74065ca0dc0c2d",
+      "per_file_sha256": {
+        "__init__.py": "34ff5edb886ae35d08fc9b82b6f2550c9358df120187f4c794a161c783d256da",
+        "core.py": "84934080da10a046b55e6b9e1672c2c49190f076487821b4e941ffd04c07c5d0",
+        "exp1_3d_and_macro_tours.py": "ae079e2d1b0ba44f283c85ebb54c290b7f18253fc11de38e72a8d0de80599bf2",
+        "exp2_nonlmdp_kkt.py": "3187b5ff1be8a3e637974029fb56d401b74c0c86f468c68bc662bfbf69ad9405",
+        "exp3_highd_and_kinetic.py": "4d6588d5fec9408c4dfe9ae9d2df6a1a7bd375d1b373d7f4e7e063c16fe6d401",
+        "exp4_fidelity_and_continual.py": "a6e76501e02e31ba5f441b191bdd679dda1bec1c50f9b1c44476640cc7f70cf2",
+        "exp5_response_subspace_diagnostic.py": "2ec4b5ca376f6a6d0432bcb368b90f11d9f73e4e4a4c220459f05b7ddc86676c",
+        "highd_solvers.py": "b2860c83e59dc4b6060c0e8726f64755a97f4cb9edbca2d4acbdf6242dee4542",
+        "macro_planning.py": "d14ab828ce4ee61510a09918164f89acf74654a20b880b6906334353492ffc0e",
+        "port_solvers.py": "35e598894f1013db0732561bcd85a9b81097fc7eddbbc5d929192296d194f914",
+        "verify_audit_closure.py": "3fa99a517a768a185bd361be2e0642d3935b0c466d1f63a3d6d05e52b4b661fd"
+      }
+    },
+    "python_version": "3.10.12",
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "processor": "x86_64",
+    "cpu_count": 32,
+    "configured_parallel_workers": 1,
+    "numpy_version": "2.2.6",
+    "scipy_version": "1.15.3",
+    "sklearn_version": "1.7.2",
+    "thread_env": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1"
+    },
+    "active_threadpools": [
+      {
+        "user_api": "blas",
+        "internal_api": "openblas",
+        "num_threads": 1,
+        "prefix": "libscipy_openblas",
+        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/numpy.libs/libscipy_openblas64_-56d6093b.so",
+        "version": "0.3.29",
+        "threading_layer": "pthreads",
+        "architecture": "SkylakeX"
+      },
+      {
+        "user_api": "blas",
+        "internal_api": "openblas",
+        "num_threads": 1,
+        "prefix": "libscipy_openblas",
+        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/scipy.libs/libscipy_openblas-68440149.so",
+        "version": "0.3.28",
+        "threading_layer": "pthreads",
+        "architecture": "SkylakeX"
+      },
+      {
+        "user_api": "openmp",
+        "internal_api": "openmp",
+        "num_threads": 1,
+        "prefix": "libgomp",
+        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/scikit_learn.libs/libgomp-a34b3233.so.1.0.0",
+        "version": null
+      }
+    ]
+  },
+  "phase2_manifest": {
+    "phase2_package_py_sha256": "f530c1b8d42e5693bea71b9a59d996e878432d107042e499dadae56e7c745ac9",
+    "phase2_per_file_sha256": {
+      "__init__.py": "2608f67d3e97d98fdf77b36817a56e65038c3884eb7b4ae614b7c2c692d71b64",
+      "m20_contracts.py": "287d2659a6b063329a66898cc5ab6c8a4afc86cf622250aa3315c3a5d6509967",
+      "m21_postprocess_closure.py": "301cb848e71f907c00b39e4760d0bdbf011e8791801dd1e365d5224321359284",
+      "m21_qgap_collar_ablation.py": "391b5e2dfbc8616519c5a89818ba29e5a3007de6579257e11776f9ee606a3f98",
+      "m22_portal_quotient_pilot.py": "ec59d6408d8021ad706ba3d5f036d43e39dbefa24737c453a74ccc75e94fd5b7",
+      "m231_audit_closure.py": "12958e54b2d125a8855e0ef465a80891733f09f0565849d03b022c3a32e69eab",
+      "m231_fair_ablation.py": "93b680ad8f5d1071eb18c2afb285463524b66bdbbc2e03431db7d23224d9ca01",
+      "m23_m24_3d_portal_scale.py": "8ff5b63ce1b9fa2017778072a304241ada61fe45f5938f09354dab4d63de36e9"
+    },
+    "frozen_phase1_package_py_sha256": "271ac8df9caaa8af8aaa5af9d35d76578632b554d5071fe8fe74065ca0dc0c2d",
+    "frozen_phase1_verified_intact": true
+  },
+  "historical_artifacts_preserved": {
+    "m20_contract_results.json": {
+      "sha256": "bdad834622c2ab0215be84c2e3cfb4473f5b242e053d9b7bef8e792081c67004",
+      "verified_untouched": true
+    },
+    "m21_ablation_results.json": {
+      "sha256": "634c15e52fb3a8181f738baef40b8d7c30e690a8600a7cf1e30b6ca17a3c4fc1",
+      "verified_untouched": true
+    },
+    "m22_pilot_results.json": {
+      "sha256": "55d7e1ea176d2ad53d173595339c21216fc6f210857b5d28e30b98c163a3d892",
+      "verified_untouched": true
+    },
+    "m23_m24_3d_results.json": {
+      "sha256": "8fb6fb84749dfa640e5f5394c65db71426302a365e95a512c25dd896bce30f05",
+      "verified_untouched": true
+    },
+    "m21_economic_gate_verdict.json": {
+      "exists": true,
+      "sha256": "dca3212a6b34dda33952f58397c7d9ae3bade9058be083e98154d3f9d7b3a95b"
+    },
+    "m21_post_audit_closure.json": {
+      "exists": true,
+      "sha256": "9b8d0db59265b0386dd3cf3812c1234aeb1e24aa782ca5b9d0fe20e3e2c967a1"
+    }
+  },
+  "regressions": {
+    "m20_all_15_passed": true,
+    "wp0_all_passed": true,
+    "m22_4_families_passed": true,
+    "EC01_terminal_gauge_invariance": {
+      "pass": true,
+      "max_width_drift_across_phi_minus1000_to_plus1000": 7.105427357601002e-14,
+      "cases": [
+        {
+          "phi_goal": -1000.0,
+          "truth": -997.380782696892,
+          "lo": -997.4036040718428,
+          "hi": -997.3587660379538,
+          "width": 0.04483803388893648,
+          "deployed_policy_value": -997.3800465666897,
+          "pass": true
+        },
+        {
+          "phi_goal": 0.0,
+          "truth": 2.619217303107979,
+          "lo": 2.5963959281571856,
+          "hi": 2.641233962046191,
+          "width": 0.04483803388900531,
+          "deployed_policy_value": 2.6199534333103256,
+          "pass": true
+        },
+        {
+          "phi_goal": 100.0,
+          "truth": 102.61921730310797,
+          "lo": 102.59639592815718,
+          "hi": 102.64123396204619,
+          "width": 0.044838033889007534,
+          "deployed_policy_value": 102.61995343331034,
+          "pass": true
+        },
+        {
+          "phi_goal": 135.0,
+          "truth": 137.61921730310797,
+          "lo": 137.5963959281572,
+          "hi": 137.6412339620462,
+          "width": 0.04483803388899332,
+          "deployed_policy_value": 137.61995343331031,
+          "pass": true
+        },
+        {
+          "phi_goal": 145.0,
+          "truth": 147.61921730310797,
+          "lo": 147.5963959281572,
+          "hi": 147.6412339620462,
+          "width": 0.04483803388899332,
+          "deployed_policy_value": 147.61995343331031,
+          "pass": true
+        },
+        {
+          "phi_goal": 160.0,
+          "truth": 162.61921730310797,
+          "lo": 162.5963959281572,
+          "hi": 162.6412339620462,
+          "width": 0.04483803388899332,
+          "deployed_policy_value": 162.61995343331031,
+          "pass": true
+        },
+        {
+          "phi_goal": 1000.0,
+          "truth": 1002.619217303108,
+          "lo": 1002.5963959281572,
+          "hi": 1002.6412339620462,
+          "width": 0.04483803388893648,
+          "deployed_policy_value": 1002.6199534333103,
+          "pass": true
+        }
+      ]
+    },
+    "EC02_domain_and_capability_guards": {
+      "pass": true,
+      "rejected_multi_room_goal_union": true,
+      "rejected_portal_goal": true,
+      "rejected_finite_u_max": true,
+      "rejected_anisotropic_r_diag": true,
+      "start_in_goal_exact": true,
+      "start_on_portal_enclosed": true
+    },
+    "EC03_unreachable_goal_and_floor_free_evaluators": {
+      "pass": true,
+      "m22_uncompressed_status": "unreachable",
+      "m22_evaluator_values": [
+        Infinity,
+        Infinity,
+        0.0
+      ],
+      "m23_status": "unreachable",
+      "m23_evaluator_value": Infinity
+    },
+    "EC04_runtime_howard_and_lyapunov_verification": {
+      "pass": true,
+      "iters_lo": 13,
+      "post_fp_min_slack": 1.134949961559574e-25,
+      "pre_fp_min_slack": 4.4853010194856324e-14,
+      "min_beta_s_over_w": 0.08333333333343247,
+      "true_cost_start": 27.50337463298318,
+      "certified_upper_cost_start": 27.503374632984283,
+      "capped_6iter_still_sound_or_rejected": true
+    },
+    "EC05_reference_nonconvergence_rejected": {
+      "pass": true
+    },
+    "EC06_and_7_3_chain_identity_policy_epoch_and_nested_dyadic": {
+      "pass": true,
+      "repeated_root_chain_rejected": true,
+      "stale_policy_epoch_rejected": true,
+      "portal_11x11_level_counts": {
+        "L0": 1,
+        "L1": 4,
+        "L2": 16,
+        "L3": 64
+      },
+      "cross_parent_blocks_count": 0
+    }
+  }
+}

@@ -27,9 +27,38 @@ if str(ROOT) not in sys.path:
 import numpy as np
 import scipy.sparse as sp
 import scipy.sparse.linalg as spla
+from scipy.sparse.csgraph import breadth_first_order
 
 from green_response.core import collect_runtime_metadata, enforce_single_thread_env
 from quotient_phase2 import compute_phase2_manifest
+
+
+def check_directed_goal_reachability(A_csr: sp.spmatrix, goal_mask: np.ndarray) -> np.ndarray:
+    """Computes exact directed graph reachability to `goal_mask` on M-matrix `A_csr` (`i -> j` iff `-A_{ij} > 0`).
+    Uses a single C-level reverse BFS from a virtual sink connected to all `goal_mask` nodes (`O(nnz)`).
+    """
+    A_c = sp.csr_matrix(A_csr, dtype=float)
+    n_tot = A_c.shape[0]
+    gm = np.asarray(goal_mask, dtype=bool)
+    if gm.ndim != 1 or gm.shape[0] != n_tot:
+        raise ValueError(f"goal_mask shape {gm.shape} incompatible with operator shape {A_c.shape}")
+    goal_idx = np.flatnonzero(gm)
+    if len(goal_idx) == 0:
+        return np.zeros(n_tot, dtype=bool)
+
+    diag_all = A_c.diagonal()
+    A_off_pos = (-(A_c - sp.diags(diag_all, offsets=0, format="csr"))).tocoo()
+    keep = A_off_pos.data > 0.0
+    # Reverse edges: `j -> i` if original graph has `i -> j` (`-A_{ij} > 0`), plus `sink (n_tot) -> g` for `g in goal_idx`
+    rev_rows = np.concatenate([A_off_pos.col[keep], np.full(len(goal_idx), n_tot, dtype=np.int64)])
+    rev_cols = np.concatenate([A_off_pos.row[keep], goal_idx.astype(np.int64)])
+    rev_vals = np.ones(len(rev_rows), dtype=np.int8)
+    G_rev = sp.csr_matrix((rev_vals, (rev_rows, rev_cols)), shape=(n_tot + 1, n_tot + 1))
+
+    order = breadth_first_order(G_rev, i_start=n_tot, directed=True, return_predecessors=False)
+    reach = np.zeros(n_tot + 1, dtype=bool)
+    reach[order] = True
+    return reach[:n_tot]
 
 
 # ==============================================================================
@@ -378,12 +407,23 @@ class Phase2DecisionCertificate:
     root_action_q_bounds: Optional[Dict[int, Tuple[float, float]]] = None
     chosen_root_action: int = 0
     horizon_steps: int = 1
+    step_index: Optional[int] = None
+    state_id: Optional[int] = None
+    next_state_id: Optional[int] = None
+    operator_epoch: Optional[int] = None
+    model_semantics: str = "discrete_upwind_kl_lmdp"
 
     def __post_init__(self) -> None:
         if not isinstance(self.certified, (bool, np.bool_)):
             raise TypeError("certified must be a boolean")
         if self.certificate_mode not in ("full_policy_enclosure", "receding_horizon_root_action_enclosure"):
             raise ValueError(f"Invalid certificate_mode: {self.certificate_mode}")
+        if not isinstance(self.model_semantics, str) or not self.model_semantics.strip():
+            raise ValueError("model_semantics must be a non-empty string")
+        for attr_nm in ("step_index", "state_id", "next_state_id", "operator_epoch"):
+            val = getattr(self, attr_nm)
+            if val is not None and (not isinstance(val, (int, np.integer)) or isinstance(val, bool) or int(val) < 0):
+                raise ValueError(f"{attr_nm} must be None or a non-negative integer, got {val!r}")
         if (
             not isinstance(self.horizon_steps, (int, np.integer))
             or isinstance(self.horizon_steps, bool)
@@ -483,11 +523,32 @@ class RecedingHorizonCertificateChain:
                 raise TypeError("All entries of step_certificates must be Phase2DecisionCertificate")
 
     @property
+    def trajectory_identity_verified(self) -> bool:
+        """Verifies that multi-step certificates carry distinct sequential step indices `0..m-1`,
+        concrete state & operator identities, and contiguous transition linkage `next_state_id == next.state_id`.
+        Closes `EC-06` (repeating a single root object `(c, c, c, c)` is rejected!).
+        """
+        m = int(self.expected_horizon_steps)
+        if len(self.step_certificates) != m:
+            return False
+        for idx_t, c in enumerate(self.step_certificates):
+            if c.step_index != idx_t or c.state_id is None or c.operator_epoch is None:
+                return False
+            if idx_t < m - 1:
+                nxt = self.step_certificates[idx_t + 1]
+                if c.next_state_id is None or c.next_state_id != nxt.state_id:
+                    return False
+        return True
+
+    @property
     def all_steps_certified(self) -> bool:
-        return bool(
-            len(self.step_certificates) == int(self.expected_horizon_steps)
-            and all(c.certified and c.guaranteed_root_action_regret_bound is not None for c in self.step_certificates)
-        )
+        if len(self.step_certificates) != int(self.expected_horizon_steps):
+            return False
+        if not all(c.certified and c.guaranteed_root_action_regret_bound is not None for c in self.step_certificates):
+            return False
+        if int(self.expected_horizon_steps) > 1 and (not self.trajectory_identity_verified):
+            return False
+        return True
 
     @property
     def guaranteed_full_horizon_regret_bound(self) -> Optional[float]:
@@ -819,18 +880,38 @@ def run_m20_contract_verification_suite() -> dict:
         horizon_steps=4,
     )
     chain_incomplete = RecedingHorizonCertificateChain(expected_horizon_steps=4, step_certificates=(cert_root_only,))
-    chain_complete = RecedingHorizonCertificateChain(
+    chain_repeated_unindexed = RecedingHorizonCertificateChain(
         expected_horizon_steps=4, step_certificates=(cert_root_only, cert_root_only, cert_root_only, cert_root_only)
     )
+    step_certs_valid = tuple(
+        Phase2DecisionCertificate(
+            certificate_mode="receding_horizon_root_action_enclosure",
+            certified=True,
+            epsilon_tol=0.10,
+            lower_bound_opt=0.0,
+            incumbent_policy_upper_bound=None,
+            root_action_q_bounds=root_q,
+            chosen_root_action=0,
+            horizon_steps=4,
+            step_index=t_idx,
+            state_id=10 + t_idx,
+            next_state_id=11 + t_idx,
+            operator_epoch=0,
+        )
+        for t_idx in range(4)
+    )
+    chain_complete = RecedingHorizonCertificateChain(expected_horizon_steps=4, step_certificates=step_certs_valid)
     results["C04_P2A04_root_gap_vs_full_policy_separation"] = {
         "bad_deployed_policy_rejected_under_full_policy_mode": rejected_false_full_policy,
         "single_root_cert_full_horizon_regret_is_none": cert_root_only.guaranteed_full_horizon_regret_bound is None,
         "incomplete_chain_full_horizon_regret_is_none": chain_incomplete.guaranteed_full_horizon_regret_bound is None,
+        "repeated_unindexed_root_chain_rejected": chain_repeated_unindexed.guaranteed_full_horizon_regret_bound is None,
         "verified_4step_chain_bound": chain_complete.guaranteed_full_horizon_regret_bound,
         "pass": bool(
             rejected_false_full_policy
             and (cert_root_only.guaranteed_full_horizon_regret_bound is None)
             and (chain_incomplete.guaranteed_full_horizon_regret_bound is None)
+            and (chain_repeated_unindexed.guaranteed_full_horizon_regret_bound is None)
             and abs(float(chain_complete.guaranteed_full_horizon_regret_bound) - 0.40) <= 1e-15
         ),
     }

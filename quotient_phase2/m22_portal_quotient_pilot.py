@@ -73,6 +73,7 @@ from quotient_phase2.m20_contracts import (
     Phase2DecisionCertificate,
     audit_normalized_block_state_adequacy,
     certify_cyclic_ssp_policy_via_lyapunov_witness,
+    check_directed_goal_reachability,
 )
 
 
@@ -97,41 +98,95 @@ def evaluate_twisted_lmdp_policy_exact(
     `V^*(i) <= V^{mu(z_sub)}(i) <= -lam * log(z_sub(i))` holds for EVERY state `i`!
     """
     n_tot = A_csr.shape[0]
-    ext = np.flatnonzero(~goal_mask)
+    gm = np.asarray(goal_mask, dtype=bool)
+    ext = np.flatnonzero(~gm)
     if len(ext) == 0:
         return np.full(n_tot, float(phi_goal), dtype=float)
 
-    z_pos = np.maximum(np.asarray(z_guide_full, dtype=float), 1e-300)
+    z_arr = np.asarray(z_guide_full, dtype=float)
+    if z_arr.shape != (n_tot,) or (not np.all(np.isfinite(z_arr))) or np.any(z_arr < 0.0):
+        raise ValueError("z_guide_full must be a finite non-negative 1D array matching A_csr")
+
+    # Independent graph reachability check (`EC-03`: unreachable states have true SSP value `+inf`, NEVER `690.78`!)
+    can_reach_op = check_directed_goal_reachability(A_csr, gm)
+
     diag_all = A_csr.diagonal()
     A_zero_diag = A_csr - sp.diags(diag_all, offsets=0, format="csr")
     A_off_neg = (-A_zero_diag)[ext, :].tocsr()
-    # Remove any tiny numerical negative zeros
     A_off_neg.data = np.maximum(A_off_neg.data, 0.0)
 
     d_ext = diag_all[ext]
-    M_ext = sp.diags(1.0 / d_ext) @ A_off_neg  # `M_{ij} = -A_{ij} / A_{ii} >= 0` on `ext x all`
+    M_ext = (sp.diags(1.0 / d_ext) @ A_off_neg).tocsr()
     m_row = np.asarray(M_ext.sum(axis=1)).ravel()
-    # Weighted outgoing fluxes `W_{ij} = M_{ij} * z_j`
-    W_ext = M_ext @ sp.diags(z_pos)
-    w_sum = np.asarray(W_ext.sum(axis=1)).ravel()
-    w_sum_safe = np.maximum(w_sum, 1e-300)
-    Pi_all = sp.diags(1.0 / w_sum_safe) @ W_ext  # Row-stochastic transition matrix `ext x all`
 
-    # Compute exact `c^mu_i = -lam * log(m_i) + lam * KL(Pi_i || M_i / m_i)`
-    # Note: `Pi_{ij} log(Pi_{ij} / (M_{ij}/m_i)) = Pi_{ij} (log(z_j) + log(m_i) - log(w_sum_i))`
-    # Therefore `c^mu_i = -lam * log(w_sum_i) + lam * (Pi_all @ log(z_pos))_i`!
-    # Check when `z_pos == 1`: `w_sum_i == m_i`, `log(z_pos) == 0` -> `c^mu_i == -lam * log(m_i)`!
-    log_z = np.log(z_pos)
-    c_mu = -float(lam) * np.log(w_sum_safe) + float(lam) * np.asarray(Pi_all @ log_z).ravel()
+    # Scale-invariant row normalization without `1e-300` denominator floor corruption (`EC-03`)!
+    pi_data = np.empty_like(M_ext.data)
+    c_mu = np.full(len(ext), float("inf"), dtype=float)
+    for r_i in range(len(ext)):
+        p0, p1 = M_ext.indptr[r_i], M_ext.indptr[r_i + 1]
+        if p0 == p1 or m_row[r_i] <= 0.0:
+            continue
+        cols_i = M_ext.indices[p0:p1]
+        m_vals = M_ext.data[p0:p1]
+        p_pas = m_vals / m_row[r_i]
+        z_nb = z_arr[cols_i]
+        z_mx = float(np.max(z_nb))
+        if z_mx <= 0.0:
+            pi_i = p_pas
+        else:
+            w_i = m_vals * (z_nb / z_mx)
+            w_s = float(np.sum(w_i))
+            pi_i = (w_i / w_s) if w_s > 0.0 else p_pas
+        pi_data[p0:p1] = pi_i
+        pos_p = pi_i > 0.0
+        kl_i = float(np.sum(pi_i[pos_p] * np.log(pi_i[pos_p] / p_pas[pos_p])))
+        c_mu[r_i] = -float(lam) * float(np.log(m_row[r_i])) + float(lam) * max(0.0, kl_i)
 
-    P_ii = Pi_all[:, ext]
-    p_goal = np.asarray(Pi_all[:, goal_mask].sum(axis=1)).ravel()
-    rhs = c_mu + p_goal * float(phi_goal)
-    Sys = (sp.eye(len(ext), format="csc") - P_ii.tocsc())
-    v_ext = spla.spsolve(Sys, rhs)
+    Pi_all = sp.csr_matrix((pi_data, M_ext.indices.copy(), M_ext.indptr.copy()), shape=M_ext.shape)
+    active_rows = m_row > 0.0
+    if np.any(active_rows):
+        row_sums_pi = np.asarray(Pi_all[active_rows, :].sum(axis=1)).ravel()
+        if float(np.max(np.abs(row_sums_pi - 1.0))) > 1e-11:
+            raise RuntimeError("Internal normalization error: non-unit policy transition row sum")
 
-    V_out = np.full(n_tot, float(phi_goal), dtype=float)
-    V_out[ext] = v_ext
+    # Check properness under deployed policy `Pi_all`: states that cannot reach `gm` (or can reach a dead-end) have `V = +inf`
+    Sys_full_pi = sp.eye(n_tot, format=" lil" if False else "csr").tolil()
+    Sys_full_pi[ext, :] = sp.eye(len(ext), n_tot, k=0, format="csr")[:, :]
+    # Build `(I - Pi_full)` on `n_tot x n_tot` to test policy-graph reachability
+    P_full = sp.csr_matrix(
+        (
+            pi_data,
+            M_ext.indices.copy(),
+            np.searchsorted(np.arange(len(ext)), np.repeat(np.arange(len(ext)), np.diff(M_ext.indptr))),
+        ) if False else (0,),
+    ) if False else None
+    # Direct CSR construction of `I - Pi` on `n_tot x n_tot`:
+    row_full = np.repeat(ext, np.diff(Pi_all.indptr))
+    A_pi_graph = sp.eye(n_tot, format="csr") - sp.csr_matrix(
+        (Pi_all.data, (row_full, Pi_all.indices)), shape=(n_tot, n_tot)
+    )
+    can_reach_pi = can_reach_op & check_directed_goal_reachability(A_pi_graph, gm)
+    # Any state with a positive transition to an `~can_reach_pi` state also incurs `+inf` expected cost!
+    bad_mask = ~can_reach_pi
+    while True:
+        leak_to_bad = (Pi_all[:, bad_mask].sum(axis=1).A1 > 0.0) & can_reach_pi[ext]
+        if not np.any(leak_to_bad):
+            break
+        can_reach_pi[ext[leak_to_bad]] = False
+        bad_mask = ~can_reach_pi
+
+    V_out = np.full(n_tot, float("inf"), dtype=float)
+    V_out[gm] = float(phi_goal)
+    proper_ext_mask = can_reach_pi[ext]
+    if np.any(proper_ext_mask):
+        ext_prop = ext[proper_ext_mask]
+        Pi_prop = Pi_all[proper_ext_mask, :]
+        P_pp = Pi_prop[:, ext_prop]
+        p_goal = np.asarray(Pi_prop[:, gm].sum(axis=1)).ravel()
+        rhs = c_mu[proper_ext_mask] + p_goal * float(phi_goal)
+        Sys = sp.eye(len(ext_prop), format="csc") - P_pp.tocsc()
+        v_prop = spla.spsolve(Sys, rhs)
+        V_out[ext_prop] = v_prop
     return V_out
 
 
@@ -380,15 +435,26 @@ def plan_unseen_goal_via_portal_quotient(
 ) -> dict:
     """Plans an arbitrary unseen goal `goal_mask` from `start_node` using ONLY local room solves + interface system."""
     t_goal0 = time.perf_counter()
-    g_val = float(np.exp(-float(phi_goal) / float(lam)))
+    if (not np.isfinite(phi_goal)) or (not np.isfinite(lam)) or float(lam) <= 0.0:
+        raise ValueError(f"Invalid phi_goal={phi_goal} or lam={lam}")
+    goal_mask = np.asarray(goal_mask, dtype=bool)
+    if goal_mask.ndim != 1 or goal_mask.shape[0] != decomp.n_total or (not np.any(goal_mask)):
+        raise ValueError("goal_mask must be a non-empty 1D boolean array of length decomp.n_total")
+    if start_node < 0 or start_node >= decomp.n_total:
+        raise ValueError(f"start_node {start_node} out of range [0, {decomp.n_total})")
+
+    # Solve internally in unit terminal gauge (`g_val = 1.0`), adding `phi_goal` at value readout (`EC-01` gauge invariance!)
+    g_val = 1.0
+    phi_shift = float(phi_goal)
     n_g = len(decomp.gamma_nodes)
 
     if bool(goal_mask[start_node]):
-        z_triv = np.full(decomp.n_total, g_val, dtype=float)
+        z_triv = np.ones(decomp.n_total, dtype=float)
         return {
             "certified": True,
-            "lower_bound": float(phi_goal),
-            "upper_bound": float(phi_goal),
+            "status": "start_in_goal",
+            "lower_bound": phi_shift,
+            "upper_bound": phi_shift,
             "active_interface_dofs": 0,
             "n_splits": 0,
             "used_interface_fallback": False,
@@ -397,6 +463,27 @@ def plan_unseen_goal_via_portal_quotient(
             "split_ms": 0.0,
             "fallback_ms": 0.0,
             "z_guide_full": z_triv if materialize_full_z_guide else None,
+        }
+
+    # Explicit directed graph reachability check (`EC-03`: reject unreachable goals fail-closed!)
+    can_reach = check_directed_goal_reachability(A_csr, goal_mask)
+    if not bool(can_reach[start_node]):
+        z_unreach = np.where(goal_mask, 1.0, 0.0).astype(float)
+        return {
+            "certified": False,
+            "status": "unreachable",
+            "lower_bound": float("inf"),
+            "upper_bound": float("inf"),
+            "active_interface_dofs": 0,
+            "n_splits": 0,
+            "used_interface_fallback": False,
+            "goal_room_update_ms": 1000.0 * (time.perf_counter() - t_goal0),
+            "interface_and_cert_ms": 0.0,
+            "split_ms": 0.0,
+            "fallback_ms": 0.0,
+            "z_gamma_deployed": np.zeros(n_g, dtype=float),
+            "reconstruct_fn": lambda _: z_unreach.copy(),
+            "z_guide_full": z_unreach if materialize_full_z_guide else None,
         }
 
     # Identify rooms touched by `goal_mask` (typically 1 room `c^*`) and separator nodes inside `goal_mask`.
@@ -502,8 +589,25 @@ def plan_unseen_goal_via_portal_quotient(
     if use_uncompressed_interface:
         t_if0 = time.perf_counter()
         z_exact_g = np.linalg.solve(S_gg, r_gamma)
-        z_s = max(_eval_start_z(z_exact_g), 1e-300)
-        v_s = float(-lam * np.log(z_s))
+        z_s_raw = _eval_start_z(z_exact_g)
+        if (not np.isfinite(z_s_raw)) or z_s_raw <= 0.0:
+            return {
+                "certified": False,
+                "status": "numeric_invalid_or_underflow",
+                "lower_bound": -float("inf"),
+                "upper_bound": float("inf"),
+                "active_interface_dofs": int(n_g),
+                "n_splits": 0,
+                "used_interface_fallback": False,
+                "goal_room_update_ms": goal_room_update_ms,
+                "interface_and_cert_ms": 1000.0 * (time.perf_counter() - t_if0),
+                "split_ms": 0.0,
+                "fallback_ms": 0.0,
+                "z_gamma_deployed": z_exact_g,
+                "reconstruct_fn": _reconstruct_full_z_from_gamma,
+                "z_guide_full": _reconstruct_full_z_from_gamma(z_exact_g) if materialize_full_z_guide else None,
+            }
+        v_s = phi_shift + float(-lam * np.log(z_s_raw))
         pad = 1e-12 * (1.0 + abs(v_s))
         cert = Phase2DecisionCertificate(
             certificate_mode="full_policy_enclosure",
@@ -517,6 +621,7 @@ def plan_unseen_goal_via_portal_quotient(
         if_ms = 1000.0 * (time.perf_counter() - t_if0)
         return {
             "certified": cert.certified,
+            "status": "ok",
             "lower_bound": v_s - pad,
             "upper_bound": v_s + pad,
             "active_interface_dofs": int(n_g),
@@ -564,14 +669,14 @@ def plan_unseen_goal_via_portal_quotient(
             S_gg, r_gamma, s_row_sums, blocks, g_max_val=max(1.0, g_val), smooth_jacobi=(adaptive_split and n_g > 32)
         )
         z_lo_s = _eval_start_z(z_sub_g) if sub_ok else 0.0
-        z_hi_s = max(_eval_start_z(z_sup_g), 1e-300)
-        lo_v = float(-lam * np.log(z_hi_s))
-        hi_v = float(-lam * np.log(z_lo_s)) if (sub_ok and z_lo_s > 1e-280) else float("inf")
+        z_hi_s = _eval_start_z(z_sup_g)
+        lo_v = (phi_shift + float(-lam * np.log(z_hi_s))) if (np.isfinite(z_hi_s) and z_hi_s > 0.0) else -float("inf")
+        hi_v = (phi_shift + float(-lam * np.log(z_lo_s))) if (sub_ok and np.isfinite(z_lo_s) and z_lo_s > 1e-280) else float("inf")
         if hi_v < lo_v and hi_v > lo_v - 1e-11:
             hi_v = lo_v
         if_cert_ms += 1000.0 * (time.perf_counter() - t_c0)
 
-        if sub_ok and np.isfinite(hi_v) and (hi_v - lo_v <= epsilon_tol):
+        if sub_ok and np.isfinite(lo_v) and np.isfinite(hi_v) and (hi_v >= lo_v) and (hi_v - lo_v <= epsilon_tol):
             cert = Phase2DecisionCertificate(
                 certificate_mode="full_policy_enclosure",
                 certified=True,
@@ -583,6 +688,7 @@ def plan_unseen_goal_via_portal_quotient(
             )
             return {
                 "certified": cert.certified,
+                "status": "ok",
                 "lower_bound": lo_v,
                 "upper_bound": hi_v,
                 "active_interface_dofs": int(len(blocks)),
@@ -676,8 +782,25 @@ def plan_unseen_goal_via_portal_quotient(
     # Operational **interface-only** exact fallback (`S_gg z = r_gamma` — STILL `0` global `N x N` LU!)
     t_fb0 = time.perf_counter()
     z_exact_g = np.linalg.solve(S_gg, r_gamma)
-    z_s = max(_eval_start_z(z_exact_g), 1e-300)
-    v_s = float(-lam * np.log(z_s))
+    z_s_raw = _eval_start_z(z_exact_g)
+    if (not np.isfinite(z_s_raw)) or z_s_raw <= 0.0:
+        return {
+            "certified": False,
+            "status": "numeric_invalid_or_underflow",
+            "lower_bound": -float("inf"),
+            "upper_bound": float("inf"),
+            "active_interface_dofs": int(n_g),
+            "n_splits": int(n_splits_done),
+            "used_interface_fallback": True,
+            "goal_room_update_ms": goal_room_update_ms,
+            "interface_and_cert_ms": if_cert_ms,
+            "split_ms": split_ms,
+            "fallback_ms": 1000.0 * (time.perf_counter() - t_fb0),
+            "z_gamma_deployed": z_exact_g,
+            "reconstruct_fn": _reconstruct_full_z_from_gamma,
+            "z_guide_full": _reconstruct_full_z_from_gamma(z_exact_g) if materialize_full_z_guide else None,
+        }
+    v_s = phi_shift + float(-lam * np.log(z_s_raw))
     pad = 1e-12 * (1.0 + abs(v_s))
     cert = Phase2DecisionCertificate(
         certificate_mode="full_policy_enclosure",
@@ -691,6 +814,7 @@ def plan_unseen_goal_via_portal_quotient(
     fallback_ms = 1000.0 * (time.perf_counter() - t_fb0)
     return {
         "certified": cert.certified,
+        "status": "ok",
         "lower_bound": v_s - pad,
         "upper_bound": v_s + pad,
         "active_interface_dofs": int(n_g),
