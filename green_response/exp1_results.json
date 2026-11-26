@@ -1,8 +1,30 @@
 {
   "metadata": {
+    "git_head_sha": "d1b926aa74f54bbd9ce454b8f4a1b6e2cdffe943",
+    "git_dirty_green_response": true,
+    "package_py_sha256": "849bc319f431fc8563d5748a4352558d45d778cdb4a0a4812b0a63682faca559",
+    "source_manifest": {
+      "git_head_sha": "d1b926aa74f54bbd9ce454b8f4a1b6e2cdffe943",
+      "git_dirty_green_response": true,
+      "package_py_sha256": "849bc319f431fc8563d5748a4352558d45d778cdb4a0a4812b0a63682faca559",
+      "per_file_sha256": {
+        "__init__.py": "aa9636147a3df265603b70ffb3036393cac60e0056f0dec4c6c524b11b2ecd9f",
+        "core.py": "e57340bbdee7cf185e48e32d14a3d233419efad76ec8158bbb66fcbd3fd219f7",
+        "exp1_3d_and_macro_tours.py": "ae079e2d1b0ba44f283c85ebb54c290b7f18253fc11de38e72a8d0de80599bf2",
+        "exp2_nonlmdp_kkt.py": "3187b5ff1be8a3e637974029fb56d401b74c0c86f468c68bc662bfbf69ad9405",
+        "exp3_highd_and_kinetic.py": "aad29f917018952ae9bffc10baabd6486b0ed2a6ba8472973c23a00fabd851e5",
+        "exp4_fidelity_and_continual.py": "bbd7896f060fdcd988015fb9173facdf030fba32fc5fde7d5110478adf15381e",
+        "highd_solvers.py": "b2860c83e59dc4b6060c0e8726f64755a97f4cb9edbca2d4acbdf6242dee4542",
+        "macro_planning.py": "cf2f18968ef8980998418d05bf7e804b231a3692c771d49685a90dfcd3fe0824",
+        "port_solvers.py": "35e598894f1013db0732561bcd85a9b81097fc7eddbbc5d929192296d194f914",
+        "verify_audit_closure.py": "8b7849e2d3f751011442e8fd4d1e058fe9474842405baa0ad7829473f424853b"
+      }
+    },
     "python_version": "3.10.12",
     "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
     "processor": "x86_64",
+    "cpu_count": 32,
+    "configured_parallel_workers": 8,
     "numpy_version": "2.2.6",
     "scipy_version": "1.15.3",
     "sklearn_version": "1.7.2",
@@ -2814,7 +2836,8 @@
           3.1407662381442996
         ]
       }
-    }
+    },
+    "block_provenance": "inherited_from_commit_85e2323_ddd19c5"
   },
   "stream_3d_fresh_confirmation_8maps": {
     "locked_fresh_seeds": [
@@ -3184,7 +3207,8 @@
           2025.4342569969594
         ]
       }
-    }
+    },
+    "block_provenance": "inherited_from_commit_ddd19c5"
   },
   "certified_tours_144tasks": {
     "n_maps_total": 18,
@@ -3197,8 +3221,8 @@
       "Euclidean-Heuristic": {
         "all_144_tours_mean_cost": 10.844920298845178,
         "strictly_exterior_starts_mean_cost": 11.10803240586972,
-        "planning_subsystem_ms": 14.62318048450268,
-        "speedup_vs_matched_exact_subset_dp": 12.267089634963034,
+        "planning_subsystem_ms": 16.965262501293587,
+        "speedup_vs_matched_exact_subset_dp": 12.25406146652336,
         "mean_total_lu_backsolves": 0.0,
         "certification_rate": 0.0,
         "bound_violation_count": 0,
@@ -3237,24 +3261,24 @@
           "p_two_sided": 0.000281502809290107
         },
         "per_map_planning_ms": [
-          12.131318217143416,
-          13.95985553972423,
-          14.311142032966018,
-          13.153666630387306,
-          13.470632024109364,
-          15.503764851018786,
-          12.038073968142271,
-          12.00092677026987,
-          16.45439211279154,
-          14.60347045212984,
-          17.044015927240252,
-          15.631316462531686,
-          17.71182822994888,
-          17.326605739071965,
-          17.07174815237522,
-          16.134214121848345,
-          12.366947252303362,
-          12.303330237045884
+          16.02245308458805,
+          16.473424155265093,
+          18.771496834233403,
+          16.294553177431226,
+          17.670503119006753,
+          17.629277193918824,
+          13.74695892445743,
+          16.664894996210933,
+          20.146023016422987,
+          20.624313037842512,
+          20.014996640384197,
+          17.522157169878483,
+          15.497100073844194,
+          16.727580688893795,
+          15.547926304861903,
+          16.811934299767017,
+          14.48962208814919,
+          14.719510218128562
         ],
         "per_map_costs_all": [
           11.259714347650968,
@@ -3280,8 +3304,8 @@
       "Heuristic-1Port": {
         "all_144_tours_mean_cost": 10.227247693413547,
         "strictly_exterior_starts_mean_cost": 10.509055371907285,
-        "planning_subsystem_ms": 114.22559409402311,
-        "speedup_vs_matched_exact_subset_dp": 1.5704349552691261,
+        "planning_subsystem_ms": 127.28949169266141,
+        "speedup_vs_matched_exact_subset_dp": 1.6332327729653513,
         "mean_total_lu_backsolves": 12.0,
         "certification_rate": 0.0,
         "bound_violation_count": 0,
@@ -3320,24 +3344,24 @@
           "p_two_sided": 0.41985619021552034
         },
         "per_map_planning_ms": [
-          128.54107236489654,
-          135.7288567814976,
-          130.36718522198498,
-          112.2150847222656,
-          118.80216281861067,
-          127.18865112401545,
-          124.63983474299312,
-          119.31329243816435,
-          120.77478296123445,
-          94.21383775770664,
-          104.06908649019897,
-          98.3159663155675,
-          115.19903177395463,
-          106.91227717325091,
-          107.22307534888387,
-          109.94428815320134,
-          110.10486562736332,
-          92.50734187662601
+          127.96984775923193,
+          126.36620295234025,
+          161.98183642700315,
+          124.78008004836738,
+          157.8339859843254,
+          127.4964592885226,
+          124.6418731752783,
+          132.8164292499423,
+          128.73250781558454,
+          128.08593991212547,
+          129.05925908125937,
+          113.21734823286533,
+          121.60029704682529,
+          129.94481530040503,
+          110.3741901461035,
+          125.17651868984103,
+          110.1458091288805,
+          110.98745022900403
         ],
         "per_map_costs_all": [
           10.457976807245803,
@@ -3363,8 +3387,8 @@
       "Cached-ExactRing-FixedTour": {
         "all_144_tours_mean_cost": 10.20548667275591,
         "strictly_exterior_starts_mean_cost": 10.481835175809726,
-        "planning_subsystem_ms": 177.98385282771454,
-        "speedup_vs_matched_exact_subset_dp": 1.0078659547013917,
+        "planning_subsystem_ms": 208.50177647338973,
+        "speedup_vs_matched_exact_subset_dp": 0.9970820057405511,
         "mean_total_lu_backsolves": 378.94444444444446,
         "certification_rate": 1.0,
         "bound_violation_count": 0,
@@ -3403,24 +3427,24 @@
           "p_two_sided": 1.0
         },
         "per_map_planning_ms": [
-          190.89053524658084,
-          181.7581900395453,
-          194.2998613230884,
-          184.03946235775948,
-          176.94063484668732,
-          187.03332194127142,
-          195.96296432428062,
-          180.53362681530416,
-          178.651780821383,
-          156.52454318478703,
-          157.8278976958245,
-          131.85567501932383,
-          179.33791875839233,
-          146.76066092215478,
-          230.68525223061442,
-          181.31438316777349,
-          177.42698220536113,
-          171.86565999872983
+          226.8843378406018,
+          243.51017898879945,
+          215.0660480838269,
+          254.107684828341,
+          232.33518516644835,
+          244.39331819303334,
+          240.0304430630058,
+          245.58411282487214,
+          183.76003112643957,
+          185.56584790349007,
+          167.32811089605093,
+          181.05166731402278,
+          180.10825803503394,
+          206.73399115912616,
+          171.8753189779818,
+          217.36215217970312,
+          177.96492599882185,
+          179.37036394141614
         ],
         "per_map_costs_all": [
           10.322436896470602,
@@ -3446,8 +3470,8 @@
       "Certified-BnB-FixedTour": {
         "all_144_tours_mean_cost": 10.207604579586397,
         "strictly_exterior_starts_mean_cost": 10.483720144720102,
-        "planning_subsystem_ms": 720.8904374856502,
-        "speedup_vs_matched_exact_subset_dp": 0.2488365172068291,
+        "planning_subsystem_ms": 836.8665312882513,
+        "speedup_vs_matched_exact_subset_dp": 0.2484187880790616,
         "mean_total_lu_backsolves": 256.3333333333333,
         "certification_rate": 1.0,
         "bound_violation_count": 0,
@@ -3486,24 +3510,24 @@
           "p_two_sided": 0.32525832075464356
         },
         "per_map_planning_ms": [
-          669.8687807656825,
-          682.9269067384303,
-          742.1921449713409,
-          562.5896446872503,
-          606.5559412818402,
-          600.7060222327709,
-          626.7714453861117,
-          622.7398656774312,
-          990.1633902918547,
-          707.2975302580744,
-          841.7862623464316,
-          635.2559847291559,
-          860.6487133074552,
-          826.109605608508,
-          852.7496568858624,
-          645.083477254957,
-          681.5011613070965,
-          821.0813410114497
+          859.2439179774374,
+          674.0265989210457,
+          924.6433961670846,
+          647.9386491701007,
+          856.1366300564259,
+          854.4612664263695,
+          882.5804537627846,
+          841.0766678862274,
+          833.8106127921492,
+          843.2947010733187,
+          1074.807947035879,
+          763.1247923709452,
+          952.4891846813262,
+          1038.6937418952584,
+          728.9158359635621,
+          685.6235470622778,
+          835.1181873586029,
+          767.6114325877279
         ],
         "per_map_costs_all": [
           10.322436896470602,
@@ -3529,7 +3553,7 @@
       "Full-ExactRing-SubsetDP": {
         "all_144_tours_mean_cost": 10.194047582609304,
         "strictly_exterior_starts_mean_cost": 10.464516259516138,
-        "planning_subsystem_ms": 179.38386575163653,
+        "planning_subsystem_ms": 207.89336948655546,
         "speedup_vs_matched_exact_subset_dp": 1.0,
         "mean_total_lu_backsolves": 378.94444444444446,
         "certification_rate": 1.0,
@@ -3569,24 +3593,24 @@
           "p_two_sided": 0.1986232467085194
         },
         "per_map_planning_ms": [
-          177.35290224663913,
-          223.55652274563909,
-          205.0760535057634,
-          185.72499975562096,
-          182.40051320753992,
-          182.26678227074444,
-          187.4287307728082,
-          213.41588255017996,
-          185.17443351447582,
-          156.63056867197156,
-          163.94488094374537,
-          142.64962798915803,
-          173.0463937856257,
-          164.0040238853544,
-          187.63032578863204,
-          163.19969482719898,
-          166.253729024902,
-          169.15351804345846
+          224.4500075466931,
+          210.39917739108205,
+          235.7047728728503,
+          238.76031604595482,
+          234.53851509839296,
+          242.63252317905426,
+          240.19653513096273,
+          254.84732701443136,
+          178.05623821914196,
+          169.11656712181866,
+          160.68976279348135,
+          185.37460989318788,
+          253.5663451999426,
+          191.89724908210337,
+          204.83350870199502,
+          163.43837254680693,
+          174.22252660617232,
+          179.35629631392658
         ],
         "per_map_costs_all": [
           10.37582364708599,
@@ -3612,8 +3636,8 @@
       "UniformWidth-Port-SubsetDP": {
         "all_144_tours_mean_cost": 10.197912798597669,
         "strictly_exterior_starts_mean_cost": 10.47791349765658,
-        "planning_subsystem_ms": 415.59974937182335,
-        "speedup_vs_matched_exact_subset_dp": 0.4316265012738199,
+        "planning_subsystem_ms": 488.89572203107593,
+        "speedup_vs_matched_exact_subset_dp": 0.42523049418980396,
         "mean_total_lu_backsolves": 327.0,
         "certification_rate": 1.0,
         "bound_violation_count": 0,
@@ -3652,24 +3676,24 @@
           "p_two_sided": 0.7173150072753679
         },
         "per_map_planning_ms": [
-          439.4873396959156,
-          410.6205478310585,
-          382.76652013882995,
-          373.0946297291666,
-          377.3066741414368,
-          362.9334138240665,
-          375.3696687053889,
-          381.3947264570743,
-          532.3252521920949,
-          401.7365979962051,
-          447.61423114687204,
-          334.1882233507931,
-          517.6825989037752,
-          422.6538159418851,
-          470.8161959424615,
-          396.80400281213224,
-          415.79781100153923,
-          438.2032388821244
+          454.7948718536645,
+          444.73227276466787,
+          459.41585884429514,
+          500.34097908064723,
+          494.20517892576754,
+          530.2432519383729,
+          449.5429729577154,
+          523.6114810686558,
+          536.3093300256878,
+          427.6523746084422,
+          585.1868544705212,
+          432.7351590618491,
+          523.7825631629676,
+          465.44103417545557,
+          531.5346387214959,
+          460.35869885236025,
+          475.26723542250693,
+          504.9682406242937
         ],
         "per_map_costs_all": [
           10.356396716570313,
@@ -3695,8 +3719,8 @@
       "DecisionGuided-Port-SubsetDP": {
         "all_144_tours_mean_cost": 10.201260903205215,
         "strictly_exterior_starts_mean_cost": 10.473859325501728,
-        "planning_subsystem_ms": 429.89607927544665,
-        "speedup_vs_matched_exact_subset_dp": 0.41727262564006823,
+        "planning_subsystem_ms": 512.9928687949562,
+        "speedup_vs_matched_exact_subset_dp": 0.4052558663727754,
         "mean_total_lu_backsolves": 325.1111111111111,
         "certification_rate": 1.0,
         "bound_violation_count": 0,
@@ -3735,24 +3759,24 @@
           "p_two_sided": 0.4148950891351433
         },
         "per_map_planning_ms": [
-          407.0126316510141,
-          449.8659169767052,
-          427.30677709914744,
-          386.1616288777441,
-          370.1238923240453,
-          393.55234196409583,
-          381.7741412203759,
-          385.1312038023025,
-          532.9562216065824,
-          412.50262199901044,
-          538.2077700924128,
-          404.5703234151006,
-          463.7601457070559,
-          393.9844910055399,
-          528.7071904167533,
-          414.49419502168894,
-          433.216837933287,
-          414.80109584517777
+          510.2060770150274,
+          663.0600586067885,
+          494.882503291592,
+          545.8124405704439,
+          560.4863117914647,
+          490.78629072755575,
+          492.3335292842239,
+          484.87575724720955,
+          501.35244033299387,
+          492.68454965204,
+          567.6968705374748,
+          481.73278919421136,
+          582.7729275915772,
+          500.5063721910119,
+          481.2873189803213,
+          440.683153225109,
+          477.3698840290308,
+          465.3423640411347
         ],
         "per_map_costs_all": [
           10.356396716570313,
@@ -3778,8 +3802,8 @@
       "Hybrid-Economical-SubsetDP": {
         "all_144_tours_mean_cost": 10.194047582609304,
         "strictly_exterior_starts_mean_cost": 10.464516259516138,
-        "planning_subsystem_ms": 173.8693246152252,
-        "speedup_vs_matched_exact_subset_dp": 1.031716584559209,
+        "planning_subsystem_ms": 200.98387585797659,
+        "speedup_vs_matched_exact_subset_dp": 1.034378348009675,
         "mean_total_lu_backsolves": 378.94444444444446,
         "certification_rate": 1.0,
         "bound_violation_count": 0,
@@ -3818,24 +3842,24 @@
           "p_two_sided": 0.1986232467085194
         },
         "per_map_planning_ms": [
-          195.18704270012677,
-          167.29108896106482,
-          194.32612275704741,
-          194.08053904771805,
-          172.93053749017417,
-          184.7589381504804,
-          191.81649782694876,
-          170.17208668403327,
-          198.35410453379154,
-          162.47683227993548,
-          169.4543247576803,
-          137.22421694546938,
-          189.6029559429735,
-          144.42919078283012,
-          179.94771688245237,
-          159.11342855542898,
-          161.88670974224806,
-          156.59550903365016
+          239.76044147275388,
+          199.67314461246133,
+          233.32718200981617,
+          199.7077700216323,
+          186.13580823875964,
+          232.25127696059644,
+          243.7312735710293,
+          240.47112721018493,
+          189.92029479704797,
+          179.7427712008357,
+          181.13299272954464,
+          198.59577855095267,
+          171.9708947930485,
+          159.96025293134153,
+          203.2998085487634,
+          170.5097823869437,
+          169.41034188494086,
+          218.10882352292538
         ],
         "per_map_costs_all": [
           10.37582364708599,
@@ -3858,7 +3882,8 @@
           11.305393394762039
         ]
       }
-    }
+    },
+    "block_provenance": "fresh_computed_in_current_run"
   },
   "scalability_and_crossover": {
     "scaling_65sq_m5_to_m9": {
@@ -3869,33 +3894,33 @@
         "example_row_mask_entries": 4128,
         "example_dp_tables_bytes": 82560,
         "matched_exact_ring_subset_dp": {
-          "mean_map_stream_ms": 118.65302904819448,
+          "mean_map_stream_ms": 127.14862951543182,
           "mean_lu_backsolves": 278.8333333333333
         },
         "scratch_dp_decision_port_subset_dp": {
-          "mean_map_stream_ms": 295.2267968018229,
+          "mean_map_stream_ms": 314.00907594555366,
           "mean_lu_backsolves": 237.33333333333334
         },
         "uniform_width_port_subset_dp": {
-          "mean_map_stream_ms": 276.1296833632514,
+          "mean_map_stream_ms": 313.1887741619721,
           "mean_lu_backsolves": 240.83333333333334
         },
         "decision_guided_port_subset_dp": {
-          "mean_map_stream_ms": 282.4002996009464,
-          "incremental_dp_speedup_vs_scratch_dp": 1.04541955946577,
-          "speedup_vs_exact_subset_dp": 0.42015900555297014,
-          "speedup_vs_uniform_width": 0.9777952918373107,
+          "mean_map_stream_ms": 323.9536643959582,
+          "incremental_dp_speedup_vs_scratch_dp": 0.9693024356771912,
+          "speedup_vs_exact_subset_dp": 0.39249017217481486,
+          "speedup_vs_uniform_width": 0.9667702779221274,
           "certification_rate": 1.0,
           "mean_lu_backsolves": 237.33333333333334
         },
         "hybrid_economical_subset_dp": {
-          "mean_map_stream_ms": 111.05249694082886,
-          "speedup_vs_decision_port": 2.542944169471627,
+          "mean_map_stream_ms": 126.03484633533905,
+          "speedup_vs_decision_port": 2.5703499771326688,
           "mean_lu_backsolves": 278.8333333333333
         },
-        "cached_exact_fixed_tour_ms": 107.94897901359946,
+        "cached_exact_fixed_tour_ms": 110.56594050023705,
         "certified_bnb_fixed_tour": {
-          "mean_map_stream_ms": 410.7762653535853,
+          "mean_map_stream_ms": 485.2889726947372,
           "certification_rate": 1.0,
           "mean_pruned_fraction": 0.7954861111111112
         },
@@ -3909,33 +3934,33 @@
         "example_row_mask_entries": 22912,
         "example_dp_tables_bytes": 458240,
         "matched_exact_ring_subset_dp": {
-          "mean_map_stream_ms": 134.58556518889964,
+          "mean_map_stream_ms": 149.93012160994112,
           "mean_lu_backsolves": 304.1666666666667
         },
         "scratch_dp_decision_port_subset_dp": {
-          "mean_map_stream_ms": 489.3477199366316,
+          "mean_map_stream_ms": 535.7176328543574,
           "mean_lu_backsolves": 284.0
         },
         "uniform_width_port_subset_dp": {
-          "mean_map_stream_ms": 445.9968192580466,
+          "mean_map_stream_ms": 536.506466451101,
           "mean_lu_backsolves": 286.8333333333333
         },
         "decision_guided_port_subset_dp": {
-          "mean_map_stream_ms": 468.1655283008392,
-          "incremental_dp_speedup_vs_scratch_dp": 1.0452450903693637,
-          "speedup_vs_exact_subset_dp": 0.2874743163542278,
-          "speedup_vs_uniform_width": 0.9526477117543196,
+          "mean_map_stream_ms": 521.4647454752898,
+          "incremental_dp_speedup_vs_scratch_dp": 1.0273324083799313,
+          "speedup_vs_exact_subset_dp": 0.287517273048415,
+          "speedup_vs_uniform_width": 1.0288451349900969,
           "certification_rate": 1.0,
           "mean_lu_backsolves": 284.0
         },
         "hybrid_economical_subset_dp": {
-          "mean_map_stream_ms": 129.99963605155548,
-          "speedup_vs_decision_port": 3.6012833767870958,
+          "mean_map_stream_ms": 147.7001674550896,
+          "speedup_vs_decision_port": 3.530562994343583,
           "mean_lu_backsolves": 304.1666666666667
         },
-        "cached_exact_fixed_tour_ms": 260.2841151723017,
+        "cached_exact_fixed_tour_ms": 262.7613802906126,
         "certified_bnb_fixed_tour": {
-          "mean_map_stream_ms": 780.8944362138087,
+          "mean_map_stream_ms": 885.3207376475135,
           "certification_rate": 1.0,
           "mean_pruned_fraction": 0.9788690476190477
         },
@@ -3949,33 +3974,33 @@
         "example_row_mask_entries": 52736,
         "example_dp_tables_bytes": 1054720,
         "matched_exact_ring_subset_dp": {
-          "mean_map_stream_ms": 143.56614051697156,
+          "mean_map_stream_ms": 157.56160851257542,
           "mean_lu_backsolves": 304.1666666666667
         },
         "scratch_dp_decision_port_subset_dp": {
-          "mean_map_stream_ms": 749.9585586677616,
+          "mean_map_stream_ms": 860.6610115384683,
           "mean_lu_backsolves": 283.5
         },
         "uniform_width_port_subset_dp": {
-          "mean_map_stream_ms": 681.8225554112965,
+          "mean_map_stream_ms": 794.7855560729901,
           "mean_lu_backsolves": 286.0
         },
         "decision_guided_port_subset_dp": {
-          "mean_map_stream_ms": 717.3130954227721,
-          "incremental_dp_speedup_vs_scratch_dp": 1.0455107587653183,
-          "speedup_vs_exact_subset_dp": 0.20014431833613203,
-          "speedup_vs_uniform_width": 0.9505229442513411,
+          "mean_map_stream_ms": 832.356421626173,
+          "incremental_dp_speedup_vs_scratch_dp": 1.0340053721901932,
+          "speedup_vs_exact_subset_dp": 0.18929584060245205,
+          "speedup_vs_uniform_width": 0.9548620463817883,
           "certification_rate": 1.0,
           "mean_lu_backsolves": 283.5
         },
         "hybrid_economical_subset_dp": {
-          "mean_map_stream_ms": 136.87634374946356,
-          "speedup_vs_decision_port": 5.240592170811718,
+          "mean_map_stream_ms": 158.70560061496994,
+          "speedup_vs_decision_port": 5.244656889239363,
           "mean_lu_backsolves": 304.1666666666667
         },
         "cached_exact_fixed_tour_ms": null,
         "certified_bnb_fixed_tour": {
-          "mean_map_stream_ms": 1190.8246906629454,
+          "mean_map_stream_ms": 1449.6232508681715,
           "certification_rate": 1.0,
           "mean_pruned_fraction": 0.9973596643518517
         },
@@ -3989,28 +4014,28 @@
         "example_row_mask_entries": 117760,
         "example_dp_tables_bytes": 2355200,
         "matched_exact_ring_subset_dp": {
-          "mean_map_stream_ms": 165.40305553159365,
+          "mean_map_stream_ms": 172.88038231587657,
           "mean_lu_backsolves": 300.0
         },
         "scratch_dp_decision_port_subset_dp": {
-          "mean_map_stream_ms": 1308.0886063010742,
+          "mean_map_stream_ms": 1317.5487379776314,
           "mean_lu_backsolves": 290.8333333333333
         },
         "uniform_width_port_subset_dp": {
-          "mean_map_stream_ms": 1191.7573738610372,
+          "mean_map_stream_ms": 1244.286371123356,
           "mean_lu_backsolves": 293.6666666666667
         },
         "decision_guided_port_subset_dp": {
-          "mean_map_stream_ms": 1248.44234646298,
-          "incremental_dp_speedup_vs_scratch_dp": 1.0477765433118165,
-          "speedup_vs_exact_subset_dp": 0.13248754017372508,
-          "speedup_vs_uniform_width": 0.9545954422624805,
+          "mean_map_stream_ms": 1353.6996830177184,
+          "incremental_dp_speedup_vs_scratch_dp": 0.9732947082033011,
+          "speedup_vs_exact_subset_dp": 0.12770955366590994,
+          "speedup_vs_uniform_width": 0.9191746047761096,
           "certification_rate": 1.0,
           "mean_lu_backsolves": 290.8333333333333
         },
         "hybrid_economical_subset_dp": {
-          "mean_map_stream_ms": 161.06414725072682,
-          "speedup_vs_decision_port": 7.751211972205976,
+          "mean_map_stream_ms": 164.47936611560485,
+          "speedup_vs_decision_port": 8.230209752062555,
           "mean_lu_backsolves": 300.0
         },
         "cached_exact_fixed_tour_ms": null,
@@ -4039,38 +4064,38 @@
         ],
         "m_targets": 6,
         "tasks_per_map": 4,
-        "full_exact_ring_subset_dp_ms": 21.32058219285682,
-        "uniform_width_port_subset_dp_ms": 231.46948681096546,
-        "decision_guided_port_subset_dp_ms": 240.3150137688499,
-        "hybrid_economical_subset_dp_ms": 19.75988404592499,
-        "decision_guided_speedup_vs_exact_subset_dp": 0.08871930995274517,
-        "hybrid_speedup_vs_exact_subset_dp": 1.0789831632262885,
-        "decision_guided_speedup_vs_uniform_width": 0.9631919503523295,
+        "full_exact_ring_subset_dp_ms": 22.139206528663635,
+        "uniform_width_port_subset_dp_ms": 219.21697302605025,
+        "decision_guided_port_subset_dp_ms": 220.66309503861703,
+        "hybrid_economical_subset_dp_ms": 19.020595296751708,
+        "decision_guided_speedup_vs_exact_subset_dp": 0.10033035440198632,
+        "hybrid_speedup_vs_exact_subset_dp": 1.1639597070047811,
+        "decision_guided_speedup_vs_uniform_width": 0.9934464709093576,
         "paired_ms_diff_decision_minus_exact": {
           "n": 8,
-          "mean": 218.99443157599308,
-          "ci95_half": 28.82011201494905,
+          "mean": 198.5238885099534,
+          "ci95_half": 12.36470764686497,
           "ci95": [
-            190.17431956104403,
-            247.81454359094212
+            186.15918086308844,
+            210.88859615681835
           ],
-          "p_two_sided": 4.085919412256515e-07
+          "p_two_sided": 2.2881877165697047e-09
         },
         "paired_ms_diff_hybrid_minus_exact": {
           "n": 8,
-          "mean": -1.560698146931827,
-          "ci95_half": 1.2534160925450928,
+          "mean": -3.1186112319119275,
+          "ci95_half": 2.9002852677492226,
           "ci95": [
-            -2.81411423947692,
-            -0.3072820543867343
+            -6.01889649966115,
+            -0.2183259641627049
           ],
-          "p_two_sided": 0.02158017112201589
+          "p_two_sided": 0.038515971847758984
         },
         "decision_port_phase_ms": {
-          "init_ms": 8.116993441944942,
-          "col_solve_ms": 5.2396442333702,
-          "dp_ms": 215.13985996716656,
-          "occ_ms": 10.132454888662323
+          "init_ms": 7.6869029144290835,
+          "col_solve_ms": 4.972567578079179,
+          "dp_ms": 197.022430395009,
+          "occ_ms": 9.302353922976181
         },
         "full_exact_ring_backsolves": 106.875,
         "uniform_width_backsolves": 100.0,
@@ -4081,44 +4106,44 @@
         "decision_guided_mean_exact_regret": 0.003534683452648457,
         "verified_bound_violations_all_32_tasks": 0,
         "per_map_exact_ms": [
-          19.79226735420525,
-          21.437864052131772,
-          23.27807084657252,
-          25.47528687864542,
-          22.16962887905538,
-          19.916037330403924,
-          17.749195685610175,
-          20.746306516230106
+          20.193210570141673,
+          19.820289919152856,
+          19.417032599449158,
+          20.903625758364797,
+          20.36828873679042,
+          21.235757041722536,
+          33.17076759412885,
+          22.004680009558797
         ],
         "per_map_uniform_ms": [
-          233.8966012466699,
-          237.49050707556307,
-          307.5676781591028,
-          272.11376605555415,
-          218.18235516548157,
-          175.63336482271552,
-          189.84815594740212,
-          217.0234660152346
+          268.18594080395997,
+          234.53763662837446,
+          231.08592326752841,
+          217.44707645848393,
+          203.64530198276043,
+          181.9517642725259,
+          196.42583606764674,
+          220.4563047271222
         ],
         "per_map_decision_ms": [
-          237.41672094911337,
-          235.52907211706042,
-          291.07459308579564,
-          294.2671119235456,
-          227.76907682418823,
-          205.55735402740538,
-          190.49384002573788,
-          240.41234119795263
+          225.33793980255723,
+          236.89282685518265,
+          227.8308868408203,
+          220.0372323859483,
+          224.1071118041873,
+          188.93062719143927,
+          229.57837907597423,
+          212.58975635282695
         ],
         "per_map_hybrid_ms": [
-          20.3100077342242,
-          17.906636698171496,
-          21.242577116936445,
-          23.20702327415347,
-          22.938230074942112,
-          17.932408256456256,
-          16.42638468183577,
-          18.11580453068018
+          19.737391965463758,
+          17.110886285081506,
+          18.46412173472345,
+          17.03123957850039,
+          17.682796344161034,
+          21.582009037956595,
+          22.367794765159488,
+          18.188522662967443
         ]
       },
       "Fine-2D-65sq": {
@@ -4140,38 +4165,38 @@
         ],
         "m_targets": 6,
         "tasks_per_map": 4,
-        "full_exact_ring_subset_dp_ms": 169.95854195556603,
-        "uniform_width_port_subset_dp_ms": 421.4782369672321,
-        "decision_guided_port_subset_dp_ms": 449.61290576611646,
-        "hybrid_economical_subset_dp_ms": 159.6783186250832,
-        "decision_guided_speedup_vs_exact_subset_dp": 0.3780108172517106,
-        "hybrid_speedup_vs_exact_subset_dp": 1.0643808340355856,
-        "decision_guided_speedup_vs_uniform_width": 0.9374246859063255,
+        "full_exact_ring_subset_dp_ms": 146.49133951752447,
+        "uniform_width_port_subset_dp_ms": 369.5433842949569,
+        "decision_guided_port_subset_dp_ms": 361.8652352015488,
+        "hybrid_economical_subset_dp_ms": 141.17599968449213,
+        "decision_guided_speedup_vs_exact_subset_dp": 0.4048229154589357,
+        "hybrid_speedup_vs_exact_subset_dp": 1.0376504494029535,
+        "decision_guided_speedup_vs_uniform_width": 1.0212182557109462,
         "paired_ms_diff_decision_minus_exact": {
           "n": 8,
-          "mean": 279.6543638105504,
-          "ci95_half": 35.79648012281851,
+          "mean": 215.37389568402432,
+          "ci95_half": 16.05869370502929,
           "ci95": [
-            243.8578836877319,
-            315.4508439333689
+            199.31520197899502,
+            231.43258938905362
           ],
-          "p_two_sided": 3.377001987074789e-07
+          "p_two_sided": 8.01102897438232e-09
         },
         "paired_ms_diff_hybrid_minus_exact": {
           "n": 8,
-          "mean": -10.28022333048284,
-          "ci95_half": 10.313422685143525,
+          "mean": -5.31533983303234,
+          "ci95_half": 6.519545116594807,
           "ci95": [
-            -20.593646015626366,
-            0.03319935466068458
+            -11.834884949627146,
+            1.2042052835624668
           ],
-          "p_two_sided": 0.050563047237379775
+          "p_two_sided": 0.09522157456996481
         },
         "decision_port_phase_ms": {
-          "init_ms": 44.45409882464446,
-          "col_solve_ms": 94.47278414154425,
-          "dp_ms": 292.43216491886415,
-          "occ_ms": 15.511979756411165
+          "init_ms": 40.19431766937487,
+          "col_solve_ms": 76.73945574788377,
+          "dp_ms": 230.15255690552294,
+          "occ_ms": 12.28186790831387
         },
         "full_exact_ring_backsolves": 324.875,
         "uniform_width_backsolves": 295.0,
@@ -4182,44 +4207,44 @@
         "decision_guided_mean_exact_regret": 4.283306344216031e-05,
         "verified_bound_violations_all_32_tasks": 0,
         "per_map_exact_ms": [
-          184.91178867407143,
-          163.27483695931733,
-          167.27541224099696,
-          178.76504850573838,
-          167.19922074116766,
-          181.6647290252149,
-          158.20870245806873,
-          158.36859703995287
+          145.23583371192217,
+          192.34584248624742,
+          137.95672403648496,
+          169.6795707102865,
+          133.72575002722442,
+          128.22522409260273,
+          124.64877497404814,
+          140.1129961013794
         ],
         "per_map_uniform_ms": [
-          511.062600184232,
-          464.9546449072659,
-          389.36775201000273,
-          460.5006598867476,
-          404.7511834651232,
-          338.0474152509123,
-          390.027429908514,
-          413.1142101250589
+          358.29623276367784,
+          506.5030499827117,
+          348.4250952024013,
+          415.72489589452744,
+          331.62801316939294,
+          298.47837309353054,
+          327.2740850225091,
+          370.0173292309046
         ],
         "per_map_decision_ms": [
-          436.4813722204417,
-          514.9247555527836,
-          424.54317794181406,
-          514.0785488765687,
-          433.1917578820139,
-          406.28733579069376,
-          431.26371689140797,
-          436.13258097320795
+          364.92224992252886,
+          392.24572968669236,
+          362.0127341710031,
+          412.9822659306228,
+          360.19349098205566,
+          309.03335288167,
+          330.3881068713963,
+          363.1439511664212
         ],
         "per_map_hybrid_ms": [
-          158.5886252578348,
-          177.1646908018738,
-          155.49559239298105,
-          166.25639633275568,
-          166.86174576170743,
-          161.21661779470742,
-          144.17486381717026,
-          147.6680168416351
+          134.14729526266456,
+          184.74887101911008,
+          133.97620129399002,
+          159.92203587666154,
+          124.98881598003209,
+          139.6001991815865,
+          124.32797509245574,
+          127.69660376943648
         ]
       },
       "Coarse-3D-21cubed": {
@@ -4241,86 +4266,86 @@
         ],
         "m_targets": 6,
         "tasks_per_map": 4,
-        "full_exact_ring_subset_dp_ms": 1664.750604861183,
-        "uniform_width_port_subset_dp_ms": 1925.778651930159,
-        "decision_guided_port_subset_dp_ms": 1964.3936998036224,
-        "hybrid_economical_subset_dp_ms": 1874.4799295382109,
-        "decision_guided_speedup_vs_exact_subset_dp": 0.8474628100403732,
-        "hybrid_speedup_vs_exact_subset_dp": 0.8881133260633547,
-        "decision_guided_speedup_vs_uniform_width": 0.980342510833076,
+        "full_exact_ring_subset_dp_ms": 1632.7503107022494,
+        "uniform_width_port_subset_dp_ms": 1857.1342012146488,
+        "decision_guided_port_subset_dp_ms": 1947.9475444823038,
+        "hybrid_economical_subset_dp_ms": 1565.638800704619,
+        "decision_guided_speedup_vs_exact_subset_dp": 0.8381900813125731,
+        "hybrid_speedup_vs_exact_subset_dp": 1.0428652572786437,
+        "decision_guided_speedup_vs_uniform_width": 0.9533799852440124,
         "paired_ms_diff_decision_minus_exact": {
           "n": 8,
-          "mean": 299.64309494243935,
-          "ci95_half": 139.85213760343134,
+          "mean": 315.1972337800544,
+          "ci95_half": 117.03594706530582,
           "ci95": [
-            159.790957339008,
-            439.4952325458707
+            198.16128671474854,
+            432.2331808453602
           ],
-          "p_two_sided": 0.001452965515094578
+          "p_two_sided": 0.0003785392233555733
         },
         "paired_ms_diff_hybrid_minus_exact": {
           "n": 8,
-          "mean": 209.72932467702776,
-          "ci95_half": 78.30459498768238,
+          "mean": -67.11150999763049,
+          "ci95_half": 85.54957213889897,
           "ci95": [
-            131.42472968934538,
-            288.03391966471014
+            -152.66108213652944,
+            18.438062141268475
           ],
-          "p_two_sided": 0.0003914188202126916
+          "p_two_sided": 0.10598825111036007
         },
         "decision_port_phase_ms": {
-          "init_ms": 650.4106966604013,
-          "col_solve_ms": 911.140343057923,
-          "dp_ms": 379.3542950588744,
-          "occ_ms": 18.42350888182409
+          "init_ms": 692.4953394918703,
+          "col_solve_ms": 892.3062107060105,
+          "dp_ms": 339.38792211120017,
+          "occ_ms": 17.77242007665336
         },
         "full_exact_ring_backsolves": 202.875,
         "uniform_width_backsolves": 200.25,
         "decision_guided_backsolves": 196.875,
-        "hybrid_economical_backsolves": 200.875,
+        "hybrid_economical_backsolves": 202.875,
         "decision_guided_certification_rate": 1.0,
         "hybrid_certification_rate": 1.0,
         "decision_guided_mean_exact_regret": 4.852728277271456e-06,
         "verified_bound_violations_all_32_tasks": 0,
         "per_map_exact_ms": [
-          1534.068641019985,
-          1758.939349791035,
-          1691.113709937781,
-          1817.3760420177132,
-          1583.3405773155391,
-          1650.1572837587446,
-          1554.740112973377,
-          1728.2691220752895
+          1501.5988601371646,
+          1571.951717371121,
+          1608.349459944293,
+          1647.3956091795117,
+          1587.199617177248,
+          1787.35255706124,
+          1599.972752854228,
+          1758.181911893189
         ],
         "per_map_uniform_ms": [
-          2037.2974548954517,
-          1804.1545627638698,
-          1999.8523762915283,
-          2084.4795538578182,
-          1934.7981670871377,
-          1813.131979200989,
-          1846.2059788871557,
-          1886.3091424573213
+          1721.1696321610361,
+          1801.9970662426203,
+          1996.838130056858,
+          1829.8505079001188,
+          1660.055941902101,
+          1773.0777440592647,
+          2018.1142047513276,
+          2055.9703826438636
         ],
         "per_map_decision_ms": [
-          1860.6460811570287,
-          1871.6707723215222,
-          2036.071919137612,
-          2044.9679044540972,
-          1742.7936128806323,
-          1844.2362158093601,
-          1950.8925767149776,
-          2363.8705159537494
+          1811.8890307378024,
+          1987.7210485283285,
+          1889.1600682400167,
+          2098.720312351361,
+          1789.3972073215991,
+          1986.36152013205,
+          2131.757286610082,
+          1888.573881937191
         ],
         "per_map_hybrid_ms": [
-          1824.1268983110785,
-          2015.7397971488535,
-          2049.9098452273756,
-          1892.2015859279782,
-          1759.6999225206673,
-          1754.5198237057775,
-          1755.9219147078693,
-          1943.7196487560868
+          1541.6103242896497,
+          1662.427956936881,
+          1519.905930152163,
+          1575.4082973580807,
+          1434.838091256097,
+          1569.8909133207053,
+          1589.004282373935,
+          1632.0246099494398
         ]
       },
       "3D-Spherical-25cubed": {
@@ -4342,38 +4367,38 @@
         ],
         "m_targets": 6,
         "tasks_per_map": 4,
-        "full_exact_ring_subset_dp_ms": 4717.162739136256,
-        "uniform_width_port_subset_dp_ms": 4928.590241994243,
-        "decision_guided_port_subset_dp_ms": 4928.106484177988,
-        "hybrid_economical_subset_dp_ms": 5110.379167541396,
-        "decision_guided_speedup_vs_exact_subset_dp": 0.9571957818446131,
-        "hybrid_speedup_vs_exact_subset_dp": 0.9230553319991096,
-        "decision_guided_speedup_vs_uniform_width": 1.00009816302018,
+        "full_exact_ring_subset_dp_ms": 4193.589342234191,
+        "uniform_width_port_subset_dp_ms": 4265.913224982796,
+        "decision_guided_port_subset_dp_ms": 4281.2824836873915,
+        "hybrid_economical_subset_dp_ms": 3707.9770812997594,
+        "decision_guided_speedup_vs_exact_subset_dp": 0.9795170858761759,
+        "hybrid_speedup_vs_exact_subset_dp": 1.1309642023904336,
+        "decision_guided_speedup_vs_uniform_width": 0.9964101273945003,
         "paired_ms_diff_decision_minus_exact": {
           "n": 8,
-          "mean": 210.94374504173175,
-          "ci95_half": 431.86387622268995,
+          "mean": 87.69314145320095,
+          "ci95_half": 213.37389713303634,
           "ci95": [
-            -220.9201311809582,
-            642.8076212644216
+            -125.68075567983539,
+            301.0670385862373
           ],
-          "p_two_sided": 0.2859903941983716
+          "p_two_sided": 0.36351464039746845
         },
         "paired_ms_diff_hybrid_minus_exact": {
           "n": 8,
-          "mean": 393.2164284051396,
-          "ci95_half": 467.35883370505985,
+          "mean": -485.6122609344311,
+          "ci95_half": 137.47186276667836,
           "ci95": [
-            -74.14240529992026,
-            860.5752621101994
+            -623.0841237011094,
+            -348.1403981677528
           ],
-          "p_two_sided": 0.08695569787677397
+          "p_two_sided": 6.911995683851875e-05
         },
         "decision_port_phase_ms": {
-          "init_ms": 1815.6293826468755,
-          "col_solve_ms": 2716.7509508726653,
-          "dp_ms": 371.9783824926708,
-          "occ_ms": 17.593722557649016
+          "init_ms": 1694.7245765768457,
+          "col_solve_ms": 2254.311845463235,
+          "dp_ms": 310.70399362943135,
+          "occ_ms": 15.286744543118402
         },
         "full_exact_ring_backsolves": 320.125,
         "uniform_width_backsolves": 314.875,
@@ -4384,44 +4409,44 @@
         "decision_guided_mean_exact_regret": 0.00019223236272303268,
         "verified_bound_violations_all_32_tasks": 0,
         "per_map_exact_ms": [
-          4519.665798172355,
-          4512.875717133284,
-          4115.444720955566,
-          5061.219060095027,
-          4951.848789816722,
-          5205.119880149141,
-          4591.954622650519,
-          4779.173324117437
+          4066.897421842441,
+          4240.701011847705,
+          4066.9931122101843,
+          4266.766303917393,
+          4054.920705733821,
+          4345.905330730602,
+          4283.201176906005,
+          4223.329674685374
         ],
         "per_map_uniform_ms": [
-          4913.873173296452,
-          4503.809902118519,
-          4645.090024219826,
-          5069.652783917263,
-          4706.10985881649,
-          4905.032178387046,
-          5637.802481185645,
-          5047.351534012705
+          3967.650623526424,
+          4472.425271058455,
+          4609.259946737438,
+          4525.930524105206,
+          3859.883523080498,
+          4188.818831462413,
+          4308.006879640743,
+          4195.330200251192
         ],
         "per_map_decision_ms": [
-          4789.133959216997,
-          4792.846200289205,
-          4748.578189639375,
-          4750.63714501448,
-          4338.439109735191,
-          5098.756064893678,
-          5291.17298591882,
-          5615.2882187161595
+          3695.891320006922,
+          4530.306925298646,
+          4309.237846639007,
+          4352.209388045594,
+          4039.6928070113063,
+          4378.056706627831,
+          4244.81513351202,
+          4700.049742357805
         ],
         "per_map_hybrid_ms": [
-          5548.194041941315,
-          5471.644657896832,
-          5162.387777119875,
-          4820.421049371362,
-          5055.420227115974,
-          4870.532402768731,
-          4866.920654894784,
-          5087.512529222295
+          3426.6270424705,
+          3508.58512124978,
+          3793.9702563453466,
+          3728.702442254871,
+          3678.410714957863,
+          3902.0376570988446,
+          3703.1537760049105,
+          3922.3296400159597
         ]
       },
       "Fine-3D-31cubed": {
@@ -4443,136 +4468,89 @@
         ],
         "m_targets": 6,
         "tasks_per_map": 4,
-        "full_exact_ring_subset_dp_ms": 23157.713677268475,
-        "uniform_width_port_subset_dp_ms": 22492.02735448489,
-        "decision_guided_port_subset_dp_ms": 22789.969113917323,
-        "hybrid_economical_subset_dp_ms": 22291.599519143347,
-        "decision_guided_speedup_vs_exact_subset_dp": 1.0161362466755859,
-        "hybrid_speedup_vs_exact_subset_dp": 1.0388538362795068,
-        "decision_guided_speedup_vs_uniform_width": 0.9869266273269985,
+        "full_exact_ring_subset_dp_ms": 18691.13615943934,
+        "uniform_width_port_subset_dp_ms": 18778.55037053814,
+        "decision_guided_port_subset_dp_ms": 19895.042777468916,
+        "hybrid_economical_subset_dp_ms": 21268.516672833357,
+        "decision_guided_speedup_vs_exact_subset_dp": 0.9394871058335699,
+        "hybrid_speedup_vs_exact_subset_dp": 0.8788171007390397,
+        "decision_guided_speedup_vs_uniform_width": 0.9438808742751135,
         "paired_ms_diff_decision_minus_exact": {
           "n": 8,
-          "mean": -367.74456335115246,
-          "ci95_half": 2467.127482620036,
+          "mean": 1203.9066180295777,
+          "ci95_half": 1334.4075694787023,
           "ci95": [
-            -2834.8720459711885,
-            2099.3829192688836
+            -130.5009514491246,
+            2538.31418750828
           ],
-          "p_two_sided": 0.7348627680152018
+          "p_two_sided": 0.07031926017690213
         },
         "paired_ms_diff_hybrid_minus_exact": {
           "n": 8,
-          "mean": -866.1141581251286,
-          "ci95_half": 1529.668170777981,
+          "mean": 2577.3805133940186,
+          "ci95_half": 1473.898635163303,
           "ci95": [
-            -2395.7823289031094,
-            663.5540126528524
+            1103.4818782307157,
+            4051.2791485573216
           ],
-          "p_two_sided": 0.22245547510922217
+          "p_two_sided": 0.0043766112479159775
         },
         "decision_port_phase_ms": {
-          "init_ms": 7019.233958126279,
-          "col_solve_ms": 15277.255130378762,
-          "dp_ms": 460.3746211505495,
-          "occ_ms": 19.69725705566816
+          "init_ms": 7188.8250413758215,
+          "col_solve_ms": 12200.468062190339,
+          "dp_ms": 473.45540253445506,
+          "occ_ms": 21.873683406738564
         },
         "full_exact_ring_backsolves": 544.5,
         "uniform_width_backsolves": 539.0,
         "decision_guided_backsolves": 539.0,
-        "hybrid_economical_backsolves": 539.0,
+        "hybrid_economical_backsolves": 544.5,
         "decision_guided_certification_rate": 1.0,
         "hybrid_certification_rate": 1.0,
         "decision_guided_mean_exact_regret": 4.439517389320802e-06,
         "verified_bound_violations_all_32_tasks": 0,
         "per_map_exact_ms": [
-          22537.84242318943,
-          22186.829117825255,
-          21852.84113418311,
-          22253.492726944387,
-          24809.11289411597,
-          23676.06960888952,
-          24541.168354218826,
-          23404.353158781305
+          16591.915464494377,
+          19191.71668519266,
+          20832.985151326284,
+          18155.689839972183,
+          16909.562662942335,
+          18288.756355643272,
+          17856.512666214257,
+          21701.95044972934
         ],
         "per_map_uniform_ms": [
-          21305.36826280877,
-          21831.186653580517,
-          24725.638165371493,
-          22434.18304808438,
-          21631.69482559897,
-          22404.50599975884,
-          20812.13857093826,
-          24791.50330973789
+          19544.821944087744,
+          19092.58112194948,
+          19155.148727819324,
+          17836.002400843427,
+          17289.797011297196,
+          20309.153311885893,
+          17603.381514316425,
+          19397.516932105646
         ],
         "per_map_decision_ms": [
-          19259.313293965533,
-          23862.804251955822,
-          24618.552535306662,
-          24444.273931207135,
-          21805.306802270934,
-          21122.957867803052,
-          20991.934181191027,
-          26214.610047638416
+          16713.627920718864,
+          21901.957507943735,
+          19241.465838626027,
+          21591.65127389133,
+          18870.687744114548,
+          20040.208023507148,
+          18328.337026759982,
+          22472.406884189695
         ],
         "per_map_hybrid_ms": [
-          20383.65302258171,
-          23258.821360534057,
-          22678.0575835146,
-          23690.762942424044,
-          21275.916867423803,
-          22439.161183079705,
-          22061.91769009456,
-          22544.505503494292
+          18777.599499793723,
+          22042.46115521528,
+          22579.741751775146,
+          21232.656634179875,
+          20100.240253144875,
+          22517.111907014623,
+          22340.73922713287,
+          20557.582954410464
         ]
       }
-    }
-  },
-  "metadata_exp1b_8core_update": {
-    "git_head_sha": "ddd19c5ddc56786d9b31be5e98c5780d978ffa37",
-    "python_version": "3.10.12",
-    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
-    "processor": "x86_64",
-    "cpu_count": 32,
-    "configured_parallel_workers": 8,
-    "numpy_version": "2.2.6",
-    "scipy_version": "1.15.3",
-    "sklearn_version": "1.7.2",
-    "thread_env": {
-      "OMP_NUM_THREADS": "1",
-      "OPENBLAS_NUM_THREADS": "1",
-      "MKL_NUM_THREADS": "1",
-      "VECLIB_MAXIMUM_THREADS": "1",
-      "NUMEXPR_NUM_THREADS": "1"
     },
-    "active_threadpools": [
-      {
-        "user_api": "blas",
-        "internal_api": "openblas",
-        "num_threads": 1,
-        "prefix": "libscipy_openblas",
-        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/numpy.libs/libscipy_openblas64_-56d6093b.so",
-        "version": "0.3.29",
-        "threading_layer": "pthreads",
-        "architecture": "SkylakeX"
-      },
-      {
-        "user_api": "blas",
-        "internal_api": "openblas",
-        "num_threads": 1,
-        "prefix": "libscipy_openblas",
-        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/scipy.libs/libscipy_openblas-68440149.so",
-        "version": "0.3.28",
-        "threading_layer": "pthreads",
-        "architecture": "SkylakeX"
-      },
-      {
-        "user_api": "openmp",
-        "internal_api": "openmp",
-        "num_threads": 1,
-        "prefix": "libgomp",
-        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/scikit_learn.libs/libgomp-a34b3233.so.1.0.0",
-        "version": null
-      }
-    ]
+    "block_provenance": "fresh_computed_in_current_run"
   }
 }

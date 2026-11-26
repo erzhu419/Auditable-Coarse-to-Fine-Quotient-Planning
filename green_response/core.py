@@ -4,13 +4,14 @@
 from __future__ import annotations
 
 import concurrent.futures
+import hashlib
 import math
 import os
 import platform
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable, Iterable, List, Optional, Sequence, Tuple, TypeVar
+from typing import Callable, Dict, Iterable, List, Optional, Sequence, Tuple, TypeVar
 
 import numpy as np
 import scipy
@@ -58,8 +59,9 @@ def run_map_parallel(
     max_workers: int = 8,
 ) -> List[T_Out]:
     """Executes independent map/seed tasks across up to `max_workers` OS processes (default 8 cores)
-    while pinning each worker's internal BLAS/OpenMP threadpool to 1 thread for deterministic,
-    contention-free numerical linear algebra. Preserves input order.
+    while pinning each worker's internal BLAS/OpenMP threadpool to 1 thread (eliminating nested
+    intra-process thread oversubscription; OS process-level cache/memory bandwidth remains shared).
+    Preserves input order.
     """
     item_list = list(items)
     if not item_list:
@@ -74,6 +76,40 @@ def run_map_parallel(
         return list(ex.map(worker_fn, item_list))
 
 
+def compute_source_manifest() -> dict:
+    """Computes an immutable SHA-256 manifest of all `green_response/*.py` sources plus Git status."""
+    pkg_dir = Path(__file__).resolve().parent
+    repo_dir = pkg_dir.parent
+    per_file: Dict[str, str] = {}
+    agg = hashlib.sha256()
+    for py_path in sorted(pkg_dir.glob("*.py")):
+        raw = py_path.read_bytes()
+        digest = hashlib.sha256(raw).hexdigest()
+        per_file[py_path.name] = digest
+        agg.update(f"{py_path.name}:{digest}\n".encode("utf-8"))
+    git_sha = "unknown"
+    git_dirty = None
+    try:
+        git_sha = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=str(repo_dir), text=True, stderr=subprocess.DEVNULL
+        ).strip()
+        st_out = subprocess.check_output(
+            ["git", "status", "--porcelain", "green_response"],
+            cwd=str(repo_dir),
+            text=True,
+            stderr=subprocess.DEVNULL,
+        ).strip()
+        git_dirty = bool(len(st_out) > 0)
+    except Exception:
+        pass
+    return {
+        "git_head_sha": git_sha,
+        "git_dirty_green_response": git_dirty,
+        "package_py_sha256": agg.hexdigest(),
+        "per_file_sha256": per_file,
+    }
+
+
 def collect_runtime_metadata(max_workers: int = 1) -> dict:
     pool_info = None
     try:
@@ -81,16 +117,12 @@ def collect_runtime_metadata(max_workers: int = 1) -> dict:
         pool_info = threadpool_info()
     except Exception:
         pool_info = "threadpoolctl_unavailable"
-    git_sha = "unknown"
-    try:
-        repo_dir = Path(__file__).resolve().parents[1]
-        git_sha = subprocess.check_output(
-            ["git", "rev-parse", "HEAD"], cwd=str(repo_dir), text=True, stderr=subprocess.DEVNULL
-        ).strip()
-    except Exception:
-        pass
+    src_manifest = compute_source_manifest()
     return {
-        "git_head_sha": git_sha,
+        "git_head_sha": src_manifest["git_head_sha"],
+        "git_dirty_green_response": src_manifest["git_dirty_green_response"],
+        "package_py_sha256": src_manifest["package_py_sha256"],
+        "source_manifest": src_manifest,
         "python_version": platform.python_version(),
         "platform": platform.platform(),
         "processor": platform.processor(),
@@ -235,6 +267,7 @@ class IntervalCertificate:
     operator_epoch: int = 0
     work: Optional[dict] = None
     extras: Optional[dict] = None
+    allow_value_only: bool = False
 
     def __post_init__(self) -> None:
         if self.status not in _VALID_CERT_STATUSES:
@@ -271,11 +304,17 @@ class IntervalCertificate:
                 raise ValueError(
                     f"certified=True with gap={gap} exceeding epsilon_tol={self.epsilon_tol}."
                 )
+            policy_keys = ("policy_action_idx", "select_next_waypoint", "best_order", "policy")
+            if not self.allow_value_only:
+                if not self.extras or not any(k in self.extras for k in policy_keys):
+                    raise ValueError(
+                        "certified=True requires a non-null actionable policy reference in extras "
+                        f"({policy_keys}) unless allow_value_only=True."
+                    )
             if self.extras:
-                if "policy_action_idx" in self.extras and self.extras["policy_action_idx"] is None:
-                    raise ValueError("certified=True cannot have policy_action_idx=None.")
-                if "best_order" in self.extras and self.extras["best_order"] is None:
-                    raise ValueError("certified=True cannot have best_order=None.")
+                for pk in policy_keys:
+                    if pk in self.extras and self.extras[pk] is None:
+                        raise ValueError(f"certified=True cannot have {pk}=None.")
 
         if self.extras:
             illegal_overlap = _PROTECTED_CERT_KEYS.intersection(self.extras.keys())
@@ -550,6 +589,14 @@ class KrigingWorldModel:
         s = np.sqrt(5.0) * d
         return st["c_val"] * (1.0 + s + (s ** 2) / 3.0) * np.exp(-s)
 
+    @staticmethod
+    def _eval_matern25_kernel_pair(X_a: np.ndarray, X_b: np.ndarray, st: dict) -> np.ndarray:
+        Xa_s = np.atleast_2d(X_a) / st["ell"][None, :]
+        Xb_s = np.atleast_2d(X_b) / st["ell"][None, :]
+        d = cdist(Xa_s, Xb_s, metric="euclidean")
+        s = np.sqrt(5.0) * d
+        return st["c_val"] * (1.0 + s + (s ** 2) / 3.0) * np.exp(-s)
+
     def predict_q(self, X: np.ndarray) -> np.ndarray:
         K_star = self._eval_matern25_kernel(X, self._q_fast)
         mean = self._q_fast["y_mean"] + K_star @ self._q_fast["alpha_scaled"]
@@ -564,6 +611,32 @@ class KrigingWorldModel:
         lat_var = np.maximum(st["c_val"] - np.einsum("ij,ij->j", V, V), 0.0)
         lat_std = np.sqrt(lat_var) * st["y_std"]
         return mean, lat_std, float(st["obs_noise_std"])
+
+    def project_q_linear_functional_variance_reduction(
+        self,
+        cand_pts: np.ndarray,
+        grid_pts: np.ndarray,
+        weights_mat: np.ndarray,
+    ) -> np.ndarray:
+        """Exact closed-form 1-step Gaussian posterior variance reduction on `K` linear functionals
+        `L_k = <w_k, q_latent(grid_pts)>` from observing a noisy probe `y(x) = q_latent(x) + eps`
+        at each candidate point `x in cand_pts` (`shape = (len(cand_pts), K)`):
+            `Delta Var(L_k | y(x)) = Cov_post(q(x), L_k)^2 / (Var_post(q(x)) + sigma_noise^2)`.
+        """
+        from scipy.linalg import solve_triangular
+        st = self._q_fast
+        W = np.atleast_2d(np.asarray(weights_mat, dtype=float))
+        if W.shape[0] != len(grid_pts) and W.shape[1] == len(grid_pts):
+            W = W.T
+        K_cg = self._eval_matern25_kernel_pair(cand_pts, grid_pts, st)
+        K_co = self._eval_matern25_kernel(cand_pts, st)
+        K_go = self._eval_matern25_kernel(grid_pts, st)
+        V_c = solve_triangular(st["L"], K_co.T, lower=True, check_finite=False)
+        V_g = solve_triangular(st["L"], K_go.T, lower=True, check_finite=False)
+        cov_mat = (st["y_std"] ** 2) * ((K_cg @ W) - (V_c.T @ (V_g @ W)))
+        lat_var = np.maximum(st["c_val"] - np.einsum("ij,ij->j", V_c, V_c), 0.0) * (st["y_std"] ** 2)
+        pred_obs_var = np.maximum(lat_var + (st["obs_noise_std"] ** 2), 1e-12)
+        return (cov_mat ** 2) / pred_obs_var[:, None]
 
     def predict_b(self, X: np.ndarray) -> np.ndarray:
         X = np.atleast_2d(X)
@@ -633,6 +706,79 @@ def _eval_segment_goal_union_hit_tau(
     return in_any, phi_out, tau_out, X_hit
 
 
+def _eval_reflected_step_goal_union_hit_tau(
+    X_prev: np.ndarray,
+    X_raw_next: np.ndarray,
+    half_width: float,
+    goals: Sequence[GoalBall],
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Exact piecewise-reflected polyline sphere-entry intersection on `[-L, L]^d` (`d1b926a Sec 6.1`):
+    Splits any wall-bouncing Euler-Maruyama step `X_prev + tau * (X_raw_next - X_prev)` (`tau in [0, 1]`)
+    at its exact specular wall-reflection breakpoints `(2*m + 1) * L` before testing sphere entry on each
+    reflected straight sub-segment. (Note: exact for the discrete piecewise-reflected polyline, not
+    continuous Brownian-bridge first-passage between `t` and `t + dt`.)
+    Returns `(in_any, phi_hit, tau_hit, X_hit_or_final_reflected, X_final_reflected)`.
+    """
+    X_prev = np.atleast_2d(X_prev)
+    X_raw_next = np.atleast_2d(X_raw_next)
+    L = float(half_width)
+    X_ref_end = reflect_into_box(X_raw_next, L)
+    bounced = np.any(np.abs(X_raw_next) > L, axis=1)
+    if not np.any(bounced):
+        in_any, phi_out, tau_out, X_hit = _eval_segment_goal_union_hit_tau(X_prev, X_raw_next, goals)
+        X_pos = np.where(in_any[:, None], X_hit, X_ref_end)
+        return in_any, phi_out, tau_out, X_pos, X_ref_end
+
+    n = len(X_prev)
+    in_any = np.zeros(n, dtype=bool)
+    phi_out = np.zeros(n, dtype=float)
+    tau_out = np.ones(n, dtype=float)
+    X_pos = X_ref_end.copy()
+
+    interior_idx = np.flatnonzero(~bounced)
+    if interior_idx.size > 0:
+        h_i, p_i, t_i, x_i = _eval_segment_goal_union_hit_tau(X_prev[interior_idx], X_raw_next[interior_idx], goals)
+        in_any[interior_idx] = h_i
+        phi_out[interior_idx] = p_i
+        tau_out[interior_idx] = t_i
+        X_pos[interior_idx] = np.where(h_i[:, None], x_i, X_ref_end[interior_idx])
+
+    for i in np.flatnonzero(bounced):
+        p0 = X_prev[i]
+        pr = X_raw_next[i]
+        dx = pr - p0
+        taus = [0.0, 1.0]
+        for j in range(len(p0)):
+            if abs(dx[j]) <= 1e-15:
+                continue
+            lo_v = min(p0[j], pr[j])
+            hi_v = max(p0[j], pr[j])
+            m_min = int(math.floor((lo_v + L) / (2.0 * L)))
+            m_max = int(math.ceil((hi_v + L) / (2.0 * L)))
+            for m_k in range(m_min, m_max + 1):
+                wall_x = (2 * m_k - 1) * L
+                if lo_v < wall_x < hi_v:
+                    t_w = float((wall_x - p0[j]) / dx[j])
+                    if 1e-12 < t_w < 1.0 - 1e-12:
+                        taus.append(t_w)
+        taus_s = sorted(taus)
+        uniq_taus = [taus_s[0]]
+        for tv in taus_s[1:]:
+            if tv - uniq_taus[-1] > 1e-11:
+                uniq_taus.append(tv)
+        for t_a, t_b in zip(uniq_taus[:-1], uniq_taus[1:]):
+            xa = reflect_into_box((p0 + t_a * dx)[None, :], L)
+            xb = reflect_into_box((p0 + t_b * dx)[None, :], L)
+            h_s, p_s, loc_tau, x_s = _eval_segment_goal_union_hit_tau(xa, xb, goals)
+            if h_s[0]:
+                in_any[i] = True
+                phi_out[i] = float(p_s[0])
+                tau_out[i] = float(t_a + float(loc_tau[0]) * (t_b - t_a))
+                X_pos[i] = x_s[0]
+                break
+    return in_any, phi_out, tau_out, X_pos, X_ref_end
+
+
 def _eval_segment_goal_union_hit(
     X_prev: np.ndarray, X_next: np.ndarray, goals: Sequence[GoalBall]
 ) -> Tuple[np.ndarray, np.ndarray]:
@@ -650,6 +796,7 @@ def simulate_closed_loop_crn(
     dt_override: Optional[float] = None,
     substep_segment_hit: bool = False,
     dW_pregenerated: Optional[np.ndarray] = None,
+    record_visited_states: bool = False,
 ) -> dict:
     """Closed-loop rollout with per-trajectory CRN streams, `t=0` immediate goal absorption,
     specular reflection, optional fractional-step segment hitting, and optional pregenerated Brownian
@@ -681,6 +828,7 @@ def simulate_closed_loop_crn(
     steps_taken = np.zeros(n_traj, dtype=float)
     clipped_steps = 0
     total_active_steps = 0
+    visited_chunks: List[np.ndarray] = [X[alive].copy()] if (record_visited_states and np.any(alive)) else []
 
     for _step in range(max_steps):
         idx = np.flatnonzero(alive)
@@ -710,18 +858,24 @@ def simulate_closed_loop_crn(
         else:
             assert traj_rngs is not None
             dW = np.vstack([traj_rngs[i].normal(0.0, sqrt_dt, size=spec.dim) for i in idx])
-        X_next = reflect_into_box(X_act + (b_val + u) * dt + spec.sigma * dW, spec.half_width)
+        X_raw = X_act + (b_val + u) * dt + spec.sigma * dW
 
         if substep_segment_hit:
-            hit_post, phi_post, tau_hit, X_hit = _eval_segment_goal_union_hit_tau(X_act, X_next, query.goals)
+            hit_post, phi_post, tau_hit, X_pos, _ = _eval_reflected_step_goal_union_hit_tau(
+                X_act, X_raw, spec.half_width, query.goals
+            )
             running_cost[idx] += step_rate * (tau_hit * dt)
-            X[idx] = np.where(hit_post[:, None], X_hit, X_next)
+            X[idx] = X_pos
             steps_taken[idx] += tau_hit
         else:
+            X_next = reflect_into_box(X_raw, spec.half_width)
             hit_post, phi_post = eval_goal_union(X_next, query.goals)
             running_cost[idx] += step_rate * dt
             X[idx] = X_next
             steps_taken[idx] += 1.0
+
+        if record_visited_states:
+            visited_chunks.append(X[idx].copy())
 
         if np.any(hit_post):
             newly_done = idx[hit_post]
@@ -740,7 +894,7 @@ def simulate_closed_loop_crn(
         timeout_penalty[alive] = 4.0 + 2.0 * min_goal_dist
 
     total_cost = running_cost + terminal_cost + timeout_penalty
-    return {
+    out_dict = {
         "mean_cost": float(np.mean(total_cost)),
         "mean_running_plus_terminal_cost": float(np.mean(running_cost + terminal_cost)),
         "mean_timeout_penalty": float(np.mean(timeout_penalty)),
@@ -751,6 +905,9 @@ def simulate_closed_loop_crn(
         "clip_fraction": float(clipped_steps / max(total_active_steps, 1)),
         "traj_costs": total_cost,
     }
+    if record_visited_states:
+        out_dict["visited_states"] = np.vstack(visited_chunks) if visited_chunks else np.empty((0, spec.dim))
+    return out_dict
 
 
 def paired_stats(diffs: Sequence[float], noninferiority_margin: Optional[float] = None) -> dict:

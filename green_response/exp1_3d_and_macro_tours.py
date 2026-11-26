@@ -689,7 +689,7 @@ def _tour_144_map_worker(args: Tuple[int, int, int, int]) -> dict:
         for idx_c in rng_ord.permutation(len(call_specs)).tolist():
             pk, fn_c, ms_key = call_specs[idx_c]
             r_out = fn_c()
-            ord_ms[pk] += r_out[ms_key] + float(r_out.get("router_ms", 0.0))
+            ord_ms[pk] += r_out[ms_key]
             res_map[pk] = r_out
 
         fixed_cache: Dict[Tuple[int, ...], float] = {}
@@ -909,7 +909,7 @@ def _scaling_m_worker(args: Tuple[int, int]) -> dict:
         rd = res_d["inc"]
         t_inc += rd["planning_ms"]
         t_uws += res_d["uw"]["planning_ms"]
-        t_hyb += res_d["hyb"]["planning_ms"] + float(res_d["hyb"].get("router_ms", 0.0))
+        t_hyb += res_d["hyb"]["planning_ms"]
         dg_cert.append(float(rd["certified"]))
         sample_work_meta = {k: v for k, v in rd["work"].items()}
 
@@ -1020,7 +1020,7 @@ def _crossover_map_worker(args: Tuple[int, int, int, float, float]) -> dict:
         tu += res_c["uw"]["planning_ms"]
         rd = res_c["dg"]
         td += rd["planning_ms"]
-        th += res_c["hy"]["planning_ms"] + float(res_c["hy"].get("router_ms", 0.0))
+        th += res_c["hy"]["planning_ms"]
         phase_dg["col_solve_ms"] += rd["col_solve_ms"]
         phase_dg["dp_ms"] += rd["dp_ms"]
         phase_dg["occ_ms"] += rd["occupancy_ms"]
@@ -1243,7 +1243,7 @@ def plot_exp1(res_3d: dict, res_tour: dict, res_scale_all: dict, out_png: Path) 
     ax.set_xticks(x)
     ax.set_xticklabels(r_lbls, fontsize=7.3)
     ax.set_ylabel("Total Map Planning Time incl. Init (ms, log)")
-    ax.set_title("Unconfounded Crossover (Fixed r=0.28, ε=0.25, m=6)\n(Exact Wins in 2D; Incremental Port Cuts Gap / Parity at 31³)", fontsize=9.1)
+    ax.set_title("Unconfounded Crossover (Fixed r=0.28, ε=0.25, m=6)\n(Exact & Hybrid Win in 2D; Port Approaches Exact at 25³–31³)", fontsize=9.1)
     ax.grid(True, axis="y", which="both", alpha=0.28)
     ax.legend(fontsize=7.1, loc="upper left")
     ax.set_ylim(10, max(max(ex_vals), max(dg_vals)) * 1.75)
@@ -1270,7 +1270,7 @@ def plot_exp1(res_3d: dict, res_tour: dict, res_scale_all: dict, out_png: Path) 
     ax.set_xticklabels([f"m={m}\n(2^m={1<<m})" for m in ms_all], fontsize=8.0)
     ax.set_xlabel("Active Waypoints m (Subset Masks 2^m)")
     ax.set_ylabel("Total Map Stream Time incl. Init (ms, log)")
-    ax.set_title("65² Scaling m=5..9 (All 96 Tasks 4-Way Table Verified: 0 Viol)\n(Incremental DP Cuts Port Overhead; Hybrid Picks Exact in 2D)", fontsize=9.1)
+    ax.set_title("65² Scaling m=5..9 (All 96 Tasks 4-Way Table Verified: 0 Viol)\n(Exact & Hybrid Win in 2D; Scratch vs Incremental Port Tied on 65²)", fontsize=9.1)
     ax.grid(True, which="both", alpha=0.28)
     ax.legend(fontsize=7.0, loc="upper left")
 

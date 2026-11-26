@@ -765,17 +765,30 @@ class SchurPortPlanner:
             self.op_factor_ms += 1000.0 * (time.perf_counter() - t_f)
         return self.lu0
 
-    def marginal_backsolves_to_refine(self, wp_id: int, target_level: int | str) -> int:
+    def marginal_backsolves_to_refine(
+        self,
+        wp_id: int,
+        target_level: int | str,
+        require_current_exact: Optional[bool] = None,
+    ) -> int:
         """Exact number of NEW `A_0` LU backsolves required to upgrade `wp_id` to `target_level` under
-        the current `operator_epoch` (`ddd19c5 P0 Bug 3.1`: stale-epoch coarse columns cannot serve as
-        subtraction parents for exact child levels!).
+        the current `operator_epoch` (`ddd19c5 P0 Bug 3.1` + `d1b926a P1 Descriptor Closure`):
+          - Stale-epoch coarse columns cannot serve as subtraction parents for exact child levels;
+          - `require_current_exact` (defaults to `True` for `target_level == "EXACT"`, `False` otherwise)
+            explicitly distinguishes residual-validated approximate reuse from current-epoch exact columns!
         """
         tgt = canonicalize_level(target_level)
         tree = self._wp_tree.get(wp_id, {})
         if tgt == "NONE":
             return 0
-        if tgt in tree and self._is_level_valid_in_current_epoch(wp_id, tgt):
-            return 0
+        if require_current_exact is None:
+            require_current_exact = (tgt == "EXACT")
+        if require_current_exact:
+            if tgt in tree and self._is_level_exact_in_current_epoch(wp_id, tgt):
+                return 0
+        else:
+            if tgt in tree and self._is_level_valid_in_current_epoch(wp_id, tgt):
+                return 0
         parts = self._wp_partitions[wp_id]
         has_exact_l1 = ("L1" in tree) and self._is_level_exact_in_current_epoch(wp_id, "L1")
         has_exact_l4 = ("L4" in tree) and self._is_level_exact_in_current_epoch(wp_id, "L4")
@@ -804,6 +817,33 @@ class SchurPortPlanner:
                     if int(nid) not in self._node_col_cache:
                         cost += 1
         return cost
+
+    def estimate_current_exact_route_work(self, target_wp_ids: Sequence[int]) -> dict:
+        """Explicit pre-execution work descriptor for `plan_exact_subset_dp` / `plan_exact_fixed_tour`
+        distinguishing `current-exact` columns, `residual-valid` columns, and current-epoch `LU` availability.
+        """
+        t_unique = list(dict.fromkeys(int(w) for w in target_wp_ids))
+        missing_bs = sum(
+            self.marginal_backsolves_to_refine(b, "EXACT", require_current_exact=True) for b in t_unique
+        )
+        lu_ready = bool(self._lu_is_current and (self._lu_epoch == self.operator_epoch) and (self.lu0 is not None))
+        needs_lu = bool((missing_bs > 0) and (not lu_ready))
+        residual_valid_wps = sum(
+            1 for b in t_unique
+            if self.wp_levels.get(b, "NONE") != "NONE" and self._is_level_valid_in_current_epoch(b, self.wp_levels[b])
+        )
+        current_exact_wps = sum(
+            1 for b in t_unique if self._is_level_exact_in_current_epoch(b, "EXACT")
+        )
+        return {
+            "operator_epoch": int(self.operator_epoch),
+            "missing_current_exact_backsolves": int(missing_bs),
+            "requires_new_lu_factorization": needs_lu,
+            "current_lu_ready": lu_ready,
+            "current_exact_waypoints": int(current_exact_wps),
+            "residual_valid_waypoints": int(residual_valid_wps),
+            "total_target_waypoints": len(t_unique),
+        }
 
     def refresh_waypoint_under_current_operator(self, wp_id: int, target_level: Optional[str] = None) -> int:
         """Evicts stale/approximate columns for `wp_id` and recomputes exact columns under current `A0`."""
@@ -1340,9 +1380,14 @@ class SchurPortPlanner:
         readout_scheme: str = "central_grad",
         force_exact_operator_columns: bool = False,
     ) -> dict:
-        """Single/Multi-Goal Port Query with Rigorous Post-Update Residual Enclosure (`ddd19c5 P0 Bug 3.2`):
-        Propagates `delta_z = |coeff| @ col_err` through M-matrix comparison bounds on the exterior domain:
-        `gamma_lo * (raw_Z(x) - delta_z) <= Z_exact(x) <= gamma_hi * (raw_Z(x) + delta_z)`.
+        """Single/Multi-Goal Port Query with Unified Reciprocal Residual Enclosure (`d1b926a P0 Closure`):
+        With `gamma_lo = min_Gamma((Z_tilde - d) / g)` and `gamma_hi = max_Gamma((Z_tilde + d) / g)`,
+        the discrete M-matrix comparison principle yields `gamma_lo * Z_exact <= h <= gamma_hi * Z_exact`
+        where `|h - Z_tilde| <= d`. Hence on the exterior domain `Omega \\ Gamma`:
+            `(Z_tilde(x) - d) / gamma_hi <= Z_exact(x) <= (Z_tilde(x) + d) / gamma_lo`,
+        giving the single continuous `d >= 0` value-shift formula:
+            `s_lo(x) = lam * log(gamma_lo) - lam * log1p(d / Z_tilde(x))`,
+            `s_hi(x) = lam * log(gamma_hi) - lam * log1p(-d / Z_tilde(x))`.
         """
         t0 = time.perf_counter()
         lam = self.spec.lam
@@ -1358,22 +1403,31 @@ class SchurPortPlanner:
         ext_mask = ~goal_mask
 
         def _compute_shifts(rz: np.ndarray, glo: float, ghi: float, dz: float) -> Tuple[Optional[float], Optional[float]]:
-            if np.min(rz) <= 0.0 or glo <= 0.0:
+            if (
+                not np.all(np.isfinite(rz))
+                or not np.isfinite(glo)
+                or not np.isfinite(ghi)
+                or not np.isfinite(dz)
+                or dz < 0.0
+                or np.min(rz) <= 0.0
+                or glo <= 0.0
+                or ghi <= 0.0
+                or glo > ghi + 1e-12
+            ):
                 return None, None
-            if dz <= 0.0:
-                v_lo_s = float(lam * np.log(glo) - 1e-13 * (1.0 + abs(lam * np.log(glo))))
-                v_hi_s = float(lam * np.log(ghi) + 1e-13 * (1.0 + abs(lam * np.log(ghi))))
-                return v_lo_s, v_hi_s
-            if np.any(rz[ext_mask] - dz <= 0.0):
-                return None, None
-            # Exact pointwise enclosure: `-lam*log(ghi*(rz + dz)) <= V_exact <= -lam*log(glo*(rz - dz))`
-            # Relative to `V_grid = -lam*log(rz)`:
-            # `V_lo - V_grid = -lam*log(ghi*(1 + dz/rz))`, `V_hi - V_grid = -lam*log(glo*(1 - dz/rz))`
             rz_ext = rz[ext_mask]
-            lo_diff = float(np.min(-lam * np.log(ghi * (1.0 + dz / rz_ext)))) if np.any(ext_mask) else 0.0
-            hi_diff = float(np.max(-lam * np.log(glo * (1.0 - dz / rz_ext)))) if np.any(ext_mask) else 0.0
-            lo_diff = min(0.0, lo_diff)
-            hi_diff = max(0.0, hi_diff)
+            if rz_ext.size > 0:
+                if np.any(rz_ext - dz <= 0.0):
+                    return None, None
+                s_lo_ext = lam * np.log(glo) - lam * np.log1p(dz / rz_ext)
+                s_hi_ext = lam * np.log(ghi) - lam * np.log1p(-dz / rz_ext)
+                if not (np.all(np.isfinite(s_lo_ext)) and np.all(np.isfinite(s_hi_ext))):
+                    return None, None
+                lo_diff = min(0.0, float(np.min(s_lo_ext)))
+                hi_diff = max(0.0, float(np.max(s_hi_ext)))
+            else:
+                lo_diff = 0.0
+                hi_diff = 0.0
             v_lo_s = float(lo_diff - 1e-13 * (1.0 + abs(lo_diff)))
             v_hi_s = float(hi_diff + 1e-13 * (1.0 + abs(hi_diff)))
             return v_lo_s, v_hi_s

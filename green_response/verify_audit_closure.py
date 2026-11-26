@@ -950,12 +950,57 @@ def run_all_audit_checks() -> dict:
     hi_hz = r_sq_hz["V_grid"] + r_sq_hz["ring_value_upper_shift"]
     sq_hz_viols = int(np.sum((fd_sq_hz["V_grid"] < lo_hz - 1e-10) | (fd_sq_hz["V_grid"] > hi_hz + 1e-10)))
 
+    # Case D: GPT6 `d1_core_gamma_noop.py` (`25^2` off-center 12-node L1 ring, nonzero drift, no-op update)
+    sp_noop = ProblemSpec(dim=2, half_width=1.0, sigma=0.622986099095231, q0=0.5)
+    g_noop = GoalBall((0.1369616873214543, -0.2302132862361297), 0.16510223091108872, 0.21434073337766815)
+    q_noop = lambda X: np.zeros(len(X))
+    b_noop = lambda X: np.tile([-1.16033367473153, 0.7518485740806538], (len(X), 1))
+    qt_noop = QueryTask("noop", (g_noop,), ((-0.8, -0.8),))
+    pl_noop = SchurPortPlanner(sp_noop, 25, q_noop, b_noop, [g_noop], initial_sectors_per_wp="L1")
+    r_noop0 = pl_noop.solve_query(qt_noop)
+    pl_noop.update_world_with_residual_audit(q_noop, b_noop, mode="selective_residual")
+    r_noop1 = pl_noop.solve_query(qt_noop)
+    fd_noop = ClassicalFDSolver(sp_noop, 25, q_noop, b_noop).solve_direct(qt_noop)
+    lo_noop = r_noop1["V_grid"] + r_noop1["ring_value_lower_shift"]
+    hi_noop = r_noop1["V_grid"] + r_noop1["ring_value_upper_shift"]
+    noop_viols = int(np.sum((fd_noop["V_grid"] < lo_noop - 1e-10) | (fd_noop["V_grid"] > hi_noop + 1e-10)))
+    noop_shift_jump = max(
+        abs(r_noop1["ring_value_lower_shift"] - r_noop0["ring_value_lower_shift"]),
+        abs(r_noop1["ring_value_upper_shift"] - r_noop0["ring_value_upper_shift"]),
+    )
+
+    # Case E: GPT6 `d1_core_gamma_probe.py` (`40` random off-center multi-node L1/L4/L8 rings across 25^2/41^2/61^2)
+    gamma_probe_viols = 0
+    for sd_g in range(40):
+        rng_g = np.random.default_rng(sd_g)
+        c_g = tuple(rng_g.uniform(-0.5, 0.5, 2).tolist())
+        rad_g = float(rng_g.uniform(0.2, 0.55))
+        dr_g = rng_g.uniform(-1.2, 1.2, 2)
+        ph_g = float(rng_g.uniform(-0.2, 0.2))
+        sg_g = float(rng_g.uniform(0.35, 0.8))
+        gn_g = (25, 41, 61)[sd_g % 3]
+        lv_g = ("L1", "L4", "L8")[sd_g % 3]
+        sp_g = ProblemSpec(dim=2, half_width=1.0, sigma=sg_g, q0=0.5)
+        go_g = [GoalBall(c_g, ph_g, rad_g)]
+        qt_g = QueryTask("gp", tuple(go_g), ((-0.8, -0.8),))
+        bf_g = lambda X, d=dr_g: np.tile(d, (len(X), 1))
+        pl_g = SchurPortPlanner(sp_g, gn_g, lambda X: np.zeros(len(X)), bf_g, go_g, initial_sectors_per_wp=lv_g)
+        pl_g.update_world_with_residual_audit(lambda X: np.full(len(X), 1e-9), bf_g, mode="selective_residual")
+        out_g = pl_g.solve_query(qt_g)
+        fd_g = ClassicalFDSolver(sp_g, gn_g, lambda X: np.full(len(X), 1e-9), bf_g).solve_direct(qt_g)
+        lo_g = out_g["V_grid"] + out_g["ring_value_lower_shift"]
+        hi_g = out_g["V_grid"] + out_g["ring_value_upper_shift"]
+        gamma_probe_viols += int(np.sum((fd_g["V_grid"] < lo_g - 1e-10) | (fd_g["V_grid"] > hi_g + 1e-10)))
+
     report["17_single_query_post_update_residual_enclosure"] = {
         "gpt6_dq1e3_violations_of_81": sq_viols,
         "mild_dq1e5_lu_skipped": bool(not pl_sq_m._lu_is_current),
         "mild_dq1e5_scope": r_sq_m["value_bound_scope"],
         "mild_dq1e5_violations_of_81": sq_m_viols,
         "post_update_hazard_query_violations_of_81": sq_hz_viols,
+        "d1_noop_25sq_violations_of_625": noop_viols,
+        "d1_noop_shift_continuity_diff": float(noop_shift_jump),
+        "d1_40seed_multinode_L1_L4_L8_violations": gamma_probe_viols,
         "pass": bool(
             sq_viols == 0
             and (not pl_sq_m._lu_is_current)
@@ -963,11 +1008,14 @@ def run_all_audit_checks() -> dict:
             and sq_m_viols == 0
             and sq_hz_viols == 0
             and upd_sq["waypoints_retained"] == 1
+            and noop_viols == 0
+            and noop_shift_jump < 1e-9
+            and gamma_probe_viols == 0
         ),
     }
 
     # ------------------------------------------------------------------
-    # 18. [NEW `ddd19c5` P1 Bug 3.3] Exact-Baseline Underflow/NaN Fail-Closed & Certificate Guard
+    # 18. [NEW `ddd19c5` P1 Bug 3.3 + `d1b926a` Policy Guard] Exact-Baseline Fail-Closed & Cert Guard
     # ------------------------------------------------------------------
     uf_rejected_all = True
     for q_big in (1e8, 1e12, 1e16, 1e20):
@@ -987,17 +1035,19 @@ def run_all_audit_checks() -> dict:
     r_nan_sub = MacroTourPlanner(pl_nan).plan_exact_subset_dp((-0.8, -0.8), [0])
     r_nan_fix = MacroTourPlanner(pl_nan).plan_exact_fixed_tour((-0.8, -0.8), [0])
 
-    # Verify IntervalCertificate rejects forged `extras` override or NaN certified bounds
+    # Verify IntervalCertificate rejects forged `extras`, NaN bounds, AND missing policy on `certified=True`
     cert_guard_ok = True
     try:
-        from .core import IntervalCertificate as _IC
+        from .core import IntervalCertificate as _IC, _eval_reflected_step_goal_union_hit_tau
     except ImportError:
-        from green_response.core import IntervalCertificate as _IC
+        from green_response.core import IntervalCertificate as _IC, _eval_reflected_step_goal_union_hit_tau
     for bad_kwargs in (
-        dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=float("nan"), upper_bound=1.0),
-        dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=2.0, upper_bound=1.0),
-        dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=1.0, upper_bound=1.05, extras={"status": "heuristic"}),
+        dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=float("nan"), upper_bound=1.0, extras={"policy": 1}),
+        dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=2.0, upper_bound=1.0, extras={"policy": 1}),
+        dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=1.0, upper_bound=1.05, extras={"status": "heuristic", "policy": 1}),
         dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=1.0, upper_bound=1.05, extras={"policy_action_idx": None}),
+        dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=1.0, upper_bound=1.05),
+        dict(status="epsilon_certified", certified=True, certificate_scope="t", epsilon_tol=0.1, lower_bound=1.0, upper_bound=1.05, extras={"other_field": 42}),
     ):
         try:
             _IC(**bad_kwargs)
@@ -1015,6 +1065,108 @@ def run_all_audit_checks() -> dict:
             and r_nan_sub["status"] == "numeric_invalid" and not r_nan_sub["certified"]
             and r_nan_fix["status"] == "numeric_invalid" and not r_nan_fix["certified"]
             and cert_guard_ok
+        ),
+    }
+
+    # ------------------------------------------------------------------
+    # 19. [NEW `d1b926a` P1] Stale-EXACT Route Work Descriptor & Hybrid LU Accounting Probe
+    # ------------------------------------------------------------------
+    sp_hx = ProblemSpec(dim=2, half_width=1.0, sigma=0.6, q0=0.5)
+    gs_hx = [GoalBall((0.3, 0.2), 0.0, 0.25), GoalBall((-0.4, -0.2), 0.0, 0.25)]
+    q_hx = lambda X: np.zeros(len(X))
+    pl_hx = SchurPortPlanner(sp_hx, 25, q_hx, None, gs_hx, initial_sectors_per_wp="EXACT")
+    pl_hx.update_world_with_residual_audit(q_hx, None, mode="selective_residual")
+    pred_ex_bs = sum(pl_hx.marginal_backsolves_to_refine(w, "EXACT") for w in range(2))
+    est_hx = pl_hx.estimate_current_exact_route_work([0, 1])
+
+    # Hybrid should recognize residual-valid columns + missing LU and route to `incremental_decision_port_dp` with 0 new LUs!
+    lu_hx0 = pl_hx.lu_factorizations
+    out_hyb_hx = MacroTourPlanner(pl_hx).plan_economical_hybrid((-0.8, 0.8), [0, 1])
+    hyb_lu_used = pl_hx.lu_factorizations - lu_hx0
+    hyb_charges_router = abs(out_hyb_hx["planning_ms"] - (out_hyb_hx["inner_route_planning_ms"] + out_hyb_hx["router_ms"])) < 1e-9
+
+    # Direct `plan_exact_subset_dp` must match `predicted_missing_exact_backsolves` (`29`) and `requires_new_lu` (`1`)!
+    bs_ex0 = pl_hx.total_lu_backsolves
+    lu_ex0 = pl_hx.lu_factorizations
+    out_ex_hx = MacroTourPlanner(pl_hx).plan_exact_subset_dp((-0.8, 0.8), [0, 1])
+    obs_ex_bs = pl_hx.total_lu_backsolves - bs_ex0
+    obs_ex_lu = pl_hx.lu_factorizations - lu_ex0
+
+    report["19_stale_exact_work_descriptor_and_hybrid_probe"] = {
+        "predicted_missing_current_exact_backsolves": int(pred_ex_bs),
+        "observed_exact_route_new_backsolves": int(obs_ex_bs),
+        "predicted_requires_new_lu": bool(est_hx["requires_new_lu_factorization"]),
+        "observed_exact_route_new_lu": int(obs_ex_lu),
+        "hybrid_route_on_warm_residual_valid": out_hyb_hx["hybrid_selected_route"],
+        "hybrid_new_lu_factorizations": int(hyb_lu_used),
+        "hybrid_planning_ms_includes_router_ms": bool(hyb_charges_router),
+        "pass": bool(
+            pred_ex_bs > 0
+            and pred_ex_bs == obs_ex_bs
+            and est_hx["missing_current_exact_backsolves"] == obs_ex_bs
+            and est_hx["requires_new_lu_factorization"] is True
+            and obs_ex_lu == 1
+            and out_hyb_hx["hybrid_selected_route"] == "incremental_decision_port_dp"
+            and hyb_lu_used == 0
+            and out_hyb_hx["certified"] is True
+            and out_ex_hx["certified"] is True
+            and hyb_charges_router
+        ),
+    }
+
+    # ------------------------------------------------------------------
+    # 20. [NEW `d1b926a` Work Packages A/B] Green-Adjoint Frechet FD Check, Target-Order Invariance, & Piecewise-Reflected Hit
+    # ------------------------------------------------------------------
+    sp_gf = ProblemSpec(dim=2, half_width=1.2, sigma=0.5, q0=0.5)
+    gs_gf = [
+        GoalBall((-0.45, 0.55), 0.1, 0.24),
+        GoalBall((0.55, 0.40), -0.2, 0.24),
+        GoalBall((0.40, -0.55), 0.0, 0.24),
+        GoalBall((-0.50, -0.45), 0.15, 0.24),
+    ]
+    q_gf_base = np.linspace(0.1, 0.9, 17 * 17)
+    b_gf = lambda X: np.column_stack([0.35 * X[:, 1], -0.35 * X[:, 0]])
+    pl_gf = SchurPortPlanner(sp_gf, 17, lambda X: q_gf_base, b_gf, gs_gf, initial_sectors_per_wp="EXACT", lazy_init=True)
+    mt_gf = MacroTourPlanner(pl_gf)
+    sens_a = mt_gf.compute_exact_macro_q_sensitivities((-0.85, 0.05), [3, 1, 0, 2])
+    sens_b = mt_gf.compute_exact_macro_q_sensitivities((-0.85, 0.05), [2, 0, 1, 3])
+    perm_grad_diff = float(np.max(np.abs(sens_a["grad_q_optimal"] - sens_b["grad_q_optimal"])))
+    perm_gap_diff = float(np.max(np.abs(sens_a["grad_q_top_gap"] - sens_b["grad_q_top_gap"])))
+
+    # Finite-difference verification at 6 interior grid nodes
+    fd_errs = []
+    eps_fd = 1e-6
+    for nid_test in (40, 72, 110, 144, 185, 222):
+        dq_vec = np.zeros_like(q_gf_base)
+        dq_vec[nid_test] = eps_fd
+        pl_p = SchurPortPlanner(sp_gf, 17, lambda X, v=q_gf_base + dq_vec: v, b_gf, gs_gf, initial_sectors_per_wp="EXACT", lazy_init=True)
+        pl_m = SchurPortPlanner(sp_gf, 17, lambda X, v=q_gf_base - dq_vec: v, b_gf, gs_gf, initial_sectors_per_wp="EXACT", lazy_init=True)
+        vp = MacroTourPlanner(pl_p).plan_exact_subset_dp((-0.85, 0.05), [0, 1, 2, 3])["lower_bound"]
+        vm = MacroTourPlanner(pl_m).plan_exact_subset_dp((-0.85, 0.05), [0, 1, 2, 3])["lower_bound"]
+        fd_grad = (vp - vm) / (2.0 * eps_fd)
+        fd_errs.append(abs(fd_grad - float(sens_a["grad_q_optimal"][nid_test])))
+    max_frechet_fd_err = float(max(fd_errs))
+
+    # GPT6 `reflection_segment_probe` (`false_chord_hit` & `missed_pre_reflection_hit`)
+    st_ref = np.array([[0.9, 0.0]])
+    raw_ref = np.array([[1.5, 0.4]])
+    h_false, _, _, _, _ = _eval_reflected_step_goal_union_hit_tau(st_ref, raw_ref, 1.0, (GoalBall((0.8, 0.1), 0.0, 0.02),))
+    h_pre, _, tau_pre, _, _ = _eval_reflected_step_goal_union_hit_tau(st_ref, raw_ref, 1.0, (GoalBall((0.96, 0.04), 0.0, 0.01),))
+
+    report["20_green_frechet_invariance_and_piecewise_reflected_hit"] = {
+        "target_permutation_grad_max_diff": perm_grad_diff,
+        "target_permutation_gap_grad_max_diff": perm_gap_diff,
+        "max_frechet_vs_central_fd_abs_err": max_frechet_fd_err,
+        "false_chord_hit_eliminated": bool(not h_false[0]),
+        "pre_reflection_hit_detected": bool(h_pre[0]),
+        "pre_reflection_hit_tau": float(tau_pre[0]),
+        "pass": bool(
+            perm_grad_diff == 0.0
+            and perm_gap_diff == 0.0
+            and max_frechet_fd_err < 1e-8
+            and (not h_false[0])
+            and bool(h_pre[0])
+            and abs(float(tau_pre[0]) - (0.06 - 0.01) / np.hypot(0.6, 0.4)) < 0.03
         ),
     }
 

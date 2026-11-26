@@ -507,6 +507,7 @@ def solve_highd_fk_distillation(
     seed: int = 101,
     design_seed: Optional[int] = None,
     mc_seed: Optional[int] = None,
+    teacher_mode: str = "bessel_guided",
 ) -> dict:
     """Unified High-D Reflected Girsanov-FK Value Distillation (`green_response`, `ddd19c5 Stage E`):
       - Explicit entry guard via `spec.validate_cole_hopf_lmdp`;
@@ -523,7 +524,12 @@ def solve_highd_fk_distillation(
     d_seed = int(seed if design_seed is None else design_seed)
     m_seed = int(seed if mc_seed is None else mc_seed)
 
-    base = BoxNeumannBesselBaseGuide(spec, query)
+    base = None if teacher_mode == "cone_girsanov_independent" else BoxNeumannBesselBaseGuide(spec, query)
+    cone_teacher = (
+        EikonalConeMeanGuide(spec, query, smooth_tau=0.0, calibrate_nnls=True)
+        if teacher_mode == "cone_girsanov_independent"
+        else None
+    )
     eik_prior = None
     if prior_mode == "eikonal_cone":
         eik_prior = EikonalConeMeanGuide(spec, query)
@@ -544,7 +550,7 @@ def solve_highd_fk_distillation(
         pj = np.clip(gc[None, :] + (g.radius + 1e-8) * dirs, -L + 1e-4, L - 1e-4)
         in_other, phi_u = eval_goal_union(pj, query.goals)
         target_phi = np.where(in_other, np.minimum(phi_u, g.phi), g.phi)
-        v0_j, _ = base.val_and_grad(pj)
+        v0_j = np.zeros(len(pj), dtype=float) if base is None else base.val_and_grad(pj)[0]
         bnd_pts.append(pj)
         bnd_phi.append(target_phi)
         bnd_v0.append(v0_j)
@@ -570,111 +576,210 @@ def solve_highd_fk_distillation(
     in_g_int, _ = eval_goal_union(X_int_raw, [GoalBall(g.center, g.phi, g.radius + 0.025) for g in query.goals])
     X_int = X_int_raw[~in_g_int]
     n_int = len(X_int)
-    v0_int, _ = base.val_and_grad(X_int)
-
     half_m = max(n_mc_paths // 2, 1)
     M_eff = 2 * half_m
     sqrt_dt = np.sqrt(dt_fk)
-    pos = np.repeat(X_int[:, None, :], M_eff, axis=1)
-    v0_cur = np.repeat(v0_int[:, None], M_eff, axis=1)
-    alive = np.ones((n_int, M_eff), dtype=bool)
-    acc_tilde = np.zeros((n_int, M_eff), dtype=float)
-    term_res = np.zeros((n_int, M_eff), dtype=float)
-    collar_steps = 0
-    total_steps = 0
-
-    for _st in range(n_steps_fk):
-        if not np.any(alive):
-            break
-        z_half = rng_mc.normal(0.0, sqrt_dt, size=(n_int, half_m, d))
-        dW_step = np.concatenate([z_half, -z_half], axis=1)
-
-        ai, aj = np.where(alive)
-        pts_a = pos[ai, aj]
-        dw_a = dW_step[ai, aj]
-        total_steps += len(pts_a)
-        collar_steps += int(np.sum(np.any(np.abs(pts_a) > base.L0, axis=1)))
-
-        q_pert = km.predict_q(pts_a) + eval_hazard_features(pts_a, query.local_hazards)
-        b_hat = km.predict_b(pts_a)
-
-        if guided_proposal:
-            if residual_mode == "continuum_collar":
-                _, gv0, r_step = base.step_continuum_collar_residual(pts_a, q_pert, b_hat, dt_fk)
-                u_prop = -gv0 / r_sc
-                x_next = reflect_into_box(pts_a + (b_hat + u_prop) * dt_fk + spec.sigma * dw_a, L)
-                acc_tilde[ai, aj] += r_step
-            elif residual_mode == "discrete_telescoping":
-                v0_a = v0_cur[ai, aj]
-                _, gv0 = base.val_and_grad(pts_a)
-                u_prop = -gv0 / r_sc
-                x_next = reflect_into_box(pts_a + (b_hat + u_prop) * dt_fk + spec.sigma * dw_a, L)
-                r_step, v0_n = base.step_discrete_telescoping_reference(pts_a, v0_a, gv0, q_pert, x_next, dw_a, dt_fk)
-                acc_tilde[ai, aj] += r_step
-                v0_cur[ai, aj] = v0_n
-            else:
-                raise ValueError(f"Unknown residual_mode: {residual_mode}")
-        else:
-            v0_a = v0_cur[ai, aj]
-            x_next = reflect_into_box(pts_a + b_hat * dt_fk + spec.sigma * dw_a, L)
-            v0_n, _ = base.val_and_grad(x_next)
-            acc_tilde[ai, aj] += (spec.q0 + q_pert) * dt_fk + (v0_n - v0_a)
-            v0_cur[ai, aj] = v0_n
-
-        pos[ai, aj] = x_next
-        hit_post, phi_post = eval_goal_union(x_next, query.goals)
-        if np.any(hit_post):
-            hl = np.flatnonzero(hit_post)
-            v0_hit, _ = base.val_and_grad(x_next[hl])
-            term_res[ai[hl], aj[hl]] = phi_post[hl] - v0_hit
-            alive[ai[hl], aj[hl]] = False
-
-    survivor_frac = float(np.mean(alive))
     ell_gp = 0.48 if d <= 4 else 0.68
     X_all = np.vstack([X_int, X_bnd])
     noise_vec = np.concatenate([np.full(n_int, 2.5e-3), np.full(len(X_bnd), 1e-7)])
 
-    def _fk_stats(emat: np.ndarray, alive_mask: np.ndarray) -> Tuple[np.ndarray, np.ndarray, float]:
-        mx = np.max(emat, axis=1, keepdims=True)
-        w = np.exp(emat - mx)
-        w_sum = np.maximum(np.sum(w, axis=1), 1e-300)
-        ess_vec = (w_sum ** 2) / np.maximum(np.sum(w ** 2, axis=1), 1e-300)
-        weighted_surv_mass = float(np.mean(np.sum(w * alive_mask, axis=1) / w_sum))
-        dv = -lam * (mx[:, 0] + np.log(np.maximum(np.mean(w, axis=1), 1e-300)))
-        return dv, ess_vec, weighted_surv_mass
+    if teacher_mode == "cone_girsanov_independent":
+        assert cone_teacher is not None
+        pos = np.repeat(X_int[:, None, :], M_eff, axis=1)
+        alive = np.ones((n_int, M_eff), dtype=bool)
+        acc_girs = np.zeros((n_int, M_eff), dtype=float)
+        term_phi = np.zeros((n_int, M_eff), dtype=float)
+        collar_L0 = L - min(0.25, 0.2 * L)
+        collar_steps = 0
+        total_steps = 0
 
-    tail_dv = np.zeros_like(term_res)
-    dv_cur, ess_vec, weighted_tail_mass = _fk_stats(-(acc_tilde + np.where(alive, tail_dv, term_res)) / lam, alive)
-    cont_diffs = []
-    ai_s, aj_s = np.where(alive)
-    v0_surv = base.val_and_grad(pos[ai_s, aj_s])[0] if len(ai_s) > 0 else np.empty(0)
+        for _st in range(n_steps_fk):
+            if not np.any(alive):
+                break
+            z_half = rng_mc.normal(0.0, sqrt_dt, size=(n_int, half_m, d))
+            dW_step = np.concatenate([z_half, -z_half], axis=1)
+            ai, aj = np.where(alive)
+            pts_a = pos[ai, aj]
+            dw_a = dW_step[ai, aj]
+            total_steps += len(pts_a)
+            collar_steps += int(np.sum(np.any(np.abs(pts_a) > collar_L0, axis=1)))
 
-    if prior_mode == "helmholtz_bessel":
-        prior_fn = base.val_and_grad
-    elif prior_mode in ("eikonal_cone", "matched_smooth_cone", "matched_sharp_cone"):
-        assert eik_prior is not None
-        prior_fn = eik_prior.val_and_grad
-    elif prior_mode == "zero_mean":
-        prior_fn = None
+            q_pert = km.predict_q(pts_a) + eval_hazard_features(pts_a, query.local_hazards)
+            b_hat = km.predict_b(pts_a)
+            if guided_proposal:
+                _, g_cone = cone_teacher.val_and_grad(pts_a)
+                u_prop = -g_cone / r_sc
+            else:
+                u_prop = np.zeros_like(pts_a)
+            x_next = reflect_into_box(pts_a + (b_hat + u_prop) * dt_fk + spec.sigma * dw_a, L)
+            acc_girs[ai, aj] += (spec.q0 + q_pert + 0.5 * r_sc * np.sum(u_prop ** 2, axis=1)) * dt_fk + (
+                r_sc * np.sum(u_prop * (spec.sigma * dw_a), axis=1)
+            )
+            pos[ai, aj] = x_next
+            hit_post, phi_post = eval_goal_union(x_next, query.goals)
+            if np.any(hit_post):
+                hl = np.flatnonzero(hit_post)
+                term_phi[ai[hl], aj[hl]] = phi_post[hl]
+                alive[ai[hl], aj[hl]] = False
+
+        survivor_frac = float(np.mean(alive))
+
+        def _girs_stats(emat: np.ndarray, alive_mask: np.ndarray) -> Tuple[np.ndarray, np.ndarray, float]:
+            mx = np.max(emat, axis=1, keepdims=True)
+            w = np.exp(emat - mx)
+            w_sum = np.maximum(np.sum(w, axis=1), 1e-300)
+            ess_v = (w_sum ** 2) / np.maximum(np.sum(w ** 2, axis=1), 1e-300)
+            w_surv = float(np.mean(np.sum(w * alive_mask, axis=1) / w_sum))
+            v_est = -lam * (mx[:, 0] + np.log(np.maximum(np.mean(w, axis=1), 1e-300)))
+            return v_est, ess_v, w_surv
+
+        ai_s, aj_s = np.where(alive)
+        tail_phi = np.zeros_like(term_phi)
+        if len(ai_s) > 0:
+            tail_phi[ai_s, aj_s] = cone_teacher.val_and_grad(pos[ai_s, aj_s])[0]
+        v_cur, ess_vec, weighted_tail_mass = _girs_stats(-(acc_girs + np.where(alive, tail_phi, term_phi)) / lam, alive)
+        cont_diffs = []
+        n_gp_fits = 0
+        gp_teacher = None
+        for _c_it in range(max(1, n_continuation_rounds + 1)):
+            y_tot_final = np.concatenate([v_cur, phi_bnd])
+            gp_teacher = MirrorNeumannMatern52GP(
+                X_all, y_tot_final, L, length_scale=ell_gp, noise_vec=noise_vec, prior_val_and_grad_fn=cone_teacher.val_and_grad
+            )
+            n_gp_fits += 1
+            if _c_it == n_continuation_rounds or len(ai_s) == 0:
+                break
+            tail_phi[ai_s, aj_s] = gp_teacher.predict_val_and_grad(pos[ai_s, aj_s])[0]
+            v_next, ess_vec, weighted_tail_mass = _girs_stats(-(acc_girs + np.where(alive, tail_phi, term_phi)) / lam, alive)
+            cont_diffs.append(float(np.max(np.abs(v_next - v_cur))))
+            v_cur = v_next
+
+        y_tot_final = np.concatenate([v_cur, phi_bnd])
+        if prior_mode == "matched_sharp_cone":
+            gp_model = gp_teacher
+            base = cone_teacher
+        elif prior_mode == "helmholtz_bessel":
+            bessel_student = BoxNeumannBesselBaseGuide(spec, query)
+            gp_model = MirrorNeumannMatern52GP(
+                X_all, y_tot_final, L, length_scale=ell_gp, noise_vec=noise_vec, prior_val_and_grad_fn=bessel_student.val_and_grad
+            )
+            n_gp_fits += 1
+            base = bessel_student
+        elif prior_mode in ("eikonal_cone", "matched_smooth_cone"):
+            assert eik_prior is not None
+            gp_model = MirrorNeumannMatern52GP(
+                X_all, y_tot_final, L, length_scale=ell_gp, noise_vec=noise_vec, prior_val_and_grad_fn=eik_prior.val_and_grad
+            )
+            n_gp_fits += 1
+            base = cone_teacher
+        elif prior_mode == "zero_mean":
+            gp_model = MirrorNeumannMatern52GP(
+                X_all, y_tot_final, L, length_scale=ell_gp, noise_vec=noise_vec, prior_val_and_grad_fn=None
+            )
+            n_gp_fits += 1
+            base = cone_teacher
+        else:
+            raise ValueError(f"Unknown prior_mode: {prior_mode}")
     else:
-        raise ValueError(f"Unknown prior_mode: {prior_mode}")
+        assert base is not None
+        v0_int, _ = base.val_and_grad(X_int)
+        pos = np.repeat(X_int[:, None, :], M_eff, axis=1)
+        v0_cur = np.repeat(v0_int[:, None], M_eff, axis=1)
+        alive = np.ones((n_int, M_eff), dtype=bool)
+        acc_tilde = np.zeros((n_int, M_eff), dtype=float)
+        term_res = np.zeros((n_int, M_eff), dtype=float)
+        collar_steps = 0
+        total_steps = 0
 
-    gp_model: Optional[MirrorNeumannMatern52GP] = None
-    y_tot_final = np.concatenate([v0_int + dv_cur, phi_bnd])
-    n_gp_fits = 0
-    for _c_it in range(max(1, n_continuation_rounds + 1)):
+        for _st in range(n_steps_fk):
+            if not np.any(alive):
+                break
+            z_half = rng_mc.normal(0.0, sqrt_dt, size=(n_int, half_m, d))
+            dW_step = np.concatenate([z_half, -z_half], axis=1)
+
+            ai, aj = np.where(alive)
+            pts_a = pos[ai, aj]
+            dw_a = dW_step[ai, aj]
+            total_steps += len(pts_a)
+            collar_steps += int(np.sum(np.any(np.abs(pts_a) > base.L0, axis=1)))
+
+            q_pert = km.predict_q(pts_a) + eval_hazard_features(pts_a, query.local_hazards)
+            b_hat = km.predict_b(pts_a)
+
+            if guided_proposal:
+                if residual_mode == "continuum_collar":
+                    _, gv0, r_step = base.step_continuum_collar_residual(pts_a, q_pert, b_hat, dt_fk)
+                    u_prop = -gv0 / r_sc
+                    x_next = reflect_into_box(pts_a + (b_hat + u_prop) * dt_fk + spec.sigma * dw_a, L)
+                    acc_tilde[ai, aj] += r_step
+                elif residual_mode == "discrete_telescoping":
+                    v0_a = v0_cur[ai, aj]
+                    _, gv0 = base.val_and_grad(pts_a)
+                    u_prop = -gv0 / r_sc
+                    x_next = reflect_into_box(pts_a + (b_hat + u_prop) * dt_fk + spec.sigma * dw_a, L)
+                    r_step, v0_n = base.step_discrete_telescoping_reference(pts_a, v0_a, gv0, q_pert, x_next, dw_a, dt_fk)
+                    acc_tilde[ai, aj] += r_step
+                    v0_cur[ai, aj] = v0_n
+                else:
+                    raise ValueError(f"Unknown residual_mode: {residual_mode}")
+            else:
+                v0_a = v0_cur[ai, aj]
+                x_next = reflect_into_box(pts_a + b_hat * dt_fk + spec.sigma * dw_a, L)
+                v0_n, _ = base.val_and_grad(x_next)
+                acc_tilde[ai, aj] += (spec.q0 + q_pert) * dt_fk + (v0_n - v0_a)
+                v0_cur[ai, aj] = v0_n
+
+            pos[ai, aj] = x_next
+            hit_post, phi_post = eval_goal_union(x_next, query.goals)
+            if np.any(hit_post):
+                hl = np.flatnonzero(hit_post)
+                v0_hit, _ = base.val_and_grad(x_next[hl])
+                term_res[ai[hl], aj[hl]] = phi_post[hl] - v0_hit
+                alive[ai[hl], aj[hl]] = False
+
+        survivor_frac = float(np.mean(alive))
+
+        def _fk_stats(emat: np.ndarray, alive_mask: np.ndarray) -> Tuple[np.ndarray, np.ndarray, float]:
+            mx = np.max(emat, axis=1, keepdims=True)
+            w = np.exp(emat - mx)
+            w_sum = np.maximum(np.sum(w, axis=1), 1e-300)
+            ess_vec = (w_sum ** 2) / np.maximum(np.sum(w ** 2, axis=1), 1e-300)
+            weighted_surv_mass = float(np.mean(np.sum(w * alive_mask, axis=1) / w_sum))
+            dv = -lam * (mx[:, 0] + np.log(np.maximum(np.mean(w, axis=1), 1e-300)))
+            return dv, ess_vec, weighted_surv_mass
+
+        tail_dv = np.zeros_like(term_res)
+        dv_cur, ess_vec, weighted_tail_mass = _fk_stats(-(acc_tilde + np.where(alive, tail_dv, term_res)) / lam, alive)
+        cont_diffs = []
+        ai_s, aj_s = np.where(alive)
+        v0_surv = base.val_and_grad(pos[ai_s, aj_s])[0] if len(ai_s) > 0 else np.empty(0)
+
+        if prior_mode == "helmholtz_bessel":
+            prior_fn = base.val_and_grad
+        elif prior_mode in ("eikonal_cone", "matched_smooth_cone", "matched_sharp_cone"):
+            assert eik_prior is not None
+            prior_fn = eik_prior.val_and_grad
+        elif prior_mode == "zero_mean":
+            prior_fn = None
+        else:
+            raise ValueError(f"Unknown prior_mode: {prior_mode}")
+
+        gp_model = None
         y_tot_final = np.concatenate([v0_int + dv_cur, phi_bnd])
-        gp_model = MirrorNeumannMatern52GP(
-            X_all, y_tot_final, L, length_scale=ell_gp, noise_vec=noise_vec, prior_val_and_grad_fn=prior_fn
-        )
-        n_gp_fits += 1
-        if _c_it == n_continuation_rounds or len(ai_s) == 0:
-            break
-        pred_tot_surv = gp_model.predict_val_and_grad(pos[ai_s, aj_s])[0]
-        tail_dv[ai_s, aj_s] = pred_tot_surv - v0_surv
-        dv_next, ess_vec, weighted_tail_mass = _fk_stats(-(acc_tilde + np.where(alive, tail_dv, term_res)) / lam, alive)
-        cont_diffs.append(float(np.max(np.abs(dv_next - dv_cur))))
-        dv_cur = dv_next
+        n_gp_fits = 0
+        for _c_it in range(max(1, n_continuation_rounds + 1)):
+            y_tot_final = np.concatenate([v0_int + dv_cur, phi_bnd])
+            gp_model = MirrorNeumannMatern52GP(
+                X_all, y_tot_final, L, length_scale=ell_gp, noise_vec=noise_vec, prior_val_and_grad_fn=prior_fn
+            )
+            n_gp_fits += 1
+            if _c_it == n_continuation_rounds or len(ai_s) == 0:
+                break
+            pred_tot_surv = gp_model.predict_val_and_grad(pos[ai_s, aj_s])[0]
+            tail_dv[ai_s, aj_s] = pred_tot_surv - v0_surv
+            dv_next, ess_vec, weighted_tail_mass = _fk_stats(-(acc_tilde + np.where(alive, tail_dv, term_res)) / lam, alive)
+            cont_diffs.append(float(np.max(np.abs(dv_next - dv_cur))))
+            dv_cur = dv_next
 
     assert gp_model is not None
 
@@ -699,18 +804,22 @@ def solve_highd_fk_distillation(
             u[hit] = 0.0
         return u
 
+    n_world_obs = int(len(km.X_obs)) if hasattr(km, "X_obs") else 0
     budget_counters = {
+        "teacher_mode": str(teacher_mode),
+        "n_physical_world_observations": n_world_obs,
         "n_interior_proposed_nominal": int(n_interior_anchors),
         "n_start_anchors_added": int(len(starts_arr)),
         "n_near_goal_filtered": int(np.sum(in_g_int)),
         "n_interior_actual": int(n_int),
         "n_boundary_actual": int(len(X_bnd)),
         "n_gp_rows_total": int(len(X_all)),
+        "mc_independent_streams_per_anchor": int(half_m),
         "mc_paths_per_anchor_effective": int(M_eff),
         "n_fk_paths_launched_actual": int(n_int * M_eff),
         "n_fk_active_steps_total": int(total_steps),
-        "n_world_q_queries": int(total_steps),
-        "n_world_b_queries": int(total_steps),
+        "n_model_q_evals": int(total_steps),
+        "n_model_b_evals": int(total_steps),
         "n_continuation_gp_fits": int(n_gp_fits),
     }
 

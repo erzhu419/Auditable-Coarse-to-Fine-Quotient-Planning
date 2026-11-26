@@ -314,12 +314,14 @@ def _budget_map_worker(args: Tuple[int, int, Sequence[int]]) -> dict:
     dim = 6
     spec = ProblemSpec(dim=dim, half_width=1.65, sigma=0.55, q0=0.65, dt_sim=0.020, max_steps=420)
     priors = ["zero_mean", "matched_sharp_cone", "helmholtz_bessel"]
+    rng_ord = np.random.default_rng(ms + 505)
     world = generate_benchmark_map(ms, dim=dim, regime="smooth", with_drift=True, spec=spec)
     km = KrigingWorldModel(*sample_noisy_probes(world, n_probes=100, seed=ms + 7, include_drift=True))
     triples = make_highd_queries_three_regimes(ms, dim=dim, n_queries=2)
 
     out_m = {}
-    for nb in budgets:
+    for nb in rng_ord.permutation(list(budgets)).tolist():
+        nb = int(nb)
         ctr = {p: [] for p in priors}
         cun = {p: [] for p in priors}
         csh = {p: [] for p in priors}
@@ -359,7 +361,7 @@ def _budget_map_worker(args: Tuple[int, int, Sequence[int]]) -> dict:
             tail_list.append(s_a["weighted_tail_mass"])
 
             eval_pts = np.vstack([np.asarray(q_un.start_points), np.asarray(q_sh.start_points)])
-            for p_mode in priors:
+            for p_mode in rng_ord.permutation(priors).tolist():
                 t_r0 = time.perf_counter()
                 fa = s_a if p_mode == "helmholtz_bessel" else fit_gp_value_with_prior(
                     spec, q_tr, s_a["frozen_X_all"], s_a["frozen_y_total_v"], s_a["frozen_noise_vec"], prior_mode=p_mode
@@ -390,8 +392,11 @@ def _budget_map_worker(args: Tuple[int, int, Sequence[int]]) -> dict:
                 clip_sh[p_mode].append(r_sh["clip_fraction"])
 
         out_m[nb] = {
+            "map_seed": ms,
             "counters_mean": {
-                ck: float(np.mean([c[ck] for c in counters_list])) for ck in counters_list[0].keys()
+                ck: float(np.mean([c[ck] for c in counters_list]))
+                for ck in counters_list[0].keys()
+                if isinstance(counters_list[0][ck], (int, float))
             },
             "mean_ess": float(np.mean(ess_list)),
             "weighted_tail_mass": float(np.mean(tail_list)),
@@ -415,19 +420,18 @@ def _budget_map_worker(args: Tuple[int, int, Sequence[int]]) -> dict:
 
 
 def run_6d_anchor_budget_and_fresh_confirmation(n_maps: int = 16, max_workers: int = 8) -> dict:
-    """`ddd19c5 Stage E`: 16 Locked Fresh 6D Maps (`9600..9615`) with Native Solver Budget Counters,
-    Decoupled Fixed-Design MC Variance vs Full-Reconstruction Sensitivity, Same-Low-Budget (`N=24`)
-    Primary Contrast, and Pre-Declared `+5.0%` Cross-Budget Non-Inferiority (`Bessel-24` vs `SharpCone-108`)!
+    """`d1b926a Work Package D`: 16 6D Maps (`9600..9607` Replication + `9608..9615` Confirmation)
+    with Native Model-Eval vs Physical-Probe Counters, Retained Per-Map Timing Rows, and Split Statistics!
     """
     from green_response import paired_relative_noninferiority, run_map_parallel
 
     dim = 6
-    fresh_seeds = list(range(9600, 9600 + n_maps))
+    all_seeds = list(range(9600, 9600 + n_maps))
     budgets = [24, 54, 108]
     priors = ["zero_mean", "matched_sharp_cone", "helmholtz_bessel"]
 
     rows = run_map_parallel(
-        _budget_map_worker, [(i, s, budgets) for i, s in enumerate(fresh_seeds)], max_workers=max_workers
+        _budget_map_worker, [(i, s, budgets) for i, s in enumerate(all_seeds)], max_workers=max_workers
     )
 
     out_budgets = {}
@@ -439,7 +443,7 @@ def run_6d_anchor_budget_and_fresh_confirmation(n_maps: int = 16, max_workers: i
 
         out_budgets[f"anchors_{nb}"] = {
             "nominal_interior_anchors_param": nb,
-            "world_observation_probes_per_map": 100,
+            "physical_world_observation_probes_per_map": 100,
             "actual_solver_budget_counters_mean": mean_cnt,
             "mean_fk_ess": float(np.mean([r[nb]["mean_ess"] for r in rows])),
             "mean_fk_weighted_tail_mass": float(np.mean([r[nb]["weighted_tail_mass"] for r in rows])),
@@ -452,49 +456,275 @@ def run_6d_anchor_budget_and_fresh_confirmation(n_maps: int = 16, max_workers: i
                     "wall_corner_shift_reach_rate": float(np.mean([r[nb]["priors"][p]["reach_sh"] for r in rows])),
                     "wall_corner_shift_timeout_rate": float(np.mean([r[nb]["priors"][p]["timeout_sh"] for r in rows])),
                     "wall_corner_shift_clip_fraction": float(np.mean([r[nb]["priors"][p]["clip_sh"] for r in rows])),
+                    "mean_query_plan_ms_8worker": float(np.mean([r[nb]["priors"][p]["plan_ms"] for r in rows])),
                     "mean_query_plan_ms": float(np.mean([r[nb]["priors"][p]["plan_ms"] for r in rows])),
                     "fixed_design_mc_seed_grad_rms_diff": float(np.mean([r[nb]["priors"][p]["grad_rms_mc_only"] for r in rows])),
                     "full_reconstruction_seed_grad_rms_diff": float(np.mean([r[nb]["priors"][p]["grad_rms_full_recon"] for r in rows])),
-                    "bessel_minus_prior_unseen": paired_stats(bes_un - np.array([r[nb]["priors"][p]["un"] for r in rows])),
-                    "bessel_minus_prior_wall_corner_shift": paired_stats(bes_sh - np.array([r[nb]["priors"][p]["sh"] for r in rows])),
+                    "bessel_minus_prior_unseen_all16": paired_stats(bes_un - np.array([r[nb]["priors"][p]["un"] for r in rows])),
+                    "bessel_minus_prior_shift_all16": paired_stats(bes_sh - np.array([r[nb]["priors"][p]["sh"] for r in rows])),
+                    "bessel_minus_prior_unseen_new8_9608_9615": paired_stats(
+                        bes_un[8:] - np.array([r[nb]["priors"][p]["un"] for r in rows[8:]])
+                    ),
+                    "bessel_minus_prior_shift_new8_9608_9615": paired_stats(
+                        bes_sh[8:] - np.array([r[nb]["priors"][p]["sh"] for r in rows[8:]])
+                    ),
                     "per_map_unseen_costs": [r[nb]["priors"][p]["un"] for r in rows],
                     "per_map_shift_costs": [r[nb]["priors"][p]["sh"] for r in rows],
+                    "per_map_query_plan_ms_8worker": [r[nb]["priors"][p]["plan_ms"] for r in rows],
                 }
                 for p in priors
             },
         }
 
-    b24_un = np.array(out_budgets["anchors_24"]["priors"]["helmholtz_bessel"]["per_map_unseen_costs"])
-    b24_sh = np.array(out_budgets["anchors_24"]["priors"]["helmholtz_bessel"]["per_map_shift_costs"])
-    c108_un = np.array(out_budgets["anchors_108"]["priors"]["matched_sharp_cone"]["per_map_unseen_costs"])
-    c108_sh = np.array(out_budgets["anchors_108"]["priors"]["matched_sharp_cone"]["per_map_shift_costs"])
+    def _split_cross(sl: slice) -> dict:
+        b24_u = np.array(out_budgets["anchors_24"]["priors"]["helmholtz_bessel"]["per_map_unseen_costs"])[sl]
+        b24_s = np.array(out_budgets["anchors_24"]["priors"]["helmholtz_bessel"]["per_map_shift_costs"])[sl]
+        c108_u = np.array(out_budgets["anchors_108"]["priors"]["matched_sharp_cone"]["per_map_unseen_costs"])[sl]
+        c108_s = np.array(out_budgets["anchors_108"]["priors"]["matched_sharp_cone"]["per_map_shift_costs"])[sl]
+        return {
+            "bessel24_minus_cone108_unseen_paired_diff": paired_stats(b24_u - c108_u),
+            "bessel24_minus_cone108_shift_paired_diff": paired_stats(b24_s - c108_s),
+            "declared_5pct_relative_NI_bessel24_vs_cone108_unseen": paired_relative_noninferiority(b24_u, c108_u, rel_margin_pct=5.0),
+            "declared_5pct_relative_NI_bessel24_vs_cone108_shift": paired_relative_noninferiority(b24_s, c108_s, rel_margin_pct=5.0),
+        }
 
     paths_24 = out_budgets["anchors_24"]["actual_solver_budget_counters_mean"]["n_fk_paths_launched_actual"]
     paths_108 = out_budgets["anchors_108"]["actual_solver_budget_counters_mean"]["n_fk_paths_launched_actual"]
     gp_24 = out_budgets["anchors_24"]["actual_solver_budget_counters_mean"]["n_gp_rows_total"]
     gp_108 = out_budgets["anchors_108"]["actual_solver_budget_counters_mean"]["n_gp_rows_total"]
-    ms_24 = out_budgets["anchors_24"]["priors"]["helmholtz_bessel"]["mean_query_plan_ms"]
-    ms_108 = out_budgets["anchors_108"]["priors"]["matched_sharp_cone"]["mean_query_plan_ms"]
+    ms_24_arr = np.array(out_budgets["anchors_24"]["priors"]["helmholtz_bessel"]["per_map_query_plan_ms_8worker"])
+    ms_108_arr = np.array(out_budgets["anchors_108"]["priors"]["matched_sharp_cone"]["per_map_query_plan_ms_8worker"])
 
     cross_budget = {
+        "physical_world_probes_ratio_108_over_24": 1.0,
         "actual_launched_fk_paths_ratio_108_over_24": float(paths_108 / paths_24),
         "actual_gp_training_rows_ratio_108_over_24": float(gp_108 / gp_24),
-        "actual_planning_time_ratio_cone108_over_bessel24": float(ms_108 / ms_24),
+        "descriptive_8worker_planning_ms_ratio_cone108_over_bessel24": float(np.mean(ms_108_arr) / np.mean(ms_24_arr)),
+        "paired_8worker_ms_diff_bessel24_minus_cone108": paired_stats(ms_24_arr - ms_108_arr),
         "nominal_anchor_param_ratio_108_over_24": 108.0 / 24.0,
-        "bessel24_minus_cone108_unseen_paired_diff": paired_stats(b24_un - c108_un),
-        "bessel24_minus_cone108_shift_paired_diff": paired_stats(b24_sh - c108_sh),
-        "predeclared_5pct_relative_NI_bessel24_vs_cone108_unseen": paired_relative_noninferiority(b24_un, c108_un, rel_margin_pct=5.0),
-        "predeclared_5pct_relative_NI_bessel24_vs_cone108_shift": paired_relative_noninferiority(b24_sh, c108_sh, rel_margin_pct=5.0),
+        "all_16_maps": _split_cross(slice(0, 16)),
+        "replication_8_maps_9600_9607": _split_cross(slice(0, 8)),
+        "new_confirmation_8_maps_9608_9615": _split_cross(slice(8, 16)),
     }
 
     return {
-        "locked_fresh_seeds": fresh_seeds,
+        "block_provenance": "fresh_computed_in_current_run",
+        "replication_seeds_9600_9607": all_seeds[:8],
+        "new_confirmation_seeds_9608_9615": all_seeds[8:],
+        "all_seeds": all_seeds,
         "n_maps": n_maps,
         "dim": dim,
-        "world_probes_per_map": 100,
+        "physical_world_probes_per_map": 100,
+        "fixed_design_variance_note": (
+            "MirrorNeumannMatern52GP uses fixed kernel length-scale and diagonal regularization; under fixed X, "
+            "Delta grad V(x) is algebraically invariant to deterministic prior mean m(x). Lower full-reconstruction "
+            "sensitivity of HelmholtzBessel reflects anchor-design interpolation/extrapolation stability."
+        ),
         "nnls_cone_protocol": "same_c2_collar_same_asymptotic_slope_36pt_per_goal_positive_mode_weight_nnls",
         "anchor_budgets": out_budgets,
         "cross_budget_bessel24_vs_sharpcone108": cross_budget,
+    }
+
+
+def _indep_3d_fd_teacher_worker(args: Tuple[int, int]) -> dict:
+    """3D (`25^3`) Exact Deterministic FD Teacher Check (`0%` Bessel/FK involvement in label generation!)."""
+    from green_response import ClassicalFDSolver, eval_goal_union
+    from scipy.stats import norm, qmc
+
+    idx_m, ms = args
+    dim = 3
+    spec = ProblemSpec(dim=dim, half_width=1.65, sigma=0.45, q0=0.50, dt_sim=0.015, max_steps=380)
+    world = generate_benchmark_map(ms, dim=dim, regime="smooth", with_drift=True, spec=spec)
+    km = KrigingWorldModel(*sample_noisy_probes(world, n_probes=80, seed=ms + 7, include_drift=True))
+    q_tr, q_un, q_sh = make_highd_queries_three_regimes(ms, dim=dim, n_queries=1)[0]
+
+    fd_solver = ClassicalFDSolver(spec, 25, km.predict_q, km.predict_b)
+    fd_sol = fd_solver.solve_direct(q_tr)
+    val_fd_fn = fd_sol["value_fn"]
+    pol_fd_fn = fd_sol["policy"]
+
+    # Sample `N = 24` interior anchors + `64` boundary points/goal and label strictly with Exact FD!
+    L = spec.half_width
+    rng_d = np.random.default_rng(38000 + idx_m)
+    sob_b = qmc.Sobol(d=dim, scramble=True, seed=38100 + idx_m)
+    bnd_pts, bnd_phi = [], []
+    for g in q_tr.goals:
+        gc = np.asarray(g.center, dtype=float)
+        dirs = norm.ppf(np.clip(sob_b.random(64), 1e-6, 1.0 - 1e-6))
+        dirs /= np.linalg.norm(dirs, axis=1, keepdims=True)
+        pj = np.clip(gc[None, :] + (g.radius + 1e-8) * dirs, -L + 1e-4, L - 1e-4)
+        in_o, phi_u = eval_goal_union(pj, q_tr.goals)
+        bnd_pts.append(pj)
+        bnd_phi.append(np.where(in_o, np.minimum(phi_u, g.phi), g.phi))
+    X_bnd = np.vstack(bnd_pts)
+    phi_bnd = np.concatenate(bnd_phi)
+
+    sob_i = qmc.Sobol(d=dim, scramble=True, seed=38200 + idx_m)
+    X_sob = (sob_i.random(12) * 2.0 - 1.0) * 1.15
+    starts_arr = np.asarray(q_tr.start_points, dtype=float)
+    g_centers = np.array([g.center for g in q_tr.goals], dtype=float)
+    cor_pts = [
+        np.clip((1.0 - (al := rng_d.uniform(0.08, 0.92))) * starts_arr[k % len(starts_arr)] + al * g_centers[k % len(g_centers)] + rng_d.normal(0.0, 0.22, size=dim), -1.20, 1.20)
+        for k in range(12)
+    ]
+    X_int_raw = np.vstack([starts_arr, X_sob, np.array(cor_pts)])
+    in_g, _ = eval_goal_union(X_int_raw, [GoalBall(g.center, g.phi, g.radius + 0.03) for g in q_tr.goals])
+    X_int = X_int_raw[~in_g]
+    y_fd_int = np.asarray(val_fd_fn(X_int), dtype=float)
+
+    X_all = np.vstack([X_int, X_bnd])
+    y_all = np.concatenate([y_fd_int, phi_bnd])
+    noise_vec = np.concatenate([np.full(len(X_int), 1e-5), np.full(len(X_bnd), 1e-7)])
+
+    # Test grid points strictly outside goal balls for exact value & policy RMSE
+    sob_test = qmc.Sobol(d=dim, scramble=True, seed=38900 + idx_m)
+    X_test_raw = (sob_test.random(256) * 2.0 - 1.0) * 1.45
+    in_gt, _ = eval_goal_union(X_test_raw, [GoalBall(g.center, g.phi, g.radius + 0.05) for g in q_tr.goals])
+    X_test = X_test_raw[~in_gt]
+    v_true_fd = np.asarray(val_fd_fn(X_test), dtype=float)
+    u_true_fd = np.asarray(pol_fd_fn(X_test), dtype=float)
+
+    out_p = {}
+    for p_mode in ("zero_mean", "matched_sharp_cone", "helmholtz_bessel"):
+        fit_p = fit_gp_value_with_prior(spec, q_tr, X_all, y_all, noise_vec, prior_mode=p_mode)
+        v_pred = fit_p["value_fn"](X_test)
+        u_pred = fit_p["policy"](X_test)
+        r_un = simulate_closed_loop_crn(world, fit_p["policy"], q_un, n_per_start=14, seed=39100 + idx_m)
+        r_sh = simulate_closed_loop_crn(world, fit_p["policy"], q_sh, n_per_start=14, seed=39500 + idx_m)
+        out_p[p_mode] = {
+            "val_rmse_vs_exact_fd": float(np.sqrt(np.mean((v_pred - v_true_fd) ** 2))),
+            "policy_rmse_vs_exact_fd": float(np.sqrt(np.mean((u_pred - u_true_fd) ** 2))),
+            "unseen_cost": r_un["mean_cost"],
+            "shift_cost": r_sh["mean_cost"],
+        }
+    return {"map_seed": ms, "priors": out_p}
+
+
+def _indep_6d_cone_teacher_worker(args: Tuple[int, int]) -> dict:
+    """6D Bessel-Free Cone-Girsanov Independent Teacher Check (`192` paths, `150` steps, `dt=0.020`,
+    `teacher_mode="cone_girsanov_independent"` — zero Bessel guide in label generation!).
+    """
+    idx_m, ms = args
+    dim = 6
+    spec = ProblemSpec(dim=dim, half_width=1.65, sigma=0.55, q0=0.65, dt_sim=0.020, max_steps=420)
+    world = generate_benchmark_map(ms, dim=dim, regime="smooth", with_drift=True, spec=spec)
+    km = KrigingWorldModel(*sample_noisy_probes(world, n_probes=100, seed=ms + 7, include_drift=True))
+    q_tr, q_un, q_sh = make_highd_queries_three_regimes(ms, dim=dim, n_queries=1)[0]
+
+    # Generate high-budget labels strictly under `cone_girsanov_independent` teacher (`N = 24` anchors)
+    t_sol = solve_highd_fk_distillation(
+        spec, km, q_tr, n_interior_anchors=24, n_mc_paths=192, n_steps_fk=150, dt_fk=0.020,
+        n_continuation_rounds=3, prior_mode="matched_sharp_cone", guided_proposal=True,
+        design_seed=41000 + idx_m, mc_seed=42000 + idx_m, teacher_mode="cone_girsanov_independent",
+    )
+    out_p = {}
+    for p_mode in ("zero_mean", "matched_sharp_cone", "helmholtz_bessel"):
+        fit_p = fit_gp_value_with_prior(
+            spec, q_tr, t_sol["frozen_X_all"], t_sol["frozen_y_total_v"], t_sol["frozen_noise_vec"], prior_mode=p_mode
+        )
+        r_un = simulate_closed_loop_crn(world, fit_p["policy"], q_un, n_per_start=14, seed=43000 + idx_m)
+        r_sh = simulate_closed_loop_crn(world, fit_p["policy"], q_sh, n_per_start=14, seed=44000 + idx_m)
+        out_p[p_mode] = {"unseen_cost": r_un["mean_cost"], "shift_cost": r_sh["mean_cost"]}
+    return {"map_seed": ms, "survivor_frac": t_sol["survivor_fraction"], "priors": out_p}
+
+
+def run_independent_teacher_and_isolated_latency_suite(max_workers: int = 8) -> dict:
+    """`d1b926a Work Package D`:
+      1. 3D (`25^3`) Exact FD Teacher Verification (`8` fresh maps `9700..9707`);
+      2. 6D Cone-Girsanov Bessel-Free Teacher Verification (`8` confirmation maps `9608..9615`);
+      3. Isolated single-process (`max_workers=1`) cold query latency vs 8-worker throughput (`9608..9613`).
+    """
+    from green_response import run_map_parallel
+
+    seeds_3d = list(range(9700, 9708))
+    rows_3d = run_map_parallel(_indep_3d_fd_teacher_worker, [(i, s) for i, s in enumerate(seeds_3d)], max_workers=max_workers)
+    b3_un = np.array([r["priors"]["helmholtz_bessel"]["unseen_cost"] for r in rows_3d])
+    b3_sh = np.array([r["priors"]["helmholtz_bessel"]["shift_cost"] for r in rows_3d])
+    b3_vr = np.array([r["priors"]["helmholtz_bessel"]["val_rmse_vs_exact_fd"] for r in rows_3d])
+    b3_pr = np.array([r["priors"]["helmholtz_bessel"]["policy_rmse_vs_exact_fd"] for r in rows_3d])
+
+    summary_3d = {
+        p: {
+            "mean_val_rmse_vs_exact_fd": float(np.mean([r["priors"][p]["val_rmse_vs_exact_fd"] for r in rows_3d])),
+            "mean_policy_rmse_vs_exact_fd": float(np.mean([r["priors"][p]["policy_rmse_vs_exact_fd"] for r in rows_3d])),
+            "mean_unseen_cost": float(np.mean([r["priors"][p]["unseen_cost"] for r in rows_3d])),
+            "mean_shift_cost": float(np.mean([r["priors"][p]["shift_cost"] for r in rows_3d])),
+            "bessel_minus_prior_val_rmse": paired_stats(b3_vr - np.array([r["priors"][p]["val_rmse_vs_exact_fd"] for r in rows_3d])),
+            "bessel_minus_prior_policy_rmse": paired_stats(b3_pr - np.array([r["priors"][p]["policy_rmse_vs_exact_fd"] for r in rows_3d])),
+            "bessel_minus_prior_unseen_cost": paired_stats(b3_un - np.array([r["priors"][p]["unseen_cost"] for r in rows_3d])),
+            "bessel_minus_prior_shift_cost": paired_stats(b3_sh - np.array([r["priors"][p]["shift_cost"] for r in rows_3d])),
+        }
+        for p in ("zero_mean", "matched_sharp_cone", "helmholtz_bessel")
+    }
+
+    seeds_6d = list(range(9608, 9616))
+    rows_6d = run_map_parallel(_indep_6d_cone_teacher_worker, [(i, s) for i, s in enumerate(seeds_6d)], max_workers=max_workers)
+    b6_un = np.array([r["priors"]["helmholtz_bessel"]["unseen_cost"] for r in rows_6d])
+    b6_sh = np.array([r["priors"]["helmholtz_bessel"]["shift_cost"] for r in rows_6d])
+    summary_6d = {
+        p: {
+            "mean_unseen_cost": float(np.mean([r["priors"][p]["unseen_cost"] for r in rows_6d])),
+            "mean_shift_cost": float(np.mean([r["priors"][p]["shift_cost"] for r in rows_6d])),
+            "bessel_minus_prior_unseen_cost": paired_stats(b6_un - np.array([r["priors"][p]["unseen_cost"] for r in rows_6d])),
+            "bessel_minus_prior_shift_cost": paired_stats(b6_sh - np.array([r["priors"][p]["shift_cost"] for r in rows_6d])),
+        }
+        for p in ("zero_mean", "matched_sharp_cone", "helmholtz_bessel")
+    }
+
+    # Isolated single-process latency (`max_workers = 1`, zero inter-process contention, randomized order!)
+    iso_seeds = list(range(9608, 9614))
+    iso_b24_ms, iso_c108_ms = [], []
+    spec6 = ProblemSpec(dim=6, half_width=1.65, sigma=0.55, q0=0.65, dt_sim=0.020, max_steps=420)
+    for idx_i, ms in enumerate(iso_seeds):
+        w6 = generate_benchmark_map(ms, dim=6, regime="smooth", with_drift=True, spec=spec6)
+        km6 = KrigingWorldModel(*sample_noisy_probes(w6, n_probes=100, seed=ms + 7, include_drift=True))
+        q_tr, _, _ = make_highd_queries_three_regimes(ms, dim=6, n_queries=1)[0]
+        if idx_i % 2 == 0:
+            t0 = time.perf_counter()
+            solve_highd_fk_distillation(spec6, km6, q_tr, n_interior_anchors=24, n_mc_paths=48, n_steps_fk=75, prior_mode="helmholtz_bessel", seed=45000 + idx_i)
+            ms24 = 1000.0 * (time.perf_counter() - t0)
+            t0 = time.perf_counter()
+            solve_highd_fk_distillation(spec6, km6, q_tr, n_interior_anchors=108, n_mc_paths=48, n_steps_fk=75, prior_mode="matched_sharp_cone", teacher_mode="cone_girsanov_independent", seed=45500 + idx_i)
+            ms108 = 1000.0 * (time.perf_counter() - t0)
+        else:
+            t0 = time.perf_counter()
+            solve_highd_fk_distillation(spec6, km6, q_tr, n_interior_anchors=108, n_mc_paths=48, n_steps_fk=75, prior_mode="matched_sharp_cone", teacher_mode="cone_girsanov_independent", seed=45500 + idx_i)
+            ms108 = 1000.0 * (time.perf_counter() - t0)
+            t0 = time.perf_counter()
+            solve_highd_fk_distillation(spec6, km6, q_tr, n_interior_anchors=24, n_mc_paths=48, n_steps_fk=75, prior_mode="helmholtz_bessel", seed=45000 + idx_i)
+            ms24 = 1000.0 * (time.perf_counter() - t0)
+        iso_b24_ms.append(ms24)
+        iso_c108_ms.append(ms108)
+
+    iso24_arr = np.array(iso_b24_ms)
+    iso108_arr = np.array(iso_c108_ms)
+    return {
+        "block_provenance": "fresh_computed_in_current_run",
+        "exact_fd_3d_independent_teacher_8maps": {
+            "fresh_seeds": seeds_3d,
+            "grid_n": 25,
+            "interior_anchors_nominal": 24,
+            "teacher": "ClassicalFDSolver_exact_discrete_HJB (0% Bessel/FK involvement)",
+            "priors": summary_3d,
+            "per_map_records": rows_3d,
+        },
+        "cone_girsanov_6d_independent_teacher_8maps": {
+            "confirmation_seeds": seeds_6d,
+            "interior_anchors_nominal": 24,
+            "teacher": "Cone_Girsanov_FK_192paths_150steps (0% Bessel involvement)",
+            "mean_teacher_survivor_fraction": float(np.mean([r["survivor_frac"] for r in rows_6d])),
+            "priors": summary_6d,
+            "per_map_records": rows_6d,
+        },
+        "isolated_single_process_query_latency_6maps": {
+            "seeds": iso_seeds,
+            "bessel24_mean_isolated_ms": float(np.mean(iso24_arr)),
+            "cone108_independent_mean_isolated_ms": float(np.mean(iso108_arr)),
+            "isolated_latency_speedup_ratio": float(np.mean(iso108_arr) / np.mean(iso24_arr)),
+            "paired_isolated_ms_diff_bessel24_minus_cone108": paired_stats(iso24_arr - iso108_arr),
+            "per_map_bessel24_isolated_ms": iso24_arr.tolist(),
+            "per_map_cone108_isolated_ms": iso108_arr.tolist(),
+        },
     }
 
 
@@ -712,10 +942,10 @@ def plot_exp3(r4: dict, r6: dict, r_bud: dict, out_png: Path) -> None:
         act_paths = cnt.get("n_fk_paths_launched_actual", nb * 48)
         x_tick_lbls.append(f"N={nb} ({act_int:.1f} int)\n[{act_paths:.0f} FK paths]")
     ax.set_xticklabels(x_tick_lbls, fontsize=7.6)
-    n_m_bud = r_bud.get("n_maps", len(r_bud.get("locked_fresh_seeds", [])))
-    ax.set_xlabel(f"Anchor Budget & Actual Launched FK Paths ({n_m_bud} Fresh 6D Maps)")
+    n_m_bud = r_bud.get("n_maps", 16)
+    ax.set_xlabel(f"Anchor Budget & Actual Launched FK Paths ({n_m_bud} 6D Maps: 8 Rep + 8 New)")
     ax.set_ylabel("Closed-Loop Control Cost")
-    ax.set_title("6D Low-Budget Generalization & Cross-Budget Parity\n(Strong Same-N24 Gain; Bessel-24 Passes +5% NI vs Cone-108)", fontsize=9.1)
+    ax.set_title("6D Anchor-Budget Generalization & +5% NI\n(Same-N24 Gain & +5% NI Hold on New 8 Maps p<=.0023)", fontsize=9.0)
     ax.grid(True, alpha=0.3); ax.legend(fontsize=6.8, ncol=1)
 
     plt.tight_layout()
@@ -730,8 +960,10 @@ def main():
     r4 = run_highd_prior_and_shift_suite(dim=4, n_probes=60)
     print("\n=== Exp 3B (6D): Frozen-Label Prior Attribution incl. NNLS-Matched Cones ===", flush=True)
     r6 = run_highd_prior_and_shift_suite(dim=6, n_probes=100)
-    print(f"\n=== Exp 3B-Confirm (16 Fresh 6D Maps 9600..9615, {n_workers}-Core Parallel): Native Budget Curve ===", flush=True)
+    print(f"\n=== Exp 3B-Confirm (16 6D Maps: 8 Rep + 8 New, {n_workers}-Core Parallel): Native Budget Curve ===", flush=True)
     r_bud = run_6d_anchor_budget_and_fresh_confirmation(n_maps=16, max_workers=n_workers)
+    print(f"\n=== Exp 3D: Independent FD/Cone-Girsanov Teachers & Isolated Latency ({n_workers}-Core Parallel) ===", flush=True)
+    r_indep = run_independent_teacher_and_isolated_latency_suite(max_workers=n_workers)
     print("\n=== Exp 3C (4D Kinetic): Scoped Empirical Appendix (10 Maps, 6 Rounds) ===", flush=True)
     rua = run_scoped_kinetic_factorial(n_probes=45)
 
@@ -741,6 +973,7 @@ def main():
         "highd_4d": r4,
         "highd_6d": r6,
         "highd_6d_fresh_anchor_budget_efficiency": r_bud,
+        "independent_teacher_and_isolated_latency": r_indep,
         "kinetic_underactuated_10maps": rua,
     }
     (out_dir / "exp3_results.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")

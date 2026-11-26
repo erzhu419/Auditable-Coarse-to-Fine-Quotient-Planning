@@ -22827,5 +22827,73 @@
         }
       }
     ]
+  },
+  "block_provenance": "inherited_from_commit_85e2323_supporting_nonlmdp_benchmark",
+  "last_manifest_sync": {
+    "git_head_sha": "d1b926aa74f54bbd9ce454b8f4a1b6e2cdffe943",
+    "git_dirty_green_response": true,
+    "package_py_sha256": "849bc319f431fc8563d5748a4352558d45d778cdb4a0a4812b0a63682faca559",
+    "source_manifest": {
+      "git_head_sha": "d1b926aa74f54bbd9ce454b8f4a1b6e2cdffe943",
+      "git_dirty_green_response": true,
+      "package_py_sha256": "849bc319f431fc8563d5748a4352558d45d778cdb4a0a4812b0a63682faca559",
+      "per_file_sha256": {
+        "__init__.py": "aa9636147a3df265603b70ffb3036393cac60e0056f0dec4c6c524b11b2ecd9f",
+        "core.py": "e57340bbdee7cf185e48e32d14a3d233419efad76ec8158bbb66fcbd3fd219f7",
+        "exp1_3d_and_macro_tours.py": "ae079e2d1b0ba44f283c85ebb54c290b7f18253fc11de38e72a8d0de80599bf2",
+        "exp2_nonlmdp_kkt.py": "3187b5ff1be8a3e637974029fb56d401b74c0c86f468c68bc662bfbf69ad9405",
+        "exp3_highd_and_kinetic.py": "aad29f917018952ae9bffc10baabd6486b0ed2a6ba8472973c23a00fabd851e5",
+        "exp4_fidelity_and_continual.py": "bbd7896f060fdcd988015fb9173facdf030fba32fc5fde7d5110478adf15381e",
+        "highd_solvers.py": "b2860c83e59dc4b6060c0e8726f64755a97f4cb9edbca2d4acbdf6242dee4542",
+        "macro_planning.py": "cf2f18968ef8980998418d05bf7e804b231a3692c771d49685a90dfcd3fe0824",
+        "port_solvers.py": "35e598894f1013db0732561bcd85a9b81097fc7eddbbc5d929192296d194f914",
+        "verify_audit_closure.py": "8b7849e2d3f751011442e8fd4d1e058fe9474842405baa0ad7829473f424853b"
+      }
+    },
+    "python_version": "3.10.12",
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "processor": "x86_64",
+    "cpu_count": 32,
+    "configured_parallel_workers": 8,
+    "numpy_version": "2.2.6",
+    "scipy_version": "1.15.3",
+    "sklearn_version": "1.7.2",
+    "thread_env": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1"
+    },
+    "active_threadpools": [
+      {
+        "user_api": "blas",
+        "internal_api": "openblas",
+        "num_threads": 1,
+        "prefix": "libscipy_openblas",
+        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/numpy.libs/libscipy_openblas64_-56d6093b.so",
+        "version": "0.3.29",
+        "threading_layer": "pthreads",
+        "architecture": "SkylakeX"
+      },
+      {
+        "user_api": "blas",
+        "internal_api": "openblas",
+        "num_threads": 1,
+        "prefix": "libscipy_openblas",
+        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/scipy.libs/libscipy_openblas-68440149.so",
+        "version": "0.3.28",
+        "threading_layer": "pthreads",
+        "architecture": "SkylakeX"
+      },
+      {
+        "user_api": "openmp",
+        "internal_api": "openmp",
+        "num_threads": 1,
+        "prefix": "libgomp",
+        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/scikit_learn.libs/libgomp-a34b3233.so.1.0.0",
+        "version": null
+      }
+    ]
   }
 }

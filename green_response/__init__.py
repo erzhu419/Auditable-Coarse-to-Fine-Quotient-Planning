@@ -25,6 +25,7 @@ from .core import (
     ProblemSpec,
     QueryTask,
     collect_runtime_metadata,
+    compute_source_manifest,
     enforce_single_thread_env,
     eval_goal_union,
     eval_hazard_features,
