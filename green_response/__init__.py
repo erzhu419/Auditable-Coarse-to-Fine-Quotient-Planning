@@ -31,6 +31,7 @@ from .core import (
     eval_hazard_features,
     generate_benchmark_map,
     holm_bonferroni_adjust,
+    load_and_verify_lossless_acquisition_tape_npz,
     observe_world_at_points,
     paired_relative_noninferiority,
     paired_stats,
@@ -38,7 +39,9 @@ from .core import (
     reflect_kinetic_into_box,
     run_map_parallel,
     sample_noisy_probes,
+    save_lossless_acquisition_tape_npz,
     simulate_closed_loop_crn,
+    welch_two_sample_stats,
 )
 from .highd_solvers import (
     BoxNeumannBesselBaseGuide,

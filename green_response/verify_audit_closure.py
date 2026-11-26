@@ -1387,24 +1387,57 @@ def run_all_audit_checks() -> dict:
     )
     spd_selected_idx = int(np.argmin(np.sum((cand_spd - sel_spd[0]) ** 2, axis=1)))
 
-    # Off-grid pending_X block-Cholesky exactness on real `km_cc` across BOTH `q` and `b` channels
+    # Off-grid pending_X block-Cholesky exactness on real `km_cc` across ALL THREE channels (`q`, `b_x`, `b_y`)
     X_pend_offgrid = np.array([[-0.37, 0.29], [0.44, -0.51], [0.12, 0.63]], dtype=float)
-    Cp_q, Gp_q, nzp_q = km_cc._build_channel_posterior_cov_and_proj(km_cc._q_fast, cand_cc, grid_cc, w_func, pending_X=X_pend_offgrid)
-    X_aug_p = np.vstack([km_cc.X_obs, X_pend_offgrid])
-    K_aap = km_cc._eval_matern25_kernel_pair(X_aug_p, X_aug_p, st_q) + (nzp_q / (st_q["y_std"] ** 2)) * np.eye(len(X_aug_p))
-    K_aap[:n0_obs, :n0_obs] += 1e-10 * np.eye(n0_obs)
-    L_aug_p = np.linalg.cholesky(K_aap)
-    V_cap = _st_tri(L_aug_p, km_cc._eval_matern25_kernel_pair(cand_cc, X_aug_p, st_q).T, lower=True, check_finite=False)
-    V_gap = _st_tri(L_aug_p, km_cc._eval_matern25_kernel_pair(grid_cc, X_aug_p, st_q).T, lower=True, check_finite=False)
-    Cp_exact = (st_q["y_std"] ** 2) * (K_cc_raw - (V_cap.T @ V_cap))
-    Gp_exact = (st_q["y_std"] ** 2) * ((K_cg_raw @ w_func) - (V_cap.T @ (V_gap @ w_func)))
-    pend_offgrid_cov_err = float(np.max(np.abs(Cp_q - Cp_exact)))
-    pend_offgrid_proj_err = float(np.max(np.abs(Gp_q - Gp_exact)))
+    pend_cov_errs_3ch = []
+    pend_proj_errs_3ch = []
+    for st_ch in [km_cc._q_fast] + list(km_cc._b_fast):
+        Cp_ch, Gp_ch, nzp_ch = km_cc._build_channel_posterior_cov_and_proj(
+            st_ch, cand_cc, grid_cc, w_func, pending_X=X_pend_offgrid
+        )
+        X_aug_p = np.vstack([km_cc.X_obs, X_pend_offgrid])
+        K_aap = km_cc._eval_matern25_kernel_pair(X_aug_p, X_aug_p, st_ch) + (nzp_ch / (st_ch["y_std"] ** 2)) * np.eye(len(X_aug_p))
+        K_aap[:n0_obs, :n0_obs] += 1e-10 * np.eye(n0_obs)
+        L_aug_p = np.linalg.cholesky(K_aap)
+        K_cc_ch = km_cc._eval_matern25_kernel_pair(cand_cc, cand_cc, st_ch)
+        K_cg_ch = km_cc._eval_matern25_kernel_pair(cand_cc, grid_cc, st_ch)
+        V_cap = _st_tri(L_aug_p, km_cc._eval_matern25_kernel_pair(cand_cc, X_aug_p, st_ch).T, lower=True, check_finite=False)
+        V_gap = _st_tri(L_aug_p, km_cc._eval_matern25_kernel_pair(grid_cc, X_aug_p, st_ch).T, lower=True, check_finite=False)
+        Cp_exact = (st_ch["y_std"] ** 2) * (K_cc_ch - (V_cap.T @ V_cap))
+        Gp_exact = (st_ch["y_std"] ** 2) * ((K_cg_ch @ w_func) - (V_cap.T @ (V_gap @ w_func)))
+        pend_cov_errs_3ch.append(float(np.max(np.abs(Cp_ch - Cp_exact))))
+        pend_proj_errs_3ch.append(float(np.max(np.abs(Gp_ch - Gp_exact))))
+    pend_offgrid_cov_err = float(max(pend_cov_errs_3ch))
+    pend_offgrid_proj_err = float(max(pend_proj_errs_3ch))
 
     # (D) Positive control on `cols_retained`: no-op / micro update MUST retain >0 native columns
     pl_pos = SchurPortPlanner(sp_gf, 17, lambda X: np.full(len(X), 0.4), None, [GoalBall((0.4, 0.2), 0.0, 0.28)], initial_sectors_per_wp="L1", lazy_init=False)
     upd_pos = pl_pos.update_world_with_residual_audit(lambda X: np.full(len(X), 0.4), None, mode="selective_residual")
     pos_cols_retained = int(upd_pos["cols_retained"])
+
+    def _eval_s22_gate(cov_e: float, proj_e: float, ret_c: int) -> bool:
+        checks = {
+            "no_action_tie": not bool(sens_zd["action_tie_detected"]),
+            "upwind_kink_detected": bool(sens_zd["upwind_drift_kink_detected"]),
+            "kink_count_pos": int(sens_zd["n_zero_drift_kink_components"]) > 0,
+            "right_rich_ok": float(max(zd_right_rich_errs)) < 1e-9,
+            "left_rich_ok": float(max(zd_left_rich_errs)) < 1e-9,
+            "mid_rich_ok": float(max(zd_mid_rich_errs)) < 1e-9,
+            "mix_rich_ok": float(zd_mix_err) < 1e-9,
+            "strict_smooth_rejects": bool(strict_smooth_rejected),
+            "alt0_grad_exact": float(alt0_grad_diff) == 0.0,
+            "alt0_rhs_reduced": bool(alt0_rhs_reduced),
+            "spd_idx_2": int(spd_selected_idx) == 2,
+            "offgrid_cov_ok": float(cov_e) < 1e-12,
+            "offgrid_proj_ok": float(proj_e) < 1e-12,
+            "retained_cols_pos": int(ret_c) >= 1,
+        }
+        return bool(all(checks.values()))
+
+    # Explicit single-condition failure-injection negative controls (`c2c499e` v6 Audit §5.1 Closure)
+    neg_cov_fails = not _eval_s22_gate(1.0, pend_offgrid_proj_err, pos_cols_retained)
+    neg_proj_fails = not _eval_s22_gate(pend_offgrid_cov_err, 1.0, pos_cols_retained)
+    neg_ret_fails = not _eval_s22_gate(pend_offgrid_cov_err, pend_offgrid_proj_err, 0)
 
     report["22_zero_drift_kink_pending_sentinel_and_retained_cols_audit"] = {
         "zero_drift_action_tie_detected": bool(sens_zd["action_tie_detected"]),
@@ -1421,24 +1454,109 @@ def run_all_audit_checks() -> dict:
         "alt1_rhs_cols": int(sens_alt1["n_transpose_rhs_cols"]),
         "alt0_rhs_reduced": alt0_rhs_reduced,
         "spd_pending_counterexample_selected_idx": spd_selected_idx,
+        "offgrid_pending_3channel_cov_errs": pend_cov_errs_3ch,
+        "offgrid_pending_3channel_proj_errs": pend_proj_errs_3ch,
         "offgrid_pending_cov_max_abs_err": pend_offgrid_cov_err,
         "offgrid_pending_proj_max_abs_err": pend_offgrid_proj_err,
         "positive_control_cols_retained": pos_cols_retained,
+        "negative_control_cov_injection_rejected": bool(neg_cov_fails),
+        "negative_control_proj_injection_rejected": bool(neg_proj_fails),
+        "negative_control_retained_zero_rejected": bool(neg_ret_fails),
         "pass": bool(
-            (not sens_zd["action_tie_detected"])
-            and bool(sens_zd["upwind_drift_kink_detected"])
-            and int(sens_zd["n_zero_drift_kink_components"]) > 0
-            and max(zd_right_rich_errs) < 1e-9
-            and max(zd_left_rich_errs) < 1e-9
-            and max(zd_mid_rich_errs) < 1e-9
-            and zd_mix_err < 1e-9
-            and strict_smooth_rejected
-            and alt0_grad_diff == 0.0
-            and alt0_rhs_reduced
-            and spd_selected_idx == 2
-            and pend_offgrid_cov_max_err < 1e-12 if (pend_offgrid_cov_max_err := pend_offgrid_cov_err) is not None else False
-            and pend_offgrid_proj_err < 1e-12
-            and pos_cols_retained >= 1
+            _eval_s22_gate(pend_offgrid_cov_err, pend_offgrid_proj_err, pos_cols_retained)
+            and neg_cov_fails
+            and neg_proj_fails
+            and neg_ret_fails
+        ),
+    }
+
+    # ------------------------------------------------------------------
+    # 23. [NEW `c2c499e` v6 Closure] Lossless `<f8` `.npz` Acquisition Tape Round-Trip & Bellman-Tie Scope Guard
+    # ------------------------------------------------------------------
+    import tempfile
+    from green_response.core import (
+        load_and_verify_lossless_acquisition_tape_npz,
+        save_lossless_acquisition_tape_npz,
+    )
+    with tempfile.TemporaryDirectory() as tmp_d:
+        tp_grid = Path(tmp_d) / "grid_tape.npz"
+        tp_off = Path(tmp_d) / "offgrid_tape.npz"
+        X_g_test = cand_cc[:6].copy()
+        q_g_test = np.linspace(0.123456789012345, 0.987654321098765, 6)
+        b_g_test = np.column_stack([np.sin(np.arange(6) * 0.71), np.cos(np.arange(6) * 0.53)])
+        save_lossless_acquisition_tape_npz(tp_grid, X_g_test, q_g_test, b_g_test, metadata={"batch": "grid"})
+        rec_g = load_and_verify_lossless_acquisition_tape_npz(tp_grid)
+        grid_roundtrip_diff = float(
+            max(
+                np.max(np.abs(rec_g["X_selected"] - X_g_test)),
+                np.max(np.abs(rec_g["q_observed"] - q_g_test)),
+                np.max(np.abs(rec_g["b_observed"] - b_g_test)),
+            )
+        )
+
+        # Irrational off-grid trajectory batch + indices + 1-ULP tamper rejection check
+        X_o_test = np.column_stack([np.pi * 0.31 * np.arange(1, 6) - 1.1, np.sqrt(2.0) * 0.27 * np.arange(1, 6) - 0.8])
+        q_o_test = np.exp(-0.37 * np.arange(1, 6))
+        b_o_test = np.column_stack([np.cbrt(np.arange(1, 6) * 0.19), -np.sqrt(np.arange(1, 6) * 0.13)])
+        idx_o_test = [17, 4, 29, 8, 12]
+        man_o = save_lossless_acquisition_tape_npz(
+            tp_off, X_o_test, q_o_test, b_o_test, metadata={"batch": "offgrid"}, onpolicy_traj_indices=idx_o_test
+        )
+        rec_o = load_and_verify_lossless_acquisition_tape_npz(tp_off)
+        off_roundtrip_diff = float(
+            max(
+                np.max(np.abs(rec_o["X_selected"] - X_o_test)),
+                np.max(np.abs(rec_o["q_observed"] - q_o_test)),
+                np.max(np.abs(rec_o["b_observed"] - b_o_test)),
+            )
+        )
+        idx_exact_match = rec_o["onpolicy_traj_indices"] == idx_o_test
+
+        # Tamper X_selected by 1 ULP without updating manifest_json -> MUST fail closed!
+        X_tamper = X_o_test.copy()
+        X_tamper[0, 0] = np.nextafter(X_tamper[0, 0], np.inf)
+        tp_bad = Path(tmp_d) / "tampered_tape.npz"
+        np.savez_compressed(
+            tp_bad,
+            X_selected=np.ascontiguousarray(X_tamper, dtype="<f8"),
+            q_observed=np.ascontiguousarray(q_o_test, dtype="<f8"),
+            b_observed=np.ascontiguousarray(b_o_test, dtype="<f8"),
+            onpolicy_traj_indices=np.asarray(idx_o_test, dtype="<i8"),
+            manifest_json=np.array(json.dumps(man_o, sort_keys=True)),
+        )
+        tamper_rejected = False
+        try:
+            load_and_verify_lossless_acquisition_tape_npz(tp_bad)
+        except ValueError:
+            tamper_rejected = True
+
+    # Symmetric nonzero-drift Bellman tie scope check (`c2_core_audit_notes.md` §2):
+    # `strict_smooth` allows nonzero drift while `action_tie_detected` explicitly flags the Bellman cusp!
+    b_sym_nz = np.full((17 * 17, 2), 0.12, dtype=float)
+    gs_sym_xy = [GoalBall((0.55, -0.25), 0.0, 0.24), GoalBall((-0.25, 0.55), 0.0, 0.24)]
+    pl_sym_nz = SchurPortPlanner(
+        sp_gf, 17, lambda X: np.full(len(X), 0.35), lambda X: b_sym_nz, gs_sym_xy, initial_sectors_per_wp="EXACT", lazy_init=True
+    )
+    sens_sym_nz = MacroTourPlanner(pl_sym_nz).compute_exact_macro_q_sensitivities(
+        (-0.60, -0.60), [0, 1], max_alt_branches=1, zero_drift_mode="strict_smooth"
+    )
+
+    report["23_lossless_npz_tape_and_bellman_tie_scope_audit"] = {
+        "grid_batch_roundtrip_max_diff": grid_roundtrip_diff,
+        "offgrid_batch_roundtrip_max_diff": off_roundtrip_diff,
+        "offgrid_indices_exact_match": bool(idx_exact_match),
+        "one_ulp_tamper_rejected": bool(tamper_rejected),
+        "nonzero_drift_bellman_tie_upwind_kink": bool(sens_sym_nz["upwind_drift_kink_detected"]),
+        "nonzero_drift_bellman_tie_action_tie": bool(sens_sym_nz["action_tie_detected"]),
+        "nonzero_drift_bellman_tie_derivative_kind": sens_sym_nz["derivative_kind"],
+        "pass": bool(
+            grid_roundtrip_diff == 0.0
+            and off_roundtrip_diff == 0.0
+            and idx_exact_match
+            and tamper_rejected
+            and (not sens_sym_nz["upwind_drift_kink_detected"])
+            and bool(sens_sym_nz["action_tie_detected"])
+            and sens_sym_nz["derivative_kind"] == "active_branch"
         ),
     }
 

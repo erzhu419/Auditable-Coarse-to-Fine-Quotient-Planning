@@ -2026,10 +2026,20 @@ def _deferred_eval_active_sensing_worker(args: Tuple[int, int, str, int, Tuple[s
 
 
 def _compute_budget_attainment_curves(rows: List[dict], arms: Sequence[str], budgets: Sequence[int] = (28, 42, 56, 70, 84, 98)) -> dict:
-    """Computes pre-declared relative cost-reduction attainment across natural probe checkpoints `[28..98]`
-    without dropping or hiding unattained maps (right-censored maps explicitly retained and counted).
+    """Computes pre-declared relative cost-reduction attainment across natural probe checkpoints `[28..98]`:
+      - Primary censoring-free summaries: `fraction_attained_by_checkpoint`, `fraction_unattained_at_98_probes`,
+        and finite-budget trapezoidal `mean_cost_auc_over_28_to_98`;
+      - Bounded penalty score: `bounded_next_step_penalty_score_at_112` (assigns `112` when `T > 98`; explicitly
+        documented as a bounded penalty score, NOT uncensored expected sample complexity!).
     """
     ep1_anchor = np.array([r["arms"][arms[0]]["heldout_cost_by_ep"][0] for r in rows], dtype=float)
+    b_arr = np.asarray(budgets, dtype=float)
+    auc_by_arm = {}
+    for a in arms:
+        c_mat = np.array([r["arms"][a]["heldout_cost_by_ep"] for r in rows], dtype=float)
+        auc_vals = np.trapezoid(c_mat, b_arr, axis=1) / float(b_arr[-1] - b_arr[0])
+        auc_by_arm[a] = float(np.mean(auc_vals))
+
     thresholds_rel = (0.06, 0.09, 0.12)
     out_thr = {}
     for rel_pct in thresholds_rel:
@@ -2048,16 +2058,23 @@ def _compute_budget_attainment_curves(rows: List[dict], arms: Sequence[str], bud
                     first_b.append(int(budgets[int(hits[0])]))
                     attained_flags.append(True)
                 else:
-                    first_b.append(112)  # right-censored at `>98` (next +14 step)
+                    first_b.append(112)  # bounded next-step penalty (`T > 98`), NOT observed sample complexity
                     attained_flags.append(False)
             arm_stats[a] = {
                 "fraction_attained_by_checkpoint": [float(np.mean(cum_hit[:, j])) for j in range(len(budgets))],
                 "fraction_attained_by_98_probes": float(np.mean(attained_flags)),
+                "fraction_unattained_gt_98_probes": float(1.0 - np.mean(attained_flags)),
                 "n_unattained_censored_of_total": int(len(rows) - sum(attained_flags)),
+                "bounded_next_step_penalty_score_at_112": float(np.mean(first_b)),
                 "mean_first_budget_censored_at_112": float(np.mean(first_b)),
+                "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count.",
             }
         out_thr[key] = arm_stats
-    return {"probe_checkpoints": list(budgets), "relative_ep1_reduction_targets": out_thr}
+    return {
+        "probe_checkpoints": list(budgets),
+        "normalized_trapezoidal_cost_auc_28_to_98": auc_by_arm,
+        "relative_ep1_reduction_targets": out_thr,
+    }
 
 
 def _summarize_factorial_cohort(rows: List[dict], regime_label: str, seeds: List[int], grid_n: int) -> dict:
@@ -2287,9 +2304,13 @@ def run_locked_fresh_confirmation_64maps(n_maps_per_regime: int = 32, grid_n: in
     all_rows = rows_std + rows_comp
     tapes = [r["_compact_tape"] for r in all_rows]
 
-    # Shared-simulation-noise-index paired sensitivity check (`n = 32` paired averages across the two regimes)
+    # Shared-simulation-noise-index paired sensitivity check (`n = 32` paired averages)
+    # AND explicit Gelman-Stern between-regime interaction test `(G - B)_Competing - (G - B)_Standard` (`v6` §7.2 Closure)!
+    from green_response.core import welch_two_sample_stats
     cand_k = "Green-ValueOnly-qb-Cond-11+3"
     pair_avg_diffs = {}
+    regime_interaction_paired = {}
+    regime_interaction_welch = {}
     for base_k, lbl_k in [
         ("Global-CondMaxVar-qb-14", "GreenValCond_minus_GlobalCondMaxVar_qb_14"),
         ("True-OnPolicy-11+CondSentinel-qb-3", "GreenValCond_minus_OnPolicy11CondSentinel_qb_3"),
@@ -2298,6 +2319,8 @@ def run_locked_fresh_confirmation_64maps(n_maps_per_regime: int = 32, grid_n: in
         d_std = np.array([r["arms"][cand_k]["heldout_post_acq_ep2_6_mean_cost"] - r["arms"][base_k]["heldout_post_acq_ep2_6_mean_cost"] for r in rows_std])
         d_cmp = np.array([r["arms"][cand_k]["heldout_post_acq_ep2_6_mean_cost"] - r["arms"][base_k]["heldout_post_acq_ep2_6_mean_cost"] for r in rows_comp])
         pair_avg_diffs[lbl_k] = paired_stats(0.5 * (d_std + d_cmp))
+        regime_interaction_paired[lbl_k] = paired_stats(d_cmp - d_std)
+        regime_interaction_welch[lbl_k] = welch_two_sample_stats(d_cmp, d_std)
     pair_avg_holm = holm_bonferroni_adjust({k: v["p_two_sided"] for k, v in pair_avg_diffs.items()})
 
     summary = {
@@ -2308,6 +2331,15 @@ def run_locked_fresh_confirmation_64maps(n_maps_per_regime: int = 32, grid_n: in
         "standard_narrow_barrier_32maps": _summarize_locked_confirmation_cohort(rows_std, "narrow_barrier", std_seeds, grid_n),
         "competing_corridor_32maps": _summarize_locked_confirmation_cohort(rows_comp, "competing_corridor", comp_seeds, grid_n),
         "pooled_64maps": _summarize_locked_confirmation_cohort(all_rows, "pooled_fresh_confirmation_64maps", std_seeds + comp_seeds, grid_n),
+        "between_regime_interaction_tests_competing_minus_standard": {
+            "interpretation_note": (
+                "Gelman-Stern (2006) direct interaction test: within-subgroup significance in Competing-Corridor "
+                "plus non-significance in Standard does NOT establish a statistically significant difference between regimes "
+                "unless Competing-minus-Standard itself is significant."
+            ),
+            "paired_by_shared_noise_index_32pairs": regime_interaction_paired,
+            "independent_strata_welch_64maps": regime_interaction_welch,
+        },
         "shared_noise_index_32pair_sensitivity_check": {
             "n_independent_index_pairs": n_maps_per_regime,
             "contrasts_ep2_6": pair_avg_diffs,

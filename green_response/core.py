@@ -1364,3 +1364,101 @@ def holm_bonferroni_adjust(p_values: Dict[str, float], alpha: float = 0.05) -> D
             "significant_familywise_0_05": bool(rejected_so_far and p_adj < alpha),
         }
     return out
+
+
+def welch_two_sample_stats(x: Sequence[float], y: Sequence[float]) -> dict:
+    """Independent two-sample Welch t-test and 95% CI for `mean(x) - mean(y)` (e.g. between-regime interaction)."""
+    ax = np.asarray(x, dtype=float)
+    ay = np.asarray(y, dtype=float)
+    nx, ny = int(ax.size), int(ay.size)
+    diff = float(np.mean(ax) - np.mean(ay))
+    vx = float(np.var(ax, ddof=1)) / max(nx, 1)
+    vy = float(np.var(ay, ddof=1)) / max(ny, 1)
+    se = float(np.sqrt(max(vx + vy, 1e-30)))
+    denom_df = (vx ** 2) / max(nx - 1, 1) + (vy ** 2) / max(ny - 1, 1)
+    df = float(((vx + vy) ** 2) / max(denom_df, 1e-30))
+    t_val = diff / se
+    p_two = float(2.0 * student_t.sf(abs(t_val), df=df))
+    half = float(student_t.ppf(0.975, df=df)) * se
+    return {
+        "n_x": nx,
+        "n_y": ny,
+        "welch_df": df,
+        "mean_diff": diff,
+        "ci95_half": half,
+        "ci95": [diff - half, diff + half],
+        "p_two_sided": p_two,
+    }
+
+
+def _array_f8_sha256(arr: np.ndarray) -> str:
+    import hashlib
+    a = np.ascontiguousarray(arr, dtype="<f8")
+    h = hashlib.sha256()
+    h.update(f"{a.dtype.str}:{a.shape}:".encode("utf-8"))
+    h.update(a.tobytes())
+    return h.hexdigest()
+
+
+def save_lossless_acquisition_tape_npz(
+    path: Path,
+    X_selected: np.ndarray,
+    q_observed: np.ndarray,
+    b_observed: np.ndarray,
+    metadata: Optional[dict] = None,
+    onpolicy_traj_indices: Optional[Sequence[int]] = None,
+) -> dict:
+    """Lossless IEEE-754 float64 (`.npz`) acquisition tape serializer (`c2c499e` v6 Closure):
+    Binds SHA-256 digests directly to exact `<f8` dtype, shape, and raw bytes so both on-grid and
+    arbitrary off-grid coordinates/observations round-trip with `0.0` bit loss.
+    """
+    import json
+    X_f8 = np.ascontiguousarray(np.atleast_2d(X_selected), dtype="<f8")
+    q_f8 = np.ascontiguousarray(np.asarray(q_observed), dtype="<f8")
+    b_f8 = np.ascontiguousarray(np.atleast_2d(b_observed), dtype="<f8")
+    idx_i8 = (
+        np.ascontiguousarray(np.asarray(onpolicy_traj_indices, dtype="<i8"))
+        if onpolicy_traj_indices is not None
+        else np.empty((0,), dtype="<i8")
+    )
+    manifest = {
+        "schema": "lossless_f64_acquisition_tape_v2",
+        "X_sha256": _array_f8_sha256(X_f8),
+        "q_sha256": _array_f8_sha256(q_f8),
+        "b_sha256": _array_f8_sha256(b_f8),
+        "has_onpolicy_indices": bool(onpolicy_traj_indices is not None),
+        "metadata": dict(metadata or {}),
+    }
+    np.savez_compressed(
+        path,
+        X_selected=X_f8,
+        q_observed=q_f8,
+        b_observed=b_f8,
+        onpolicy_traj_indices=idx_i8,
+        manifest_json=np.array(json.dumps(manifest, sort_keys=True)),
+    )
+    return manifest
+
+
+def load_and_verify_lossless_acquisition_tape_npz(path: Path) -> dict:
+    """Loads a lossless `.npz` acquisition tape and fail-closed verifies exact `<f8` byte SHA-256 integrity."""
+    import json
+    with np.load(path, allow_pickle=False) as z:
+        X_f8 = np.ascontiguousarray(z["X_selected"], dtype="<f8")
+        q_f8 = np.ascontiguousarray(z["q_observed"], dtype="<f8")
+        b_f8 = np.ascontiguousarray(z["b_observed"], dtype="<f8")
+        idx_i8 = np.ascontiguousarray(z["onpolicy_traj_indices"], dtype="<i8")
+        manifest = json.loads(str(z["manifest_json"].item()))
+    if _array_f8_sha256(X_f8) != manifest.get("X_sha256"):
+        raise ValueError("Lossless tape X_selected SHA-256 mismatch!")
+    if _array_f8_sha256(q_f8) != manifest.get("q_sha256"):
+        raise ValueError("Lossless tape q_observed SHA-256 mismatch!")
+    if _array_f8_sha256(b_f8) != manifest.get("b_sha256"):
+        raise ValueError("Lossless tape b_observed SHA-256 mismatch!")
+    return {
+        "X_selected": X_f8,
+        "q_observed": q_f8,
+        "b_observed": b_f8,
+        "onpolicy_traj_indices": idx_i8.tolist() if manifest.get("has_onpolicy_indices") else None,
+        "manifest": manifest,
+    }

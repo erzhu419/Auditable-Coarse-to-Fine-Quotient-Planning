@@ -67,26 +67,28 @@
     ]
   },
   "source_manifest": {
-    "git_head_sha": "57e59129bb21146df352e9c365150c34b775d564",
+    "git_head_sha": "c2c499e50428759f883b82fd41de9774c84d54d6",
     "git_dirty_green_response": true,
-    "package_py_sha256": "2b38a2d5d6c544e33f58640eafc2d7a15f45ce573d8423506ce56188b4692939",
+    "package_py_sha256": "7f9d208b7280771642bb3f9142f15dcfd568528b4a6ced94a3df587f927ee6a9",
     "per_file_sha256": {
-      "__init__.py": "028706b1e52a4b5e29c4dc42b8995b35397720ff6cf81c48b635ec51f9b5ee05",
-      "core.py": "9d8cc7a42aa73c966428a50c94725b2481dfd5c08262c8b6672f39035bd7185a",
+      "__init__.py": "34ff5edb886ae35d08fc9b82b6f2550c9358df120187f4c794a161c783d256da",
+      "core.py": "9867133f19cf25a5a52a11d7708b3a17840afbc5a24977c3e28231bfe85e9507",
       "exp1_3d_and_macro_tours.py": "ae079e2d1b0ba44f283c85ebb54c290b7f18253fc11de38e72a8d0de80599bf2",
       "exp2_nonlmdp_kkt.py": "3187b5ff1be8a3e637974029fb56d401b74c0c86f468c68bc662bfbf69ad9405",
       "exp3_highd_and_kinetic.py": "4d6588d5fec9408c4dfe9ae9d2df6a1a7bd375d1b373d7f4e7e063c16fe6d401",
-      "exp4_fidelity_and_continual.py": "285fbf3d8b1aeda37667b34cf68a1c2175a43b70663dfbcbf1e7fde4e8a2acf2",
+      "exp4_fidelity_and_continual.py": "79250914aa01fa54e974ddf3cb5a7fe8e9692e456d5d873f90840bd213297b54",
+      "exp5_response_subspace_diagnostic.py": "0c8fca7bbeaf58a26213ca4a998e914c49f30576d304a380b86ab490c75cdc49",
       "highd_solvers.py": "b2860c83e59dc4b6060c0e8726f64755a97f4cb9edbca2d4acbdf6242dee4542",
-      "macro_planning.py": "69a21fec2d593ad6e7ba89abde85dffab16e74c5e0db55a741d87781903936ce",
+      "macro_planning.py": "8196e073ed72492ad7018ced65d5cd8e781bd6580a04c0804d90ab1be48621ac",
       "port_solvers.py": "35e598894f1013db0732561bcd85a9b81097fc7eddbbc5d929192296d194f914",
-      "verify_audit_closure.py": "8a95348c187a3eb8c27e9aa640770f625dfd5b331fb9c0695ba96c2b7bc8878e"
+      "verify_audit_closure.py": "85463fc4afb06eafb4336d1ac92698a8387dd169df47cef74a3687a1b04b724d"
     }
   },
   "acquisition_tape_manifest": {
     "file": "exp4_acquisition_tapes.json",
-    "sha256": "956b048b55f6bddbf164519ebce6aad9ff4f083ffdf19442030cca0cd54643a4",
-    "size_bytes": 1812334,
+    "schema": "compact_5dec_provenance_tape_v1",
+    "sha256": "41a5b4893cfe9cba372dc615e27ada4a191680ed23d90ba02b90b525f9e57887",
+    "size_bytes": 1812863,
     "n_map_tapes_total": 96
   },
   "model_to_execution_fidelity_72tasks": {
@@ -5120,7 +5122,7 @@
     "generating_commit": "29fa7c6"
   },
   "real_gp_update_lifecycle_12maps": {
-    "block_provenance": "fresh_computed_in_current_run",
+    "block_provenance": "inherited_from_commit_c2c499e",
     "experiment_scope": "genuine_16_real_world_observations_and_gp_refit_zero_partial2_broad6_warmup_lifecycle",
     "column_counter_definition": "mean_cached_level_cols_retained counts total cached level-column entries (`L1/L4/L8/EXACT`) retained across the 12-waypoint partition tree inside update_world_with_residual_audit.",
     "fresh_seeds": [
@@ -19702,10 +19704,12 @@
           }
         }
       }
-    ]
+    ],
+    "generating_commit": "c2c499e",
+    "cohort_origin": "reused_10250_10261_cohort_with_zero_partial2_broad6_controls"
   },
   "batch_B_factorial_mechanism_diagnosis_32maps": {
-    "block_provenance": "fresh_computed_in_current_run",
+    "block_provenance": "inherited_from_commit_c2c499e",
     "experiment_scope": "batch_B_development_2x2_factorial_q_vs_qb_and_uncond_vs_cond_with_pending_qb_sentinels",
     "evaluation_chronology": "strictly_deferred_until_after_all_6_operational_episodes_complete",
     "standard_narrow_barrier_16maps": {
@@ -19845,6 +19849,15 @@
           84,
           98
         ],
+        "normalized_trapezoidal_cost_auc_28_to_98": {
+          "Global-CondMaxVar-qb-14": 11.366539579711304,
+          "True-OnPolicy-14": 11.321190697495817,
+          "True-OnPolicy-11+CondSentinel-qb-3": 11.392956394310279,
+          "FactA-GreenVal-qOnly-Uncond": 11.291345310589401,
+          "FactB-GreenVal-qOnly-Cond": 11.16699676800408,
+          "FactC-GreenVal-qb-Uncond": 11.29063804725657,
+          "FactD-GreenVal-qb-Cond": 11.133030857177186
+        },
         "relative_ep1_reduction_targets": {
           "rel_reduction_ge_6pct_vs_ep1_28obs": {
             "Global-CondMaxVar-qb-14": {
@@ -19857,8 +19870,11 @@
                 0.875
               ],
               "fraction_attained_by_98_probes": 0.875,
+              "fraction_unattained_gt_98_probes": 0.125,
               "n_unattained_censored_of_total": 2,
-              "mean_first_budget_censored_at_112": 57.75
+              "bounded_next_step_penalty_score_at_112": 57.75,
+              "mean_first_budget_censored_at_112": 57.75,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-14": {
               "fraction_attained_by_checkpoint": [
@@ -19870,8 +19886,11 @@
                 0.9375
               ],
               "fraction_attained_by_98_probes": 0.9375,
+              "fraction_unattained_gt_98_probes": 0.0625,
               "n_unattained_censored_of_total": 1,
-              "mean_first_budget_censored_at_112": 56.875
+              "bounded_next_step_penalty_score_at_112": 56.875,
+              "mean_first_budget_censored_at_112": 56.875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-11+CondSentinel-qb-3": {
               "fraction_attained_by_checkpoint": [
@@ -19883,8 +19902,11 @@
                 0.9375
               ],
               "fraction_attained_by_98_probes": 0.9375,
+              "fraction_unattained_gt_98_probes": 0.0625,
               "n_unattained_censored_of_total": 1,
-              "mean_first_budget_censored_at_112": 58.625
+              "bounded_next_step_penalty_score_at_112": 58.625,
+              "mean_first_budget_censored_at_112": 58.625,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactA-GreenVal-qOnly-Uncond": {
               "fraction_attained_by_checkpoint": [
@@ -19896,8 +19918,11 @@
                 0.9375
               ],
               "fraction_attained_by_98_probes": 0.9375,
+              "fraction_unattained_gt_98_probes": 0.0625,
               "n_unattained_censored_of_total": 1,
-              "mean_first_budget_censored_at_112": 58.625
+              "bounded_next_step_penalty_score_at_112": 58.625,
+              "mean_first_budget_censored_at_112": 58.625,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactB-GreenVal-qOnly-Cond": {
               "fraction_attained_by_checkpoint": [
@@ -19909,8 +19934,11 @@
                 0.9375
               ],
               "fraction_attained_by_98_probes": 0.9375,
+              "fraction_unattained_gt_98_probes": 0.0625,
               "n_unattained_censored_of_total": 1,
-              "mean_first_budget_censored_at_112": 54.25
+              "bounded_next_step_penalty_score_at_112": 54.25,
+              "mean_first_budget_censored_at_112": 54.25,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactC-GreenVal-qb-Uncond": {
               "fraction_attained_by_checkpoint": [
@@ -19922,8 +19950,11 @@
                 0.9375
               ],
               "fraction_attained_by_98_probes": 0.9375,
+              "fraction_unattained_gt_98_probes": 0.0625,
               "n_unattained_censored_of_total": 1,
-              "mean_first_budget_censored_at_112": 58.625
+              "bounded_next_step_penalty_score_at_112": 58.625,
+              "mean_first_budget_censored_at_112": 58.625,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactD-GreenVal-qb-Cond": {
               "fraction_attained_by_checkpoint": [
@@ -19935,8 +19966,11 @@
                 0.9375
               ],
               "fraction_attained_by_98_probes": 0.9375,
+              "fraction_unattained_gt_98_probes": 0.0625,
               "n_unattained_censored_of_total": 1,
-              "mean_first_budget_censored_at_112": 54.25
+              "bounded_next_step_penalty_score_at_112": 54.25,
+              "mean_first_budget_censored_at_112": 54.25,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             }
           },
           "rel_reduction_ge_9pct_vs_ep1_28obs": {
@@ -19950,8 +19984,11 @@
                 0.75
               ],
               "fraction_attained_by_98_probes": 0.75,
+              "fraction_unattained_gt_98_probes": 0.25,
               "n_unattained_censored_of_total": 4,
-              "mean_first_budget_censored_at_112": 70.875
+              "bounded_next_step_penalty_score_at_112": 70.875,
+              "mean_first_budget_censored_at_112": 70.875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-14": {
               "fraction_attained_by_checkpoint": [
@@ -19963,8 +20000,11 @@
                 0.75
               ],
               "fraction_attained_by_98_probes": 0.75,
+              "fraction_unattained_gt_98_probes": 0.25,
               "n_unattained_censored_of_total": 4,
-              "mean_first_budget_censored_at_112": 68.25
+              "bounded_next_step_penalty_score_at_112": 68.25,
+              "mean_first_budget_censored_at_112": 68.25,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-11+CondSentinel-qb-3": {
               "fraction_attained_by_checkpoint": [
@@ -19976,8 +20016,11 @@
                 0.8125
               ],
               "fraction_attained_by_98_probes": 0.8125,
+              "fraction_unattained_gt_98_probes": 0.1875,
               "n_unattained_censored_of_total": 3,
-              "mean_first_budget_censored_at_112": 68.25
+              "bounded_next_step_penalty_score_at_112": 68.25,
+              "mean_first_budget_censored_at_112": 68.25,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactA-GreenVal-qOnly-Uncond": {
               "fraction_attained_by_checkpoint": [
@@ -19989,8 +20032,11 @@
                 0.6875
               ],
               "fraction_attained_by_98_probes": 0.6875,
+              "fraction_unattained_gt_98_probes": 0.3125,
               "n_unattained_censored_of_total": 5,
-              "mean_first_budget_censored_at_112": 71.75
+              "bounded_next_step_penalty_score_at_112": 71.75,
+              "mean_first_budget_censored_at_112": 71.75,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactB-GreenVal-qOnly-Cond": {
               "fraction_attained_by_checkpoint": [
@@ -20002,8 +20048,11 @@
                 0.75
               ],
               "fraction_attained_by_98_probes": 0.75,
+              "fraction_unattained_gt_98_probes": 0.25,
               "n_unattained_censored_of_total": 4,
-              "mean_first_budget_censored_at_112": 67.375
+              "bounded_next_step_penalty_score_at_112": 67.375,
+              "mean_first_budget_censored_at_112": 67.375,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactC-GreenVal-qb-Uncond": {
               "fraction_attained_by_checkpoint": [
@@ -20015,8 +20064,11 @@
                 0.6875
               ],
               "fraction_attained_by_98_probes": 0.6875,
+              "fraction_unattained_gt_98_probes": 0.3125,
               "n_unattained_censored_of_total": 5,
-              "mean_first_budget_censored_at_112": 72.625
+              "bounded_next_step_penalty_score_at_112": 72.625,
+              "mean_first_budget_censored_at_112": 72.625,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactD-GreenVal-qb-Cond": {
               "fraction_attained_by_checkpoint": [
@@ -20028,8 +20080,11 @@
                 0.8125
               ],
               "fraction_attained_by_98_probes": 0.8125,
+              "fraction_unattained_gt_98_probes": 0.1875,
               "n_unattained_censored_of_total": 3,
-              "mean_first_budget_censored_at_112": 65.625
+              "bounded_next_step_penalty_score_at_112": 65.625,
+              "mean_first_budget_censored_at_112": 65.625,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             }
           },
           "rel_reduction_ge_12pct_vs_ep1_28obs": {
@@ -20043,8 +20098,11 @@
                 0.6875
               ],
               "fraction_attained_by_98_probes": 0.6875,
+              "fraction_unattained_gt_98_probes": 0.3125,
               "n_unattained_censored_of_total": 5,
-              "mean_first_budget_censored_at_112": 77.0
+              "bounded_next_step_penalty_score_at_112": 77.0,
+              "mean_first_budget_censored_at_112": 77.0,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-14": {
               "fraction_attained_by_checkpoint": [
@@ -20056,8 +20114,11 @@
                 0.75
               ],
               "fraction_attained_by_98_probes": 0.75,
+              "fraction_unattained_gt_98_probes": 0.25,
               "n_unattained_censored_of_total": 4,
-              "mean_first_budget_censored_at_112": 77.875
+              "bounded_next_step_penalty_score_at_112": 77.875,
+              "mean_first_budget_censored_at_112": 77.875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-11+CondSentinel-qb-3": {
               "fraction_attained_by_checkpoint": [
@@ -20069,8 +20130,11 @@
                 0.6875
               ],
               "fraction_attained_by_98_probes": 0.6875,
+              "fraction_unattained_gt_98_probes": 0.3125,
               "n_unattained_censored_of_total": 5,
-              "mean_first_budget_censored_at_112": 77.0
+              "bounded_next_step_penalty_score_at_112": 77.0,
+              "mean_first_budget_censored_at_112": 77.0,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactA-GreenVal-qOnly-Uncond": {
               "fraction_attained_by_checkpoint": [
@@ -20082,8 +20146,11 @@
                 0.625
               ],
               "fraction_attained_by_98_probes": 0.625,
+              "fraction_unattained_gt_98_probes": 0.375,
               "n_unattained_censored_of_total": 6,
-              "mean_first_budget_censored_at_112": 77.0
+              "bounded_next_step_penalty_score_at_112": 77.0,
+              "mean_first_budget_censored_at_112": 77.0,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactB-GreenVal-qOnly-Cond": {
               "fraction_attained_by_checkpoint": [
@@ -20095,8 +20162,11 @@
                 0.6875
               ],
               "fraction_attained_by_98_probes": 0.6875,
+              "fraction_unattained_gt_98_probes": 0.3125,
               "n_unattained_censored_of_total": 5,
-              "mean_first_budget_censored_at_112": 73.5
+              "bounded_next_step_penalty_score_at_112": 73.5,
+              "mean_first_budget_censored_at_112": 73.5,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactC-GreenVal-qb-Uncond": {
               "fraction_attained_by_checkpoint": [
@@ -20108,8 +20178,11 @@
                 0.625
               ],
               "fraction_attained_by_98_probes": 0.625,
+              "fraction_unattained_gt_98_probes": 0.375,
               "n_unattained_censored_of_total": 6,
-              "mean_first_budget_censored_at_112": 77.0
+              "bounded_next_step_penalty_score_at_112": 77.0,
+              "mean_first_budget_censored_at_112": 77.0,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactD-GreenVal-qb-Cond": {
               "fraction_attained_by_checkpoint": [
@@ -20121,8 +20194,11 @@
                 0.6875
               ],
               "fraction_attained_by_98_probes": 0.6875,
+              "fraction_unattained_gt_98_probes": 0.3125,
               "n_unattained_censored_of_total": 5,
-              "mean_first_budget_censored_at_112": 73.5
+              "bounded_next_step_penalty_score_at_112": 73.5,
+              "mean_first_budget_censored_at_112": 73.5,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             }
           }
         }
@@ -26386,7 +26462,8 @@
             }
           }
         }
-      ]
+      ],
+      "kink_audit_scope": "five_acquisition_stages_ep1_to_ep5_online_adjoint_calls_ep6_has_no_acquisition"
     },
     "competing_corridor_16maps": {
       "cohort_role": "development_mechanism_diagnosis_on_revealed_seeds_not_fresh_confirmation",
@@ -26525,6 +26602,15 @@
           84,
           98
         ],
+        "normalized_trapezoidal_cost_auc_28_to_98": {
+          "Global-CondMaxVar-qb-14": 8.423829089779728,
+          "True-OnPolicy-14": 8.265576356927562,
+          "True-OnPolicy-11+CondSentinel-qb-3": 8.329928916438277,
+          "FactA-GreenVal-qOnly-Uncond": 8.270730847336903,
+          "FactB-GreenVal-qOnly-Cond": 8.135603887461919,
+          "FactC-GreenVal-qb-Uncond": 8.293586483319167,
+          "FactD-GreenVal-qb-Cond": 8.162188222461875
+        },
         "relative_ep1_reduction_targets": {
           "rel_reduction_ge_6pct_vs_ep1_28obs": {
             "Global-CondMaxVar-qb-14": {
@@ -26537,8 +26623,11 @@
                 0.875
               ],
               "fraction_attained_by_98_probes": 0.875,
+              "fraction_unattained_gt_98_probes": 0.125,
               "n_unattained_censored_of_total": 2,
-              "mean_first_budget_censored_at_112": 66.5
+              "bounded_next_step_penalty_score_at_112": 66.5,
+              "mean_first_budget_censored_at_112": 66.5,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-14": {
               "fraction_attained_by_checkpoint": [
@@ -26550,8 +26639,11 @@
                 0.875
               ],
               "fraction_attained_by_98_probes": 0.875,
+              "fraction_unattained_gt_98_probes": 0.125,
               "n_unattained_censored_of_total": 2,
-              "mean_first_budget_censored_at_112": 62.125
+              "bounded_next_step_penalty_score_at_112": 62.125,
+              "mean_first_budget_censored_at_112": 62.125,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-11+CondSentinel-qb-3": {
               "fraction_attained_by_checkpoint": [
@@ -26563,8 +26655,11 @@
                 0.9375
               ],
               "fraction_attained_by_98_probes": 0.9375,
+              "fraction_unattained_gt_98_probes": 0.0625,
               "n_unattained_censored_of_total": 1,
-              "mean_first_budget_censored_at_112": 61.25
+              "bounded_next_step_penalty_score_at_112": 61.25,
+              "mean_first_budget_censored_at_112": 61.25,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactA-GreenVal-qOnly-Uncond": {
               "fraction_attained_by_checkpoint": [
@@ -26576,8 +26671,11 @@
                 0.875
               ],
               "fraction_attained_by_98_probes": 0.875,
+              "fraction_unattained_gt_98_probes": 0.125,
               "n_unattained_censored_of_total": 2,
-              "mean_first_budget_censored_at_112": 61.25
+              "bounded_next_step_penalty_score_at_112": 61.25,
+              "mean_first_budget_censored_at_112": 61.25,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactB-GreenVal-qOnly-Cond": {
               "fraction_attained_by_checkpoint": [
@@ -26589,8 +26687,11 @@
                 0.9375
               ],
               "fraction_attained_by_98_probes": 0.9375,
+              "fraction_unattained_gt_98_probes": 0.0625,
               "n_unattained_censored_of_total": 1,
-              "mean_first_budget_censored_at_112": 56.0
+              "bounded_next_step_penalty_score_at_112": 56.0,
+              "mean_first_budget_censored_at_112": 56.0,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactC-GreenVal-qb-Uncond": {
               "fraction_attained_by_checkpoint": [
@@ -26602,8 +26703,11 @@
                 0.875
               ],
               "fraction_attained_by_98_probes": 0.875,
+              "fraction_unattained_gt_98_probes": 0.125,
               "n_unattained_censored_of_total": 2,
-              "mean_first_budget_censored_at_112": 61.25
+              "bounded_next_step_penalty_score_at_112": 61.25,
+              "mean_first_budget_censored_at_112": 61.25,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactD-GreenVal-qb-Cond": {
               "fraction_attained_by_checkpoint": [
@@ -26615,8 +26719,11 @@
                 0.9375
               ],
               "fraction_attained_by_98_probes": 0.9375,
+              "fraction_unattained_gt_98_probes": 0.0625,
               "n_unattained_censored_of_total": 1,
-              "mean_first_budget_censored_at_112": 57.75
+              "bounded_next_step_penalty_score_at_112": 57.75,
+              "mean_first_budget_censored_at_112": 57.75,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             }
           },
           "rel_reduction_ge_9pct_vs_ep1_28obs": {
@@ -26630,8 +26737,11 @@
                 0.8125
               ],
               "fraction_attained_by_98_probes": 0.8125,
+              "fraction_unattained_gt_98_probes": 0.1875,
               "n_unattained_censored_of_total": 3,
-              "mean_first_budget_censored_at_112": 73.5
+              "bounded_next_step_penalty_score_at_112": 73.5,
+              "mean_first_budget_censored_at_112": 73.5,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-14": {
               "fraction_attained_by_checkpoint": [
@@ -26643,8 +26753,11 @@
                 0.8125
               ],
               "fraction_attained_by_98_probes": 0.8125,
+              "fraction_unattained_gt_98_probes": 0.1875,
               "n_unattained_censored_of_total": 3,
-              "mean_first_budget_censored_at_112": 68.25
+              "bounded_next_step_penalty_score_at_112": 68.25,
+              "mean_first_budget_censored_at_112": 68.25,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-11+CondSentinel-qb-3": {
               "fraction_attained_by_checkpoint": [
@@ -26656,8 +26769,11 @@
                 0.8125
               ],
               "fraction_attained_by_98_probes": 0.8125,
+              "fraction_unattained_gt_98_probes": 0.1875,
               "n_unattained_censored_of_total": 3,
-              "mean_first_budget_censored_at_112": 69.125
+              "bounded_next_step_penalty_score_at_112": 69.125,
+              "mean_first_budget_censored_at_112": 69.125,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactA-GreenVal-qOnly-Uncond": {
               "fraction_attained_by_checkpoint": [
@@ -26669,8 +26785,11 @@
                 0.875
               ],
               "fraction_attained_by_98_probes": 0.875,
+              "fraction_unattained_gt_98_probes": 0.125,
               "n_unattained_censored_of_total": 2,
-              "mean_first_budget_censored_at_112": 69.125
+              "bounded_next_step_penalty_score_at_112": 69.125,
+              "mean_first_budget_censored_at_112": 69.125,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactB-GreenVal-qOnly-Cond": {
               "fraction_attained_by_checkpoint": [
@@ -26682,8 +26801,11 @@
                 0.875
               ],
               "fraction_attained_by_98_probes": 0.875,
+              "fraction_unattained_gt_98_probes": 0.125,
               "n_unattained_censored_of_total": 2,
-              "mean_first_budget_censored_at_112": 62.125
+              "bounded_next_step_penalty_score_at_112": 62.125,
+              "mean_first_budget_censored_at_112": 62.125,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactC-GreenVal-qb-Uncond": {
               "fraction_attained_by_checkpoint": [
@@ -26695,8 +26817,11 @@
                 0.8125
               ],
               "fraction_attained_by_98_probes": 0.8125,
+              "fraction_unattained_gt_98_probes": 0.1875,
               "n_unattained_censored_of_total": 3,
-              "mean_first_budget_censored_at_112": 70.875
+              "bounded_next_step_penalty_score_at_112": 70.875,
+              "mean_first_budget_censored_at_112": 70.875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactD-GreenVal-qb-Cond": {
               "fraction_attained_by_checkpoint": [
@@ -26708,8 +26833,11 @@
                 0.8125
               ],
               "fraction_attained_by_98_probes": 0.8125,
+              "fraction_unattained_gt_98_probes": 0.1875,
               "n_unattained_censored_of_total": 3,
-              "mean_first_budget_censored_at_112": 63.875
+              "bounded_next_step_penalty_score_at_112": 63.875,
+              "mean_first_budget_censored_at_112": 63.875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             }
           },
           "rel_reduction_ge_12pct_vs_ep1_28obs": {
@@ -26723,8 +26851,11 @@
                 0.625
               ],
               "fraction_attained_by_98_probes": 0.625,
+              "fraction_unattained_gt_98_probes": 0.375,
               "n_unattained_censored_of_total": 6,
-              "mean_first_budget_censored_at_112": 88.375
+              "bounded_next_step_penalty_score_at_112": 88.375,
+              "mean_first_budget_censored_at_112": 88.375,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-14": {
               "fraction_attained_by_checkpoint": [
@@ -26736,8 +26867,11 @@
                 0.6875
               ],
               "fraction_attained_by_98_probes": 0.6875,
+              "fraction_unattained_gt_98_probes": 0.3125,
               "n_unattained_censored_of_total": 5,
-              "mean_first_budget_censored_at_112": 77.875
+              "bounded_next_step_penalty_score_at_112": 77.875,
+              "mean_first_budget_censored_at_112": 77.875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-11+CondSentinel-qb-3": {
               "fraction_attained_by_checkpoint": [
@@ -26749,8 +26883,11 @@
                 0.625
               ],
               "fraction_attained_by_98_probes": 0.625,
+              "fraction_unattained_gt_98_probes": 0.375,
               "n_unattained_censored_of_total": 6,
-              "mean_first_budget_censored_at_112": 82.25
+              "bounded_next_step_penalty_score_at_112": 82.25,
+              "mean_first_budget_censored_at_112": 82.25,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactA-GreenVal-qOnly-Uncond": {
               "fraction_attained_by_checkpoint": [
@@ -26762,8 +26899,11 @@
                 0.625
               ],
               "fraction_attained_by_98_probes": 0.625,
+              "fraction_unattained_gt_98_probes": 0.375,
               "n_unattained_censored_of_total": 6,
-              "mean_first_budget_censored_at_112": 81.375
+              "bounded_next_step_penalty_score_at_112": 81.375,
+              "mean_first_budget_censored_at_112": 81.375,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactB-GreenVal-qOnly-Cond": {
               "fraction_attained_by_checkpoint": [
@@ -26775,8 +26915,11 @@
                 0.625
               ],
               "fraction_attained_by_98_probes": 0.625,
+              "fraction_unattained_gt_98_probes": 0.375,
               "n_unattained_censored_of_total": 6,
-              "mean_first_budget_censored_at_112": 77.0
+              "bounded_next_step_penalty_score_at_112": 77.0,
+              "mean_first_budget_censored_at_112": 77.0,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactC-GreenVal-qb-Uncond": {
               "fraction_attained_by_checkpoint": [
@@ -26788,8 +26931,11 @@
                 0.6875
               ],
               "fraction_attained_by_98_probes": 0.6875,
+              "fraction_unattained_gt_98_probes": 0.3125,
               "n_unattained_censored_of_total": 5,
-              "mean_first_budget_censored_at_112": 80.5
+              "bounded_next_step_penalty_score_at_112": 80.5,
+              "mean_first_budget_censored_at_112": 80.5,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactD-GreenVal-qb-Cond": {
               "fraction_attained_by_checkpoint": [
@@ -26801,8 +26947,11 @@
                 0.625
               ],
               "fraction_attained_by_98_probes": 0.625,
+              "fraction_unattained_gt_98_probes": 0.375,
               "n_unattained_censored_of_total": 6,
-              "mean_first_budget_censored_at_112": 77.875
+              "bounded_next_step_penalty_score_at_112": 77.875,
+              "mean_first_budget_censored_at_112": 77.875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             }
           }
         }
@@ -33066,7 +33215,8 @@
             }
           }
         }
-      ]
+      ],
+      "kink_audit_scope": "five_acquisition_stages_ep1_to_ep5_online_adjoint_calls_ep6_has_no_acquisition"
     },
     "pooled_32maps": {
       "cohort_role": "development_mechanism_diagnosis_on_revealed_seeds_not_fresh_confirmation",
@@ -33221,6 +33371,15 @@
           84,
           98
         ],
+        "normalized_trapezoidal_cost_auc_28_to_98": {
+          "Global-CondMaxVar-qb-14": 9.895184334745517,
+          "True-OnPolicy-14": 9.793383527211692,
+          "True-OnPolicy-11+CondSentinel-qb-3": 9.861442655374278,
+          "FactA-GreenVal-qOnly-Uncond": 9.781038078963151,
+          "FactB-GreenVal-qOnly-Cond": 9.651300327732997,
+          "FactC-GreenVal-qb-Uncond": 9.79211226528787,
+          "FactD-GreenVal-qb-Cond": 9.64760953981953
+        },
         "relative_ep1_reduction_targets": {
           "rel_reduction_ge_6pct_vs_ep1_28obs": {
             "Global-CondMaxVar-qb-14": {
@@ -33233,8 +33392,11 @@
                 0.875
               ],
               "fraction_attained_by_98_probes": 0.875,
+              "fraction_unattained_gt_98_probes": 0.125,
               "n_unattained_censored_of_total": 4,
-              "mean_first_budget_censored_at_112": 62.125
+              "bounded_next_step_penalty_score_at_112": 62.125,
+              "mean_first_budget_censored_at_112": 62.125,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-14": {
               "fraction_attained_by_checkpoint": [
@@ -33246,8 +33408,11 @@
                 0.90625
               ],
               "fraction_attained_by_98_probes": 0.90625,
+              "fraction_unattained_gt_98_probes": 0.09375,
               "n_unattained_censored_of_total": 3,
-              "mean_first_budget_censored_at_112": 59.5
+              "bounded_next_step_penalty_score_at_112": 59.5,
+              "mean_first_budget_censored_at_112": 59.5,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-11+CondSentinel-qb-3": {
               "fraction_attained_by_checkpoint": [
@@ -33259,8 +33424,11 @@
                 0.9375
               ],
               "fraction_attained_by_98_probes": 0.9375,
+              "fraction_unattained_gt_98_probes": 0.0625,
               "n_unattained_censored_of_total": 2,
-              "mean_first_budget_censored_at_112": 59.9375
+              "bounded_next_step_penalty_score_at_112": 59.9375,
+              "mean_first_budget_censored_at_112": 59.9375,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactA-GreenVal-qOnly-Uncond": {
               "fraction_attained_by_checkpoint": [
@@ -33272,8 +33440,11 @@
                 0.90625
               ],
               "fraction_attained_by_98_probes": 0.90625,
+              "fraction_unattained_gt_98_probes": 0.09375,
               "n_unattained_censored_of_total": 3,
-              "mean_first_budget_censored_at_112": 59.9375
+              "bounded_next_step_penalty_score_at_112": 59.9375,
+              "mean_first_budget_censored_at_112": 59.9375,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactB-GreenVal-qOnly-Cond": {
               "fraction_attained_by_checkpoint": [
@@ -33285,8 +33456,11 @@
                 0.9375
               ],
               "fraction_attained_by_98_probes": 0.9375,
+              "fraction_unattained_gt_98_probes": 0.0625,
               "n_unattained_censored_of_total": 2,
-              "mean_first_budget_censored_at_112": 55.125
+              "bounded_next_step_penalty_score_at_112": 55.125,
+              "mean_first_budget_censored_at_112": 55.125,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactC-GreenVal-qb-Uncond": {
               "fraction_attained_by_checkpoint": [
@@ -33298,8 +33472,11 @@
                 0.90625
               ],
               "fraction_attained_by_98_probes": 0.90625,
+              "fraction_unattained_gt_98_probes": 0.09375,
               "n_unattained_censored_of_total": 3,
-              "mean_first_budget_censored_at_112": 59.9375
+              "bounded_next_step_penalty_score_at_112": 59.9375,
+              "mean_first_budget_censored_at_112": 59.9375,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactD-GreenVal-qb-Cond": {
               "fraction_attained_by_checkpoint": [
@@ -33311,8 +33488,11 @@
                 0.9375
               ],
               "fraction_attained_by_98_probes": 0.9375,
+              "fraction_unattained_gt_98_probes": 0.0625,
               "n_unattained_censored_of_total": 2,
-              "mean_first_budget_censored_at_112": 56.0
+              "bounded_next_step_penalty_score_at_112": 56.0,
+              "mean_first_budget_censored_at_112": 56.0,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             }
           },
           "rel_reduction_ge_9pct_vs_ep1_28obs": {
@@ -33326,8 +33506,11 @@
                 0.78125
               ],
               "fraction_attained_by_98_probes": 0.78125,
+              "fraction_unattained_gt_98_probes": 0.21875,
               "n_unattained_censored_of_total": 7,
-              "mean_first_budget_censored_at_112": 72.1875
+              "bounded_next_step_penalty_score_at_112": 72.1875,
+              "mean_first_budget_censored_at_112": 72.1875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-14": {
               "fraction_attained_by_checkpoint": [
@@ -33339,8 +33522,11 @@
                 0.78125
               ],
               "fraction_attained_by_98_probes": 0.78125,
+              "fraction_unattained_gt_98_probes": 0.21875,
               "n_unattained_censored_of_total": 7,
-              "mean_first_budget_censored_at_112": 68.25
+              "bounded_next_step_penalty_score_at_112": 68.25,
+              "mean_first_budget_censored_at_112": 68.25,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-11+CondSentinel-qb-3": {
               "fraction_attained_by_checkpoint": [
@@ -33352,8 +33538,11 @@
                 0.8125
               ],
               "fraction_attained_by_98_probes": 0.8125,
+              "fraction_unattained_gt_98_probes": 0.1875,
               "n_unattained_censored_of_total": 6,
-              "mean_first_budget_censored_at_112": 68.6875
+              "bounded_next_step_penalty_score_at_112": 68.6875,
+              "mean_first_budget_censored_at_112": 68.6875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactA-GreenVal-qOnly-Uncond": {
               "fraction_attained_by_checkpoint": [
@@ -33365,8 +33554,11 @@
                 0.78125
               ],
               "fraction_attained_by_98_probes": 0.78125,
+              "fraction_unattained_gt_98_probes": 0.21875,
               "n_unattained_censored_of_total": 7,
-              "mean_first_budget_censored_at_112": 70.4375
+              "bounded_next_step_penalty_score_at_112": 70.4375,
+              "mean_first_budget_censored_at_112": 70.4375,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactB-GreenVal-qOnly-Cond": {
               "fraction_attained_by_checkpoint": [
@@ -33378,8 +33570,11 @@
                 0.8125
               ],
               "fraction_attained_by_98_probes": 0.8125,
+              "fraction_unattained_gt_98_probes": 0.1875,
               "n_unattained_censored_of_total": 6,
-              "mean_first_budget_censored_at_112": 64.75
+              "bounded_next_step_penalty_score_at_112": 64.75,
+              "mean_first_budget_censored_at_112": 64.75,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactC-GreenVal-qb-Uncond": {
               "fraction_attained_by_checkpoint": [
@@ -33391,8 +33586,11 @@
                 0.75
               ],
               "fraction_attained_by_98_probes": 0.75,
+              "fraction_unattained_gt_98_probes": 0.25,
               "n_unattained_censored_of_total": 8,
-              "mean_first_budget_censored_at_112": 71.75
+              "bounded_next_step_penalty_score_at_112": 71.75,
+              "mean_first_budget_censored_at_112": 71.75,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactD-GreenVal-qb-Cond": {
               "fraction_attained_by_checkpoint": [
@@ -33404,8 +33602,11 @@
                 0.8125
               ],
               "fraction_attained_by_98_probes": 0.8125,
+              "fraction_unattained_gt_98_probes": 0.1875,
               "n_unattained_censored_of_total": 6,
-              "mean_first_budget_censored_at_112": 64.75
+              "bounded_next_step_penalty_score_at_112": 64.75,
+              "mean_first_budget_censored_at_112": 64.75,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             }
           },
           "rel_reduction_ge_12pct_vs_ep1_28obs": {
@@ -33419,8 +33620,11 @@
                 0.65625
               ],
               "fraction_attained_by_98_probes": 0.65625,
+              "fraction_unattained_gt_98_probes": 0.34375,
               "n_unattained_censored_of_total": 11,
-              "mean_first_budget_censored_at_112": 82.6875
+              "bounded_next_step_penalty_score_at_112": 82.6875,
+              "mean_first_budget_censored_at_112": 82.6875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-14": {
               "fraction_attained_by_checkpoint": [
@@ -33432,8 +33636,11 @@
                 0.71875
               ],
               "fraction_attained_by_98_probes": 0.71875,
+              "fraction_unattained_gt_98_probes": 0.28125,
               "n_unattained_censored_of_total": 9,
-              "mean_first_budget_censored_at_112": 77.875
+              "bounded_next_step_penalty_score_at_112": 77.875,
+              "mean_first_budget_censored_at_112": 77.875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-11+CondSentinel-qb-3": {
               "fraction_attained_by_checkpoint": [
@@ -33445,8 +33652,11 @@
                 0.65625
               ],
               "fraction_attained_by_98_probes": 0.65625,
+              "fraction_unattained_gt_98_probes": 0.34375,
               "n_unattained_censored_of_total": 11,
-              "mean_first_budget_censored_at_112": 79.625
+              "bounded_next_step_penalty_score_at_112": 79.625,
+              "mean_first_budget_censored_at_112": 79.625,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactA-GreenVal-qOnly-Uncond": {
               "fraction_attained_by_checkpoint": [
@@ -33458,8 +33668,11 @@
                 0.625
               ],
               "fraction_attained_by_98_probes": 0.625,
+              "fraction_unattained_gt_98_probes": 0.375,
               "n_unattained_censored_of_total": 12,
-              "mean_first_budget_censored_at_112": 79.1875
+              "bounded_next_step_penalty_score_at_112": 79.1875,
+              "mean_first_budget_censored_at_112": 79.1875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactB-GreenVal-qOnly-Cond": {
               "fraction_attained_by_checkpoint": [
@@ -33471,8 +33684,11 @@
                 0.65625
               ],
               "fraction_attained_by_98_probes": 0.65625,
+              "fraction_unattained_gt_98_probes": 0.34375,
               "n_unattained_censored_of_total": 11,
-              "mean_first_budget_censored_at_112": 75.25
+              "bounded_next_step_penalty_score_at_112": 75.25,
+              "mean_first_budget_censored_at_112": 75.25,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactC-GreenVal-qb-Uncond": {
               "fraction_attained_by_checkpoint": [
@@ -33484,8 +33700,11 @@
                 0.65625
               ],
               "fraction_attained_by_98_probes": 0.65625,
+              "fraction_unattained_gt_98_probes": 0.34375,
               "n_unattained_censored_of_total": 11,
-              "mean_first_budget_censored_at_112": 78.75
+              "bounded_next_step_penalty_score_at_112": 78.75,
+              "mean_first_budget_censored_at_112": 78.75,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "FactD-GreenVal-qb-Cond": {
               "fraction_attained_by_checkpoint": [
@@ -33497,8 +33716,11 @@
                 0.65625
               ],
               "fraction_attained_by_98_probes": 0.65625,
+              "fraction_unattained_gt_98_probes": 0.34375,
               "n_unattained_censored_of_total": 11,
-              "mean_first_budget_censored_at_112": 75.6875
+              "bounded_next_step_penalty_score_at_112": 75.6875,
+              "mean_first_budget_censored_at_112": 75.6875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             }
           }
         }
@@ -45794,13 +46016,15 @@
             }
           }
         }
-      ]
+      ],
+      "kink_audit_scope": "five_acquisition_stages_ep1_to_ep5_online_adjoint_calls_ep6_has_no_acquisition"
     },
     "acquisition_tape_file": "exp4_acquisition_tapes.json",
-    "acquisition_tape_sha256": "956b048b55f6bddbf164519ebce6aad9ff4f083ffdf19442030cca0cd54643a4"
+    "acquisition_tape_sha256": "41a5b4893cfe9cba372dc615e27ada4a191680ed23d90ba02b90b525f9e57887",
+    "generating_commit": "c2c499e"
   },
   "batch_C_locked_fresh_confirmation_64maps": {
-    "block_provenance": "fresh_computed_in_current_run",
+    "block_provenance": "inherited_from_commit_c2c499e",
     "experiment_scope": "batch_C_single_locked_fresh_confirmation_64maps_coordinate_oracle_active_sensing",
     "evaluation_chronology": "strictly_deferred_until_after_all_6_operational_episodes_complete",
     "power_rationale": "Sized a priori at n=32 per regime (N=64 total) from dev SD ~0.28 for ~80%+ power at delta ~0.10-0.14.",
@@ -45908,6 +46132,13 @@
           84,
           98
         ],
+        "normalized_trapezoidal_cost_auc_28_to_98": {
+          "Frozen-GP-28": 11.942341835930266,
+          "Global-CondMaxVar-qb-14": 10.708211213674389,
+          "True-OnPolicy-14": 10.539662538622093,
+          "True-OnPolicy-11+CondSentinel-qb-3": 10.643701859246072,
+          "Green-ValueOnly-qb-Cond-11+3": 10.5464917556639
+        },
         "relative_ep1_reduction_targets": {
           "rel_reduction_ge_6pct_vs_ep1_28obs": {
             "Frozen-GP-28": {
@@ -45920,8 +46151,11 @@
                 0.0
               ],
               "fraction_attained_by_98_probes": 0.0,
+              "fraction_unattained_gt_98_probes": 1.0,
               "n_unattained_censored_of_total": 32,
-              "mean_first_budget_censored_at_112": 112.0
+              "bounded_next_step_penalty_score_at_112": 112.0,
+              "mean_first_budget_censored_at_112": 112.0,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "Global-CondMaxVar-qb-14": {
               "fraction_attained_by_checkpoint": [
@@ -45933,8 +46167,11 @@
                 0.9375
               ],
               "fraction_attained_by_98_probes": 0.9375,
+              "fraction_unattained_gt_98_probes": 0.0625,
               "n_unattained_censored_of_total": 2,
-              "mean_first_budget_censored_at_112": 60.375
+              "bounded_next_step_penalty_score_at_112": 60.375,
+              "mean_first_budget_censored_at_112": 60.375,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-14": {
               "fraction_attained_by_checkpoint": [
@@ -45946,8 +46183,11 @@
                 0.96875
               ],
               "fraction_attained_by_98_probes": 0.96875,
+              "fraction_unattained_gt_98_probes": 0.03125,
               "n_unattained_censored_of_total": 1,
-              "mean_first_budget_censored_at_112": 53.375
+              "bounded_next_step_penalty_score_at_112": 53.375,
+              "mean_first_budget_censored_at_112": 53.375,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-11+CondSentinel-qb-3": {
               "fraction_attained_by_checkpoint": [
@@ -45959,8 +46199,11 @@
                 0.9375
               ],
               "fraction_attained_by_98_probes": 0.9375,
+              "fraction_unattained_gt_98_probes": 0.0625,
               "n_unattained_censored_of_total": 2,
-              "mean_first_budget_censored_at_112": 59.0625
+              "bounded_next_step_penalty_score_at_112": 59.0625,
+              "mean_first_budget_censored_at_112": 59.0625,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "Green-ValueOnly-qb-Cond-11+3": {
               "fraction_attained_by_checkpoint": [
@@ -45972,8 +46215,11 @@
                 0.96875
               ],
               "fraction_attained_by_98_probes": 0.96875,
+              "fraction_unattained_gt_98_probes": 0.03125,
               "n_unattained_censored_of_total": 1,
-              "mean_first_budget_censored_at_112": 56.4375
+              "bounded_next_step_penalty_score_at_112": 56.4375,
+              "mean_first_budget_censored_at_112": 56.4375,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             }
           },
           "rel_reduction_ge_9pct_vs_ep1_28obs": {
@@ -45987,8 +46233,11 @@
                 0.0
               ],
               "fraction_attained_by_98_probes": 0.0,
+              "fraction_unattained_gt_98_probes": 1.0,
               "n_unattained_censored_of_total": 32,
-              "mean_first_budget_censored_at_112": 112.0
+              "bounded_next_step_penalty_score_at_112": 112.0,
+              "mean_first_budget_censored_at_112": 112.0,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "Global-CondMaxVar-qb-14": {
               "fraction_attained_by_checkpoint": [
@@ -46000,8 +46249,11 @@
                 0.8125
               ],
               "fraction_attained_by_98_probes": 0.8125,
+              "fraction_unattained_gt_98_probes": 0.1875,
               "n_unattained_censored_of_total": 6,
-              "mean_first_budget_censored_at_112": 70.875
+              "bounded_next_step_penalty_score_at_112": 70.875,
+              "mean_first_budget_censored_at_112": 70.875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-14": {
               "fraction_attained_by_checkpoint": [
@@ -46013,8 +46265,11 @@
                 0.84375
               ],
               "fraction_attained_by_98_probes": 0.84375,
+              "fraction_unattained_gt_98_probes": 0.15625,
               "n_unattained_censored_of_total": 5,
-              "mean_first_budget_censored_at_112": 65.1875
+              "bounded_next_step_penalty_score_at_112": 65.1875,
+              "mean_first_budget_censored_at_112": 65.1875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-11+CondSentinel-qb-3": {
               "fraction_attained_by_checkpoint": [
@@ -46026,8 +46281,11 @@
                 0.8125
               ],
               "fraction_attained_by_98_probes": 0.8125,
+              "fraction_unattained_gt_98_probes": 0.1875,
               "n_unattained_censored_of_total": 6,
-              "mean_first_budget_censored_at_112": 69.5625
+              "bounded_next_step_penalty_score_at_112": 69.5625,
+              "mean_first_budget_censored_at_112": 69.5625,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "Green-ValueOnly-qb-Cond-11+3": {
               "fraction_attained_by_checkpoint": [
@@ -46039,8 +46297,11 @@
                 0.84375
               ],
               "fraction_attained_by_98_probes": 0.84375,
+              "fraction_unattained_gt_98_probes": 0.15625,
               "n_unattained_censored_of_total": 5,
-              "mean_first_budget_censored_at_112": 69.125
+              "bounded_next_step_penalty_score_at_112": 69.125,
+              "mean_first_budget_censored_at_112": 69.125,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             }
           },
           "rel_reduction_ge_12pct_vs_ep1_28obs": {
@@ -46054,8 +46315,11 @@
                 0.0
               ],
               "fraction_attained_by_98_probes": 0.0,
+              "fraction_unattained_gt_98_probes": 1.0,
               "n_unattained_censored_of_total": 32,
-              "mean_first_budget_censored_at_112": 112.0
+              "bounded_next_step_penalty_score_at_112": 112.0,
+              "mean_first_budget_censored_at_112": 112.0,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "Global-CondMaxVar-qb-14": {
               "fraction_attained_by_checkpoint": [
@@ -46067,8 +46331,11 @@
                 0.6875
               ],
               "fraction_attained_by_98_probes": 0.6875,
+              "fraction_unattained_gt_98_probes": 0.3125,
               "n_unattained_censored_of_total": 10,
-              "mean_first_budget_censored_at_112": 79.1875
+              "bounded_next_step_penalty_score_at_112": 79.1875,
+              "mean_first_budget_censored_at_112": 79.1875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-14": {
               "fraction_attained_by_checkpoint": [
@@ -46080,8 +46347,11 @@
                 0.65625
               ],
               "fraction_attained_by_98_probes": 0.65625,
+              "fraction_unattained_gt_98_probes": 0.34375,
               "n_unattained_censored_of_total": 11,
-              "mean_first_budget_censored_at_112": 76.5625
+              "bounded_next_step_penalty_score_at_112": 76.5625,
+              "mean_first_budget_censored_at_112": 76.5625,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-11+CondSentinel-qb-3": {
               "fraction_attained_by_checkpoint": [
@@ -46093,8 +46363,11 @@
                 0.59375
               ],
               "fraction_attained_by_98_probes": 0.59375,
+              "fraction_unattained_gt_98_probes": 0.40625,
               "n_unattained_censored_of_total": 13,
-              "mean_first_budget_censored_at_112": 81.375
+              "bounded_next_step_penalty_score_at_112": 81.375,
+              "mean_first_budget_censored_at_112": 81.375,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "Green-ValueOnly-qb-Cond-11+3": {
               "fraction_attained_by_checkpoint": [
@@ -46106,8 +46379,11 @@
                 0.71875
               ],
               "fraction_attained_by_98_probes": 0.71875,
+              "fraction_unattained_gt_98_probes": 0.28125,
               "n_unattained_censored_of_total": 9,
-              "mean_first_budget_censored_at_112": 75.25
+              "bounded_next_step_penalty_score_at_112": 75.25,
+              "mean_first_budget_censored_at_112": 75.25,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             }
           }
         }
@@ -55130,7 +55406,8 @@
             }
           }
         }
-      ]
+      ],
+      "kink_audit_scope": "five_acquisition_stages_ep1_to_ep5_online_adjoint_calls_ep6_has_no_acquisition"
     },
     "competing_corridor_32maps": {
       "regime": "competing_corridor",
@@ -55236,6 +55513,13 @@
           84,
           98
         ],
+        "normalized_trapezoidal_cost_auc_28_to_98": {
+          "Frozen-GP-28": 8.707294583710635,
+          "Global-CondMaxVar-qb-14": 8.254159900828352,
+          "True-OnPolicy-14": 8.096942431217002,
+          "True-OnPolicy-11+CondSentinel-qb-3": 8.12468377720168,
+          "Green-ValueOnly-qb-Cond-11+3": 8.000062460231025
+        },
         "relative_ep1_reduction_targets": {
           "rel_reduction_ge_6pct_vs_ep1_28obs": {
             "Frozen-GP-28": {
@@ -55248,8 +55532,11 @@
                 0.0
               ],
               "fraction_attained_by_98_probes": 0.0,
+              "fraction_unattained_gt_98_probes": 1.0,
               "n_unattained_censored_of_total": 32,
-              "mean_first_budget_censored_at_112": 112.0
+              "bounded_next_step_penalty_score_at_112": 112.0,
+              "mean_first_budget_censored_at_112": 112.0,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "Global-CondMaxVar-qb-14": {
               "fraction_attained_by_checkpoint": [
@@ -55261,8 +55548,11 @@
                 0.65625
               ],
               "fraction_attained_by_98_probes": 0.65625,
+              "fraction_unattained_gt_98_probes": 0.34375,
               "n_unattained_censored_of_total": 11,
-              "mean_first_budget_censored_at_112": 81.8125
+              "bounded_next_step_penalty_score_at_112": 81.8125,
+              "mean_first_budget_censored_at_112": 81.8125,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-14": {
               "fraction_attained_by_checkpoint": [
@@ -55274,8 +55564,11 @@
                 0.8125
               ],
               "fraction_attained_by_98_probes": 0.8125,
+              "fraction_unattained_gt_98_probes": 0.1875,
               "n_unattained_censored_of_total": 6,
-              "mean_first_budget_censored_at_112": 72.625
+              "bounded_next_step_penalty_score_at_112": 72.625,
+              "mean_first_budget_censored_at_112": 72.625,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-11+CondSentinel-qb-3": {
               "fraction_attained_by_checkpoint": [
@@ -55287,8 +55580,11 @@
                 0.6875
               ],
               "fraction_attained_by_98_probes": 0.6875,
+              "fraction_unattained_gt_98_probes": 0.3125,
               "n_unattained_censored_of_total": 10,
-              "mean_first_budget_censored_at_112": 76.5625
+              "bounded_next_step_penalty_score_at_112": 76.5625,
+              "mean_first_budget_censored_at_112": 76.5625,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "Green-ValueOnly-qb-Cond-11+3": {
               "fraction_attained_by_checkpoint": [
@@ -55300,8 +55596,11 @@
                 0.875
               ],
               "fraction_attained_by_98_probes": 0.875,
+              "fraction_unattained_gt_98_probes": 0.125,
               "n_unattained_censored_of_total": 4,
-              "mean_first_budget_censored_at_112": 65.1875
+              "bounded_next_step_penalty_score_at_112": 65.1875,
+              "mean_first_budget_censored_at_112": 65.1875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             }
           },
           "rel_reduction_ge_9pct_vs_ep1_28obs": {
@@ -55315,8 +55614,11 @@
                 0.0
               ],
               "fraction_attained_by_98_probes": 0.0,
+              "fraction_unattained_gt_98_probes": 1.0,
               "n_unattained_censored_of_total": 32,
-              "mean_first_budget_censored_at_112": 112.0
+              "bounded_next_step_penalty_score_at_112": 112.0,
+              "mean_first_budget_censored_at_112": 112.0,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "Global-CondMaxVar-qb-14": {
               "fraction_attained_by_checkpoint": [
@@ -55328,8 +55630,11 @@
                 0.53125
               ],
               "fraction_attained_by_98_probes": 0.53125,
+              "fraction_unattained_gt_98_probes": 0.46875,
               "n_unattained_censored_of_total": 15,
-              "mean_first_budget_censored_at_112": 88.375
+              "bounded_next_step_penalty_score_at_112": 88.375,
+              "mean_first_budget_censored_at_112": 88.375,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-14": {
               "fraction_attained_by_checkpoint": [
@@ -55341,8 +55646,11 @@
                 0.65625
               ],
               "fraction_attained_by_98_probes": 0.65625,
+              "fraction_unattained_gt_98_probes": 0.34375,
               "n_unattained_censored_of_total": 11,
-              "mean_first_budget_censored_at_112": 82.25
+              "bounded_next_step_penalty_score_at_112": 82.25,
+              "mean_first_budget_censored_at_112": 82.25,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-11+CondSentinel-qb-3": {
               "fraction_attained_by_checkpoint": [
@@ -55354,8 +55662,11 @@
                 0.53125
               ],
               "fraction_attained_by_98_probes": 0.53125,
+              "fraction_unattained_gt_98_probes": 0.46875,
               "n_unattained_censored_of_total": 15,
-              "mean_first_budget_censored_at_112": 84.875
+              "bounded_next_step_penalty_score_at_112": 84.875,
+              "mean_first_budget_censored_at_112": 84.875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "Green-ValueOnly-qb-Cond-11+3": {
               "fraction_attained_by_checkpoint": [
@@ -55367,8 +55678,11 @@
                 0.65625
               ],
               "fraction_attained_by_98_probes": 0.65625,
+              "fraction_unattained_gt_98_probes": 0.34375,
               "n_unattained_censored_of_total": 11,
-              "mean_first_budget_censored_at_112": 78.3125
+              "bounded_next_step_penalty_score_at_112": 78.3125,
+              "mean_first_budget_censored_at_112": 78.3125,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             }
           },
           "rel_reduction_ge_12pct_vs_ep1_28obs": {
@@ -55382,8 +55696,11 @@
                 0.0
               ],
               "fraction_attained_by_98_probes": 0.0,
+              "fraction_unattained_gt_98_probes": 1.0,
               "n_unattained_censored_of_total": 32,
-              "mean_first_budget_censored_at_112": 112.0
+              "bounded_next_step_penalty_score_at_112": 112.0,
+              "mean_first_budget_censored_at_112": 112.0,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "Global-CondMaxVar-qb-14": {
               "fraction_attained_by_checkpoint": [
@@ -55395,8 +55712,11 @@
                 0.3125
               ],
               "fraction_attained_by_98_probes": 0.3125,
+              "fraction_unattained_gt_98_probes": 0.6875,
               "n_unattained_censored_of_total": 22,
-              "mean_first_budget_censored_at_112": 99.75
+              "bounded_next_step_penalty_score_at_112": 99.75,
+              "mean_first_budget_censored_at_112": 99.75,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-14": {
               "fraction_attained_by_checkpoint": [
@@ -55408,8 +55728,11 @@
                 0.5
               ],
               "fraction_attained_by_98_probes": 0.5,
+              "fraction_unattained_gt_98_probes": 0.5,
               "n_unattained_censored_of_total": 16,
-              "mean_first_budget_censored_at_112": 88.8125
+              "bounded_next_step_penalty_score_at_112": 88.8125,
+              "mean_first_budget_censored_at_112": 88.8125,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-11+CondSentinel-qb-3": {
               "fraction_attained_by_checkpoint": [
@@ -55421,8 +55744,11 @@
                 0.5
               ],
               "fraction_attained_by_98_probes": 0.5,
+              "fraction_unattained_gt_98_probes": 0.5,
               "n_unattained_censored_of_total": 16,
-              "mean_first_budget_censored_at_112": 90.5625
+              "bounded_next_step_penalty_score_at_112": 90.5625,
+              "mean_first_budget_censored_at_112": 90.5625,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "Green-ValueOnly-qb-Cond-11+3": {
               "fraction_attained_by_checkpoint": [
@@ -55434,8 +55760,11 @@
                 0.5
               ],
               "fraction_attained_by_98_probes": 0.5,
+              "fraction_unattained_gt_98_probes": 0.5,
               "n_unattained_censored_of_total": 16,
-              "mean_first_budget_censored_at_112": 87.0625
+              "bounded_next_step_penalty_score_at_112": 87.0625,
+              "mean_first_budget_censored_at_112": 87.0625,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             }
           }
         }
@@ -64458,7 +64787,8 @@
             }
           }
         }
-      ]
+      ],
+      "kink_audit_scope": "five_acquisition_stages_ep1_to_ep5_online_adjoint_calls_ep6_has_no_acquisition"
     },
     "pooled_64maps": {
       "regime": "pooled_fresh_confirmation_64maps",
@@ -64596,6 +64926,13 @@
           84,
           98
         ],
+        "normalized_trapezoidal_cost_auc_28_to_98": {
+          "Frozen-GP-28": 10.324818209820451,
+          "Global-CondMaxVar-qb-14": 9.48118555725137,
+          "True-OnPolicy-14": 9.318302484919547,
+          "True-OnPolicy-11+CondSentinel-qb-3": 9.384192818223877,
+          "Green-ValueOnly-qb-Cond-11+3": 9.273277107947465
+        },
         "relative_ep1_reduction_targets": {
           "rel_reduction_ge_6pct_vs_ep1_28obs": {
             "Frozen-GP-28": {
@@ -64608,8 +64945,11 @@
                 0.0
               ],
               "fraction_attained_by_98_probes": 0.0,
+              "fraction_unattained_gt_98_probes": 1.0,
               "n_unattained_censored_of_total": 64,
-              "mean_first_budget_censored_at_112": 112.0
+              "bounded_next_step_penalty_score_at_112": 112.0,
+              "mean_first_budget_censored_at_112": 112.0,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "Global-CondMaxVar-qb-14": {
               "fraction_attained_by_checkpoint": [
@@ -64621,8 +64961,11 @@
                 0.796875
               ],
               "fraction_attained_by_98_probes": 0.796875,
+              "fraction_unattained_gt_98_probes": 0.203125,
               "n_unattained_censored_of_total": 13,
-              "mean_first_budget_censored_at_112": 71.09375
+              "bounded_next_step_penalty_score_at_112": 71.09375,
+              "mean_first_budget_censored_at_112": 71.09375,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-14": {
               "fraction_attained_by_checkpoint": [
@@ -64634,8 +64977,11 @@
                 0.890625
               ],
               "fraction_attained_by_98_probes": 0.890625,
+              "fraction_unattained_gt_98_probes": 0.109375,
               "n_unattained_censored_of_total": 7,
-              "mean_first_budget_censored_at_112": 63.0
+              "bounded_next_step_penalty_score_at_112": 63.0,
+              "mean_first_budget_censored_at_112": 63.0,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-11+CondSentinel-qb-3": {
               "fraction_attained_by_checkpoint": [
@@ -64647,8 +64993,11 @@
                 0.8125
               ],
               "fraction_attained_by_98_probes": 0.8125,
+              "fraction_unattained_gt_98_probes": 0.1875,
               "n_unattained_censored_of_total": 12,
-              "mean_first_budget_censored_at_112": 67.8125
+              "bounded_next_step_penalty_score_at_112": 67.8125,
+              "mean_first_budget_censored_at_112": 67.8125,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "Green-ValueOnly-qb-Cond-11+3": {
               "fraction_attained_by_checkpoint": [
@@ -64660,8 +65009,11 @@
                 0.921875
               ],
               "fraction_attained_by_98_probes": 0.921875,
+              "fraction_unattained_gt_98_probes": 0.078125,
               "n_unattained_censored_of_total": 5,
-              "mean_first_budget_censored_at_112": 60.8125
+              "bounded_next_step_penalty_score_at_112": 60.8125,
+              "mean_first_budget_censored_at_112": 60.8125,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             }
           },
           "rel_reduction_ge_9pct_vs_ep1_28obs": {
@@ -64675,8 +65027,11 @@
                 0.0
               ],
               "fraction_attained_by_98_probes": 0.0,
+              "fraction_unattained_gt_98_probes": 1.0,
               "n_unattained_censored_of_total": 64,
-              "mean_first_budget_censored_at_112": 112.0
+              "bounded_next_step_penalty_score_at_112": 112.0,
+              "mean_first_budget_censored_at_112": 112.0,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "Global-CondMaxVar-qb-14": {
               "fraction_attained_by_checkpoint": [
@@ -64688,8 +65043,11 @@
                 0.671875
               ],
               "fraction_attained_by_98_probes": 0.671875,
+              "fraction_unattained_gt_98_probes": 0.328125,
               "n_unattained_censored_of_total": 21,
-              "mean_first_budget_censored_at_112": 79.625
+              "bounded_next_step_penalty_score_at_112": 79.625,
+              "mean_first_budget_censored_at_112": 79.625,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-14": {
               "fraction_attained_by_checkpoint": [
@@ -64701,8 +65059,11 @@
                 0.75
               ],
               "fraction_attained_by_98_probes": 0.75,
+              "fraction_unattained_gt_98_probes": 0.25,
               "n_unattained_censored_of_total": 16,
-              "mean_first_budget_censored_at_112": 73.71875
+              "bounded_next_step_penalty_score_at_112": 73.71875,
+              "mean_first_budget_censored_at_112": 73.71875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-11+CondSentinel-qb-3": {
               "fraction_attained_by_checkpoint": [
@@ -64714,8 +65075,11 @@
                 0.671875
               ],
               "fraction_attained_by_98_probes": 0.671875,
+              "fraction_unattained_gt_98_probes": 0.328125,
               "n_unattained_censored_of_total": 21,
-              "mean_first_budget_censored_at_112": 77.21875
+              "bounded_next_step_penalty_score_at_112": 77.21875,
+              "mean_first_budget_censored_at_112": 77.21875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "Green-ValueOnly-qb-Cond-11+3": {
               "fraction_attained_by_checkpoint": [
@@ -64727,8 +65091,11 @@
                 0.75
               ],
               "fraction_attained_by_98_probes": 0.75,
+              "fraction_unattained_gt_98_probes": 0.25,
               "n_unattained_censored_of_total": 16,
-              "mean_first_budget_censored_at_112": 73.71875
+              "bounded_next_step_penalty_score_at_112": 73.71875,
+              "mean_first_budget_censored_at_112": 73.71875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             }
           },
           "rel_reduction_ge_12pct_vs_ep1_28obs": {
@@ -64742,8 +65109,11 @@
                 0.0
               ],
               "fraction_attained_by_98_probes": 0.0,
+              "fraction_unattained_gt_98_probes": 1.0,
               "n_unattained_censored_of_total": 64,
-              "mean_first_budget_censored_at_112": 112.0
+              "bounded_next_step_penalty_score_at_112": 112.0,
+              "mean_first_budget_censored_at_112": 112.0,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "Global-CondMaxVar-qb-14": {
               "fraction_attained_by_checkpoint": [
@@ -64755,8 +65125,11 @@
                 0.5
               ],
               "fraction_attained_by_98_probes": 0.5,
+              "fraction_unattained_gt_98_probes": 0.5,
               "n_unattained_censored_of_total": 32,
-              "mean_first_budget_censored_at_112": 89.46875
+              "bounded_next_step_penalty_score_at_112": 89.46875,
+              "mean_first_budget_censored_at_112": 89.46875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-14": {
               "fraction_attained_by_checkpoint": [
@@ -64768,8 +65141,11 @@
                 0.578125
               ],
               "fraction_attained_by_98_probes": 0.578125,
+              "fraction_unattained_gt_98_probes": 0.421875,
               "n_unattained_censored_of_total": 27,
-              "mean_first_budget_censored_at_112": 82.6875
+              "bounded_next_step_penalty_score_at_112": 82.6875,
+              "mean_first_budget_censored_at_112": 82.6875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "True-OnPolicy-11+CondSentinel-qb-3": {
               "fraction_attained_by_checkpoint": [
@@ -64781,8 +65157,11 @@
                 0.546875
               ],
               "fraction_attained_by_98_probes": 0.546875,
+              "fraction_unattained_gt_98_probes": 0.453125,
               "n_unattained_censored_of_total": 29,
-              "mean_first_budget_censored_at_112": 85.96875
+              "bounded_next_step_penalty_score_at_112": 85.96875,
+              "mean_first_budget_censored_at_112": 85.96875,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             },
             "Green-ValueOnly-qb-Cond-11+3": {
               "fraction_attained_by_checkpoint": [
@@ -64794,8 +65173,11 @@
                 0.609375
               ],
               "fraction_attained_by_98_probes": 0.609375,
+              "fraction_unattained_gt_98_probes": 0.390625,
               "n_unattained_censored_of_total": 25,
-              "mean_first_budget_censored_at_112": 81.15625
+              "bounded_next_step_penalty_score_at_112": 81.15625,
+              "mean_first_budget_censored_at_112": 81.15625,
+              "censoring_note": "Unattained maps only establish T > 98; 112 is a bounded penalty score, not expected sample count."
             }
           }
         }
@@ -82298,7 +82680,8 @@
             }
           }
         }
-      ]
+      ],
+      "kink_audit_scope": "five_acquisition_stages_ep1_to_ep5_online_adjoint_calls_ep6_has_no_acquisition"
     },
     "shared_noise_index_32pair_sensitivity_check": {
       "n_independent_index_pairs": 32,
@@ -82353,7 +82736,81 @@
       }
     },
     "acquisition_tape_file": "exp4_acquisition_tapes.json",
-    "acquisition_tape_sha256": "956b048b55f6bddbf164519ebce6aad9ff4f083ffdf19442030cca0cd54643a4"
+    "acquisition_tape_sha256": "41a5b4893cfe9cba372dc615e27ada4a191680ed23d90ba02b90b525f9e57887",
+    "generating_commit": "c2c499e",
+    "between_regime_interaction_tests_competing_minus_standard": {
+      "interpretation_note": "Gelman-Stern (2006) direct interaction test: within-subgroup significance in Competing-Corridor plus non-significance in Standard does NOT establish a statistically significant difference between regimes unless Competing-minus-Standard itself is significant.",
+      "paired_by_shared_noise_index_32pairs": {
+        "GreenValCond_minus_GlobalCondMaxVar_qb_14": {
+          "n": 32,
+          "mean": -0.09279769642223099,
+          "ci95_half": 0.17700677764492329,
+          "ci95": [
+            -0.26980447406715424,
+            0.0842090812226923
+          ],
+          "p_two_sided": 0.2932183813655482
+        },
+        "GreenValCond_minus_OnPolicy11CondSentinel_qb_3": {
+          "n": 32,
+          "mean": -0.033904609466807345,
+          "ci95_half": 0.1736833084641452,
+          "ci95": [
+            -0.20758791793095255,
+            0.13977869899733786
+          ],
+          "p_two_sided": 0.6932615465871244
+        },
+        "GreenValCond_minus_TrueOnPolicy14": {
+          "n": 32,
+          "mean": -0.10798794898824235,
+          "ci95_half": 0.15471222956115002,
+          "ci95": [
+            -0.26270017854939237,
+            0.04672428057290767
+          ],
+          "p_two_sided": 0.16456016593651357
+        }
+      },
+      "independent_strata_welch_64maps": {
+        "GreenValCond_minus_GlobalCondMaxVar_qb_14": {
+          "n_x": 32,
+          "n_y": 32,
+          "welch_df": 60.22758493981937,
+          "mean_diff": -0.09279769642223099,
+          "ci95_half": 0.1821710163138039,
+          "ci95": [
+            -0.27496871273603485,
+            0.0893733198915729
+          ],
+          "p_two_sided": 0.31234007971467503
+        },
+        "GreenValCond_minus_OnPolicy11CondSentinel_qb_3": {
+          "n_x": 32,
+          "n_y": 32,
+          "welch_df": 49.38761389283199,
+          "mean_diff": -0.033904609466807345,
+          "ci95_half": 0.17070753666619828,
+          "ci95": [
+            -0.20461214613300563,
+            0.13680292719939094
+          ],
+          "p_two_sided": 0.691578824094879
+        },
+        "GreenValCond_minus_TrueOnPolicy14": {
+          "n_x": 32,
+          "n_y": 32,
+          "welch_df": 54.520141246463865,
+          "mean_diff": -0.10798794898824235,
+          "ci95_half": 0.15108868646344897,
+          "ci95": [
+            -0.25907663545169135,
+            0.043100737475206624
+          ],
+          "p_two_sided": 0.1576703093990152
+        }
+      }
+    }
   },
   "historical_v57_voi_dual_regime_32maps": {
     "block_provenance": "inherited_from_commit_57e5912",
@@ -106438,7 +106895,7 @@
     ]
   },
   "last_manifest_sync": {
-    "synced_package_py_sha256": "2b38a2d5d6c544e33f58640eafc2d7a15f45ce573d8423506ce56188b4692939",
+    "synced_package_py_sha256": "7f9d208b7280771642bb3f9142f15dcfd568528b4a6ced94a3df587f927ee6a9",
     "note": "Synchronized package_py_sha256 across suite; inherited blocks preserve original generating_commit."
   }
 }

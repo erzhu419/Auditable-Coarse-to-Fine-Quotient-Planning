@@ -1367,8 +1367,10 @@ class MacroTourPlanner:
           - Separates Bellman action ties (`action_tie_detected`) from upwind operator sign kinks at exact
             `b == 0` (`upwind_drift_kink_detected`, `n_zero_drift_kink_components`), returning exact right/left
             directional slope arrays (`grad_b_plus_optimal`, `grad_b_minus_optimal`) and either the Clarke
-            generalized subdifferential midpoint `0.5 * (g_b_+ + g_b_-)` (`zero_drift_mode="clarke_midpoint"`)
-            or a fail-closed `ValueError` (`zero_drift_mode="strict_smooth"`).
+            generalized subdifferential midpoint `0.5 * (g_b_+ + g_b_-)` (`zero_drift_mode="clarke_midpoint"`,
+            scoped to fixed/stable Bellman branches) or a fail-closed `ValueError` on upwind zero-drift kinks
+            (`zero_drift_mode="strict_smooth"`). Note: `strict_smooth` guards upwind operator kinks only; callers
+            requiring a unique two-sided gradient of the optimal value function must ALSO check `not action_tie_detected`.
         """
         if zero_drift_mode not in ("clarke_midpoint", "strict_smooth"):
             raise ValueError(f"Unsupported zero_drift_mode={zero_drift_mode!r}; expected 'clarke_midpoint' or 'strict_smooth'.")

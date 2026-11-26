@@ -1,23 +1,24 @@
 {
   "metadata": {
-    "git_head_sha": "57e59129bb21146df352e9c365150c34b775d564",
+    "git_head_sha": "c2c499e50428759f883b82fd41de9774c84d54d6",
     "git_dirty_green_response": true,
-    "package_py_sha256": "2b38a2d5d6c544e33f58640eafc2d7a15f45ce573d8423506ce56188b4692939",
+    "package_py_sha256": "7f9d208b7280771642bb3f9142f15dcfd568528b4a6ced94a3df587f927ee6a9",
     "source_manifest": {
-      "git_head_sha": "57e59129bb21146df352e9c365150c34b775d564",
+      "git_head_sha": "c2c499e50428759f883b82fd41de9774c84d54d6",
       "git_dirty_green_response": true,
-      "package_py_sha256": "2b38a2d5d6c544e33f58640eafc2d7a15f45ce573d8423506ce56188b4692939",
+      "package_py_sha256": "7f9d208b7280771642bb3f9142f15dcfd568528b4a6ced94a3df587f927ee6a9",
       "per_file_sha256": {
-        "__init__.py": "028706b1e52a4b5e29c4dc42b8995b35397720ff6cf81c48b635ec51f9b5ee05",
-        "core.py": "9d8cc7a42aa73c966428a50c94725b2481dfd5c08262c8b6672f39035bd7185a",
+        "__init__.py": "34ff5edb886ae35d08fc9b82b6f2550c9358df120187f4c794a161c783d256da",
+        "core.py": "9867133f19cf25a5a52a11d7708b3a17840afbc5a24977c3e28231bfe85e9507",
         "exp1_3d_and_macro_tours.py": "ae079e2d1b0ba44f283c85ebb54c290b7f18253fc11de38e72a8d0de80599bf2",
         "exp2_nonlmdp_kkt.py": "3187b5ff1be8a3e637974029fb56d401b74c0c86f468c68bc662bfbf69ad9405",
         "exp3_highd_and_kinetic.py": "4d6588d5fec9408c4dfe9ae9d2df6a1a7bd375d1b373d7f4e7e063c16fe6d401",
-        "exp4_fidelity_and_continual.py": "285fbf3d8b1aeda37667b34cf68a1c2175a43b70663dfbcbf1e7fde4e8a2acf2",
+        "exp4_fidelity_and_continual.py": "79250914aa01fa54e974ddf3cb5a7fe8e9692e456d5d873f90840bd213297b54",
+        "exp5_response_subspace_diagnostic.py": "0c8fca7bbeaf58a26213ca4a998e914c49f30576d304a380b86ab490c75cdc49",
         "highd_solvers.py": "b2860c83e59dc4b6060c0e8726f64755a97f4cb9edbca2d4acbdf6242dee4542",
-        "macro_planning.py": "69a21fec2d593ad6e7ba89abde85dffab16e74c5e0db55a741d87781903936ce",
+        "macro_planning.py": "8196e073ed72492ad7018ced65d5cd8e781bd6580a04c0804d90ab1be48621ac",
         "port_solvers.py": "35e598894f1013db0732561bcd85a9b81097fc7eddbbc5d929192296d194f914",
-        "verify_audit_closure.py": "8a95348c187a3eb8c27e9aa640770f625dfd5b331fb9c0695ba96c2b7bc8878e"
+        "verify_audit_closure.py": "85463fc4afb06eafb4336d1ac92698a8387dd169df47cef74a3687a1b04b724d"
       }
     },
     "python_version": "3.10.12",
@@ -329,31 +330,55 @@
     "alt1_rhs_cols": 52,
     "alt0_rhs_reduced": true,
     "spd_pending_counterexample_selected_idx": 2,
+    "offgrid_pending_3channel_cov_errs": [
+      3.552713678800501e-15,
+      7.806255641895632e-18,
+      3.382710778154774e-17
+    ],
+    "offgrid_pending_3channel_proj_errs": [
+      3.552713678800501e-15,
+      1.0408340855860843e-17,
+      7.892991815694472e-17
+    ],
     "offgrid_pending_cov_max_abs_err": 3.552713678800501e-15,
     "offgrid_pending_proj_max_abs_err": 3.552713678800501e-15,
     "positive_control_cols_retained": 1,
+    "negative_control_cov_injection_rejected": true,
+    "negative_control_proj_injection_rejected": true,
+    "negative_control_retained_zero_rejected": true,
+    "pass": true
+  },
+  "23_lossless_npz_tape_and_bellman_tie_scope_audit": {
+    "grid_batch_roundtrip_max_diff": 0.0,
+    "offgrid_batch_roundtrip_max_diff": 0.0,
+    "offgrid_indices_exact_match": true,
+    "one_ulp_tamper_rejected": true,
+    "nonzero_drift_bellman_tie_upwind_kink": false,
+    "nonzero_drift_bellman_tie_action_tie": true,
+    "nonzero_drift_bellman_tie_derivative_kind": "active_branch",
     "pass": true
   },
   "ALL_PASSED": true,
   "source_manifest": {
-    "git_head_sha": "57e59129bb21146df352e9c365150c34b775d564",
+    "git_head_sha": "c2c499e50428759f883b82fd41de9774c84d54d6",
     "git_dirty_green_response": true,
-    "package_py_sha256": "2b38a2d5d6c544e33f58640eafc2d7a15f45ce573d8423506ce56188b4692939",
+    "package_py_sha256": "7f9d208b7280771642bb3f9142f15dcfd568528b4a6ced94a3df587f927ee6a9",
     "per_file_sha256": {
-      "__init__.py": "028706b1e52a4b5e29c4dc42b8995b35397720ff6cf81c48b635ec51f9b5ee05",
-      "core.py": "9d8cc7a42aa73c966428a50c94725b2481dfd5c08262c8b6672f39035bd7185a",
+      "__init__.py": "34ff5edb886ae35d08fc9b82b6f2550c9358df120187f4c794a161c783d256da",
+      "core.py": "9867133f19cf25a5a52a11d7708b3a17840afbc5a24977c3e28231bfe85e9507",
       "exp1_3d_and_macro_tours.py": "ae079e2d1b0ba44f283c85ebb54c290b7f18253fc11de38e72a8d0de80599bf2",
       "exp2_nonlmdp_kkt.py": "3187b5ff1be8a3e637974029fb56d401b74c0c86f468c68bc662bfbf69ad9405",
       "exp3_highd_and_kinetic.py": "4d6588d5fec9408c4dfe9ae9d2df6a1a7bd375d1b373d7f4e7e063c16fe6d401",
-      "exp4_fidelity_and_continual.py": "285fbf3d8b1aeda37667b34cf68a1c2175a43b70663dfbcbf1e7fde4e8a2acf2",
+      "exp4_fidelity_and_continual.py": "79250914aa01fa54e974ddf3cb5a7fe8e9692e456d5d873f90840bd213297b54",
+      "exp5_response_subspace_diagnostic.py": "0c8fca7bbeaf58a26213ca4a998e914c49f30576d304a380b86ab490c75cdc49",
       "highd_solvers.py": "b2860c83e59dc4b6060c0e8726f64755a97f4cb9edbca2d4acbdf6242dee4542",
-      "macro_planning.py": "69a21fec2d593ad6e7ba89abde85dffab16e74c5e0db55a741d87781903936ce",
+      "macro_planning.py": "8196e073ed72492ad7018ced65d5cd8e781bd6580a04c0804d90ab1be48621ac",
       "port_solvers.py": "35e598894f1013db0732561bcd85a9b81097fc7eddbbc5d929192296d194f914",
-      "verify_audit_closure.py": "8a95348c187a3eb8c27e9aa640770f625dfd5b331fb9c0695ba96c2b7bc8878e"
+      "verify_audit_closure.py": "85463fc4afb06eafb4336d1ac92698a8387dd169df47cef74a3687a1b04b724d"
     }
   },
   "last_manifest_sync": {
-    "synced_package_py_sha256": "2b38a2d5d6c544e33f58640eafc2d7a15f45ce573d8423506ce56188b4692939",
+    "synced_package_py_sha256": "7f9d208b7280771642bb3f9142f15dcfd568528b4a6ced94a3df587f927ee6a9",
     "note": "Synchronized package_py_sha256 across suite; inherited blocks preserve original generating_commit."
   }
 }
