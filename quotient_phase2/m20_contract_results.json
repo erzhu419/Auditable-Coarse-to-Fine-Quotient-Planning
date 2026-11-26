@@ -1,0 +1,155 @@
+{
+  "milestone": "M2.0_Mathematical_Contracts_and_10_Counterexample_Gates",
+  "runtime_metadata": {
+    "git_head_sha": "a26c1160046a81ae022c886fee5d77368e5cb472",
+    "git_dirty_green_response": true,
+    "package_py_sha256": "271ac8df9caaa8af8aaa5af9d35d76578632b554d5071fe8fe74065ca0dc0c2d",
+    "source_manifest": {
+      "git_head_sha": "a26c1160046a81ae022c886fee5d77368e5cb472",
+      "git_dirty_green_response": true,
+      "package_py_sha256": "271ac8df9caaa8af8aaa5af9d35d76578632b554d5071fe8fe74065ca0dc0c2d",
+      "per_file_sha256": {
+        "__init__.py": "34ff5edb886ae35d08fc9b82b6f2550c9358df120187f4c794a161c783d256da",
+        "core.py": "84934080da10a046b55e6b9e1672c2c49190f076487821b4e941ffd04c07c5d0",
+        "exp1_3d_and_macro_tours.py": "ae079e2d1b0ba44f283c85ebb54c290b7f18253fc11de38e72a8d0de80599bf2",
+        "exp2_nonlmdp_kkt.py": "3187b5ff1be8a3e637974029fb56d401b74c0c86f468c68bc662bfbf69ad9405",
+        "exp3_highd_and_kinetic.py": "4d6588d5fec9408c4dfe9ae9d2df6a1a7bd375d1b373d7f4e7e063c16fe6d401",
+        "exp4_fidelity_and_continual.py": "a6e76501e02e31ba5f441b191bdd679dda1bec1c50f9b1c44476640cc7f70cf2",
+        "exp5_response_subspace_diagnostic.py": "2ec4b5ca376f6a6d0432bcb368b90f11d9f73e4e4a4c220459f05b7ddc86676c",
+        "highd_solvers.py": "b2860c83e59dc4b6060c0e8726f64755a97f4cb9edbca2d4acbdf6242dee4542",
+        "macro_planning.py": "d14ab828ce4ee61510a09918164f89acf74654a20b880b6906334353492ffc0e",
+        "port_solvers.py": "35e598894f1013db0732561bcd85a9b81097fc7eddbbc5d929192296d194f914",
+        "verify_audit_closure.py": "3fa99a517a768a185bd361be2e0642d3935b0c466d1f63a3d6d05e52b4b661fd"
+      }
+    },
+    "python_version": "3.10.12",
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "processor": "x86_64",
+    "cpu_count": 32,
+    "configured_parallel_workers": 1,
+    "numpy_version": "2.2.6",
+    "scipy_version": "1.15.3",
+    "sklearn_version": "1.7.2",
+    "thread_env": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1"
+    },
+    "active_threadpools": [
+      {
+        "user_api": "blas",
+        "internal_api": "openblas",
+        "num_threads": 1,
+        "prefix": "libscipy_openblas",
+        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/numpy.libs/libscipy_openblas64_-56d6093b.so",
+        "version": "0.3.29",
+        "threading_layer": "pthreads",
+        "architecture": "SkylakeX"
+      },
+      {
+        "user_api": "blas",
+        "internal_api": "openblas",
+        "num_threads": 1,
+        "prefix": "libscipy_openblas",
+        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/scipy.libs/libscipy_openblas-68440149.so",
+        "version": "0.3.28",
+        "threading_layer": "pthreads",
+        "architecture": "SkylakeX"
+      },
+      {
+        "user_api": "openmp",
+        "internal_api": "openmp",
+        "num_threads": 1,
+        "prefix": "libgomp",
+        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/scikit_learn.libs/libgomp-a34b3233.so.1.0.0",
+        "version": null
+      }
+    ]
+  },
+  "phase2_manifest": {
+    "phase2_package_py_sha256": "cdd584d99b012aa3f6668680604bec7c2db12fa99da15db30f8fd348ce55e803",
+    "phase2_per_file_sha256": {
+      "__init__.py": "2608f67d3e97d98fdf77b36817a56e65038c3884eb7b4ae614b7c2c692d71b64",
+      "m20_contracts.py": "a286890405aed17a1aa8f1bab235a33296492fd8c1a12e65bb6c343f89d5c087",
+      "m21_qgap_collar_ablation.py": "e359791cc4c5e1c20d2f9f5efb8d90d3e1c6ade6b94692eb9509e8751822fccc"
+    },
+    "frozen_phase1_package_py_sha256": "271ac8df9caaa8af8aaa5af9d35d76578632b554d5071fe8fe74065ca0dc0c2d",
+    "frozen_phase1_verified_intact": true
+  },
+  "elapsed_ms": 3.290332155302167,
+  "ALL_10_COUNTEREXAMPLE_GATES_PASSED": true,
+  "counterexample_gates": {
+    "C01_P2A01_green_source_vs_killed_hitting": {
+      "green_source_max": 23.809523809523807,
+      "unnormalized_green_rejected_as_submarkov": true,
+      "killed_hitting_verified_submarkov": true,
+      "killed_hitting_min": 0.19047619047619044,
+      "killed_hitting_max_row_sum": 0.47619047619047616,
+      "pass": true
+    },
+    "C02_P2A02_collar_lift_interface_feedback": {
+      "naive_no_feedback": [
+        0.5,
+        0.25
+      ],
+      "exact_solution": [
+        0.6666666666666666,
+        0.3333333333333333
+      ],
+      "schur_err_inf": 0.0,
+      "full_remainder_correction_err_inf": 0.0,
+      "collar_row_residual_zero": 0.0,
+      "exterior_rim_residual_captured": 0.5,
+      "pass": true
+    },
+    "C03_P2A03_swapped_rows_continuation_enclosure": {
+      "row_sum_residual_zero": 0.0,
+      "true_continuation_diff": 0.8,
+      "zero_psi_encloses_true_continuation": true,
+      "exact_psi_recovers_exact_continuation_err": 2.220001960040463e-12,
+      "pass": true
+    },
+    "C04_P2A04_root_gap_vs_full_policy_separation": {
+      "bad_deployed_policy_rejected_under_full_policy_mode": true,
+      "receding_horizon_4step_bound_scales_with_m": 0.4,
+      "pass": true
+    },
+    "C05_P2A05_operator_witness_and_sound_dwr_fallback": {
+      "radial_template_rejected_as_super_adjoint": true,
+      "min_adjoint_slack": -0.5321205588285577,
+      "bilinear_dwr_with_imperfect_psi_still_encloses_z_true": true,
+      "pass": true
+    },
+    "C06_P2B01_pou_galerkin_negativity_vs_stochastic_sandwich": {
+      "galerkin_min_entry": -0.16666666666666669,
+      "sandwich_min_entry": 0.16666666666666666,
+      "sandwich_max_row_sum": 0.9999999999999999,
+      "pass": true
+    },
+    "C07_P2B02_within_port_dispersion_and_split_recovery": {
+      "coarse_point_interval_width": 0.0,
+      "coarse_within_block_dispersion_l1": 2.0,
+      "coarse_two_step_discrepancy_inf": 1.0,
+      "split_is_strongly_lumpable": true,
+      "pass": true
+    },
+    "C08_P2B03_irreversible_cycle_invariant_under_doob": {
+      "cycle_ratio_original": 728.9999999999999,
+      "cycle_ratio_transformed": 729.0,
+      "pass": true
+    },
+    "C09_P2C01_compact_prior_nonlocal_posterior_guard": {
+      "prior_LR_cov": 0.0,
+      "posterior_LR_cov_given_M": -0.16000000000000003,
+      "unit_innovation_at_L_shifts_R_by": -0.19047619047619052,
+      "pass": true
+    },
+    "C10_P2C02_local_schur_update_global_interface_coupling": {
+      "changed_interface_coordinates_of_3": 3,
+      "max_interface_shift": 0.017441860465116255,
+      "pass": true
+    }
+  }
+}
