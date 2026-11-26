@@ -1,0 +1,198 @@
+{
+  "source_m21_results_sha256": "634c15e52fb3a8181f738baef40b8d7c30e690a8600a7cf1e30b6ca17a3c4fc1",
+  "generating_commit_89761ff_phase2_py_sha256": "cdd584d99b012aa3f6668680604bec7c2db12fa99da15db30f8fd348ce55e803",
+  "n_streams_evaluated": 8,
+  "n_streams_where_f11_beats_best_classical": 0,
+  "n_streams_where_any_candidate_beats_best_classical": 0,
+  "overall_global_grid_dwr_economic_verdict": "STOP_GLOBAL_GRID_WITNESS_AND_MONOLITHIC_LU",
+  "architectural_root_causes": [
+    "Monolithic epoch-LU cliff: 1 refreshed waypoint in an epoch triggers global splu(A_t) across all 5.0/5.0 test epochs.",
+    "Full-grid O(N |R|) witness bank & dense residual matmul overhead (19.5s + 10.1s on 3D 27^3)."
+  ],
+  "streams": {
+    "dev_12maps::2D-51sq_RealisticGPStream": {
+      "best_classical_from_zero_arm": "ExactRing-Rebuild",
+      "best_classical_from_zero_ms": 269.1007529307778,
+      "best_classical_test_marginal_arm": "ExactRing-Rebuild",
+      "best_classical_test_marginal_ms": 226.09938615156958,
+      "f11_from_zero_ms": 865.0539282243699,
+      "f11_test_marginal_ms": 779.6971124868529,
+      "f11_slowdown_vs_best_classical_from_zero_pct": 221.4609839634645,
+      "f11_slowdown_vs_best_classical_test_marginal_pct": 244.84707179353848,
+      "best_candidate_from_zero_arm": "F00_NoLift_PrimalUniform",
+      "best_candidate_from_zero_ms": 329.0068907275175,
+      "best_candidate_slowdown_vs_best_classical_from_zero_pct": 22.261601702820077,
+      "best_candidate_slowdown_vs_best_classical_test_marginal_pct": 21.394824680259063,
+      "f11_mean_test_epochs_global_lus": 5.0,
+      "f11_stage_breakdown_mean_ms": {
+        "ref_cache_build_ms": 36.34499772063767,
+        "collar_lift_ms": 36.686799120313175,
+        "dwr_witness_and_audit_ms": 341.0882980097085,
+        "dp_ms": 185.74742218091464,
+        "fallback_exact_ms": 172.8983607996876
+      },
+      "stream_economic_gate_verdict": "STOP"
+    },
+    "dev_12maps::2D-51sq_LowDimParametricStream": {
+      "best_classical_from_zero_arm": "ExactRing-Rebuild",
+      "best_classical_from_zero_ms": 298.16825517142814,
+      "best_classical_test_marginal_arm": "ExactRing-Rebuild",
+      "best_classical_test_marginal_ms": 183.28471823285022,
+      "f11_from_zero_ms": 826.0787718657715,
+      "f11_test_marginal_ms": 665.7148397838076,
+      "f11_slowdown_vs_best_classical_from_zero_pct": 177.05121438592707,
+      "f11_slowdown_vs_best_classical_test_marginal_pct": 263.21349985003343,
+      "best_candidate_from_zero_arm": "F00_NoLift_PrimalUniform",
+      "best_candidate_from_zero_ms": 357.69522516056895,
+      "best_candidate_slowdown_vs_best_classical_from_zero_pct": 19.964221192801524,
+      "best_candidate_slowdown_vs_best_classical_test_marginal_pct": 29.16018638975015,
+      "f11_mean_test_epochs_global_lus": 5.0,
+      "f11_stage_breakdown_mean_ms": {
+        "ref_cache_build_ms": 35.71017534704879,
+        "collar_lift_ms": 31.921064228905987,
+        "dwr_witness_and_audit_ms": 289.68766300628585,
+        "dp_ms": 167.64092515222728,
+        "fallback_exact_ms": 144.56147686966384
+      },
+      "stream_economic_gate_verdict": "STOP"
+    },
+    "dev_12maps::3D-21cubed_RealisticGPStream": {
+      "best_classical_from_zero_arm": "Structure-Memory-Fresh-Exact",
+      "best_classical_from_zero_ms": 6467.01307441496,
+      "best_classical_test_marginal_arm": "Structure-Memory-Fresh-Exact",
+      "best_classical_test_marginal_ms": 5156.397368390269,
+      "f11_from_zero_ms": 12480.043956602458,
+      "f11_test_marginal_ms": 8624.741962761618,
+      "f11_slowdown_vs_best_classical_from_zero_pct": 92.98003286828778,
+      "f11_slowdown_vs_best_classical_test_marginal_pct": 67.2629424495673,
+      "best_candidate_from_zero_arm": "F10_CollarLift_PrimalUniform",
+      "best_candidate_from_zero_ms": 7111.965257829676,
+      "best_candidate_slowdown_vs_best_classical_from_zero_pct": 9.9729531391594,
+      "best_candidate_slowdown_vs_best_classical_test_marginal_pct": 14.5649989059655,
+      "f11_mean_test_epochs_global_lus": 5.0,
+      "f11_stage_breakdown_mean_ms": {
+        "ref_cache_build_ms": 2667.6765522764376,
+        "collar_lift_ms": 73.60777906918277,
+        "dwr_witness_and_audit_ms": 2128.983432330036,
+        "dp_ms": 184.21817782412595,
+        "fallback_exact_ms": 6010.891906373824
+      },
+      "stream_economic_gate_verdict": "STOP"
+    },
+    "dev_12maps::3D-21cubed_LowDimParametricStream": {
+      "best_classical_from_zero_arm": "Structure-Memory-Fresh-Exact",
+      "best_classical_from_zero_ms": 8253.88159241993,
+      "best_classical_test_marginal_arm": "Structure-Memory-Fresh-Exact",
+      "best_classical_test_marginal_ms": 5068.26821390617,
+      "f11_from_zero_ms": 15602.719813895723,
+      "f11_test_marginal_ms": 8819.964749544548,
+      "f11_slowdown_vs_best_classical_from_zero_pct": 89.03493634103867,
+      "f11_slowdown_vs_best_classical_test_marginal_pct": 74.0232437846241,
+      "best_candidate_from_zero_arm": "F10_CollarLift_PrimalUniform",
+      "best_candidate_from_zero_ms": 8861.890449499091,
+      "best_candidate_slowdown_vs_best_classical_from_zero_pct": 7.3663384950607425,
+      "best_candidate_slowdown_vs_best_classical_test_marginal_pct": 9.2840690532211,
+      "f11_mean_test_epochs_global_lus": 5.0,
+      "f11_stage_breakdown_mean_ms": {
+        "ref_cache_build_ms": 3103.9685106758648,
+        "collar_lift_ms": 82.19136255017172,
+        "dwr_witness_and_audit_ms": 2316.301414646053,
+        "dp_ms": 216.5584990483088,
+        "fallback_exact_ms": 6032.7625593636185
+      },
+      "stream_economic_gate_verdict": "STOP"
+    },
+    "confirm_8maps::3D-21cubed_FreshConfirm_RealisticGPStream": {
+      "best_classical_from_zero_arm": "ExactRing-Rebuild",
+      "best_classical_from_zero_ms": 9861.575301736593,
+      "best_classical_test_marginal_arm": "ExactRing-Rebuild",
+      "best_classical_test_marginal_ms": 8181.512854032917,
+      "f11_from_zero_ms": 15706.586464919383,
+      "f11_test_marginal_ms": 11141.326457203832,
+      "f11_slowdown_vs_best_classical_from_zero_pct": 59.270562606295776,
+      "f11_slowdown_vs_best_classical_test_marginal_pct": 36.176849636212836,
+      "best_candidate_from_zero_arm": "F01_NoLift_BilinearDWR",
+      "best_candidate_from_zero_ms": 15585.455190885114,
+      "best_candidate_slowdown_vs_best_classical_from_zero_pct": 58.042246943452966,
+      "best_candidate_slowdown_vs_best_classical_test_marginal_pct": 13.194034660151011,
+      "f11_mean_test_epochs_global_lus": 5.0,
+      "f11_stage_breakdown_mean_ms": {
+        "ref_cache_build_ms": 3192.186949949246,
+        "collar_lift_ms": 92.20081058447249,
+        "dwr_witness_and_audit_ms": 2828.2999896619003,
+        "dp_ms": 253.02706137881614,
+        "fallback_exact_ms": 7687.533725489629
+      },
+      "stream_economic_gate_verdict": "STOP"
+    },
+    "confirm_8maps::3D-21cubed_FreshConfirm_LowDimParametricStream": {
+      "best_classical_from_zero_arm": "Structure-Memory-Fresh-Exact",
+      "best_classical_from_zero_ms": 8721.640875388402,
+      "best_classical_test_marginal_arm": "Structure-Memory-Fresh-Exact",
+      "best_classical_test_marginal_ms": 5454.481639404548,
+      "f11_from_zero_ms": 15723.858185054269,
+      "f11_test_marginal_ms": 8490.169048367534,
+      "f11_slowdown_vs_best_classical_from_zero_pct": 80.28554958534721,
+      "f11_slowdown_vs_best_classical_test_marginal_pct": 55.65492029586121,
+      "best_candidate_from_zero_arm": "F10_CollarLift_PrimalUniform",
+      "best_candidate_from_zero_ms": 9544.391328585334,
+      "best_candidate_slowdown_vs_best_classical_from_zero_pct": 9.433436493798443,
+      "best_candidate_slowdown_vs_best_classical_test_marginal_pct": 9.568727726168746,
+      "f11_mean_test_epochs_global_lus": 5.0,
+      "f11_stage_breakdown_mean_ms": {
+        "ref_cache_build_ms": 3362.351917399792,
+        "collar_lift_ms": 78.45259335590526,
+        "dwr_witness_and_audit_ms": 2322.591585892951,
+        "dp_ms": 181.65131763089448,
+        "fallback_exact_ms": 5737.497555586742
+      },
+      "stream_economic_gate_verdict": "STOP"
+    },
+    "confirm_8maps::3D-27cubed_FreshConfirm_RealisticGPStream": {
+      "best_classical_from_zero_arm": "ExactRing-Rebuild",
+      "best_classical_from_zero_ms": 39125.57284286595,
+      "best_classical_test_marginal_arm": "ExactRing-Rebuild",
+      "best_classical_test_marginal_ms": 32771.02394544636,
+      "f11_from_zero_ms": 77663.43839745969,
+      "f11_test_marginal_ms": 50581.98891711072,
+      "f11_slowdown_vs_best_classical_from_zero_pct": 98.49789473848081,
+      "f11_slowdown_vs_best_classical_test_marginal_pct": 54.34973591705319,
+      "best_candidate_from_zero_arm": "F10_CollarLift_PrimalUniform",
+      "best_candidate_from_zero_ms": 39998.876309691695,
+      "best_candidate_slowdown_vs_best_classical_from_zero_pct": 2.2320528579429677,
+      "best_candidate_slowdown_vs_best_classical_test_marginal_pct": 0.6741099869790546,
+      "f11_mean_test_epochs_global_lus": 5.0,
+      "f11_stage_breakdown_mean_ms": {
+        "ref_cache_build_ms": 19978.195305884583,
+        "collar_lift_ms": 179.14895265130326,
+        "dwr_witness_and_audit_ms": 10439.937997463858,
+        "dp_ms": 244.765861047199,
+        "fallback_exact_ms": 39095.11466926779
+      },
+      "stream_economic_gate_verdict": "STOP"
+    },
+    "confirm_8maps::3D-27cubed_FreshConfirm_LowDimParametricStream": {
+      "best_classical_from_zero_arm": "ExactRing-Rebuild",
+      "best_classical_from_zero_ms": 52219.350948755164,
+      "best_classical_test_marginal_arm": "ExactRing-Rebuild",
+      "best_classical_test_marginal_ms": 32791.40871702111,
+      "f11_from_zero_ms": 85134.49170012609,
+      "f11_test_marginal_ms": 43361.08808146673,
+      "f11_slowdown_vs_best_classical_from_zero_pct": 63.032458568226566,
+      "f11_slowdown_vs_best_classical_test_marginal_pct": 32.23307499735195,
+      "best_candidate_from_zero_arm": "F00_NoLift_PrimalUniform",
+      "best_candidate_from_zero_ms": 52624.0954004752,
+      "best_candidate_slowdown_vs_best_classical_from_zero_pct": 0.7750851827270422,
+      "best_candidate_slowdown_vs_best_classical_test_marginal_pct": 0.3903376940816994,
+      "f11_mean_test_epochs_global_lus": 5.0,
+      "f11_stage_breakdown_mean_ms": {
+        "ref_cache_build_ms": 19462.981158314506,
+        "collar_lift_ms": 176.05255177477375,
+        "dwr_witness_and_audit_ms": 10058.006365696201,
+        "dp_ms": 217.4771445861552,
+        "fallback_exact_ms": 32471.109423437156
+      },
+      "stream_economic_gate_verdict": "STOP"
+    }
+  }
+}

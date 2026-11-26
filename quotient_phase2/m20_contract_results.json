@@ -1,11 +1,11 @@
 {
-  "milestone": "M2.0_Mathematical_Contracts_and_10_Counterexample_Gates",
+  "milestone": "M2.0_Mathematical_Contracts_and_15_Counterexample_Gates",
   "runtime_metadata": {
-    "git_head_sha": "a26c1160046a81ae022c886fee5d77368e5cb472",
+    "git_head_sha": "89761ffa3cfb44ef71d42047638aa17bba6c26da",
     "git_dirty_green_response": true,
     "package_py_sha256": "271ac8df9caaa8af8aaa5af9d35d76578632b554d5071fe8fe74065ca0dc0c2d",
     "source_manifest": {
-      "git_head_sha": "a26c1160046a81ae022c886fee5d77368e5cb472",
+      "git_head_sha": "89761ffa3cfb44ef71d42047638aa17bba6c26da",
       "git_dirty_green_response": true,
       "package_py_sha256": "271ac8df9caaa8af8aaa5af9d35d76578632b554d5071fe8fe74065ca0dc0c2d",
       "per_file_sha256": {
@@ -69,17 +69,23 @@
     ]
   },
   "phase2_manifest": {
-    "phase2_package_py_sha256": "cdd584d99b012aa3f6668680604bec7c2db12fa99da15db30f8fd348ce55e803",
+    "phase2_package_py_sha256": "c3f7a8a23a724f38f702f8fefe55bdcd2d9a4f9d1b61667a85575c452d49c022",
     "phase2_per_file_sha256": {
       "__init__.py": "2608f67d3e97d98fdf77b36817a56e65038c3884eb7b4ae614b7c2c692d71b64",
-      "m20_contracts.py": "a286890405aed17a1aa8f1bab235a33296492fd8c1a12e65bb6c343f89d5c087",
-      "m21_qgap_collar_ablation.py": "e359791cc4c5e1c20d2f9f5efb8d90d3e1c6ade6b94692eb9509e8751822fccc"
+      "m20_contracts.py": "89b8f6734a1e272f9ac5279afa05257eaadd47a378a958c0e70f595334ed3340",
+      "m21_postprocess_closure.py": "259e04de8d61dc27d84525fb7a1066e22a31ac62df238e3b8a91db3984b22b28",
+      "m21_qgap_collar_ablation.py": "391b5e2dfbc8616519c5a89818ba29e5a3007de6579257e11776f9ee606a3f98",
+      "m22_portal_quotient_pilot.py": "d3af8a9aae60aee8ea63a9ae7fa921cca17e9e9b425052eb6977b647be527ff8",
+      "m23_m24_3d_portal_scale.py": "7cf769479ee510305d7369d133f5f0e8f258f1de93ff5901f930b094863800a6"
     },
     "frozen_phase1_package_py_sha256": "271ac8df9caaa8af8aaa5af9d35d76578632b554d5071fe8fe74065ca0dc0c2d",
     "frozen_phase1_verified_intact": true
   },
-  "elapsed_ms": 3.290332155302167,
+  "elapsed_ms": 3.781834151595831,
   "ALL_10_COUNTEREXAMPLE_GATES_PASSED": true,
+  "ALL_15_COUNTEREXAMPLE_GATES_PASSED": true,
+  "n_gates_passed": 15,
+  "n_gates_total": 15,
   "counterexample_gates": {
     "C01_P2A01_green_source_vs_killed_hitting": {
       "green_source_max": 23.809523809523807,
@@ -113,7 +119,9 @@
     },
     "C04_P2A04_root_gap_vs_full_policy_separation": {
       "bad_deployed_policy_rejected_under_full_policy_mode": true,
-      "receding_horizon_4step_bound_scales_with_m": 0.4,
+      "single_root_cert_full_horizon_regret_is_none": true,
+      "incomplete_chain_full_horizon_regret_is_none": true,
+      "verified_4step_chain_bound": 0.4,
       "pass": true
     },
     "C05_P2A05_operator_witness_and_sound_dwr_fallback": {
@@ -149,6 +157,49 @@
     "C10_P2C02_local_schur_update_global_interface_coupling": {
       "changed_interface_coordinates_of_3": 3,
       "max_interface_shift": 0.017441860465116255,
+      "pass": true
+    },
+    "C11_V10_C02_nan_inf_and_invalid_input_rejection": {
+      "rejected_by_case": {
+        "cert_eps_nan": true,
+        "cert_eps_inf": true,
+        "cert_eps_neg": true,
+        "cert_nan_comp": true,
+        "cert_bad_horizon": true,
+        "sandwich_H_nan": true,
+        "sandwich_R_nan": true,
+        "sandwich_L_nan": true
+      },
+      "pass": true
+    },
+    "C12_V10_tiny_z_exit_aliasing_rejected": {
+      "raw_delta_H_l1": 2e-08,
+      "normalized_delta_P_l1": 2.0,
+      "joint_bellman_discrepancy": 1.0,
+      "rejected_under_z_floor": true,
+      "rejected_under_joint_discrepancy": true,
+      "pass": true
+    },
+    "C13_V10_tiny_z_cost_aliasing_rejected": {
+      "raw_delta_H_l1": 1e-08,
+      "normalized_delta_P_l1": 0.0,
+      "max_delta_c0": 0.6931471805599472,
+      "state_adequacy_certified": false,
+      "pass": true
+    },
+    "C14_V10_single_option_jensen_gap_vs_exact_desirability_interface": {
+      "fixed_single_option_value": 2.052680257828913,
+      "multi_exit_cole_hopf_value": 0.39908614492243794,
+      "action_library_jensen_gap": 1.653594112906475,
+      "pass": true
+    },
+    "C15_V10_cyclic_resolvent_amplification_lyapunov_enclosure": {
+      "bellman_residual": 0.01,
+      "true_value_error": 1.0,
+      "certified_resolvent_inf_ub": 100.0,
+      "certified_V_lo": 99.0,
+      "certified_V_hi": 100.00000000000051,
+      "encloses_true_100": true,
       "pass": true
     }
   }

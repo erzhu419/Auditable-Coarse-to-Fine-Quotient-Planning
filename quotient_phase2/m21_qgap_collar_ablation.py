@@ -8,9 +8,9 @@ Evaluates:
     verifying `0%` `H < 0` and `0%` `Z > 1` on principal killed-collar lifts across `hops = 2, 3, 4`).
   - Part M2.1-B: Continual evolving-world full-lifecycle & test-marginal wall-clock ablation across:
       1. `Exp 5B` Parity Dev Cohort (`30300..30311`, `12` maps, `2D 51^2` & `3D 21^3`, `GP` & `Param` streams);
-      2. Untouched Confirmation + 3D Scale-Rung Cohort (`40300..40307`, `8` fresh maps, `3D 21^3` & `3D 31^3`,
-         `GP` & `Param` streams), testing whether avoiding test-epoch `splu` factorizations yields net wall-clock
-         savings once 3D `splu` fill-in grows (`9,261` -> `29,791` nodes).
+      2. Untouched Confirmation + 3D Scale-Rung Cohort (`40300..40307`, `8` fresh maps, `3D 21^3` & `3D 27^3`
+         [`9,261` -> `19,683` nodes], `GP` & `Param` streams, plus standalone single-worker 3D `splu` scaling
+         ladder `21^3 -> 25^3 -> 27^3 -> 31^3` up to `29,791` nodes).
 
 Imports `green_response` strictly read-only (`package_py_sha256 == "271ac8df..."` verified at startup).
 """
@@ -150,6 +150,7 @@ class KilledCollarDWRPlanner:
         self.inv_inf_ub_cur: float = float(spec.lam / max(float(np.min(self.pl.q_base)), 1e-12))
         self.ep_dwr_ops: Dict[int, dict] = {}
         self.ep_eval_row_map: Dict[int, np.ndarray] = {}  # `b -> pos in dwr_op['H_corr'] for full node id`
+        self.ep_eval_nodes_tuple: Dict[int, Tuple[int, ...]] = {}
         self.ep_wp_is_exact: Dict[int, bool] = {}
 
         self.ref_cache_build_ms = 0.0
@@ -230,8 +231,19 @@ class KilledCollarDWRPlanner:
 
         self.A_cur_csr = A_new.tocsr()
         self.inv_inf_ub_cur = float(self.pl.spec.lam / q_min)
-        self.ep_dwr_ops.clear()
-        self.ep_eval_row_map.clear()
+        self.ep_dwr_ops = {
+            j: {
+                "H_corr": np.zeros((0, len(self.pl.wp_rings[j])), dtype=float),
+                "alpha_row": np.zeros(0, dtype=float),
+                "r_col_inf": np.zeros(len(self.pl.wp_rings[j]), dtype=float),
+                "rho_1": 0.0,
+                "z_lo_ext": np.zeros(0, dtype=float),
+                "z_hi_ext": np.zeros(0, dtype=float),
+            }
+            for j in range(self.n_wps)
+        }
+        self.ep_eval_row_map = {j: np.full(self.n_grid, -1, dtype=np.int64) for j in range(self.n_wps)}
+        self.ep_eval_nodes_tuple = {j: () for j in range(self.n_wps)}
         self.ep_wp_is_exact = {j: False for j in range(self.n_wps)}
 
         # Map tasks to start nodes & collect required exterior evaluation rows per waypoint `b`
@@ -291,6 +303,7 @@ class KilledCollarDWRPlanner:
             row_lookup = np.full(self.n_grid, -1, dtype=np.int64)
             row_lookup[req_full] = np.arange(len(req_full), dtype=np.int64)
             self.ep_eval_row_map[b] = row_lookup
+            self.ep_eval_nodes_tuple[b] = tuple(int(x) for x in req_full)
 
             if len(req_full) == 0:
                 self.ep_dwr_ops[b] = {
@@ -345,43 +358,59 @@ class KilledCollarDWRPlanner:
             self.dwr_witness_and_audit_ms += 1000.0 * (time.perf_counter() - t_a0)
 
     def _upgrade_waypoint_to_current_exact(self, b: int, req_full_nodes: np.ndarray) -> None:
-        """Upgrades waypoint `b` to exact current-epoch operator (`R_ext == 0, alpha == 0`), paying `splu(A_cur)`
-        automatically on the first exact fallback of the epoch!
+        """Upgrades waypoint `b` to exact current-epoch operator (`R_ext == 0, alpha == 0`) on `req_full_nodes`,
+        paying `splu(A_cur)` automatically on the first exact fallback of the epoch and atomically extending
+        cached rows (`0` extra LU/backsolve) whenever unannounced online queries request new exterior rows (`v10 C01`).
         """
-        if self.ep_wp_is_exact.get(b, False):
+        req_sorted = np.unique(np.asarray(req_full_nodes, dtype=np.int64))
+        req_tup = tuple(int(x) for x in req_sorted)
+        if self.ep_wp_is_exact.get(b, False) and self.ep_eval_nodes_tuple.get(b) == req_tup:
             return
         t_f0 = time.perf_counter()
         self.pl.ensure_wp_level(b, "EXACT")
         _, U_b = self.pl._wp_tree[b]["EXACT"]
         rg = self.pl.wp_rings[b]
-        H_req = U_b[req_full_nodes, :] @ np.linalg.inv(U_b[rg, :])
+        if len(req_sorted) == 0:
+            H_req = np.zeros((0, len(rg)), dtype=float)
+        else:
+            H_req = U_b[req_sorted, :] @ np.linalg.inv(U_b[rg, :])
         z_ex = np.sum(H_req, axis=1)
         pad_z = 1e-13 * (1.0 + np.abs(z_ex))
-        self.ep_dwr_ops[b] = {
+        new_op = {
             "H_corr": H_req,
-            "alpha_row": np.zeros(len(req_full_nodes), dtype=float),
+            "alpha_row": np.zeros(len(req_sorted), dtype=float),
             "r_col_inf": np.zeros(len(rg), dtype=float),
             "rho_1": 0.0,
             "z_lo_ext": z_ex - pad_z,
             "z_hi_ext": np.minimum(1.0, z_ex + pad_z),
         }
+        row_lookup = np.full(self.n_grid, -1, dtype=np.int64)
+        row_lookup[req_sorted] = np.arange(len(req_sorted), dtype=np.int64)
+        # Atomic swap only after `new_op` and `row_lookup` are completely built (`v10 C01` invariant):
+        self.ep_dwr_ops[b] = new_op
+        self.ep_eval_row_map[b] = row_lookup
+        self.ep_eval_nodes_tuple[b] = req_tup
         self.ep_wp_is_exact[b] = True
         self.fallback_exact_ms += 1000.0 * (time.perf_counter() - t_f0)
 
     def _slice_task_dwr_op(self, b: int, task_ext_full_nodes: np.ndarray) -> dict:
-        op = self.ep_dwr_ops[b]
-        idx = self.ep_eval_row_map[b][task_ext_full_nodes]
-        if np.any(idx < 0):
-            # Re-upgrade or extend if unseen row requested
-            old_map = self.ep_eval_row_map[b]
-            cur_nodes = np.flatnonzero(old_map >= 0)
-            merged = np.unique(np.concatenate([cur_nodes, task_ext_full_nodes]))
-            row_lookup = np.full(self.n_grid, -1, dtype=np.int64)
-            row_lookup[merged] = np.arange(len(merged), dtype=np.int64)
-            self.ep_eval_row_map[b] = row_lookup
+        req_task = np.asarray(task_ext_full_nodes, dtype=np.int64)
+        if b not in self.ep_eval_row_map:
+            cur_nodes = np.zeros(0, dtype=np.int64)
+            need_extend = len(req_task) > 0
+        else:
+            row_map = self.ep_eval_row_map[b]
+            idx = row_map[req_task]
+            need_extend = bool(np.any(idx < 0))
+            if need_extend:
+                cur_nodes = np.flatnonzero(row_map >= 0)
+        if need_extend:
+            merged = np.unique(np.concatenate([cur_nodes, req_task]))
             self._upgrade_waypoint_to_current_exact(b, merged)
-            op = self.ep_dwr_ops[b]
-            idx = self.ep_eval_row_map[b][task_ext_full_nodes]
+        op = self.ep_dwr_ops[b]
+        idx = self.ep_eval_row_map[b][req_task]
+        if np.any(idx < 0) or (len(idx) > 0 and int(np.max(idx)) >= op["H_corr"].shape[0]):
+            raise RuntimeError(f"Inconsistent ep_eval_row_map / ep_dwr_ops state for waypoint {b}")
         return {
             "H_corr": op["H_corr"][idx, :],
             "alpha_row": op["alpha_row"][idx],
@@ -560,11 +589,15 @@ class KilledCollarDWRPlanner:
                 lo_0 = float(F0_lo[0, full_mk] + phi_mask_sum[full_mk])
                 hi_0 = float(F0_hi[0, full_mk] + phi_mask_sum[full_mk])
                 if np.isfinite(lo_0) and np.isfinite(hi_0) and (hi_0 - lo_0 <= epsilon_tol):
-                    # Validate via `M2.0` typed `Phase2DecisionCertificate` (`full_policy_enclosure`!)
-                    root_q_bounds = {}
-                    for i, b in enumerate(t_list):
-                        rem = full_mk ^ (1 << i)
-                        root_q_bounds[i] = (lo_0, hi_0)  # placeholder summary; check exact policy gap via dataclass
+                    # Populate actual per-action root Q-intervals (`v10 C04`) and validate `full_policy_enclosure`:
+                    if m == 1:
+                        root_q_bounds = {0: (lo_0, hi_0)}
+                    else:
+                        phi_tot = float(phi_mask_sum[full_mk])
+                        root_q_bounds = {
+                            i: (float(q_lo_by_i[i][0, 0] + phi_tot), float(q_hi_by_i[i][0, 0] + phi_tot))
+                            for i in range(m)
+                        }
                     cert_obj = Phase2DecisionCertificate(
                         certificate_mode="full_policy_enclosure",
                         certified=True,
@@ -580,6 +613,7 @@ class KilledCollarDWRPlanner:
                         "certified": True,
                         "certificate_mode": cert_obj.certificate_mode,
                         "macro_value_bounds": [lo_0, hi_0],
+                        "root_action_q_bounds": root_q_bounds,
                         "guaranteed_suboptimality_upper_bound": cert_obj.guaranteed_full_horizon_regret_bound,
                         "policy_action_idx": act_idx,
                         "refinement_steps": refinements,

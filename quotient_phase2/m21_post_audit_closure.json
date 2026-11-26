@@ -1,0 +1,149 @@
+{
+  "milestone": "WP0_V10_Contract_OnlineCache_and_Provenance_Closure",
+  "runtime_metadata": {
+    "git_head_sha": "89761ffa3cfb44ef71d42047638aa17bba6c26da",
+    "git_dirty_green_response": true,
+    "package_py_sha256": "271ac8df9caaa8af8aaa5af9d35d76578632b554d5071fe8fe74065ca0dc0c2d",
+    "source_manifest": {
+      "git_head_sha": "89761ffa3cfb44ef71d42047638aa17bba6c26da",
+      "git_dirty_green_response": true,
+      "package_py_sha256": "271ac8df9caaa8af8aaa5af9d35d76578632b554d5071fe8fe74065ca0dc0c2d",
+      "per_file_sha256": {
+        "__init__.py": "34ff5edb886ae35d08fc9b82b6f2550c9358df120187f4c794a161c783d256da",
+        "core.py": "84934080da10a046b55e6b9e1672c2c49190f076487821b4e941ffd04c07c5d0",
+        "exp1_3d_and_macro_tours.py": "ae079e2d1b0ba44f283c85ebb54c290b7f18253fc11de38e72a8d0de80599bf2",
+        "exp2_nonlmdp_kkt.py": "3187b5ff1be8a3e637974029fb56d401b74c0c86f468c68bc662bfbf69ad9405",
+        "exp3_highd_and_kinetic.py": "4d6588d5fec9408c4dfe9ae9d2df6a1a7bd375d1b373d7f4e7e063c16fe6d401",
+        "exp4_fidelity_and_continual.py": "a6e76501e02e31ba5f441b191bdd679dda1bec1c50f9b1c44476640cc7f70cf2",
+        "exp5_response_subspace_diagnostic.py": "2ec4b5ca376f6a6d0432bcb368b90f11d9f73e4e4a4c220459f05b7ddc86676c",
+        "highd_solvers.py": "b2860c83e59dc4b6060c0e8726f64755a97f4cb9edbca2d4acbdf6242dee4542",
+        "macro_planning.py": "d14ab828ce4ee61510a09918164f89acf74654a20b880b6906334353492ffc0e",
+        "port_solvers.py": "35e598894f1013db0732561bcd85a9b81097fc7eddbbc5d929192296d194f914",
+        "verify_audit_closure.py": "3fa99a517a768a185bd361be2e0642d3935b0c466d1f63a3d6d05e52b4b661fd"
+      }
+    },
+    "python_version": "3.10.12",
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "processor": "x86_64",
+    "cpu_count": 32,
+    "configured_parallel_workers": 1,
+    "numpy_version": "2.2.6",
+    "scipy_version": "1.15.3",
+    "sklearn_version": "1.7.2",
+    "thread_env": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1"
+    },
+    "active_threadpools": [
+      {
+        "user_api": "blas",
+        "internal_api": "openblas",
+        "num_threads": 1,
+        "prefix": "libscipy_openblas",
+        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/numpy.libs/libscipy_openblas64_-56d6093b.so",
+        "version": "0.3.29",
+        "threading_layer": "pthreads",
+        "architecture": "SkylakeX"
+      },
+      {
+        "user_api": "blas",
+        "internal_api": "openblas",
+        "num_threads": 1,
+        "prefix": "libscipy_openblas",
+        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/scipy.libs/libscipy_openblas-68440149.so",
+        "version": "0.3.28",
+        "threading_layer": "pthreads",
+        "architecture": "SkylakeX"
+      },
+      {
+        "user_api": "openmp",
+        "internal_api": "openmp",
+        "num_threads": 1,
+        "prefix": "libgomp",
+        "filepath": "/home/erzhu419/.local/lib/python3.10/site-packages/scikit_learn.libs/libgomp-a34b3233.so.1.0.0",
+        "version": null
+      }
+    ]
+  },
+  "phase2_manifest": {
+    "phase2_package_py_sha256": "c3f7a8a23a724f38f702f8fefe55bdcd2d9a4f9d1b61667a85575c452d49c022",
+    "phase2_per_file_sha256": {
+      "__init__.py": "2608f67d3e97d98fdf77b36817a56e65038c3884eb7b4ae614b7c2c692d71b64",
+      "m20_contracts.py": "89b8f6734a1e272f9ac5279afa05257eaadd47a378a958c0e70f595334ed3340",
+      "m21_postprocess_closure.py": "259e04de8d61dc27d84525fb7a1066e22a31ac62df238e3b8a91db3984b22b28",
+      "m21_qgap_collar_ablation.py": "391b5e2dfbc8616519c5a89818ba29e5a3007de6579257e11776f9ee606a3f98",
+      "m22_portal_quotient_pilot.py": "d3af8a9aae60aee8ea63a9ae7fa921cca17e9e9b425052eb6977b647be527ff8",
+      "m23_m24_3d_portal_scale.py": "7cf769479ee510305d7369d133f5f0e8f258f1de93ff5901f930b094863800a6"
+    },
+    "frozen_phase1_package_py_sha256": "271ac8df9caaa8af8aaa5af9d35d76578632b554d5071fe8fe74065ca0dc0c2d",
+    "frozen_phase1_verified_intact": true
+  },
+  "frozen_m21_ablation_results_sha256": "634c15e52fb3a8181f738baef40b8d7c30e690a8600a7cf1e30b6ca17a3c4fc1",
+  "frozen_m21_ablation_results_verified_untouched": true,
+  "elapsed_ms": 46.84525588527322,
+  "v10_probes": {
+    "ALL_V10_CLOSURE_PROBES_PASSED": true,
+    "m20_15_gates_passed": true,
+    "c03_root_only_full_horizon_is_none": true,
+    "c03_verified_4step_chain_regret_bound": 0.4,
+    "c02_nan_inf_rejections": {
+      "certificate_epsilon_nan": true,
+      "certificate_epsilon_inf": true,
+      "certificate_nan_competitor": true,
+      "H_nan": true,
+      "R_nan": true,
+      "L_nan": true
+    },
+    "dwr_30_dense_draws_max_violation": 0.0,
+    "c01_low_row_slice_max_err": 0.0,
+    "c01_high_row_slice_max_err": 0.0,
+    "c01_public_online_unannounced_violations": 0,
+    "c01_public_online_checks": [
+      {
+        "node": 0,
+        "reported_bounds": [
+          2.600408672104465,
+          2.6004086873962904
+        ],
+        "exact_killed_value": 2.6004086797503776,
+        "violates_enclosure": false
+      },
+      {
+        "node": 63,
+        "reported_bounds": [
+          1.5213630591659322,
+          1.5213630592401495
+        ],
+        "exact_killed_value": 1.5213630592030407,
+        "violates_enclosure": false
+      },
+      {
+        "node": 120,
+        "reported_bounds": [
+          4.050844281148313,
+          4.050864013394307
+        ],
+        "exact_killed_value": 4.050854147030964,
+        "violates_enclosure": false
+      }
+    ],
+    "c04_root_action_q_bounds_populated": {
+      "0": [
+        3.173600223581453,
+        3.1736002245916235
+      ],
+      "1": [
+        3.6287356124517935,
+        3.6287356309268235
+      ]
+    }
+  },
+  "economic_gate_summary": {
+    "verdict": "STOP_GLOBAL_GRID_WITNESS_AND_MONOLITHIC_LU",
+    "n_streams_evaluated": 8,
+    "n_streams_where_any_candidate_beats_best_classical": 0
+  }
+}
