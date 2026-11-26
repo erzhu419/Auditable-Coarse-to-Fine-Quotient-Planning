@@ -1333,6 +1333,21 @@ class MacroTourPlanner:
                 use_incremental_dp=True,
             )
             selected_route = "incremental_decision_port_dp"
+            if res.get("status") == "unresolved":
+                bs_port = int(res.get("new_lu_backsolves", 0))
+                ms_port = float(res.get("planning_ms", 0.0))
+                res_ex = self.plan_exact_subset_dp(start_point, t_list)
+                ms_ex = float(res_ex.get("planning_ms", 0.0))
+                bs_ex = int(res_ex.get("new_lu_backsolves", 0))
+                res_ex["new_lu_backsolves"] = bs_port + bs_ex
+                res_ex["planning_ms"] = ms_port + ms_ex
+                if isinstance(res_ex.get("work"), dict):
+                    res_ex["work"]["new_lu_backsolves"] = bs_port + bs_ex
+                    res_ex["work"]["planning_ms"] = ms_port + ms_ex
+                    res_ex["work"]["port_pre_fallback_ms"] = ms_port
+                    res_ex["work"]["exact_dp_fallback_ms"] = ms_ex
+                res = res_ex
+                selected_route = "incremental_decision_port_dp_then_exact_dp_fallback"
 
         inner_ms = float(res.get("planning_ms", 0.0))
         total_ms = inner_ms + router_ms

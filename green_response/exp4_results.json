@@ -67,27 +67,27 @@
     ]
   },
   "source_manifest": {
-    "git_head_sha": "c2c499e50428759f883b82fd41de9774c84d54d6",
+    "git_head_sha": "efde60ce09be4750ac5189a3b559641a327c83ba",
     "git_dirty_green_response": true,
-    "package_py_sha256": "7f9d208b7280771642bb3f9142f15dcfd568528b4a6ced94a3df587f927ee6a9",
+    "package_py_sha256": "f595b74162bd1e05a981a144a9ce2db43ab26abb3c45f27f7f982373427ed2f2",
     "per_file_sha256": {
       "__init__.py": "34ff5edb886ae35d08fc9b82b6f2550c9358df120187f4c794a161c783d256da",
-      "core.py": "9867133f19cf25a5a52a11d7708b3a17840afbc5a24977c3e28231bfe85e9507",
+      "core.py": "86cd412314ab0cffdd9f754d3433a5032195ee8f7e9996fe394ccfd5236742c6",
       "exp1_3d_and_macro_tours.py": "ae079e2d1b0ba44f283c85ebb54c290b7f18253fc11de38e72a8d0de80599bf2",
       "exp2_nonlmdp_kkt.py": "3187b5ff1be8a3e637974029fb56d401b74c0c86f468c68bc662bfbf69ad9405",
       "exp3_highd_and_kinetic.py": "4d6588d5fec9408c4dfe9ae9d2df6a1a7bd375d1b373d7f4e7e063c16fe6d401",
-      "exp4_fidelity_and_continual.py": "79250914aa01fa54e974ddf3cb5a7fe8e9692e456d5d873f90840bd213297b54",
-      "exp5_response_subspace_diagnostic.py": "0c8fca7bbeaf58a26213ca4a998e914c49f30576d304a380b86ab490c75cdc49",
+      "exp4_fidelity_and_continual.py": "a6e76501e02e31ba5f441b191bdd679dda1bec1c50f9b1c44476640cc7f70cf2",
+      "exp5_response_subspace_diagnostic.py": "43c9dba30624de86d9e5239c379abee7f7306b420376b394301e84fe0f80b879",
       "highd_solvers.py": "b2860c83e59dc4b6060c0e8726f64755a97f4cb9edbca2d4acbdf6242dee4542",
-      "macro_planning.py": "8196e073ed72492ad7018ced65d5cd8e781bd6580a04c0804d90ab1be48621ac",
+      "macro_planning.py": "7cf984fa210a3fbaa1bfb81636caa170f51ac1dd3f8afccf818a2d47848cbd7f",
       "port_solvers.py": "35e598894f1013db0732561bcd85a9b81097fc7eddbbc5d929192296d194f914",
-      "verify_audit_closure.py": "85463fc4afb06eafb4336d1ac92698a8387dd169df47cef74a3687a1b04b724d"
+      "verify_audit_closure.py": "05b293fedc570863e64c5d568efab614e73921bc6f3859bd7ea5d6d39e07a706"
     }
   },
   "acquisition_tape_manifest": {
     "file": "exp4_acquisition_tapes.json",
     "schema": "compact_5dec_provenance_tape_v1",
-    "sha256": "41a5b4893cfe9cba372dc615e27ada4a191680ed23d90ba02b90b525f9e57887",
+    "sha256": "4917a7ee43b6c99e1f3822b366ea7ad6abc6ac26702858eed640fd86678a9e2e",
     "size_bytes": 1812863,
     "n_map_tapes_total": 96
   },
@@ -46020,7 +46020,7 @@
       "kink_audit_scope": "five_acquisition_stages_ep1_to_ep5_online_adjoint_calls_ep6_has_no_acquisition"
     },
     "acquisition_tape_file": "exp4_acquisition_tapes.json",
-    "acquisition_tape_sha256": "41a5b4893cfe9cba372dc615e27ada4a191680ed23d90ba02b90b525f9e57887",
+    "acquisition_tape_sha256": "4917a7ee43b6c99e1f3822b366ea7ad6abc6ac26702858eed640fd86678a9e2e",
     "generating_commit": "c2c499e"
   },
   "batch_C_locked_fresh_confirmation_64maps": {
@@ -82736,7 +82736,7 @@
       }
     },
     "acquisition_tape_file": "exp4_acquisition_tapes.json",
-    "acquisition_tape_sha256": "41a5b4893cfe9cba372dc615e27ada4a191680ed23d90ba02b90b525f9e57887",
+    "acquisition_tape_sha256": "4917a7ee43b6c99e1f3822b366ea7ad6abc6ac26702858eed640fd86678a9e2e",
     "generating_commit": "c2c499e",
     "between_regime_interaction_tests_competing_minus_standard": {
       "interpretation_note": "Gelman-Stern (2006) direct interaction test: within-subgroup significance in Competing-Corridor plus non-significance in Standard does NOT establish a statistically significant difference between regimes unless Competing-minus-Standard itself is significant.",
@@ -106892,10 +106892,11 @@
           }
         }
       }
-    ]
+    ],
+    "generating_commit": "29fa7c6"
   },
   "last_manifest_sync": {
-    "synced_package_py_sha256": "7f9d208b7280771642bb3f9142f15dcfd568528b4a6ced94a3df587f927ee6a9",
+    "synced_package_py_sha256": "f595b74162bd1e05a981a144a9ce2db43ab26abb3c45f27f7f982373427ed2f2",
     "note": "Synchronized package_py_sha256 across suite; inherited blocks preserve original generating_commit."
   }
 }

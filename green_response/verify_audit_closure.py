@@ -1530,6 +1530,98 @@ def run_all_audit_checks() -> dict:
         except ValueError:
             tamper_rejected = True
 
+        # v7 A4 Record-Level Contract Checks:
+        # (a) Valid mixed `11+3` (`14` obs, `11` leading on-policy indices) & empty `(0, 2)` batches round-trip
+        tp_mix = Path(tmp_d) / "mixed_11plus3.npz"
+        X_m14 = np.linspace(-1.0, 1.0, 28).reshape(14, 2)
+        q_m14 = np.linspace(0.2, 0.9, 14)
+        b_m14 = np.linspace(-0.3, 0.4, 28).reshape(14, 2)
+        idx_m11 = [3, 7, 12, 15, 19, 22, 25, 31, 34, 38, 41]
+        save_lossless_acquisition_tape_npz(tp_mix, X_m14, q_m14, b_m14, onpolicy_traj_indices=idx_m11)
+        rec_mix = load_and_verify_lossless_acquisition_tape_npz(tp_mix)
+        tp_emp = Path(tmp_d) / "empty_batch.npz"
+        save_lossless_acquisition_tape_npz(tp_emp, np.empty((0, 2)), np.empty((0,)), np.empty((0, 2)))
+        rec_emp = load_and_verify_lossless_acquisition_tape_npz(tp_emp)
+        mixed_and_empty_ok = (
+            rec_mix["onpolicy_traj_indices"] == idx_m11
+            and rec_mix["X_selected"].shape == (14, 2)
+            and rec_emp["X_selected"].shape == (0, 2)
+            and rec_emp["onpolicy_traj_indices"] is None
+        )
+
+        # (b) Index mutation (`[17,4,29,8,12] -> [18,4,29,8,12]`) without manifest update -> rejected!
+        tp_idx_mut = Path(tmp_d) / "idx_mut.npz"
+        np.savez_compressed(
+            tp_idx_mut,
+            X_selected=np.ascontiguousarray(X_o_test, dtype="<f8"),
+            q_observed=np.ascontiguousarray(q_o_test, dtype="<f8"),
+            b_observed=np.ascontiguousarray(b_o_test, dtype="<f8"),
+            onpolicy_traj_indices=np.asarray([18, 4, 29, 8, 12], dtype="<i8"),
+            manifest_json=np.array(json.dumps(man_o, sort_keys=True)),
+        )
+        idx_mut_rejected = False
+        try:
+            load_and_verify_lossless_acquisition_tape_npz(tp_idx_mut)
+        except ValueError:
+            idx_mut_rejected = True
+
+        # (c) Index truncation (`[17,4,29,8,12] -> [17]`) without manifest update -> rejected!
+        tp_idx_trunc = Path(tmp_d) / "idx_trunc.npz"
+        np.savez_compressed(
+            tp_idx_trunc,
+            X_selected=np.ascontiguousarray(X_o_test, dtype="<f8"),
+            q_observed=np.ascontiguousarray(q_o_test, dtype="<f8"),
+            b_observed=np.ascontiguousarray(b_o_test, dtype="<f8"),
+            onpolicy_traj_indices=np.asarray([17], dtype="<i8"),
+            manifest_json=np.array(json.dumps(man_o, sort_keys=True)),
+        )
+        idx_trunc_rejected = False
+        try:
+            load_and_verify_lossless_acquisition_tape_npz(tp_idx_trunc)
+        except ValueError:
+            idx_trunc_rejected = True
+
+        # (d) Unsupported schema (`unsupported_future_schema_v999`) -> rejected!
+        tp_bad_schema = Path(tmp_d) / "bad_schema.npz"
+        man_bad_schema = dict(man_o)
+        man_bad_schema["schema"] = "unsupported_future_schema_v999"
+        np.savez_compressed(
+            tp_bad_schema,
+            X_selected=np.ascontiguousarray(X_o_test, dtype="<f8"),
+            q_observed=np.ascontiguousarray(q_o_test, dtype="<f8"),
+            b_observed=np.ascontiguousarray(b_o_test, dtype="<f8"),
+            onpolicy_traj_indices=np.asarray(idx_o_test, dtype="<i8"),
+            manifest_json=np.array(json.dumps(man_bad_schema, sort_keys=True)),
+        )
+        bad_schema_rejected = False
+        try:
+            load_and_verify_lossless_acquisition_tape_npz(tp_bad_schema)
+        except ValueError:
+            bad_schema_rejected = True
+
+        # (e) Observation row mismatch (`X:(3,2), q:(1,), b:(3,2)`) -> rejected on BOTH save and load!
+        row_mismatch_save_rejected = False
+        try:
+            save_lossless_acquisition_tape_npz(Path(tmp_d) / "bad_rows_s.npz", X_o_test[:3], q_o_test[:1], b_o_test[:3])
+        except ValueError:
+            row_mismatch_save_rejected = True
+        tp_bad_rows = Path(tmp_d) / "bad_rows_l.npz"
+        man_bad_rows = dict(man_o)
+        man_bad_rows["n_observations"] = 3
+        np.savez_compressed(
+            tp_bad_rows,
+            X_selected=np.ascontiguousarray(X_o_test[:3], dtype="<f8"),
+            q_observed=np.ascontiguousarray(q_o_test[:1], dtype="<f8"),
+            b_observed=np.ascontiguousarray(b_o_test[:3], dtype="<f8"),
+            onpolicy_traj_indices=np.empty((0,), dtype="<i8"),
+            manifest_json=np.array(json.dumps(man_bad_rows, sort_keys=True)),
+        )
+        row_mismatch_load_rejected = False
+        try:
+            load_and_verify_lossless_acquisition_tape_npz(tp_bad_rows)
+        except ValueError:
+            row_mismatch_load_rejected = True
+
     # Symmetric nonzero-drift Bellman tie scope check (`c2_core_audit_notes.md` §2):
     # `strict_smooth` allows nonzero drift while `action_tie_detected` explicitly flags the Bellman cusp!
     b_sym_nz = np.full((17 * 17, 2), 0.12, dtype=float)
@@ -1545,7 +1637,13 @@ def run_all_audit_checks() -> dict:
         "grid_batch_roundtrip_max_diff": grid_roundtrip_diff,
         "offgrid_batch_roundtrip_max_diff": off_roundtrip_diff,
         "offgrid_indices_exact_match": bool(idx_exact_match),
+        "mixed_11plus3_and_empty_roundtrip_ok": bool(mixed_and_empty_ok),
         "one_ulp_tamper_rejected": bool(tamper_rejected),
+        "index_mutation_rejected": bool(idx_mut_rejected),
+        "index_truncation_rejected": bool(idx_trunc_rejected),
+        "unknown_schema_rejected": bool(bad_schema_rejected),
+        "row_mismatch_save_rejected": bool(row_mismatch_save_rejected),
+        "row_mismatch_load_rejected": bool(row_mismatch_load_rejected),
         "nonzero_drift_bellman_tie_upwind_kink": bool(sens_sym_nz["upwind_drift_kink_detected"]),
         "nonzero_drift_bellman_tie_action_tie": bool(sens_sym_nz["action_tie_detected"]),
         "nonzero_drift_bellman_tie_derivative_kind": sens_sym_nz["derivative_kind"],
@@ -1553,10 +1651,90 @@ def run_all_audit_checks() -> dict:
             grid_roundtrip_diff == 0.0
             and off_roundtrip_diff == 0.0
             and idx_exact_match
+            and mixed_and_empty_ok
             and tamper_rejected
+            and idx_mut_rejected
+            and idx_trunc_rejected
+            and bad_schema_rejected
+            and row_mismatch_save_rejected
+            and row_mismatch_load_rejected
             and (not sens_sym_nz["upwind_drift_kink_detected"])
             and bool(sens_sym_nz["action_tie_detected"])
             and sens_sym_nz["derivative_kind"] == "active_branch"
+        ),
+    }
+
+    # ------------------------------------------------------------------
+    # 24. [NEW `v7` A1 + A2 Closure] Same-Cache Exact-DP Terminal Fallback (`seed=30309`) & Exact-Portal Unclipped Control
+    # ------------------------------------------------------------------
+    from green_response.exp5_response_subspace_diagnostic import (
+        _eval_lowrank_portal_macro_dp,
+        _sample_nonoverlapping_balls,
+    )
+    w_30309 = generate_benchmark_map(30309, dim=2, regime="narrow_barrier", with_drift=True)
+    wps_30309 = _sample_nonoverlapping_balls(np.random.default_rng(30309 + 505 * 2), 10, 2, 0.25, 1.18)
+    km_30309 = KrigingWorldModel(*sample_noisy_probes(w_30309, n_probes=44, seed=30309 + 99 * 2, include_drift=True))
+    c1_2d = np.array([-0.35, 0.0], dtype=float)
+    c2_2d = np.array([0.35, 0.0], dtype=float)
+    qmod_30309 = lambda X: (
+        km_30309.predict_q(X)
+        + 0.03 * np.exp(-np.sum((X - c1_2d[None, :]) ** 2, axis=1) / 0.30)
+        + 0.03 * np.exp(-np.sum((X - c2_2d[None, :]) ** 2, axis=1) / 0.30)
+    )
+    pl_30309 = SchurPortPlanner(w_30309.spec, 51, qmod_30309, km_30309.predict_b, wps_30309, initial_sectors_per_wp="EXACT", lazy_init=True)
+    mt_30309 = MacroTourPlanner(pl_30309)
+    s_30309 = np.array([-1.0204267120033985, 0.9748486055465924], dtype=float)
+    t_30309 = (0, 2, 5, 7)
+    mt_30309.plan_exact_subset_dp(s_30309, t_30309)
+    res_unres = mt_30309.plan_subset_macro_policy(s_30309, t_30309, epsilon_tol=0.25, max_refine_steps=12, use_incremental_dp=True)
+    all_curr_ex = all(pl_30309._is_level_exact_in_current_epoch(w, "EXACT") for w in t_30309)
+    lu_pre_fb = pl_30309.lu_factorizations
+    bs_pre_fb = pl_30309.total_lu_backsolves
+    res_fb_ex = mt_30309.plan_exact_subset_dp(s_30309, t_30309)
+    fb_added_lu = pl_30309.lu_factorizations - lu_pre_fb
+    fb_added_bs = pl_30309.total_lu_backsolves - bs_pre_fb
+    ref_30309 = independent_exact_macro_bellman_reference(pl_30309, s_30309, t_30309, policy_action_idx=res_fb_ex["policy_action_idx"])
+    fb_ref_err = max(
+        abs(res_fb_ex["macro_value_bounds"][0] - ref_30309["optimal_adaptive_macro_cost"]),
+        abs(res_fb_ex["macro_value_bounds"][1] - ref_30309["evaluated_policy_exact_macro_cost"]),
+    )
+
+    # Exact-portal unclipped sanity control (`A2`) + invalid negative-H / Z>1 low-rank rejection check
+    s_nd_30309 = int(np.argmin(np.sum((pl_30309.pts - s_30309[None, :]) ** 2, axis=1)))
+    p_nodes_24 = sorted({s_nd_30309}.union(*(set(int(x) for x in pl_30309.wp_rings[w]) for w in t_30309)))
+    p_row_of_24 = {nd: idx for idx, nd in enumerate(p_nodes_24)}
+    E_p24 = np.zeros((len(pl_30309.pts), len(p_nodes_24)), dtype=float)
+    for ci, nd in enumerate(p_nodes_24):
+        E_p24[nd, ci] = 1.0
+    G_p24_exact = pl_30309._ensure_current_lu().solve(E_p24, trans="T").T
+    sens_30309 = mt_30309.compute_exact_macro_q_sensitivities(s_30309, t_30309, max_alt_branches=0, include_drift_grad=False)
+    p24_exact_out = _eval_lowrank_portal_macro_dp(pl_30309, s_nd_30309, t_30309, G_p24_exact, p_row_of_24, readout_mode="strict_unclipped")
+    exact_portal_q_err = float(np.max(np.abs(p24_exact_out["Q_root"] - np.asarray(sens_30309["Q_root_canonical"], dtype=float))))
+    Up24, sp24, Vtp24 = np.linalg.svd(G_p24_exact, full_matrices=False)
+    G_p24_r4 = (Up24[:, :4] * sp24[:4][None, :]) @ Vtp24[:4, :]
+    p24_r4_strict = _eval_lowrank_portal_macro_dp(pl_30309, s_nd_30309, t_30309, G_p24_r4, p_row_of_24, readout_mode="strict_unclipped")
+
+    report["24_same_cache_exact_dp_fallback_and_exact_portal_control"] = {
+        "seed30309_interval_status": res_unres["status"],
+        "seed30309_interval_width": float(res_unres["macro_value_bounds"][1] - res_unres["macro_value_bounds"][0]),
+        "seed30309_all_wps_current_exact": bool(all_curr_ex),
+        "same_cache_fallback_status": res_fb_ex["status"],
+        "same_cache_fallback_added_lu": int(fb_added_lu),
+        "same_cache_fallback_added_backsolves": int(fb_added_bs),
+        "same_cache_fallback_vs_killed_ref_err": float(fb_ref_err),
+        "exact_portal_unclipped_physically_valid": bool(p24_exact_out["physically_valid"]),
+        "exact_portal_unclipped_max_Q_err": exact_portal_q_err,
+        "lowrank_r4_unphysical_flagged_invalid": bool(not p24_r4_strict["physically_valid"]),
+        "pass": bool(
+            res_unres["status"] == "unresolved"
+            and all_curr_ex
+            and res_fb_ex["certified"]
+            and fb_added_lu == 0
+            and fb_added_bs == 0
+            and fb_ref_err <= 1e-12
+            and bool(p24_exact_out["physically_valid"])
+            and exact_portal_q_err <= 1e-12
+            and (not p24_r4_strict["physically_valid"])
         ),
     }
 

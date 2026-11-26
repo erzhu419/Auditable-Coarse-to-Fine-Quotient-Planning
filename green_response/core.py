@@ -1391,13 +1391,50 @@ def welch_two_sample_stats(x: Sequence[float], y: Sequence[float]) -> dict:
     }
 
 
-def _array_f8_sha256(arr: np.ndarray) -> str:
+SUPPORTED_LOSSLESS_TAPE_SCHEMAS = ("lossless_f64_acquisition_tape_v2",)
+
+
+def _array_typed_sha256(arr: np.ndarray, expected_dtype: str) -> str:
     import hashlib
-    a = np.ascontiguousarray(arr, dtype="<f8")
+    a = np.ascontiguousarray(arr, dtype=expected_dtype)
     h = hashlib.sha256()
     h.update(f"{a.dtype.str}:{a.shape}:".encode("utf-8"))
     h.update(a.tobytes())
     return h.hexdigest()
+
+
+def _array_f8_sha256(arr: np.ndarray) -> str:
+    return _array_typed_sha256(arr, "<f8")
+
+
+def _validate_lossless_tape_arrays(
+    X_f8: np.ndarray,
+    q_f8: np.ndarray,
+    b_f8: np.ndarray,
+    idx_i8: np.ndarray,
+    has_onpolicy_indices: bool,
+) -> None:
+    if X_f8.ndim != 2 or b_f8.ndim != 2 or q_f8.ndim != 1 or idx_i8.ndim != 1:
+        raise ValueError(
+            f"Invalid lossless tape array ranks: X={X_f8.shape}, q={q_f8.shape}, b={b_f8.shape}, idx={idx_i8.shape}."
+        )
+    n_obs, dim = X_f8.shape
+    if dim < 1:
+        raise ValueError(f"Lossless tape spatial dimension must be >= 1, got X.shape={X_f8.shape}.")
+    if q_f8.shape[0] != n_obs or b_f8.shape != (n_obs, dim):
+        raise ValueError(
+            f"Observation shape mismatch in lossless tape: X={X_f8.shape}, q={q_f8.shape}, b={b_f8.shape}."
+        )
+    if not has_onpolicy_indices and idx_i8.shape != (0,):
+        raise ValueError(
+            f"has_onpolicy_indices is False, expected empty index array, got shape={idx_i8.shape}."
+        )
+    if len(idx_i8) > n_obs:
+        raise ValueError(
+            f"onpolicy_traj_indices length ({len(idx_i8)}) cannot exceed observation count ({n_obs})."
+        )
+    if len(idx_i8) > 0 and np.any(idx_i8 < 0):
+        raise ValueError("onpolicy_traj_indices must be non-negative trajectory step indices.")
 
 
 def save_lossless_acquisition_tape_npz(
@@ -1408,25 +1445,49 @@ def save_lossless_acquisition_tape_npz(
     metadata: Optional[dict] = None,
     onpolicy_traj_indices: Optional[Sequence[int]] = None,
 ) -> dict:
-    """Lossless IEEE-754 float64 (`.npz`) acquisition tape serializer (`c2c499e` v6 Closure):
-    Binds SHA-256 digests directly to exact `<f8` dtype, shape, and raw bytes so both on-grid and
-    arbitrary off-grid coordinates/observations round-trip with `0.0` bit loss.
+    """Lossless IEEE-754 float64 (`.npz`) acquisition tape serializer (`c2c499e` v6 + `v7` Record Contract):
+    Validates `(X, q, b, onpolicy_traj_indices)` shape/row consistency and binds SHA-256 digests to exact
+    `<f8` / `<i8` dtype, shape, and raw bytes. When `onpolicy_traj_indices` has length `k <= n_obs` (e.g.
+    `11` on-policy points in an `11+3` mixed batch), indices correspond to leading rows `0..k-1` of `X_selected`.
     """
     import json
-    X_f8 = np.ascontiguousarray(np.atleast_2d(X_selected), dtype="<f8")
-    q_f8 = np.ascontiguousarray(np.asarray(q_observed), dtype="<f8")
-    b_f8 = np.ascontiguousarray(np.atleast_2d(b_observed), dtype="<f8")
-    idx_i8 = (
-        np.ascontiguousarray(np.asarray(onpolicy_traj_indices, dtype="<i8"))
-        if onpolicy_traj_indices is not None
-        else np.empty((0,), dtype="<i8")
-    )
+    X_in = np.asarray(X_selected)
+    q_in = np.asarray(q_observed)
+    b_in = np.asarray(b_observed)
+    if X_in.ndim == 1 and q_in.ndim == 1 and len(q_in) == 1:
+        X_in = X_in[None, :]
+    if b_in.ndim == 1 and q_in.ndim == 1 and len(q_in) == 1:
+        b_in = b_in[None, :]
+    if X_in.ndim != 2 or q_in.ndim != 1 or b_in.ndim != 2:
+        raise ValueError(
+            f"Lossless tape requires X:(n,d), q:(n,), b:(n,d); got X={X_in.shape}, q={q_in.shape}, b={b_in.shape}."
+        )
+    X_f8 = np.ascontiguousarray(X_in, dtype="<f8")
+    q_f8 = np.ascontiguousarray(q_in, dtype="<f8")
+    b_f8 = np.ascontiguousarray(b_in, dtype="<f8")
+    has_idx = onpolicy_traj_indices is not None
+    if has_idx:
+        idx_raw = np.asarray(onpolicy_traj_indices)
+        if idx_raw.ndim != 1 or (len(idx_raw) > 0 and not np.issubdtype(idx_raw.dtype, np.integer)):
+            raise ValueError(f"onpolicy_traj_indices must be a 1D integer sequence, got shape={idx_raw.shape}, dtype={idx_raw.dtype}.")
+        idx_i8 = np.ascontiguousarray(idx_raw, dtype="<i8")
+    else:
+        idx_i8 = np.empty((0,), dtype="<i8")
+    _validate_lossless_tape_arrays(X_f8, q_f8, b_f8, idx_i8, has_idx)
+
     manifest = {
         "schema": "lossless_f64_acquisition_tape_v2",
-        "X_sha256": _array_f8_sha256(X_f8),
-        "q_sha256": _array_f8_sha256(q_f8),
-        "b_sha256": _array_f8_sha256(b_f8),
-        "has_onpolicy_indices": bool(onpolicy_traj_indices is not None),
+        "n_observations": int(X_f8.shape[0]),
+        "dim": int(X_f8.shape[1]),
+        "X_sha256": _array_typed_sha256(X_f8, "<f8"),
+        "q_sha256": _array_typed_sha256(q_f8, "<f8"),
+        "b_sha256": _array_typed_sha256(b_f8, "<f8"),
+        "has_onpolicy_indices": bool(has_idx),
+        "n_onpolicy_indices": int(len(idx_i8)),
+        "onpolicy_indices_sha256": _array_typed_sha256(idx_i8, "<i8"),
+        "onpolicy_index_row_convention": (
+            "ordered_step_indices_for_leading_onpolicy_rows_0_to_k_minus_1" if has_idx else "none"
+        ),
         "metadata": dict(metadata or {}),
     }
     np.savez_compressed(
@@ -1441,24 +1502,51 @@ def save_lossless_acquisition_tape_npz(
 
 
 def load_and_verify_lossless_acquisition_tape_npz(path: Path) -> dict:
-    """Loads a lossless `.npz` acquisition tape and fail-closed verifies exact `<f8` byte SHA-256 integrity."""
+    """Loads a lossless `.npz` acquisition tape and fail-closed verifies schema, row/shape consistency,
+    and exact `<f8` / `<i8` byte SHA-256 integrity across `X`, `q`, `b`, and `onpolicy_traj_indices`.
+    """
     import json
     with np.load(path, allow_pickle=False) as z:
-        X_f8 = np.ascontiguousarray(z["X_selected"], dtype="<f8")
-        q_f8 = np.ascontiguousarray(z["q_observed"], dtype="<f8")
-        b_f8 = np.ascontiguousarray(z["b_observed"], dtype="<f8")
-        idx_i8 = np.ascontiguousarray(z["onpolicy_traj_indices"], dtype="<i8")
+        required_keys = {"X_selected", "q_observed", "b_observed", "onpolicy_traj_indices", "manifest_json"}
+        missing_k = required_keys.difference(z.files)
+        if missing_k:
+            raise ValueError(f"Lossless tape missing required archive keys: {sorted(missing_k)}")
+        raw_X = z["X_selected"]
+        raw_q = z["q_observed"]
+        raw_b = z["b_observed"]
+        raw_idx = z["onpolicy_traj_indices"]
+        if raw_X.dtype != np.dtype("<f8") or raw_q.dtype != np.dtype("<f8") or raw_b.dtype != np.dtype("<f8"):
+            raise ValueError("Lossless tape float arrays must have exact '<f8' dtype.")
+        if raw_idx.dtype != np.dtype("<i8"):
+            raise ValueError("Lossless tape onpolicy_traj_indices must have exact '<i8' dtype.")
+        X_f8 = np.ascontiguousarray(raw_X, dtype="<f8")
+        q_f8 = np.ascontiguousarray(raw_q, dtype="<f8")
+        b_f8 = np.ascontiguousarray(raw_b, dtype="<f8")
+        idx_i8 = np.ascontiguousarray(raw_idx, dtype="<i8")
         manifest = json.loads(str(z["manifest_json"].item()))
-    if _array_f8_sha256(X_f8) != manifest.get("X_sha256"):
+
+    if not isinstance(manifest, dict) or manifest.get("schema") not in SUPPORTED_LOSSLESS_TAPE_SCHEMAS:
+        raise ValueError(f"Unsupported or missing lossless tape schema: {manifest.get('schema') if isinstance(manifest, dict) else type(manifest)}")
+    has_idx = bool(manifest.get("has_onpolicy_indices", False))
+    _validate_lossless_tape_arrays(X_f8, q_f8, b_f8, idx_i8, has_idx)
+    if "n_observations" in manifest and int(manifest["n_observations"]) != X_f8.shape[0]:
+        raise ValueError("Lossless tape n_observations manifest mismatch!")
+    if "dim" in manifest and int(manifest["dim"]) != X_f8.shape[1]:
+        raise ValueError("Lossless tape dim manifest mismatch!")
+    if "n_onpolicy_indices" in manifest and int(manifest["n_onpolicy_indices"]) != len(idx_i8):
+        raise ValueError("Lossless tape n_onpolicy_indices manifest mismatch!")
+    if _array_typed_sha256(X_f8, "<f8") != manifest.get("X_sha256"):
         raise ValueError("Lossless tape X_selected SHA-256 mismatch!")
-    if _array_f8_sha256(q_f8) != manifest.get("q_sha256"):
+    if _array_typed_sha256(q_f8, "<f8") != manifest.get("q_sha256"):
         raise ValueError("Lossless tape q_observed SHA-256 mismatch!")
-    if _array_f8_sha256(b_f8) != manifest.get("b_sha256"):
+    if _array_typed_sha256(b_f8, "<f8") != manifest.get("b_sha256"):
         raise ValueError("Lossless tape b_observed SHA-256 mismatch!")
+    if _array_typed_sha256(idx_i8, "<i8") != manifest.get("onpolicy_indices_sha256"):
+        raise ValueError("Lossless tape onpolicy_traj_indices SHA-256 mismatch!")
     return {
         "X_selected": X_f8,
         "q_observed": q_f8,
         "b_observed": b_f8,
-        "onpolicy_traj_indices": idx_i8.tolist() if manifest.get("has_onpolicy_indices") else None,
+        "onpolicy_traj_indices": idx_i8.tolist() if has_idx else None,
         "manifest": manifest,
     }

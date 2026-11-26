@@ -2529,7 +2529,13 @@ def main():
 
     meta = collect_runtime_metadata(max_workers=n_workers)
     tape_payload = {
-        "schema": "compact_replayable_acquisition_tape_v1",
+        "schema": "compact_5dec_provenance_tape_v1",
+        "precision_contract_note": (
+            "Coordinates and q/b observations are rounded to 5 decimals for compact storage: all 1,440/1,440 grid-only "
+            "batches recover exact 10-decimal hashes via snapping to the declared 25x25 candidate grid; off-grid trajectory "
+            "batches provide provenance and trajectory-index membership checks rather than lossless float64 replay. "
+            "Use green_response.save_lossless_acquisition_tape_npz for lossless float64 tapes."
+        ),
         "source_manifest": meta["source_manifest"],
         "batch_B_factorial_diagnosis_32maps_tapes": tapes_b,
         "batch_C_locked_fresh_confirmation_64maps_tapes": tapes_c,
@@ -2549,6 +2555,7 @@ def main():
         "source_manifest": meta["source_manifest"],
         "acquisition_tape_manifest": {
             "file": "exp4_acquisition_tapes.json",
+            "schema": "compact_5dec_provenance_tape_v1",
             "sha256": tape_sha256,
             "size_bytes": len(tape_bytes),
             "n_map_tapes_total": len(tapes_b) + len(tapes_c),
