@@ -15,6 +15,7 @@ from quotient_phase2 import compute_phase2_manifest
 EXPECTED_PHASE1_PY_SHA256 = "271ac8df9caaa8af8aaa5af9d35d76578632b554d5071fe8fe74065ca0dc0c2d"
 EXPECTED_PHASE2_PY_SHA256 = "e6ea565b8a4e87e7298c93bf01351ee5c2787fed3a91fc6a7caebcfe4b44e9c6"
 FROZEN_P3_V1_EXPLORATORY_JSON_SHA256 = "0e2c76ea204ba7ad66341d243ee0d992e23158d16573a430d0ab602d6f98e161"
+FROZEN_P3_V2_BENCHMARK_JSON_SHA256 = "6167bd5f3e27218d7d7d0bb8f0986a79f020765daaeabf4adb8a18c9ab7d0dd3"
 
 
 def verify_phase3_v1_archive_untouched() -> Dict[str, object]:
@@ -27,6 +28,20 @@ def verify_phase3_v1_archive_untouched() -> Dict[str, object]:
     if actual != FROZEN_P3_V1_EXPLORATORY_JSON_SHA256:
         raise RuntimeError(
             f"Frozen p3_neurips_benchmark_results.json modified! Expected {FROZEN_P3_V1_EXPLORATORY_JSON_SHA256}, got {actual}"
+        )
+    return {"file": fp.name, "sha256": actual, "verified_untouched": True}
+
+
+def verify_phase3_v2_archive_untouched() -> Dict[str, object]:
+    """Verify Phase-III v2 benchmark archive remains byte-identical (`R747` immutable history rule)."""
+    p3_dir = Path(__file__).resolve().parent
+    fp = p3_dir / "p3_v2_verified_benchmark_results.json"
+    if not fp.exists():
+        raise RuntimeError(f"Missing frozen Phase-III v2 benchmark archive: {fp}")
+    actual = hashlib.sha256(fp.read_bytes()).hexdigest()
+    if actual != FROZEN_P3_V2_BENCHMARK_JSON_SHA256:
+        raise RuntimeError(
+            f"Frozen p3_v2_verified_benchmark_results.json modified! Expected {FROZEN_P3_V2_BENCHMARK_JSON_SHA256}, got {actual}"
         )
     return {"file": fp.name, "sha256": actual, "verified_untouched": True}
 

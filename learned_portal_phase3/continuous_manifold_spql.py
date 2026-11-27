@@ -360,14 +360,23 @@ def make_continuous_control_from_landmark_policy(
     dt: float,
     u_clip: float,
     landmark_running_q: np.ndarray = None,
+    allow_explicit_zero_fallback: bool = False,
 ):
-    """Maps any discrete landmark transition policy `Pi_ext_csr` (`ext -> landmarks`) to a smooth
-    continuous HJB feedback law `u(x)` by conditioning `Pi_ext_csr` on strictly off-diagonal Voronoi
-    cell exits `j != i` and scaling along the implied unit exit direction at `sqrt(2 * q_hat(x))`.
+    """Maps a discrete landmark transition policy `Pi_ext_csr` (`ext -> landmarks`) to a continuous
+    Voronoi exit-direction feedback law `u(x)`.
+    `Closes R747-P0-02`: Forbids silent `Pi_ext_csr is None -> u = 0` conversion! Raises `ValueError`
+    whenever `Pi_ext_csr is None` on a non-empty exterior unless `allow_explicit_zero_fallback=True`.
     """
     gm = np.asarray(goal_mask, dtype=bool)
     ext = np.flatnonzero(~gm)
-    if Pi_ext_csr is None or len(ext) == 0:
+    if len(ext) == 0:
+        return lambda X_batch: np.zeros_like(np.atleast_2d(X_batch))
+    if Pi_ext_csr is None:
+        if not allow_explicit_zero_fallback:
+            raise ValueError(
+                "make_continuous_control_from_landmark_policy received Pi_ext_csr=None! "
+                "Silent zero-control fallback is forbidden (R747-P0-02)."
+            )
         return lambda X_batch: np.zeros_like(np.atleast_2d(X_batch))
     Pi_coo = Pi_ext_csr.tocoo()
     non_self = ext[Pi_coo.row] != Pi_coo.col
@@ -407,6 +416,18 @@ def make_continuous_control_from_landmark_policy(
     return _ctrl
 
 
+def _exact_chord_has_rect_hit(world: RotatedContinuousDiffusionWorld, x0: np.ndarray, x1: np.ndarray) -> np.ndarray:
+    """Exact analytic Liang-Barsky chord intersection check against `world.obstacle_rects_uv` (`R747-06`)."""
+    uv0 = world._to_uv(x0)
+    uv1 = world._to_uv(x1)
+    dp = uv1 - uv0
+    hit = np.zeros(len(uv0), dtype=bool)
+    for rect in world.obstacle_rects_uv:
+        t_h, _ = _ray_aabb_first_hit(uv0, dp, rect)
+        hit |= np.isfinite(t_h) & (t_h > 1e-12) & (t_h < 1.0 - 1e-12)
+    return hit
+
+
 def evaluate_continuous_policy_rollouts(
     world: RotatedContinuousDiffusionWorld,
     ctrl_fn,
@@ -419,14 +440,16 @@ def evaluate_continuous_policy_rollouts(
     seed: int = 0,
     verify_zero_tunneling: bool = False,
 ) -> dict:
-    """Evaluates closed-loop continuous stochastic control cost & goal-reaching rate via seeded
-    Euler-Maruyama trajectories (with optional 20-checkpoint segment collision auditing).
+    """Evaluates closed-loop continuous control cost & goal-reaching rate on the damped (`0.85` post-bounce),
+    obstacle-padded (`4e-4`), chord-guarded Euler diffusion simulator (`80` rollouts/goal, exact analytic
+    ray-AABB chord check + 20-point check whenever `verify_zero_tunneling=True`).
     """
     rng = np.random.default_rng(seed)
     X = np.repeat(np.atleast_2d(start_pt), n_rollouts, axis=0)
     alive = np.ones(n_rollouts, dtype=bool)
     total_cost = np.zeros(n_rollouts, dtype=float)
     blocked_segments = 0
+    exact_chord_hits = 0
     total_segments = 0
 
     for _ in range(max_steps):
@@ -441,6 +464,7 @@ def evaluate_continuous_policy_rollouts(
         X_nxt, sc = world.step_batch(X[a_idx], U_a, rng)
         if verify_zero_tunneling:
             blocked_segments += int(np.sum(world.segment_has_collision(X[a_idx], X_nxt, n_checks=20)))
+            exact_chord_hits += int(np.sum(_exact_chord_has_rect_hit(world, X[a_idx], X_nxt)))
             total_segments += len(a_idx)
         X[a_idx] = X_nxt
         total_cost[a_idx] += sc
@@ -453,7 +477,9 @@ def evaluate_continuous_policy_rollouts(
         "mean_cost": float(np.mean(total_cost)),
         "success_rate": success_rate,
         "blocked_segments": int(blocked_segments),
+        "exact_chord_hits": int(exact_chord_hits),
         "total_segments": int(total_segments),
+        "collision_audit_performed": bool(verify_zero_tunneling),
     }
 
 
@@ -462,12 +488,14 @@ def run_single_continuous_rotated_map_benchmark(
     n_explore_steps: int = 36000,
     n_goals: int = 12,
     verify_zero_tunneling: bool = True,
+    include_uniform_portal_spql: bool = False,
 ) -> dict:
-    """Runs one complete continuous-state rotated multi-room map (`seed`) under:
-      - Purely passive `U == 0` exploratory drift-diffusion rollouts (`Closes P3-E02`);
-      - Exact zero-tunneling ray-slab wall reflection (`Closes P3-E01`);
-      - All **6** same-data landmark planners (`SPQL`, `Uncompressed_PAC`, `PlugIn_CE`,
-        `Scalar_Portal_Ablation`, `SVD_Resolvent_Ablation`, `Sampled_Desirability_TD`).
+    """Runs one continuous-state rotated multi-room map (`seed`) on the empirical fitted Voronoi surrogate
+    (`damped 0.85, padded 4e-4 collision-corrected Euler simulator; no continuous SDE or non-Markov Voronoi
+    PAC claim — Closes R747-P0-02, R747-06, & R747-07`):
+      - Purely passive `U == 0` exploration (`all transitions collision-audited`);
+      - Strict `ValueError` if any method fails to deliver an actual landmark policy (`0` silent `u=0` fallbacks);
+      - Full `12/12` goal rollout collision auditing (`verify_zero_tunneling` applied to ALL `n_goals` tasks!).
     """
     world = RotatedContinuousDiffusionWorld(seed=seed)
     rng = np.random.default_rng(seed + 500)
@@ -481,11 +509,13 @@ def run_single_continuous_rotated_map_benchmark(
     U_passive = np.zeros_like(X_ep)
     q_min_step, q_max_step = 0.008, 0.080
     explore_blocked_segments = 0
+    explore_exact_chord_hits = 0
 
     for _ in range(ep_len):
         X_n, _ = world.step_batch(X_ep, U_passive, rng)
         if verify_zero_tunneling:
             explore_blocked_segments += int(np.sum(world.segment_has_collision(X_ep, X_n, n_checks=20)))
+            explore_exact_chord_hits += int(np.sum(_exact_chord_has_rect_hit(world, X_ep, X_n)))
         q_true_step = world.running_cost(X_ep) * world.dt
         q_step = np.array(
             [sample_unbiased_bounded_cost(float(qv), q_min_step, q_max_step, 0.004, rng) for qv in q_true_step],
@@ -505,7 +535,6 @@ def run_single_continuous_rotated_map_benchmark(
         q_min_bound=q_min_step, q_max_bound=q_max_step, seed=seed + 502,
     )
 
-    # Fit all 6 multi-goal learners on the EXACT SAME empirical dataset `ds` (`max_degree_bound=None -> N`)
     spql = SPQLPlanner(ds, delta=0.05, eps_tol=0.05, max_rooms=6, max_degree_bound=None)
     uncomp_pl = UncompressedSpectralSchurPACPlanner(ds, delta=0.05, max_rooms=6, max_degree_bound=None)
     ce_pl = PlugInCEFullGraphPlanner(ds)
@@ -522,6 +551,10 @@ def run_single_continuous_rotated_map_benchmark(
         "SVD_Resolvent_Ablation": sr_pl,
         "Sampled_Desirability_TD": mfq_pl,
     }
+    if include_uniform_portal_spql:
+        planners["SPQL_UniformPortals"] = SPQLPlanner(
+            ds, delta=0.05, eps_tol=0.05, max_rooms=6, max_degree_bound=None, all_portals_uniform_weight=1.0
+        )
 
     uv_lm = world._to_uv(landmarks)
     quad_lm = ((uv_lm[:, 0] > 0).astype(int) * 2 + (uv_lm[:, 1] > 0).astype(int))
@@ -540,58 +573,93 @@ def run_single_continuous_rotated_map_benchmark(
         if int(np.sum(gm)) >= 3 and not gm[s_id]:
             tasks_c.append((landmarks[s_id], g_ctr, s_id, gm))
 
-    # Cyclic method order balance across maps (`seed % 6`)
     m_names = list(planners.keys())
     rot = seed % len(m_names)
     m_order = m_names[rot:] + m_names[:rot]
 
     methods_out: Dict[str, Dict[str, list]] = {
-        k: {"costs": [], "succ": [], "query_ms": [], "blocked_segments": []} for k in m_names
+        k: {
+            "costs": [], "succ": [], "query_ms": [], "blocked_segments": [],
+            "exact_chord_hits": [], "policy_present": [], "fallback_used": [], "audited_goals": [],
+        }
+        for k in m_names
     }
     task_events: List[dict] = []
 
     for t_idx, (s_pt, g_ctr, s_id, gm) in enumerate(tasks_c):
         for m_nm in m_order:
             r_dict = planners[m_nm].solve_unseen_goal(s_id, gm)
+            pol_present = bool(r_dict["Pi_ext_csr"] is not None)
+            # Strict R747-P0-02 enforcement: raises ValueError if Pi_ext_csr is None!
             ctrl = make_continuous_control_from_landmark_policy(
-                landmarks, tree, r_dict["Pi_ext_csr"], gm, g_ctr, world.dt, world.u_clip, landmark_running_q=lm_running_q
+                landmarks, tree, r_dict["Pi_ext_csr"], gm, g_ctr, world.dt, world.u_clip,
+                landmark_running_q=lm_running_q, allow_explicit_zero_fallback=False,
             )
             ev = evaluate_continuous_policy_rollouts(
                 world, ctrl, s_pt, g_ctr, n_rollouts=80, seed=seed * 100 + t_idx,
-                verify_zero_tunneling=(verify_zero_tunneling and t_idx < 3),
+                verify_zero_tunneling=verify_zero_tunneling,
+            )
+            fb_used = bool(r_dict.get("fallback_used", False))
+            ctrl_origin = (
+                "landmark_policy_exact_portal_fallback" if fb_used else "landmark_policy_direct"
             )
             methods_out[m_nm]["costs"].append(ev["mean_cost"])
             methods_out[m_nm]["succ"].append(ev["success_rate"])
             methods_out[m_nm]["query_ms"].append(float(r_dict["query_ms"]))
             methods_out[m_nm]["blocked_segments"].append(int(ev["blocked_segments"]))
+            methods_out[m_nm]["exact_chord_hits"].append(int(ev["exact_chord_hits"]))
+            methods_out[m_nm]["policy_present"].append(1 if pol_present else 0)
+            methods_out[m_nm]["fallback_used"].append(1 if fb_used else 0)
+            methods_out[m_nm]["audited_goals"].append(1 if ev["collision_audit_performed"] else 0)
+
             task_events.append({
                 "seed": int(seed),
                 "task_index": int(t_idx),
                 "method_id": m_nm,
                 "start_landmark": int(s_id),
                 "goal_landmark_count": int(np.sum(gm)),
+                "solver_status": str(r_dict.get("solver_status", "delivered_landmark_policy")),
+                "finite_certificate": bool(r_dict.get("certified", False)),
+                "policy_present": pol_present,
+                "fallback_used": fb_used,
+                "fallback_method": r_dict.get("fallback_method", None),
+                "fallback_ms": float(r_dict.get("fallback_ms", 0.0)),
+                "materialization_ms": float(r_dict.get("materialization_ms", 0.0)),
+                "active_dofs": int(r_dict.get("active_dofs", 0)),
+                "control_origin": ctrl_origin,
+                "collision_audit_performed": bool(ev["collision_audit_performed"]),
+                "n_rollouts": 80,
                 "mean_rollout_cost": float(ev["mean_cost"]),
                 "rollout_success_rate": float(ev["success_rate"]),
                 "query_ms": float(r_dict["query_ms"]),
                 "blocked_segments_checked": int(ev["blocked_segments"]),
+                "exact_chord_hits_checked": int(ev["exact_chord_hits"]),
+                "total_segments_audited": int(ev["total_segments"]),
             })
 
     return {
         "seed": seed,
-        "guarantee_scope": "empirical_voronoi_landmark_control_no_continuous_sde_pac_claim",
+        "simulator_model": "damped_0.85_padded_4e-4_chord_guarded_euler_diffusion_simulator",
+        "guarantee_scope": "empirical_fitted_voronoi_surrogate_no_aggregation_or_continuous_sde_pac_claim",
         "actual_explore_steps": actual_explore_steps,
         "exploration_control_law": "pure_passive_zero_control_U_eq_0",
         "explore_blocked_segments": int(explore_blocked_segments),
+        "explore_exact_chord_hits": int(explore_exact_chord_hits),
         "n_landmarks": len(landmarks),
         "discovered_rooms": len(spql.dec.room_nodes),
         "discovered_portals": len(spql.dec.portal_nodes_loc),
+        "full_portal_landmarks": len(spql.dec.gamma_nodes),
         "offline_init_ms": {k: float(getattr(v, "offline_init_ms", 0.0)) for k, v in planners.items()},
         "methods": {
             k: {
                 "mean_closed_loop_cost": float(np.mean(v["costs"])),
                 "mean_success_rate": float(np.mean(v["succ"])),
                 "mean_query_ms": float(np.mean(v["query_ms"])),
+                "policy_present_count": int(sum(v["policy_present"])),
+                "fallback_count": int(sum(v["fallback_used"])),
+                "collision_audited_goal_count": int(sum(v["audited_goals"])),
                 "total_blocked_segments": int(sum(v["blocked_segments"])),
+                "total_exact_chord_hits": int(sum(v["exact_chord_hits"])),
             }
             for k, v in methods_out.items()
         },
