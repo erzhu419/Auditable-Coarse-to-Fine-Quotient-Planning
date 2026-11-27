@@ -1,29 +1,21 @@
 """Milestone M2.3.1 Parts B, C, & D (`quotient_phase2.m231_fair_ablation`):
-Same-Quality Adjacent-Baseline Attribution, Balanced Randomized Execution Order, Executable Policy
-Delivery Accounting, and Causal `CacheOn / StructureOnly / CacheOff` Self-Amortization Study.
+Adjacent-Baseline Attribution, Cyclic Position-Balanced Execution Schedule, Executable Policy
+Delivery Accounting, and Cache Invalidation Ablation.
 
-Pre-Registered Scientific Design (Closing `ec75871` Audit Sections 5, 6, 7, 8):
-  1. Preserves all historical JSON artifacts (`m20`, `m21`, `m22`, `m23_m24`) 100% byte-untouched;
-     writes independent artifacts `m231_fair_ablation_results.json` & `m231_fair_ablation_summary.png`.
-  2. Enforces a SINGLE matched quality & service contract across ALL arms (`epsilon_tol = 0.25`
-     `full_policy_enclosure` + callable discrete KL-LMDP controller handle ready at `s_0` charged
-     inside `query_ms`, plus shared prefix `gp_fit_ms` and `operator_assembly_ms` explicitly billed).
-  3. Compares 6 Mechanistically Adjacent Arms in Balanced Randomized Order per Map:
-       - `M231_Portal_CacheOn`: Proposed strictly nested dyadic (`1->4->16->64`) portal quotient with
-         persistent multi-resolution response cache across tasks;
-       - `M231_Portal_StructureOnly`: Same discovered rooms & local LUs, resetting `L1..L3` cache per query;
-       - `M231_Portal_CacheOff_Cold`: Clears ALL cached portal responses (`L0..L3`) per query;
-       - `MatrixFree_ExactSchur_Krylov`: Same 27 room LUs + same verified L0 Lyapunov gauge, solving
-         the full `n_g`-node portal equation directly via Krylov + verified defect bound (`0` `L1..L3` coarsening);
-       - `SingleLU_GoalCapacitance`: Single global `splu(A)` offline + exact goal-ring Woodbury/capacitance
-         solve per unseen goal (`100%` algorithmically independent exact full-grid reference!);
-       - `Verified_Global_WarmILU`: Global `spilu` + `BiCGSTAB` with residual-based positivity/enclosure
-         verification, escalating tolerance (`1e-11 -> 1e-14`) and falling back to exact `SingleLU`/sparse
-         solve whenever unscaled global Krylov fails the `eps_tol = 0.25` certificate gate!
-  4. Records 4 distinct audit denominators (`certificate_conditions_verified_count`,
-     `optimal_value_reference_checked_count` [against independent `SingleLU`!],
-     `deployed_policy_evaluated_count`, and `continuous_or_real_world_evaluated_count = 0`),
-     per-prefix cumulative cost curves `C(1..K)`, memory byte ledgers, and reversed-order task controls.
+Scientific Design & Guarantee Tiers (Updated in `M2.3.2` for `B6-01..B6-05` Closure):
+  1. Preserves all historical JSON artifacts (`m20`, `m21`, `m22`, `m23_m24`, and `b6ff40d`'s
+     `m231_fair_ablation_results.json`) 100% byte-untouched.
+  2. Separates Guarantee Tiers Explicitly (`B6-03`):
+       - `M231_Portal_*` & `MatrixFree_ExactSchur_Krylov`: `float64_toleranced_model_enclosure`
+         (`epsilon_tol = 0.25` discrete KL-LMDP sub-/supersolution verified at runtime in IEEE-754 float64);
+       - `SingleLU_GoalCapacitance`: `high_accuracy_numerical_reference` (direct global sparse LU +
+         Woodbury capacitance verified via both global and componentwise relative residuals, without
+         masquerading a fixed numerical pad as an outward-rounded interval enclosure);
+       - `Verified_Global_WarmILU`: `uniform_mmatrix_enclosure` when self-certified by global residual,
+         otherwise `fallback_to_high_accuracy_numerical_reference` (`with internal Krylov stage diagnostic
+         recorded strictly as krylov_stage_diagnostic_inside_verified_pipeline_ms`, `B6-04`).
+  3. Cache Ablation Arms Keep Intra-Query Memoization Enabled (`use_portal_cache=True`, `B6-02`),
+     differing strictly at query boundaries (`CacheOn` vs `StructureOnly/L0Only` vs `CacheOff/QueryCold`).
 """
 from __future__ import annotations
 
@@ -60,6 +52,7 @@ from quotient_phase2.m23_m24_3d_portal_scale import (
     SeamFreePortal3DPlanner,
     build_3d_reflecting_obstacle_mmatrix,
     evaluate_3d_deployed_policy_exact,
+    extract_directed_goal_ring_in_room,
     generate_3d_multiroom_world,
     solve_and_verify_portal_howard_bounds,
 )
@@ -91,12 +84,39 @@ class FullGridGuidePolicy:
         return nb, w / float(np.sum(w))
 
 
+def verify_direct_desirability_solution(
+    A_csr: sp.csr_matrix,
+    gm: np.ndarray,
+    z_unit: np.ndarray,
+    s_f: int,
+    rel_tol: float = 1e-7,
+) -> Tuple[bool, float, float]:
+    """Verifies strict exterior positivity and BOTH global AND componentwise relative residuals
+    `max_{i in ext} |(A z)_i| / max(A_{ii} |z_i|, b_i, 1e-300) <= rel_tol` (`Closes B6-03` perturbation probe).
+    """
+    ext = np.flatnonzero(~gm)
+    if len(ext) == 0:
+        return True, 0.0, 0.0
+    if (not np.all(np.isfinite(z_unit))) or np.any(z_unit[ext] <= 0.0) or float(z_unit[s_f]) <= 0.0:
+        return False, float("inf"), float("inf")
+    res_ext = np.abs((A_csr @ z_unit)[ext])
+    b_ext = np.asarray(np.abs(A_csr[ext, :][:, gm].sum(axis=1))).ravel()
+    rhs_norm = max(1.0, float(np.max(b_ext)))
+    glob_res = float(np.max(res_ext)) / rhs_norm
+    diag_ext = np.abs(A_csr.diagonal()[ext]) * np.abs(z_unit[ext])
+    denom_comp = np.maximum(np.maximum(diag_ext, b_ext), 1e-300)
+    comp_rel_res = float(np.max(res_ext / denom_comp))
+    ok = bool(glob_res <= 1e-9 and comp_rel_res <= rel_tol)
+    return ok, glob_res, comp_rel_res
+
+
 class SingleLUGoalCapacitance3DPlanner:
     """Classical global factor reuse (`SingleLU + target-ring Woodbury capacitance`):
       - Offline: ONE global `splu(A_csc)` on the full `N`-node 3D grid;
       - Online per unseen goal: solves `|ring_G|` (`~26`) global triangular systems `U = lu.solve(E_ring)`,
-        inverts the `|ring_G| x |ring_G|` capacitance matrix `U[ring_G, :]`, and delivers the exact
-        full-grid desirability field `z_unit = U @ (U[ring_G, :]^{-1} 1)` + zero-gap certificate!
+        inverts the `|ring_G| x |ring_G|` capacitance matrix `U[ring_G, :]`, and delivers the high-accuracy
+        numerical reference `z_unit = U @ (U[ring_G, :]^{-1} 1)` (`guarantee_tier = "high_accuracy_numerical_reference"`,
+        NOT an outward-rounded interval certificate; `Closes B6-03`).
     """
 
     def __init__(self, spec: ProblemSpec, A_csc: sp.csc_matrix, A_csr: sp.csr_matrix, eps_tol: float = 0.25) -> None:
@@ -129,57 +149,88 @@ class SingleLUGoalCapacitance3DPlanner:
         g_f = np.flatnonzero(gm)
         phi_f = float(phi_goal)
         if bool(gm[s_f]):
-            cert = Phase2DecisionCertificate("full_policy_enclosure", True, self.eps_tol, phi_f, phi_f, None, 0, 1, state_id=int(s_f), operator_epoch=self.operator_epoch)
             pol = FullGridGuidePolicy(self.A_csr, self.operator_epoch, tuple(int(x) for x in g_f), np.ones(self.n_f, dtype=float))
-            return {"query_ms": 1000.0 * (time.perf_counter() - t0), "lo": phi_f, "hi": phi_f, "value": phi_f, "width": 0.0, "certified": True, "certificate": cert, "policy": pol, "z_unit": pol.z_unit}
+            _ = pol.action_distribution(s_f)
+            return {
+                "query_ms": 1000.0 * (time.perf_counter() - t0),
+                "guarantee_tier": "exact_start_in_goal",
+                "status": "start_in_goal",
+                "reference_valid": True,
+                "lo": phi_f,
+                "hi": phi_f,
+                "value": phi_f,
+                "width": 0.0,
+                "certified": True,
+                "certificate": None,
+                "policy": pol,
+                "z_unit": pol.z_unit,
+            }
 
         if not bool(check_directed_goal_reachability(self.A_csr, gm)[s_f]):
-            return {"query_ms": 1000.0 * (time.perf_counter() - t0), "lo": float("inf"), "hi": float("inf"), "value": float("inf"), "width": float("inf"), "certified": False, "certificate": None, "policy": None, "z_unit": None}
+            return {
+                "query_ms": 1000.0 * (time.perf_counter() - t0),
+                "guarantee_tier": "unreachable",
+                "status": "unreachable",
+                "reference_valid": False,
+                "lo": float("inf"),
+                "hi": float("inf"),
+                "value": float("inf"),
+                "width": float("inf"),
+                "certified": False,
+                "certificate": None,
+                "policy": None,
+                "z_unit": None,
+            }
 
         ext = np.flatnonzero(~gm)
-        ring = g_f[np.asarray(np.abs(self.A_csr[ext, :][:, g_f]).sum(axis=0)).ravel() > 0]
+        ring = g_f[np.asarray((self.A_csr[ext, :][:, g_f] < 0.0).sum(axis=0)).ravel() > 0]
         rhs = np.zeros((self.n_f, len(ring)), dtype=float)
         rhs[ring, np.arange(len(ring))] = 1.0
         U = self.lu.solve(rhs)
         coef = np.linalg.solve(U[ring, :], np.ones(len(ring), dtype=float))
         z_unit = U @ coef
         z_unit[gm] = 1.0
-        if (not np.all(np.isfinite(z_unit))) or float(z_unit[s_f]) <= 0.0:
-            return {"query_ms": 1000.0 * (time.perf_counter() - t0), "lo": -float("inf"), "hi": float("inf"), "value": float("nan"), "width": float("inf"), "certified": False, "certificate": None, "policy": None, "z_unit": None}
 
-        # Verify normalized linear residual on exterior
-        rhs_ext_norm = max(1.0, float(np.max(np.abs(self.A_csr[ext, :][:, gm].sum(axis=1)))))
-        lin_res = float(np.max(np.abs((self.A_csr @ z_unit)[ext]))) / rhs_ext_norm
-        if lin_res > 1e-9:
-            raise RuntimeError(f"SingleLU capacitance residual too large: {lin_res:.3e}")
+        ok_ref, glob_res, comp_rel_res = verify_direct_desirability_solution(self.A_csr, gm, z_unit, s_f, rel_tol=1e-7)
+        if not ok_ref:
+            val_bad = (phi_f + float(-self.lam * np.log(float(z_unit[s_f])))) if (np.isfinite(z_unit[s_f]) and float(z_unit[s_f]) > 0.0) else float("nan")
+            return {
+                "query_ms": 1000.0 * (time.perf_counter() - t0),
+                "guarantee_tier": "unverified_direct_solve",
+                "status": "failed_componentwise_relative_residual",
+                "reference_valid": False,
+                "lo": -float("inf"),
+                "hi": float("inf"),
+                "value": val_bad,
+                "width": float("inf"),
+                "certified": False,
+                "certificate": None,
+                "policy": None,
+                "z_unit": z_unit,
+                "global_residual": glob_res,
+                "componentwise_relative_residual": comp_rel_res,
+            }
 
         val = phi_f + float(-self.lam * np.log(float(z_unit[s_f])))
-        pad = 1e-11 * (1.0 + abs(val))
-        cert = Phase2DecisionCertificate(
-            certificate_mode="full_policy_enclosure",
-            certified=True,
-            epsilon_tol=self.eps_tol,
-            lower_bound_opt=val - pad,
-            incumbent_policy_upper_bound=val + pad,
-            chosen_root_action=0,
-            horizon_steps=1,
-            state_id=int(s_f),
-            operator_epoch=self.operator_epoch,
-        )
         pol = FullGridGuidePolicy(self.A_csr, self.operator_epoch, tuple(int(x) for x in g_f), np.maximum(z_unit, 0.0))
         _ = pol.action_distribution(s_f)
         q_ms = 1000.0 * (time.perf_counter() - t0)
         return {
             "query_ms": q_ms,
-            "lo": val - pad,
-            "hi": val + pad,
+            "guarantee_tier": "high_accuracy_numerical_reference",
+            "status": "ok_numerical_reference",
+            "reference_valid": True,
+            "lo": None,
+            "hi": None,
             "value": val,
-            "width": 2.0 * pad,
-            "certified": True,
-            "certificate": cert,
+            "width": None,
+            "certified": False,
+            "certificate": None,
             "policy": pol,
             "z_unit": z_unit,
             "ring_size": int(len(ring)),
+            "global_residual": glob_res,
+            "componentwise_relative_residual": comp_rel_res,
         }
 
 
@@ -225,11 +276,7 @@ class MatrixFreeExactSchurKrylov3DPlanner:
         tl_g = b_pl.room_tl[c_g]
         c_s = int(b_pl.room_of_f[s_i])
 
-        in_g_loc = gm[rn_g]
-        A_rr = b_pl.A_csr[rn_g, :][:, rn_g]
-        ext_r = np.flatnonzero(~in_g_loc)
-        g_r = np.flatnonzero(in_g_loc)
-        ring_r = g_r[np.asarray(np.abs(A_rr[ext_r, :][:, g_r]).sum(axis=0)).ravel() > 0]
+        in_g_loc, ring_r = extract_directed_goal_ring_in_room(b_pl.A_csr, gm, rn_g, b_pl.gamma_f[tl_g])
 
         RHS_rg = np.zeros((len(rn_g), len(ring_r)), dtype=float)
         RHS_rg[ring_r, np.arange(len(ring_r))] = 1.0
@@ -345,11 +392,13 @@ class MatrixFreeExactSchurKrylov3DPlanner:
         is_cert = bool(hw_ok and np.isfinite(lo_c) and np.isfinite(hi_c) and (hi_c >= lo_c) and (hi_c - lo_c <= self.eps_tol + 1e-12))
         cert = Phase2DecisionCertificate("full_policy_enclosure", is_cert, self.eps_tol, lo_c, hi_c, None, 0, 1, state_id=s_i, operator_epoch=b_pl.operator_epoch) if is_cert else None
         pol = LazyRoomPortalPolicy(b_pl, b_pl.operator_epoch, goal_sig, phi_f, c_g, in_g_loc, ring_r, U_rg, K_inv, h_goal_r, W_lo) if is_cert else None
-        if pol is not None and c_s >= 0:
-            _ = pol.room_desirability_unit(c_s)
+        if pol is not None:
+            _ = pol.action_distribution(s_i)
         q_ms = 1000.0 * (time.perf_counter() - t0)
         return {
             "query_ms": q_ms,
+            "guarantee_tier": "float64_toleranced_model_enclosure" if is_cert else "uncertified",
+            "status": "ok" if is_cert else "numeric_or_width_unclosed",
             "lo": lo_c,
             "hi": hi_c,
             "width": float(hi_c - lo_c) if is_cert else float("inf"),
@@ -456,34 +505,44 @@ class VerifiedGlobalWarmILU3DPlanner:
             used_exact_fallback = True
             if self._fallback_lu is None:
                 self._fallback_lu = spla.splu(self.A_csc)
-            ring = g_f[np.asarray(np.abs(self.A_csr[ext, :][:, g_f]).sum(axis=0)).ravel() > 0]
+            ring = g_f[np.asarray((self.A_csr[ext, :][:, g_f] < 0.0).sum(axis=0)).ravel() > 0]
             rhs_cap = np.zeros((self.n_f, len(ring)), dtype=float)
             rhs_cap[ring, np.arange(len(ring))] = 1.0
             U_cap = self._fallback_lu.solve(rhs_cap)
             coef_cap = np.linalg.solve(U_cap[ring, :], np.ones(len(ring), dtype=float))
             z_dep = U_cap @ coef_cap
             z_dep[gm] = 1.0
+            ok_fb, _, _ = verify_direct_desirability_solution(self.A_csr, gm, z_dep, s_f, rel_tol=1e-7)
+            if not ok_fb:
+                raise RuntimeError("VerifiedGlobalWarmILU3DPlanner direct fallback failed componentwise relative residual check")
             val_ex = phi_f - self.lam * float(np.log(float(z_dep[s_f])))
-            pad = 1e-11 * (1.0 + abs(val_ex))
-            lo_c, hi_c = val_ex - pad, val_ex + pad
+            lo_c, hi_c = None, None
             z_dep = np.maximum(z_dep, 0.0)
             self.z_prev = z_dep
+            cert = None
+        else:
+            cert = Phase2DecisionCertificate("full_policy_enclosure", True, self.eps_tol, lo_c, hi_c, None, 0, 1, state_id=int(s_f), operator_epoch=self.operator_epoch)
+            val_ex = 0.5 * (lo_c + hi_c)
 
-        cert = Phase2DecisionCertificate("full_policy_enclosure", True, self.eps_tol, lo_c, hi_c, None, 0, 1, state_id=int(s_f), operator_epoch=self.operator_epoch)
         pol = FullGridGuidePolicy(self.A_csr, self.operator_epoch, goal_sig, z_dep)
         _ = pol.action_distribution(s_f)
         q_ms = 1000.0 * (time.perf_counter() - t0)
         return {
             "query_ms": q_ms,
+            "krylov_stage_diagnostic_inside_verified_pipeline_ms": raw_unverified_query_ms,
             "raw_unverified_query_ms": raw_unverified_query_ms,
+            "guarantee_tier": "uniform_mmatrix_enclosure" if certified_by_krylov else "fallback_to_high_accuracy_numerical_reference",
             "lo": lo_c,
             "hi": hi_c,
-            "width": hi_c - lo_c,
-            "certified": True,
+            "value": val_ex,
+            "width": (hi_c - lo_c) if (lo_c is not None and hi_c is not None) else None,
+            "certified": bool(certified_by_krylov),
+            "reference_fallback_valid": True,
             "certified_without_direct_fallback": certified_by_krylov,
             "pointwise_s0_certified_by_krylov": pointwise_s0_certified,
             "used_exact_fallback": used_exact_fallback,
             "raw_rtol11_value": raw_rtol11_val,
+            "certificate": cert,
             "policy": pol,
             "z_unit": z_dep,
         }
@@ -555,9 +614,9 @@ def _run_fair_map_worker(args: Tuple[int, int, int, int, bool]) -> dict:
     for exec_rank, arm_name in enumerate(perm_arms):
         gc.collect()
         if arm_name in ("M231_Portal_CacheOn", "M231_Portal_StructureOnly", "M231_Portal_CacheOff_Cold"):
-            use_cache = (arm_name == "M231_Portal_CacheOn")
+            # Keep intra-query memoization enabled (`use_portal_cache=True`) across ALL 3 arms (`Closes B6-02`)!
             pl = SeamFreePortal3DPlanner(
-                spec=spec, gn=gn, free_3d=free_3d, free_nodes=free_nodes, pts_f=pts_f, A_csr=A_csr, eps_tol=0.25, use_portal_cache=use_cache
+                spec=spec, gn=gn, free_3d=free_3d, free_nodes=free_nodes, pts_f=pts_f, A_csr=A_csr, eps_tol=0.25, use_portal_cache=True
             )
             init_ms = pl.offline_init_ms
             q_ms_list, eager_ms_list, active_dofs, lu_solves, widths = [], [], [], [], []
@@ -566,17 +625,19 @@ def _run_fair_map_worker(args: Tuple[int, int, int, int, bool]) -> dict:
             lo_list, hi_list = [], []
             guides_tmp: List[np.ndarray] = []
 
-            # Evaluate deployed policies on `24` (`35^3`), `12` (`47^3`), `6` (`59^3`) tasks; measure eager full-grid materialization on ALL tasks of `CacheOn`!
             n_pol_eval = (n_tasks if gn <= 35 else (min(12, n_tasks) if gn <= 47 else min(6, n_tasks))) if arm_name == "M231_Portal_CacheOn" else 0
             mat_flag = (arm_name == "M231_Portal_CacheOn")
             for t_i, (s_f, gm_k) in enumerate(tasks):
-                if arm_name == "M231_Portal_CacheOff_Cold":
+                if arm_name == "M231_Portal_StructureOnly":
+                    for k_del in [k for k in pl.portal_cache.keys() if k[1] > 0]:
+                        del pl.portal_cache[k_del]
+                elif arm_name == "M231_Portal_CacheOff_Cold":
                     pl.portal_cache.clear()
                 res = pl.solve_unseen_goal(s_f, gm_k, phi_goal=0.0, materialize_full_z_sub=mat_flag)
                 q_ms_list.append(res["query_ms"])
                 eager_ms_list.append(res["eager_materialize_ms"])
                 active_dofs.append(res["active_dofs"])
-                lu_solves.append(res["local_lu_solve_calls"] if "local_lu_solve_calls" in res else res["local_lu_solves"])
+                lu_solves.append(res["local_lu_solves"])
                 widths.append(res["width"])
                 lo_list.append(res["lo"])
                 hi_list.append(res["hi"])
@@ -586,6 +647,7 @@ def _run_fair_map_worker(args: Tuple[int, int, int, int, bool]) -> dict:
                     cert_cnt += 1
                 if t_i < n_pol_eval and res["z_guide_full"] is not None:
                     guides_tmp.append(res["z_guide_full"])
+                del res
 
             mem_info = _portal_memory_ledger(pl)
             if arm_name == "M231_Portal_CacheOn":
@@ -727,24 +789,39 @@ def _run_fair_map_worker(args: Tuple[int, int, int, int, bool]) -> dict:
         }
         del pl_rev
 
-    # Independent Audit against `SingleLU_GoalCapacitance` (`100%` independent exact full-grid reference!)
+    # Independent Audit against `SingleLU_GoalCapacitance` (`high_accuracy_numerical_reference`)
     assert singlelu_exact_values is not None
+    v_ex = np.array(singlelu_exact_values, dtype=float)
+    m231_his_saved: Optional[np.ndarray] = None
     for arm_name, a_d in arm_results.items():
-        los = np.array(a_d.pop("lo_list"), dtype=float)
-        his = np.array(a_d.pop("hi_list"), dtype=float)
-        v_ex = np.array(singlelu_exact_values, dtype=float)
-        viols = int(np.sum((v_ex < los - 1e-7) | (v_ex > his + 1e-7) | ((his - los) > 0.25 + 1e-6)))
-        a_d["independent_reference_violations"] = viols
+        lo_raw = a_d.pop("lo_list")
+        hi_raw = a_d.pop("hi_list")
+        if arm_name == "M231_Portal_CacheOn":
+            m231_his_saved = np.array(hi_raw, dtype=float)
+        if arm_name == "SingleLU_GoalCapacitance":
+            a_d["independent_reference_violations"] = int(np.sum(~np.isfinite(v_ex)))
+        elif arm_name == "Verified_Global_WarmILU":
+            viols = 0
+            for idx_q, (lv, hv) in enumerate(zip(lo_raw, hi_raw)):
+                if lv is not None and hv is not None:
+                    if v_ex[idx_q] < lv - 1e-7 or v_ex[idx_q] > hv + 1e-7 or (hv - lv) > 0.25 + 1e-6:
+                        viols += 1
+            a_d["independent_reference_violations"] = viols
+        else:
+            los = np.array(lo_raw, dtype=float)
+            his = np.array(hi_raw, dtype=float)
+            viols = int(np.sum((v_ex < los - 1e-7) | (v_ex > his + 1e-7) | ((his - los) > 0.25 + 1e-6)))
+            a_d["independent_reference_violations"] = viols
         if "raw_rtol11_values" in a_d:
             rv = np.array(a_d.pop("raw_rtol11_values"), dtype=float)
             a_d["unverified_rtol11_errors_gt_025"] = int(np.sum(np.abs(rv - v_ex) > 0.25))
             a_d["unverified_rtol11_max_abs_err"] = float(np.max(np.abs(rv - v_ex)))
 
-    # Independent Deployed Discrete KL-LMDP Policy Evaluations on `M231_Portal_CacheOn`
+    # Independent Deployed Discrete KL-LMDP Policy Evaluations on `M231_Portal_CacheOn` (`verifying L <= V* <= J <= U`)
     pol_viols = 0
     pol_regrets: List[float] = []
     max_sub_res = 0.0
-    if m231_deployed_guides:
+    if m231_deployed_guides and m231_his_saved is not None:
         m231_d = arm_results["M231_Portal_CacheOn"]
         for t_i, z_g in enumerate(m231_deployed_guides):
             s_f, gm_k = tasks[t_i]
@@ -753,7 +830,7 @@ def _run_fair_map_worker(args: Tuple[int, int, int, int, bool]) -> dict:
             vp = evaluate_3d_deployed_policy_exact(A_csr, gm_k, 0.0, z_g, lam, s_f)
             reg = max(0.0, vp - singlelu_exact_values[t_i])
             pol_regrets.append(reg)
-            if reg > 0.25 + 1e-6 or vp < singlelu_exact_values[t_i] - 1e-6:
+            if reg > 0.25 + 1e-6 or vp < singlelu_exact_values[t_i] - 1e-6 or vp > float(m231_his_saved[t_i]) + 1e-6:
                 pol_viols += 1
         m231_d["deployed_policy_evaluated_count"] = int(len(m231_deployed_guides))
         m231_d["deployed_policy_violations"] = int(pol_viols)
@@ -861,10 +938,14 @@ def _run_continual_fair_worker(args: Tuple[int, int, int, int]) -> dict:
                 totals[nm]["life_ms"] += rr["query_ms"]
                 if ep > 0:
                     totals[nm]["marg_ms"] += rr["query_ms"]
-                if (not rr["certified"]) or v_ex < rr["lo"] - 1e-7 or v_ex > rr["hi"] + 1e-7 or rr["width"] > 0.25 + 1e-6:
-                    totals[nm]["viols"] += 1
                 if nm == "Verified_Global_WarmILU" and rr["used_exact_fallback"]:
                     totals[nm]["fallbacks"] += 1
+                    if (not rr.get("reference_fallback_valid", False)) or abs(float(rr["value"]) - v_ex) > 1e-7:
+                        totals[nm]["viols"] += 1
+                else:
+                    if (not rr["certified"]) or v_ex < rr["lo"] - 1e-7 or v_ex > rr["hi"] + 1e-7 or rr["width"] > 0.25 + 1e-6:
+                        totals[nm]["viols"] += 1
+                del rr
 
     return {"seed": seed, "gn": gn, "stream": "known_support_synthetic_local_operator_updates", "totals": totals}
 

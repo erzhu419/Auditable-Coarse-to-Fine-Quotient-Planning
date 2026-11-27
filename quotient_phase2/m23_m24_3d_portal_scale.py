@@ -21,10 +21,11 @@ Mathematical Foundations & Guarantees:
                certifying deployed primitive Markov policy `mu_hat = mu(z_sub)` via:
                  `L^*(s_0) <= V^*(s_0) <= V^{mu_hat}(s_0) <= U^{mu_hat}(s_0)`,  `U^{mu_hat}(s_0) - L^*(s_0) <= eps_tol`.
   3. Scale-Matched Doob/Lyapunov Sub-Stochastic Defect Closure:
-       For ultra-long 6-room baffled detours where `z^*` decays by `10^{-8}`, the cooperative Howard
-       super-harmonic weight `w_lyap = L v_lyap > 0` (`(I - K_Gamma) w_lyap = s_0 >= 0.5 W_hi > 0`)
-       transforms `(I_Gamma - K_Gamma) z = r_hat_Gamma` into an `O(1)`-conditioned sub-stochastic system
-       `(I - P_tilde) u_hat = r_hat_Gamma / w_lyap`, guaranteeing `100%` (`0` violations) certification.
+       For multi-room baffled detours where `z^*` decays across doorways, the cooperative Howard
+       super-harmonic weight `w_lyap = L v_lyap > 0` (`(I - K_Gamma) w_lyap = s_0 > 0`) transforms
+       `(I_Gamma - K_Gamma) z = r_hat_Gamma` into a strictly sub-stochastic system
+       `(I - P_tilde) u_hat = r_hat_Gamma / w_lyap` whose defect amplification is governed by
+       `beta = min_i (s_0_i / w_lyap_i) > 0` (verified at runtime).
 """
 from __future__ import annotations
 
@@ -711,6 +712,7 @@ class LazyRoomPortalPolicy:
             return self._room_z_cache[c]
         tl_c = self.planner.room_tl[c]
         yc = self.planner.hq_lus[c].solve(self.planner.room_Arg[c] @ self.W_lo_unit[tl_c])
+        self.planner.local_lu_solve_calls += 1
         if c == self.c_goal:
             yc = self.h_goal_r + yc - self.U_rg @ (self.K_inv @ yc[self.ring_r])
             yc[self.in_g_loc] = 1.0
@@ -763,14 +765,41 @@ class LazyRoomPortalPolicy:
 # ==============================================================================
 # 3. Seam-Free Integral 3D Portal Quotient Planner (`M2.3` & Continual `M2.4`)
 # ==============================================================================
+def extract_directed_goal_ring_in_room(
+    A_csr: sp.csr_matrix,
+    goal_mask: np.ndarray,
+    rn_g: np.ndarray,
+    incident_portal_f: np.ndarray,
+) -> Tuple[np.ndarray, np.ndarray]:
+    """Extracts the complete directed absorbing goal support `ring_r` (indices into `rn_g`)
+    for a single-room interior goal `G subset rn_g`:
+        `R_G = { j in G : exists i in Omega \\ G with A[i, j] < 0 }`.
+    Since separator portals `incident_portal_f` disconnect `rn_g` from all other rooms and contain
+    no goal nodes, all incoming non-goal rows `i in Omega \\ G` with `A[i, j] < 0` lie in the union
+    `(rn_g \\ G) U incident_portal_f` (`Closes B6-01`, including portal-adjacent slabs and whole-room goals!).
+    """
+    gm = np.asarray(goal_mask, dtype=bool)
+    in_g_loc = gm[rn_g]
+    g_r = np.flatnonzero(in_g_loc).astype(np.int64)
+    if len(g_r) == 0:
+        raise ValueError("Goal room contains zero goal nodes")
+    ext_rows_f = np.concatenate([rn_g[~in_g_loc], np.asarray(incident_portal_f, dtype=np.int64)])
+    if len(ext_rows_f) == 0:
+        return in_g_loc, g_r
+    sub = A_csr[ext_rows_f, :][:, rn_g[g_r]]
+    has_incoming_non_goal = np.asarray((sub < 0.0).sum(axis=0)).ravel() > 0
+    ring_r = g_r[has_incoming_non_goal]
+    return in_g_loc, ring_r
+
+
 class SeamFreePortal3DPlanner:
     """Autonomous 3D Planar-Portal Quotient Planner with:
-      - Zero-hint 3D conductance bottleneck discovery;
+      - Zero-hint 3D conductance bottleneck discovery (axis-aligned planar occupancy family);
       - Room-local interior sparse factorizations `hq_lus[c]` (`0` global `splu`s!);
       - Block-diagonal in-plane smoothing `lu_Agg = splu(A_{Gamma,Gamma})` eliminating `O(1/h^2)` seam jumps;
-      - Persistent lazy multi-resolution portal cache `portal_cache[(p_id, lv)]` (`L0=1 -> L1=4 -> L2=16 -> L3=36`);
+      - Persistent lazy nested dyadic portal cache `portal_cache[(p_id, lv)]` (`L0=1 -> L1<=4 -> L2<=16 -> L3<=64`);
       - Surgical room-update invalidation (`update_world_operator`) for continual `M2.4` streams;
-      - Row-Coupled Howard Sub-/Supersolution Certificate + Doob/Lyapunov Sub-Stochastic Defect Closure.
+      - Runtime-verified Row-Coupled Howard Sub-/Supersolution Certificate + Lyapunov Defect Closure.
     """
 
     def __init__(
@@ -982,11 +1011,7 @@ class SeamFreePortal3DPlanner:
         tl_g = self.room_tl[c_g]
         c_s = int(self.room_of_f[s_i])
 
-        in_g_loc = gm[rn_g]
-        A_rr = self.A_csr[rn_g, :][:, rn_g]
-        ext_r = np.flatnonzero(~in_g_loc)
-        g_r = np.flatnonzero(in_g_loc)
-        ring_r = g_r[np.asarray(np.abs(A_rr[ext_r, :][:, g_r]).sum(axis=0)).ravel() > 0]
+        in_g_loc, ring_r = extract_directed_goal_ring_in_room(self.A_csr, gm, rn_g, self.gamma_f[tl_g])
 
         RHS_rg = np.zeros((len(rn_g), len(ring_r)), dtype=float)
         RHS_rg[ring_r, np.arange(len(ring_r))] = 1.0
@@ -1160,12 +1185,8 @@ class SeamFreePortal3DPlanner:
         tl_g = self.room_tl[c_g]
         c_s = int(self.room_of_f[s_i])
 
-        # Exact goal-room separator-ring Woodbury elimination in UNIT terminal gauge (`g_unit = 1.0`)
-        in_g_loc = gm[rn_g]
-        A_rr = self.A_csr[rn_g, :][:, rn_g]
-        ext_r = np.flatnonzero(~in_g_loc)
-        g_r = np.flatnonzero(in_g_loc)
-        ring_r = g_r[np.asarray(np.abs(A_rr[ext_r, :][:, g_r]).sum(axis=0)).ravel() > 0]
+        # Exact goal-room separator-ring Woodbury elimination in UNIT terminal gauge (`g_unit = 1.0`, `Closes B6-01`)
+        in_g_loc, ring_r = extract_directed_goal_ring_in_room(self.A_csr, gm, rn_g, self.gamma_f[tl_g])
 
         RHS_rg = np.zeros((len(rn_g), len(ring_r)), dtype=float)
         RHS_rg[ring_r, np.arange(len(ring_r))] = 1.0
@@ -1393,9 +1414,9 @@ class SeamFreePortal3DPlanner:
             if np.all(np.isfinite(W_lo)) and np.all(W_lo > 0.0)
             else None
         )
-        # Prime the start room inside `query_ms` so immediate root execution at `s_i` requires ZERO hidden backsolve!
-        if policy_handle is not None and c_s >= 0:
-            _ = policy_handle.room_desirability_unit(c_s)
+        # Prime root action at `s_i` inside `query_ms` (covers BOTH interior `c_s >= 0` AND portal `c_s < 0` starts, `Closes B6-05`!)
+        if policy_handle is not None:
+            _ = policy_handle.action_distribution(s_i)
         query_ms = 1000.0 * (time.perf_counter() - t0)
 
         t_mat0 = time.perf_counter()
@@ -1414,6 +1435,7 @@ class SeamFreePortal3DPlanner:
         return {
             "query_ms": query_ms,
             "eager_materialize_ms": eager_mat_ms,
+            "guarantee_tier": "float64_toleranced_model_enclosure" if is_cert else "uncertified",
             "status": "ok" if is_cert else ("uncertified_coarse_l0" if self.coarse_l0_only else "numeric_or_width_unclosed"),
             "lo": lo_c,
             "hi": hi_c,
