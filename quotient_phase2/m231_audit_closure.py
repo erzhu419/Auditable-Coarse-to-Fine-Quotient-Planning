@@ -85,7 +85,7 @@ def verify_historical_jsons_untouched() -> dict:
     return out
 
 
-def run_m231_audit_closure_suite() -> dict:
+def run_m231_audit_closure_suite(write_json: bool = False) -> dict:
     t0 = time.perf_counter()
     verify_phase1_readonly_freeze()
     enforce_single_thread_env()
@@ -395,13 +395,14 @@ def run_m231_audit_closure_suite() -> dict:
         },
     }
 
-    out_path = Path(__file__).resolve().parent / "m231_audit_closure.json"
-    out_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    if write_json:
+        out_path = Path(__file__).resolve().parent / "m231_audit_closure.json"
+        out_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     print(
         f"[M2.3.1 WP-A] ALL_EC75871_AUDIT_ISSUES_CLOSED={all_pass} | "
         f"EC01={ec01_pass} EC02={ec02_pass} EC03={ec03_pass} EC04={ec04_pass} "
         f"EC05={rejected_bad_ref} EC06+Nested={ec06_and_nested_pass} (cross_parent={cross_parent_total}) | "
-        f"elapsed={payload['elapsed_ms']:.1f}ms"
+        f"write_json={write_json} | elapsed={payload['elapsed_ms']:.1f}ms"
     )
     if not all_pass:
         raise RuntimeError("One or more M2.3.1 WP-A audit closure gates failed!")
@@ -409,4 +410,12 @@ def run_m231_audit_closure_suite() -> dict:
 
 
 if __name__ == "__main__":
-    run_m231_audit_closure_suite()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--allow-legacy-archive-overwrite",
+        action="store_true",
+        help="Explicitly overwrite frozen b6ff40d m231_audit_closure.json (default: run in-memory read-only).",
+    )
+    args_cli = parser.parse_args()
+    run_m231_audit_closure_suite(write_json=args_cli.allow_legacy_archive_overwrite)

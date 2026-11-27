@@ -395,6 +395,7 @@ class MatrixFreeExactSchurKrylov3DPlanner:
         if pol is not None:
             _ = pol.action_distribution(s_i)
         q_ms = 1000.0 * (time.perf_counter() - t0)
+        op_rhs = int(b_pl.local_lu_solve_calls - solves_0)
         return {
             "query_ms": q_ms,
             "guarantee_tier": "float64_toleranced_model_enclosure" if is_cert else "uncertified",
@@ -406,7 +407,9 @@ class MatrixFreeExactSchurKrylov3DPlanner:
             "certificate": cert,
             "policy": pol,
             "portal_matvecs": matvecs,
-            "local_lu_solves": int(b_pl.local_lu_solve_calls - solves_0),
+            "operational_local_lu_rhs_solves": op_rhs,
+            "evaluation_materialization_rhs_solves": 0,
+            "local_lu_solves": op_rhs,
         }
 
 
@@ -627,16 +630,20 @@ def _run_fair_map_worker(args: Tuple[int, int, int, int, bool]) -> dict:
 
             n_pol_eval = (n_tasks if gn <= 35 else (min(12, n_tasks) if gn <= 47 else min(6, n_tasks))) if arm_name == "M231_Portal_CacheOn" else 0
             mat_flag = (arm_name == "M231_Portal_CacheOn")
+            op_rhs_solves, eval_rhs_solves = [], []
             for t_i, (s_f, gm_k) in enumerate(tasks):
-                if arm_name == "M231_Portal_StructureOnly":
-                    for k_del in [k for k in pl.portal_cache.keys() if k[1] > 0]:
-                        del pl.portal_cache[k_del]
-                elif arm_name == "M231_Portal_CacheOff_Cold":
-                    pl.portal_cache.clear()
+                if t_i > 0:
+                    if arm_name == "M231_Portal_StructureOnly":
+                        for k_del in [k for k in pl.portal_cache.keys() if k[1] > 0]:
+                            del pl.portal_cache[k_del]
+                    elif arm_name == "M231_Portal_CacheOff_Cold":
+                        pl.portal_cache.clear()
                 res = pl.solve_unseen_goal(s_f, gm_k, phi_goal=0.0, materialize_full_z_sub=mat_flag)
                 q_ms_list.append(res["query_ms"])
                 eager_ms_list.append(res["eager_materialize_ms"])
                 active_dofs.append(res["active_dofs"])
+                op_rhs_solves.append(res["operational_local_lu_rhs_solves"])
+                eval_rhs_solves.append(res["evaluation_materialization_rhs_solves"])
                 lu_solves.append(res["local_lu_solves"])
                 widths.append(res["width"])
                 lo_list.append(res["lo"])
@@ -666,6 +673,8 @@ def _run_fair_map_worker(args: Tuple[int, int, int, int, bool]) -> dict:
                 "mean_active_coarse_dofs": float(np.mean(active_dofs)),
                 "full_interface_dofs": int(pl.n_g),
                 "defect_closure_count": int(defect_cnt),
+                "total_operational_local_lu_rhs_solves": int(np.sum(op_rhs_solves)),
+                "total_evaluation_materialization_rhs_solves": int(np.sum(eval_rhs_solves)),
                 "total_local_lu_solves": int(np.sum(lu_solves)),
                 "certified_count": int(cert_cnt),
                 "mean_width": float(np.mean(widths)),
@@ -692,6 +701,7 @@ def _run_fair_map_worker(args: Tuple[int, int, int, int, bool]) -> dict:
                 hi_list.append(res["hi"])
                 if res["certified"]:
                     cert_cnt += 1
+                del res
             cum_prefix = list(np.cumsum([init_ms] + q_ms_list)[1:])
             arm_results[arm_name] = {
                 "exec_order_rank": exec_rank,
@@ -700,6 +710,7 @@ def _run_fair_map_worker(args: Tuple[int, int, int, int, bool]) -> dict:
                 "mean_query_ms": float(np.mean(q_ms_list)),
                 "prefix_cumulative_ms": [float(x) for x in cum_prefix],
                 "mean_portal_matvecs": float(np.mean(matvecs_l)),
+                "total_operational_local_lu_rhs_solves": int(np.sum(lu_solves)),
                 "total_local_lu_solves": int(np.sum(lu_solves)),
                 "certified_count": int(cert_cnt),
                 "lo_list": lo_list,
@@ -721,6 +732,7 @@ def _run_fair_map_worker(args: Tuple[int, int, int, int, bool]) -> dict:
                 hi_list.append(res["hi"])
                 if res["certified"]:
                     cert_cnt += 1
+                del res
             singlelu_exact_values = vals_ex
             cum_prefix = list(np.cumsum([init_ms] + q_ms_list)[1:])
             arm_results[arm_name] = {
@@ -756,6 +768,7 @@ def _run_fair_map_worker(args: Tuple[int, int, int, int, bool]) -> dict:
                     pt_cert_cnt += 1
                 if res["used_exact_fallback"]:
                     fb_cnt += 1
+                del res
             cum_prefix = list(np.cumsum([init_ms] + q_ms_list)[1:])
             arm_results[arm_name] = {
                 "exec_order_rank": exec_rank,
@@ -768,7 +781,8 @@ def _run_fair_map_worker(args: Tuple[int, int, int, int, bool]) -> dict:
                 "krylov_self_certified_count": int(kry_cert_cnt),
                 "pointwise_s0_certified_by_krylov_count": int(pt_cert_cnt),
                 "direct_fallback_count": int(fb_cnt),
-                "certified_count": n_tasks,
+                "certified_count": int(kry_cert_cnt),
+                "verified_or_valid_reference_count": int(kry_cert_cnt + fb_cnt),
                 "raw_rtol11_values": raw_vals,
                 "lo_list": lo_list,
                 "hi_list": hi_list,
@@ -1290,5 +1304,17 @@ def run_m231_fair_campaign(self_test: bool = False) -> dict:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--self-test", action="store_true")
+    parser.add_argument(
+        "--allow-legacy-archive-overwrite",
+        action="store_true",
+        help="Explicitly permit overwriting the frozen b6ff40d m231_fair_ablation_results.json archive (to reproduce exact b6ff40d semantics, checkout commit b6ff40d).",
+    )
     args_cli = parser.parse_args()
+    if (not args_cli.self_test) and (not args_cli.allow_legacy_archive_overwrite):
+        raise SystemExit(
+            "[ARCHIVE GUARD C232-05] m231_fair_ablation_results.json is frozen at commit b6ff40d "
+            "(sha256=f844a1028ec72ca7e0c26f77106b65d4a497636451bc5cf69bf241339410dba / f844a102...). "
+            "Use `quotient_phase2/verify_m232_release.py` for current M2.3.2 release verification, `--self-test` for smoke checks, "
+            "or `git checkout b6ff40d` to reproduce historical M2.3.1."
+        )
     run_m231_fair_campaign(self_test=args_cli.self_test)

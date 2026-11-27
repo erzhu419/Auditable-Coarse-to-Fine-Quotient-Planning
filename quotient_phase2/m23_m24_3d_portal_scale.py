@@ -1142,6 +1142,7 @@ class SeamFreePortal3DPlanner:
             return {
                 "query_ms": q_ms,
                 "eager_materialize_ms": 0.0,
+                "guarantee_tier": "exact_start_in_goal",
                 "status": "start_in_goal",
                 "lo": phi_f,
                 "hi": phi_f,
@@ -1153,6 +1154,8 @@ class SeamFreePortal3DPlanner:
                 "full_interface_dofs": self.n_g,
                 "rounds": 0,
                 "used_defect_closure": False,
+                "operational_local_lu_rhs_solves": 0,
+                "evaluation_materialization_rhs_solves": 0,
                 "local_lu_solves": 0,
                 "min_beta_s_over_w": 1.0,
                 "z_guide_full": z_full_triv,
@@ -1164,6 +1167,7 @@ class SeamFreePortal3DPlanner:
             return {
                 "query_ms": q_ms,
                 "eager_materialize_ms": 0.0,
+                "guarantee_tier": "unreachable",
                 "status": "unreachable",
                 "lo": float("inf"),
                 "hi": float("inf"),
@@ -1175,6 +1179,8 @@ class SeamFreePortal3DPlanner:
                 "full_interface_dofs": self.n_g,
                 "rounds": 0,
                 "used_defect_closure": False,
+                "operational_local_lu_rhs_solves": 0,
+                "evaluation_materialization_rhs_solves": 0,
                 "local_lu_solves": 0,
                 "min_beta_s_over_w": None,
                 "z_guide_full": None,
@@ -1418,6 +1424,8 @@ class SeamFreePortal3DPlanner:
         if policy_handle is not None:
             _ = policy_handle.action_distribution(s_i)
         query_ms = 1000.0 * (time.perf_counter() - t0)
+        # Split operational RHS column backsolves (inside `query_ms`) from post-timer evaluation materialization (`Closes C232-02`)
+        solves_after_query = self.local_lu_solve_calls
 
         t_mat0 = time.perf_counter()
         z_guide_full = None
@@ -1431,6 +1439,7 @@ class SeamFreePortal3DPlanner:
             else:
                 z_guide_full = z_unit
         eager_mat_ms = 1000.0 * (time.perf_counter() - t_mat0)
+        solves_after_mat = self.local_lu_solve_calls
 
         return {
             "query_ms": query_ms,
@@ -1447,7 +1456,9 @@ class SeamFreePortal3DPlanner:
             "full_interface_dofs": int(self.n_g),
             "rounds": int(rounds_run),
             "used_defect_closure": bool(used_defect_closure),
-            "local_lu_solves": int(self.local_lu_solve_calls - solves_before),
+            "operational_local_lu_rhs_solves": int(solves_after_query - solves_before),
+            "evaluation_materialization_rhs_solves": int(solves_after_mat - solves_after_query),
+            "local_lu_solves": int(solves_after_mat - solves_before),
             "min_beta_s_over_w": min_beta,
             "z_guide_full": z_guide_full,
         }

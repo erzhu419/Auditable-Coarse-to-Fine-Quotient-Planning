@@ -78,6 +78,7 @@ from quotient_phase2.m23_m24_3d_portal_scale import (
     generate_3d_multiroom_world,
     solve_and_verify_portal_howard_bounds,
 )
+from quotient_phase2.m231_audit_closure import run_m231_audit_closure_suite
 from quotient_phase2.m231_fair_ablation import (
     MatrixFreeExactSchurKrylov3DPlanner,
     SingleLUGoalCapacitance3DPlanner,
@@ -163,7 +164,7 @@ def _sustained_crossing_k(c_cand: Sequence[float], c_base: Sequence[float]) -> O
 # ==============================================================================
 # Part 1: Deterministic Contract, Goal-Ring (`B6-01`), Cache (`B6-02`), Pad (`B6-03`), & Readiness (`B6-05`) Suite
 # ==============================================================================
-def run_m232_contract_and_ring_closure() -> dict:
+def run_m232_contract_and_ring_closure(write_json: bool = False) -> dict:
     t0 = time.perf_counter()
     verify_phase1_readonly_freeze()
     prior_hashes = verify_all_prior_artifacts_untouched()
@@ -172,7 +173,8 @@ def run_m232_contract_and_ring_closure() -> dict:
     with warnings.catch_warnings():
         warnings.simplefilter("error")
 
-        # 0. Prior suites (`M2.0` 15 gates, `WP0`, `M2.2` 4 graph families) in memory
+        # 0. Prior suites (`M2.0` 15 gates, `WP0`, `M2.2` 4 graph families, AND full `M2.3.1 EC-01..EC-06 + 7.3`, `Closes C232-05`) in memory
+        m231_ec_full = run_m231_audit_closure_suite(write_json=False)
         m20_res = run_m20_contract_verification_suite()
         wp0_res = run_v10_online_and_contract_probes()
         m22_res = run_part_a_multiroom_graph_suite()
@@ -238,7 +240,8 @@ def run_m232_contract_and_ring_closure() -> dict:
                 if len(np.unique(par[cb])) > 1:
                     cross_p += 1
         prior_ec_all_ok = bool(
-            ec01_ok
+            m231_ec_full["ALL_EC75871_AUDIT_ISSUES_CLOSED"]
+            and ec01_ok
             and (not r_m22_u["certified"])
             and np.isinf(ev_m22_u[0])
             and (not chain_rep.all_steps_certified)
@@ -540,12 +543,13 @@ def run_m232_contract_and_ring_closure() -> dict:
         },
     })
 
-    out_path = Path(__file__).resolve().parent / "m232_contract_and_ring_closure.json"
-    out_path.write_text(json.dumps(payload, indent=2, allow_nan=False), encoding="utf-8")
+    if write_json:
+        out_path = Path(__file__).resolve().parent / "m232_contract_and_ring_closure.json"
+        out_path.write_text(json.dumps(payload, indent=2, allow_nan=False), encoding="utf-8")
     print(
         f"[M2.3.2 WP-1] ALL_B6FF40D_CONTRACT_ISSUES_CLOSED={all_closed} | "
         f"B6_01={b6_01_pass} (36/36) | Official792RingUnchanged={official_ring_compat_ok} ({official_ring_checked}/792) | "
-        f"B6_02={b6_02_counter_ok} | B6_03={b6_03_ok} | B6_05={b6_05_ok} | elapsed={payload['elapsed_ms']:.1f}ms"
+        f"B6_02={b6_02_counter_ok} | B6_03={b6_03_ok} | B6_05={b6_05_ok} | write_json={write_json} | elapsed={payload['elapsed_ms']:.1f}ms"
     )
     if not all_closed:
         raise RuntimeError("M2.3.2 WP-1 contract closure check failed!")
@@ -617,6 +621,8 @@ def _build_task_event(
         "query_ms": float(res["query_ms"]),
         "active_coarse_dofs": int(res.get("active_dofs", len(gm) * 0)),
         "used_defect_closure": bool(res.get("used_defect_closure", True)),
+        "operational_local_lu_rhs_solves": int(res.get("operational_local_lu_rhs_solves", res.get("local_lu_solves", 0))),
+        "evaluation_materialization_rhs_solves": int(res.get("evaluation_materialization_rhs_solves", 0)),
         "local_lu_solves": int(res.get("local_lu_solves", 0)),
     }
 
@@ -681,11 +687,12 @@ def _run_47_cache_and_pair_single_map(seed: int, map_idx: int, n_tasks: int) -> 
         guides_12: Dict[int, np.ndarray] = {}
         n_pol = min(12, n_tasks) if c_mode == "CacheOn_Persistent" else 0
         for t_i, (s_f, gm_k) in enumerate(tasks):
-            if c_mode == "CacheL0Only":
-                for kd in [k for k in pl.portal_cache.keys() if k[1] > 0]:
-                    del pl.portal_cache[kd]
-            elif c_mode == "QueryCold":
-                pl.portal_cache.clear()
+            if t_i > 0:
+                if c_mode == "CacheL0Only":
+                    for kd in [k for k in pl.portal_cache.keys() if k[1] > 0]:
+                        del pl.portal_cache[kd]
+                elif c_mode == "QueryCold":
+                    pl.portal_cache.clear()
             rr = pl.solve_unseen_goal(s_f, gm_k, phi_goal=0.0, materialize_full_z_sub=(t_i < n_pol))
             if t_i < n_pol and rr["z_guide_full"] is not None:
                 guides_12[t_i] = rr["z_guide_full"]
@@ -698,6 +705,8 @@ def _run_47_cache_and_pair_single_map(seed: int, map_idx: int, n_tasks: int) -> 
                 "query_ms": rr["query_ms"],
                 "active_dofs": rr["active_dofs"],
                 "used_defect_closure": rr["used_defect_closure"],
+                "operational_local_lu_rhs_solves": rr["operational_local_lu_rhs_solves"],
+                "evaluation_materialization_rhs_solves": rr["evaluation_materialization_rhs_solves"],
                 "local_lu_solves": rr["local_lu_solves"],
             })
             del rr
@@ -713,6 +722,8 @@ def _run_47_cache_and_pair_single_map(seed: int, map_idx: int, n_tasks: int) -> 
             "first6_query_ms": float(np.mean(q_arr[:6])),
             "last6_query_ms": float(np.mean(q_arr[-6:])),
             "prefix_cumulative_ms": [float(x) for x in np.cumsum([init_ms] + q_arr)[1:]],
+            "total_operational_local_lu_rhs_solves": int(sum(x["operational_local_lu_rhs_solves"] for x in raw_rows)),
+            "total_evaluation_materialization_rhs_solves": int(sum(x["evaluation_materialization_rhs_solves"] for x in raw_rows)),
             "total_local_lu_solves": int(sum(x["local_lu_solves"] for x in raw_rows)),
             "factor_plus_response_cache_bytes": mem_led,
             "_raw_rows": raw_rows,
@@ -744,6 +755,8 @@ def _run_47_cache_and_pair_single_map(seed: int, map_idx: int, n_tasks: int) -> 
                     "eager_ms": rr["eager_materialize_ms"],
                     "active_dofs": rr["active_dofs"],
                     "used_defect_closure": rr["used_defect_closure"],
+                    "operational_local_lu_rhs_solves": rr["operational_local_lu_rhs_solves"],
+                    "evaluation_materialization_rhs_solves": rr["evaluation_materialization_rhs_solves"],
                     "local_lu_solves": rr["local_lu_solves"],
                 })
                 del rr
@@ -901,6 +914,8 @@ def _run_59_pair_single_map(seed: int, map_idx: int, n_tasks: int) -> dict:
                     "query_ms": rr["query_ms"],
                     "active_dofs": rr["active_dofs"],
                     "used_defect_closure": rr["used_defect_closure"],
+                    "operational_local_lu_rhs_solves": rr.get("operational_local_lu_rhs_solves", rr["local_lu_solves"]),
+                    "evaluation_materialization_rhs_solves": rr.get("evaluation_materialization_rhs_solves", 0),
                     "local_lu_solves": rr["local_lu_solves"],
                 })
                 del rr
@@ -1095,6 +1110,8 @@ def _run_continual_47_abba_single_map(seed: int, map_idx: int, n_epochs: int, ta
                         "query_ms": rr["query_ms"],
                         "active_dofs": rr.get("active_dofs", int(pl_obj.base.n_g) if hasattr(pl_obj, "base") else 0),
                         "used_defect_closure": rr.get("used_defect_closure", True),
+                        "operational_local_lu_rhs_solves": rr.get("operational_local_lu_rhs_solves", rr.get("local_lu_solves", 0)),
+                        "evaluation_materialization_rhs_solves": rr.get("evaluation_materialization_rhs_solves", 0),
                         "local_lu_solves": rr.get("local_lu_solves", 0),
                     },
                     z_pol,
@@ -1213,7 +1230,7 @@ def _summarize_pair_block(rows: List[dict], block_label: str, arms_key: str, eve
 def _plot_m232_summary(cache_sum: dict, pair47: dict, pair59: dict, cont47: dict, rows47: List[dict], rows59: List[dict], fig_path: Path) -> None:
     fig, axes = plt.subplots(2, 2, figsize=(13.8, 9.6), dpi=160)
 
-    # Panel A: Corrected 47^3 3-Arm Cache Causal Study (`Intra-Query Memoization ON Across All 3 Modes!`)
+    # Panel A: Corrected 47^3 3-Arm Cache Causal Study (`Intra-Query Memoization ON Across All 3 Modes, Same-Block Curves ONLY, Closes C232-01`)
     ax = axes[0, 0]
     ks = np.arange(1, len(cache_sum["modes"]["CacheOn_Persistent"]["prefix_cumulative_mean_ms"]) + 1)
     for m_k, m_lbl, st, col in (
@@ -1223,8 +1240,6 @@ def _plot_m232_summary(cache_sum: dict, pair47: dict, pair59: dict, cont47: dict
     ):
         ys = np.array(cache_sum["modes"][m_k]["prefix_cumulative_mean_ms"], dtype=float) / 1000.0
         ax.plot(ks, ys, st, linewidth=2.3, label=m_lbl, color=col)
-    mf_curve47 = np.mean([r["pair_arms"]["MatrixFree_ExactSchur_Krylov"]["prefix_cumulative_ms"] for r in rows47], axis=0) / 1000.0
-    ax.plot(ks, mf_curve47, ":", linewidth=2.1, label="MatrixFree Exact Schur Krylov (Ref)", color="#2980b9")
     ax.set_xlabel("Streaming Unseen Goal Index k (1..24)")
     ax.set_ylabel("Single-Worker Cumulative Time C(k) (s)")
     ax.set_title("A. Corrected 47^3 Cache Causal Ablation (Replay 63000..63005, 1 Worker)")
@@ -1293,8 +1308,8 @@ def _plot_m232_summary(cache_sum: dict, pair47: dict, pair59: dict, cont47: dict
     plt.close(fig)
 
 
-def run_m232_full_closure(self_test: bool = False) -> dict:
-    wp1_payload = run_m232_contract_and_ring_closure()
+def run_m232_full_closure(self_test: bool = False, write_json: bool = False) -> dict:
+    wp1_payload = run_m232_contract_and_ring_closure(write_json=write_json and (not self_test))
     t_rep0 = time.perf_counter()
 
     if self_test:
@@ -1432,9 +1447,22 @@ def run_m232_full_closure(self_test: bool = False) -> dict:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--self-test", action="store_true")
-    parser.add_argument("--contracts-only", action="store_true")
+    parser.add_argument("--contracts-only", action="store_true", help="Run WP-1 contract & goal-ring suite in memory (read-only unless --allow-frozen-ec3c58f-overwrite is also set).")
+    parser.add_argument(
+        "--allow-frozen-ec3c58f-overwrite",
+        action="store_true",
+        help="Explicitly allow overwriting frozen ec3c58f m232_*.json/png artifacts (default: read-only guard; use verify_m232_release.py for current release checks).",
+    )
     args_cli = parser.parse_args()
     if args_cli.contracts_only:
-        run_m232_contract_and_ring_closure()
+        run_m232_contract_and_ring_closure(write_json=args_cli.allow_frozen_ec3c58f_overwrite)
+    elif args_cli.self_test:
+        run_m232_full_closure(self_test=True, write_json=False)
     else:
-        run_m232_full_closure(self_test=args_cli.self_test)
+        if not args_cli.allow_frozen_ec3c58f_overwrite:
+            raise SystemExit(
+                "[ARCHIVE GUARD C232-05] m232_contract_and_ring_closure.json (06b44156...) and m232_targeted_replay_results.json (9979d61a...) "
+                "are frozen at commit ec3c58f. Run `quotient_phase2/verify_m232_release.py` for zero-rerun release verification, "
+                "`--contracts-only` for in-memory contract checks, or `--self-test` for smoke tests."
+            )
+        run_m232_full_closure(self_test=False, write_json=True)
