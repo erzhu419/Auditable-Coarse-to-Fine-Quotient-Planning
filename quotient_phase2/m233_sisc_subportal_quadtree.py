@@ -119,6 +119,57 @@ LOCKED_M233_HYPERPARAMS = {
     "warm_start_howard_enabled": True,
 }
 
+FROZEN_M233_ORIGINAL_JSON_SHA256 = "339e723ff8dca6b9f061c7589de40337e6e2c24e07bac00f6768aeea7ba4539b"
+
+
+def verify_m233_original_archive_untouched(p2_dir: Path) -> Dict[str, Any]:
+    """Verify frozen `m233_sisc_unlock_results.json` remains byte-identical (`R333-D03`)."""
+    fp = p2_dir / "m233_sisc_unlock_results.json"
+    if not fp.exists():
+        raise RuntimeError(f"Missing frozen M2.3.3 archive: {fp}")
+    actual = hashlib.sha256(fp.read_bytes()).hexdigest()
+    if actual != FROZEN_M233_ORIGINAL_JSON_SHA256:
+        raise RuntimeError(
+            f"Frozen m233_sisc_unlock_results.json modified! Expected {FROZEN_M233_ORIGINAL_JSON_SHA256}, got {actual}"
+        )
+    return {"file": fp.name, "sha256": actual, "verified_untouched": True}
+
+
+def _current_rss_mb() -> float:
+    """Read current Linux process VmRSS in MiB from /proc/self/status (`0.0` if unavailable)."""
+    try:
+        for line in Path("/proc/self/status").read_text(encoding="utf-8").splitlines():
+            if line.startswith("VmRSS:"):
+                return float(line.split()[1]) / 1024.0
+    except OSError:
+        pass
+    return 0.0
+
+
+def _scalar_row_snapshot(res: dict) -> dict:
+    """Extract pure scalar/stage snapshot from a solver result dict, severing all strong
+    references to `LazyRoomPortalPolicy`, `Phase2DecisionCertificate`, `z_guide_full`,
+    and parent `SeamFreePortal3DPlanner` / `SuperLU` room factorizations (`Closes SISC-01`).
+    """
+    st_ms = res.get("stage_ms")
+    return {
+        "lo": float(res["lo"]),
+        "hi": float(res["hi"]),
+        "width": float(res["hi"]) - float(res["lo"]),
+        "certified": bool(res["certified"]),
+        "guarantee_tier": str(res["guarantee_tier"]),
+        "status": str(res["status"]),
+        "query_ms": float(res["query_ms"]),
+        "active_dofs": int(res.get("active_dofs", 0)),
+        "used_defect_closure": bool(res.get("used_defect_closure", True)),
+        "operational_local_lu_rhs_solves": int(
+            res.get("operational_local_lu_rhs_solves", res.get("local_lu_solves", 0))
+        ),
+        "evaluation_materialization_rhs_solves": int(res.get("evaluation_materialization_rhs_solves", 0)),
+        "local_lu_solves": int(res.get("local_lu_solves", 0)),
+        "stage_ms": {str(k): float(v) for k, v in st_ms.items()} if isinstance(st_ms, dict) else None,
+    }
+
 
 QuadNodeKey = Tuple[int, int, int]  # (portal_id, level 0..4, block_index_at_level)
 
@@ -1170,6 +1221,25 @@ def _load_m232_verified_reference_lookup(p2_dir: Path) -> Dict[Tuple[str, int, i
                 lookup[("continual", int(e["seed"]), 47, int(e["operator_epoch"]), int(e["task_index"]))] = (
                     int(e["start_state"]), str(e["goal_signature_sha1"]), float(e["reference_value"]), 0
                 )
+    m233_p = p2_dir / "m233_sisc_unlock_results.json"
+    if m233_p.exists():
+        verify_m233_original_archive_untouched(p2_dir)
+        d233 = _strict_json_loads(m233_p.read_text(encoding="utf-8"))
+        pm233 = d233["per_map_records"]
+        for r in pm233["replay_35cubed"]:
+            sb = int(r["singlelu_factor_bytes"])
+            for e in r["pair_events"]:
+                if e["method_id"] == "M233_SubPortal_PoUQuadtree":
+                    lookup[("static", int(e["seed"]), 35, 0, int(e["task_index"]))] = (
+                        int(e["start_state"]), str(e["goal_signature_sha1"]), float(e["reference_value"]), sb
+                    )
+        for r in pm233["untouched_confirm_47cubed"]:
+            sb = int(r["singlelu_factor_bytes"])
+            for e in r["pair_events"]:
+                if e["method_id"] == "M233_SubPortal_PoUQuadtree":
+                    lookup[("static", int(e["seed"]), 47, 0, int(e["task_index"]))] = (
+                        int(e["start_state"]), str(e["goal_signature_sha1"]), float(e["reference_value"]), sb
+                    )
     return lookup
 
 
@@ -1208,7 +1278,10 @@ def _run_static_pair_single_map(
         cache_raw = {}
         for rk, c_mode in enumerate(cache_order):
             gc.collect()
+            rss_before = _current_rss_mb()
             pl_c = SubPortalPoUQuadtree3DPlanner(spec, gn, free_3d, free_nodes, pts_f, A_csr, eps_tol=0.25, use_portal_cache=True)
+            wref_c_base = weakref.ref(pl_c.base)
+            wref_c_pl = weakref.ref(pl_c)
             init_ms = pl_c.offline_init_ms
             raw_rows = []
             guides_c: Dict[int, np.ndarray] = {}
@@ -1222,11 +1295,16 @@ def _run_static_pair_single_map(
                         pl_c.node_cache.clear()
                 rr = pl_c.solve_unseen_goal(s_f, gm_k, phi_goal=0.0, materialize_full_z_sub=(t_i < n_pol_c))
                 if t_i < n_pol_c and rr["z_guide_full"] is not None:
-                    guides_c[t_i] = rr["z_guide_full"]
-                raw_rows.append(rr)
+                    guides_c[t_i] = np.array(rr["z_guide_full"], dtype=float, copy=True)
+                raw_rows.append(_scalar_row_snapshot(rr))
+                del rr
             mem_led = pl_c.factor_plus_response_cache_bytes()
+            rss_peak_arm = _current_rss_mb()
             del pl_c
             gc.collect()
+            if wref_c_base() is not None or wref_c_pl() is not None:
+                raise RuntimeError(f"SISC-01 isolation violation: cache arm {c_mode} retained planner/LU base!")
+            rss_after = _current_rss_mb()
             q_arr = [x["query_ms"] for x in raw_rows]
             cache_raw[c_mode] = {
                 "exec_rank": rk,
@@ -1240,6 +1318,10 @@ def _run_static_pair_single_map(
                 "total_evaluation_materialization_rhs_solves": int(sum(x["evaluation_materialization_rhs_solves"] for x in raw_rows)),
                 "total_local_lu_solves": int(sum(x["local_lu_solves"] for x in raw_rows)),
                 "factor_plus_response_cache_bytes": mem_led,
+                "rss_mb_before_arm": rss_before,
+                "rss_mb_end_of_arm_before_del": rss_peak_arm,
+                "rss_mb_after_arm_gc": rss_after,
+                "prior_base_gc_freed": True,
                 "_raw_rows": raw_rows,
                 "_guides": guides_c,
             }
@@ -1251,25 +1333,32 @@ def _run_static_pair_single_map(
 
     for rk, arm_nm in enumerate(pair_order):
         gc.collect()
+        rss_before = _current_rss_mb()
         if arm_nm == "M233_SubPortal_PoUQuadtree":
             pl_p = SubPortalPoUQuadtree3DPlanner(spec, gn, free_3d, free_nodes, pts_f, A_csr, eps_tol=0.25, use_portal_cache=True)
+            wref_base = weakref.ref(pl_p.base)
+            wref_pl = weakref.ref(pl_p)
             init_ms = pl_p.offline_init_ms
             raw_rows = []
             guides_p: Dict[int, np.ndarray] = {}
             for t_i, (s_f, gm_k) in enumerate(tasks):
                 rr = pl_p.solve_unseen_goal(s_f, gm_k, phi_goal=0.0, materialize_full_z_sub=(t_i < n_pol))
                 if t_i < n_pol and rr["z_guide_full"] is not None:
-                    guides_p[t_i] = rr["z_guide_full"]
-                raw_rows.append(rr)
+                    guides_p[t_i] = np.array(rr["z_guide_full"], dtype=float, copy=True)
+                raw_rows.append(_scalar_row_snapshot(rr))
+                del rr
             mem_led = pl_p.factor_plus_response_cache_bytes()
             stage_sum_ms = {
                 sk: float(sum(x["stage_ms"][sk] for x in raw_rows))
                 for sk in ("goal_ring_and_readout_ms", "cache_miss_lu_ms", "howard_and_selection_ms", "defect_krylov_ms", "policy_prime_ms")
             }
+            rss_peak_arm = _current_rss_mb()
             del pl_p
             gc.collect()
         else:
             pl_mf = MatrixFreeExactSchurKrylov3DPlanner(spec, gn, free_3d, free_nodes, pts_f, A_csr, eps_tol=0.25)
+            wref_base = weakref.ref(pl_mf.base)
+            wref_pl = weakref.ref(pl_mf)
             init_ms = pl_mf.offline_init_ms
             raw_rows = []
             guides_p = {}
@@ -1277,16 +1366,22 @@ def _run_static_pair_single_map(
                 rr = pl_mf.solve_unseen_goal(s_f, gm_k, phi_goal=0.0)
                 if t_i < n_pol and rr["policy"] is not None:
                     s_m0 = pl_mf.base.local_lu_solve_calls
-                    guides_p[t_i] = rr["policy"].materialize_full_grid_unit()
+                    guides_p[t_i] = np.array(rr["policy"].materialize_full_grid_unit(), dtype=float, copy=True)
                     rr["evaluation_materialization_rhs_solves"] = int(pl_mf.base.local_lu_solve_calls - s_m0)
                     rr["local_lu_solves"] = int(rr["operational_local_lu_rhs_solves"] + rr["evaluation_materialization_rhs_solves"])
                 rr["active_dofs"] = int(pl_mf.base.n_g)
                 rr["used_defect_closure"] = True
-                raw_rows.append(rr)
+                raw_rows.append(_scalar_row_snapshot(rr))
+                del rr
             mem_led = None
             stage_sum_ms = None
+            rss_peak_arm = _current_rss_mb()
             del pl_mf
             gc.collect()
+
+        if wref_base() is not None or wref_pl() is not None:
+            raise RuntimeError(f"SISC-01 isolation violation: pair arm {arm_nm} retained planner/LU base!")
+        rss_after = _current_rss_mb()
 
         q_arr = [x["query_ms"] for x in raw_rows]
         pair_raw[arm_nm] = {
@@ -1304,6 +1399,10 @@ def _run_static_pair_single_map(
             "total_local_lu_solves": int(sum(x["local_lu_solves"] for x in raw_rows)),
             "stage_sum_ms": stage_sum_ms,
             "factor_plus_response_cache_bytes": mem_led,
+            "rss_mb_before_arm": rss_before,
+            "rss_mb_end_of_arm_before_del": rss_peak_arm,
+            "rss_mb_after_arm_gc": rss_after,
+            "prior_base_gc_freed": True,
             "_raw_rows": raw_rows,
             "_guides": guides_p,
         }
@@ -1467,12 +1566,15 @@ def _run_continual_47_sisc_single_map(
 
     for rk, arm_nm in enumerate(pair_order):
         gc.collect()
+        rss_before = _current_rss_mb()
         if arm_nm == "M233_SubPortal_PoUQuadtree":
             pl_obj: Any = SubPortalPoUQuadtree3DPlanner(spec, gn, free_3d, free_nodes, pts_f, epoch_ops[0][1], eps_tol=0.25, use_portal_cache=True)
             init_ms = pl_obj.offline_init_ms
         else:
             pl_obj = MatrixFreeExactSchurKrylov3DPlanner(spec, gn, free_3d, free_nodes, pts_f, epoch_ops[0][1], eps_tol=0.25)
             init_ms = pl_obj.offline_init_ms
+        wref_base = weakref.ref(pl_obj.base)
+        wref_pl = weakref.ref(pl_obj)
 
         life_ms = op_init_ms + init_ms
         marg_ms = 0.0
@@ -1491,12 +1593,12 @@ def _run_continual_47_sisc_single_map(
                 eval_pol_here = (local_ti == 0)
                 if arm_nm == "M233_SubPortal_PoUQuadtree":
                     rr = pl_obj.solve_unseen_goal(s_f, gm_k, phi_goal=0.0, materialize_full_z_sub=eval_pol_here)
-                    z_pol = rr["z_guide_full"] if eval_pol_here else None
+                    z_pol = np.array(rr["z_guide_full"], dtype=float, copy=True) if (eval_pol_here and rr["z_guide_full"] is not None) else None
                 else:
                     rr = pl_obj.solve_unseen_goal(s_f, gm_k, phi_goal=0.0)
                     if eval_pol_here and rr["policy"] is not None:
                         s_m0 = pl_obj.base.local_lu_solve_calls
-                        z_pol = rr["policy"].materialize_full_grid_unit()
+                        z_pol = np.array(rr["policy"].materialize_full_grid_unit(), dtype=float, copy=True)
                         rr["evaluation_materialization_rhs_solves"] = int(pl_obj.base.local_lu_solve_calls - s_m0)
                         rr["local_lu_solves"] = int(rr["operational_local_lu_rhs_solves"] + rr["evaluation_materialization_rhs_solves"])
                     else:
@@ -1506,17 +1608,25 @@ def _run_continual_47_sisc_single_map(
                 life_ms += rr["query_ms"]
                 if ep_idx > 0:
                     marg_ms += rr["query_ms"]
-                raw_task_rows.append((ep_idx, g_ti, rr, z_pol))
+                raw_task_rows.append((ep_idx, g_ti, _scalar_row_snapshot(rr), z_pol))
                 del rr
 
+        rss_peak_arm = _current_rss_mb()
         del pl_obj
         gc.collect()
+        if wref_base() is not None or wref_pl() is not None:
+            raise RuntimeError(f"SISC-01 isolation violation: continual arm {arm_nm} retained planner/LU base!")
+        rss_after = _current_rss_mb()
         arm_streams[arm_nm] = {
             "exec_rank": rk,
             "lifecycle_incl_rebuild_ms": life_ms,
             "post_init_marginal_incl_rebuild_ms": marg_ms,
             "mean_retained_l1_l4_quadtree_nodes": float(np.mean(retained_higher)) if retained_higher else 0.0,
             "defect_closure_count": int(sum(1 for _, _, rx, _ in raw_task_rows if rx["used_defect_closure"])),
+            "rss_mb_before_arm": rss_before,
+            "rss_mb_end_of_arm_before_del": rss_peak_arm,
+            "rss_mb_after_arm_gc": rss_after,
+            "prior_base_gc_freed": True,
             "_raw_rows": raw_task_rows,
         }
 
@@ -1732,14 +1842,19 @@ def _plot_m233_sisc_summary(
     fig, axes = plt.subplots(2, 2, figsize=(14.4, 9.8), dpi=180)
     cand_nm, base_nm = PAIR2_SISC_ARMS
 
-    # Panel A: Progression from Uniform-Portal `M2.3.2` to Sub-Portal PoU-Quadtree `M2.3.3` (+ Untouched Confirm 64k)
+    is_repl = "clean_isolation" in fig_path.name
+    cf_bar_lbl = "Clean-Isolation Repl. 64000..64011 (n=12)" if is_repl else "Untouched Confirm 64000..64011 (n=12)"
+    cf_cat_lbl = "Static 47^3\n(Repl. 64k n=12)" if is_repl else "Static 47^3\n(Confirm n=12)"
+    cf_mf_lbl = "47^3 MatrixFree (Clean-Isolation Repl. 64k)" if is_repl else "47^3 MatrixFree (Untouched Confirm 64k)"
+
+    # Panel A: Progression from Uniform-Portal `M2.3.2` to Sub-Portal PoU-Quadtree `M2.3.3` (+ 64k Cohort)
     ax = axes[0, 0]
     cats = [
         "Static 35^3\n(Replay 63k)",
         "Static 47^3\n(Replay 63k)",
         "Static 59^3\n(Replay 63k)",
         "Continual 47^3\n(Marg, 63k)",
-        "Static 47^3\n(Confirm n=12)",
+        cf_cat_lbl,
     ]
     old_sav = [
         m232_savings_ref["35"],
@@ -1761,7 +1876,7 @@ def _plot_m233_sisc_summary(
     ax.axhline(20.0, color="#8e44ad", linestyle="--", linewidth=1.6, label="Pre-Declared 20% Saving Gate")
     ax.bar(x[:4] - w / 2, old_sav[:4], width=w, color="#95a5a6", label="Uniform Portal L0..L3 (M2.3.2)")
     ax.bar(x[:-1] + w / 2, new_sav[:-1], width=w, color="#27ae60", label="Sub-Portal PoU-Quadtree L0..L4 (M2.3.3)")
-    ax.bar(x[-1:], new_sav[-1:], width=w * 1.15, color="#16a085", label="Untouched Confirm 64000..64011 (n=12)")
+    ax.bar(x[-1:], new_sav[-1:], width=w * 1.15, color="#16a085", label=cf_bar_lbl)
     for idx_i, sv in enumerate(new_sav):
         xpos = x[idx_i] + (w / 2 if idx_i < 4 else 0.0)
         ax.text(xpos, sv + 1.0, f"+{sv:.1f}%", ha="center", va="bottom", fontsize=7.9, fontweight="bold", color="#1e8449")
@@ -1774,11 +1889,11 @@ def _plot_m233_sisc_summary(
     ax.set_xticklabels(cats, fontsize=8.0)
     ax.set_ylabel("Relative Time Saving vs. MatrixFree (%)")
     ax.set_ylim(-18.0, max(new_sav) + 9.0)
-    ax.set_title("A. Closest-Neighbor Time Saving Unlock (1 Worker, Exact 3 AB / 3 BA)", fontsize=9.5, fontweight="bold")
+    ax.set_title("A. Closest-Neighbor Time Saving Unlock (1 Worker, Exact AB / BA)", fontsize=9.5, fontweight="bold")
     ax.grid(True, axis="y", alpha=0.28)
     ax.legend(fontsize=7.3, loc="lower right")
 
-    # Panel B: Untouched Confirmation Cohort `64000..64005` (`47^3`) & `59^3` Same-Block Cumulative Curves `C(k)`
+    # Panel B: 64k (`47^3`) & `59^3` Same-Block Cumulative Curves `C(k)`
     ax = axes[0, 1]
     ks = np.arange(1, 25)
     c_p_64 = np.mean([r["pair_arms"][cand_nm]["prefix_cumulative_ms"] for r in rows_confirm47], axis=0) / 1000.0
@@ -1787,7 +1902,7 @@ def _plot_m233_sisc_summary(
     c_mf_59 = np.mean([r["pair_arms"][base_nm]["prefix_cumulative_ms"] for r in rows59], axis=0) / 1000.0
     ax.plot(ks, c_mf_59, "--", color="#d35400", linewidth=2.1, label="59^3 MatrixFree (Replay 63k)")
     ax.plot(ks, c_p_59, "-", color="#8e44ad", linewidth=2.3, label=f"59^3 PoU-Quadtree (-{pair59['relative_time_saving_pct']:.1f}%, k*={pair59['observed_cohort_mean_prefix_crossing_through_K24']})")
-    ax.plot(ks, c_mf_64, "--", color="#e67e22", linewidth=2.0, label="47^3 MatrixFree (Untouched Confirm 64k)")
+    ax.plot(ks, c_mf_64, "--", color="#e67e22", linewidth=2.0, label=cf_mf_lbl)
     ax.plot(ks, c_p_64, "-", color="#16a085", linewidth=2.3, label=f"47^3 PoU-Quadtree (-{confirm47['relative_time_saving_pct']:.1f}%, k*={confirm47['observed_cohort_mean_prefix_crossing_through_K24']})")
     ax.set_xlabel("Streaming Unseen Goal Index $k$ (1..24)")
     ax.set_ylabel("Single-Worker Cumulative Planner Time $C(k)$ (s)")
@@ -1868,10 +1983,114 @@ def _plot_m233_sisc_summary(
     plt.close(fig)
 
 
-def run_m233_sisc_campaign(self_test: bool = False) -> dict:
+def verify_zero_cross_arm_retention_probe() -> Dict[str, Any]:
+    """Deterministic `SISC-01` regression gate reproducing `r333_m233_retention_probe.py`:
+    instruments constructor weakrefs across `_run_static_pair_single_map` (3 cache + 2 pair +
+    1 independent reference arm) and verifies `alive_prior_bases == []` at every transition.
+    """
+    global SubPortalPoUQuadtree3DPlanner, MatrixFreeExactSchurKrylov3DPlanner
+    global SingleLUGoalCapacitance3DPlanner, generate_3d_multiroom_world
+
+    orig_p = SubPortalPoUQuadtree3DPlanner
+    orig_b = MatrixFreeExactSchurKrylov3DPlanner
+    orig_s = SingleLUGoalCapacitance3DPlanner
+    orig_w = generate_3d_multiroom_world
+    refs: List[Tuple[str, weakref.ReferenceType[Any]]] = []
+    timeline: List[Dict[str, Any]] = []
+
+    def _snap(label: str) -> None:
+        gc.collect()
+        timeline.append({"stage": label, "alive_prior_bases": [nm for nm, r in refs if r() is not None]})
+
+    class _P(orig_p):  # type: ignore[misc,valid-type]
+        def __init__(self, *a: Any, **kw: Any) -> None:
+            _snap("before_Portal_ctor")
+            super().__init__(*a, **kw)
+            refs.append((f"Portal_{len(refs)}", weakref.ref(self.base)))
+
+    class _B(orig_b):  # type: ignore[misc,valid-type]
+        def __init__(self, *a: Any, **kw: Any) -> None:
+            _snap("before_MatrixFree_ctor")
+            super().__init__(*a, **kw)
+            refs.append((f"MatrixFree_{len(refs)}", weakref.ref(self.base)))
+
+    class _S(orig_s):  # type: ignore[misc,valid-type]
+        def __init__(self, *a: Any, **kw: Any) -> None:
+            _snap("before_independent_reference_ctor")
+            super().__init__(*a, **kw)
+
+    def _tiny_world(**kwargs: Any) -> dict:
+        gn = 17
+        spec = ProblemSpec(dim=3)
+        free = np.ones((gn, gn, gn), dtype=bool)
+        free[8, :, :] = False
+        free[8, 6:11, 6:11] = True
+        nodes = np.flatnonzero(free.ravel())
+        pos = np.full(gn**3, -1, dtype=int)
+        pos[nodes] = np.arange(len(nodes))
+        _, pts, _ = build_grid_points(3, spec.half_width, gn)
+        tasks = []
+        for ti in range(int(kwargs["n_tasks"])):
+            s = int(pos[3 * gn * gn + 8 * gn + 8])
+            g = int(pos[(12 + ti) * gn * gn + 8 * gn + 8])
+            gm = np.zeros(len(nodes), dtype=bool)
+            gm[g] = True
+            tasks.append((s, gm))
+        return {
+            "spec": spec,
+            "free_3d": free,
+            "free_mask": free.ravel(),
+            "free_nodes": nodes,
+            "pts_f": pts[nodes],
+            "tasks": tasks,
+            "q_f": np.full(len(nodes), 0.5, dtype=float),
+            "b_f": np.tile([0.09, 0.13, -0.07], (len(nodes), 1)),
+            "gp_fit_ms": 0.0,
+        }
+
+    try:
+        SubPortalPoUQuadtree3DPlanner = _P  # type: ignore[misc]
+        MatrixFreeExactSchurKrylov3DPlanner = _B  # type: ignore[misc]
+        SingleLUGoalCapacitance3DPlanner = _S  # type: ignore[misc]
+        generate_3d_multiroom_world = _tiny_world  # type: ignore[assignment]
+        res = _run_static_pair_single_map(
+            block_id="sisc01_retention_probe",
+            seed=17,
+            map_idx=0,
+            gn=17,
+            n_tasks=2,
+            n_pol_evals=1,
+            run_cache_ablation=True,
+            ref_lookup=None,
+            force_fresh_singlelu=True,
+        )
+        _snap("after_runner_return")
+    finally:
+        SubPortalPoUQuadtree3DPlanner = orig_p  # type: ignore[misc]
+        MatrixFreeExactSchurKrylov3DPlanner = orig_b  # type: ignore[misc]
+        SingleLUGoalCapacitance3DPlanner = orig_s  # type: ignore[misc]
+        generate_3d_multiroom_world = orig_w  # type: ignore[assignment]
+        gc.collect()
+
+    zero_retained = all(len(step["alive_prior_bases"]) == 0 for step in timeline)
+    all_valid = all(bool(e["value_enclosure_satisfied"]) for e in res["cache_events"] + res["pair_events"])
+    if not (zero_retained and all_valid and len(timeline) == 7):
+        raise RuntimeError(f"SISC-01 zero-retention gate failed: timeline={timeline}, valid={all_valid}")
+    return {
+        "pass": True,
+        "stages_checked": len(timeline),
+        "max_alive_prior_bases": max(len(step["alive_prior_bases"]) for step in timeline),
+        "timeline": timeline,
+    }
+
+
+def run_m233_sisc_campaign(self_test: bool = False, clean_isolation_replication: bool = False) -> dict:
     t_all0 = time.perf_counter()
     p2_dir = Path(__file__).resolve().parent
+    frozen_m233_orig = verify_m233_original_archive_untouched(p2_dir)
+    sisc01_probe = verify_zero_cross_arm_retention_probe()
     contracts_out = run_m233_contract_and_pou_verification()
+    contracts_out["sisc01_zero_cross_arm_retention_probe"] = sisc01_probe
     ref_lookup = _load_m232_verified_reference_lookup(p2_dir)
 
     if self_test:
@@ -1948,7 +2167,7 @@ def run_m233_sisc_campaign(self_test: bool = False) -> dict:
     seeds_confirm = list(range(64000, 64012))
     K_goals = 24
 
-    print("[M2.3.3 Block S1] Running 1-worker Static 35^3 AB/BA Replay (63000..63005, K=24, Fresh SingleLU)...")
+    print("[M2.3.3 Block S1] Running 1-worker Static 35^3 AB/BA Replay (63000..63005, K=24)...")
     rows35 = [
         _run_static_pair_single_map(
             block_id="m233_pair_abba_35cubed",
@@ -1958,8 +2177,8 @@ def run_m233_sisc_campaign(self_test: bool = False) -> dict:
             n_tasks=K_goals,
             n_pol_evals=12,
             run_cache_ablation=False,
-            ref_lookup=None,
-            force_fresh_singlelu=True,
+            ref_lookup=ref_lookup if clean_isolation_replication else None,
+            force_fresh_singlelu=((idx_m == 0) if clean_isolation_replication else True),
         )
         for idx_m, sd in enumerate(seeds_replay)
     ]
@@ -2086,7 +2305,7 @@ def run_m233_sisc_campaign(self_test: bool = False) -> dict:
         f"gate20={cont47_marg['engineering_20pct_time_saving_gate']}, p20={cont47_marg['diagnostic_one_sided_p_for_20pct_saving']:.4g})"
     )
 
-    print("[M2.3.3 Block S5 — UNTOUCHED CONFIRMATION] Running 1-worker Static 47^3 AB/BA on Fresh Seeds 64000..64011 (n=12, K=24, Fresh SingleLU)...")
+    print("[M2.3.3 Block S5] Running 1-worker Static 47^3 AB/BA on Seeds 64000..64011 (n=12, K=24)...")
     rows_confirm47 = [
         _run_static_pair_single_map(
             block_id="m233_confirm_abba_47cubed",
@@ -2096,8 +2315,8 @@ def run_m233_sisc_campaign(self_test: bool = False) -> dict:
             n_tasks=K_goals,
             n_pol_evals=12,
             run_cache_ablation=False,
-            ref_lookup=None,
-            force_fresh_singlelu=True,
+            ref_lookup=ref_lookup if clean_isolation_replication else None,
+            force_fresh_singlelu=((idx_m == 0) if clean_isolation_replication else True),
         )
         for idx_m, sd in enumerate(seeds_confirm)
     ]
@@ -2150,7 +2369,30 @@ def run_m233_sisc_campaign(self_test: bool = False) -> dict:
     fault_report = run_negative_control_fault_injections(all_events, exp_keys, exp_pol_keys)
     faults_rejected = bool(fault_report["ALL_4_FAULT_INJECTIONS_REJECTED"])
 
-    fig_path = p2_dir / "m233_sisc_unlock_summary.png"
+    fig_name = "m233_clean_isolation_summary.png" if clean_isolation_replication else "m233_sisc_unlock_summary.png"
+    out_json_name = (
+        "m233_clean_isolation_replication.json"
+        if clean_isolation_replication
+        else "m233_sisc_unlock_results.json"
+    )
+    out_json = p2_dir / out_json_name
+    if out_json.name == "m233_sisc_unlock_results.json" and out_json.exists():
+        raise RuntimeError(
+            "Refusing to overwrite frozen m233_sisc_unlock_results.json (R333-D03); "
+            "pass --clean-isolation-replication to write m233_clean_isolation_replication.json."
+        )
+
+    if clean_isolation_replication:
+        for s_dict in (pair35_sum, pair35_e2e, pair47_sum, pair47_e2e, pair59_sum, pair59_e2e, cont47_marg, cont47_life):
+            s_dict["cohort_provenance"] = "Protocol_Fixed_Clean_Isolation_Replay_63000_63005 (zero cross-arm retention)"
+        for s_dict in (confirm47_sum, confirm47_e2e):
+            s_dict["block_label"] = s_dict["block_label"].replace("Untouched_Confirmation", "Clean_Isolation_Confirm_Replication")
+            s_dict["cohort_provenance"] = (
+                "Protocol_Fixed_Clean_Isolation_Confirm_Replication_64000_64011 "
+                "(n=12 maps, 6 AB / 6 BA, zero cross-arm retention; re-evaluates M2.3.3 confirmation seeds, not a fresh untouched cohort)"
+            )
+
+    fig_path = p2_dir / fig_name
     _plot_m233_sisc_summary(
         pair35_sum,
         pair47_sum,
@@ -2165,17 +2407,91 @@ def run_m233_sisc_campaign(self_test: bool = False) -> dict:
     )
 
     frozen_10_after = verify_all_10_frozen_jsons(p2_dir)
+    frozen_m233_after = verify_m233_original_archive_untouched(p2_dir)
     verify_phase1_readonly_freeze()
     rt_meta = collect_runtime_metadata()
     rt_meta["actual_parallel_workers"] = 1
 
+    # Compare clean-isolation replication directly against frozen M2.3.3 archive (`339e723f...`)
+    orig_m233_data = _strict_json_loads((p2_dir / "m233_sisc_unlock_results.json").read_text(encoding="utf-8"))
+    orig_sisc = orig_m233_data["sisc_head_to_head_summaries"]
+    cur_sisc = {
+        "replay_35cubed_planner_only": pair35_sum,
+        "replay_35cubed_end_to_end": pair35_e2e,
+        "replay_47cubed_planner_only": pair47_sum,
+        "replay_47cubed_end_to_end": pair47_e2e,
+        "replay_59cubed_planner_only": pair59_sum,
+        "replay_59cubed_end_to_end": pair59_e2e,
+        "continual_47cubed_marginal": cont47_marg,
+        "continual_47cubed_lifecycle": cont47_life,
+        "continual_47cubed_mean_retained_l1_l4_nodes": float(
+            np.mean([r["arms"]["M233_SubPortal_PoUQuadtree"]["mean_retained_l1_l4_quadtree_nodes"] for r in rows_cont])
+        ),
+        "confirm_64000_64011_47cubed_planner_only": confirm47_sum,
+        "confirm_64000_64011_47cubed_end_to_end": confirm47_e2e,
+    }
+    comparison_vs_orig = {}
+    for k_orig, k_cur in (
+        ("untouched_confirm_64000_64011_47cubed_planner_only", "confirm_64000_64011_47cubed_planner_only"),
+        ("replay_59cubed_planner_only", "replay_59cubed_planner_only"),
+        ("replay_47cubed_planner_only", "replay_47cubed_planner_only"),
+        ("replay_35cubed_planner_only", "replay_35cubed_planner_only"),
+        ("continual_47cubed_marginal", "continual_47cubed_marginal"),
+        ("continual_47cubed_lifecycle", "continual_47cubed_lifecycle"),
+    ):
+        o_b = orig_sisc[k_orig]
+        c_b = cur_sisc[k_cur]
+        comparison_vs_orig[k_cur] = {
+            "frozen_m233_saving_pct": float(o_b["relative_time_saving_pct"]),
+            "clean_isolation_saving_pct": float(c_b["relative_time_saving_pct"]),
+            "saving_pct_delta_clean_minus_frozen": float(c_b["relative_time_saving_pct"] - o_b["relative_time_saving_pct"]),
+            "frozen_m233_pou_mean_ms": float(o_b["pou_quadtree_mean_ms"]),
+            "clean_isolation_pou_mean_ms": float(c_b["pou_quadtree_mean_ms"]),
+            "frozen_m233_mf_mean_ms": float(o_b["matrixfree_mean_ms"]),
+            "clean_isolation_mf_mean_ms": float(c_b["matrixfree_mean_ms"]),
+            "clean_isolation_20pct_gate": str(c_b["engineering_20pct_time_saving_gate"]),
+            "clean_isolation_p_20pct": float(c_b["diagnostic_one_sided_p_for_20pct_saving"]),
+            "clean_isolation_p_two_sided": float(c_b["paired_equal_time_diff_pou_minus_matrixfree_ms"]["p_two_sided"]),
+        }
+
+    rss_telemetry_summary = {}
+    for lbl, rlist, akey in (
+        ("replay_35cubed", rows35, "pair_arms"),
+        ("replay_47cubed", rows47, "pair_arms"),
+        ("replay_59cubed", rows59, "pair_arms"),
+        ("continual_47cubed", rows_cont, "arms"),
+        ("confirm_47cubed", rows_confirm47, "pair_arms"),
+    ):
+        rss_telemetry_summary[lbl] = {
+            arm_nm: {
+                "mean_rss_mb_before_arm": float(np.mean([r[akey][arm_nm]["rss_mb_before_arm"] for r in rlist])),
+                "max_rss_mb_end_of_arm": float(np.max([r[akey][arm_nm]["rss_mb_end_of_arm_before_del"] for r in rlist])),
+                "mean_rss_mb_after_arm_gc": float(np.mean([r[akey][arm_nm]["rss_mb_after_arm_gc"] for r in rlist])),
+                "all_prior_bases_gc_freed": bool(all(r[akey][arm_nm]["prior_base_gc_freed"] for r in rlist)),
+            }
+            for arm_nm in PAIR2_SISC_ARMS
+        }
+
     payload = _sanitize_for_strict_json({
-        "milestone": "M2.3.3_SISC_SubPortal_PoU_Quadtree_Unlock_and_Untouched_Confirmation",
+        "milestone": (
+            "M2.3.3_Protocol_Fixed_Clean_Isolation_Replication_SISC01_Closure"
+            if clean_isolation_replication
+            else "M2.3.3_SISC_SubPortal_PoU_Quadtree_Unlock_and_Untouched_Confirmation"
+        ),
+        "protocol_status": (
+            "protocol_fixed_clean_isolation_replication_zero_cross_arm_retention"
+            if clean_isolation_replication
+            else "original_campaign"
+        ),
         "elapsed_wall_s": float(time.perf_counter() - t_all0),
         "locked_hyperparameters": LOCKED_M233_HYPERPARAMS,
         "runtime_metadata": rt_meta,
         "phase2_manifest": compute_phase2_manifest(),
         "prior_10_frozen_artifacts_verified": frozen_10_after,
+        "frozen_m233_original_archive_verified": frozen_m233_after,
+        "sisc01_zero_cross_arm_retention_probe": sisc01_probe,
+        "rss_telemetry_summary_mb": rss_telemetry_summary,
+        "comparison_vs_frozen_m233_original": comparison_vs_orig,
         "contracts_and_pou_verification": contracts_out,
         "independent_roster_and_zero_slack_audit": {
             "audit_at_zero_slack": audit_zero_slack,
@@ -2183,21 +2499,7 @@ def run_m233_sisc_campaign(self_test: bool = False) -> dict:
             "negative_control_fault_injections": fault_report,
             "all_4_fault_injections_rejected": faults_rejected,
         },
-        "sisc_head_to_head_summaries": {
-            "replay_35cubed_planner_only": pair35_sum,
-            "replay_35cubed_end_to_end": pair35_e2e,
-            "replay_47cubed_planner_only": pair47_sum,
-            "replay_47cubed_end_to_end": pair47_e2e,
-            "replay_59cubed_planner_only": pair59_sum,
-            "replay_59cubed_end_to_end": pair59_e2e,
-            "continual_47cubed_marginal": cont47_marg,
-            "continual_47cubed_lifecycle": cont47_life,
-            "continual_47cubed_mean_retained_l1_l4_nodes": float(
-                np.mean([r["arms"]["M233_SubPortal_PoUQuadtree"]["mean_retained_l1_l4_quadtree_nodes"] for r in rows_cont])
-            ),
-            "untouched_confirm_64000_64011_47cubed_planner_only": confirm47_sum,
-            "untouched_confirm_64000_64011_47cubed_end_to_end": confirm47_e2e,
-        },
+        "sisc_head_to_head_summaries": cur_sisc,
         "cache_causal_ablation_47cubed": cache47_sum,
         "stage_timing_breakdown_ms": stage_breakdown,
         "per_map_records": {
@@ -2205,11 +2507,10 @@ def run_m233_sisc_campaign(self_test: bool = False) -> dict:
             "replay_47cubed": rows47,
             "replay_59cubed": rows59,
             "continual_47cubed": rows_cont,
-            "untouched_confirm_47cubed": rows_confirm47,
+            "confirm_47cubed": rows_confirm47,
         },
     })
 
-    out_json = p2_dir / "m233_sisc_unlock_results.json"
     txt = json.dumps(payload, indent=2, allow_nan=False)
     _ = _strict_json_loads(txt)
     out_json.write_text(txt, encoding="utf-8")
@@ -2220,7 +2521,7 @@ def run_m233_sisc_campaign(self_test: bool = False) -> dict:
     print(
         f"[DONE] Wrote {out_json.name} & {fig_path.name} in {payload['elapsed_wall_s']:.1f}s | "
         f"ZeroSlackPass={audit_zero_slack['ALL_INDEPENDENT_GATES_PASSED']} (2304 events, 792 pol evals) | "
-        f"Faults4/4={faults_rejected} | Frozen10=100% Untouched"
+        f"Faults4/4={faults_rejected} | SISC01_ZeroRetention={sisc01_probe['pass']} | Frozen11=100% Untouched"
     )
     return payload
 
@@ -2229,11 +2530,18 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--self-test", action="store_true")
     parser.add_argument("--contracts-only", action="store_true")
+    parser.add_argument("--clean-isolation-replication", action="store_true")
     args = parser.parse_args()
     if args.contracts_only:
+        probe_out = verify_zero_cross_arm_retention_probe()
         res = run_m233_contract_and_pou_verification()
-        print(f"[M2.3.3 CONTRACTS PASS] {res['ALL_M233_CONTRACTS_PASSED']} in {res['elapsed_ms']:.1f}ms")
+        print(
+            f"[M2.3.3 CONTRACTS PASS] {res['ALL_M233_CONTRACTS_PASSED']} | "
+            f"SISC01_ZeroRetention={probe_out['pass']} (max_alive={probe_out['max_alive_prior_bases']}) in {res['elapsed_ms']:.1f}ms"
+        )
     elif args.self_test:
         run_m233_sisc_campaign(self_test=True)
+    elif args.clean_isolation_replication:
+        run_m233_sisc_campaign(self_test=False, clean_isolation_replication=True)
     else:
-        run_m233_sisc_campaign(self_test=False)
+        run_m233_sisc_campaign(self_test=False, clean_isolation_replication=False)

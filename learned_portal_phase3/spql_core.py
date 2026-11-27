@@ -119,21 +119,21 @@ class UnknownDiscreteKLEnv:
         np.add.at(kl_row, r_nz, kl_vals)
         c_step = np.where(valid_row, self.q_true[ext] + self.lam * np.maximum(kl_row, 0.0), float("inf"))
 
-        # Reachability / properness check from `s0`
-        A_pi = sp.eye(self.n_states, format="csr") - sp.csr_matrix(
-            (pi_nz, (ext[r_nz], c_nz)), shape=(self.n_states, self.n_states)
+        # Exact positive-support reachability / properness check from `s0` (`Closes P3-E07`: zero arbitrary 1e-11 cutoff)
+        adj_T = sp.csr_matrix(
+            (np.ones(len(pi_nz), dtype=float), (c_nz, ext[r_nz])),
+            shape=(self.n_states, self.n_states),
         )
-        # Backward BFS from goal on transpose of `Pi` (requiring non-negligible transition probability > 1e-11)
-        sig_mask = pi_nz > 1e-11
-        adj_T = sp.csr_matrix((np.ones(int(np.sum(sig_mask))), (c_nz[sig_mask], ext[r_nz[sig_mask]])), shape=(self.n_states, self.n_states))
         dist_to_g = shortest_path(adj_T, directed=True, unweighted=True, indices=np.flatnonzero(gm))
         can_reach = np.min(dist_to_g, axis=0) < np.inf if dist_to_g.ndim == 2 else (dist_to_g < np.inf)
         if not bool(can_reach[s0]):
             return float("inf")
 
+        Pi_pos_csr = sp.csr_matrix((pi_nz, (r_nz, c_nz)), shape=Pi_ext_csr.shape)
         bad = ~can_reach
         while np.any(bad):
-            leak = (Pi_ext_csr[:, bad].sum(axis=1).A1 > 1e-12) & can_reach[ext]
+            Pi_bad = Pi_pos_csr[:, bad]
+            leak = (np.diff(Pi_bad.indptr) > 0) & can_reach[ext]
             if not np.any(leak):
                 break
             can_reach[ext[leak]] = False
@@ -141,12 +141,38 @@ class UnknownDiscreteKLEnv:
                 return float("inf")
             bad = ~can_reach
 
-        prop_ext_mask = can_reach[ext] & valid_row
+        # Restrict linear evaluation to the exact Markov support reachable forward from `s0` (states never
+        # visited from `s0` cannot affect `J^{mu}(s0)` and must not pollute condition number!)
+        adj_fwd = sp.csr_matrix(
+            (np.ones(len(pi_nz), dtype=float), (ext[r_nz], c_nz)),
+            shape=(self.n_states, self.n_states),
+        )
+        fwd_from_s0 = np.isfinite(shortest_path(adj_fwd, directed=True, unweighted=True, indices=s0))
+
+        prop_ext_mask = fwd_from_s0[ext] & can_reach[ext] & valid_row
         if not bool(prop_ext_mask[s_pos]):
             return float("inf")
+        # Verify closedness: no state reachable from `s0` may transition outside `(prop_ext_mask cup gm)`
+        allowed_dest = np.zeros(self.n_states, dtype=bool)
+        allowed_dest[gm] = True
+        allowed_dest[ext[prop_ext_mask]] = True
+        if Pi_pos_csr[prop_ext_mask, :][:, ~allowed_dest].nnz > 0:
+            return float("inf")
+
         ext_p = ext[prop_ext_mask]
-        Pi_p = Pi_ext_csr[prop_ext_mask, :][:, ext_p]
-        Sys = (sp.eye(len(ext_p), format="csr") - Pi_p).tocsc()
+        # Form `(I - Pi_p)` WITHOUT catastrophic `1.0 - pi_{ii}` cancellation in IEEE-754 float64:
+        # For any row-stochastic Markov kernel closed on `ext_p cup gm`,
+        # `1 - pi_{ii} == sum_{j in ext_p \ {i}} pi_{ij} + sum_{g in gm} pi_{ig} > 0`!
+        Pi_p_off = Pi_pos_csr[prop_ext_mask, :][:, ext_p].tolil()
+        Pi_p_off.setdiag(0.0)
+        Pi_p_off_csr = Pi_p_off.tocsr()
+        Pi_p_off_csr.eliminate_zeros()
+        exit_to_ext = np.asarray(Pi_p_off_csr.sum(axis=1)).ravel()
+        exit_to_goal = np.asarray(Pi_pos_csr[prop_ext_mask, :][:, gm].sum(axis=1)).ravel()
+        diag_m = exit_to_ext + exit_to_goal
+        if np.any(diag_m <= 0.0):
+            return float("inf")
+        Sys = (sp.diags(diag_m, format="csr") - Pi_p_off_csr).tocsc()
         rhs = c_step[prop_ext_mask]
         try:
             with warnings.catch_warnings():
@@ -154,9 +180,12 @@ class UnknownDiscreteKLEnv:
                 v0 = spla.spsolve(Sys, rhs)
         except Exception:
             return float("inf")
-        if (not np.all(np.isfinite(v0))) or float(np.max(np.abs(rhs - (Sys @ v0)))) > 1e-6 * max(1.0, float(np.max(np.abs(rhs)))):
+        if (not np.all(np.isfinite(v0))) or np.any(v0 < -1e-9):
             return float("inf")
-        return float(phi_goal) + float(v0[int(np.searchsorted(ext_p, s0))])
+        comp_denom = np.maximum(np.maximum(np.abs(rhs), diag_m * np.abs(v0)), 1e-300)
+        if float(np.max(np.abs(rhs - (Sys @ v0)) / comp_denom)) > 1e-6:
+            return float("inf")
+        return float(phi_goal) + float(max(0.0, float(v0[int(np.searchsorted(ext_p, s0))])))
 
 
 def build_rotated_multiroom_2d_env(
@@ -476,6 +505,28 @@ class EmpiricalTrajectoryDataset:
     lam: float
 
 
+def sample_unbiased_bounded_cost(
+    q_val: float,
+    q_min: float,
+    q_max: float,
+    noise_std: float,
+    rng: np.random.Generator,
+) -> float:
+    """Exact mean-preserving bounded sensor observation on `[q_min, q_max]` (`Closes P3-P0-03`):
+    Draws a Bernoulli-mixture observation `q_tilde in [q_min, q_max]` satisfying
+    `E[q_tilde | q_val] == q_val` IDENTICALLY everywhere on `[q_min, q_max]`, including boundaries
+    `q_val == q_min` and `q_val == q_max` (eliminating clipped-Gaussian boundary bias).
+    """
+    qv = float(np.clip(q_val, q_min, q_max))
+    rng_span = float(q_max - q_min)
+    if noise_std <= 0.0 or rng_span <= 0.0:
+        return qv
+    u = float(np.clip((qv - q_min) / rng_span, 0.0, 1.0))
+    eta = min(1.0, (2.0 * float(noise_std)) / rng_span)
+    bern = 1.0 if float(rng.random()) < u else 0.0
+    return float((1.0 - eta) * qv + eta * (q_min + rng_span * bern))
+
+
 def collect_exploration_trajectories(
     env: UnknownDiscreteKLEnv,
     total_steps: int,
@@ -527,7 +578,7 @@ def collect_exploration_trajectories(
             s = _sample_episode_start()
 
         v_cnt[s] += 1
-        q_obs = float(np.clip(env.q_true[s] + rng.normal(0.0, env.cost_noise_std), env.q_min, env.q_max))
+        q_obs = sample_unbiased_bounded_cost(env.q_true[s], env.q_min, env.q_max, env.cost_noise_std, rng)
         c_sum[s] += q_obs
 
         cols_s = row_cols[s]
@@ -617,7 +668,7 @@ def collect_portal_directed_active_trajectories(
         v_i = np.fromiter(edge_dict.values(), dtype=float, count=len(edge_dict))
         T_cur = sp.csr_matrix((v_i, (r_i, c_i)), shape=(N, N))
         ds_cur = EmpiricalTrajectoryDataset(N, warm_steps, v_cnt.copy(), T_cur, c_sum.copy(), env.q_min, env.q_max, env.lam)
-        pac_cur = build_pac_mmatrix_pair(ds_cur, delta=0.05, max_degree_bound=8, n_peeling_epochs=3)
+        pac_cur = build_pac_mmatrix_pair(ds_cur, delta=0.05, max_degree_bound=8)
         dec_cur = discover_spectral_portals_from_trajectories(T_cur, max_rooms=10, min_room_size=max(20, N // 35))
 
         # Build candidate target sets: discovered bottleneck portals + high-rho rooms
@@ -683,7 +734,7 @@ def collect_portal_directed_active_trajectories(
 
                 # Uncontrolled exploratory step (`u_t = 0`, exact draw from `P_true[s, :]`!)
                 v_cnt[s] += 1
-                q_obs = float(np.clip(env.q_true[s] + rng.normal(0.0, env.cost_noise_std), env.q_min, env.q_max))
+                q_obs = sample_unbiased_bounded_cost(env.q_true[s], env.q_min, env.q_max, env.cost_noise_std, rng)
                 c_sum[s] += q_obs
                 cols_s = row_cols[s]
                 idx_k = min(int(np.searchsorted(row_cdfs[s], float(rng.random()), side="right")), len(cols_s) - 1)
@@ -725,39 +776,52 @@ class DualPACMMatrixPair:
 def build_pac_mmatrix_pair(
     dataset: EmpiricalTrajectoryDataset,
     delta: float = 0.05,
-    max_degree_bound: Optional[int] = 8,
-    n_peeling_epochs: int = 2,
+    max_degree_bound: Optional[int] = None,
+    n_peeling_epochs: int = 1,
 ) -> DualPACMMatrixPair:
     """Constructs the goal-independent pessimistic/optimistic M-matrix pair `(A_pes, A_opt)` on a single
-    time/epoch-uniform Clopper-Pearson + Hoeffding concentration event `E_{1-delta}`:
-      - `A_pes = I - gamma_lo * P_lo`: uses exact Clopper-Pearson Binomial lower quantiles
-        `p_lo_{ij} = Beta^{-1}(delta_edge; k_{ij}, n(i) - k_{ij} + 1) > 0` for `k_{ij} >= 1` (`0` for `k_{ij} == 0`),
-        guaranteeing `J^{mu_hat}_{true}(s_0; G) <= U_{n, C}(s_0; G)` simultaneously across ALL unseen goals `G`.
-      - `A_opt = I - gamma_hi * P_lo` with exploration source `b_opt_i = gamma_hi_i * rho_i` where
-        `rho_i = 1 - sum_j p_lo_{ij} in [0, 1]`: supported EXCLUSIVELY on observed edges `E_hat` (exact same
-        off-diagonal sparsity as `A_pes`!), satisfying `(A_opt 1 - b_opt)_i = 1 - gamma_hi_i >= 1 - exp(-q_min/lam) > 0`
-        so `z_opt(i) <= gamma_hi_i < 1` (`L_{n, C}(s_0; G) >= phi_goal + q_min > 0` strictly positive for ALL `n >= 0`!),
-        and guaranteeing `L_{n, C}(s_0; G) <= V^*_{true}(s_0; G)` simultaneously across ALL unseen goals `G`
-        even in the presence of unobserved cross-room shortcut edges!
+    **time-uniform predictable-sampling** Clopper-Pearson + Hoeffding confidence sequence `E_{1-delta}`
+    (`Closes P3-P0-02`):
+      - Under the canonical latent transition/cost stack `(S_{i,m}, Q_{i,m})_{m >= 1}`, union-bounding over
+        ALL states `i = 1..N`, ALL true outgoing support edges `|supp(P^*_i)| <= d_max`, and ALL possible
+        visit counts `m = 1, 2, ...` via `sum_{m=1}^inf 1/(m(m+1)) = 1` sets:
+            `alpha_edge(m) = delta / (2 * N * d_max * m * (m + 1))`,
+            `alpha_cost(m) = delta / (2 * N * m * (m + 1))`.
+        This holds simultaneously across ALL `m >= 1`, hence for ANY predictable adaptive exploration or
+        stopping strategy `N_T(i)` without requiring fixed-time row counts or finite epoch caps (`n_peeling_epochs`
+        is retained only as a deprecated no-op signature argument for backward compatibility).
+      - Uses **zero upward flooring** (`np.clip(sp_beta.ppf(...), 0.0, 1.0)`), so `p_lo_{ij} <= P^*_{ij}`
+        holds even for arbitrarily rare transitions `P^*_{ij} < 1e-15`.
+      - Validates `observed_out_degree <= d_max` explicitly (`default max_degree_bound=None -> d_max = N`).
     """
-    N = dataset.n_states
-    deg_ub = int(max_degree_bound) if max_degree_bound is not None else N
-    ep_ub = float(max(1, int(n_peeling_epochs)))
-    delta_edge = float(delta) / float(2.0 * N * max(1, deg_ub) * ep_ub)
-    delta_cost = float(delta) / float(2.0 * N * ep_ub)
-
+    N = int(dataset.n_states)
+    if not (0.0 < float(delta) < 1.0):
+        raise ValueError(f"Confidence parameter delta must lie in (0, 1), got {delta}")
     T_csr = dataset.trans_counts.tocsr()
-    v_cnt = dataset.visit_counts
+    obs_max_deg = int(np.max(np.diff(T_csr.indptr))) if N > 0 else 0
+    deg_ub = int(max_degree_bound) if max_degree_bound is not None else max(1, N)
+    if deg_ub < 1 or obs_max_deg > deg_ub:
+        raise ValueError(
+            f"Observed row support degree {obs_max_deg} exceeds declared max_degree_bound={deg_ub}; "
+            "pass a valid structural out-degree bound d_max or None (uses N)."
+        )
+
+    v_cnt = np.asarray(dataset.visit_counts, dtype=np.int64)
+    row_sum_T = np.asarray(T_csr.sum(axis=1)).ravel()
+    if np.any(np.round(row_sum_T).astype(np.int64) > v_cnt):
+        raise ValueError("Invalid EmpiricalTrajectoryDataset: transition row sum exceeds visit_counts.")
+
     row_of_nnz = np.repeat(np.arange(N, dtype=np.int64), np.diff(T_csr.indptr))
     k_nnz = T_csr.data
     n_of_nnz = v_cnt[row_of_nnz].astype(float)
 
-    pos = k_nnz >= 1.0
+    pos = (k_nnz >= 1.0) & (n_of_nnz >= 1.0)
     p_lo_data = np.zeros_like(k_nnz, dtype=float)
     if np.any(pos):
         k_p = k_nnz[pos]
         n_p = n_of_nnz[pos]
-        p_lo_data[pos] = np.clip(sp_beta.ppf(delta_edge, k_p, n_p - k_p + 1.0), 1e-15, 1.0)
+        alpha_edge_p = float(delta) / (2.0 * float(N) * float(deg_ub) * n_p * (n_p + 1.0))
+        p_lo_data[pos] = np.clip(sp_beta.ppf(alpha_edge_p, k_p, n_p - k_p + 1.0), 0.0, 1.0)
 
     P_lo = sp.csr_matrix((p_lo_data, T_csr.indices.copy(), T_csr.indptr.copy()), shape=(N, N))
     p_lo_row_sum = np.clip(np.asarray(P_lo.sum(axis=1)).ravel(), 0.0, 1.0)
@@ -765,10 +829,12 @@ def build_pac_mmatrix_pair(
 
     vis = v_cnt > 0
     q_range = max(0.0, float(dataset.q_max - dataset.q_min))
-    q_hat = np.where(vis, dataset.cost_sums / np.maximum(v_cnt, 1), 0.5 * (dataset.q_min + dataset.q_max))
+    m_float = np.maximum(v_cnt, 1).astype(float)
+    alpha_cost_vec = float(delta) / (2.0 * float(N) * m_float * (m_float + 1.0))
+    q_hat = np.where(vis, dataset.cost_sums / m_float, 0.5 * (dataset.q_min + dataset.q_max))
     eps_q = np.where(
         vis,
-        q_range * np.sqrt(np.log(2.0 / delta_cost) / (2.0 * np.maximum(v_cnt, 1).astype(float))),
+        q_range * np.sqrt(np.log(2.0 / alpha_cost_vec) / (2.0 * m_float)),
         q_range,
     )
     q_lo = np.clip(q_hat - eps_q, dataset.q_min, dataset.q_max)
@@ -877,11 +943,13 @@ def _fiedler_sweep_bisect(W_sym: sp.csr_matrix, min_side: int = 25) -> Optional[
 def _recursive_fiedler_portal_tree(
     p_nodes_loc: np.ndarray,
     W_portal: sp.csr_matrix,
-    max_depth: int = 4,
+    max_depth: Optional[int] = None,
 ) -> Tuple[Dict[Tuple[int, int], np.ndarray], Dict[Tuple[int, int], List[Tuple[int, int]]]]:
-    """Builds a strictly nested binary Fiedler partition tree (`L0 -> L1 -> L2 -> L3 -> L4` singletons)
-    on an arbitrary unstructured portal subgraph `p_nodes_loc` using ONLY portal edge weights `W_portal`!
-    Every internal split produces `<= 2` disjoint children (`enabling 50% PoU LU solve conservation!`).
+    """Builds a **strictly binary** nested Fiedler partition tree (`Closes P3-E06`) on an arbitrary
+    unstructured portal subgraph `p_nodes_loc` using ONLY portal edge weights `W_portal`!
+    Bisects recursively to unrestricted depth until EVERY leaf is an exact 1-node singleton, so
+    every internal node has **strictly `2` disjoint non-empty children** (`exact 50.0% PoU child-column
+    LU solve conservation for any portal size >= 2!`).
     """
     blocks: Dict[Tuple[int, int], np.ndarray] = {(0, 0): p_nodes_loc.copy()}
     children: Dict[Tuple[int, int], List[Tuple[int, int]]] = {}
@@ -894,7 +962,7 @@ def _recursive_fiedler_portal_tree(
         W_sub = W_portal[sub_loc_idx, :][:, sub_loc_idx]
         n_cc, lbl = connected_components(W_sub > 0, directed=False)
         if n_cc > 1:
-            # Group connected components into two balanced halves
+            # Group connected components into two balanced non-empty halves
             counts = [(int(np.sum(lbl == c)), c) for c in range(n_cc)]
             counts.sort(reverse=True)
             g_a, g_b = [], []
@@ -920,42 +988,33 @@ def _recursive_fiedler_portal_tree(
             fv = vecs[:, 1]
         if fv[0] < 0.0:
             fv = -fv
-        order = np.argsort(fv)
+        order = np.argsort(fv, kind="mergesort")
         mid = len(order) // 2
         return [np.sort(sub_loc_idx[order[:mid]]), np.sort(sub_loc_idx[order[mid:]])]
 
     cur_lv_blocks = [np.arange(len(p_nodes_loc), dtype=np.int64)]
-    for lv in range(max_depth):
+    lv = 0
+    hard_cap = int(max_depth) if max_depth is not None else (max(1, int(np.ceil(np.log2(max(2, len(p_nodes_loc))))) + 4))
+    while any(len(b_sub) > 1 for b_sub in cur_lv_blocks) and lv < hard_cap:
         nxt_lv_blocks: List[np.ndarray] = []
         for bi, b_sub in enumerate(cur_lv_blocks):
             pkey = (lv, bi)
             if len(b_sub) <= 1:
                 children[pkey] = []
                 continue
-            if lv == max_depth - 1:
-                # Final level `L4` splits all remaining multi-node blocks into exact singletons!
-                ch_keys = []
-                for single_idx in b_sub:
-                    ci = len(nxt_lv_blocks)
-                    nxt_lv_blocks.append(np.array([int(single_idx)], dtype=np.int64))
-                    blocks[(lv + 1, ci)] = p_nodes_loc[nxt_lv_blocks[-1]]
-                    ch_keys.append((lv + 1, ci))
-                children[pkey] = ch_keys
-            else:
-                parts = _bisect_subset(b_sub)
-                if len(parts) <= 1:
-                    children[pkey] = []
-                else:
-                    ch_keys = []
-                    for pt in parts:
-                        ci = len(nxt_lv_blocks)
-                        nxt_lv_blocks.append(pt)
-                        blocks[(lv + 1, ci)] = p_nodes_loc[pt]
-                        ch_keys.append((lv + 1, ci))
-                    children[pkey] = ch_keys
+            parts = _bisect_subset(b_sub)
+            assert len(parts) == 2 and len(parts[0]) >= 1 and len(parts[1]) >= 1
+            ch_keys = []
+            for pt in parts:
+                ci = len(nxt_lv_blocks)
+                nxt_lv_blocks.append(pt)
+                blocks[(lv + 1, ci)] = p_nodes_loc[pt]
+                ch_keys.append((lv + 1, ci))
+            children[pkey] = ch_keys
         cur_lv_blocks = nxt_lv_blocks
+        lv += 1
     for bi in range(len(cur_lv_blocks)):
-        children[(max_depth, bi)] = []
+        children[(lv, bi)] = []
     return blocks, children
 
 
@@ -982,7 +1041,7 @@ def discover_spectral_portals_from_trajectories(
     min_room_size: int = 55,
     conductance_Stop_thresh: float = 0.14,
 ) -> SpectralPortalDecomposition:
-    """Discovers low-conductance clusters ("learned rooms") and minimal vertex separators ("portals")
+    """Discovers low-conductance clusters ("learned rooms") and valid bipartite vertex separators ("portals")
     purely from empirical transition counts `trans_counts` (ZERO coordinates, ZERO wall priors!).
     Guarantees exact vertex separation `(trans_counts + trans_counts.T)[R_c, R_{c'}] == 0` for all `c != c'`.
     """
@@ -1108,7 +1167,7 @@ def discover_spectral_portals_from_trajectories(
     qt_children: Dict[Tuple[int, int, int], List[Tuple[int, int, int]]] = {}
     for pid, p_loc in enumerate(portal_nodes_loc):
         W_p = W_gg_2hop[np.arange(n_g), :][:, np.arange(n_g)]
-        bl_map, ch_map = _recursive_fiedler_portal_tree(p_loc, W_p, max_depth=4)
+        bl_map, ch_map = _recursive_fiedler_portal_tree(p_loc, W_p, max_depth=None)
         for (lv, bi), barr in bl_map.items():
             qt_blocks[(pid, lv, bi)] = barr
         for (lv, bi), chs in ch_map.items():
@@ -1139,8 +1198,9 @@ class _SingleMMatrixPortalChannel:
     """Internal reusable local-Schur + Fiedler-PoU portal solver for a single nonsingular M-matrix `A`
     with optional goal-independent non-negative interior source `b_source >= 0` (`0` for `A_pes`,
     `b_opt_explore` for `A_opt`).
-    Supports **general goals** `G` (including goals intersecting multiple rooms or separator `Gamma`
-    by killing `G cap Gamma` cleanly on the portal system!).
+    Supports **ALL non-empty goals** `G subset S` (`2^N - 1` subsets, including goals intersecting
+    multiple rooms, covering entire rooms, or intersecting separator `Gamma`) via exact killed-portal
+    Dirichlet elimination on `E_Gamma = Gamma - G` and straddling-block refinement (`Closes P3-P0-01`).
     """
 
     def __init__(
@@ -1158,6 +1218,7 @@ class _SingleMMatrixPortalChannel:
         self.max_k_neg_roundoff = 0.0
 
         A_gg = A_csr[dec.gamma_nodes, :][:, dec.gamma_nodes].tocsc()
+        self.D_gg_csc = A_gg
         self.D_gg_csr = A_gg.tocsr()
         self.lu_Agg = spla.splu(A_gg)
 
@@ -1185,10 +1246,12 @@ class _SingleMMatrixPortalChannel:
             else:
                 self.h_exp_rooms.append(np.zeros(len(rn), dtype=float))
 
-        # Persistent unclipped Fiedler-tree node cache `(pid, lv, bi) -> (k_raw_col, {room_c: y_col})`
-        self.node_cache: Dict[Tuple[int, int, int], Tuple[np.ndarray, Dict[int, np.ndarray]]] = {}
+        # Persistent unclipped Fiedler-tree node cache:
+        # `(pid, lv, bi) -> (k_raw_unkilled, neg_m_unsmoothed, {room_c: y_col})`
+        self.node_cache: Dict[Tuple[int, int, int], Tuple[np.ndarray, np.ndarray, Dict[int, np.ndarray]]] = {}
         for pid in range(len(dec.portal_nodes_loc)):
             self._solve_keys_direct(pid, [(pid, 0, 0)])
+        self.init_lu_rhs_solves = int(self.local_lu_rhs_solves)
 
     def _solve_keys_direct(self, pid: int, ckeys: Sequence[Tuple[int, int, int]]) -> None:
         m_b = len(ckeys)
@@ -1212,12 +1275,16 @@ class _SingleMMatrixPortalChannel:
         neg_m = max(0.0, float(-np.min(K_raw)))
         self.max_k_neg_roundoff = max(self.max_k_neg_roundoff, neg_m)
         for j, ck in enumerate(ckeys):
-            self.node_cache[ck] = (K_raw[:, j].copy(), {c: y_by_c[c][:, j].copy() for c in dec.portal_rooms[pid]})
+            self.node_cache[ck] = (
+                K_raw[:, j].copy(),
+                NegM_L[:, j].copy(),
+                {c: y_by_c[c][:, j].copy() for c in dec.portal_rooms[pid]},
+            )
 
     def split_parents_pou(self, parent_keys: Sequence[Tuple[int, int, int]]) -> None:
-        """Binary / k-way Fiedler tree Partition-of-Unity split:
-        Solves ONLY `k - 1` children (`1` of `2` for binary Fiedler bisections = **50% LU saving!**)
-        and recovers the last child by exact subtraction from the cached parent!
+        """Strictly binary Fiedler tree Partition-of-Unity split:
+        Solves ONLY `1` of `2` children (`exact 50.0% LU backsolve saving!`) and recovers the
+        second child by linearity on `k_raw`, `neg_m_col`, and `y_by_c`!
         """
         dec = self.dec
         ordered = sorted(set(parent_keys), key=lambda x: (x[1], x[0], x[2]))
@@ -1244,105 +1311,195 @@ class _SingleMMatrixPortalChannel:
                 self._solve_keys_direct(pid, cks)
 
             for pk, sibs, last_ck in derive_list:
-                kp, yp = self.node_cache[pk]
+                kp, nmp, yp = self.node_cache[pk]
                 kr = kp.copy()
+                nmr = nmp.copy()
                 for sb in sibs:
                     kr -= self.node_cache[sb][0]
+                    nmr -= self.node_cache[sb][1]
                 self.max_k_neg_roundoff = max(self.max_k_neg_roundoff, max(0.0, float(-np.min(kr))))
                 yr: Dict[int, np.ndarray] = {}
                 for c in dec.portal_rooms[pk[0]]:
                     yc_r = yp[c].copy()
                     for sb in sibs:
-                        yc_r -= self.node_cache[sb][1][c]
+                        yc_r -= self.node_cache[sb][2][c]
                     yr[c] = yc_r
-                self.node_cache[last_ck] = (kr, yr)
+                self.node_cache[last_ck] = (kr, nmr, yr)
+
+    def build_initial_exterior_cut(self, ctx: dict) -> List[Tuple[int, int, int]]:
+        """Constructs the coarsest Fiedler cut whose active blocks lie **strictly inside** `E_Gamma = Gamma - G`
+        (`splitting only tree nodes that straddle G_Gamma and E_Gamma via PoU`).
+        When `G_Gamma == empty`, returns the exact `L0` whole-portal cut `[(pid, 0, 0) for pid in 0..P-1]`.
+        """
+        dec = self.dec
+        g_gam_mask = ctx["g_gam_mask"]
+        if not ctx["has_portal_goal"]:
+            return [(pid, 0, 0) for pid in range(len(dec.portal_nodes_loc))]
+        out_keys: List[Tuple[int, int, int]] = []
+        queue = [(pid, 0, 0) for pid in range(len(dec.portal_nodes_loc))]
+        while queue:
+            nxt_q: List[Tuple[int, int, int]] = []
+            to_split: List[Tuple[int, int, int]] = []
+            for ck in queue:
+                bl = dec.qt_blocks[ck]
+                in_g_bl = g_gam_mask[bl]
+                if np.all(in_g_bl):
+                    continue  # Purely in G_Gamma: pinned to 1.0, excluded from exterior unknowns
+                if not np.any(in_g_bl):
+                    out_keys.append(ck)  # Purely in E_Gamma!
+                    continue
+                # Straddles both G_Gamma and E_Gamma -> split down binary tree!
+                to_split.append(ck)
+                nxt_q.extend(dec.qt_children[ck])
+            if to_split:
+                self.split_parents_pou(to_split)
+            queue = nxt_q
+        return out_keys
 
     def prepare_goal_context(self, s0: int, gm: np.ndarray) -> dict:
-        """Prepares exact Woodbury goal-ring capacitance across any rooms touched by `gm` (plus any
-        portal goal nodes `gm[gamma_nodes]`, handled cleanly by pinning `W[g_gam] = 1.0`!).
+        """Exact all-goal Dirichlet reduction onto `E_Gamma = Gamma - G` (`Closes P3-P0-01`):
+          - Eliminates all room interiors `X_c = R_c - G` via complete directed incoming ring `R_{G,c}`,
+            handling whole-room goals `R_c <= G` and portal-boundary sources `G_Gamma -> R_c -> E_Gamma` exactly.
+          - Factors the exact killed portal diagonal block `A_{E_Gamma, E_Gamma}` whenever `G_Gamma != empty`.
         """
         dec = self.dec
         gam = dec.gamma_nodes
-        g_gam_mask = gm[gam]
+        g_gam_mask = np.asarray(gm[gam], dtype=bool)
         ext_gam_mask = ~g_gam_mask
+        has_portal_goal = bool(np.any(g_gam_mask))
+        ext_gam_idx = np.flatnonzero(ext_gam_mask).astype(np.int64)
+        lu_Agg_ext = spla.splu(self.D_gg_csc[ext_gam_idx, :][:, ext_gam_idx]) if (has_portal_goal and len(ext_gam_idx) > 0) else None
 
-        # Identify rooms containing interior goal nodes
         goal_rooms: Dict[int, dict] = {}
-        r_gam = self.r_exp_gam_base.copy()
+        full_goal_rooms: set = set()
+        h_room_const: List[np.ndarray] = []
+
+        # Base portal RHS on `0..n_g-1` before room goal / G_Gamma adjustments
+        r_gam = np.zeros(self.n_g, dtype=float)
+        if self.has_source:
+            r_gam += self.b_source[gam]
+
         for c, rn in enumerate(dec.room_nodes):
-            in_g = gm[rn]
-            if not np.any(in_g):
-                continue
-            g_r = np.flatnonzero(in_g).astype(np.int64)
+            in_g = np.asarray(gm[rn], dtype=bool)
             tl_c = dec.room_tl[c]
-            ext_rows = np.concatenate([rn[~in_g], gam[tl_c][~gm[gam[tl_c]]]])
-            if len(ext_rows) == 0:
-                ring_r = g_r
-            else:
-                sub = self.A_csr[ext_rows, :][:, rn[g_r]]
-                ring_r = g_r[np.asarray((sub < 0.0).sum(axis=0)).ravel() > 0]
-            if len(ring_r) == 0:
+            if np.all(in_g):
+                full_goal_rooms.add(c)
+                hc_const = np.ones(len(rn), dtype=float)
+                h_room_const.append(hc_const)
+                r_gam[tl_c] += self.room_NegAgr[c] @ hc_const
                 continue
+
+            g_tl_local = g_gam_mask[tl_c]
+            if has_portal_goal and np.any(g_tl_local):
+                w_g_tl = g_tl_local.astype(float)
+                rhs_u0 = self.b_source[rn] + np.asarray(self.room_Arg[c] @ w_g_tl).ravel()
+                u_c0 = self.hq_lus[c].solve(rhs_u0)
+                self.local_lu_rhs_solves += 1
+            else:
+                u_c0 = self.h_exp_rooms[c].copy()
+
+            if not np.any(in_g):
+                h_room_const.append(u_c0)
+                r_gam[tl_c] += self.room_NegAgr[c] @ u_c0
+                continue
+
+            g_r = np.flatnonzero(in_g).astype(np.int64)
+            ext_rows = np.concatenate([rn[~in_g], gam[tl_c][~g_tl_local]])
+            sub = self.A_csr[ext_rows, :][:, rn[g_r]]
+            ring_r = g_r[np.asarray((sub < 0.0).sum(axis=0)).ravel() > 0]
+            if len(ring_r) == 0:
+                hc_const = u_c0.copy()
+                hc_const[in_g] = 1.0
+                h_room_const.append(hc_const)
+                # Note: since ring_r == empty, A[E_Gamma, G_c] == 0 so setting hc_const[in_g]=1 or u_c0 gives identical NegAgr[ext]!
+                r_gam[tl_c] += self.room_NegAgr[c] @ u_c0
+                continue
+
             RHS_rg = np.zeros((len(rn), len(ring_r)), dtype=float)
             RHS_rg[ring_r, np.arange(len(ring_r))] = 1.0
             U_rg = self.hq_lus[c].solve(RHS_rg)
             self.local_lu_rhs_solves += int(len(ring_r))
             C_inv = np.linalg.inv(U_rg[ring_r, :])
 
-            NegAgr_U = np.zeros((self.n_g, len(ring_r)), dtype=float)
-            NegAgr_U[tl_c, :] = self.room_NegAgr[c] @ U_rg
-            Smooth_U = self.lu_Agg.solve(NegAgr_U)
+            NegAgr_U_local = self.room_NegAgr[c] @ U_rg
+            Smooth_U = None
+            if not has_portal_goal:
+                NegAgr_U_full = np.zeros((self.n_g, len(ring_r)), dtype=float)
+                NegAgr_U_full[tl_c, :] = NegAgr_U_local
+                Smooth_U = self.lu_Agg.solve(NegAgr_U_full)
 
-            rhs_ring_val = np.ones(len(ring_r), dtype=float) - self.h_exp_rooms[c][ring_r]
+            rhs_ring_val = np.ones(len(ring_r), dtype=float) - u_c0[ring_r]
             h_goal_corr = U_rg @ (C_inv @ rhs_ring_val)
-            r_gam[tl_c] += self.room_NegAgr[c] @ h_goal_corr
+            hc_total = u_c0 + h_goal_corr
+            r_gam[tl_c] += self.room_NegAgr[c] @ hc_total
+            hc_store = hc_total.copy()
+            hc_store[in_g] = 1.0
+            h_room_const.append(hc_store)
             goal_rooms[c] = {
                 "in_g": in_g,
                 "ring_r": ring_r,
                 "U_rg": U_rg,
                 "C_inv": C_inv,
+                "NegAgr_U_local": NegAgr_U_local,
                 "Smooth_U": Smooth_U,
-                "h_goal_total": self.h_exp_rooms[c] + h_goal_corr,
             }
 
-        # Direct coupling from portal goal nodes `g_gam_mask` to `ext_gam_mask` inside `D_gg`
-        if np.any(g_gam_mask):
-            r_gam[ext_gam_mask] += np.asarray((-self.D_gg_csr[ext_gam_mask, :][:, g_gam_mask]).sum(axis=1)).ravel()
-        r_gam = np.maximum(r_gam, 0.0)
-        r_hat = np.maximum(self.lu_Agg.solve(r_gam), 0.0)
-        if np.any(g_gam_mask):
-            r_hat[g_gam_mask] = 1.0
+        # Direct portal-to-portal coupling `-A_{E_Gamma, G_Gamma} @ 1` inside `D_gg`
+        if has_portal_goal and len(ext_gam_idx) > 0:
+            r_gam[ext_gam_idx] += np.asarray((-self.D_gg_csr[ext_gam_idx, :][:, g_gam_mask]).sum(axis=1)).ravel()
 
-        # Start-state readout `(h_s_tl, tl_s, z_dir)`
+        r_gam = np.maximum(r_gam, 0.0)
+        if not has_portal_goal:
+            r_hat = np.maximum(self.lu_Agg.solve(r_gam), 0.0)
+        else:
+            r_hat = np.ones(self.n_g, dtype=float)
+            if len(ext_gam_idx) > 0:
+                r_hat[ext_gam_idx] = np.maximum(lu_Agg_ext.solve(r_gam[ext_gam_idx]), 0.0)
+
+        # Start-state readout `(h_s_tl, tl_s, z_dir)` matching `W_ext` (`zeroed on g_gam_mask`)
         c_s = int(dec.room_of_state[s0])
         if c_s >= 0:
             rn_s = dec.room_nodes[c_s]
             tl_s = dec.room_tl[c_s]
             pos_s = int(np.searchsorted(rn_s, s0))
-            e_s = np.zeros(len(rn_s), dtype=float)
-            e_s[pos_s] = 1.0
-            lam_s = self.hq_lus[c_s].solve(e_s, trans="T")
-            self.local_lu_rhs_solves += 1
-            if c_s in goal_rooms:
-                gr = goal_rooms[c_s]
-                RHS_adj = np.zeros(len(rn_s), dtype=float)
-                RHS_adj[gr["ring_r"]] = gr["C_inv"].T @ gr["U_rg"][pos_s, :]
-                lam_s = lam_s - self.hq_lus[c_s].solve(RHS_adj, trans="T")
-                self.local_lu_rhs_solves += 1
-                z_dir = float(gr["h_goal_total"][pos_s])
+            if c_s in full_goal_rooms:
+                h_s_tl = np.zeros(len(tl_s), dtype=float)
+                z_dir = 1.0
             else:
-                z_dir = float(self.h_exp_rooms[c_s][pos_s])
-            h_s_tl = np.maximum(np.asarray(self.room_Arg[c_s].T @ lam_s).ravel(), 0.0)
+                e_s = np.zeros(len(rn_s), dtype=float)
+                e_s[pos_s] = 1.0
+                lam_s = self.hq_lus[c_s].solve(e_s, trans="T")
+                self.local_lu_rhs_solves += 1
+                if c_s in goal_rooms:
+                    gr = goal_rooms[c_s]
+                    RHS_adj = np.zeros(len(rn_s), dtype=float)
+                    RHS_adj[gr["ring_r"]] = gr["C_inv"].T @ gr["U_rg"][pos_s, :]
+                    lam_s = lam_s - self.hq_lus[c_s].solve(RHS_adj, trans="T")
+                    self.local_lu_rhs_solves += 1
+                z_dir = float(h_room_const[c_s][pos_s])
+                h_s_tl = np.maximum(np.asarray(self.room_Arg[c_s].T @ lam_s).ravel(), 0.0)
+                if has_portal_goal:
+                    h_s_tl[g_gam_mask[tl_s]] = 0.0
         else:
             g_pos = int(np.searchsorted(gam, s0))
             tl_s = np.array([g_pos], dtype=np.int64)
-            h_s_tl = np.array([1.0], dtype=float)
-            z_dir = 0.0
+            if bool(g_gam_mask[g_pos]):
+                h_s_tl = np.array([0.0], dtype=float)
+                z_dir = 1.0
+            else:
+                h_s_tl = np.array([1.0], dtype=float)
+                z_dir = 0.0
 
         return {
             "gm": gm,
             "g_gam_mask": g_gam_mask,
+            "ext_gam_idx": ext_gam_idx,
+            "has_portal_goal": has_portal_goal,
+            "has_full_goal_room": len(full_goal_rooms) > 0,
+            "full_goal_rooms": full_goal_rooms,
+            "lu_Agg_ext": lu_Agg_ext,
             "goal_rooms": goal_rooms,
+            "h_room_const": h_room_const,
             "r_hat": r_hat,
             "tl_s": tl_s,
             "h_s_tl": h_s_tl,
@@ -1354,18 +1511,35 @@ class _SingleMMatrixPortalChannel:
         cc = ctx["col_cache"]
         if ck in cc:
             return cc[ck]
-        k_raw, y_map = self.node_cache[ck]
-        k_mod = k_raw.copy()
-        for c, gr in ctx["goal_rooms"].items():
-            if c in y_map:
-                k_mod = k_mod - gr["Smooth_U"] @ (gr["C_inv"] @ y_map[c][gr["ring_r"]])
-        if np.any(ctx["g_gam_mask"]):
-            # Portal nodes inside `G` are absorbing (`z = 1.0`, zero homogeneous dependence on `v`)
-            if np.all(ctx["gm"][self.dec.gamma_nodes[self.dec.qt_blocks[ck]]]):
-                k_mod[:] = 0.0
-            k_mod[ctx["g_gam_mask"]] = 0.0
-        neg_m = max(0.0, float(-np.min(k_mod)))
-        self.max_k_neg_roundoff = max(self.max_k_neg_roundoff, neg_m)
+        k_raw, neg_m_col, y_map = self.node_cache[ck]
+        if (not ctx["has_portal_goal"]) and (not ctx["has_full_goal_room"]):
+            k_mod = k_raw.copy()
+            for c, gr in ctx["goal_rooms"].items():
+                if c in y_map:
+                    k_mod = k_mod - gr["Smooth_U"] @ (gr["C_inv"] @ y_map[c][gr["ring_r"]])
+        else:
+            if np.all(ctx["g_gam_mask"][self.dec.qt_blocks[ck]]):
+                k_zero = np.zeros(self.n_g, dtype=float)
+                cc[ck] = k_zero
+                return k_zero
+            neg_m = neg_m_col.copy()
+            for c in ctx["full_goal_rooms"]:
+                if c in y_map:
+                    tl_c = self.dec.room_tl[c]
+                    neg_m[tl_c] -= self.room_NegAgr[c] @ y_map[c]
+            for c, gr in ctx["goal_rooms"].items():
+                if c in y_map:
+                    tl_c = self.dec.room_tl[c]
+                    neg_m[tl_c] -= gr["NegAgr_U_local"] @ (gr["C_inv"] @ y_map[c][gr["ring_r"]])
+            k_mod = np.zeros(self.n_g, dtype=float)
+            ext_idx = ctx["ext_gam_idx"]
+            if len(ext_idx) > 0:
+                if ctx["has_portal_goal"]:
+                    k_mod[ext_idx] = ctx["lu_Agg_ext"].solve(neg_m[ext_idx])
+                else:
+                    k_mod = self.lu_Agg.solve(neg_m)
+        neg_m_val = max(0.0, float(-np.min(k_mod)))
+        self.max_k_neg_roundoff = max(self.max_k_neg_roundoff, neg_m_val)
         k_pos = np.maximum(k_mod, 0.0)
         cc[ck] = k_pos
         return k_pos
@@ -1377,18 +1551,22 @@ class _SingleMMatrixPortalChannel:
         mode: str,
         warm_W: Optional[np.ndarray] = None,
         certify_lyapunov: bool = True,
-    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, bool]:
         """Solves `mode == 'lo'` (`adversarial min`, post-fixed-point `W_lo >= L v_lo`) or `mode == 'hi'`
-        (`cooperative max`, pre-fixed-point `W_hi <= L v_hi`).
-        When `certify_lyapunov=True` (run on the terminal partition before returning bounds/policy),
-        verifies and outward-shifts `[v, W]` via a cooperative Lyapunov witness `v_lyap > 0`!
+        (`cooperative max`, pre-fixed-point `W_hi <= L v_hi`) strictly on exterior portal blocks `E_Gamma`.
+        Returns `(K_cur, v_cert, W_cert, lyapunov_certified_ok)` (fail-closed if Lyapunov witness fails!).
         """
         dec = self.dec
         m = len(active_keys)
-        K_cur = np.column_stack([self.get_goal_col(ctx, ck) for ck in active_keys])
         r_hat = ctx["r_hat"]
+        if m == 0:
+            # Entire separator Gamma lies inside goal G (`E_Gamma == empty`): W = 1 identically!
+            return np.zeros((self.n_g, 0), dtype=float), np.zeros(0, dtype=float), r_hat.copy(), True
+
+        K_cur = np.column_stack([self.get_goal_col(ctx, ck) for ck in active_keys])
         blks = [dec.qt_blocks[ck] for ck in active_keys]
         I_m = np.eye(m, dtype=float)
+        ext_idx = ctx["ext_gam_idx"]
 
         if warm_W is not None:
             if mode == "lo":
@@ -1404,7 +1582,7 @@ class _SingleMMatrixPortalChannel:
             v = np.linalg.solve(Sys_bar, rhs_bar)
             W = (K_cur @ v) + r_hat
 
-        max_howard_it = 20 if certify_lyapunov else 6
+        max_howard_it = 24 if certify_lyapunov else 6
         for _ in range(max_howard_it):
             if mode == "lo":
                 x_sel = np.array([bl[int(np.argmin(W[bl]))] for bl in blks], dtype=np.int64)
@@ -1424,74 +1602,86 @@ class _SingleMMatrixPortalChannel:
             v, W = vn, W_nxt
 
         if not certify_lyapunov:
-            if np.any(ctx["g_gam_mask"]):
+            if ctx["has_portal_goal"]:
                 W = W.copy()
                 W[ctx["g_gam_mask"]] = 1.0
-            return K_cur, v, W
+            return K_cur, v, W, True
 
-        # Verify / outward-shift using cooperative Lyapunov witness `v_lyap > 0`
-        src_ly = np.maximum(0.5 * W, 1e-6)
+        # Scale-matched cooperative Lyapunov witness `v_lyap > 0` (matching exponential decay down to 1e-300
+        # so distant rooms with `W ~ 1e-35..1e-70` are never wiped out by an O(1e-17) additive floor!)
+        src_ly = np.where(W > 0.0, np.maximum(0.5 * W, 1e-300), 1e-300)
         x_mx = np.array([bl[int(np.argmax(W[bl]))] for bl in blks], dtype=np.int64)
         v_ly = np.linalg.solve(I_m - K_cur[x_mx, :], src_ly[x_mx])
-        for _ in range(8):
+        for _ in range(10):
             W_ly = (K_cur @ v_ly) + src_ly
             x_mx = np.array([bl[int(np.argmax(W_ly[bl]))] for bl in blks], dtype=np.int64)
             vn_ly = np.linalg.solve(I_m - K_cur[x_mx, :], src_ly[x_mx])
-            if np.max(np.abs(vn_ly - v_ly) / np.maximum(np.abs(vn_ly), 1e-30)) < 1e-9:
+            if np.max(np.abs(vn_ly - v_ly) / np.maximum(np.abs(vn_ly), 1e-300)) < 1e-9:
                 v_ly = vn_ly
                 break
             v_ly = vn_ly
 
-        Lv = np.empty(self.n_g, dtype=float)
-        w_ly = np.empty(self.n_g, dtype=float)
+        Lv = np.ones(self.n_g, dtype=float)
+        w_ly = np.zeros(self.n_g, dtype=float)
         for j, bl in enumerate(blks):
             Lv[bl] = float(v[j])
             w_ly[bl] = float(v_ly[j])
 
-        k_ub = float(self.max_k_neg_roundoff)
-        xi_ly = w_ly - (K_cur @ v_ly) - k_ub * float(np.sum(np.abs(v_ly)))
-        if np.all(xi_ly > 0.0):
-            rnd = k_ub * float(np.sum(np.abs(v))) + 1e-13 * np.maximum(W, 0.0)
+        xi_ly_full = w_ly - (K_cur @ v_ly)
+        xi_ly_ext = xi_ly_full[ext_idx]
+        if np.all(xi_ly_ext > 0.0):
+            rnd_ext = 1e-13 * np.maximum(W[ext_idx], 0.0)
             if mode == "lo":
-                df = np.maximum(0.0, Lv - (W - rnd))
-                th = float(np.max(df / xi_ly)) * (1.0 + 1e-11) if float(np.max(df)) > 0.0 else 0.0
-                v_c = v - th * v_ly
-                W_c = ((K_cur @ v_c) + r_hat - k_ub * float(np.sum(np.abs(v_c)))) * (1.0 - 1e-12)
-                if np.any(ctx["g_gam_mask"]):
-                    W_c[ctx["g_gam_mask"]] = 1.0
-                if np.all(W_c >= 0.0):
-                    return K_cur, v_c, W_c
+                df_ext = np.maximum(0.0, Lv[ext_idx] - (W[ext_idx] - rnd_ext))
+                th = float(np.max(df_ext / xi_ly_ext)) * (1.0 + 1e-11) if float(np.max(df_ext)) > 0.0 else 0.0
+                v_c = np.maximum(v - th * v_ly, 0.0)
+                W_c = np.ones(self.n_g, dtype=float)
+                W_c_ext = ((K_cur[ext_idx, :] @ v_c) + r_hat[ext_idx]) * (1.0 - 1e-12)
+                if np.min(W_c_ext) >= 0.0:
+                    W_c[ext_idx] = W_c_ext
+                    return K_cur, v_c, W_c, True
             else:
-                df = np.maximum(0.0, (W + rnd) - Lv)
-                th = float(np.max(df / xi_ly)) * (1.0 + 1e-11) if float(np.max(df)) > 0.0 else 0.0
+                df_ext = np.maximum(0.0, (W[ext_idx] + rnd_ext) - Lv[ext_idx])
+                th = float(np.max(df_ext / xi_ly_ext)) * (1.0 + 1e-11) if float(np.max(df_ext)) > 0.0 else 0.0
                 v_c = v + th * v_ly
-                W_c = ((K_cur @ v_c) + r_hat + k_ub * float(np.sum(np.abs(v_c)))) * (1.0 + 1e-12)
-                if np.any(ctx["g_gam_mask"]):
-                    W_c[ctx["g_gam_mask"]] = 1.0
-                return K_cur, v_c, W_c
+                W_c = np.ones(self.n_g, dtype=float)
+                W_c[ext_idx] = ((K_cur[ext_idx, :] @ v_c) + r_hat[ext_idx]) * (1.0 + 1e-12)
+                return K_cur, v_c, W_c, True
 
-        return K_cur, v, W
+        return K_cur, v, W, False
 
-    def materialize_full_extension(self, ctx: dict, W_portal: np.ndarray) -> np.ndarray:
+    def materialize_full_extension(self, ctx: dict, W_portal: np.ndarray) -> Tuple[np.ndarray, float]:
         dec = self.dec
         gm = ctx["gm"]
+        W_ext = np.where(ctx["g_gam_mask"], 0.0, W_portal)
         z_full = np.ones(dec.n_states, dtype=float)
         z_full[dec.gamma_nodes] = W_portal
+        z_full[gm] = 1.0
+        min_raw_ext = float(np.min(W_portal[ctx["ext_gam_idx"]])) if len(ctx["ext_gam_idx"]) > 0 else 1.0
         for c, rn in enumerate(dec.room_nodes):
+            if c in ctx["full_goal_rooms"]:
+                z_full[rn] = 1.0
+                continue
             tl_c = dec.room_tl[c]
-            yc = self.h_exp_rooms[c] + self.hq_lus[c].solve(self.room_Arg[c] @ W_portal[tl_c])
+            y_ext = self.hq_lus[c].solve(self.room_Arg[c] @ W_ext[tl_c])
             self.local_lu_rhs_solves += 1
             if c in ctx["goal_rooms"]:
                 gr = ctx["goal_rooms"][c]
-                yc = gr["h_goal_total"] + (yc - self.h_exp_rooms[c]) - gr["U_rg"] @ (gr["C_inv"] @ (yc - self.h_exp_rooms[c])[gr["ring_r"]])
-                yc[gr["in_g"]] = 1.0
-            z_full[rn] = np.maximum(yc, 0.0)
+                y_ext = y_ext - gr["U_rg"] @ (gr["C_inv"] @ y_ext[gr["ring_r"]])
+            yc = ctx["h_room_const"][c] + y_ext
+            in_g_c = gm[rn]
+            if np.any(~in_g_c):
+                min_raw_ext = min(min_raw_ext, float(np.min(yc[~in_g_c])))
+            yc_clean = np.maximum(yc, 0.0)
+            if np.any(in_g_c):
+                yc_clean[in_g_c] = 1.0
+            z_full[rn] = yc_clean
         z_full[gm] = 1.0
-        return z_full
+        return z_full, min_raw_ext
 
 
 class SPQLPlanner:
-    """PAC-Certified Spectral-Portal Quotient Learner & Multi-Goal Planner (`Phase-III`).
+    """PAC-Certified Spectral-Portal Quotient Learner & Multi-Goal Planner (`Phase-III v2`).
     Constructed purely from an `EmpiricalTrajectoryDataset` (`0` coordinate or true-matrix access!).
     """
 
@@ -1504,7 +1694,8 @@ class SPQLPlanner:
         enable_pou_conservation: bool = True,
         enable_epistemic_stopping: bool = True,
         max_rooms: int = 12,
-        n_peeling_epochs: int = 3,
+        max_degree_bound: Optional[int] = None,
+        n_peeling_epochs: int = 1,
     ) -> None:
         t0 = time.perf_counter()
         self.dataset = dataset
@@ -1514,7 +1705,9 @@ class SPQLPlanner:
         self.epistemic_stop_ratio = float(epistemic_stop_ratio)
         self.enable_epistemic_stopping = bool(enable_epistemic_stopping)
 
-        self.pac_pair = build_pac_mmatrix_pair(dataset, delta=delta, max_degree_bound=8, n_peeling_epochs=n_peeling_epochs)
+        self.pac_pair = build_pac_mmatrix_pair(
+            dataset, delta=delta, max_degree_bound=max_degree_bound, n_peeling_epochs=n_peeling_epochs
+        )
         self.dec = discover_spectral_portals_from_trajectories(
             dataset.trans_counts, max_rooms=max_rooms, min_room_size=max(20, dataset.n_states // 35)
         )
@@ -1524,31 +1717,32 @@ class SPQLPlanner:
         self.opt_chan = _SingleMMatrixPortalChannel(
             self.pac_pair.A_opt, self.dec, b_source=self.pac_pair.b_opt_explore, enable_pou_conservation=enable_pou_conservation
         )
+        self.init_lu_rhs = int(self.pes_chan.init_lu_rhs_solves + self.opt_chan.init_lu_rhs_solves)
         self.offline_init_ms = 1000.0 * (time.perf_counter() - t0)
 
     def resident_bytes(self) -> int:
-        """Total resident bytes across local room LU factors (`pes` + `opt`) and cached Fiedler portal columns."""
+        """Total resident bytes across local room/portal LU factors (`pes` + `opt`) and cached Fiedler columns."""
         tot = 0
         for ch in (self.pes_chan, self.opt_chan):
+            tot += int(
+                ch.lu_Agg.L.data.nbytes + ch.lu_Agg.L.indices.nbytes + ch.lu_Agg.L.indptr.nbytes
+                + ch.lu_Agg.U.data.nbytes + ch.lu_Agg.U.indices.nbytes + ch.lu_Agg.U.indptr.nbytes
+            )
             for lu_c in ch.hq_lus:
                 tot += int(
                     lu_c.L.data.nbytes + lu_c.L.indices.nbytes + lu_c.L.indptr.nbytes
                     + lu_c.U.data.nbytes + lu_c.U.indices.nbytes + lu_c.U.indptr.nbytes
                 )
-            for k_col, y_map in ch.node_cache.values():
-                tot += int(k_col.nbytes) + sum(int(yc.nbytes) for yc in y_map.values())
+            for k_col, nm_col, y_map in ch.node_cache.values():
+                tot += int(k_col.nbytes) + int(nm_col.nbytes) + sum(int(yc.nbytes) for yc in y_map.values())
         return tot
 
     def active_bottleneck_exploration_weights(self) -> np.ndarray:
-        """Computes goal-free epistemic bottleneck priority weights `w_act(i)` on states `0..N-1`:
-        weights portal separator states & their 2-hop corridor neighborhoods by local epistemic
-        mass `rho_i(delta)`, prioritizing under-sampled doorways that bottleneck multi-goal certificates!
-        """
+        """Computes goal-free epistemic bottleneck priority weights `w_act(i)` on states `0..N-1`."""
         N = self.dataset.n_states
         T_sym = ((self.dataset.trans_counts + self.dataset.trans_counts.T) > 0).tocsr()
         ind = np.zeros(N, dtype=float)
         ind[self.dec.gamma_nodes] = 1.0
-        # 2-hop corridor neighborhood around discovered separator `Gamma`
         corridor = np.clip(ind + 0.65 * (T_sym @ ind) + 0.35 * (T_sym @ (T_sym @ ind)), 0.0, 2.0)
         return (0.15 + corridor) * self.pac_pair.rho_epistemic
 
@@ -1576,31 +1770,41 @@ class SPQLPlanner:
         s0: int,
         goal_mask: np.ndarray,
         phi_goal: float = 0.0,
-        max_rounds: int = 8,
+        max_rounds: int = 12,
         m_cap: int = 384,
         coarse_l0_only: bool = False,
         materialize_policy: bool = True,
     ) -> dict:
-        """Plans & PAC-certifies an unseen goal `goal_mask` from `s0`:
-          - Pessimistic channel (`A_pes`, `min` Howard) delivers `U_{n, C}(s0) >= J^{mu_hat}_{true}(s0)`
-            plus coarse pessimistic upper proxy `U_coarse_opt_proxy` (`max` Howard on `A_pes`) to measure
-            pure coarse abstraction gap `Delta_plan(C)`!
-          - Optimistic channel (`A_opt + b_opt`, `max` Howard) delivers `L_{n, C}(s0) <= V^*_{true}(s0)`!
+        """Plans & PAC-certifies any unseen goal `goal_mask` (`including portal-intersecting goals`) from `s0`:
+          - Stops `query_ms` **after** full extension + residual verification + policy construction when
+            `materialize_policy=True` (`Closes P3-E05`), while also reporting `bounds_only_query_ms`.
+          - Runs a **fail-closed full-graph residual verifier** checking `(A_pes z_sub)[ext] <= 1e-9` on `z_sub`
+            and `(A_opt z_sup - b_opt)[Gamma - G] >= -1e-9` (`Closes P3-P0-01`).
         """
         t0 = time.perf_counter()
         gm = np.asarray(goal_mask, dtype=bool)
         phi_f = float(phi_goal)
         if bool(gm[s0]):
+            q_ms = 1000.0 * (time.perf_counter() - t0)
             return {
-                "query_ms": 1000.0 * (time.perf_counter() - t0),
+                "query_ms": q_ms,
+                "bounds_only_query_ms": q_ms,
                 "certified": True,
+                "sound_enclosure": True,
+                "within_eps_tol": True,
                 "lo": phi_f,
                 "hi": phi_f,
                 "width": 0.0,
                 "plan_gap_pes": 0.0,
                 "active_dofs": 0,
+                "full_portal_dofs": self.pes_chan.n_g,
                 "rounds": 0,
                 "operational_lu_rhs": 0,
+                "materialization_lu_rhs": 0,
+                "total_query_lu_rhs": 0,
+                "max_pes_subsolution_residual": 0.0,
+                "min_opt_supersolution_residual": 0.0,
+                "z_sub_full": None,
                 "Pi_ext_csr": None,
             }
 
@@ -1608,8 +1812,11 @@ class SPQLPlanner:
         ctx_pes = self.pes_chan.prepare_goal_context(s0, gm)
         ctx_opt = self.opt_chan.prepare_goal_context(s0, gm)
 
-        n_portals = len(self.dec.portal_nodes_loc)
-        active_keys: List[Tuple[int, int, int]] = [(pid, 0, 0) for pid in range(n_portals)]
+        active_keys = self.pes_chan.build_initial_exterior_cut(ctx_pes)
+        # Ensure opt_chan has the exact same initial straddling splits cached when G intersects Gamma
+        if ctx_opt["has_portal_goal"]:
+            _ = self.opt_chan.build_initial_exterior_cut(ctx_opt)
+
         W_pes_lo: Optional[np.ndarray] = None
         W_pes_hi: Optional[np.ndarray] = None
         W_opt_hi: Optional[np.ndarray] = None
@@ -1627,9 +1834,9 @@ class SPQLPlanner:
 
         for rd in range(rounds_limit):
             rounds_run = rd + 1
-            K_pes, _, W_pes_lo = self.pes_chan.solve_howard_bound(ctx_pes, active_keys, mode="lo", warm_W=W_pes_lo, certify_lyapunov=False)
-            _, _, W_pes_hi = self.pes_chan.solve_howard_bound(ctx_pes, active_keys, mode="hi", warm_W=W_pes_hi, certify_lyapunov=False)
-            K_opt, _, W_opt_hi = self.opt_chan.solve_howard_bound(ctx_opt, active_keys, mode="hi", warm_W=W_opt_hi, certify_lyapunov=False)
+            K_pes, _, W_pes_lo, _ = self.pes_chan.solve_howard_bound(ctx_pes, active_keys, mode="lo", warm_W=W_pes_lo, certify_lyapunov=False)
+            _, _, W_pes_hi, _ = self.pes_chan.solve_howard_bound(ctx_pes, active_keys, mode="hi", warm_W=W_pes_hi, certify_lyapunov=False)
+            K_opt, _, W_opt_hi, _ = self.opt_chan.solve_howard_bound(ctx_opt, active_keys, mode="hi", warm_W=W_opt_hi, certify_lyapunov=False)
 
             z_pes_lo_s = ctx_pes["z_dir"] + float(ctx_pes["h_s_tl"] @ W_pes_lo[ctx_pes["tl_s"]])
             z_pes_hi_s = ctx_pes["z_dir"] + float(ctx_pes["h_s_tl"] @ W_pes_hi[ctx_pes["tl_s"]])
@@ -1641,17 +1848,21 @@ class SPQLPlanner:
             tot_width = hi_c - lo_c if (np.isfinite(hi_c) and np.isfinite(lo_c)) else float("inf")
             plan_gap_pes = max(0.0, hi_c - hi_pes_best) if (np.isfinite(hi_c) and np.isfinite(hi_pes_best)) else float("inf")
 
-            if coarse_l0_only or tot_width <= self.eps_tol or len(active_keys) >= m_cap or rd == rounds_limit - 1:
+            if coarse_l0_only or len(active_keys) == 0 or tot_width <= self.eps_tol or len(active_keys) >= m_cap or rd == rounds_limit - 1:
                 break
-            if self.enable_epistemic_stopping and np.isfinite(tot_width) and plan_gap_pes <= max(0.015, self.epistemic_stop_ratio * tot_width):
-                _, _, W_opt_lo_chk = self.opt_chan.solve_howard_bound(ctx_opt, active_keys, mode="lo", warm_W=None, certify_lyapunov=False)
+            pes_gap_cap = max(self.eps_tol, 0.25 * self.lam)
+            if (
+                self.enable_epistemic_stopping
+                and np.isfinite(tot_width)
+                and plan_gap_pes <= min(pes_gap_cap, max(0.015 * self.lam, self.epistemic_stop_ratio * tot_width))
+            ):
+                _, _, W_opt_lo_chk, _ = self.opt_chan.solve_howard_bound(ctx_opt, active_keys, mode="lo", warm_W=None, certify_lyapunov=False)
                 z_opt_lo_s = ctx_opt["z_dir"] + float(ctx_opt["h_s_tl"] @ W_opt_lo_chk[ctx_opt["tl_s"]])
                 lo_opt_worst = (phi_f - self.lam * float(np.log(z_opt_lo_s))) if z_opt_lo_s > 0.0 else float("inf")
                 tot_plan_gap = plan_gap_pes + max(0.0, lo_opt_worst - lo_c)
-                if tot_plan_gap <= max(0.02, self.epistemic_stop_ratio * tot_width):
+                if tot_plan_gap <= min(2.0 * pes_gap_cap, max(0.02 * self.lam, self.epistemic_stop_ratio * tot_width)):
                     break
 
-            # Joint adjoint sensitivity across pessimistic & optimistic channels
             m_cur = len(active_keys)
             blks_cur = [self.dec.qt_blocks[ck] for ck in active_keys]
             x_p = np.array([bl[int(np.argmax(W_pes_hi[bl]))] for bl in blks_cur], dtype=np.int64)
@@ -1660,32 +1871,48 @@ class SPQLPlanner:
             psi_o = np.maximum(np.linalg.solve((np.eye(m_cur) - K_opt[x_o, :]).T, np.maximum(w_s_opt @ K_opt, 0.0)), 0.0)
 
             cands = []
+            choke_cands = []
             for j, ck in enumerate(active_keys):
                 chs = self.dec.qt_children.get(ck, [])
                 bl = blks_cur[j]
                 if chs and len(bl) >= 2:
-                    osc_p = 0.5 * (float(np.max(W_pes_hi[bl]) - np.min(W_pes_hi[bl])) + float(np.max(W_pes_lo[bl]) - np.min(W_pes_lo[bl])))
+                    hi_max_b = float(np.max(W_pes_hi[bl]))
+                    lo_min_b = float(np.min(W_pes_lo[bl]))
+                    osc_p = 0.5 * (float(hi_max_b - np.min(W_pes_hi[bl])) + float(np.max(W_pes_lo[bl]) - lo_min_b))
                     osc_o = float(np.max(W_opt_hi[bl]) - np.min(W_opt_hi[bl]))
                     sc = float(psi_p[j]) * osc_p + 0.5 * float(psi_o[j]) * osc_o
-                    if sc > 0.0:
+                    # When `hi_c` is currently `+inf` (`z_pes_lo_s == 0`) while `z_pes_hi_s > 0`, unchoke exact `0`-min blocks!
+                    if (not np.isfinite(hi_c)) and float(psi_p[j]) > 0.0 and hi_max_b > 0.0 and lo_min_b <= 0.0:
+                        choke_cands.append((float(psi_p[j]) * hi_max_b, j, ck))
+                    elif sc > 0.0:
                         cands.append((sc, j, ck))
-            if not cands:
+            if (not choke_cands) and (not cands):
                 break
+            choke_cands.sort(reverse=True)
             cands.sort(reverse=True)
-            top_sc = cands[0][0]
             repl: Dict[int, List[Tuple[int, int, int]]] = {}
             parents_split: List[Tuple[int, int, int]] = []
             added = 0
-            for sc, j, ck in cands[:18]:
-                if sc < 0.05 * top_sc:
-                    continue
+            # Always unchoke reachable zero-choked blocks first (without `0.05 * top_sc` suppression!)
+            for _, j, ck in choke_cands[:18]:
                 chs = self.dec.qt_children[ck]
                 if len(active_keys) + added + len(chs) - 1 <= m_cap:
                     repl[j] = chs
                     parents_split.append(ck)
                     added += len(chs) - 1
+            if cands:
+                top_sc = cands[0][0]
+                for sc, j, ck in cands[: max(0, 18 - len(repl))]:
+                    if sc < 0.05 * top_sc:
+                        continue
+                    chs = self.dec.qt_children[ck]
+                    if len(active_keys) + added + len(chs) - 1 <= m_cap:
+                        repl[j] = chs
+                        parents_split.append(ck)
+                        added += len(chs) - 1
             if not repl:
-                j0, ck0 = cands[0][1], cands[0][2]
+                src_list = choke_cands if choke_cands else cands
+                j0, ck0 = src_list[0][1], src_list[0][2]
                 repl[j0] = self.dec.qt_children[ck0]
                 parents_split.append(ck0)
 
@@ -1700,26 +1927,74 @@ class SPQLPlanner:
             active_keys = nxt_keys
 
         # Terminal exact Lyapunov outward certification on the selected partition `active_keys`
-        _, _, W_pes_lo = self.pes_chan.solve_howard_bound(ctx_pes, active_keys, mode="lo", warm_W=W_pes_lo, certify_lyapunov=True)
-        _, _, W_opt_hi = self.opt_chan.solve_howard_bound(ctx_opt, active_keys, mode="hi", warm_W=W_opt_hi, certify_lyapunov=True)
+        _, v_pes_lo, W_pes_lo, pes_lyap_ok = self.pes_chan.solve_howard_bound(
+            ctx_pes, active_keys, mode="lo", warm_W=W_pes_lo, certify_lyapunov=True
+        )
+        _, v_opt_hi, W_opt_hi, opt_lyap_ok = self.opt_chan.solve_howard_bound(
+            ctx_opt, active_keys, mode="hi", warm_W=W_opt_hi, certify_lyapunov=True
+        )
         z_pes_lo_s = ctx_pes["z_dir"] + float(ctx_pes["h_s_tl"] @ W_pes_lo[ctx_pes["tl_s"]])
         z_opt_hi_s = ctx_opt["z_dir"] + float(ctx_opt["h_s_tl"] @ W_opt_hi[ctx_opt["tl_s"]])
-        hi_c = (phi_f - self.lam * float(np.log(z_pes_lo_s))) if z_pes_lo_s > 0.0 else float("inf")
-        lo_c = (phi_f - self.lam * float(np.log(z_opt_hi_s))) if z_opt_hi_s > 0.0 else -float("inf")
+        hi_c = (phi_f - self.lam * float(np.log(z_pes_lo_s))) if (pes_lyap_ok and z_pes_lo_s > 0.0) else float("inf")
+        lo_c = (phi_f - self.lam * float(np.log(z_opt_hi_s))) if (opt_lyap_ok and z_opt_hi_s > 0.0) else -float("inf")
 
         op_rhs = (self.pes_chan.local_lu_rhs_solves + self.opt_chan.local_lu_rhs_solves) - rhs0
-        q_ms = 1000.0 * (time.perf_counter() - t0)
+        bounds_only_ms = 1000.0 * (time.perf_counter() - t0)
+
+        # Verify portal-level supersolution inequality `W_opt_hi <= L v_opt_hi` on E_Gamma (exact interior extension gives 0 room residual)
+        opt_portal_res_ok = bool(opt_lyap_ok)
+        min_opt_res = 0.0
+        if opt_lyap_ok and len(active_keys) > 0:
+            Lv_opt = np.ones(self.opt_chan.n_g, dtype=float)
+            for j, ck in enumerate(active_keys):
+                Lv_opt[self.dec.qt_blocks[ck]] = float(v_opt_hi[j])
+            ext_idx = ctx_opt["ext_gam_idx"]
+            # W_opt_hi <= Lv_opt <=> Lv_opt - W_opt_hi >= 0 <=> S W_opt_hi - r_gam >= 0
+            min_opt_res = float(np.min(Lv_opt[ext_idx] - W_opt_hi[ext_idx]))
+            if min_opt_res < -1e-9:
+                opt_portal_res_ok = False
+                lo_c = -float("inf")
 
         Pi_csr = None
         z_sub_full = None
-        if materialize_policy and W_pes_lo is not None and np.isfinite(hi_c):
-            z_sub_full = self.pes_chan.materialize_full_extension(ctx_pes, W_pes_lo)
-            Pi_csr = self.build_deployed_policy_csr(z_sub_full, gm)
+        max_pes_res = 0.0
+        pes_full_ok = bool(pes_lyap_ok)
+        rhs_mat0 = self.pes_chan.local_lu_rhs_solves + self.opt_chan.local_lu_rhs_solves
 
+        if materialize_policy and pes_lyap_ok and W_pes_lo is not None and np.isfinite(hi_c):
+            z_sub_full, min_raw_ext = self.pes_chan.materialize_full_extension(ctx_pes, W_pes_lo)
+            ext_all = np.flatnonzero(~gm)
+            pes_res_vec = np.asarray(self.pac_pair.A_pes @ z_sub_full).ravel()[ext_all]
+            max_pes_res = float(np.max(pes_res_vec)) if len(pes_res_vec) > 0 else 0.0
+            if (min_raw_ext < -1e-10) or (max_pes_res > 1e-9) or (z_sub_full[s0] <= 0.0):
+                # Fail-closed: reject upper bound & policy if finite-precision subsolution check fails!
+                pes_full_ok = False
+                hi_c = float("inf")
+                z_sub_full = None
+                Pi_csr = None
+            else:
+                Pi_csr = self.build_deployed_policy_csr(z_sub_full, gm)
+        elif (not materialize_policy) and pes_lyap_ok and len(active_keys) > 0 and np.isfinite(hi_c):
+            Lv_pes = np.ones(self.pes_chan.n_g, dtype=float)
+            for j, ck in enumerate(active_keys):
+                Lv_pes[self.dec.qt_blocks[ck]] = float(v_pes_lo[j])
+            ext_idx_p = ctx_pes["ext_gam_idx"]
+            max_pes_res = float(np.max(Lv_pes[ext_idx_p] - W_pes_lo[ext_idx_p]))
+            if max_pes_res > 1e-9:
+                pes_full_ok = False
+                hi_c = float("inf")
+
+        mat_rhs = (self.pes_chan.local_lu_rhs_solves + self.opt_chan.local_lu_rhs_solves) - rhs_mat0
+        full_q_ms = 1000.0 * (time.perf_counter() - t0)
+
+        sound_enclosure = bool(opt_portal_res_ok and (pes_full_ok or not np.isfinite(hi_c)) and (hi_c >= lo_c - 1e-9))
+        finite_certified = bool(sound_enclosure and np.isfinite(lo_c) and np.isfinite(hi_c) and hi_c >= lo_c)
         return {
-            "query_ms": q_ms,
-            "certified": bool(np.isfinite(lo_c) and np.isfinite(hi_c) and hi_c >= lo_c),
-            "within_eps_tol": bool(np.isfinite(lo_c) and np.isfinite(hi_c) and (hi_c - lo_c <= self.eps_tol)),
+            "query_ms": full_q_ms,
+            "bounds_only_query_ms": bounds_only_ms,
+            "certified": finite_certified,
+            "sound_enclosure": sound_enclosure,
+            "within_eps_tol": bool(finite_certified and (hi_c - lo_c <= self.eps_tol)),
             "lo": lo_c,
             "hi": hi_c,
             "width": float(hi_c - lo_c) if (np.isfinite(lo_c) and np.isfinite(hi_c)) else float("inf"),
@@ -1728,6 +2003,10 @@ class SPQLPlanner:
             "full_portal_dofs": self.pes_chan.n_g,
             "rounds": rounds_run,
             "operational_lu_rhs": int(op_rhs),
+            "materialization_lu_rhs": int(mat_rhs),
+            "total_query_lu_rhs": int(op_rhs + mat_rhs),
+            "max_pes_subsolution_residual": max_pes_res,
+            "min_opt_supersolution_residual": min_opt_res,
             "z_sub_full": z_sub_full,
             "Pi_ext_csr": Pi_csr,
         }
