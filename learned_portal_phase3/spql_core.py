@@ -31,6 +31,7 @@ for _k in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "VECLIB
 
 from collections import deque
 from dataclasses import dataclass, field
+import hashlib
 import math
 import time
 from typing import Dict, List, Optional, Sequence, Tuple
@@ -43,6 +44,23 @@ from scipy.sparse.csgraph import connected_components, dijkstra as cs_dijkstra, 
 from scipy.stats import beta as sp_beta
 
 U_MACH_F64 = 1.1102230246251565e-16  # IEEE-754 binary64 unit roundoff 2^{-53}
+ETA_SUB_F64 = float(np.nextafter(0.0, 1.0))  # IEEE-754 binary64 min positive subnormal 2^{-1074}
+
+
+def _up1(x: float) -> float:
+    return float(np.nextafter(float(x), float("inf")))
+
+
+def _up2(x: float) -> float:
+    return _up1(_up1(x))
+
+
+def _dn1(x: float) -> float:
+    return float(np.nextafter(float(x), -float("inf")))
+
+
+def _dn2(x: float) -> float:
+    return _dn1(_dn1(x))
 
 
 def backward_reachable_mask(M_csr: sp.csr_matrix, gm: np.ndarray) -> np.ndarray:
@@ -101,12 +119,12 @@ def dijkstra_equilibrated_sparse_subsolution(
     log_cutoff: float = 630.0,
     must_keep_local_idx: Optional[int] = None,
 ) -> np.ndarray:
-    """Solves `(I - (1 - damp) M_sub) y = (1 - damp) b_sub` on `M_sub >= 0, b_sub >= 0` across `270+`
-    orders of magnitude (`1.0` down to `1e-275`) via shortest-path Doob `h`-transform equilibration:
-      - Computes exact shortest-path log-potentials `ell_i = dist(boundary -> i)` in `-log M_{ij}` via Cython Dijkstra;
-      - By Bellman's triangle inequality `ell_i <= ell_j - log M_{ij}`, every transformed off-diagonal entry
-        `M_tilde_{ij} = exp(log M_{ij} - ell_j + ell_i)` lies in `[0, 1]` (`zero overflow, zero dynamic-range loss`)
-        and every transformed unknown `u_i = y_i * exp(ell_i) >= 1` is `O(1)`!
+    """Constructs a truncated, damped shortest-path Doob `h`-scaled candidate subsolution on `M_sub >= 0`:
+      - Computes shortest-path log-potentials `ell_i = dist(boundary -> i)` in `-log M_{ij}` via Cython Dijkstra;
+      - By Bellman's triangle inequality `ell_i <= ell_j - log M_{ij}`, every transformed single-edge entry
+        `M_tilde_{ij} = exp(log M_{ij} - ell_j + ell_i)` lies in `[0, 1]` (`mitigating multi-decade room/cave
+        dynamic range; note that on multi-path DAGs of depth d, path multiplicity can still yield u_i = O(2^d),
+        so soundness relies strictly on the subsequent full-operator IEEE-754 verifier, never on assuming u_i = O(1)`).
     """
     n = len(b_sub)
     src = np.flatnonzero(b_sub > 0.0)
@@ -199,45 +217,80 @@ def higham_verify_upper_subsolution(
     q_min: float,
     max_allowed_eps_fl: float = 1e-2,
 ) -> Tuple[bool, float, float, float]:
-    """Tier-3 IEEE-754 Higham-verified upper bound on `I_+ = {i in X_G : z_sub[i] > 0}` (`Closes R747-03 & Sec 8.4`):
-      - Verifies `z_sub[gm] == 1` and `z_sub[ext] >= 0` with `z_sub[s0] > 0`;
-      - Uses Higham's sparse dot-product lower bound with gradual-underflow guard (`2^{-1074} ~ 5e-324` per product):
-            `S_lo[i] = max(0, max(1 - (deg_i + 3)*u_mach, 0) * fl((M_pes z_sub)[i]) - (deg_i + 1)*5e-324)`;
-      - Computes rigorous relative defect `delta_rel = max_{i in I_+} max(0, 1 - S_lo[i] / z_sub[i])`;
-      - Propagates `delta_rel` analytically via step-cost Bellman-KL telescoping (`q^* >= q_min > 0`):
-            `U_cert = phi_goal + (-lam * log(z_sub[s0])) / (1 - (lam / q_min) * (-log(1 - delta_rel)))`
-        whenever `eps_fl = (lam / q_min) * (-log(1 - delta_rel)) <= max_allowed_eps_fl < 0.5`.
-    Returns `(ok, hi_cert, delta_rel, eps_fl)`.
+    """Outward-rounded IEEE-754 stored-operator upper bound verifier on `I_+ = {i in X_G : z_sub[i] > 0}`
+    (`Closes R747-03 & R675-01`):
+      - Rejects non-positive/non-finite `(lam, q_min)` fail-closed with ZERO undeclared `1e-12` floors
+        (preserving exact cost-unit equivariance under `(q, lam) -> c * (q, lam)`);
+      - Bounds sparse dot products below including gradual-underflow error `(deg_i + 1) * 2^{-1074}`;
+      - Outward-rounds `delta_rel`, `eta_log`, `eps_fl = (lam / q_min) * eta_log`, and terminal readout `hi_cert`.
     """
-    if z_sub is None or float(z_sub[s0]) <= 0.0 or float(z_sub[s0]) > 1.0:
+    if (
+        z_sub is None
+        or (not np.isfinite(phi_goal))
+        or (not np.isfinite(lam)) or float(lam) <= 0.0
+        or (not np.isfinite(q_min)) or float(q_min) <= 0.0
+    ):
         return False, float("inf"), 1.0, 1.0
-    ext = np.flatnonzero(~gm)
+    z_arr = np.asarray(z_sub, dtype=float)
+    gm_b = np.asarray(gm, dtype=bool)
+    if (not np.all(np.isfinite(z_arr))) or float(z_arr[s0]) <= 0.0 or float(z_arr[s0]) > 1.0:
+        return False, float("inf"), 1.0, 1.0
+    ext = np.flatnonzero(~gm_b)
     if len(ext) == 0:
         return True, float(phi_goal), 0.0, 0.0
-    if float(np.min(z_sub[ext])) < 0.0 or not np.all(z_sub[gm] == 1.0):
+    if float(np.min(z_arr[ext])) < 0.0 or not np.all(z_arr[gm_b] == 1.0):
         return False, float("inf"), 1.0, 1.0
-    zp = z_sub[ext]
+    zp = z_arr[ext]
     pos = zp > 0.0
     if not np.any(pos):
         return False, float("inf"), 1.0, 1.0
     pos_nodes = ext[pos]
     M_pos = M_pes[pos_nodes, :]
-    Mz_hat = np.asarray(M_pos @ z_sub).ravel()
+    if len(M_pos.data) > 0 and ((not np.all(np.isfinite(M_pos.data))) or float(np.min(M_pos.data)) < 0.0):
+        return False, float("inf"), 1.0, 1.0
+    Mz_hat = np.asarray(M_pos @ z_arr).ravel()
     deg = np.diff(M_pos.indptr).astype(float)
-    S_lo = np.maximum(1.0 - (deg + 3.0) * U_MACH_F64, 0.0) * Mz_hat - (deg + 1.0) * 5.0e-324
-    zp_pos = z_sub[pos_nodes]
+    if np.any((deg + 3.0) * U_MACH_F64 >= 0.25):
+        return False, float("inf"), 1.0, 1.0
+    rel_dn = np.maximum(1.0 - (deg + 3.0) * U_MACH_F64, 0.0)
+    S_lo = np.nextafter(
+        np.nextafter(rel_dn * Mz_hat, -float("inf")) - (deg + 1.0) * ETA_SUB_F64,
+        -float("inf"),
+    )
+    zp_pos = z_arr[pos_nodes]
     if np.any(S_lo <= 0.0):
         return False, float("inf"), 1.0, 1.0
-    delta_rel = max(0.0, float(1.0 - np.min(S_lo / zp_pos)))
-    if delta_rel >= 0.25:
-        return False, float("inf"), delta_rel, 1.0
-    eta_log = -math.log1p(-delta_rel)
-    eps_fl = (float(lam) / max(float(q_min), 1e-12)) * eta_log
-    if eps_fl > max_allowed_eps_fl or eps_fl >= 0.5:
-        return False, float("inf"), delta_rel, eps_fl
-    u_raw = max(0.0, -float(lam) * math.log(float(z_sub[s0])))
-    hi_cert = float(phi_goal) + u_raw / (1.0 - eps_fl)
-    return True, hi_cert, delta_rel, eps_fl
+    ratio_lo = np.nextafter(S_lo / zp_pos, -float("inf"))
+    min_ratio = float(np.min(ratio_lo))
+    delta_rel = 0.0 if min_ratio >= 1.0 else _up1(1.0 - min_ratio)
+    if (not np.isfinite(delta_rel)) or delta_rel >= 0.25:
+        return False, float("inf"), float(delta_rel), 1.0
+    eta_log_hi = 0.0 if delta_rel == 0.0 else _up2(-math.log1p(-delta_rel))
+    with np.errstate(over="ignore", divide="ignore", invalid="ignore"):
+        raw_lq = float(lam) / float(q_min)
+    if (not np.isfinite(raw_lq)) or raw_lq <= 0.0:
+        return False, float("inf"), delta_rel, float("inf")
+    lam_over_q_hi = _up1(raw_lq)
+    if not np.isfinite(lam_over_q_hi):
+        return False, float("inf"), delta_rel, float("inf")
+    with np.errstate(over="ignore", invalid="ignore"):
+        raw_eps = 0.0 if eta_log_hi == 0.0 else lam_over_q_hi * eta_log_hi
+    if not np.isfinite(raw_eps):
+        return False, float("inf"), delta_rel, float("inf")
+    eps_fl = 0.0 if eta_log_hi == 0.0 else _up1(raw_eps)
+    if (not np.isfinite(eps_fl)) or eps_fl > max_allowed_eps_fl or eps_fl >= 0.5:
+        return False, float("inf"), delta_rel, float(eps_fl)
+    zs0 = float(z_arr[s0])
+    neg_log_hi = 0.0 if zs0 >= 1.0 else _up2(-math.log(zs0))
+    u_raw_hi = 0.0 if neg_log_hi == 0.0 else _up1(float(lam) * neg_log_hi)
+    denom_lo = _dn1(1.0 - eps_fl)
+    if denom_lo <= 0.0 or (not np.isfinite(u_raw_hi)):
+        return False, float("inf"), delta_rel, float(eps_fl)
+    term_hi = 0.0 if u_raw_hi == 0.0 else _up1(u_raw_hi / denom_lo)
+    hi_cert = float(phi_goal) if term_hi == 0.0 else _up1(float(phi_goal) + term_hi)
+    if not np.isfinite(hi_cert):
+        return False, float("inf"), delta_rel, float(eps_fl)
+    return True, hi_cert, delta_rel, float(eps_fl)
 
 
 def higham_verify_lower_supersolution(
@@ -250,32 +303,280 @@ def higham_verify_lower_supersolution(
     lam: float,
     q_min: float,
 ) -> Tuple[bool, float, float, float]:
-    """Tier-3 IEEE-754 Higham-verified lower bound on full exterior `X_G = S - G`:
-      - Uses Higham's upper dot-product bound `S_hi[i] = (1 + (deg_i + 4)*u_mach) * (fl((M_opt z_sup)[i]) + b_opt[i])`;
-      - Computes `delta_abs = max_{i in X_G} max(0, S_hi[i] - z_sup[i])`;
-      - Shifts upward by `tau = (delta_abs / (1 - exp(-q_min / lam))) * (1 + 1e-8)` and clamps at `exp(-q_min / lam)`.
-    Returns `(ok, lo_cert, delta_abs, tau)`.
+    """Outward-rounded IEEE-754 stored-operator lower bound verifier on `X_G = S - G` (`Closes R675-01`):
+      - Includes BOTH relative dot-product error AND gradual-underflow product error `(deg_i + 1) * 2^{-1074}`
+        (`eliminating the 2^{-1074} subnormal round-to-zero false accept!`);
+      - Computes `1 - exp(-q_min / lam)` via `-expm1(-q_min / lam)` with certified downward rounding and
+        ZERO `1e-12` contraction-margin floor (failing closed whenever margin underflows or overflows);
+      - Outward-rounds `gam_max` upward and `lo_cert` downward (`eliminating 1-ULP upward readout drift`).
     """
-    if z_sup is None:
+    if (
+        z_sup is None or b_opt is None
+        or (not np.isfinite(phi_goal))
+        or (not np.isfinite(lam)) or float(lam) <= 0.0
+        or (not np.isfinite(q_min)) or float(q_min) <= 0.0
+    ):
         return False, -float("inf"), 1.0, 1.0
-    ext = np.flatnonzero(~gm)
+    z_in = np.asarray(z_sup, dtype=float)
+    b_in = np.asarray(b_opt, dtype=float)
+    gm_b = np.asarray(gm, dtype=bool)
+    if (not np.all(np.isfinite(z_in))) or (not np.all(np.isfinite(b_in))):
+        return False, -float("inf"), 1.0, 1.0
+    ext = np.flatnonzero(~gm_b)
     if len(ext) == 0:
         return True, float(phi_goal), 0.0, 0.0
-    z_clamped = np.clip(np.asarray(z_sup, dtype=float), 0.0, 1.0)
-    z_clamped[gm] = 1.0
+    if np.any(b_in[ext] < 0.0):
+        return False, -float("inf"), 1.0, 1.0
+    z_clamped = np.clip(z_in, 0.0, 1.0)
+    z_clamped[gm_b] = 1.0
     M_ext = M_opt[ext, :]
-    Mz_hat = np.asarray(M_ext @ z_clamped).ravel() + b_opt[ext]
+    if len(M_ext.data) > 0 and ((not np.all(np.isfinite(M_ext.data))) or float(np.min(M_ext.data)) < 0.0):
+        return False, -float("inf"), 1.0, 1.0
     deg = np.diff(M_ext.indptr).astype(float)
-    S_hi = (1.0 + (deg + 4.0) * U_MACH_F64) * Mz_hat
-    delta_abs = max(0.0, float(np.max(S_hi - z_clamped[ext])))
-    gam_max = math.exp(-float(q_min) / float(lam))
-    margin = max(1.0 - gam_max, 1e-12)
-    tau = (delta_abs / margin) * (1.0 + 1e-8)
-    z_cert_s0 = min(gam_max, float(z_clamped[s0]) + tau)
-    if z_cert_s0 <= 0.0:
+    if np.any((deg + 5.0) * U_MACH_F64 >= 0.25):
+        return False, -float("inf"), 1.0, 1.0
+
+    raw_dot = np.asarray(M_ext @ z_clamped).ravel()
+    sum_hi = np.nextafter(raw_dot + b_in[ext], float("inf"))
+    den_dn = np.maximum(1.0 - (deg + 4.0) * U_MACH_F64, 0.5)
+    sub_up = (deg + 1.0) * ETA_SUB_F64
+    S_hi = np.nextafter(np.nextafter(sum_hi / den_dn, float("inf")) + sub_up, float("inf"))
+    diff_up = np.nextafter(S_hi - z_clamped[ext], float("inf"))
+    delta_abs = max(0.0, float(np.max(diff_up)))
+
+    with np.errstate(over="ignore", under="ignore", divide="ignore", invalid="ignore"):
+        raw_x = float(q_min) / float(lam)
+    if (not np.isfinite(raw_x)) or raw_x <= 0.0:
+        return False, -float("inf"), delta_abs, float("inf")
+    x_dn = _dn1(raw_x)
+    if x_dn <= 0.0:
+        return False, -float("inf"), delta_abs, float("inf")
+    m_raw = -math.expm1(-x_dn)
+    margin_lo = _dn2(m_raw * (1.0 - 4.0 * U_MACH_F64))
+    if (not np.isfinite(margin_lo)) or margin_lo <= 0.0:
+        return False, -float("inf"), delta_abs, float("inf")
+    with np.errstate(over="ignore", invalid="ignore"):
+        raw_tau = 0.0 if delta_abs == 0.0 else delta_abs / margin_lo
+    if not np.isfinite(raw_tau):
+        return False, -float("inf"), delta_abs, float("inf")
+    tau = 0.0 if delta_abs == 0.0 else _up2(raw_tau)
+    if not np.isfinite(tau):
+        return False, -float("inf"), delta_abs, float("inf")
+
+    gam_max_hi = min(1.0, _up2(math.exp(-x_dn)))
+    z_sum_hi = float(z_clamped[s0]) if tau == 0.0 else _up1(float(z_clamped[s0]) + tau)
+    z_cert_s0 = min(gam_max_hi, z_sum_hi)
+    if (not np.isfinite(z_cert_s0)) or z_cert_s0 <= 0.0:
         return False, -float("inf"), delta_abs, tau
-    lo_cert = float(phi_goal) - float(lam) * math.log(z_cert_s0)
+    neg_log_dn = 0.0 if z_cert_s0 >= 1.0 else max(0.0, _dn2(-math.log(z_cert_s0)))
+    cost_dn = 0.0 if neg_log_dn == 0.0 else _dn1(float(lam) * neg_log_dn)
+    lo_cert = float(phi_goal) if cost_dn == 0.0 else _dn1(float(phi_goal) + cost_dn)
+    if not np.isfinite(lo_cert):
+        return False, -float("inf"), delta_abs, tau
     return True, lo_cert, delta_abs, tau
+
+
+def build_log_scaled_policy_csr(M_csr: sp.csr_matrix, z_vec: np.ndarray, gm: np.ndarray) -> sp.csr_matrix:
+    """Constructs a row-stochastic Markov policy `pi_{ij} propto M_{ij} z_j` on `ext = ~gm` via exact
+    per-row max-log-weight scaling (`Closes R675-02`: eliminates `max(w_sum, 1e-300)` denominator floors so
+    normalization remains row-stochastic across the entire IEEE-754 range down to `2^{-1074} = 4.94e-324`).
+    """
+    gm_b = np.asarray(gm, dtype=bool)
+    ext = np.flatnonzero(~gm_b)
+    M_ext = M_csr[ext, :].tocsr()
+    if len(ext) == 0 or M_ext.nnz == 0:
+        return sp.csr_matrix(M_ext.shape, dtype=float)
+    row_ids = np.repeat(np.arange(len(ext), dtype=np.int64), np.diff(M_ext.indptr))
+    m_dat = M_ext.data
+    z_nb = np.asarray(z_vec, dtype=float)[M_ext.indices]
+    pos_e = (m_dat > 0.0) & (z_nb > 0.0)
+    has_pos_row = np.zeros(len(ext), dtype=bool)
+    np.logical_or.at(has_pos_row, row_ids, pos_e)
+
+    use_z = has_pos_row[row_ids]
+    active_e = np.where(use_z, pos_e, m_dat > 0.0)
+    log_w = np.full(len(m_dat), -float("inf"), dtype=float)
+    idx_z = np.flatnonzero(use_z & pos_e)
+    if len(idx_z) > 0:
+        log_w[idx_z] = np.log(m_dat[idx_z]) + np.log(z_nb[idx_z])
+    idx_fb = np.flatnonzero((~use_z) & (m_dat > 0.0))
+    if len(idx_fb) > 0:
+        log_w[idx_fb] = np.log(m_dat[idx_fb])
+
+    rmax_log = np.full(len(ext), -float("inf"), dtype=float)
+    np.maximum.at(rmax_log, row_ids, log_w)
+    rel_w = np.zeros(len(m_dat), dtype=float)
+    act_idx = np.flatnonzero(active_e & np.isfinite(rmax_log[row_ids]))
+    if len(act_idx) > 0:
+        diff_log = log_w[act_idx] - rmax_log[row_ids[act_idx]]
+        rel_w[act_idx] = np.where(diff_log > -745.0, np.exp(np.minimum(diff_log, 0.0)), 0.0)
+
+    W_mat = sp.csr_matrix((rel_w, M_ext.indices.copy(), M_ext.indptr.copy()), shape=M_ext.shape)
+    w_sum = np.asarray(W_mat.sum(axis=1)).ravel()
+    pi_dat = np.where((w_sum > 0.0)[row_ids], rel_w / np.where(w_sum > 0.0, w_sum, 1.0)[row_ids], 0.0)
+    Pi_out = sp.csr_matrix((pi_dat, M_ext.indices.copy(), M_ext.indptr.copy()), shape=M_ext.shape)
+    Pi_out.sort_indices()
+    return Pi_out
+
+
+def verify_and_bind_deployed_policy_csr(
+    M_pes: sp.csr_matrix,
+    z_sub: np.ndarray,
+    Pi_csr: Optional[sp.csr_matrix],
+    gm: np.ndarray,
+    s0: int,
+    phi_goal: float,
+    lam: float,
+    q_min: float,
+    hi_sub: float,
+    eps_fl_sub: float,
+    max_allowed_eps_fl: float = 1e-2,
+) -> Tuple[bool, float, float, str]:
+    """Verifies the ACTUAL delivered `Pi_csr` object and cryptographically binds it to `hi_cert` (`Closes R675-02`):
+      1. Finiteness, non-negativity, and shape `(len(ext), N)`;
+      2. Forward reachability closure inside `I_+ = {i in ext : z_sub[i] > 0}` from `s0`;
+      3. Row-stochasticity `|sum_j Pi[r, j] - 1| <= 1e-11` on every reachable exterior row;
+      4. Strict observed-edge support `Pi[r, j] > 0 => M_pes[ext[r], j] > 0` and `j in I_+ U G`;
+      5. Topological properness (`100%` of forward-reachable states from `s0` reach `G` on `Pi > 0`);
+      6. Outward-rounded Bellman-KL step-drift bound directly on the stored `Pi_csr` entries;
+      7. Canonical SHA-256 digest `policy_sha256` over `(indptr, indices, data)`.
+    Returns `(ok, hi_bound, eps_fl_bound, policy_sha256)`.
+    """
+    gm_b = np.asarray(gm, dtype=bool)
+    ext = np.flatnonzero(~gm_b)
+    if (
+        Pi_csr is None or z_sub is None
+        or (not sp.isspmatrix_csr(Pi_csr))
+        or Pi_csr.shape != (len(ext), len(gm_b))
+        or (not np.isfinite(hi_sub))
+    ):
+        return False, float("inf"), 1.0, ""
+    if len(ext) == 0:
+        return True, float(phi_goal), 0.0, "empty_exterior"
+    if len(Pi_csr.data) == 0 or (not np.all(np.isfinite(Pi_csr.data))) or float(np.min(Pi_csr.data)) < 0.0:
+        return False, float("inf"), 1.0, ""
+
+    r_s0 = int(np.searchsorted(ext, s0))
+    if not (0 <= r_s0 < len(ext) and int(ext[r_s0]) == int(s0)):
+        return False, float("inf"), 1.0, ""
+    z_arr = np.asarray(z_sub, dtype=float)
+    if float(z_arr[s0]) <= 0.0 or float(z_arr[s0]) > 1.0:
+        return False, float("inf"), 1.0, ""
+
+    ext_lookup = np.full(len(gm_b), -1, dtype=np.int64)
+    ext_lookup[ext] = np.arange(len(ext), dtype=np.int64)
+
+    # 1. Forward BFS from `r_s0` along `Pi_csr > 0`
+    vis_f = np.zeros(len(ext), dtype=bool)
+    vis_f[r_s0] = True
+    qf = deque([r_s0])
+    reaches_goal_direct = np.zeros(len(ext), dtype=bool)
+    while qf:
+        r = qf.popleft()
+        for p_idx in range(Pi_csr.indptr[r], Pi_csr.indptr[r + 1]):
+            pv = float(Pi_csr.data[p_idx])
+            if pv <= 0.0:
+                continue
+            j_st = int(Pi_csr.indices[p_idx])
+            if gm_b[j_st]:
+                reaches_goal_direct[r] = True
+            else:
+                rn = int(ext_lookup[j_st])
+                if rn < 0 or float(z_arr[j_st]) <= 0.0:
+                    return False, float("inf"), 1.0, ""
+                if not vis_f[rn]:
+                    vis_f[rn] = True
+                    qf.append(rn)
+
+    reach_rows = np.flatnonzero(vis_f)
+    if np.any(z_arr[ext[reach_rows]] <= 0.0):
+        return False, float("inf"), 1.0, ""
+
+    # 2. Backward BFS from `reaches_goal_direct` on `reach_rows` to certify properness `P^Pi_{s0}(tau_G < inf) = 1`
+    Pi_rr = Pi_csr[reach_rows, :][:, ext[reach_rows]].tocsr()
+    Pi_rr_T = Pi_rr.T.tocsr()
+    can_hit = reaches_goal_direct[reach_rows].copy()
+    qb = deque(int(i) for i in np.flatnonzero(can_hit))
+    while qb:
+        u = qb.popleft()
+        for idx in range(Pi_rr_T.indptr[u], Pi_rr_T.indptr[u + 1]):
+            if Pi_rr_T.data[idx] > 0.0:
+                v = int(Pi_rr_T.indices[idx])
+                if not can_hit[v]:
+                    can_hit[v] = True
+                    qb.append(v)
+    if not np.all(can_hit):
+        return False, float("inf"), 1.0, ""
+
+    # 3. Row-stochasticity + exact observed-support check + Bellman-KL drift bound on stored `Pi_csr`
+    Pi_sub = Pi_csr[reach_rows, :].tocsr()
+    Pi_sub.sum_duplicates()
+    Pi_sub.sort_indices()
+    row_sums = np.asarray(Pi_sub.sum(axis=1)).ravel()
+    deg_r = np.diff(Pi_sub.indptr).astype(float)
+    if np.any(np.abs(row_sums - 1.0) > 1e-11) or np.any((deg_r + 3.0) * U_MACH_F64 >= 0.1):
+        return False, float("inf"), 1.0, ""
+    s_lo = np.nextafter(np.maximum(1.0 - (deg_r + 2.0) * U_MACH_F64, 0.5) * row_sums, -float("inf"))
+    if np.any(s_lo <= 0.0):
+        return False, float("inf"), 1.0, ""
+    log_s_lo = np.log(s_lo)
+
+    M_sub = M_pes[ext[reach_rows], :].tocsr()
+    M_sub.sum_duplicates()
+    M_sub.sort_indices()
+    max_eta_pol = 0.0
+    for loc_r in range(len(reach_rows)):
+        st_i = int(ext[reach_rows[loc_r]])
+        log_zi = math.log(float(z_arr[st_i]))
+        m_start, m_end = M_sub.indptr[loc_r], M_sub.indptr[loc_r + 1]
+        m_cols = M_sub.indices[m_start:m_end]
+        m_vals = M_sub.data[m_start:m_end]
+        for p_idx in range(Pi_sub.indptr[loc_r], Pi_sub.indptr[loc_r + 1]):
+            pv = float(Pi_sub.data[p_idx])
+            if pv <= 0.0:
+                continue
+            col_j = int(Pi_sub.indices[p_idx])
+            pos_m = int(np.searchsorted(m_cols, col_j))
+            if not (0 <= pos_m < len(m_cols) and int(m_cols[pos_m]) == col_j):
+                return False, float("inf"), 1.0, ""
+            mv = float(m_vals[pos_m])
+            zj = 1.0 if gm_b[col_j] else float(z_arr[col_j])
+            if mv <= 0.0 or zj <= 0.0:
+                return False, float("inf"), 1.0, ""
+            lp = math.log(pv)
+            lm = math.log(mv)
+            lzj = 0.0 if gm_b[col_j] else math.log(zj)
+            rad = 12.0 * U_MACH_F64 * (1.0 + abs(lp) + abs(lm) + abs(lzj) + abs(log_zi) + abs(float(log_s_lo[loc_r])))
+            drift_ij = (lp - lm - lzj + log_zi - float(log_s_lo[loc_r])) + rad
+            if drift_ij > max_eta_pol:
+                max_eta_pol = drift_ij
+
+    with np.errstate(over="ignore", divide="ignore", invalid="ignore"):
+        lq_hi = _up1(float(lam) / float(q_min))
+        eps_pol = 0.0 if max_eta_pol == 0.0 else _up1(lq_hi * max_eta_pol)
+    eps_tot = max(float(eps_fl_sub), float(eps_pol))
+    if (not np.isfinite(eps_tot)) or eps_tot > max_allowed_eps_fl or eps_tot >= 0.5:
+        return False, float("inf"), float(eps_tot), ""
+
+    zs0 = float(z_arr[s0])
+    neg_log_hi = 0.0 if zs0 >= 1.0 else _up2(-math.log(zs0))
+    u_raw_hi = 0.0 if neg_log_hi == 0.0 else _up1(float(lam) * neg_log_hi)
+    denom_lo = _dn1(1.0 - eps_tot)
+    if denom_lo <= 0.0:
+        return False, float("inf"), float(eps_tot), ""
+    term_hi = 0.0 if u_raw_hi == 0.0 else _up1(u_raw_hi / denom_lo)
+    hi_pol = float(phi_goal) if term_hi == 0.0 else _up1(float(phi_goal) + term_hi)
+    hi_final = max(float(hi_sub), float(hi_pol))
+    if not np.isfinite(hi_final):
+        return False, float("inf"), float(eps_tot), ""
+
+    Pi_canon = Pi_csr.copy()
+    Pi_canon.sort_indices()
+    h = hashlib.sha256()
+    h.update(np.ascontiguousarray(Pi_canon.indptr, dtype="<i8").tobytes())
+    h.update(np.ascontiguousarray(Pi_canon.indices, dtype="<i8").tobytes())
+    h.update(np.ascontiguousarray(Pi_canon.data, dtype="<f8").tobytes())
+    return True, hi_final, float(eps_tot), h.hexdigest()
 
 
 # ==============================================================================
@@ -1081,10 +1382,16 @@ def build_pac_mmatrix_pair(
     gam_hi = np.exp(-q_lo / dataset.lam)
 
     M_pes = (sp.diags(gam_lo) @ P_lo).tocsr()
+    M_pes.sum_duplicates()
+    M_pes.sort_indices()
     M_opt = (sp.diags(gam_hi) @ P_lo).tocsr()
+    M_opt.sum_duplicates()
+    M_opt.sort_indices()
     I_sp = sp.eye(N, format="csr")
     A_pes = (I_sp - M_pes).tocsr()
+    A_pes.sort_indices()
     A_opt = (I_sp - M_opt).tocsr()
+    A_opt.sort_indices()
     b_opt_explore = gam_hi * rho_clopper
     rho_epistemic = rho_clopper
 
@@ -1446,12 +1753,14 @@ class _SingleMMatrixPortalChannel:
         dec: SpectralPortalDecomposition,
         b_source: Optional[np.ndarray] = None,
         enable_pou_conservation: bool = True,
+        build_initial_l0_cache: bool = True,
     ) -> None:
         self.A_csr = A_csr
         self.dec = dec
         self.n_g = len(dec.gamma_nodes)
         self.enable_pou = bool(enable_pou_conservation)
         self.local_lu_rhs_solves = 0
+        self.room_lu_refactorizations = 0
         self.max_k_neg_roundoff = 0.0
 
         A_gg = A_csr[dec.gamma_nodes, :][:, dec.gamma_nodes].tocsc()
@@ -1486,8 +1795,9 @@ class _SingleMMatrixPortalChannel:
         # Persistent unclipped Fiedler-tree node cache:
         # `(pid, lv, bi) -> (k_raw_unkilled, neg_m_unsmoothed, {room_c: y_col})`
         self.node_cache: Dict[Tuple[int, int, int], Tuple[np.ndarray, np.ndarray, Dict[int, np.ndarray]]] = {}
-        for pid in range(len(dec.portal_nodes_loc)):
-            self._solve_keys_direct(pid, [(pid, 0, 0)])
+        if build_initial_l0_cache:
+            for pid in range(len(dec.portal_nodes_loc)):
+                self._solve_keys_direct(pid, [(pid, 0, 0)])
         self.init_lu_rhs_solves = int(self.local_lu_rhs_solves)
 
     def _solve_keys_direct(self, pid: int, ckeys: Sequence[Tuple[int, int, int]]) -> None:
@@ -1978,7 +2288,8 @@ class _SingleMMatrixPortalChannel:
                     M_p = M_xx[p_idx, :][:, p_idx].tocsr()
                     b_p = b_x[p_idx]
                     y_cert[p_idx] = dijkstra_equilibrated_sparse_subsolution(M_p, b_p, damp=1e-12, log_cutoff=630.0)
-                    self.local_lu_rhs_solves += 1
+                    # Record sparse room refactorization separately from native `hq_lus` backsolve RHS (`Closes R675-04`)!
+                    self.room_lu_refactorizations += 1
 
             yc_out = np.ones(len(rn), dtype=float)
             yc_out[ext_loc] = y_cert
@@ -2063,23 +2374,10 @@ class SPQLPlanner:
         return (0.15 + corridor) * self.pac_pair.rho_epistemic
 
     def build_deployed_policy_csr(self, z_sub_pes: np.ndarray, goal_mask: np.ndarray) -> sp.csr_matrix:
-        """Constructs the deployed Markov policy `pi_{ij} propto M_{pes, ij} z_sub_pes[j]` on `ext = ~goal_mask`.
-        Supported STRICTLY on observed transitions (`M_pes > 0 => k_{ij} >= 1 => P_true > 0`!).
+        """Constructs the deployed Markov policy `pi_{ij} propto M_{pes, ij} z_sub_pes[j]` on `ext = ~goal_mask`
+        via per-row max-log-weight scaling (`Closes R675-02`: row-stochastic down to `2^{-1074}`, zero `1e-300` floor).
         """
-        gm = np.asarray(goal_mask, dtype=bool)
-        ext = np.flatnonzero(~gm)
-        M_ext = self.pac_pair.M_pes[ext, :].tocsr()
-        row_ids = np.repeat(np.arange(len(ext), dtype=np.int64), np.diff(M_ext.indptr))
-        z_nb = z_sub_pes[M_ext.indices]
-        rmax = np.zeros(len(ext), dtype=float)
-        np.maximum.at(rmax, row_ids, z_nb)
-        has_pos = rmax > 0.0
-        sc = np.where(has_pos[row_ids], z_nb / np.maximum(rmax[row_ids], 1e-300), 1.0)
-        w_dat = M_ext.data * sc
-        W_mat = sp.csr_matrix((w_dat, M_ext.indices.copy(), M_ext.indptr.copy()), shape=M_ext.shape)
-        w_sum = np.asarray(W_mat.sum(axis=1)).ravel()
-        pi_dat = np.where((w_sum > 0.0)[row_ids], w_dat / np.maximum(w_sum[row_ids], 1e-300), 0.0)
-        return sp.csr_matrix((pi_dat, M_ext.indices.copy(), M_ext.indptr.copy()), shape=M_ext.shape)
+        return build_log_scaled_policy_csr(self.pac_pair.M_pes, z_sub_pes, goal_mask)
 
     def _exact_singleton_portal_fallback(self, ctx_pes: dict, reach_all: np.ndarray) -> np.ndarray:
         """Timed, LU-charged exact exterior singleton-portal fallback on `E_Gamma` when coarse budget cannot
@@ -2166,6 +2464,7 @@ class SPQLPlanner:
             }
 
         rhs0 = self.pes_chan.local_lu_rhs_solves + self.opt_chan.local_lu_rhs_solves
+        refac0 = self.pes_chan.room_lu_refactorizations + self.opt_chan.room_lu_refactorizations
         reach_all = backward_reachable_mask(self.pac_pair.M_pes, gm)
         s0_reachable = bool(reach_all[s0])
 
@@ -2365,6 +2664,7 @@ class SPQLPlanner:
         rhs_mat0 = self.pes_chan.local_lu_rhs_solves + self.opt_chan.local_lu_rhs_solves
 
         Pi_csr = None
+        policy_sha256 = ""
         z_sub_full = None
         pes_d_rel = 1.0
         pes_eps_fl = 1.0
@@ -2373,6 +2673,9 @@ class SPQLPlanner:
         fallback_method = None
         fallback_ms = 0.0
         fallback_lu_rhs = 0
+        global_fallback_lu_calls = 0
+        global_fallback_states = 0
+        heuristic_equiv_rhs = 0
 
         if materialize_policy:
             pes_ok = False
@@ -2393,14 +2696,16 @@ class SPQLPlanner:
                     self.pac_pair.M_pes, z_sub_full, gm, s0, phi_f, self.lam, self.q_min
                 )
                 if not pes_ok:
-                    # Single curved room spanned >15 decades (exceeding float64 SuperLU room factor precision):
-                    # run exact Doob-equilibrated exterior sparse LU and charge equivalent room RHS count!
+                    # Single curved room spanned >15 decades: run candidate exterior sparse LU and keep native
+                    # room RHS strictly separate from `global_fallback_lu_calls` (`Closes R675-04`)!
                     fallback_method = "dijkstra_equilibrated_exterior_lu"
                     z_sub_full, n_act_ext = dijkstra_equilibrated_global_subsolution(
                         self.pac_pair.M_pes, gm, reach_all, s0, damp=1e-11
                     )
+                    global_fallback_lu_calls += 1
+                    global_fallback_states += int(n_act_ext)
                     mean_rm = max(1, int(np.mean([len(rn) for rn in self.dec.room_nodes])))
-                    self.pes_chan.local_lu_rhs_solves += max(1, int(math.ceil(float(n_act_ext) / float(mean_rm))))
+                    heuristic_equiv_rhs += max(1, int(math.ceil(float(n_act_ext) / float(mean_rm))))
                     pes_ok, hi_c, pes_d_rel, pes_eps_fl = higham_verify_upper_subsolution(
                         self.pac_pair.M_pes, z_sub_full, gm, s0, phi_f, self.lam, self.q_min
                     )
@@ -2408,20 +2713,32 @@ class SPQLPlanner:
                 fallback_ms = 1000.0 * (time.perf_counter() - t_fb0)
 
             if pes_ok and z_sub_full is not None:
-                ext_all = np.flatnonzero(~gm)
-                pes_res_vec = np.asarray(self.pac_pair.A_pes @ z_sub_full).ravel()[ext_all]
-                max_pes_res = float(np.max(pes_res_vec)) if len(pes_res_vec) > 0 else 0.0
-                Pi_csr = self.build_deployed_policy_csr(z_sub_full, gm)
-                solver_status = (
-                    "certified_equilibrated_fallback_policy" if fallback_used else "certified_coarse_finite_policy"
+                Pi_cand = self.build_deployed_policy_csr(z_sub_full, gm)
+                pol_ok, hi_bound, pes_eps_fl, policy_sha256 = verify_and_bind_deployed_policy_csr(
+                    self.pac_pair.M_pes, z_sub_full, Pi_cand, gm, s0, phi_f, self.lam, self.q_min, hi_c, pes_eps_fl
                 )
+                if pol_ok:
+                    hi_c = hi_bound
+                    Pi_csr = Pi_cand
+                    ext_all = np.flatnonzero(~gm)
+                    pes_res_vec = np.asarray(self.pac_pair.A_pes @ z_sub_full).ravel()[ext_all]
+                    max_pes_res = float(np.max(pes_res_vec)) if len(pes_res_vec) > 0 else 0.0
+                    solver_status = (
+                        "certified_equilibrated_fallback_policy" if fallback_used else "certified_coarse_finite_policy"
+                    )
+                else:
+                    hi_c = float("inf")
+                    z_sub_full = None
+                    Pi_csr = None
+                    policy_sha256 = ""
+                    solver_status = "policy_verification_failure"
             else:
                 hi_c = float("inf")
                 z_sub_full = None
                 Pi_csr = None
                 solver_status = "numerical_witness_failure"
         else:
-            # Bounds-only mode: still materialize on pes_chan to enforce identical Tier-3 Higham guarantee!
+            # Bounds-only mode: still materialize on pes_chan to enforce identical stored-operator guarantee!
             pes_ok = False
             z_tmp = None
             if W_pes_lo is not None and z_pes_lo_s > 0.0:
@@ -2439,8 +2756,10 @@ class SPQLPlanner:
                 z_tmp, n_act_ext = dijkstra_equilibrated_global_subsolution(
                     self.pac_pair.M_pes, gm, reach_all, s0, damp=1e-11
                 )
+                global_fallback_lu_calls += 1
+                global_fallback_states += int(n_act_ext)
                 mean_rm = max(1, int(np.mean([len(rn) for rn in self.dec.room_nodes])))
-                self.pes_chan.local_lu_rhs_solves += max(1, int(math.ceil(float(n_act_ext) / float(mean_rm))))
+                heuristic_equiv_rhs += max(1, int(math.ceil(float(n_act_ext) / float(mean_rm))))
                 pes_ok, hi_c, pes_d_rel, pes_eps_fl = higham_verify_upper_subsolution(
                     self.pac_pair.M_pes, z_tmp, gm, s0, phi_f, self.lam, self.q_min
                 )
@@ -2455,6 +2774,7 @@ class SPQLPlanner:
                 solver_status = "numerical_witness_failure"
 
         mat_rhs = int((self.pes_chan.local_lu_rhs_solves + self.opt_chan.local_lu_rhs_solves) - rhs_mat0)
+        room_refac = int((self.pes_chan.room_lu_refactorizations + self.opt_chan.room_lu_refactorizations) - refac0)
         mat_ms = 1000.0 * (time.perf_counter() - t_mat0)
         full_q_ms = 1000.0 * (time.perf_counter() - t0)
 
@@ -2468,11 +2788,17 @@ class SPQLPlanner:
         return {
             "solver_status": solver_status,
             "policy_present": policy_present,
+            "policy_sha256": policy_sha256,
+            "operator_step_count": int(self.dataset.total_steps),
             "finite_upper": finite_upper,
             "fallback_used": fallback_used,
             "fallback_method": fallback_method,
             "fallback_ms": fallback_ms,
             "fallback_lu_rhs": fallback_lu_rhs,
+            "room_lu_refactorizations": room_refac,
+            "global_fallback_lu_calls": int(global_fallback_lu_calls),
+            "global_fallback_active_states": int(global_fallback_states),
+            "heuristic_equiv_room_rhs": int(heuristic_equiv_rhs),
             "materialization_ms": mat_ms,
             "query_ms": full_q_ms,
             "bounds_only_query_ms": bounds_only_ms,

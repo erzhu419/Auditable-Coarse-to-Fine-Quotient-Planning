@@ -18,7 +18,7 @@ GPT6 在 `R747` 中通过 `17,798` 项独立复算（`0` 失败）与外部 `wea
 - **保留并 100% 执行 `R747-SISC-01..05` 全部文稿收口项**：
   1. 将 [MANUSCRIPT_CORE_DRAFT.md](../quotient_phase2/MANUSCRIPT_CORE_DRAFT.md) 正文全部主表（`Tables 2–5`）、摘要、主图（`m233_clean_isolation_summary.png`）统一切换为干净隔离复现实验 `73101638...` 的唯一权威数据；
   2. 将早期存在跨臂 GC 串扰的 `m233_sisc_unlock_results.json`（`339e723f...`）严格降级至 `Appendix A` 历史协议修订说明（字节级保留不删改）；
-  3. 对 `Continual 47^3` 的 `9.39%` 样本均值差异（双侧 $p = 0.157$ / Wilcoxon $p = 0.0649$）明确表述为**统计不显著（与持平一致）**，不作为正向加速结论；
+  3. 对 `Continual 47^3` 的 `9.39%` 样本均值差异（边际 paired-$t$ 双侧 $p = 0.157$、全周期 paired-$t$ $p = 0.0649$；精确符号翻转/Wilcoxon $p = 0.15625 / 0.09375$）明确表述为**统计不显著（与持平一致）**，不作为正向加速结论；
   4. 将 `/proc/self/status` `VmRSS` 统一标注为 `MiB` 臂边界快照（明确区分于内核连续峰值 `VmHWM`）；
   5. 在 `Table 1` 复杂度表中显式补入缓存未命中时的房间 LU 回代项 $\sum_r n_{\mathrm{new},r} N_r^{4/3}$。
 - **拒绝任何新增代码修改或重跑**：`quotient_phase2/*.py` 保持冻结哈希 `e6ea565b8a4e87e7298c93bf01351ee5c2787fed3a91fc6a7caebcfe4b44e9c6` 完全不变，可直接进入 SIAM SISC 格式排版阶段。
