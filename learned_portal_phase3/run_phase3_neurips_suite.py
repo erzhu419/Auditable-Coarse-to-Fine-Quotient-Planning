@@ -19,6 +19,7 @@ import os
 for _k in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "VECLIB_MAXIMUM_THREADS", "NUMEXPR_NUM_THREADS"):
     os.environ[_k] = "1"
 
+import argparse
 import hashlib
 import json
 from pathlib import Path
@@ -31,7 +32,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import t as student_t, wilcoxon
 
-from learned_portal_phase3 import compute_phase3_manifest, verify_phase1_and_phase2_untouched
+from learned_portal_phase3 import compute_phase3_manifest, phase3_output_directory, verify_phase1_and_phase2_untouched
 from learned_portal_phase3.baselines_and_contracts import (
     LowRankSRLinearRLPlanner,
     ModelFreeGoalSoftQPlanner,
@@ -877,14 +878,18 @@ def generate_neurips_figures(gates: dict, exp1: dict, exp2: dict, exp3: dict, ou
 
 
 def main() -> None:
-    import sys
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--replot-from-json", "--figures-only", action="store_true")
+    parser.add_argument("--output-dir", type=Path, help="Directory for the reproduced JSON and figures")
+    args = parser.parse_args()
     t_start = time.perf_counter()
     verify_phase1_and_phase2_untouched()
-    out_dir = Path(__file__).resolve().parent
+    out_dir = phase3_output_directory("v1", args.output_dir)
     json_path = out_dir / "p3_neurips_benchmark_results.json"
 
-    if "--replot-from-json" in sys.argv and json_path.exists():
-        payload = json.loads(json_path.read_text(encoding="utf-8"))
+    if args.replot_from_json:
+        source_path = json_path if json_path.exists() else Path(__file__).with_name(json_path.name)
+        payload = json.loads(source_path.read_text(encoding="utf-8"))
         fig1_path, fig2_path = generate_neurips_figures(
             payload["part0_10_contract_gates"],
             payload["experiment1_rotated_2d_sample_complexity"],
@@ -892,13 +897,13 @@ def main() -> None:
             payload["experiment3_continuous_rotated_sde"],
             out_dir,
         )
-        payload["provenance_manifest"] = compute_phase3_manifest()
+        payload["figure_reproduction_manifest"] = compute_phase3_manifest()
         payload["figure_sha256"] = {
             fig1_path.name: hashlib.sha256(fig1_path.read_bytes()).hexdigest(),
             fig2_path.name: hashlib.sha256(fig2_path.read_bytes()).hexdigest(),
         }
         json_path.write_text(json.dumps(payload, indent=2, allow_nan=False), encoding="utf-8")
-        print(f"[Replot Done] Updated figures and manifest in {json_path.name}!")
+        print(f"[Replot Done] Wrote figures and a copy of the results to {out_dir}")
         return
 
     print("[Gate Audit] Running 10 deterministic Phase-III contract & counterexample gates...")
@@ -934,11 +939,10 @@ def main() -> None:
         "experiment3_continuous_rotated_sde": exp3,
     }
 
-    json_path = out_dir / "p3_neurips_benchmark_results.json"
     json_txt = json.dumps(payload, indent=2, allow_nan=False)
     json_path.write_text(json_txt, encoding="utf-8")
     json_sha = hashlib.sha256(json_path.read_bytes()).hexdigest()
-    print(f"[Done] Saved {json_path.name} (SHA-256: {json_sha}) in {time.perf_counter() - t_start:.1f}s!")
+    print(f"[Done] Saved {json_path} (SHA-256: {json_sha}) in {time.perf_counter() - t_start:.1f}s!")
 
 
 if __name__ == "__main__":

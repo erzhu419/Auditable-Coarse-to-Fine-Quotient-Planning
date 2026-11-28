@@ -233,6 +233,8 @@ def higham_verify_upper_subsolution(
         return False, float("inf"), 1.0, 1.0
     z_arr = np.asarray(z_sub, dtype=float)
     gm_b = np.asarray(gm, dtype=bool)
+    if gm_b[s0]:
+        return True, float(phi_goal), 0.0, 0.0
     if (not np.all(np.isfinite(z_arr))) or float(z_arr[s0]) <= 0.0 or float(z_arr[s0]) > 1.0:
         return False, float("inf"), 1.0, 1.0
     ext = np.flatnonzero(~gm_b)
@@ -320,6 +322,8 @@ def higham_verify_lower_supersolution(
     z_in = np.asarray(z_sup, dtype=float)
     b_in = np.asarray(b_opt, dtype=float)
     gm_b = np.asarray(gm, dtype=bool)
+    if gm_b[s0]:
+        return True, float(phi_goal), 0.0, 0.0
     if (not np.all(np.isfinite(z_in))) or (not np.all(np.isfinite(b_in))):
         return False, -float("inf"), 1.0, 1.0
     ext = np.flatnonzero(~gm_b)
@@ -448,7 +452,10 @@ def verify_and_bind_deployed_policy_csr(
         Pi_csr is None or z_sub is None
         or (not sp.isspmatrix_csr(Pi_csr))
         or Pi_csr.shape != (len(ext), len(gm_b))
-        or (not np.isfinite(hi_sub))
+        or not np.isfinite(hi_sub) or not np.isfinite(phi_goal)
+        or not np.isfinite(lam) or lam <= 0.0
+        or not np.isfinite(q_min) or q_min <= 0.0
+        or not np.isfinite(eps_fl_sub) or eps_fl_sub < 0.0
     ):
         return False, float("inf"), 1.0, ""
     if len(ext) == 0:
@@ -460,7 +467,8 @@ def verify_and_bind_deployed_policy_csr(
     if not (0 <= r_s0 < len(ext) and int(ext[r_s0]) == int(s0)):
         return False, float("inf"), 1.0, ""
     z_arr = np.asarray(z_sub, dtype=float)
-    if float(z_arr[s0]) <= 0.0 or float(z_arr[s0]) > 1.0:
+    if (z_arr.shape != gm_b.shape or not np.all(np.isfinite(z_arr))
+        or not np.all(z_arr[gm_b] == 1.0) or not 0.0 < z_arr[s0] <= 1.0):
         return False, float("inf"), 1.0, ""
 
     ext_lookup = np.full(len(gm_b), -1, dtype=np.int64)
@@ -541,7 +549,7 @@ def verify_and_bind_deployed_policy_csr(
                 return False, float("inf"), 1.0, ""
             mv = float(m_vals[pos_m])
             zj = 1.0 if gm_b[col_j] else float(z_arr[col_j])
-            if mv <= 0.0 or zj <= 0.0:
+            if not np.isfinite(mv) or mv <= 0.0 or zj <= 0.0:
                 return False, float("inf"), 1.0, ""
             lp = math.log(pv)
             lm = math.log(mv)
@@ -582,6 +590,64 @@ def verify_and_bind_deployed_policy_csr(
 # ==============================================================================
 # 1. Unknown-Dynamics Non-Axis-Aligned / Curved / Unstructured Environments
 # ==============================================================================
+def _log_dirichlet_elimination(P, cost, active, boundary_z):
+    """Solve for log(z) on active states by subtraction-free state elimination.
+
+    A row's diagonal is the sum of its off-diagonal, boundary and killing
+    rates. Eliminating a state propagates those rates and the boundary payoff
+    separately, so even an almost-absorbing cycle retains its small exit.
+    """
+    n = len(active)
+    local = np.full(P.shape[0], -1, dtype=int)
+    local[active] = np.arange(n)
+    edges = [{} for _ in active]
+    incoming = [set() for _ in active]
+    sink = np.full(n, -np.inf)
+    payoff = np.full(n, -np.inf)
+    for r, state in enumerate(active):
+        kill = -math.expm1(-cost[state])
+        if kill > 0:
+            sink[r] = math.log(kill)
+        for k in range(P.indptr[state], P.indptr[state + 1]):
+            j, p = P.indices[k], P.data[k]
+            if j == state or p <= 0:
+                continue
+            w = math.log(p) - cost[state]
+            other = local[j]
+            if other >= 0:
+                edges[r][other] = np.logaddexp(edges[r].get(other, -np.inf), w)
+                incoming[other].add(r)
+            else:
+                sink[r] = np.logaddexp(sink[r], w)
+                if boundary_z[j] > 0:
+                    payoff[r] = np.logaddexp(payoff[r], w + math.log(boundary_z[j]))
+
+    diagonal = np.empty(n)
+    for k, row in enumerate(edges):
+        diagonal[k] = np.logaddexp.reduce([sink[k], *row.values()])
+        if not np.isfinite(diagonal[k]):
+            raise ArithmeticError("Reachable Dirichlet row has no exit")
+        for prev in incoming[k]:
+            prev_row = edges[prev]
+            scale = prev_row.pop(k) - diagonal[k]
+            sink[prev] = np.logaddexp(sink[prev], scale + sink[k])
+            payoff[prev] = np.logaddexp(payoff[prev], scale + payoff[k])
+            for dest, rate in row.items():
+                if dest != prev:
+                    prev_row[dest] = np.logaddexp(prev_row.get(dest, -np.inf), scale + rate)
+                    incoming[dest].add(prev)
+        for dest in row:
+            incoming[dest].discard(k)
+
+    log_z = np.empty(n)
+    for k in reversed(range(n)):
+        terms = [payoff[k]] + [rate + log_z[j] for j, rate in edges[k].items()]
+        log_z[k] = np.logaddexp.reduce(terms) - diagonal[k]
+    if np.any(~np.isfinite(log_z)):
+        raise ArithmeticError("Reachable Dirichlet value is outside the log solver's numeric range")
+    return np.minimum(log_z, 0.0)
+
+
 @dataclass
 class UnknownDiscreteKLEnv:
     """True underlying unknown KL-regularized Markov environment `(P_true, q_true, lam)`.
@@ -602,17 +668,32 @@ class UnknownDiscreteKLEnv:
     def true_desirability_and_value(self, goal_mask: np.ndarray, phi_goal: float = 0.0) -> Tuple[np.ndarray, np.ndarray]:
         """Exact ground-truth `z^*_{true}` and `V^*_{true}` on the true unknown environment (for audit only)."""
         gm = np.asarray(goal_mask, dtype=bool)
-        ext = np.flatnonzero(~gm)
-        z_true = np.ones(self.n_states, dtype=float)
-        if len(ext) > 0:
-            gam = np.exp(-self.q_true / self.lam)
-            M_true = sp.diags(gam) @ self.P_true
-            Sys = sp.eye(len(ext), format="csc") - M_true[ext, :][:, ext].tocsc()
-            rhs = np.asarray(M_true[ext, :][:, gm].sum(axis=1)).ravel()
-            z_ext = spla.spsolve(Sys, rhs)
-            z_true[ext] = np.maximum(z_ext, 0.0)
-        v_true = np.where(z_true > 0.0, float(phi_goal) - self.lam * np.log(np.maximum(z_true, 1e-300)), float("inf"))
+        z_true = gm.astype(float)
+        v_true = np.full(self.n_states, np.inf)
         v_true[gm] = float(phi_goal)
+        active = np.flatnonzero(backward_reachable_mask(self.P_true, gm) & ~gm)
+        if len(active):
+            cost = self.q_true / self.lam
+            # Near-conservative rows can wipe out killing rates in I - M.
+            # This threshold selects the arithmetic; it never truncates a rate.
+            if np.min(cost[active]) <= math.sqrt(np.finfo(float).eps):
+                difficult = active
+            else:
+                M = sp.diags(np.exp(-cost[active])) @ self.P_true[active, :]
+                system = sp.eye(len(active), format="csc") - M[:, active].tocsc()
+                rhs = np.asarray(M[:, gm].sum(axis=1)).ravel()
+                z = spla.spsolve(system, rhs)
+                if np.all(np.isfinite(z)):
+                    normal = z >= np.finfo(float).tiny
+                    z_true[active[normal]] = z[normal]
+                    v_true[active[normal]] = float(phi_goal) - self.lam * np.log(z[normal])
+                    difficult = active[~normal]
+                else:
+                    difficult = active
+            if len(difficult):
+                log_z = _log_dirichlet_elimination(self.P_true, cost, difficult, z_true)
+                z_true[difficult] = np.exp(log_z)
+                v_true[difficult] = float(phi_goal) - self.lam * log_z
         return z_true, v_true
 
     def evaluate_deployed_policy_true_cost(
@@ -630,10 +711,14 @@ class UnknownDiscreteKLEnv:
         gm = np.asarray(goal_mask, dtype=bool)
         if bool(gm[s0]):
             return float(phi_goal)
-        if Pi_ext_csr is None:
+        if Pi_ext_csr is None or not np.any(gm):
             return float("inf")
         ext = np.flatnonzero(~gm)
         s_pos = int(np.searchsorted(ext, s0))
+        if Pi_ext_csr.shape != (len(ext), self.n_states):
+            return float("inf")
+        Pi_ext_csr = Pi_ext_csr.copy()
+        Pi_ext_csr.sum_duplicates()
 
         # Check absolute continuity `Pi << P_true` and compute exact step KL `D_KL(pi_i || p^*_i)`
         P_ext = self.P_true[ext, :].tocsr()
@@ -643,16 +728,31 @@ class UnknownDiscreteKLEnv:
         c_nz = Pi_ext_csr.indices[pos_mask]
         pi_nz = Pi_ext_csr.data[pos_mask]
 
+        # Costs and admissibility at s0 depend only on positive-probability
+        # paths before the first visit to G. An unused row may be undefined.
+        adj_fwd = sp.csr_matrix(
+            (np.ones(len(pi_nz), dtype=float), (ext[r_nz], c_nz)),
+            shape=(self.n_states, self.n_states),
+        )
+        fwd_from_s0 = np.isfinite(shortest_path(adj_fwd, directed=True, unweighted=True, indices=s0))
+        used = fwd_from_s0[ext[r_nz]]
+        r_nz, c_nz, pi_nz = r_nz[used], c_nz[used], pi_nz[used]
+        row_entries = Pi_ext_csr.data[fwd_from_s0[ext[row_ids]]]
+        if np.any(~np.isfinite(row_entries)) or np.any(row_entries < 0.0):
+            return float("inf")
+        if not len(pi_nz):
+            return float("inf")
         p_true_nz = np.asarray(P_ext[r_nz, c_nz]).ravel()
         if np.any(p_true_nz <= 0.0):
             return float("inf")
 
         r_sums = np.asarray(Pi_ext_csr.sum(axis=1)).ravel()
-        valid_row = r_sums > 0.999999
-        if not bool(valid_row[s_pos]):
+        valid_row = np.abs(r_sums - 1.0) <= 1e-11
+        if not np.all(valid_row[fwd_from_s0[ext]]):
             return float("inf")
 
-        kl_vals = pi_nz * np.log(pi_nz / p_true_nz)
+        pi_nz = pi_nz / r_sums[r_nz]
+        kl_vals = pi_nz * (np.log(pi_nz) - np.log(p_true_nz))
         kl_row = np.zeros(len(ext), dtype=float)
         np.add.at(kl_row, r_nz, kl_vals)
         c_step = np.where(valid_row, self.q_true[ext] + self.lam * np.maximum(kl_row, 0.0), float("inf"))
@@ -681,12 +781,6 @@ class UnknownDiscreteKLEnv:
 
         # Restrict linear evaluation to the exact Markov support reachable forward from `s0` (states never
         # visited from `s0` cannot affect `J^{mu}(s0)` and must not pollute condition number!)
-        adj_fwd = sp.csr_matrix(
-            (np.ones(len(pi_nz), dtype=float), (ext[r_nz], c_nz)),
-            shape=(self.n_states, self.n_states),
-        )
-        fwd_from_s0 = np.isfinite(shortest_path(adj_fwd, directed=True, unweighted=True, indices=s0))
-
         prop_ext_mask = fwd_from_s0[ext] & can_reach[ext] & valid_row
         if not bool(prop_ext_mask[s_pos]):
             return float("inf")
@@ -1309,6 +1403,7 @@ class DualPACMMatrixPair:
     rho_epistemic: np.ndarray  # 1 - sum_j p_lo_{ij} in [0, 1]
     q_lo: np.ndarray
     q_hi: np.ndarray
+    P_lo: Optional[sp.csr_matrix] = None  # CP probability bounds before cost scaling.
 
 
 def build_pac_mmatrix_pair(
@@ -1404,6 +1499,7 @@ def build_pac_mmatrix_pair(
         rho_epistemic=rho_epistemic,
         q_lo=q_lo,
         q_hi=q_hi,
+        P_lo=P_lo,
     )
 
 
@@ -2440,6 +2536,8 @@ class SPQLPlanner:
                 "materialization_ms": 0.0,
                 "query_ms": q_ms,
                 "bounds_only_query_ms": q_ms,
+                "certified_bounds_stage_ms": q_ms,
+                "interface_candidate_stage_ms": 0.0,
                 "certified": True,
                 "sound_enclosure": True,
                 "within_eps_tol": True,
@@ -2493,6 +2591,8 @@ class SPQLPlanner:
                 "materialization_ms": 0.0,
                 "query_ms": q_ms,
                 "bounds_only_query_ms": q_ms,
+                "certified_bounds_stage_ms": q_ms,
+                "interface_candidate_stage_ms": 0.0,
                 "certified": False,
                 "sound_enclosure": bool(opt_ok),
                 "within_eps_tol": False,
@@ -2659,7 +2759,7 @@ class SPQLPlanner:
 
         op_rhs = (self.pes_chan.local_lu_rhs_solves + self.opt_chan.local_lu_rhs_solves) - rhs0
         interface_stage_ms = 1000.0 * (time.perf_counter() - t0)
-        bounds_only_ms = interface_stage_ms
+        cert_bounds_stage_ms = None
 
         t_mat0 = time.perf_counter()
         rhs_mat0 = self.pes_chan.local_lu_rhs_solves + self.opt_chan.local_lu_rhs_solves
@@ -2779,10 +2879,7 @@ class SPQLPlanner:
         room_refac = int((self.pes_chan.room_lu_refactorizations + self.opt_chan.room_lu_refactorizations) - refac0)
         mat_ms = 1000.0 * (time.perf_counter() - t_mat0)
         full_q_ms = 1000.0 * (time.perf_counter() - t0)
-        if not materialize_policy:
-            bounds_only_ms = full_q_ms
-            cert_bounds_stage_ms = full_q_ms
-        elif not ("cert_bounds_stage_ms" in locals()):
+        if cert_bounds_stage_ms is None:
             cert_bounds_stage_ms = full_q_ms
 
         finite_upper = bool(np.isfinite(hi_c))
@@ -2810,7 +2907,7 @@ class SPQLPlanner:
             "query_ms": full_q_ms,
             "interface_candidate_stage_ms": interface_stage_ms,
             "certified_bounds_stage_ms": cert_bounds_stage_ms,
-            "bounds_only_query_ms": bounds_only_ms,
+            "bounds_only_query_ms": cert_bounds_stage_ms,
             "certified": finite_certified,
             "sound_enclosure": sound_enclosure,
             "within_eps_tol": bool(finite_certified and (hi_c - lo_c <= self.eps_tol)),

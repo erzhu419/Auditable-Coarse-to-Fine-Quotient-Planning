@@ -20,6 +20,19 @@ FROZEN_P3_V3_BENCHMARK_JSON_SHA256 = "0ffd1d3a0a22a25c6c1a9a70413c64ed267864905e
 FROZEN_P3_V4_BENCHMARK_JSON_SHA256 = "798a9e2b300a1d3898b55a91f00b771f4d3487c9b5322abfbddb61417cbd6580"
 
 
+def phase3_output_directory(stage: str, output_dir: Path | None = None) -> Path:
+    """Keep reproduction artifacts separate from the published ledgers and figures."""
+    release_dir = Path(__file__).resolve().parent
+    directory = (output_dir or release_dir.parent / ".tmp" / f"{stage}_reproduction").resolve()
+    if directory == release_dir:
+        raise ValueError("Select a reproduction directory separate from the release artifacts")
+    directory.mkdir(parents=True, exist_ok=True)
+    for entry in directory.glob("p3_*"):
+        if entry.is_symlink() or (entry.is_file() and entry.stat().st_nlink > 1):
+            raise ValueError(f"Linked reproduction output could overwrite another artifact: {entry}")
+    return directory
+
+
 def verify_phase3_v1_archive_untouched() -> Dict[str, object]:
     """Verify exploratory Phase-III v1 benchmark archive remains byte-identical (`R333-D03`)."""
     p3_dir = Path(__file__).resolve().parent

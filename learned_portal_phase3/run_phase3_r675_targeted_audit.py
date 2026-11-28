@@ -46,7 +46,6 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
-import scipy.sparse as sp
 from scipy import stats as sp_stats
 
 from green_response import collect_runtime_metadata, enforce_single_thread_env, paired_stats
@@ -55,6 +54,7 @@ from quotient_phase2.m233_sisc_subportal_quadtree import verify_m233_original_ar
 from quotient_phase2.verify_m232_release import _strict_json_loads, verify_all_10_frozen_jsons
 
 from learned_portal_phase3 import (
+    phase3_output_directory,
     compute_phase3_manifest,
     verify_phase1_and_phase2_untouched,
     verify_phase3_v1_archive_untouched,
@@ -88,6 +88,12 @@ from learned_portal_phase3.spql_core import (
 )
 
 
+from learned_portal_phase3.e3_policy_comparison import (
+    compare_event, csr_id, goal_id, index_events, load_dump, prior_dumps, read_csr,
+    require_inputs, require_old_event,
+)
+
+
 FROZEN_M233_CLEAN_SHA256 = "73101638ce563ca9f33049e2ffef50c16218ad097785c031ecd19d3d99a7e678"
 
 
@@ -106,26 +112,6 @@ def _goal_sha1(gm: np.ndarray) -> str:
     return hashlib.sha1(idx.tobytes()).hexdigest()[:12]
 
 
-def _legacy_v3_policy_csr(M_csr: sp.csr_matrix, z_vec: np.ndarray, gm: np.ndarray) -> sp.csr_matrix:
-    """Exact `v3` (`commit 67532c9`) policy constructor used strictly to test `||Pi_v4 - Pi_v3||_inf` in E3."""
-    ext = np.flatnonzero(~gm)
-    M_ext = M_csr[ext, :].tocsr()
-    row_ids = np.repeat(np.arange(len(ext), dtype=np.int64), np.diff(M_ext.indptr))
-    z_pos = np.maximum(np.asarray(z_vec, dtype=float), 0.0)
-    z_nb = z_pos[M_ext.indices]
-    rmax = np.zeros(len(ext), dtype=float)
-    np.maximum.at(rmax, row_ids, z_nb)
-    has_pos = rmax > 0.0
-    sc = np.where(has_pos[row_ids], z_nb / np.maximum(rmax[row_ids], 1e-300), 1.0)
-    w_dat = M_ext.data * sc
-    W_mat = sp.csr_matrix((w_dat, M_ext.indices.copy(), M_ext.indptr.copy()), shape=M_ext.shape)
-    w_sum = np.asarray(W_mat.sum(axis=1)).ravel()
-    pi_dat = np.where((w_sum > 0.0)[row_ids], w_dat / np.maximum(w_sum[row_ids], 1e-300), 0.0)
-    out = sp.csr_matrix((pi_dat, M_ext.indices.copy(), M_ext.indptr.copy()), shape=M_ext.shape)
-    out.sort_indices()
-    return out
-
-
 def _exact_signflip_two_sided_p(diffs: np.ndarray) -> float:
     arr = np.asarray(diffs, dtype=float)
     n = len(arr)
@@ -136,6 +122,22 @@ def _exact_signflip_two_sided_p(diffs: np.ndarray) -> float:
         if abs(float(np.mean(signs * arr))) >= obs - 1e-15:
             cnt += 1
     return float(cnt) / float(1 << n)
+
+
+def _all_surrogate_ordered(events, pac_arm, ce_arm, expected_count, atol):
+    def bounds(arm, field):
+        rows = [e for e in events if e["method_id"] == arm]
+        by_task = {(e["seed"], e["task_index"], e["start_state"], e["goal_sha1"]): e[field] for e in rows}
+        if len(rows) != len(by_task):
+            raise ValueError(f"Duplicate surrogate comparison for {arm}")
+        return by_task
+
+    pac = bounds(pac_arm, "hi")
+    ce = bounds(ce_arm, "posterior_pac_upper_bound_on_policy")
+    return (len(pac) == expected_count and bool(pac) and pac.keys() == ce.keys()
+            and all(pac[k] is not None and ce[k] is not None
+                    and np.isfinite(pac[k]) and np.isfinite(ce[k])
+                    and pac[k] <= ce[k] + atol for k in pac))
 
 
 def run_e1_240k_full_ledger_and_v2_reanalysis(p3_dir: Path, seeds: List[int]) -> dict:
@@ -246,8 +248,10 @@ def run_e1_240k_full_ledger_and_v2_reanalysis(p3_dir: Path, seeds: List[int]) ->
                     "posterior_pac_upper_bound_on_policy": ce_post_hi,
                     "pac_four_ineq_violation_zero_slack": pac_viol,
                     "ce_overoptimism_violation": ce_opt_viol,
+                    "pred_val": rr.get("pred_val"),
+                    "global_lu_rhs": int(rr.get("global_lu_rhs", 0)),
                     "query_ms": float(rr["query_ms"]),
-                    "native_operational_lu_rhs": int(rr.get("operational_lu_rhs", rr.get("global_lu_rhs", 0))),
+                    "native_operational_lu_rhs": int(rr.get("operational_lu_rhs", 0)),
                     "native_materialization_lu_rhs": int(rr.get("materialization_lu_rhs", 0)),
                     "room_lu_refactorizations": int(rr.get("room_lu_refactorizations", 0)),
                     "global_fallback_lu_calls": int(rr.get("global_fallback_lu_calls", 0)),
@@ -318,12 +322,9 @@ def run_e1_240k_full_ledger_and_v2_reanalysis(p3_dir: Path, seeds: List[int]) ->
     s_ce = _sum_arm_e1("PlugIn_CE_Passive")
     s_uc = _sum_arm_e1("Uncompressed_PAC_Passive")
     s_sp = _sum_arm_e1("SPQL_Passive")
-    uc_hi_rows = [e["hi"] for e in events_240k if e["method_id"] == "Uncompressed_PAC_Passive"]
-    ce_hi_rows = [e["posterior_pac_upper_bound_on_policy"] for e in events_240k if e["method_id"] == "PlugIn_CE_Passive"]
-    variational_dom_holds = all(
-        (ce_h is None) or (uc_h <= ce_h + 1e-9)
-        for uc_h, ce_h in zip(uc_hi_rows, ce_hi_rows)
-    )
+    uc_hi_rows = [r["hi"] for r in events_240k if r["method_id"] == "Uncompressed_PAC_Passive"]
+    variational_dom_holds = _all_surrogate_ordered(events_240k, "Uncompressed_PAC_Passive",
+                                                   "PlugIn_CE_Passive", len(seeds)*16, 1e-9)
 
     return {
         "provenance": "Frozen_v2_Reanalysis_Plus_Complete_240k_v4_PerTask_Ledger",
@@ -464,7 +465,7 @@ def run_repaired_block_e2_linear_mf_and_4level(seeds: List[int], n_steps: int = 
 
                 full_q_ms_list.append(float(rr["query_ms"]))
                 bnd_q_ms_list.append(float(rr.get("bounds_only_query_ms", rr["query_ms"])))
-                op_rhs_list.append(int(rr.get("operational_lu_rhs", rr.get("global_lu_rhs", 0))))
+                op_rhs_list.append(int(rr.get("operational_lu_rhs", 0)))
                 mat_rhs_list.append(int(rr.get("materialization_lu_rhs", 0)))
                 room_refac_list.append(int(rr.get("room_lu_refactorizations", 0)))
                 global_fb_list.append(int(rr.get("global_fallback_lu_calls", 0)))
@@ -524,9 +525,13 @@ def run_repaired_block_e2_linear_mf_and_4level(seeds: List[int], n_steps: int = 
                     "bicgstab_pes_rel_res": float(rr.get("bicgstab_pes_rel_res", 0.0)),
                     "pac_violation_zero_slack": p_viol,
                     "ce_overoptimism_violation": o_viol,
+                    "pred_val": rr.get("pred_val"),
+                    "global_lu_rhs": int(rr.get("global_lu_rhs", 0)),
+                    "interface_candidate_stage_ms": rr.get("interface_candidate_stage_ms"),
+                    "certified_bounds_stage_ms": rr.get("certified_bounds_stage_ms"),
                     "bounds_only_query_ms": float(rr.get("bounds_only_query_ms", rr["query_ms"])),
                     "full_policy_query_ms": float(rr["query_ms"]),
-                    "native_operational_room_lu_rhs": int(rr.get("operational_lu_rhs", rr.get("global_lu_rhs", 0))),
+                    "native_operational_room_lu_rhs": int(rr.get("operational_lu_rhs", 0)),
                     "native_materialization_room_lu_rhs": int(rr.get("materialization_lu_rhs", 0)),
                     "room_lu_refactorizations": int(rr.get("room_lu_refactorizations", 0)),
                     "global_fallback_lu_calls": int(rr.get("global_fallback_lu_calls", 0)),
@@ -549,6 +554,10 @@ def run_repaired_block_e2_linear_mf_and_4level(seeds: List[int], n_steps: int = 
             online_bnd_sum = float(np.sum(bnd_q_ms_list))
             op_rhs_sum = int(sum(op_rhs_list))
             mat_rhs_sum = int(sum(mat_rhs_list))
+            arm_events = per_task_by_arm[arm_nm]
+            def stage_total(field):
+                values = [e[field] for e in arm_events]
+                return sum(values) if all(v is not None for v in values) else None
             arm_data[arm_nm] = {
                 "exec_rank": int(rk),
                 "attempts": int(n_goals),
@@ -562,6 +571,9 @@ def run_repaired_block_e2_linear_mf_and_4level(seeds: List[int], n_steps: int = 
                 "bicgstab_nonzero_info_count": int(bcg_nonzero_info),
                 "offline_init_ms": init_ms,
                 "online_24q_bounds_only_ms": online_bnd_sum,
+                "online_24q_interface_candidate_stage_ms": stage_total("interface_candidate_stage_ms"),
+                "online_24q_certified_bounds_stage_ms": stage_total("certified_bounds_stage_ms"),
+                "online_global_lu_rhs": sum(e["global_lu_rhs"] for e in arm_events),
                 "online_24q_full_policy_ms": online_full_sum,
                 "lifecycle_init_plus_24q_full_policy_ms": init_ms + online_full_sum,
                 "init_native_room_lu_rhs": init_native_rhs,
@@ -635,6 +647,7 @@ def run_repaired_block_e2_linear_mf_and_4level(seeds: List[int], n_steps: int = 
             "max_certified_width": float(np.max(w_maxs)) if w_maxs else None,
             "mean_posterior_pac_upper_bound_on_policy": float(np.mean(post_bs)) if post_bs else None,
             "mean_offline_init_ms": float(np.mean([r["arms"][a_nm]["offline_init_ms"] for r in records])),
+            "mean_online_global_lu_rhs": float(np.mean([r["arms"][a_nm]["online_global_lu_rhs"] for r in records])),
             "mean_online_24q_bounds_only_ms": float(np.mean([r["arms"][a_nm]["online_24q_bounds_only_ms"] for r in records])),
             "mean_online_24q_full_policy_ms": float(np.mean([r["arms"][a_nm]["online_24q_full_policy_ms"] for r in records])),
             "mean_lifecycle_24q_full_policy_ms": float(np.mean([r["arms"][a_nm]["lifecycle_init_plus_24q_full_policy_ms"] for r in records])),
@@ -665,11 +678,8 @@ def run_repaired_block_e2_linear_mf_and_4level(seeds: List[int], n_steps: int = 
     # Check variational dominance `U_full <= J_bar(pi_CE)` across all 192 E2 tasks!
     uc_evs = {(e["seed"], e["task_index"]): e for e in event_ledger if e["method_id"] == "Uncompressed_SpectralSchur_PAC"}
     ce_evs = {(e["seed"], e["task_index"]): e for e in event_ledger if e["method_id"] == "PlugIn_CE_FullGraph"}
-    var_holds_192 = all(
-        (ce_evs[k]["posterior_pac_upper_bound_on_policy"] is None)
-        or (uc_evs[k]["hi"] <= ce_evs[k]["posterior_pac_upper_bound_on_policy"] + 1e-8)
-        for k in uc_evs
-    )
+    var_holds_192 = _all_surrogate_ordered(event_ledger, "Uncompressed_SpectralSchur_PAC",
+                                           "PlugIn_CE_FullGraph", len(seeds)*n_goals, 1e-8)
     ce_finite_post = [ce_evs[k]["posterior_pac_upper_bound_on_policy"] for k in ce_evs if ce_evs[k]["posterior_pac_upper_bound_on_policy"] is not None]
     uc_hi_all = [uc_evs[k]["hi"] for k in uc_evs]
     sp_hi_all = [e["hi"] for e in event_ledger if e["method_id"] == "SPQL"]
@@ -725,17 +735,20 @@ def run_repaired_block_e2_linear_mf_and_4level(seeds: List[int], n_steps: int = 
 
 
 def audit_e3_policy_fingerprints_and_selective_rerun(p3_dir: Path, seeds: List[int]) -> dict:
-    """Follows GPT6 R675 Section 9.3 strictly:
-      - Recomputes all `96 x 7 = 672` landmark policies under `v4` (`outward Higham + log-scaled CSR + binding`);
-      - Checks `||Pi_v4 - Pi_v3||_inf` on every single task against the exact `v3` policy formula;
-      - Re-evaluates continuous rollouts ONLY if `||Pi_v4 - Pi_v3||_inf > 1e-12`; otherwise preserves the exact
-        verified `v3` rollout result (`never re-simulating unchanged policies to shop for p-values!`).
-    """
+    """Compare the delivered policies to the original V3 planner before reusing a rollout."""
+    with prior_dumps(seeds) as (directory, archived):
+        return _audit_e3_with_prior(p3_dir, seeds, directory, archived)
+
+
+def _audit_e3_with_prior(p3_dir, seeds, directory, archived):
     v3_data = json.loads((p3_dir / "p3_v3_r747_delivery_verified_results.json").read_text(encoding="utf-8"))
     v3_e3 = v3_data["block_e3_continuous_surrogate_7controls"]
     v3_ev_map = {(int(e["seed"]), int(e["task_index"]), str(e["method_id"])): e for e in v3_e3["task_events"]}
     v3_seed_map = {int(r["seed"]): r for r in v3_e3["per_seed"]}
 
+    prior_dynamics = directory.parent/"old/learned_portal_phase3/continuous_manifold_spql.py"
+    current_dynamics = Path(__file__).with_name("continuous_manifold_spql.py")
+    same_rollout_implementation = prior_dynamics.read_bytes() == current_dynamics.read_bytes()
     m_keys = (
         "SPQL",
         "SPQL_UniformPortals",
@@ -746,7 +759,8 @@ def audit_e3_policy_fingerprints_and_selective_rerun(p3_dir: Path, seeds: List[i
         "Sampled_Desirability_TD",
     )
     recomputed_rollout_count = 0
-    max_pi_diff_overall = 0.0
+    max_pi_diff_overall = None
+    max_row_diff_overall = None
     updated_events: List[dict] = []
     per_seed_out: List[dict] = []
 
@@ -787,6 +801,11 @@ def audit_e3_policy_fingerprints_and_selective_rerun(p3_dir: Path, seeds: List[i
         mfq_pl = ModelFreeGoalSoftQPlanner(ds, n_sweeps=14, seed=seed + 777)
         spql_uni = SPQLPlanner(ds, delta=0.05, eps_tol=0.05, max_rooms=6, max_degree_bound=None, all_portals_uniform_weight=1.0)
         lm_running_q = np.where(ds.visit_counts > 0, (ds.cost_sums / np.maximum(ds.visit_counts, 1)) / world.dt, 0.6)
+
+        previous_arrays, previous_events = load_dump(directory, seed)
+        previous_archive = index_events([event for event in archived if event["seed"] == seed], seed)
+        require_inputs(previous_arrays, dict(X_curr=X_curr, X_next=X_next, q_obs=q_obs,
+            landmarks=landmarks, landmark_running_q=lm_running_q), seed)
 
         planners = {
             "SPQL": spql,
@@ -831,22 +850,23 @@ def audit_e3_policy_fingerprints_and_selective_rerun(p3_dir: Path, seeds: List[i
                     raise RuntimeError(f"E3 v4 {m_nm} returned None policy on seed={seed} task={t_idx}")
                 prev_ev = v3_ev_map[(int(seed), int(t_idx), m_nm)]
 
-                # Fail-closed policy comparison (`R7A-03`): never silently default missing old CSR to diff=0.0!
-                # Actual cross-commit CSR comparison across all 672 E3 queries is performed in `run_phase3_r7a_sidecar_audit.py`.
-                same_status = (
-                    bool(r_dict.get("fallback_used", False)) == bool(prev_ev["fallback_used"])
-                    and str(r_dict.get("fallback_method", None)) == str(prev_ev["fallback_method"])
-                )
-                pi_diff: Any = None
-                comp_status = "comparison_unavailable_without_prior_csr"
-                if "z_sub_full" in r_dict and r_dict["z_sub_full"] is not None:
-                    Pi_leg = _legacy_v3_policy_csr(spql.pac_pair.M_pes, r_dict["z_sub_full"], gm)
-                    diff_mat = Pi_v4 - Pi_leg
-                    pi_diff = float(np.max(np.abs(diff_mat.data))) if diff_mat.nnz > 0 else 0.0
-                    comp_status = "same_v4_z_normalization_formula_only"
-                    max_pi_diff_overall = max(max_pi_diff_overall, pi_diff)
+                previous = previous_events[t_idx, m_nm]
+                require_old_event(previous, previous_archive[t_idx, m_nm])
+                if prev_ev != previous_archive[t_idx, m_nm]:
+                    raise ValueError(f"Local rollout ledger differs from frozen v3 on {seed}/{t_idx}/{m_nm}")
+                current = dict(start_landmark=s_id, goal_landmark_count=int(gm.sum()),
+                    goal_sha256=goal_id(gm), goal_center=g_ctr.tolist(),
+                    fallback_used=bool(r_dict.get("fallback_used", False)),
+                    fallback_method=r_dict.get("fallback_method"), policy_present=True)
+                previous_pi = read_csr(previous_arrays, t_idx, m_nm)
+                comparison = compare_event(previous, current, previous_pi, Pi_v4)
+                pi_diff = comparison["max_abs_entry_diff"]
+                row_diff = comparison["matrix_infinity_norm_diff"]
+                if pi_diff is not None:
+                    max_pi_diff_overall = max(pi_diff, max_pi_diff_overall or 0.)
+                    max_row_diff_overall = max(row_diff, max_row_diff_overall or 0.)
 
-                if (not same_status) or (pi_diff is None) or (float(pi_diff) > 1e-12):
+                if not comparison["equivalent"] or not same_rollout_implementation:
                     recomputed_rollout_count += 1
                     ctrl = make_continuous_control_from_landmark_policy(
                         landmarks, tree, Pi_v4, gm, g_ctr, world.dt, world.u_clip,
@@ -880,13 +900,22 @@ def audit_e3_policy_fingerprints_and_selective_rerun(p3_dir: Path, seeds: List[i
 
                 updated_events.append({
                     **prev_ev,
+                    **{k:current[k] for k in ("start_landmark", "goal_landmark_count", "policy_present")},
+                    "goal_sha256":current["goal_sha256"],
+                    "control_origin": "landmark_policy_exact_portal_fallback" if fb_u else "landmark_policy_direct",
+                    "fallback_ms":float(r_dict.get("fallback_ms",0.0)),
+                    "materialization_ms":float(r_dict.get("materialization_ms",0.0)),
+                    "active_dofs":int(r_dict.get("active_dofs",0)),
                     "solver_status": str(r_dict.get("solver_status", "delivered_landmark_policy")),
                     "finite_certificate": bool(r_dict.get("certified", False)),
                     "policy_sha256": str(r_dict.get("policy_sha256", "")),
                     "fallback_used": fb_u,
                     "fallback_method": r_dict.get("fallback_method", None),
                     "global_fallback_lu_calls": int(r_dict.get("global_fallback_lu_calls", 0)),
-                    "comparison_status": comp_status,
+                    "comparison_status": comparison["comparison_status"],
+                    "prior_raw_csr_sha256": csr_id(previous_pi),
+                    "new_raw_csr_sha256": csr_id(Pi_v4),
+                    "matrix_infinity_norm_diff_vs_v3": row_diff,
                     "max_abs_pi_diff_vs_v3": pi_diff,
                     "rollout_recomputed_in_v4": roll_recomp,
                     "mean_rollout_cost": mean_c,
@@ -925,12 +954,12 @@ def audit_e3_policy_fingerprints_and_selective_rerun(p3_dir: Path, seeds: List[i
         kq = np.array([r["methods"][k]["mean_query_ms"] for r in per_seed_out], dtype=float)
         klife = np.array([r["methods"][k]["lifecycle_init_plus_12q_ms"] for r in per_seed_out], dtype=float)
         summary[k] = {
-            "total_goals": 96,
-            "total_rollouts": 7680,
+            "total_goals": 12*len(seeds),
+            "total_rollouts": 80*12*len(seeds),
             "policy_present_count": int(sum(r["methods"][k]["policy_present_count"] for r in per_seed_out)),
             "numerical_fallback_count": int(sum(r["methods"][k]["numerical_fallback_count"] for r in per_seed_out)),
             "silent_zero_control_fallback_count": 0,
-            "collision_audited_goal_count": 96,
+            "collision_audited_goal_count": 12*len(seeds),
             "mean_closed_loop_cost": float(np.mean(kc)),
             "mean_success_rate_pct": 100.0 * float(np.mean(ks)),
             "mean_query_ms": float(np.mean(kq)),
@@ -954,11 +983,13 @@ def audit_e3_policy_fingerprints_and_selective_rerun(p3_dir: Path, seeds: List[i
         "policy_fingerprint_audit": {
             "total_goal_method_pairs_checked": len(updated_events),
             "recomputed_rollout_pairs_due_to_policy_change": int(recomputed_rollout_count),
-            "max_abs_pi_diff_vs_v3_formula": float(max_pi_diff_overall),
+            "controller_and_simulator_source_unchanged": same_rollout_implementation,
+            "max_abs_pi_diff_vs_v3": max_pi_diff_overall,
+            "max_matrix_infinity_norm_diff_vs_v3": max_row_diff_overall,
         },
-        "total_explore_transitions_audited": int(v3_e3["total_explore_transitions_audited"]),
-        "total_explore_blocked_segments_sampled20": int(v3_e3["total_explore_blocked_segments_sampled20"]),
-        "total_explore_exact_chord_hits": int(v3_e3["total_explore_exact_chord_hits"]),
+        "total_explore_transitions_audited": sum(int(r["actual_explore_steps"]) for r in per_seed_out),
+        "total_explore_blocked_segments_sampled20": sum(int(r["explore_blocked_segments"]) for r in per_seed_out),
+        "total_explore_exact_chord_hits": sum(int(r["explore_exact_chord_hits"]) for r in per_seed_out),
         "summary": summary,
         "per_seed": per_seed_out,
         "task_events": updated_events,
@@ -1050,7 +1081,10 @@ def _generate_v4_figures(e1_blk: dict, e2_blk: dict, e3_blk: dict, out_dir: Path
     ax.bar(x3, onlines_s, bottom=inits_s, width=0.5, color=["#2980b9", "#8e44ad", "#d35400", "#16a085"], label="24 Matched Full-Policy Queries (s)")
     for idx_i, (tot_v, rv, fbv) in enumerate(zip(np.array(inits_s) + np.array(onlines_s), rhs_3d, fb_3d)):
         fb_str = f" + {fbv:.1f} glb" if fbv > 0 else ""
-        ax.text(idx_i, tot_v + 0.06, f"{tot_v:.2f}s\n({rv:.0f} rmRHS{fb_str})", ha="center", va="bottom", fontsize=7.2, fontweight="bold")
+        work = f"{rv:.0f} rmRHS{fb_str}"
+        if arms_3d[idx_i] == "PlugIn_CE_FullGraph":
+            work = f"{e2_blk['arms_summary'][arms_3d[idx_i]]['mean_online_global_lu_rhs']:.0f} global RHS"
+        ax.text(idx_i, tot_v + 0.06, f"{tot_v:.2f}s\n({work})", ha="center", va="bottom", fontsize=7.2, fontweight="bold")
     ax.set_xticks(x3)
     ax.set_xticklabels(lbls_3d, fontsize=7.8)
     ax.set_ylabel("Single-Worker Lifecycle Time (s)")
@@ -1080,10 +1114,11 @@ def _generate_v4_figures(e1_blk: dict, e2_blk: dict, e3_blk: dict, out_dir: Path
     plt.close(fig)
 
 
-def run_phase3_r675_targeted_audit_suite(gates_only: bool = False) -> dict:
+def run_phase3_r675_targeted_audit_suite(gates_only: bool = False, output_dir: Path | None = None) -> dict:
     t0 = time.perf_counter()
     enforce_single_thread_env()
     p3_dir = Path(__file__).resolve().parent
+    out_dir = phase3_output_directory("r675", output_dir)
     p2_dir = ROOT / "quotient_phase2"
 
     def _verify_all_immutable() -> dict:
@@ -1126,7 +1161,7 @@ def run_phase3_r675_targeted_audit_suite(gates_only: bool = False) -> dict:
     print("[Phase-III v4 Block E3] Auditing 96x7 continuous landmark policy fingerprints vs. frozen v3 (Seeds 6000..6007)...")
     e3_blk = audit_e3_policy_fingerprints_and_selective_rerun(p3_dir, seeds=list(range(6000, 6008)))
 
-    _generate_v4_figures(e1_blk, e2_blk, e3_blk, p3_dir)
+    _generate_v4_figures(e1_blk, e2_blk, e3_blk, out_dir)
     immutable_post = _verify_all_immutable()
     assert immutable_pre == immutable_post
 
@@ -1157,12 +1192,12 @@ def run_phase3_r675_targeted_audit_suite(gates_only: bool = False) -> dict:
         "block_e3_continuous_surrogate_fingerprint_verified": e3_blk,
     })
 
-    out_json = p3_dir / "p3_v4_r675_verified_results.json"
+    out_json = out_dir / "p3_v4_r675_verified_results.json"
     txt = json.dumps(payload, indent=2, allow_nan=False)
     _ = _strict_json_loads(txt)
     out_json.write_text(txt, encoding="utf-8")
     print(
-        f"[Phase-III v4 DONE] Wrote {out_json.name} in {payload['elapsed_wall_s']:.1f}s | "
+        f"[Phase-III v4 DONE] Wrote {out_json} in {payload['elapsed_wall_s']:.1f}s | "
         f"Gates20/20=True | ZeroSlackPACViol={tot_pac_viols} | "
         f"E3_RecomputedRollouts={e3_blk['policy_fingerprint_audit']['recomputed_rollout_pairs_due_to_policy_change']}"
     )
@@ -1172,9 +1207,8 @@ def run_phase3_r675_targeted_audit_suite(gates_only: bool = False) -> dict:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--gates-only", action="store_true")
+    parser.add_argument("--output-dir", type=Path, help="Directory for the reproduced JSON and figures")
     args = parser.parse_args()
+    res = run_phase3_r675_targeted_audit_suite(gates_only=args.gates_only, output_dir=args.output_dir)
     if args.gates_only:
-        res = run_phase3_r675_targeted_audit_suite(gates_only=True)
         print(json.dumps(res, indent=2))
-    else:
-        run_phase3_r675_targeted_audit_suite(gates_only=False)

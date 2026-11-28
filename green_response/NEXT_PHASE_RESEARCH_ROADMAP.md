@@ -1,5 +1,7 @@
 # Phase-II Research Specification & Decision Ledger (v7, `M2.0`–`M2.3.3` SISC Manuscript Upgrade): Seam-Free Sub-Portal PoU-Quadtree Coarsening & Verified Discrete KL-LMDP Planning
 
+> Historical roadmap from the first M2.3.3 campaign. The later clean replication measured 28.80% savings across the twelve static confirmation maps (11 faster). Use the [current SISC results](../quotient_phase2/README.md) for the paper, including the continual-update result.
+
 > **Phase-I Frozen Anchor**: `green_response/` is locked byte-for-byte at `package_py_sha256 = "271ac8df9caaa8af8aaa5af9d35d76578632b554d5071fe8fe74065ca0dc0c2d"` (`0` edits).  
 > **Phase-II Non-Destructive Provenance**: All 10 historical campaign JSONs (`m20..m232`, including `ec3c58f` `m232_contract_and_ring_closure.json` `06b44156...` and `m232_targeted_replay_results.json` `9979d61a...`, plus `m232_release_verification_report.json` `0786ce5e...`) remain **100% byte-untouched**. Milestone `M2.3.3` (`phase2_package_py_sha256 = "3dcf3834cc70af209c83afd3c3a494fb7dc0d0cddd17b1e2d1250ff8d65dc23c"`) adds isolated module `quotient_phase2/m233_sisc_subportal_quadtree.py`, mechanism figure `m233_fig1_mechanism_and_counterexamples.png`, SISC campaign record `m233_sisc_unlock_results.json` (`339e723f...`) & `m233_sisc_unlock_summary.png`, and upgraded manuscript `quotient_phase2/MANUSCRIPT_CORE_DRAFT.md`.
 

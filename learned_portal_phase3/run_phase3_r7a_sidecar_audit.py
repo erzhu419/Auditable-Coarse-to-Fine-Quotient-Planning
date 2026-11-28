@@ -27,11 +27,8 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
-import subprocess
 import sys
-import tempfile
 import time
-from typing import Any, Dict, List
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
@@ -41,7 +38,6 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
-import scipy.sparse as sp
 
 from green_response import collect_runtime_metadata, enforce_single_thread_env
 from quotient_phase2.m232_final_closure import _sanitize_for_strict_json
@@ -49,6 +45,7 @@ from quotient_phase2.m233_sisc_subportal_quadtree import verify_m233_original_ar
 from quotient_phase2.verify_m232_release import _strict_json_loads, verify_all_10_frozen_jsons
 
 from learned_portal_phase3 import (
+    phase3_output_directory,
     compute_phase3_manifest,
     verify_phase1_and_phase2_untouched,
     verify_phase3_v1_archive_untouched,
@@ -64,7 +61,6 @@ from learned_portal_phase3.baselines_and_contracts import (
     run_phase3_21_contract_gates,
 )
 from learned_portal_phase3.spql_core import (
-    SPQLPlanner,
     build_curved_3d_cave_env,
     build_rotated_multiroom_2d_env,
     collect_exploration_trajectories,
@@ -73,216 +69,165 @@ from learned_portal_phase3.spql_core import (
 
 
 FROZEN_M233_CLEAN_SHA256 = "73101638ce563ca9f33049e2ffef50c16218ad097785c031ecd19d3d99a7e678"
-OLD_V3_COMMIT = "67532c91d6c43a32d0f4d0277ad28cd059e5a28b"
+
+from learned_portal_phase3.run_phase3_r675_targeted_audit import _goal_sha1
+from learned_portal_phase3.e3_policy_comparison import run_actual_cross_commit_e3_policy_comparison
 
 
-_E3_DUMP_WORKER_CODE = r"""
-import os
-for _k in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS", "VECLIB_MAXIMUM_THREADS", "NUMEXPR_NUM_THREADS"):
-    os.environ[_k] = "1"
-import hashlib
-import json
-from pathlib import Path
-import sys
-import numpy as np
-import scipy.sparse as sp
+# SHA-256 of sorted relative path + ":" + file SHA-256 + newline at 5be3f35.
+FROZEN_47_MANIFEST_SHA256 = "388f57c5e253d1144b6c4f12192cf488b861bc846e9ea74708a2be678b655c69"
+FROZEN_ARCHIVE_NAMES = {
+    "green_response": (
+        "audit_closure_results.json",
+        "exp1_results.json",
+        "exp2_results.json",
+        "exp3_results.json",
+        "exp4_acquisition_tapes.json",
+        "exp4_results.json",
+        "exp5_results.json",
+    ),
+    "quotient_phase2": (
+        "m20_contract_results.json",
+        "m21_ablation_results.json",
+        "m21_economic_gate_verdict.json",
+        "m21_post_audit_closure.json",
+        "m22_pilot_results.json",
+        "m231_audit_closure.json",
+        "m231_fair_ablation_results.json",
+        "m232_contract_and_ring_closure.json",
+        "m232_release_verification_report.json",
+        "m232_targeted_replay_results.json",
+        "m233_clean_isolation_replication.json",
+        "m233_sisc_unlock_results.json",
+        "m23_m24_3d_results.json",
+    ),
+    "learned_portal_phase3": (
+        "p3_neurips_benchmark_results.json", "p3_v2_verified_benchmark_results.json",
+        "p3_v3_r747_delivery_verified_results.json", "p3_v4_r675_verified_results.json",
+    ),
+}
 
-repo_dir = Path(sys.argv[1]).resolve()
-out_dir = Path(sys.argv[2]).resolve()
-sys.path.insert(0, str(repo_dir))
 
-from learned_portal_phase3.spql_core import SPQLPlanner, sample_unbiased_bounded_cost
-from learned_portal_phase3.baselines_and_contracts import (
-    LowRankSRLinearRLPlanner,
-    ModelFreeGoalSoftQPlanner,
-    PlugInCEFullGraphPlanner,
-    ScalarBottleneckOptionPlanner,
-    UncompressedSpectralSchurPACPlanner,
-)
-from learned_portal_phase3.continuous_manifold_spql import (
-    RotatedContinuousDiffusionWorld,
-    build_voronoi_quotient_from_continuous_trajectories,
-)
+def _verify_frozen_roster(root):
+    paths = [path for name in ("green_response", "quotient_phase2") for path in (root / name).glob("*.py")]
+    paths.extend(root / name / file for name, files in FROZEN_ARCHIVE_NAMES.items() for file in files)
+    hashes = {path.relative_to(root).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+              for path in sorted(paths)}
+    digest = hashlib.sha256("".join(f"{name}:{sha}\n" for name, sha in hashes.items()).encode()).hexdigest()
+    if len(hashes) != 47 or digest != FROZEN_47_MANIFEST_SHA256:
+        raise ValueError(f"Frozen 47-file manifest mismatch: {len(hashes)} files, {digest}")
+    return {"sha256": digest, "files": hashes, "count": len(hashes)}
 
-def canon_csr_sha256(mat: sp.csr_matrix) -> str:
-    c = mat.copy()
-    c.sort_indices()
-    h = hashlib.sha256()
-    h.update(np.ascontiguousarray(c.indptr, dtype="<i8").tobytes())
-    h.update(np.ascontiguousarray(c.indices, dtype="<i8").tobytes())
-    h.update(np.ascontiguousarray(c.data, dtype="<f8").tobytes())
-    return h.hexdigest()
 
-for seed in range(6000, 6008):
-    world = RotatedContinuousDiffusionWorld(seed=seed)
-    rng = np.random.default_rng(seed + 500)
-    n_eps = 180
-    ep_len = 30600 // n_eps
-    starts = world.sample_free_points(n_eps, seed=seed + 501)
-    X_cur_list, X_nxt_list, q_obs_list = [], [], []
-    X_ep = starts.copy()
-    U_passive = np.zeros_like(X_ep)
-    q_min_step, q_max_step = 0.008, 0.080
-    for _ in range(ep_len):
-        X_n, _ = world.step_batch(X_ep, U_passive, rng)
-        q_true_step = world.running_cost(X_ep) * world.dt
-        q_step = np.array([sample_unbiased_bounded_cost(float(qv), q_min_step, q_max_step, 0.004, rng) for qv in q_true_step], dtype=float)
-        X_cur_list.append(X_ep.copy())
-        X_nxt_list.append(X_n.copy())
-        q_obs_list.append(q_step)
-        X_ep = X_n
-    X_curr = np.vstack(X_cur_list)
-    X_next = np.vstack(X_nxt_list)
-    q_obs = np.concatenate(q_obs_list)
-
-    landmarks, tree, ds = build_voronoi_quotient_from_continuous_trajectories(
-        X_curr, X_next, q_obs, n_landmarks=400, lam_disc=world.lam,
-        q_min_bound=q_min_step, q_max_bound=q_max_step, seed=seed + 502,
-    )
-    spql = SPQLPlanner(ds, delta=0.05, eps_tol=0.05, max_rooms=6, max_degree_bound=None)
-    uncomp_pl = UncompressedSpectralSchurPACPlanner(ds, delta=0.05, max_rooms=6, max_degree_bound=None)
-    ce_pl = PlugInCEFullGraphPlanner(ds)
-    scal_pl = ScalarBottleneckOptionPlanner(spql)
-    sr_pl = LowRankSRLinearRLPlanner(ds, rank_k=max(12, len(spql.dec.portal_nodes_loc) * 2))
-    mfq_pl = ModelFreeGoalSoftQPlanner(ds, n_sweeps=14, seed=seed + 777)
-    spql_uni = SPQLPlanner(ds, delta=0.05, eps_tol=0.05, max_rooms=6, max_degree_bound=None, all_portals_uniform_weight=1.0)
-
-    planners = {
-        "SPQL": spql,
-        "Uncompressed_PAC": uncomp_pl,
-        "PlugIn_CE": ce_pl,
-        "Scalar_Portal_Ablation": scal_pl,
-        "SVD_Resolvent_Ablation": sr_pl,
-        "Sampled_Desirability_TD": mfq_pl,
-        "SPQL_UniformPortals": spql_uni,
+def _verified_ce_event(block, seed, task, env, solution, start, goal_mask, reference):
+    goal_sha = _goal_sha1(goal_mask)
+    if (start, goal_sha) != (reference["start_state"], reference["goal_sha1"]):
+        raise ValueError(f"{block} task identity mismatch at {(seed, task)}")
+    policy = solution["Pi_ext_csr"]
+    if policy is None or not reference["proper_policy"]:
+        raise ValueError(f"{block} missing proper CE policy at {(seed, task)}")
+    archived_j = float(reference["deployed_policy_J"])
+    actual_j = float(env.evaluate_deployed_policy_true_cost(policy, goal_mask, 0.0, start))
+    pred = float(solution["pred_val"])
+    if not np.isfinite([pred, actual_j, archived_j]).all() or not np.isclose(
+        actual_j, archived_j, rtol=1e-10, atol=1e-9
+    ):
+        raise ValueError(f"{block} deployed CE cost mismatch at {(seed, task)}: {actual_j} vs {archived_j}")
+    violation = pred < actual_j - 1e-9
+    if violation != reference["ce_overoptimism_violation"]:
+        raise ValueError(f"{block} CE optimism flag mismatch at {(seed, task)}")
+    return {
+        "block": block, "seed": seed, "task_index": task, "start_state": start, "goal_sha1": goal_sha,
+        "pred_val": pred, "deployed_policy_J": actual_j, "archived_deployed_policy_J": archived_j,
+        "optimism_shortfall_J_minus_pred": actual_j - pred, "violation_threshold": 1e-9,
+        "ce_self_underestimation_violation": violation,
+        "native_room_lu_rhs": int(solution.get("operational_lu_rhs", 0)),
+        "global_lu_rhs": int(solution["global_lu_rhs"]),
     }
 
-    uv_lm = world._to_uv(landmarks)
-    quad_lm = ((uv_lm[:, 0] > 0).astype(int) * 2 + (uv_lm[:, 1] > 0).astype(int))
-    tasks_c = []
-    rng_t = np.random.default_rng(seed + 900)
-    while len(tasks_c) < 12:
-        qs, qg = rng_t.choice(4, size=2, replace=False)
-        cs = np.flatnonzero((quad_lm == qs) & (np.min(np.abs(uv_lm), axis=1) > 0.18))
-        cg = np.flatnonzero((quad_lm == qg) & (np.min(np.abs(uv_lm), axis=1) > 0.18))
-        if len(cs) == 0 or len(cg) == 0:
-            continue
-        s_id = int(rng_t.choice(cs))
-        g_id = int(rng_t.choice(cg))
-        g_ctr = landmarks[g_id]
-        gm = np.linalg.norm(landmarks - g_ctr[None, :], axis=1) <= 0.14
-        if int(np.sum(gm)) >= 3 and not gm[s_id]:
-            tasks_c.append((s_id, gm))
 
-    m_names = list(planners.keys())
-    rot = seed % len(m_names)
-    m_order = m_names[rot:] + m_names[:rot]
-    arrays = {"X_curr": X_curr, "X_next": X_next, "q_obs": q_obs, "landmarks": landmarks}
-    ev_meta = []
-    for t_idx, (s_id, gm) in enumerate(tasks_c):
-        g_sha = hashlib.sha256(np.flatnonzero(gm).astype("<i8").tobytes()).hexdigest()
-        for m_nm in m_order:
-            rr = planners[m_nm].solve_unseen_goal(s_id, gm)
-            Pi = rr["Pi_ext_csr"].copy()
-            Pi.sort_indices()
-            key = f"t{t_idx}_{m_nm}"
-            arrays[f"{key}_data"] = Pi.data
-            arrays[f"{key}_indices"] = Pi.indices
-            arrays[f"{key}_indptr"] = Pi.indptr
-            arrays[f"{key}_shape"] = np.array(Pi.shape, dtype=np.int64)
-            ev_meta.append({
-                "task_index": int(t_idx),
-                "method_id": m_nm,
-                "goal_sha256": g_sha,
-                "canonical_raw_csr_sha256": canon_csr_sha256(Pi),
-                "fallback_used": bool(rr.get("fallback_used", False)),
-                "fallback_method": rr.get("fallback_method", None),
-                "has_z_sub_full": bool("z_sub_full" in rr and rr["z_sub_full"] is not None),
-            })
-    arrays["event_json"] = np.array(json.dumps(ev_meta))
-    np.savez(out_dir / f"seed_{seed}.npz", **arrays)
-"""
+def _event_accounting(data):
+    e1 = data["block_e1_240k_full_ledger_and_v2_reanalysis"]["v4_240k_full_repair_ledger"]["task_events"]
+    e2 = data["block_e2_curved_3d_linear_mf_and_4level"]["task_events"]
+    e3 = data["block_e3_continuous_surrogate_fingerprint_verified"]["task_events"]
+    methods = (
+        ("SPQL_Passive", "SPQL_Active", "Uncompressed_PAC_Passive", "PlugIn_CE_Passive"),
+        ("SPQL", "MatrixFree_SpectralSchur_PAC", "Uncompressed_SpectralSchur_PAC", "PlugIn_CE_FullGraph"),
+        ("SPQL", "SPQL_UniformPortals", "Uncompressed_PAC", "PlugIn_CE", "Sampled_Desirability_TD",
+         "Scalar_Portal_Ablation", "SVD_Resolvent_Ablation"),
+    )
+    for rows, arms, first_seed, n_tasks in zip((e1, e2, e3), methods, (4000, 5000, 6000), (16, 24, 12)):
+        keys = {(r["seed"], r["task_index"], r["method_id"]) for r in rows}
+        expected = {(sd, t, arm) for sd in range(first_seed, first_seed + 8)
+                    for t in range(n_tasks) for arm in arms}
+        if len(rows) != len(keys) or keys != expected:
+            raise ValueError(f"Missing, duplicate or unexpected method events in block starting at {first_seed}")
+
+    pac_counts = []
+    violations = within = finite = ce_count = 0
+    for rows, ce, eps, eps_key, viol_key in (
+        (e1, methods[0][-1], 0.18, "within_eps_0p18", "pac_four_ineq_violation_zero_slack"),
+        (e2, methods[1][-1], 0.15, "within_eps_0p15", "pac_violation_zero_slack"),
+    ):
+        pac = [r for r in rows if r["method_id"] != ce]
+        ce_count += len(rows) - len(pac)
+        pac_counts.append(len(pac))
+        for r in pac:
+            if not r["finite_certified"]:
+                violation = r["lo"] is not None and r["lo"] > r["true_optimal_V"]
+                if violation != r[viol_key] or r[eps_key]:
+                    raise ValueError("Nonfinite PAC event flags disagree with its lower bound")
+                violations += int(violation)
+                continue
+            lo, opt, cost, hi, width = (r[k] for k in ("lo", "true_optimal_V", "deployed_policy_J", "hi", "width"))
+            if not r["policy_present"] or not r["proper_policy"] or None in (lo, opt, cost, hi, width):
+                raise ValueError("Finite PAC event missing policy or value")
+            if not np.isfinite([lo, opt, cost, hi, width]).all() or not np.isclose(width, hi-lo, rtol=1e-12, atol=1e-12):
+                raise ValueError("Invalid finite PAC event width")
+            violation = not (lo <= opt <= cost <= hi)
+            if violation != r[viol_key] or ((hi-lo) <= eps) != r[eps_key]:
+                raise ValueError("Saved PAC flag disagrees with the numerical values")
+            violations += int(violation)
+            within += int((hi-lo) <= eps)
+            finite += 1
+    return {
+        "total_saved_method_events_in_v4": len(e1)+len(e2)+len(e3),
+        "discrete_pac_attempts": sum(pac_counts), "discrete_pac_four_inequality_events": finite,
+        "discrete_pac_e1_events": pac_counts[0], "discrete_pac_e2_events": pac_counts[1],
+        "discrete_pac_nonfinite_attempts": sum(pac_counts) - finite,
+        "discrete_pac_zero_slack_violations": violations, "discrete_pac_within_requested_eps_count": within,
+        "uncertified_plugin_ce_control_events": ce_count, "tier4_empirical_continuous_surrogate_events": len(e3),
+    }
 
 
-def run_actual_cross_commit_e3_policy_comparison() -> dict:
-    """Reconstructs all `672` actual `E3` `CSR` policies from commit `67532c9` vs. current working tree
-    in isolated subprocesses (`zero continuous rollouts!`, `Closes R7A-03`).
-    """
-    with tempfile.TemporaryDirectory(prefix="r7a_e3_cmp_") as tmp:
-        tmp_p = Path(tmp)
-        old_repo = tmp_p / "old_repo"
-        old_out = tmp_p / "old_out"
-        new_out = tmp_p / "new_out"
-        worker_py = tmp_p / "worker_e3_dump.py"
-        old_repo.mkdir()
-        old_out.mkdir()
-        new_out.mkdir()
-        worker_py.write_text(_E3_DUMP_WORKER_CODE, encoding="utf-8")
-
-        # Extract strictly the 3 needed packages from frozen commit `67532c9`
-        tar_proc = subprocess.Popen(
-            ["git", "archive", OLD_V3_COMMIT, "green_response", "quotient_phase2", "learned_portal_phase3"],
-            cwd=str(ROOT),
-            stdout=subprocess.PIPE,
-        )
-        subprocess.run(["tar", "-x", "-C", str(old_repo)], stdin=tar_proc.stdout, check=True)
-        if tar_proc.wait() != 0:
-            raise RuntimeError(f"git archive {OLD_V3_COMMIT} failed")
-
-        subprocess.run([sys.executable, "-B", str(worker_py), str(old_repo), str(old_out)], check=True)
-        subprocess.run([sys.executable, "-B", str(worker_py), str(ROOT), str(new_out)], check=True)
-
-        rows: List[dict] = []
-        input_checks: List[dict] = []
-        for seed in range(6000, 6008):
-            with np.load(old_out / f"seed_{seed}.npz", allow_pickle=False) as A, \
-                 np.load(new_out / f"seed_{seed}.npz", allow_pickle=False) as B:
-                eq = {
-                    "seed": seed,
-                    **{k: bool(np.array_equal(A[k], B[k])) for k in ("X_curr", "X_next", "q_obs", "landmarks")},
-                }
-                if not all(eq[k] for k in ("X_curr", "X_next", "q_obs", "landmarks")):
-                    raise RuntimeError(f"E3 input mismatch on seed {seed}: {eq}")
-                input_checks.append(eq)
-                old_m = {(r["task_index"], r["method_id"]): r for r in json.loads(str(A["event_json"]))}
-                new_m = {(r["task_index"], r["method_id"]): r for r in json.loads(str(B["event_json"]))}
-                for (ti, m_nm), oa in sorted(old_m.items()):
-                    nb = new_m[(ti, m_nm)]
-                    k = f"t{ti}_{m_nm}"
-                    pa = sp.csr_matrix((A[f"{k}_data"], A[f"{k}_indices"], A[f"{k}_indptr"]), shape=tuple(A[f"{k}_shape"]))
-                    pb = sp.csr_matrix((B[f"{k}_data"], B[f"{k}_indices"], B[f"{k}_indptr"]), shape=tuple(B[f"{k}_shape"]))
-                    diff = pa - pb
-                    max_entry = float(np.max(np.abs(diff.data))) if diff.nnz > 0 else 0.0
-                    row_l1 = float(np.max(np.asarray(np.abs(diff).sum(axis=1)).ravel()))
-                    rows.append({
-                        "seed": int(seed),
-                        "task_index": int(ti),
-                        "method_id": str(m_nm),
-                        "comparison_status": "verified_actual_cross_commit_csr",
-                        "max_abs_entry_diff": max_entry,
-                        "matrix_infinity_norm_diff": row_l1,
-                        "old_raw_csr_sha256": oa["canonical_raw_csr_sha256"],
-                        "new_raw_csr_sha256": nb["canonical_raw_csr_sha256"],
-                        "same_raw_csr_hash": bool(oa["canonical_raw_csr_sha256"] == nb["canonical_raw_csr_sha256"]),
-                        "same_goal": bool(oa["goal_sha256"] == nb["goal_sha256"]),
-                        "same_fallback": bool((oa["fallback_used"], oa["fallback_method"]) == (nb["fallback_used"], nb["fallback_method"])),
-                        "v4_has_z_sub_full": bool(nb["has_z_sub_full"]),
-                    })
-
-        return {
-            "old_commit": OLD_V3_COMMIT,
-            "comparison_scope": "actual_cross_commit_csr_reconstruction_all_672_queries_zero_rollout_reruns",
-            "equivalence_semantics": "numerical_tolerance_equivalence_le_1e-12_not_bitwise_csr_identity",
-            "comparison_count": len(rows),
-            "input_data_bitwise_equal_all_8_seeds": all(all(x[k] for k in ("X_curr", "X_next", "q_obs", "landmarks")) for x in input_checks),
-            "same_fallback_count": int(sum(1 for r in rows if r["same_fallback"])),
-            "bitwise_hash_equal_count": int(sum(1 for r in rows if r["same_raw_csr_hash"])),
-            "exceeds_entrywise_1e12_count": int(sum(1 for r in rows if r["max_abs_entry_diff"] > 1e-12)),
-            "exceeds_rowwise_1e12_count": int(sum(1 for r in rows if r["matrix_infinity_norm_diff"] > 1e-12)),
-            "max_abs_entry_diff": float(max(r["max_abs_entry_diff"] for r in rows)),
-            "max_matrix_infinity_norm_diff": float(max(r["matrix_infinity_norm_diff"] for r in rows)),
-            "events": rows,
-        }
+def _simplex_event(seed, task, pair, ce_policy, pac_policy, pac_hi, gm, s0, lam):
+    ce_coord = evaluate_posterior_pac_policy_upper_bound(pair, ce_policy, gm, 0.0, s0, lam)
+    ce_unk_simp = evaluate_row_stochastic_simplex_posterior_diagnostic(
+        pair, ce_policy, gm, 0.0, s0, lam, known_observed_support=False, max_degree_bound=8
+    )
+    ce_obs_simp = evaluate_row_stochastic_simplex_posterior_diagnostic(
+        pair, ce_policy, gm, 0.0, s0, lam, known_observed_support=True, max_degree_bound=8
+    )
+    uc_coord = evaluate_posterior_pac_policy_upper_bound(pair, pac_policy, gm, 0.0, s0, lam)
+    uc_obs_simp = evaluate_row_stochastic_simplex_posterior_diagnostic(
+        pair, pac_policy, gm, 0.0, s0, lam, known_observed_support=True, max_degree_bound=8
+    )
+    values = (ce_coord, ce_unk_simp, ce_obs_simp, uc_coord, uc_obs_simp, pac_hi)
+    if not np.isfinite(values).all():
+        raise ValueError(f"Non-finite posterior diagnostic at {(seed, task)}")
+    # Each support restriction shrinks a nested set; allow sparse-solve roundoff.
+    for tight, loose in ((ce_obs_simp, ce_unk_simp), (ce_unk_simp, ce_coord), (uc_obs_simp, uc_coord)):
+        if tight > loose and not np.isclose(tight, loose, rtol=1e-10, atol=1e-9):
+            raise ValueError(f"Posterior support ordering failed at {(seed, task)}")
+    return {
+        "seed": seed, "task_index": task, "goal_sha1": _goal_sha1(gm),
+        "ce_coord_surrogate_U": ce_coord,
+        "ce_unknown_support_dmax8_simplex_U": ce_unk_simp,
+        "ce_known_observed_support_simplex_U": ce_obs_simp,
+        "full_pac_tier3_hi": pac_hi,
+        "full_pac_coord_surrogate_U": uc_coord,
+        "full_pac_known_observed_support_simplex_U": uc_obs_simp,
+    }
 
 
 def run_ce_pred_val_and_simplex_gap_sidecar(v4_data: dict) -> dict:
@@ -295,9 +240,10 @@ def run_ce_pred_val_and_simplex_gap_sidecar(v4_data: dict) -> dict:
     e1_ce_ref = {(int(e["seed"]), int(e["task_index"])): e for e in v4_e1 if e["method_id"] == "PlugIn_CE_Passive"}
     e2_ce_ref = {(int(e["seed"]), int(e["task_index"])): e for e in v4_e2 if e["method_id"] == "PlugIn_CE_FullGraph"}
 
-    ce_e1_rows: List[dict] = []
-    simplex_e1_rows: List[dict] = []
+    ce_e1_rows: list[dict] = []
+    simplex_e1_rows: list[dict] = []
     for sd in range(4000, 4008):
+        print(f"  E1 map {sd}", flush=True)
         env = build_rotated_multiroom_2d_env(seed=sd, grid_n=40, angle_deg=37.0, door_half_width=0.10, add_baffles=True)
         entry_room = int(np.bincount(env.true_room_hint_for_eval).argmax())
         entry_states = np.flatnonzero(env.true_room_hint_for_eval == entry_room)
@@ -311,48 +257,14 @@ def run_ce_pred_val_and_simplex_gap_sidecar(v4_data: dict) -> dict:
             rc = pl_ce.solve_unseen_goal(s0, gm)
             ru = pl_uc.solve_unseen_goal(s0, gm, materialize_policy=True)
             ref = e1_ce_ref[(sd, t_i)]
-            j_ce = float(ref["deployed_policy_J"])
-            pred_v = float(rc["pred_val"])
-            viol_recomp = bool(np.isfinite(pred_v) and pred_v < j_ce - 1e-9)
-            if viol_recomp != bool(ref["ce_overoptimism_violation"]):
-                raise RuntimeError(f"E1 CE violation mismatch on ({sd}, {t_i})")
-            ce_e1_rows.append({
-                "block": "E1_240k_Passive",
-                "seed": int(sd),
-                "task_index": int(t_i),
-                "start_state": int(s0),
-                "pred_val": pred_v,
-                "deployed_policy_J": j_ce,
-                "optimism_shortfall_J_minus_pred": j_ce - pred_v,
-                "violation_threshold": 1e-9,
-                "ce_self_underestimation_violation": viol_recomp,
-                "native_room_lu_rhs": 0,
-                "global_lu_rhs": int(rc["global_lu_rhs"]),
-            })
-            ce_coord = evaluate_posterior_pac_policy_upper_bound(pl_uc.pac_pair, rc["Pi_ext_csr"], gm, 0.0, s0, env.lam)
-            ce_unk_simp = evaluate_row_stochastic_simplex_posterior_diagnostic(
-                pl_uc.pac_pair, rc["Pi_ext_csr"], gm, 0.0, s0, env.lam, known_observed_support=False, max_degree_bound=8
-            )
-            ce_obs_simp = evaluate_row_stochastic_simplex_posterior_diagnostic(
-                pl_uc.pac_pair, rc["Pi_ext_csr"], gm, 0.0, s0, env.lam, known_observed_support=True, max_degree_bound=8
-            )
-            uc_coord = evaluate_posterior_pac_policy_upper_bound(pl_uc.pac_pair, ru["Pi_ext_csr"], gm, 0.0, s0, env.lam)
-            uc_obs_simp = evaluate_row_stochastic_simplex_posterior_diagnostic(
-                pl_uc.pac_pair, ru["Pi_ext_csr"], gm, 0.0, s0, env.lam, known_observed_support=True, max_degree_bound=8
-            )
-            simplex_e1_rows.append({
-                "seed": int(sd), "task_index": int(t_i),
-                "ce_coord_surrogate_U": ce_coord,
-                "ce_unknown_support_dmax8_simplex_U": ce_unk_simp,
-                "ce_known_observed_support_simplex_U": ce_obs_simp,
-                "full_pac_tier3_hi": float(ru["hi"]),
-                "full_pac_coord_surrogate_U": uc_coord,
-                "full_pac_known_observed_support_simplex_U": uc_obs_simp,
-            })
+            ce_e1_rows.append(_verified_ce_event("E1_240k_Passive", sd, t_i, env, rc, s0, gm, ref))
+            simplex_e1_rows.append(_simplex_event(sd, t_i, pl_uc.pac_pair, rc["Pi_ext_csr"],
+                                                 ru["Pi_ext_csr"], ru["hi"], gm, s0, env.lam))
 
-    ce_e2_rows: List[dict] = []
-    simplex_e2_rows: List[dict] = []
+    ce_e2_rows: list[dict] = []
+    simplex_e2_rows: list[dict] = []
     for sd in range(5000, 5008):
+        print(f"  E2 map {sd}", flush=True)
         env = build_curved_3d_cave_env(seed=sd, gn=38)
         ds = collect_exploration_trajectories(env, total_steps=460000, episode_len=100, seed=sd + 300)
         tasks = sample_unseen_goal_tasks(env, n_tasks=24, seed=sd + 600, goal_radius_nodes=12, avoid_states=None)
@@ -362,49 +274,15 @@ def run_ce_pred_val_and_simplex_gap_sidecar(v4_data: dict) -> dict:
             rc = pl_ce.solve_unseen_goal(s0, gm)
             ru = pl_uc.solve_unseen_goal(s0, gm, materialize_policy=True)
             ref = e2_ce_ref[(sd, t_i)]
-            j_ce = float(ref["deployed_policy_J"])
-            pred_v = float(rc["pred_val"])
-            viol_recomp = bool(np.isfinite(pred_v) and pred_v < j_ce - 1e-9)
-            if viol_recomp != bool(ref["ce_overoptimism_violation"]):
-                raise RuntimeError(f"E2 CE violation mismatch on ({sd}, {t_i})")
-            ce_e2_rows.append({
-                "block": "E2_460k_Curved3DCave",
-                "seed": int(sd),
-                "task_index": int(t_i),
-                "start_state": int(s0),
-                "pred_val": pred_v,
-                "deployed_policy_J": j_ce,
-                "optimism_shortfall_J_minus_pred": j_ce - pred_v,
-                "violation_threshold": 1e-9,
-                "ce_self_underestimation_violation": viol_recomp,
-                "native_room_lu_rhs": 0,
-                "global_lu_rhs": int(rc["global_lu_rhs"]),
-            })
-            ce_coord = evaluate_posterior_pac_policy_upper_bound(pl_uc.pac_pair, rc["Pi_ext_csr"], gm, 0.0, s0, env.lam)
-            ce_unk_simp = evaluate_row_stochastic_simplex_posterior_diagnostic(
-                pl_uc.pac_pair, rc["Pi_ext_csr"], gm, 0.0, s0, env.lam, known_observed_support=False, max_degree_bound=8
-            )
-            ce_obs_simp = evaluate_row_stochastic_simplex_posterior_diagnostic(
-                pl_uc.pac_pair, rc["Pi_ext_csr"], gm, 0.0, s0, env.lam, known_observed_support=True, max_degree_bound=8
-            )
-            uc_coord = evaluate_posterior_pac_policy_upper_bound(pl_uc.pac_pair, ru["Pi_ext_csr"], gm, 0.0, s0, env.lam)
-            uc_obs_simp = evaluate_row_stochastic_simplex_posterior_diagnostic(
-                pl_uc.pac_pair, ru["Pi_ext_csr"], gm, 0.0, s0, env.lam, known_observed_support=True, max_degree_bound=8
-            )
-            simplex_e2_rows.append({
-                "seed": int(sd), "task_index": int(t_i),
-                "ce_coord_surrogate_U": ce_coord,
-                "ce_unknown_support_dmax8_simplex_U": ce_unk_simp,
-                "ce_known_observed_support_simplex_U": ce_obs_simp,
-                "full_pac_tier3_hi": float(ru["hi"]),
-                "full_pac_coord_surrogate_U": uc_coord,
-                "full_pac_known_observed_support_simplex_U": uc_obs_simp,
-            })
+            ce_e2_rows.append(_verified_ce_event("E2_460k_Curved3DCave", sd, t_i, env, rc, s0, gm, ref))
+            simplex_e2_rows.append(_simplex_event(sd, t_i, pl_uc.pac_pair, rc["Pi_ext_csr"],
+                                                 ru["Pi_ext_csr"], ru["hi"], gm, s0, env.lam))
 
-    def _sum_simplex(rows: List[dict]) -> dict:
+    def _sum_simplex(rows: list[dict]) -> dict:
         return {
-            "guarantee_tier": "high_precision_numerical_diagnostic_not_tier3_interval_verified",
+            "guarantee_tier": "float64_numerical_diagnostic",
             "n_tasks": len(rows),
+            "task_events": rows,
             "mean_ce_coord_surrogate_U": float(np.mean([r["ce_coord_surrogate_U"] for r in rows])),
             "mean_ce_unknown_support_dmax8_simplex_U": float(np.mean([r["ce_unknown_support_dmax8_simplex_U"] for r in rows])),
             "mean_ce_known_observed_support_simplex_U": float(np.mean([r["ce_known_observed_support_simplex_U"] for r in rows])),
@@ -426,8 +304,10 @@ def run_ce_pred_val_and_simplex_gap_sidecar(v4_data: dict) -> dict:
             "e2_recomputed_self_underestimation_count": int(sum(1 for r in ce_e2_rows if r["ce_self_underestimation_violation"])),
             "e2_mean_pred_val": float(np.mean([r["pred_val"] for r in ce_e2_rows])),
             "e2_mean_deployed_J": float(np.mean([r["deployed_policy_J"] for r in ce_e2_rows])),
-            "e2_mean_native_room_lu_rhs": 0.0,
+            "e2_mean_native_room_lu_rhs": float(sum(r["native_room_lu_rhs"] for r in ce_e2_rows) / 8),
             "e2_mean_global_lu_rhs_per_map": float(sum(r["global_lu_rhs"] for r in ce_e2_rows) / 8.0),
+            "max_abs_rebuilt_minus_archived_J": max(abs(r["deployed_policy_J"] - r["archived_deployed_policy_J"])
+                                                    for r in ce_e1_rows + ce_e2_rows),
             "e1_events": ce_e1_rows,
             "e2_events": ce_e2_rows,
         },
@@ -438,7 +318,7 @@ def run_ce_pred_val_and_simplex_gap_sidecar(v4_data: dict) -> dict:
     }
 
 
-def _render_r7a_figures(v4_data: dict, out_dir: Path) -> None:
+def _render_r7a_figures(v4_data: dict, ce_audit: dict, out_dir: Path) -> None:
     e1_blk = v4_data["block_e1_240k_full_ledger_and_v2_reanalysis"]
     e2_blk = v4_data["block_e2_curved_3d_linear_mf_and_4level"]
     e3_blk = v4_data["block_e3_continuous_surrogate_fingerprint_verified"]
@@ -484,8 +364,12 @@ def _render_r7a_figures(v4_data: dict, out_dir: Path) -> None:
     ax.bar(bars_x - 0.17, uncap_vals, width=0.32, color="#16a085", label="Uncapped Regret (240k v4)")
     ax.bar(bars_x + 0.17, cap_vals, width=0.32, color="#2980b9", label="Cap-80 Score (240k v4)")
     ax.set_xticks(bars_x)
+    ce_rate = ce_audit["e1_recomputed_self_underestimation_count"] / ce_audit["e1_240k_count"]
+    def pac_label(arm):
+        events = [e for e in e1_blk["v4_240k_full_repair_ledger"]["task_events"] if e["method_id"] == arm]
+        return f"{arm.replace('_', ' ')}\n({np.mean([e['pac_four_ineq_violation_zero_slack'] for e in events]):.0%} PAC Env. Viol.)"
     ax.set_xticklabels(
-        ["Plug-In CE\n(94.5% Self-Underest.)", "SPQL Active\n(0% PAC Env. Viol.)", "SPQL Passive\n(0% PAC Env. Viol.)"],
+        [f"Plug-In CE\n({ce_rate:.1%} Self-Underest.)", pac_label("SPQL_Active"), pac_label("SPQL_Passive")],
         fontsize=7.6,
     )
     ax.set_ylabel("Mean Regret at 240k (128/128 Proper)")
@@ -529,7 +413,7 @@ def _render_r7a_figures(v4_data: dict, out_dir: Path) -> None:
     ax.bar(x3, onlines_s, bottom=inits_s, width=0.5, color=["#2980b9", "#8e44ad", "#d35400", "#16a085"], label="24 Matched Full-Policy Queries (s)")
     for idx_i, (k_nm, tot_v, rv, fbv) in enumerate(zip(arms_3d, np.array(inits_s) + np.array(onlines_s), rhs_3d, fb_3d)):
         if k_nm == "PlugIn_CE_FullGraph":
-            rhs_lbl = f"({rv:.0f} global RHS)"
+            rhs_lbl = f"({ce_audit['e2_mean_global_lu_rhs_per_map']:.0f} global RHS)"
         else:
             fb_str = f" + {fbv:.1f} glb" if fbv > 0 else ""
             rhs_lbl = f"({rv:.0f} rmRHS{fb_str})"
@@ -563,7 +447,7 @@ def _render_r7a_figures(v4_data: dict, out_dir: Path) -> None:
     plt.close(fig)
 
 
-def run_r7a_sidecar_audit(gates_only: bool = False) -> dict:
+def run_r7a_sidecar_audit(gates_only: bool = False, output_dir: Path | None = None) -> dict:
     t0 = time.perf_counter()
     enforce_single_thread_env()
     p3_dir = Path(__file__).resolve().parent
@@ -579,6 +463,7 @@ def run_r7a_sidecar_audit(gates_only: bool = False) -> dict:
             raise RuntimeError(f"Frozen m233_clean_isolation_replication.json modified: {m233_clean_sha}")
         return {
             **f12,
+            "frozen_roster": _verify_frozen_roster(ROOT),
             "phase2_10_jsons_untouched": True,
             "phase2_json_count": len(fp2_10),
             "m233_original_archive": fm233_orig,
@@ -589,7 +474,9 @@ def run_r7a_sidecar_audit(gates_only: bool = False) -> dict:
             "phase3_v4_archive": verify_phase3_v4_archive_untouched(),
         }
 
+    out_dir = phase3_output_directory("r7a", output_dir)
     pre_freeze = _verify_all_47_frozen()
+    source = compute_phase3_manifest()
     print("[Phase-III R7A] Running 21 Deterministic Contract Gates (P3-C01..P3-C21)...")
     gates = run_phase3_21_contract_gates()
     if not gates["ALL_21_PHASE3_CONTRACT_GATES_PASSED"]:
@@ -600,16 +487,22 @@ def run_r7a_sidecar_audit(gates_only: bool = False) -> dict:
 
     v4_data = json.loads((p3_dir / "p3_v4_r675_verified_results.json").read_text(encoding="utf-8"))
 
+    accounting = _event_accounting(v4_data)
     print("[Phase-III R7A] Reconstructing all 672 actual frozen 67532c9 vs. current E3 CSR policies (zero rollouts)...")
     e3_cross = run_actual_cross_commit_e3_policy_comparison()
 
     print("[Phase-III R7A] Exporting 320 CE pred_val records + Decision-C Bauer simplex vs. coordinatewise diagnostic...")
+    if e3_cross["new_snapshot_phase3_py_sha256"] != source["phase3_per_file_sha256"]:
+        raise RuntimeError("Working source differs from the E3 reconstruction snapshot")
     ce_and_simplex = run_ce_pred_val_and_simplex_gap_sidecar(v4_data)
 
-    _render_r7a_figures(v4_data, p3_dir)
     post_freeze = _verify_all_47_frozen()
-    assert pre_freeze == post_freeze
+    if pre_freeze != post_freeze:
+        raise RuntimeError("Archive manifests changed during the audit")
 
+    if source != compute_phase3_manifest():
+        raise RuntimeError("Working source changed while replaying the frozen tasks")
+    _render_r7a_figures(v4_data, ce_and_simplex["ce_pred_val_audit"], out_dir)
     rt_meta = collect_runtime_metadata()
     rt_meta["actual_parallel_workers"] = 1
 
@@ -618,24 +511,15 @@ def run_r7a_sidecar_audit(gates_only: bool = False) -> dict:
         "scope": "Non-destructive audit & diagnostic sidecar on frozen v4 seeds (0 benchmark timing edits, 0 continuous rollout reruns, 47/47 frozen archives untouched)",
         "elapsed_wall_s": float(time.perf_counter() - t0),
         "runtime_metadata": rt_meta,
-        "phase3_manifest": compute_phase3_manifest(),
+        "phase3_manifest": source,
         "immutable_47_archives_verified": post_freeze,
-        "event_denominator_accounting": {
-            "total_saved_method_events_in_v4": 1952,
-            "discrete_pac_four_inequality_events": 960,
-            "discrete_pac_e1_events": 384,
-            "discrete_pac_e2_events": 576,
-            "discrete_pac_zero_slack_violations": 0,
-            "discrete_pac_within_requested_eps_count": 0,
-            "uncertified_plugin_ce_control_events": 320,
-            "tier4_empirical_continuous_surrogate_events": 672,
-        },
+        "event_denominator_accounting": accounting,
         "contract_21_gates": gates,
         "e3_actual_cross_commit_672_policy_audit": e3_cross,
         **ce_and_simplex,
     })
 
-    out_fp = p3_dir / "p3_v4_r7a_sidecar_diagnostics.json"
+    out_fp = out_dir / "p3_v4_r7a_sidecar_diagnostics.json"
     txt = json.dumps(payload, indent=2, allow_nan=False)
     _ = _strict_json_loads(txt)
     out_fp.write_text(txt, encoding="utf-8")
@@ -649,7 +533,8 @@ def run_r7a_sidecar_audit(gates_only: bool = False) -> dict:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--gates-only", action="store_true")
+    ap.add_argument("--output-dir", type=Path, help="Directory for the reproduced JSON and figures")
     args = ap.parse_args()
-    res = run_r7a_sidecar_audit(gates_only=args.gates_only)
+    res = run_r7a_sidecar_audit(gates_only=args.gates_only, output_dir=args.output_dir)
     if args.gates_only:
         print(json.dumps(res, indent=2))

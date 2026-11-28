@@ -88,105 +88,14 @@ def evaluate_posterior_pac_policy_upper_bound(
     s0: int,
     lam: float,
 ) -> float:
-    """High-precision numerical diagnostic (`NOT Tier-3 outward-rounded interval arithmetic`, `Closes R7A-01 & R7A-07`):
-    Evaluates the **coordinatewise (sub-Markov) conservative surrogate upper bound** `J_bar_{M_pes}(pi; s0, G)` of any
-    fixed Markov policy `Pi_ext_csr` using step cost `c_hi[i] = lam * sum_j pi_{ij} (log pi_{ij} - log M_pes[i,j])`.
-    Satisfies `sup_{(P, q) in C_n} J^pi_{P, q}(s0; G) <= J_bar_{M_pes}(pi; s0, G)` and variational optimality
-    `U_{PAC,full} = min_pi J_bar_{M_pes}(pi)` WITHIN this coordinatewise surrogate family; when `pi_i` puts positive
-    mass on all feasible destinations (e.g. `N = d_max = |supp(pi_i)|` or known observed support), the true
-    row-stochastic simplex worst case is strictly tighter than `J_bar_{M_pes}(pi)` (see `evaluate_row_stochastic_simplex_posterior_diagnostic`).
-    Returns `+inf` if `pi` uses any unobserved edge (`M_pes == 0`) or is improper from `s0`.
+    """Numerically evaluate the coordinatewise sub-Markov surrogate of a fixed policy.
+
+    Its infimum over proper policies is the pessimistic full-model value. A
+    row with positive slack and policy mass on every feasible successor can
+    have a strictly smaller worst cost after imposing row normalization.
     """
-    gm = np.asarray(goal_mask, dtype=bool)
-    if bool(gm[s0]):
-        return float(phi_goal)
-    ext = np.flatnonzero(~gm)
-    if Pi_ext_csr is None or len(ext) == 0 or Pi_ext_csr.shape != (len(ext), len(gm)):
-        return float("inf")
-    r_s0 = int(np.searchsorted(ext, s0))
-    if not (0 <= r_s0 < len(ext) and int(ext[r_s0]) == int(s0)):
-        return float("inf")
-
-    ext_lookup = np.full(len(gm), -1, dtype=np.int64)
-    ext_lookup[ext] = np.arange(len(ext), dtype=np.int64)
-    vis = np.zeros(len(ext), dtype=bool)
-    vis[r_s0] = True
-    qf = [r_s0]
-    head = 0
-    hits_goal = np.zeros(len(ext), dtype=bool)
-    while head < len(qf):
-        r = qf[head]
-        head += 1
-        for p_idx in range(Pi_ext_csr.indptr[r], Pi_ext_csr.indptr[r + 1]):
-            pv = float(Pi_ext_csr.data[p_idx])
-            if pv <= 0.0:
-                continue
-            j_st = int(Pi_ext_csr.indices[p_idx])
-            if gm[j_st]:
-                hits_goal[r] = True
-            else:
-                rn = int(ext_lookup[j_st])
-                if rn < 0:
-                    return float("inf")
-                if not vis[rn]:
-                    vis[rn] = True
-                    qf.append(rn)
-
-    reach_rows = np.flatnonzero(vis)
-    Pi_rr = Pi_ext_csr[reach_rows, :][:, ext[reach_rows]].tocsr()
-    Pi_rr_T = Pi_rr.T.tocsr()
-    can_hit = hits_goal[reach_rows].copy()
-    qb = [int(i) for i in np.flatnonzero(can_hit)]
-    hb = 0
-    while hb < len(qb):
-        u = qb[hb]
-        hb += 1
-        for idx in range(Pi_rr_T.indptr[u], Pi_rr_T.indptr[u + 1]):
-            if Pi_rr_T.data[idx] > 0.0:
-                v = int(Pi_rr_T.indices[idx])
-                if not can_hit[v]:
-                    can_hit[v] = True
-                    qb.append(v)
-    if not np.all(can_hit):
-        return float("inf")
-
-    Pi_sub = Pi_ext_csr[reach_rows, :].tocsr()
-    Pi_sub.sum_duplicates()
-    Pi_sub.sort_indices()
-    M_sub = pac_pair.M_pes[ext[reach_rows], :].tocsr()
-    M_sub.sum_duplicates()
-    M_sub.sort_indices()
-    c_hi = np.zeros(len(reach_rows), dtype=float)
-    for loc_r in range(len(reach_rows)):
-        r_sum = float(np.sum(Pi_sub.data[Pi_sub.indptr[loc_r]:Pi_sub.indptr[loc_r + 1]]))
-        if abs(r_sum - 1.0) > 1e-9:
-            return float("inf")
-        m_cols = M_sub.indices[M_sub.indptr[loc_r]:M_sub.indptr[loc_r + 1]]
-        m_vals = M_sub.data[M_sub.indptr[loc_r]:M_sub.indptr[loc_r + 1]]
-        acc = 0.0
-        for p_idx in range(Pi_sub.indptr[loc_r], Pi_sub.indptr[loc_r + 1]):
-            pv = float(Pi_sub.data[p_idx])
-            if pv <= 0.0:
-                continue
-            cj = int(Pi_sub.indices[p_idx])
-            pm = int(np.searchsorted(m_cols, cj))
-            if not (0 <= pm < len(m_cols) and int(m_cols[pm]) == cj and float(m_vals[pm]) > 0.0):
-                return float("inf")
-            acc += pv * (math.log(pv) - math.log(float(m_vals[pm])))
-        c_hi[loc_r] = float(lam) * acc
-
-    # Cancellation-free `(I - Pi_rr)` diagonal: `1 - pi_{uu} = sum_{v != u} pi_{uv} + pi_{u, G}`
-    Pi_off = Pi_rr.copy()
-    Pi_off.setdiag(0.0)
-    Pi_off.eliminate_zeros()
-    pi_goal_mass = np.asarray(Pi_sub[:, gm].sum(axis=1)).ravel()
-    diag_m = np.asarray(Pi_off.sum(axis=1)).ravel() + pi_goal_mass
-    Sys = (sp.diags(diag_m, format="csr") - Pi_off).tocsc()
-    v_sol = spla.spsolve(Sys, c_hi)
-    if (not np.all(np.isfinite(v_sol))) or np.any(v_sol < -1e-9):
-        return float("inf")
-    s0_loc = int(np.searchsorted(reach_rows, r_s0))
-    return float(phi_goal) + max(0.0, float(v_sol[s0_loc]))
+    return _posterior_cost(pac_pair, Pi_ext_csr, goal_mask, phi_goal, s0, lam,
+                           simplex=False)
 
 
 def evaluate_row_stochastic_simplex_posterior_diagnostic(
@@ -200,7 +109,7 @@ def evaluate_row_stochastic_simplex_posterior_diagnostic(
     max_degree_bound: Optional[int] = None,
     q_hi_override: Optional[np.ndarray] = None,
 ) -> float:
-    """High-precision numerical diagnostic (`R7A-01 & Decision C Step 1`):
+    """Float64 sparse-solve diagnostic (`R7A-01 & Decision C Step 1`):
     Computes the **exact row-stochastic simplex worst-case cost** `sup_{P in P(P_lo), q <= q_hi} J^pi_{P,q}(s0; G)`
     of a fixed policy `Pi_ext_csr` via Bauer's Maximum Principle on the convex map `p_i -> -sum_j pi_{ij} log p_{ij}`:
       - At each reachable state `i`, slack mass `rho_i = 1 - sum_j p_lo[i, j]` is placed at an extreme vertex:
@@ -210,6 +119,14 @@ def evaluate_row_stochastic_simplex_posterior_diagnostic(
         is saturated)—on `argmin_{k in supp(pi_i)} pi_{ik} log(1 + rho_i / p_lo_{ik})`, tightening `c_hi[i]` by
         `-lam * min_k pi_{ik} log(1 + rho_i / p_lo_{ik})`.
     """
+    return _posterior_cost(pac_pair, Pi_ext_csr, goal_mask, phi_goal, s0, lam,
+                           simplex=True, known_observed_support=known_observed_support,
+                           max_degree_bound=max_degree_bound, q_hi_override=q_hi_override)
+
+
+def _posterior_cost(pac_pair, Pi_ext_csr, goal_mask, phi_goal, s0, lam, *,
+                    simplex, known_observed_support=True, max_degree_bound=None,
+                    q_hi_override=None):
     gm = np.asarray(goal_mask, dtype=bool)
     n_tot = len(gm)
     if bool(gm[s0]):
@@ -221,6 +138,8 @@ def evaluate_row_stochastic_simplex_posterior_diagnostic(
     if not (0 <= r_s0 < len(ext) and int(ext[r_s0]) == int(s0)):
         return float("inf")
 
+    Pi_ext_csr = Pi_ext_csr.astype(float, copy=True)
+    Pi_ext_csr.sum_duplicates()
     ext_lookup = np.full(n_tot, -1, dtype=np.int64)
     ext_lookup[ext] = np.arange(len(ext), dtype=np.int64)
     vis = np.zeros(len(ext), dtype=bool)
@@ -265,56 +184,58 @@ def evaluate_row_stochastic_simplex_posterior_diagnostic(
         return float("inf")
 
     deg_ub = int(max_degree_bound) if max_degree_bound is not None else n_tot
-    q_hi_arr = np.asarray(q_hi_override if q_hi_override is not None else pac_pair.q_hi, dtype=float)
     Pi_sub = Pi_ext_csr[reach_rows, :].tocsr()
     Pi_sub.sum_duplicates()
     Pi_sub.sort_indices()
-    M_sub = pac_pair.M_pes[ext[reach_rows], :].tocsr()
-    M_sub.sum_duplicates()
-    M_sub.sort_indices()
-    c_simplex = np.zeros(len(reach_rows), dtype=float)
-    for loc_r in range(len(reach_rows)):
-        st_i = int(ext[reach_rows[loc_r]])
-        r_sum = float(np.sum(Pi_sub.data[Pi_sub.indptr[loc_r]:Pi_sub.indptr[loc_r + 1]]))
-        if abs(r_sum - 1.0) > 1e-9:
+    if np.any(~np.isfinite(Pi_sub.data)) or np.any(Pi_sub.data < 0):
+        return float("inf")
+    row_sums = np.asarray(Pi_sub.sum(axis=1)).ravel()
+    if np.any(np.abs(row_sums - 1.0) > 1e-11):
+        return float("inf")
+    Pi_sub.data /= np.repeat(row_sums, np.diff(Pi_sub.indptr))
+    Pi_rr = Pi_sub[:, ext[reach_rows]].tocsr()
+
+    # Keep the original probability bounds. Cost rescaling can underflow a
+    # positive probability to zero, and changing q does not change the data.
+    unscaled = getattr(pac_pair, "P_lo", None) if simplex else None
+    # Match the stored operator for the coordinatewise surrogate, including
+    # matrix-only callers and edges that underflowed when forming M_pes.
+    cost_embedded = not simplex
+    q_hi_arr = None if cost_embedded else np.asarray(
+        q_hi_override if q_hi_override is not None else pac_pair.q_hi, dtype=float
+    )
+    lower = (unscaled if unscaled is not None else pac_pair.M_pes)[ext[reach_rows], :].tocsr()
+    lower.sum_duplicates()
+    lower.sort_indices()
+    c_step = np.empty(len(reach_rows), dtype=float)
+    for row, state in enumerate(ext[reach_rows]):
+        begin, end = lower.indptr[row:row + 2]
+        positive = lower.data[begin:end] > 0
+        cols = lower.indices[begin:end][positive]
+        log_p = np.log(lower.data[begin:end][positive])
+        if unscaled is None and not cost_embedded:
+            # Older matrix-only callers supply their original cost scale.
+            log_p += pac_pair.q_hi[state] / lam
+        if simplex and (deg_ub < 1 or len(cols) > deg_ub):
+            raise ValueError("Probability support exceeds the declared degree bound")
+        begin, end = Pi_sub.indptr[row:row + 2]
+        positive = Pi_sub.data[begin:end] > 0
+        mass = Pi_sub.data[begin:end][positive]
+        used_cols = Pi_sub.indices[begin:end][positive]
+        where = np.searchsorted(cols, used_cols)
+        if np.any(where >= len(cols)) or not np.array_equal(cols[where], used_cols):
             return float("inf")
-        m_cols = M_sub.indices[M_sub.indptr[loc_r]:M_sub.indptr[loc_r + 1]]
-        m_vals = M_sub.data[M_sub.indptr[loc_r]:M_sub.indptr[loc_r + 1]]
-        pos_m_mask = m_vals > 0.0
-        m_cols_pos = m_cols[pos_m_mask]
-        m_vals_pos = m_vals[pos_m_mask]
-        inv_gam_lo = math.exp(float(q_hi_arr[st_i]) / float(lam))
-        p_lo_pos = m_vals_pos * inv_gam_lo
-        rho_i = max(0.0, 1.0 - float(np.sum(p_lo_pos)))
-
-        acc = 0.0
-        pi_pos_count = 0
-        min_vertex_gain = float("inf")
-        for p_idx in range(Pi_sub.indptr[loc_r], Pi_sub.indptr[loc_r + 1]):
-            pv = float(Pi_sub.data[p_idx])
-            if pv <= 0.0:
-                continue
-            pi_pos_count += 1
-            cj = int(Pi_sub.indices[p_idx])
-            pm = int(np.searchsorted(m_cols_pos, cj))
-            if not (0 <= pm < len(m_cols_pos) and int(m_cols_pos[pm]) == cj):
-                return float("inf")
-            mv = float(m_vals_pos[pm])
-            plv = float(p_lo_pos[pm])
-            acc += pv * (math.log(pv) - math.log(mv))
-            if rho_i > 0.0:
-                gain_k = pv * math.log1p(rho_i / plv)
-                if gain_k < min_vertex_gain:
-                    min_vertex_gain = gain_k
-
-        # Determine if a zero-policy-mass state can absorb `rho_i`
-        has_unused_obs_edge = pi_pos_count < len(m_cols_pos)
-        has_outside_unobs_slot = (not known_observed_support) and (len(m_cols_pos) < n_tot) and (len(m_cols_pos) + 1 <= deg_ub)
-        if rho_i <= 0.0 or has_unused_obs_edge or has_outside_unobs_slot or (not np.isfinite(min_vertex_gain)):
-            tightening = 0.0
-        else:
-            tightening = float(lam) * min_vertex_gain
-        c_simplex[loc_r] = float(lam) * acc - tightening
+        # Fixed-policy stage cost is q + lambda * KL(pi || P).
+        used_log_p = log_p[where]
+        c_step[row] = lam * np.dot(mass, np.log(mass) - used_log_p)
+        if not cost_embedded:
+            c_step[row] += q_hi_arr[state]
+        if simplex and len(cols) == len(mass) and (known_observed_support or len(cols) == min(deg_ub, n_tot)):
+            rho = max(0.0, 1.0 - math.fsum(map(float, np.exp(log_p))))
+            if rho:
+                # log(1 + rho/p) remains finite even at the smallest positive p.
+                gains = mass * np.logaddexp(0.0, math.log(rho) - used_log_p)
+                c_step[row] -= lam * float(np.min(gains))
 
     Pi_off = Pi_rr.copy()
     Pi_off.setdiag(0.0)
@@ -322,7 +243,7 @@ def evaluate_row_stochastic_simplex_posterior_diagnostic(
     pi_goal_mass = np.asarray(Pi_sub[:, gm].sum(axis=1)).ravel()
     diag_m = np.asarray(Pi_off.sum(axis=1)).ravel() + pi_goal_mass
     Sys = (sp.diags(diag_m, format="csr") - Pi_off).tocsc()
-    v_sol = spla.spsolve(Sys, c_simplex)
+    v_sol = spla.spsolve(Sys, c_step)
     if (not np.all(np.isfinite(v_sol))) or np.any(v_sol < -1e-9):
         return float("inf")
     s0_loc = int(np.searchsorted(reach_rows, r_s0))
@@ -378,7 +299,7 @@ class PlugInCEFullGraphPlanner:
             q_ms = 1000.0 * (time.perf_counter() - t0)
             return {
                 "solver_status": "goal_at_start", "policy_present": False,
-                "query_ms": q_ms, "bounds_only_query_ms": q_ms, "pred_val": float(phi_goal), "Pi_ext_csr": None,
+                "query_ms": q_ms, "bounds_only_query_ms": q_ms, "pred_val": float(phi_goal), "global_lu_rhs": 0, "Pi_ext_csr": None,
             }
         ext = np.flatnonzero(~gm)
         g_idx = np.flatnonzero(gm)
@@ -388,7 +309,7 @@ class PlugInCEFullGraphPlanner:
             q_ms = 1000.0 * (time.perf_counter() - t0)
             return {
                 "solver_status": "unreachable_on_observed_support", "policy_present": False,
-                "query_ms": q_ms, "bounds_only_query_ms": q_ms, "pred_val": float("inf"), "Pi_ext_csr": None,
+                "query_ms": q_ms, "bounds_only_query_ms": q_ms, "pred_val": float("inf"), "global_lu_rhs": 0, "Pi_ext_csr": None,
             }
         RHS = np.zeros((self.n_states, len(ring)), dtype=float)
         RHS[ring, np.arange(len(ring))] = 1.0
@@ -649,7 +570,8 @@ class UncompressedSpectralSchurPACPlanner:
             q_ms = 1000.0 * (time.perf_counter() - t0)
             return {
                 "solver_status": "goal_at_start", "policy_present": False, "finite_upper": True,
-                "query_ms": q_ms, "bounds_only_query_ms": q_ms, "certified": True, "lo": phi_f, "hi": phi_f, "width": 0.0,
+                "query_ms": q_ms, "bounds_only_query_ms": q_ms, "certified_bounds_stage_ms": q_ms,
+                "interface_candidate_stage_ms": 0.0, "certified": True, "lo": phi_f, "hi": phi_f, "width": 0.0,
                 "operational_lu_rhs": 0, "materialization_lu_rhs": 0, "total_query_lu_rhs": 0, "Pi_ext_csr": None,
             }
         rhs0 = self.pes.local_lu_rhs_solves + self.opt.local_lu_rhs_solves
@@ -670,7 +592,8 @@ class UncompressedSpectralSchurPACPlanner:
                 "finite_upper": False, "fallback_used": False, "fallback_method": None, "fallback_ms": 0.0,
                 "room_lu_refactorizations": 0, "global_fallback_lu_calls": 0, "global_fallback_active_states": 0,
                 "heuristic_equiv_room_rhs": 0,
-                "query_ms": q_ms, "bounds_only_query_ms": q_ms, "certified": False,
+                "query_ms": q_ms, "bounds_only_query_ms": q_ms, "certified_bounds_stage_ms": q_ms,
+                "interface_candidate_stage_ms": 0.0, "certified": False,
                 "lo": lo_v if opt_ok else -float("inf"), "hi": float("inf"), "width": float("inf"),
                 "operational_lu_rhs": int(op_rhs), "materialization_lu_rhs": 0, "total_query_lu_rhs": int(op_rhs), "Pi_ext_csr": None,
             }
@@ -679,7 +602,6 @@ class UncompressedSpectralSchurPACPlanner:
         w_pes = self._solve_channel_singleton(self.pes, ctx_p, self.K_pes_base, self.NegM_pes_base, self.Y_pes_rooms, -1.0)
         op_rhs = (self.pes.local_lu_rhs_solves + self.opt.local_lu_rhs_solves) - rhs0
         interface_stage_ms = 1000.0 * (time.perf_counter() - t0)
-        b_ms = interface_stage_ms
 
         Pi_csr = None
         policy_sha256 = ""
@@ -713,6 +635,7 @@ class UncompressedSpectralSchurPACPlanner:
                 self.pac_pair.M_pes, z_f, gm, s0, phi_f, self.lam, self.q_min
             )
             fb_ms = 1000.0 * (time.perf_counter() - t_fb0)
+        certified_bounds_stage_ms = 1000.0 * (time.perf_counter() - t0)
         if materialize_policy and pes_ok:
             Pi_cand = _policy_csr_from_kernel_and_z(self.pac_pair.M_pes, z_f, gm)
             pol_ok, hi_bound, pes_eps_fl, policy_sha256 = verify_and_bind_deployed_policy_csr(
@@ -729,7 +652,7 @@ class UncompressedSpectralSchurPACPlanner:
         mat_ms = 1000.0 * (time.perf_counter() - t_m0)
         q_ms = 1000.0 * (time.perf_counter() - t0)
         if not materialize_policy:
-            b_ms = q_ms
+            certified_bounds_stage_ms = q_ms
         fin_cert = bool(opt_ok and pes_ok and np.isfinite(lo_v) and np.isfinite(hi_v) and hi_v >= lo_v and ((not materialize_policy) or Pi_csr is not None))
         return {
             "solver_status": (
@@ -749,7 +672,8 @@ class UncompressedSpectralSchurPACPlanner:
             "materialization_ms": mat_ms,
             "query_ms": q_ms,
             "interface_candidate_stage_ms": interface_stage_ms,
-            "bounds_only_query_ms": b_ms,
+            "certified_bounds_stage_ms": certified_bounds_stage_ms,
+            "bounds_only_query_ms": certified_bounds_stage_ms,
             "certified": fin_cert,
             "lo": lo_v if opt_ok else -float("inf"),
             "hi": hi_v,
@@ -885,7 +809,8 @@ class MatrixFreeSpectralSchurPACPlanner:
                 "finite_upper": True, "fallback_used": False, "fallback_method": None, "fallback_ms": 0.0,
                 "room_lu_refactorizations": 0, "global_fallback_lu_calls": 0, "global_fallback_active_states": 0,
                 "heuristic_equiv_room_rhs": 0, "bicgstab_pes_info": 0, "bicgstab_pes_rel_res": 0.0,
-                "query_ms": q_ms, "bounds_only_query_ms": q_ms, "certified": True, "lo": phi_f, "hi": phi_f,
+                "query_ms": q_ms, "bounds_only_query_ms": q_ms, "certified_bounds_stage_ms": q_ms,
+                "interface_candidate_stage_ms": 0.0, "certified": True, "lo": phi_f, "hi": phi_f,
                 "width": 0.0, "operational_lu_rhs": 0, "materialization_lu_rhs": 0, "total_query_lu_rhs": 0, "Pi_ext_csr": None,
             }
         rhs0 = self.pes.local_lu_rhs_solves + self.opt.local_lu_rhs_solves
@@ -906,7 +831,8 @@ class MatrixFreeSpectralSchurPACPlanner:
                 "finite_upper": False, "fallback_used": False, "fallback_method": None, "fallback_ms": 0.0,
                 "room_lu_refactorizations": 0, "global_fallback_lu_calls": 0, "global_fallback_active_states": 0,
                 "heuristic_equiv_room_rhs": 0, "bicgstab_pes_info": 0, "bicgstab_pes_rel_res": 0.0,
-                "query_ms": q_ms, "bounds_only_query_ms": q_ms, "certified": False,
+                "query_ms": q_ms, "bounds_only_query_ms": q_ms, "certified_bounds_stage_ms": q_ms,
+                "interface_candidate_stage_ms": 0.0, "certified": False,
                 "lo": lo_v if opt_ok else -float("inf"), "hi": float("inf"), "width": float("inf"),
                 "operational_lu_rhs": int(op_rhs), "materialization_lu_rhs": 0, "total_query_lu_rhs": int(op_rhs), "Pi_ext_csr": None,
             }
@@ -915,7 +841,6 @@ class MatrixFreeSpectralSchurPACPlanner:
         w_pes, bcg_pes_info, bcg_pes_res = self._solve_krylov_certified(self.pes, ctx_p, mode="lo")
         op_rhs = (self.pes.local_lu_rhs_solves + self.opt.local_lu_rhs_solves) - rhs0
         interface_stage_ms = 1000.0 * (time.perf_counter() - t0)
-        b_ms = interface_stage_ms
 
         Pi_csr = None
         policy_sha256 = ""
@@ -949,6 +874,7 @@ class MatrixFreeSpectralSchurPACPlanner:
                 self.pac_pair.M_pes, z_f, gm, s0, phi_f, self.lam, q_min
             )
             fb_ms = 1000.0 * (time.perf_counter() - t_fb0)
+        certified_bounds_stage_ms = 1000.0 * (time.perf_counter() - t0)
         if materialize_policy and pes_ok:
             Pi_cand = _policy_csr_from_kernel_and_z(self.pac_pair.M_pes, z_f, gm)
             pol_ok, hi_bound, pes_eps_fl, policy_sha256 = verify_and_bind_deployed_policy_csr(
@@ -965,7 +891,7 @@ class MatrixFreeSpectralSchurPACPlanner:
         mat_ms = 1000.0 * (time.perf_counter() - t_m0)
         q_ms = 1000.0 * (time.perf_counter() - t0)
         if not materialize_policy:
-            b_ms = q_ms
+            certified_bounds_stage_ms = q_ms
         fin_cert = bool(opt_ok and pes_ok and np.isfinite(lo_v) and np.isfinite(hi_v) and hi_v >= lo_v and ((not materialize_policy) or Pi_csr is not None))
         return {
             "solver_status": (
@@ -989,7 +915,8 @@ class MatrixFreeSpectralSchurPACPlanner:
             "materialization_ms": mat_ms,
             "query_ms": q_ms,
             "interface_candidate_stage_ms": interface_stage_ms,
-            "bounds_only_query_ms": b_ms,
+            "certified_bounds_stage_ms": certified_bounds_stage_ms,
+            "bounds_only_query_ms": certified_bounds_stage_ms,
             "certified": fin_cert,
             "lo": lo_v if opt_ok else -float("inf"),
             "hi": hi_v,
@@ -1702,7 +1629,11 @@ def run_phase3_16_contract_gates() -> dict:
         and r_bo_sp["certified"]
         and (r_bo_sp["solver_status"] == "sound_bounds_only_no_policy")
         and (r_bo_sp["bounds_only_query_ms"] == r_bo_sp["query_ms"])
-        and (r_bo_sp["query_ms"] >= r_bo_sp["interface_candidate_stage_ms"])
+        and all(
+            result["interface_candidate_stage_ms"] <= result["bounds_only_query_ms"]
+            == result["certified_bounds_stage_ms"] <= result["query_ms"]
+            for result in (r_bo_sp, res_worm)
+        )
         and v4_freeze_info["verified_untouched"]
     )
 

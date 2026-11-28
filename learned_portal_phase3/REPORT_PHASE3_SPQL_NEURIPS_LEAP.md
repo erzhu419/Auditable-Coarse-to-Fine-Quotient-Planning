@@ -1,5 +1,7 @@
 # 阶段报告（二）：从已知算子网格求解器（SISC）到无先验轨迹学习 PAC 瓶颈商算子（NeurIPS / ICLR）
 
+> 本文保留 SPQL v1 的阶段记录。当前论文采用的证据、比较范围及复现入口见[11 月 28 日项目复核](../GREEN_PLANNING_REVIEW.md)。
+
 - **关联阶段**：`Phase-III`（`learned_portal_phase3/`，端到端未知环境轨迹学习、双对偶 PAC 遗憾认证与无偏主动瓶颈探索）
 - **无损隔离与哈希溯源清单（`provenance_manifest`）**：
   - 冻结 Phase-I（`green_response/*.py`）：`271ac8df9caaa8af8aaa5af9d35d76578632b554d5071fe8fe74065ca0dc0c2d`（**零改动**）

@@ -1,5 +1,7 @@
 # 阶段报告（一）：近邻文献顶会录用机理剖析与 `M2.3.3` SISC 算法瓶颈解锁全量闭环报告
 
+> 本文保留 M2.3.3 初次计时 的阶段记录。当前论文采用的证据、比较范围及复现入口见[11 月 28 日项目复核](../GREEN_PLANNING_REVIEW.md)。
+
 - **关联阶段**：`Phase-II`（`quotient_phase2/`，`M2.3.2` 系统审阅闭环 $\to$ `M2.3.3` SISC 解锁与 $n=12$ 未触碰确认集）
 - **基准代码与产物指纹**：
   - 冻结 Phase-I（`green_response/*.py`）：`271ac8df9caaa8af8aaa5af9d35d76578632b554d5071fe8fe74065ca0dc0c2d`

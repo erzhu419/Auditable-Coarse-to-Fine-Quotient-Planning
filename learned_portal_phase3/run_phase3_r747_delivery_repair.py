@@ -55,6 +55,7 @@ from quotient_phase2.m233_sisc_subportal_quadtree import verify_m233_original_ar
 from quotient_phase2.verify_m232_release import _strict_json_loads, verify_all_10_frozen_jsons
 
 from learned_portal_phase3 import (
+    phase3_output_directory,
     compute_phase3_manifest,
     verify_phase1_and_phase2_untouched,
     verify_phase3_v1_archive_untouched,
@@ -643,10 +644,11 @@ def _generate_v3_figures(e1_blk: dict, e2_blk: dict, e3_blk: dict, out_dir: Path
     plt.close(fig)
 
 
-def run_phase3_r747_delivery_repair_suite(gates_only: bool = False) -> dict:
+def run_phase3_r747_delivery_repair_suite(gates_only: bool = False, output_dir: Path | None = None) -> dict:
     t0 = time.perf_counter()
     enforce_single_thread_env()
     p3_dir = Path(__file__).resolve().parent
+    out_dir = phase3_output_directory("r747", output_dir)
     p2_dir = ROOT / "quotient_phase2"
 
     def _verify_all_immutable() -> dict:
@@ -687,7 +689,7 @@ def run_phase3_r747_delivery_repair_suite(gates_only: bool = False) -> dict:
     print("[Phase-III v3 Block E3] Running Repaired Zero-Fallback Continuous Surrogate Suite (Seeds 6000..6007, 96 Goals x 7 Controls)...")
     e3_blk = run_repaired_block_e3_continuous_suite(seeds=list(range(6000, 6008)))
 
-    _generate_v3_figures(e1_blk, e2_blk, e3_blk, p3_dir)
+    _generate_v3_figures(e1_blk, e2_blk, e3_blk, out_dir)
     immutable_post = _verify_all_immutable()
     assert immutable_pre == immutable_post
 
@@ -727,12 +729,12 @@ def run_phase3_r747_delivery_repair_suite(gates_only: bool = False) -> dict:
         "block_e3_continuous_surrogate_7controls": e3_blk,
     })
 
-    out_json = p3_dir / "p3_v3_r747_delivery_verified_results.json"
+    out_json = out_dir / "p3_v3_r747_delivery_verified_results.json"
     txt = json.dumps(payload, indent=2, allow_nan=False)
     _ = _strict_json_loads(txt)
     out_json.write_text(txt, encoding="utf-8")
     print(
-        f"[Phase-III v3 DONE] Wrote {out_json.name} in {payload['elapsed_wall_s']:.1f}s | "
+        f"[Phase-III v3 DONE] Wrote {out_json} in {payload['elapsed_wall_s']:.1f}s | "
         f"Gates18/18=True | E2_SPQL_Policies={e2_blk['arms_summary']['SPQL']['total_policy_present']}/192 | "
         f"E3_SPQL_Policies={e3_blk['summary']['SPQL']['policy_present_count']}/96 | "
         f"PAC_Violations={tot_pac_viols} | ExactChordHits={tot_chord_hits}"
@@ -743,9 +745,8 @@ def run_phase3_r747_delivery_repair_suite(gates_only: bool = False) -> dict:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--gates-only", action="store_true")
+    parser.add_argument("--output-dir", type=Path, help="Directory for the reproduced JSON and figures")
     args = parser.parse_args()
+    res = run_phase3_r747_delivery_repair_suite(gates_only=args.gates_only, output_dir=args.output_dir)
     if args.gates_only:
-        res = run_phase3_r747_delivery_repair_suite(gates_only=True)
         print(json.dumps(res, indent=2))
-    else:
-        run_phase3_r747_delivery_repair_suite(gates_only=False)

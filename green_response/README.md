@@ -43,7 +43,7 @@ Canonical modular library and benchmark suite closing all findings across `7087e
 | :--- | :--- | :--- | :--- |
 | **Positive-Column M-Matrix Barrier & Continuous `log1p` Residual Enclosure** | **Model-Exact Theorem (`0` violations)** | Discrete M-matrix comparison bounds on $\Omega \setminus \Gamma_b$ + $L_\infty$ residual bound with continuous reciprocal `log1p` shift (`Suite 17`) | `0` violations across `54` sign/overlap probes, `32` signed barrier probes, `625`-node `d1_noop` + `40`-seed `L1/L4/L8` probes, `144` `75^2` tours, `160` crossover tasks, `3,456` `Exp 4B` checks, and `7,200` `Exp 5B` test-task checks |
 | **Subset-Macro DP & Cold-vs-Warm Routing (`plan_exact_subset_dp`)** | **Model-Scoped $\varepsilon$-Certified ($O(m^2 2^m)$)** | Certifies $F_{\text{lo}} \le F^* \le J^{\hat{\mu}} \le F_{\text{hi}}$ on learned discrete model; `ExactRing + Subset-DP` is cold-start default | `0 / 37,303` `m=9` 4-way table violations; `ExactRing` wins cold-start `31^3` (`18,691 ms` vs `21,269 ms` `Hybrid`, `p = 0.00438`) |
-| **Continual Partition-Structure Memory vs. Residual Column Reuse (`Exp 4B`)** | **Model-Exact Bound + Reused `10250..10261` `0/2/6` Attribution** | Mandatory `cols_retained` contract across `ZeroWarm0`, `PartialWarm2`, `BroadWarm6` under `+16` real observations (`c2c499e`) | `Residual` retains `91.0` (`PartialWarm2`) & `198.2` (`BroadWarm6`) hierarchy level-cols in 3D, yet still needs `1.0` post-update `splu`; **`Structure-Memory` beats `ExactRing` (`-193.4 ms, p = 1.75e-4`) & `Residual` (`p = 1.16e-4`) on warm 3D marginal (`K=12`)**, while tying `ExactRing` from zero (`p = 0.627`) |
+| **Continual Partition-Structure Memory vs. Residual Column Reuse (`Exp 4B`)** | **Model-Exact Bound + Reused `10250..10261` `0/2/6` Attribution** | Mandatory `cols_retained` contract across `ZeroWarm0`, `PartialWarm2`, `BroadWarm6` under `+16` real observations (`c2c499e`) | `Residual` retains `91.0` (`PartialWarm2`) & `198.2` (`BroadWarm6`) hierarchy level-cols in 3D, yet still needs `1.0` post-update `splu`; **`Structure-Memory` beats `ExactRing` (`-193.4 ms, p = 1.75e-4`) & `Residual` (`p = 1.16e-4`) on warm 3D marginal (`K=12`)**, with an inconclusive from-zero lifecycle difference (`−36.4 ms, 95% CI [−196.7, +123.9], p = 0.627`) |
 | **2x2 Mechanism Factorial (`Exp 4C` Batch B, `32` Revealed Dev Maps)** | **Controlled Causal Mechanism Attribution** | Fixes pending-conditioned `(q + 0.25 b)` sentinels; crosses `q-only vs q+b` decision adjoint $\times$ `Uncond vs Cond` (`10300..10415`) | **Sequential conditioning main effect: `-0.150 +/- 0.067` (`p = 7.63e-5`)**; **incremental `b` decision-sensitivity contrast: `+0.005 +/- 0.023` (`p = 0.643`, unresolved incremental effect; all arms still measure/fit/plan with `b`)** |
 | **Locked Fresh Confirmation (`Exp 4C` Batch C, `64` Untouched Maps)** | **Pre-Declared Single-Candidate Confirmation** | `Green-ValueOnly-qb-Cond-11+3` (`max_alt_branches=0`), deferred post-Ep-6 evaluation (`20300..20431`, frozen `c2c499e` run) | **Pooled `64` maps (`Ep 2–6`)**: beats `Global-CondMaxVar-qb` (`-0.234, p_holm = 9.03e-6`) & `OnPolicy-11+CondSentinel-qb-3` (`-0.131, p_holm = 0.0056`), **not confirmed superior to pure `True-OnPolicy-14` (`-0.056, p_holm = 0.147`)**; within Competing-Corridor (`32` maps) `p_holm = 0.0143`, while **direct interaction `Competing - Standard = -0.108` (`p = 0.165` paired / `0.158` Welch) is non-significant** |
 | **6D Helmholtz-Bessel Physics-Mean GP Prior (`Exp 3A/3B/3D`)** | **Supporting Analytical Collar Prior + `+5%` NI** | Exact $C^2$ even collar PDE residual ($R = r I$, unconstrained); locked `M1/M2/M3` pipelines (`57e5912`, incl. `100` shared probes & `1,266` internal FK paths) | `M1_EndToEnd_Bessel24` passes `+5%` Lin-NI vs `M2` (`p_NI <= 0.0107`) & `M3` (`p_NI <= 0.0412`) at **`5.70x` / `14.92x` query-cold serial speedup** (`2.38x` / `5.09x` incl. shared `449.5 ms` world GP) |
@@ -98,9 +98,9 @@ All linear-algebra and benchmark runs enforce single-thread BLAS/OpenMP executio
 
 - **Exp 4A (`29fa7c6`)**: `0 / 72` bound violations, `100%` root-action agreement; mean `|ΔJ|`: `L1` port (`0.0056`) << `L2c` `dt=0.005` reflected hit (`0.3432`) < `L3` GP mismatch (`0.8598`).
 - **Exp 4B (`c2c499e`, Reused `10250..10261` Cohort, `+16` Physical Observations, `0 / 3,456` Bound Violations)**:
-  - `Residual-Audited-Reuse` retains `7.8` / `15.3` (2D) and `91.0` / `198.2` (3D) cached hierarchy level-entries (`L1 + L4 + L8 + EXACT`), while `Structure-Memory-Fresh-Exact` refreshes `217.7` leaf RHS columns in 3D `BroadWarm6`, beating `ExactRing` (`1,111.7` vs `1,305.1 ms`, `-193.4 ms, p = 1.75e-4`) and `Residual` (`1,375.2 ms, p = 1.16e-4`) on warm marginal (`K = 12`) while tying `ExactRing` from zero (`2,544.3` vs `2,580.8 ms, p = 0.627`).
+  - `Residual-Audited-Reuse` retains `7.8` / `15.3` (2D) and `91.0` / `198.2` (3D) cached hierarchy level-entries (`L1 + L4 + L8 + EXACT`), while `Structure-Memory-Fresh-Exact` refreshes `217.7` leaf RHS columns in 3D `BroadWarm6`, beating `ExactRing` (`1,111.7` vs `1,305.1 ms`, `-193.4 ms, p = 1.75e-4`) and `Residual` (`1,375.2 ms, p = 1.16e-4`) on warm marginal (`K = 12`). The from-zero lifecycle difference was `−36.4 ms` (`2,544.3` vs `2,580.8 ms`, 95% CI `[−196.7, +123.9]`, `p = 0.627`).
 - **Exp 4C Batch B (`c2c499e`, `32` Revealed Dev Maps `10300..10415`, `5` Online Acquisition Stages `Ep 1–5`)**:
-  - Sequential Schur conditioning main effect: **`-0.150 +/- 0.067` (`p = 7.63e-5`)**; incremental `b` decision-sensitivity contrast: **`+0.005 +/- 0.023` (`p = 0.643`, unresolved incremental effect; all arms measure/fit/plan with `b`)**; `FactB` (`9.460`) and `FactD` (`9.456`) beat `Global-CondMaxVar-qb-14` (`9.723, p = 1.19e-6`).
+  - Sequential Schur conditioning main effect: **`-0.150 +/- 0.067` (`p = 7.63e-5`)**; incremental `b` decision-sensitivity contrast: **`+0.005 +/- 0.023` (`p = 0.643`, unresolved incremental effect; all arms measure/fit/plan with `b`)**; `FactB` (`9.460`, paired `p = 8.22e-6`) and `FactD` (`9.456`, paired `p = 1.19e-6`) both improved on `Global-CondMaxVar-qb-14` (`9.723`).
 - **Exp 4C Batch C (`c2c499e`, `64` Untouched Maps `20300..20331` Standard + `20400..20431` Competing-Corridor)**:
 
 | Arm (`64` Untouched Maps `20300..20431`, Deferred Eval) | Standard `32` (`Ep 2–6`) | Competing `32` (`Ep 2–6`) | Pooled `64` (`Ep 2–6`) | Pooled `GreenVal - Arm` (`95% CI`) | `p_nom` / `p_holm` (`3`-Ref Family) | Trap. Cost AUC (`28..98`) / Attained `>=6%` by `98` (`Pen@112`) | Acq / Oper / Sim(excl) / Eval ms |
@@ -153,28 +153,31 @@ All linear-algebra and benchmark runs enforce single-thread BLAS/OpenMP executio
 
 ## 4. Reproducible Execution Commands
 
-```bash
-# 1. Run all 24 independent audit & counterexample suites (single-threaded)
-OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 NUMEXPR_NUM_THREADS=1 \
-  /usr/bin/python3 green_response/verify_audit_closure.py
+From the repository root, create a fresh project-local directory for the frozen scripts. They write JSON and figures alongside their own source.
 
-# 2. Run Experiments 1–5 (8-core map-parallel with per-worker single-thread BLAS pinning)
-OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 NUMEXPR_NUM_THREADS=1 \
-  /usr/bin/python3 green_response/exp1_3d_and_macro_tours.py
-OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 NUMEXPR_NUM_THREADS=1 \
-  /usr/bin/python3 green_response/exp2_nonlmdp_kkt.py
-OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 NUMEXPR_NUM_THREADS=1 \
-  /usr/bin/python3 green_response/exp3_highd_and_kinetic.py
-OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 NUMEXPR_NUM_THREADS=1 \
-  /usr/bin/python3 green_response/exp4_fidelity_and_continual.py
-OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 NUMEXPR_NUM_THREADS=1 \
-  /usr/bin/python3 green_response/exp5_response_subspace_diagnostic.py
+```bash
+mkdir -p .tmp
+green_run=$(mktemp -d "$PWD/.tmp/green-response-XXXXXX")
+cp -r green_response "$green_run/"
+cd "$green_run" || exit 1
+export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
+export VECLIB_MAXIMUM_THREADS=1 NUMEXPR_NUM_THREADS=1
+
+# Counterexamples and numerical contracts
+/usr/bin/python3 -m green_response.verify_audit_closure
+
+# Original experiments, if regenerating their measurements
+/usr/bin/python3 -m green_response.exp1_3d_and_macro_tours
+/usr/bin/python3 -m green_response.exp2_nonlmdp_kkt
+/usr/bin/python3 -m green_response.exp3_highd_and_kinetic
+/usr/bin/python3 -m green_response.exp4_fidelity_and_continual
+/usr/bin/python3 -m green_response.exp5_response_subspace_diagnostic
 ```
 
 ---
 
 ## 5. Phase-II Follow-Up Research Specification & Isolated `quotient_phase2/` Package
 
-With Phase-I code, contracts, and `Experiments 1–5` permanently frozen at `package_py_sha256 = "271ac8df9caaa8af8aaa5af9d35d76578632b554d5071fe8fe74065ca0dc0c2d"`, the contract-hardened Phase-II specification (`A26-D01..D12` closed across all 10 matrix counterexamples) is documented in [`NEXT_PHASE_RESEARCH_ROADMAP.md`](./NEXT_PHASE_RESEARCH_ROADMAP.md), and its initial `M2.0 + M2.1` implementation lives in the sibling isolated package `../quotient_phase2/` (importing `green_response` strictly read-only).
+With Phase-I code, contracts, and `Experiments 1–5` permanently frozen at `package_py_sha256 = "271ac8df9caaa8af8aaa5af9d35d76578632b554d5071fe8fe74065ca0dc0c2d"`, the contract-hardened Phase-II specification (`A26-D01..D12` closed across all 10 matrix counterexamples) is documented in [`NEXT_PHASE_RESEARCH_ROADMAP.md`](./NEXT_PHASE_RESEARCH_ROADMAP.md), and the published clean-run results and current reproduction commands are in the [Phase II package](../quotient_phase2/README.md).
 
 

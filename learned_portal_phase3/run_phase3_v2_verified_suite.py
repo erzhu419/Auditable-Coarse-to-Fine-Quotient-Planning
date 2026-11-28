@@ -60,6 +60,7 @@ from quotient_phase2.m233_sisc_subportal_quadtree import verify_m233_original_ar
 from quotient_phase2.verify_m232_release import _strict_json_loads, verify_all_10_frozen_jsons
 
 from learned_portal_phase3 import (
+    phase3_output_directory,
     compute_phase3_manifest,
     verify_phase1_and_phase2_untouched,
     verify_phase3_v1_archive_untouched,
@@ -656,10 +657,10 @@ def _generate_v2_figures(e1: dict, e2: dict, e3: dict, out_dir: Path) -> None:
     plt.close(fig)
 
 
-def run_phase3_v2_verified_suite(self_test: bool = False) -> dict:
+def run_phase3_v2_verified_suite(self_test: bool = False, output_dir: Path | None = None) -> dict:
     t0 = time.perf_counter()
     enforce_single_thread_env()
-    p3_dir = Path(__file__).resolve().parent
+    out_dir = phase3_output_directory("v2", output_dir)
     p2_dir = ROOT / "quotient_phase2"
 
     freeze_12 = verify_phase1_and_phase2_untouched()
@@ -690,7 +691,7 @@ def run_phase3_v2_verified_suite(self_test: bool = False) -> dict:
     print("[Phase-III v2 Block E3] Running 35-deg Continuous Diffusion Suite (Fresh Seeds 6000..6007, U=0 Passive, 0 Wall Tunneling, 6 Controls)...")
     e3 = run_block_e3_continuous_diffusion_suite(seeds=list(range(6000, 6008)))
 
-    _generate_v2_figures(e1, e2, e3, p3_dir)
+    _generate_v2_figures(e1, e2, e3, out_dir)
 
     # Re-verify all frozen archives untouched after full run
     verify_phase1_and_phase2_untouched()
@@ -739,12 +740,12 @@ def run_phase3_v2_verified_suite(self_test: bool = False) -> dict:
         "block_e3_continuous_diffusion_6controls": e3,
     })
 
-    out_json = p3_dir / "p3_v2_verified_benchmark_results.json"
+    out_json = out_dir / "p3_v2_verified_benchmark_results.json"
     txt = json.dumps(payload, indent=2, allow_nan=False)
     _ = _strict_json_loads(txt)
     out_json.write_text(txt, encoding="utf-8")
     print(
-        f"[Phase-III v2 DONE] Wrote {out_json.name} in {payload['elapsed_wall_s']:.1f}s | "
+        f"[Phase-III v2 DONE] Wrote {out_json} in {payload['elapsed_wall_s']:.1f}s | "
         f"Gates16/16=True | SPQL_PAC_Violations={total_spql_pac_violations} | "
         f"WallTunnelingSegments={total_cont_blocked} | All Frozen Archives=100% Untouched"
     )
@@ -755,11 +756,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--self-test", action="store_true")
     parser.add_argument("--gates-only", action="store_true")
+    parser.add_argument("--output-dir", type=Path, help="Directory for the reproduced JSON and figures")
     args = parser.parse_args()
     if args.gates_only:
         g = run_phase3_16_contract_gates()
         print(json.dumps(g, indent=2))
-    elif args.self_test:
-        run_phase3_v2_verified_suite(self_test=True)
     else:
-        run_phase3_v2_verified_suite(self_test=False)
+        run_phase3_v2_verified_suite(self_test=args.self_test, output_dir=args.output_dir)
