@@ -2658,7 +2658,8 @@ class SPQLPlanner:
         hi_portal_est = (phi_f - self.lam * float(np.log(z_pes_lo_s))) if (pes_portal_ok and z_pes_lo_s > 0.0) else float("inf")
 
         op_rhs = (self.pes_chan.local_lu_rhs_solves + self.opt_chan.local_lu_rhs_solves) - rhs0
-        bounds_only_ms = 1000.0 * (time.perf_counter() - t0)
+        interface_stage_ms = 1000.0 * (time.perf_counter() - t0)
+        bounds_only_ms = interface_stage_ms
 
         t_mat0 = time.perf_counter()
         rhs_mat0 = self.pes_chan.local_lu_rhs_solves + self.opt_chan.local_lu_rhs_solves
@@ -2713,6 +2714,7 @@ class SPQLPlanner:
                 fallback_ms = 1000.0 * (time.perf_counter() - t_fb0)
 
             if pes_ok and z_sub_full is not None:
+                cert_bounds_stage_ms = 1000.0 * (time.perf_counter() - t0)
                 Pi_cand = self.build_deployed_policy_csr(z_sub_full, gm)
                 pol_ok, hi_bound, pes_eps_fl, policy_sha256 = verify_and_bind_deployed_policy_csr(
                     self.pac_pair.M_pes, z_sub_full, Pi_cand, gm, s0, phi_f, self.lam, self.q_min, hi_c, pes_eps_fl
@@ -2777,6 +2779,11 @@ class SPQLPlanner:
         room_refac = int((self.pes_chan.room_lu_refactorizations + self.opt_chan.room_lu_refactorizations) - refac0)
         mat_ms = 1000.0 * (time.perf_counter() - t_mat0)
         full_q_ms = 1000.0 * (time.perf_counter() - t0)
+        if not materialize_policy:
+            bounds_only_ms = full_q_ms
+            cert_bounds_stage_ms = full_q_ms
+        elif not ("cert_bounds_stage_ms" in locals()):
+            cert_bounds_stage_ms = full_q_ms
 
         finite_upper = bool(np.isfinite(hi_c))
         policy_present = bool(Pi_csr is not None)
@@ -2801,6 +2808,8 @@ class SPQLPlanner:
             "heuristic_equiv_room_rhs": int(heuristic_equiv_rhs),
             "materialization_ms": mat_ms,
             "query_ms": full_q_ms,
+            "interface_candidate_stage_ms": interface_stage_ms,
+            "certified_bounds_stage_ms": cert_bounds_stage_ms,
             "bounds_only_query_ms": bounds_only_ms,
             "certified": finite_certified,
             "sound_enclosure": sound_enclosure,

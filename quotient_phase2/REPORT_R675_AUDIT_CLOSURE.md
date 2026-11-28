@@ -55,6 +55,8 @@ GPT6 在 `R675` 中首先独立确认了 `67532c9` 的实质进展：官方 `18/
 
 ---
 
+> **[R7A 勘误与边界收窄说明（见 `REPORT_R7A_V14_AUDIT_CLOSURE.md`）]**：本报告第 3 节中计算的 $\overline{J}_{\underline{M}}(\pi)$ 是**逐坐标（次随机核）保守代理上界（`high_precision_numerical_diagnostic`）**，满足 $\sup_{(P,q)\in\mathcal{C}_n} J^\pi_{P,q} \le \overline{J}_{\underline{M}}(\pi)$ 及代理族内变分最优性 $U_{\mathrm{PAC,full}} = \min_\pi \overline{J}_{\underline{M}}(\pi) \le \overline{J}_{\underline{M}}(\hat{\pi}_{\mathrm{CE}})$；一般归一化概率单纯形上该不等式不必取等（两态反例见 `Gate P3-C21`），故 `57.5% / 77.6%` 严格指该逐坐标代理证书族内的收紧比例，`+8.44 / +26.28` 指本悲观模型在当前数据上观察到的额外部署代价（而非一切安全方法的普适信息论下界）。
+
 ## 3. 核心科学发现：同数据四层代价与后验证书分解（回应 `R675` 第 10 节核心之问）
 
 GPT6 在第 10 节提出了一个极为关键的审稿人问题：*既然 `PlugIn_CE` 经验遗憾更低，如果用确定性等价策略做控制、再用后验 PAC 包络给它出证书会怎样？为什么悲观 PAC 规划的经验代价更高？*  

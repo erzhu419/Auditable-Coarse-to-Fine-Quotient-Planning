@@ -831,19 +831,22 @@ def audit_e3_policy_fingerprints_and_selective_rerun(p3_dir: Path, seeds: List[i
                     raise RuntimeError(f"E3 v4 {m_nm} returned None policy on seed={seed} task={t_idx}")
                 prev_ev = v3_ev_map[(int(seed), int(t_idx), m_nm)]
 
-                # Check whether `Pi_v4` changed vs. `v3` (`same solver status + legacy formula diff <= 1e-12`)
+                # Fail-closed policy comparison (`R7A-03`): never silently default missing old CSR to diff=0.0!
+                # Actual cross-commit CSR comparison across all 672 E3 queries is performed in `run_phase3_r7a_sidecar_audit.py`.
                 same_status = (
                     bool(r_dict.get("fallback_used", False)) == bool(prev_ev["fallback_used"])
                     and str(r_dict.get("fallback_method", None)) == str(prev_ev["fallback_method"])
                 )
-                pi_diff = 0.0
+                pi_diff: Any = None
+                comp_status = "comparison_unavailable_without_prior_csr"
                 if "z_sub_full" in r_dict and r_dict["z_sub_full"] is not None:
                     Pi_leg = _legacy_v3_policy_csr(spql.pac_pair.M_pes, r_dict["z_sub_full"], gm)
                     diff_mat = Pi_v4 - Pi_leg
                     pi_diff = float(np.max(np.abs(diff_mat.data))) if diff_mat.nnz > 0 else 0.0
-                max_pi_diff_overall = max(max_pi_diff_overall, pi_diff)
+                    comp_status = "same_v4_z_normalization_formula_only"
+                    max_pi_diff_overall = max(max_pi_diff_overall, pi_diff)
 
-                if (not same_status) or (pi_diff > 1e-12):
+                if (not same_status) or (pi_diff is None) or (float(pi_diff) > 1e-12):
                     recomputed_rollout_count += 1
                     ctrl = make_continuous_control_from_landmark_policy(
                         landmarks, tree, Pi_v4, gm, g_ctr, world.dt, world.u_clip,
@@ -883,6 +886,7 @@ def audit_e3_policy_fingerprints_and_selective_rerun(p3_dir: Path, seeds: List[i
                     "fallback_used": fb_u,
                     "fallback_method": r_dict.get("fallback_method", None),
                     "global_fallback_lu_calls": int(r_dict.get("global_fallback_lu_calls", 0)),
+                    "comparison_status": comp_status,
                     "max_abs_pi_diff_vs_v3": pi_diff,
                     "rollout_recomputed_in_v4": roll_recomp,
                     "mean_rollout_cost": mean_c,

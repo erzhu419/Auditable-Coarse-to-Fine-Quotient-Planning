@@ -47,6 +47,7 @@ from learned_portal_phase3 import (
     verify_phase3_v1_archive_untouched,
     verify_phase3_v2_archive_untouched,
     verify_phase3_v3_archive_untouched,
+    verify_phase3_v4_archive_untouched,
 )
 from learned_portal_phase3.spql_core import (
     ETA_SUB_F64,
@@ -87,10 +88,13 @@ def evaluate_posterior_pac_policy_upper_bound(
     s0: int,
     lam: float,
 ) -> float:
-    """Computes the exact worst-case Bellman-KL cost upper bound `J_bar_{M_pes}(pi; s0, G)` of ANY fixed
-    Markov policy `Pi_ext_csr` (`such as PlugIn_CE's deployed policy`) over the `(1 - delta)` confidence set
-    `E_valid`: since `M_pes[i, j] = exp(-q_hi[i] / lam) * p_lo[i, j]`, at each exterior state `i` reachable
-    from `s0` under `pi`, the worst-case step cost is `c_hi[i] = lam * sum_j pi_{ij} (log pi_{ij} - log M_pes[i,j])`.
+    """High-precision numerical diagnostic (`NOT Tier-3 outward-rounded interval arithmetic`, `Closes R7A-01 & R7A-07`):
+    Evaluates the **coordinatewise (sub-Markov) conservative surrogate upper bound** `J_bar_{M_pes}(pi; s0, G)` of any
+    fixed Markov policy `Pi_ext_csr` using step cost `c_hi[i] = lam * sum_j pi_{ij} (log pi_{ij} - log M_pes[i,j])`.
+    Satisfies `sup_{(P, q) in C_n} J^pi_{P, q}(s0; G) <= J_bar_{M_pes}(pi; s0, G)` and variational optimality
+    `U_{PAC,full} = min_pi J_bar_{M_pes}(pi)` WITHIN this coordinatewise surrogate family; when `pi_i` puts positive
+    mass on all feasible destinations (e.g. `N = d_max = |supp(pi_i)|` or known observed support), the true
+    row-stochastic simplex worst case is strictly tighter than `J_bar_{M_pes}(pi)` (see `evaluate_row_stochastic_simplex_posterior_diagnostic`).
     Returns `+inf` if `pi` uses any unobserved edge (`M_pes == 0`) or is improper from `s0`.
     """
     gm = np.asarray(goal_mask, dtype=bool)
@@ -179,6 +183,146 @@ def evaluate_posterior_pac_policy_upper_bound(
     diag_m = np.asarray(Pi_off.sum(axis=1)).ravel() + pi_goal_mass
     Sys = (sp.diags(diag_m, format="csr") - Pi_off).tocsc()
     v_sol = spla.spsolve(Sys, c_hi)
+    if (not np.all(np.isfinite(v_sol))) or np.any(v_sol < -1e-9):
+        return float("inf")
+    s0_loc = int(np.searchsorted(reach_rows, r_s0))
+    return float(phi_goal) + max(0.0, float(v_sol[s0_loc]))
+
+
+def evaluate_row_stochastic_simplex_posterior_diagnostic(
+    pac_pair: DualPACMMatrixPair,
+    Pi_ext_csr: Optional[sp.csr_matrix],
+    goal_mask: np.ndarray,
+    phi_goal: float,
+    s0: int,
+    lam: float,
+    known_observed_support: bool = True,
+    max_degree_bound: Optional[int] = None,
+    q_hi_override: Optional[np.ndarray] = None,
+) -> float:
+    """High-precision numerical diagnostic (`R7A-01 & Decision C Step 1`):
+    Computes the **exact row-stochastic simplex worst-case cost** `sup_{P in P(P_lo), q <= q_hi} J^pi_{P,q}(s0; G)`
+    of a fixed policy `Pi_ext_csr` via Bauer's Maximum Principle on the convex map `p_i -> -sum_j pi_{ij} log p_{ij}`:
+      - At each reachable state `i`, slack mass `rho_i = 1 - sum_j p_lo[i, j]` is placed at an extreme vertex:
+        either on a feasible zero-policy-mass state `k* notin supp(pi_i)` (giving zero tightening relative to the
+        coordinatewise surrogate `c_hi[i]`), OR—whenever `supp(pi_i)` covers all feasible successors (e.g.
+        `known_observed_support=True` with `supp(pi_i) == supp(p_lo_i)`, or `N == |supp(pi_i)|`, or degree `d_max`
+        is saturated)—on `argmin_{k in supp(pi_i)} pi_{ik} log(1 + rho_i / p_lo_{ik})`, tightening `c_hi[i]` by
+        `-lam * min_k pi_{ik} log(1 + rho_i / p_lo_{ik})`.
+    """
+    gm = np.asarray(goal_mask, dtype=bool)
+    n_tot = len(gm)
+    if bool(gm[s0]):
+        return float(phi_goal)
+    ext = np.flatnonzero(~gm)
+    if Pi_ext_csr is None or len(ext) == 0 or Pi_ext_csr.shape != (len(ext), n_tot):
+        return float("inf")
+    r_s0 = int(np.searchsorted(ext, s0))
+    if not (0 <= r_s0 < len(ext) and int(ext[r_s0]) == int(s0)):
+        return float("inf")
+
+    ext_lookup = np.full(n_tot, -1, dtype=np.int64)
+    ext_lookup[ext] = np.arange(len(ext), dtype=np.int64)
+    vis = np.zeros(len(ext), dtype=bool)
+    vis[r_s0] = True
+    qf = [r_s0]
+    head = 0
+    hits_goal = np.zeros(len(ext), dtype=bool)
+    while head < len(qf):
+        r = qf[head]
+        head += 1
+        for p_idx in range(Pi_ext_csr.indptr[r], Pi_ext_csr.indptr[r + 1]):
+            pv = float(Pi_ext_csr.data[p_idx])
+            if pv <= 0.0:
+                continue
+            j_st = int(Pi_ext_csr.indices[p_idx])
+            if gm[j_st]:
+                hits_goal[r] = True
+            else:
+                rn = int(ext_lookup[j_st])
+                if rn < 0:
+                    return float("inf")
+                if not vis[rn]:
+                    vis[rn] = True
+                    qf.append(rn)
+
+    reach_rows = np.flatnonzero(vis)
+    Pi_rr = Pi_ext_csr[reach_rows, :][:, ext[reach_rows]].tocsr()
+    Pi_rr_T = Pi_rr.T.tocsr()
+    can_hit = hits_goal[reach_rows].copy()
+    qb = [int(i) for i in np.flatnonzero(can_hit)]
+    hb = 0
+    while hb < len(qb):
+        u = qb[hb]
+        hb += 1
+        for idx in range(Pi_rr_T.indptr[u], Pi_rr_T.indptr[u + 1]):
+            if Pi_rr_T.data[idx] > 0.0:
+                v = int(Pi_rr_T.indices[idx])
+                if not can_hit[v]:
+                    can_hit[v] = True
+                    qb.append(v)
+    if not np.all(can_hit):
+        return float("inf")
+
+    deg_ub = int(max_degree_bound) if max_degree_bound is not None else n_tot
+    q_hi_arr = np.asarray(q_hi_override if q_hi_override is not None else pac_pair.q_hi, dtype=float)
+    Pi_sub = Pi_ext_csr[reach_rows, :].tocsr()
+    Pi_sub.sum_duplicates()
+    Pi_sub.sort_indices()
+    M_sub = pac_pair.M_pes[ext[reach_rows], :].tocsr()
+    M_sub.sum_duplicates()
+    M_sub.sort_indices()
+    c_simplex = np.zeros(len(reach_rows), dtype=float)
+    for loc_r in range(len(reach_rows)):
+        st_i = int(ext[reach_rows[loc_r]])
+        r_sum = float(np.sum(Pi_sub.data[Pi_sub.indptr[loc_r]:Pi_sub.indptr[loc_r + 1]]))
+        if abs(r_sum - 1.0) > 1e-9:
+            return float("inf")
+        m_cols = M_sub.indices[M_sub.indptr[loc_r]:M_sub.indptr[loc_r + 1]]
+        m_vals = M_sub.data[M_sub.indptr[loc_r]:M_sub.indptr[loc_r + 1]]
+        pos_m_mask = m_vals > 0.0
+        m_cols_pos = m_cols[pos_m_mask]
+        m_vals_pos = m_vals[pos_m_mask]
+        inv_gam_lo = math.exp(float(q_hi_arr[st_i]) / float(lam))
+        p_lo_pos = m_vals_pos * inv_gam_lo
+        rho_i = max(0.0, 1.0 - float(np.sum(p_lo_pos)))
+
+        acc = 0.0
+        pi_pos_count = 0
+        min_vertex_gain = float("inf")
+        for p_idx in range(Pi_sub.indptr[loc_r], Pi_sub.indptr[loc_r + 1]):
+            pv = float(Pi_sub.data[p_idx])
+            if pv <= 0.0:
+                continue
+            pi_pos_count += 1
+            cj = int(Pi_sub.indices[p_idx])
+            pm = int(np.searchsorted(m_cols_pos, cj))
+            if not (0 <= pm < len(m_cols_pos) and int(m_cols_pos[pm]) == cj):
+                return float("inf")
+            mv = float(m_vals_pos[pm])
+            plv = float(p_lo_pos[pm])
+            acc += pv * (math.log(pv) - math.log(mv))
+            if rho_i > 0.0:
+                gain_k = pv * math.log1p(rho_i / plv)
+                if gain_k < min_vertex_gain:
+                    min_vertex_gain = gain_k
+
+        # Determine if a zero-policy-mass state can absorb `rho_i`
+        has_unused_obs_edge = pi_pos_count < len(m_cols_pos)
+        has_outside_unobs_slot = (not known_observed_support) and (len(m_cols_pos) < n_tot) and (len(m_cols_pos) + 1 <= deg_ub)
+        if rho_i <= 0.0 or has_unused_obs_edge or has_outside_unobs_slot or (not np.isfinite(min_vertex_gain)):
+            tightening = 0.0
+        else:
+            tightening = float(lam) * min_vertex_gain
+        c_simplex[loc_r] = float(lam) * acc - tightening
+
+    Pi_off = Pi_rr.copy()
+    Pi_off.setdiag(0.0)
+    Pi_off.eliminate_zeros()
+    pi_goal_mass = np.asarray(Pi_sub[:, gm].sum(axis=1)).ravel()
+    diag_m = np.asarray(Pi_off.sum(axis=1)).ravel() + pi_goal_mass
+    Sys = (sp.diags(diag_m, format="csr") - Pi_off).tocsc()
+    v_sol = spla.spsolve(Sys, c_simplex)
     if (not np.all(np.isfinite(v_sol))) or np.any(v_sol < -1e-9):
         return float("inf")
     s0_loc = int(np.searchsorted(reach_rows, r_s0))
@@ -534,7 +678,8 @@ class UncompressedSpectralSchurPACPlanner:
         ctx_p["reach_gam_mask"] = reach_all[self.dec.gamma_nodes]
         w_pes = self._solve_channel_singleton(self.pes, ctx_p, self.K_pes_base, self.NegM_pes_base, self.Y_pes_rooms, -1.0)
         op_rhs = (self.pes.local_lu_rhs_solves + self.opt.local_lu_rhs_solves) - rhs0
-        b_ms = 1000.0 * (time.perf_counter() - t0)
+        interface_stage_ms = 1000.0 * (time.perf_counter() - t0)
+        b_ms = interface_stage_ms
 
         Pi_csr = None
         policy_sha256 = ""
@@ -603,6 +748,7 @@ class UncompressedSpectralSchurPACPlanner:
             "heuristic_equiv_room_rhs": int(heur_equiv_rhs),
             "materialization_ms": mat_ms,
             "query_ms": q_ms,
+            "interface_candidate_stage_ms": interface_stage_ms,
             "bounds_only_query_ms": b_ms,
             "certified": fin_cert,
             "lo": lo_v if opt_ok else -float("inf"),
@@ -768,7 +914,8 @@ class MatrixFreeSpectralSchurPACPlanner:
         ctx_p["reach_gam_mask"] = reach_all[self.dec.gamma_nodes]
         w_pes, bcg_pes_info, bcg_pes_res = self._solve_krylov_certified(self.pes, ctx_p, mode="lo")
         op_rhs = (self.pes.local_lu_rhs_solves + self.opt.local_lu_rhs_solves) - rhs0
-        b_ms = 1000.0 * (time.perf_counter() - t0)
+        interface_stage_ms = 1000.0 * (time.perf_counter() - t0)
+        b_ms = interface_stage_ms
 
         Pi_csr = None
         policy_sha256 = ""
@@ -841,6 +988,7 @@ class MatrixFreeSpectralSchurPACPlanner:
             "bicgstab_pes_rel_res": bcg_pes_res,
             "materialization_ms": mat_ms,
             "query_ms": q_ms,
+            "interface_candidate_stage_ms": interface_stage_ms,
             "bounds_only_query_ms": b_ms,
             "certified": fin_cert,
             "lo": lo_v if opt_ok else -float("inf"),
@@ -1504,16 +1652,71 @@ def run_phase3_16_contract_gates() -> dict:
         and v3_freeze_info["verified_untouched"]
     )
 
-    all_20 = all([
+    # Gate 21 (`P3-C21`, `Closes R7A-01, R7A-02, R7A-04, & v4 Freeze`):
+    # (a) 2-state Proposition 5 counterexamples (`pi=(0.5, 0.5)` and CE-optimal `pi_CE=(0.2, 0.8)`):
+    #     verifies coordinatewise surrogate > full pessimistic surrogate > exact simplex worst case (`2.9534 < 3.2651 < 3.5027`);
+    # (b) 2-state Theorem 4 sufficiency-vs-necessity probe (`m=100/state, q=14.3, z_min^-2=2.64e12, width=0.15394 < 0.18`);
+    # (c) True bounds-only certification timing (`materialize_policy=False` runs full Higham checks inside `bounds_only_query_ms`);
+    # (d) Byte-freeze verification of `p3_v4_r675_verified_results.json` (`798a9e2b...`).
+    from types import SimpleNamespace
+    p_lo_2s = np.array([[0.1, 0.1], [0.0, 1.0]], dtype=float)
+    q_hi_2s = np.array([1.0, 1.0], dtype=float)
+    pac_2s = SimpleNamespace(M_pes=sp.csr_matrix(math.exp(-1.0) * p_lo_2s), q_hi=q_hi_2s)
+    gm_2s = np.array([False, True])
+    pi_unif_2s = sp.csr_matrix([[0.5, 0.5]], dtype=float)
+    surr_unif_2s = evaluate_posterior_pac_policy_upper_bound(pac_2s, pi_unif_2s, gm_2s, 0.0, 0, 1.0)
+    simp_unif_2s = evaluate_row_stochastic_simplex_posterior_diagnostic(
+        pac_2s, pi_unif_2s, gm_2s, 0.0, 0, 1.0, known_observed_support=False, max_degree_bound=2
+    )
+    u_pac_full_2s = -math.log((0.1 * math.exp(-1.0)) / (1.0 - 0.1 * math.exp(-1.0)))
+    pi_ce_2s = sp.csr_matrix([[0.2, 0.8]], dtype=float)
+    surr_ce_2s = evaluate_posterior_pac_policy_upper_bound(pac_2s, pi_ce_2s, gm_2s, 0.0, 0, 1.0)
+    simp_ce_2s = evaluate_row_stochastic_simplex_posterior_diagnostic(
+        pac_2s, pi_ce_2s, gm_2s, 0.0, 0, 1.0, known_observed_support=False, max_degree_bound=2
+    )
+
+    m_t4 = 100
+    q_t4 = 14.3
+    ds_t4 = EmpiricalTrajectoryDataset(
+        n_states=2, total_steps=2 * m_t4, visit_counts=np.array([m_t4, m_t4], dtype=np.int64),
+        trans_counts=sp.csr_matrix([[0.0, float(m_t4)], [0.0, float(m_t4)]], dtype=float),
+        cost_sums=np.array([m_t4 * q_t4, m_t4 * q_t4], dtype=float), q_min=q_t4, q_max=q_t4, lam=1.0,
+    )
+    pa_t4 = build_pac_mmatrix_pair(ds_t4, delta=0.05 / 3.0, max_degree_bound=2)
+    z_lo_t4 = np.array([float(pa_t4.M_pes[0, 1]), 1.0], dtype=float)
+    z_hi_t4 = np.array([float(pa_t4.M_opt[0, 1] + pa_t4.b_opt_explore[0]), 1.0], dtype=float)
+    ok_u_t4, hi_u_t4, _, eps_u_t4 = higham_verify_upper_subsolution(pa_t4.M_pes, z_lo_t4, gm_2s, 0, 0.0, 1.0, q_t4)
+    ok_l_t4, lo_l_t4, _, _ = higham_verify_lower_supersolution(pa_t4.M_opt, pa_t4.b_opt_explore, z_hi_t4, gm_2s, 0, 0.0, 1.0, q_t4)
+    pi_t4 = build_log_scaled_policy_csr(pa_t4.M_pes, z_lo_t4, gm_2s)
+    ok_b_t4, hi_b_t4, _, _ = verify_and_bind_deployed_policy_csr(pa_t4.M_pes, z_lo_t4, pi_t4, gm_2s, 0, 0.0, 1.0, q_t4, hi_u_t4, eps_u_t4)
+    width_t4 = hi_b_t4 - lo_l_t4
+
+    r_bo_sp = spql.solve_unseen_goal(s_w, gm_w, materialize_policy=False)
+    v4_freeze_info = verify_phase3_v4_archive_untouched()
+    c21_pass = bool(
+        abs(simp_unif_2s - 2.0 * (1.0 + 0.5 * math.log(25.0 / 9.0))) < 1e-12
+        and abs(surr_unif_2s - 2.0 * (1.0 + math.log(5.0))) < 1e-12
+        and (simp_ce_2s < u_pac_full_2s < surr_ce_2s)
+        and ok_u_t4 and ok_l_t4 and ok_b_t4
+        and (width_t4 < 0.18) and (math.exp(2.0 * q_t4) > 2.6e12)
+        and r_bo_sp["certified"]
+        and (r_bo_sp["solver_status"] == "sound_bounds_only_no_policy")
+        and (r_bo_sp["bounds_only_query_ms"] == r_bo_sp["query_ms"])
+        and (r_bo_sp["query_ms"] >= r_bo_sp["interface_candidate_stage_ms"])
+        and v4_freeze_info["verified_untouched"]
+    )
+
+    all_21 = all([
         c01_pass, c02_pass, c03_pass, c04_pass, c05_pass, c06_pass, c07_pass, c08_pass,
         c09_pass, c10_pass, c11_pass, c12_pass, c13_pass, c14_pass, c15_pass, c16_pass,
-        c17_pass, c18_pass, c19_pass, c20_pass,
+        c17_pass, c18_pass, c19_pass, c20_pass, c21_pass,
     ])
     return {
-        "ALL_20_PHASE3_CONTRACT_GATES_PASSED": all_20,
-        "ALL_18_PHASE3_CONTRACT_GATES_PASSED": all_20,
-        "ALL_16_PHASE3_CONTRACT_GATES_PASSED": all_20,
-        "ALL_10_PHASE3_CONTRACT_GATES_PASSED": all_20,
+        "ALL_21_PHASE3_CONTRACT_GATES_PASSED": all_21,
+        "ALL_20_PHASE3_CONTRACT_GATES_PASSED": all_21,
+        "ALL_18_PHASE3_CONTRACT_GATES_PASSED": all_21,
+        "ALL_16_PHASE3_CONTRACT_GATES_PASSED": all_21,
+        "ALL_10_PHASE3_CONTRACT_GATES_PASSED": all_21,
         "elapsed_ms": 1000.0 * (time.perf_counter() - t0),
         "gates": {
             "P3_C01_clopper_pearson_positivity_and_zero_floor": {
@@ -1592,10 +1795,17 @@ def run_phase3_16_contract_gates() -> dict:
                 "zero_err_inf": zero_err, "uc_init_lu_rhs": uc_chk.init_lu_rhs,
                 "p3_v3_archive": v3_freeze_info,
             },
+            "P3_C21_r7a_prop5_simplex_thm4_sufficiency_and_v4_freeze": {
+                "pass": c21_pass, "pi05_simplex_worst": simp_unif_2s, "pi05_coord_surrogate": surr_unif_2s,
+                "ce_simplex_worst": simp_ce_2s, "u_pac_full_surrogate": u_pac_full_2s, "ce_coord_surrogate": surr_ce_2s,
+                "thm4_200step_width_at_q14p3": width_t4, "bounds_only_certified_ms": r_bo_sp["bounds_only_query_ms"],
+                "interface_stage_ms": r_bo_sp["interface_candidate_stage_ms"], "p3_v4_archive": v4_freeze_info,
+            },
         },
     }
 
 
+run_phase3_21_contract_gates = run_phase3_16_contract_gates
 run_phase3_20_contract_gates = run_phase3_16_contract_gates
 run_phase3_18_contract_gates = run_phase3_16_contract_gates
 run_phase3_10_contract_gates = run_phase3_16_contract_gates
